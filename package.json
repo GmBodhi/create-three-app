@@ -2,14 +2,27 @@
   "name": "create-three-app",
   "version": "1.0.0",
   "description": "Create basic three.js project wi",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint src"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
-    "inquirer": "^8.1.2"
+    "cross-spawn": "^7.0.3",
+    "enquirer": "^2.3.6",
+    "node-fetch": "^2.6.1"
+  },
+  "bin": {
+    "create-three-app": "./src/index.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^16.6.1",
+    "@types/node-fetch": "^2.5.12"
   }
 }
