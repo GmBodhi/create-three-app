@@ -25,6 +25,8 @@ let domains = {
     "https://cdn.statically.io/gh/GmBodhi/create-three-app/master/",
   "raw.githubusercontent.com":
     "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/",
+  "cdn.jsdelivr.net":
+    "https://cdn.jsdelivr.net/gh/gmbodhi/create-three-app@master/",
 };
 module.exports.domains = domains;
 
