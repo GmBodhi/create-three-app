@@ -1,7 +1,7 @@
 const chalk = require("chalk");
 const spawn = require("cross-spawn");
 const path = require("path");
-const manageError = require("./manageError");
+const { error } = require("./utils");
 
 let dir = process.argv[2] || "my-three-app";
 
@@ -22,7 +22,7 @@ async function installDeps(manager) {
         chalk.dim(
           `   ${chalk.cyanBright(
             `${manager === "yarn" ? "yarn" : "npm run"} `
-          )}${chalk.yellowBright("dev")}\n and edit your files\n`
+          )}${chalk.yellowBright("dev")}\n`
         )
       );
       console.log(
@@ -34,7 +34,7 @@ async function installDeps(manager) {
       );
     })
     .on("error", (e) => {
-      manageError(e.message);
+      error(e.message);
     });
 }
 
@@ -46,7 +46,7 @@ const init = (answer) => {
       installDeps(answer);
     })
     .on("error", (e) => {
-      manageError(e.message);
+      error(e.message);
     });
 };
 

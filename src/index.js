@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 
+// DO NOT EDIT OR DELETE THIS FILE.
+
 "use strict";
 const { mkdirSync, existsSync } = require("fs");
 const chalk = require("chalk");
 const path = require("path");
+const { domains, getConfig } = require("./scripts/utils");
 // @ts-ignore
 const { Select, AutoComplete } = require("enquirer");
-const init = require("./scripts/initEnv");
+const init = require("./scripts/initenv");
 const manageDir = require("./scripts/movedir");
 
 const dir = process.argv[2] || "my-three-app";
@@ -23,22 +26,32 @@ if (existsSync(dir)) {
 }
 
 new Select({
-  name: "deps",
-  message: "How do you want to instal dependecies?",
-  choices: ["yarn", "npm"],
+  name: "Domain",
+  message: "Which domain should we use to fetch the files?",
+  choices: Object.keys(domains),
 })
   .run()
-  .then((ans) => {
+  .then(async (domain) => {
+    const config = await getConfig(domain);
     new AutoComplete({
       name: "Example",
       message: "Which example do you want to use?",
-      choices: ["Basic", "Basic (with orbitcontrols)"],
+      choices: Object.keys(config),
     })
       .run()
-      .then((answer) => {
-        mkdirSync(dir);
-        manageDir(path.join(__dirname, "../examples", answer));
-        init(ans);
+      .then((example) => {
+        new Select({
+          name: "deps",
+          message: "How do you want to instal dependecies?",
+          choices: ["yarn", "npm"],
+        })
+          .run()
+          .then((pkgManager) => {
+            mkdirSync(dir);
+            manageDir(path.join(__dirname, "../examples", example));
+            init(pkgManager);
+          })
+          .catch((e) => console.log(chalk.red("Process aborted"), e));
       })
       .catch((e) => console.log(chalk.red("Process aborted"), e));
   })
