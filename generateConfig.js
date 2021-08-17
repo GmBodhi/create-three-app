@@ -18,10 +18,7 @@ function manageDir(directory, json, target = "") {
         path.join(__dirname, "examples"),
         path.join(directory)
       );
-      json["files"][file.name] = dir
-        .split(/(\\|\/)/g)
-        .slice(1)
-        .join("/");
+      json["files"][file.name] = dir.split("\\").slice(1).join("/");
     }
   });
 }
