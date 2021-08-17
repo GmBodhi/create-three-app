@@ -12,13 +12,16 @@ function manageDir(directory, json, target = "") {
         target + "/" + file.name
       );
       if (!json["dirs"].includes(target + "/" + file.name))
-        json["dirs"].push(target + "/" + file.name);
+        json["dirs"].unshift(target + "/" + file.name);
     } else {
       let dir = path.relative(
         path.join(__dirname, "examples"),
         path.join(directory)
       );
-      json["files"][file.name] = "./" + dir.split("\\").slice(1).join("/");
+      json["files"][file.name] = dir
+        .split(/(\\|\/)/g)
+        .slice(1)
+        .join("/");
     }
   });
 }
