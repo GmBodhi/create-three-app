@@ -38,9 +38,6 @@ fs.readdirSync(path.join(__dirname, "examples"), {
 });
 saveFile(config);
 function saveFile(json) {
-  fs.writeFileSync(
-    "./examples/config.json",
-    require("prettier").format(JSON.stringify(json))
-  );
+  fs.writeFileSync("./examples/config.json", JSON.stringify(json));
 }
 // END OF FILE //
