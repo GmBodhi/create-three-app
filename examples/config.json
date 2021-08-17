@@ -1,1 +1,28 @@
-{"Basic":{"files":{"webpack.common.js":"./bundler","webpack.dev.js":"./bundler","webpack.prod.js":"./bundler","package.json":"./","index.html":"./src","main.js":"./src","style.css":"./src","example.json":"./static"},"dirs":["/bundler","/src","/static"]},"Basic (with orbitcontrols)":{"files":{"webpack.common.js":"./bundler","webpack.dev.js":"./bundler","webpack.prod.js":"./bundler","package.json":"./","index.html":"./src","main.js":"./src","style.css":"./src","example.json":"./static"},"dirs":["/bundler","/src","/static"]}}
+{
+  "Basic": {
+    "files": {
+      "webpack.common.js": "./bundler",
+      "webpack.dev.js": "./bundler",
+      "webpack.prod.js": "./bundler",
+      "package.json": "./",
+      "index.html": "./src",
+      "main.js": "./src",
+      "style.css": "./src",
+      "example.json": "./static"
+    },
+    "dirs": ["/bundler", "/src", "/static"]
+  },
+  "Basic (with orbitcontrols)": {
+    "files": {
+      "webpack.common.js": "./bundler",
+      "webpack.dev.js": "./bundler",
+      "webpack.prod.js": "./bundler",
+      "package.json": "./",
+      "index.html": "./src",
+      "main.js": "./src",
+      "style.css": "./src",
+      "example.json": "./static"
+    },
+    "dirs": ["/bundler", "/src", "/static"]
+  }
+}
