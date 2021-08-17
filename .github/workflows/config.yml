@@ -1,0 +1,23 @@
+name: Config
+
+on: push
+
+jobs:
+  Config:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Node v14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Run Config
+        run: yarn run config
+      - name: Commit congif file
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "automated(config): Config file generated (actions)"
+          file_pattern: examples/config.json
+          skip_dirty_check: false
+          skip_fetch: false
