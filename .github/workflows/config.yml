@@ -12,6 +12,8 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: 14
+      - name: Install Dependencies
+        run: yarn install
       - name: Run Config
         run: yarn run config
       - name: Commit congif file
