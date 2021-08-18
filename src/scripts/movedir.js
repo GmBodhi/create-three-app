@@ -1,4 +1,4 @@
-const { readdirSync, mkdirSync, copyFileSync, rmdir } = require("fs");
+const { readdirSync, mkdirSync, copyFileSync } = require("fs");
 const { error } = require("./utils");
 const path = require("path");
 const rimraf = require("rimraf");

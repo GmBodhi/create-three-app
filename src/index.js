@@ -5,7 +5,6 @@
 "use strict";
 const { mkdirSync, existsSync } = require("fs");
 const chalk = require("chalk");
-const path = require("path");
 const { domains, getConfig } = require("./scripts/utils");
 // @ts-ignore
 const { Select, AutoComplete } = require("enquirer");
