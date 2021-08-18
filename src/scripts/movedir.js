@@ -1,5 +1,7 @@
-const { readdirSync, mkdirSync, copyFileSync } = require("fs");
+const { readdirSync, mkdirSync, copyFileSync, rmdir } = require("fs");
+const { error } = require("./utils");
 const path = require("path");
+const rimraf = require("rimraf");
 
 const dir = process.argv[2] || "my-three-app";
 
@@ -13,6 +15,11 @@ function manageDir(directory, target = "") {
         path.join(directory, file.name),
         path.join(process.cwd(), dir, target, file.name)
       );
+    }
+  });
+  rimraf(directory, (err) => {
+    if (err) {
+      error(err.message);
     }
   });
 }

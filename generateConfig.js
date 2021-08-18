@@ -38,6 +38,14 @@ fs.readdirSync(path.join(__dirname, "examples"), {
 });
 saveFile(config);
 function saveFile(json) {
-  fs.writeFileSync("./examples/config.json", JSON.stringify(json));
+  let file = Object.fromEntries(
+    Object.entries(json).filter((val) => {
+      val[1].dirs = val[1].dirs.sort(
+        (a, b) => a.split("/").length - b.split("/").length
+      );
+      return true;
+    })
+  );
+  fs.writeFileSync("./examples/config.json", JSON.stringify(file));
 }
 // END OF FILE //

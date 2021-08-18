@@ -11,6 +11,7 @@ const { domains, getConfig } = require("./scripts/utils");
 const { Select, AutoComplete } = require("enquirer");
 const init = require("./scripts/initenv");
 const manageDir = require("./scripts/movedir");
+const downloadfiles = require("./scripts/downloadfiles");
 
 const dir = process.argv[2] || "my-three-app";
 
@@ -48,8 +49,12 @@ new Select({
           .run()
           .then((pkgManager) => {
             mkdirSync(dir);
-            manageDir(path.join(__dirname, "../examples", example));
-            init(pkgManager);
+            downloadfiles(example, config[example], domain).then(
+              (directory) => {
+                manageDir(directory);
+                init(pkgManager);
+              }
+            );
           })
           .catch((e) => console.log(chalk.red("Process aborted"), e));
       })
