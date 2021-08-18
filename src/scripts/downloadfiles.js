@@ -2,11 +2,6 @@ const { mkdtempSync, mkdirSync } = require("fs");
 const { download, domains } = require("./utils");
 
 function resolveUrl(domain, { url, example }, file) {
-  console.log(
-    `${domains[domain]}examples/${example}/${
-      url?.length ? url + "/" : ""
-    }${file}`
-  );
   return `${domains[domain]}examples/${example}/${url ? url + "/" : ""}${file}`;
 }
 
