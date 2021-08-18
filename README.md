@@ -25,7 +25,12 @@ npx create-three-app {dir_name}
 
 ## Example
 
-<h3 color="red">🔴 <a href="http://cdn.statically.io/">cdn.statically.io</a> is bloacking html content, please use other CDNs</h3>
+
+https://user-images.githubusercontent.com/71921036/129839313-d551e88a-ab34-4287-aef0-0e7ce90f1d73.mp4
+
+
+
+<h3 color="red">🔴 <a href="http://cdn.statically.io/">cdn.statically.io</a> is blocking html content, please use other CDNs</h3>
 
 ## Contributing
 
