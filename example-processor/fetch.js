@@ -9,7 +9,7 @@ const puppeteer = require("puppeteer");
 
 let browser, page;
 
-module.exports.launch = async ({ urls }) => {
+module.exports.launch = async ({ urls, json }) => {
   browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   page = await browser.newPage();
   page.on("request", (request) => {
@@ -20,8 +20,9 @@ module.exports.launch = async ({ urls }) => {
         "https://threejs.org/build/three.module.js",
         "https://threejs.org/examples/jsm/libs/stats.module.js",
         "https://threejs.org/examples/jsm/libs/dat.gui.module.js",
-      ].includes(url) ||
-      url?.endsWith(".js")
+      ].includes(request.url()) ||
+      request.url()?.endsWith(".js") ||
+      json.includes(request.url()?.split("/").pop()?.split(".")[0])
     )
       return;
     if (!url) {
