@@ -1,203 +1,192 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+class GIMesh extends THREE.Mesh {
+  copy(source) {
+    super.copy(source);
 
-			class GIMesh extends THREE.Mesh {
+    this.geometry = source.geometry.clone();
 
-				copy( source ) {
+    return this;
+  }
+}
 
-					super.copy( source );
+//
 
-					this.geometry = source.geometry.clone();
+const SimpleGI = function (renderer, scene) {
+  const SIZE = 32,
+    SIZE2 = SIZE * SIZE;
 
-					return this;
+  const camera = new THREE.PerspectiveCamera(90, 1, 0.01, 100);
 
-				}
+  scene.updateMatrixWorld(true);
 
-			}
+  let clone = scene.clone();
+  clone.autoUpdate = false;
 
-			//
+  const rt = new THREE.WebGLRenderTarget(SIZE, SIZE);
 
-			const SimpleGI = function ( renderer, scene ) {
+  const normalMatrix = new THREE.Matrix3();
 
-				const SIZE = 32, SIZE2 = SIZE * SIZE;
+  const position = new THREE.Vector3();
+  const normal = new THREE.Vector3();
 
-				const camera = new THREE.PerspectiveCamera( 90, 1, 0.01, 100 );
+  let bounces = 0;
+  let currentVertex = 0;
 
-				scene.updateMatrixWorld( true );
+  const color = new Float32Array(3);
+  const buffer = new Uint8Array(SIZE2 * 4);
 
-				let clone = scene.clone();
-				clone.autoUpdate = false;
+  function compute() {
+    if (bounces === 3) return;
 
-				const rt = new THREE.WebGLRenderTarget( SIZE, SIZE );
+    const object = scene.children[0]; // torusKnot
+    const geometry = object.geometry;
 
-				const normalMatrix = new THREE.Matrix3();
+    const attributes = geometry.attributes;
+    const positions = attributes.position.array;
+    const normals = attributes.normal.array;
 
-				const position = new THREE.Vector3();
-				const normal = new THREE.Vector3();
+    if (attributes.color === undefined) {
+      const colors = new Float32Array(positions.length);
+      geometry.setAttribute(
+        "color",
+        new THREE.BufferAttribute(colors, 3).setUsage(THREE.DynamicDrawUsage)
+      );
+    }
 
-				let bounces = 0;
-				let currentVertex = 0;
+    const colors = attributes.color.array;
 
-				const color = new Float32Array( 3 );
-				const buffer = new Uint8Array( SIZE2 * 4 );
+    const startVertex = currentVertex;
+    const totalVertex = positions.length / 3;
 
-				function compute() {
+    for (let i = 0; i < 32; i++) {
+      if (currentVertex >= totalVertex) break;
 
-					if ( bounces === 3 ) return;
+      position.fromArray(positions, currentVertex * 3);
+      position.applyMatrix4(object.matrixWorld);
 
-					const object = scene.children[ 0 ]; // torusKnot
-					const geometry = object.geometry;
+      normal.fromArray(normals, currentVertex * 3);
+      normal
+        .applyMatrix3(normalMatrix.getNormalMatrix(object.matrixWorld))
+        .normalize();
 
-					const attributes = geometry.attributes;
-					const positions = attributes.position.array;
-					const normals = attributes.normal.array;
+      camera.position.copy(position);
+      camera.lookAt(position.add(normal));
 
-					if ( attributes.color === undefined ) {
+      renderer.setRenderTarget(rt);
+      renderer.render(clone, camera);
 
-						const colors = new Float32Array( positions.length );
-						geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ).setUsage( THREE.DynamicDrawUsage ) );
+      renderer.readRenderTargetPixels(rt, 0, 0, SIZE, SIZE, buffer);
 
-					}
+      color[0] = 0;
+      color[1] = 0;
+      color[2] = 0;
 
-					const colors = attributes.color.array;
+      for (let k = 0, kl = buffer.length; k < kl; k += 4) {
+        color[0] += buffer[k + 0];
+        color[1] += buffer[k + 1];
+        color[2] += buffer[k + 2];
+      }
 
-					const startVertex = currentVertex;
-					const totalVertex = positions.length / 3;
+      colors[currentVertex * 3 + 0] = color[0] / (SIZE2 * 255);
+      colors[currentVertex * 3 + 1] = color[1] / (SIZE2 * 255);
+      colors[currentVertex * 3 + 2] = color[2] / (SIZE2 * 255);
 
-					for ( let i = 0; i < 32; i ++ ) {
+      currentVertex++;
+    }
 
-						if ( currentVertex >= totalVertex ) break;
+    attributes.color.updateRange.offset = startVertex * 3;
+    attributes.color.updateRange.count = (currentVertex - startVertex) * 3;
+    attributes.color.needsUpdate = true;
 
-						position.fromArray( positions, currentVertex * 3 );
-						position.applyMatrix4( object.matrixWorld );
+    if (currentVertex >= totalVertex) {
+      clone = scene.clone();
+      clone.autoUpdate = false;
 
-						normal.fromArray( normals, currentVertex * 3 );
-						normal.applyMatrix3( normalMatrix.getNormalMatrix( object.matrixWorld ) ).normalize();
+      bounces++;
+      currentVertex = 0;
+    }
 
-						camera.position.copy( position );
-						camera.lookAt( position.add( normal ) );
+    requestAnimationFrame(compute);
+  }
 
-						renderer.setRenderTarget( rt );
-						renderer.render( clone, camera );
+  requestAnimationFrame(compute);
+};
 
-						renderer.readRenderTargetPixels( rt, 0, 0, SIZE, SIZE, buffer );
+//
 
-						color[ 0 ] = 0;
-						color[ 1 ] = 0;
-						color[ 2 ] = 0;
+let camera, scene, renderer;
 
-						for ( let k = 0, kl = buffer.length; k < kl; k += 4 ) {
+init();
+animate();
 
-							color[ 0 ] += buffer[ k + 0 ];
-							color[ 1 ] += buffer[ k + 1 ];
-							color[ 2 ] += buffer[ k + 2 ];
+function init() {
+  camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    100
+  );
+  camera.position.z = 4;
 
-						}
+  scene = new THREE.Scene();
 
-						colors[ currentVertex * 3 + 0 ] = color[ 0 ] / ( SIZE2 * 255 );
-						colors[ currentVertex * 3 + 1 ] = color[ 1 ] / ( SIZE2 * 255 );
-						colors[ currentVertex * 3 + 2 ] = color[ 2 ] / ( SIZE2 * 255 );
+  // torus knot
 
-						currentVertex ++;
+  const torusGeometry = new THREE.TorusKnotGeometry(0.75, 0.3, 128, 32, 1);
+  const material = new THREE.MeshBasicMaterial({ vertexColors: true });
 
-					}
+  const torusKnot = new GIMesh(torusGeometry, material);
+  scene.add(torusKnot);
 
-					attributes.color.updateRange.offset = startVertex * 3;
-					attributes.color.updateRange.count = ( currentVertex - startVertex ) * 3;
-					attributes.color.needsUpdate = true;
+  // room
 
-					if ( currentVertex >= totalVertex ) {
+  const materials = [];
 
-						clone = scene.clone();
-						clone.autoUpdate = false;
+  for (let i = 0; i < 8; i++) {
+    materials.push(
+      new THREE.MeshBasicMaterial({
+        color: Math.random() * 0xffffff,
+        side: THREE.BackSide,
+      })
+    );
+  }
 
-						bounces ++;
-						currentVertex = 0;
+  const boxGeometry = new THREE.BoxGeometry(3, 3, 3);
 
-					}
+  const box = new THREE.Mesh(boxGeometry, materials);
+  scene.add(box);
 
-					requestAnimationFrame( compute );
+  //
 
-				}
+  renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-				requestAnimationFrame( compute );
+  new SimpleGI(renderer, scene);
 
-			};
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 1;
+  controls.maxDistance = 10;
 
-			//
+  window.addEventListener("resize", onWindowResize);
+}
 
-			let camera, scene, renderer;
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-			init();
-			animate();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-			function init() {
+function animate() {
+  requestAnimationFrame(animate);
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 100 );
-				camera.position.z = 4;
-
-				scene = new THREE.Scene();
-
-				// torus knot
-
-				const torusGeometry = new THREE.TorusKnotGeometry( 0.75, 0.3, 128, 32, 1 );
-				const material = new THREE.MeshBasicMaterial( { vertexColors: true } );
-
-				const torusKnot = new GIMesh( torusGeometry, material );
-				scene.add( torusKnot );
-
-				// room
-
-				const materials = [];
-
-				for ( let i = 0; i < 8; i ++ ) {
-
-					materials.push( new THREE.MeshBasicMaterial( { color: Math.random() * 0xffffff, side: THREE.BackSide } ) );
-
-				}
-
-				const boxGeometry = new THREE.BoxGeometry( 3, 3, 3 );
-
-				const box = new THREE.Mesh( boxGeometry, materials );
-				scene.add( box );
-
-				//
-
-				renderer = new THREE.WebGLRenderer();
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
-
-				new SimpleGI( renderer, scene );
-
-				const controls = new OrbitControls( camera, renderer.domElement );
-				controls.minDistance = 1;
-				controls.maxDistance = 10;
-
-				window.addEventListener( 'resize', onWindowResize );
-
-			}
-
-			function onWindowResize() {
-
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				renderer.setRenderTarget( null );
-				renderer.render( scene, camera );
-
-			}
-
-		
+  renderer.setRenderTarget(null);
+  renderer.render(scene, camera);
+}

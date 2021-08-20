@@ -1,119 +1,117 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
-			import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+let camera, scene, renderer, light1, light2, light3, light4, object, stats;
 
-			let camera, scene, renderer,
-				light1, light2, light3, light4,
-				object, stats;
+const clock = new THREE.Clock();
 
-			const clock = new THREE.Clock();
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  camera = new THREE.PerspectiveCamera(
+    50,
+    window.innerWidth / window.innerHeight,
+    1,
+    1000
+  );
+  camera.position.z = 100;
 
-			function init() {
+  scene = new THREE.Scene();
 
-				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 1000 );
-				camera.position.z = 100;
+  //model
 
-				scene = new THREE.Scene();
+  const loader = new OBJLoader();
+  loader.load("models/obj/walt/WaltHead.obj", function (obj) {
+    object = obj;
+    object.scale.multiplyScalar(0.8);
+    object.position.y = -30;
+    scene.add(object);
+  });
 
-				//model
+  const sphere = new THREE.SphereGeometry(0.5, 16, 8);
 
-				const loader = new OBJLoader();
-				loader.load( 'models/obj/walt/WaltHead.obj', function ( obj ) {
+  //lights
 
-					object = obj;
-					object.scale.multiplyScalar( 0.8 );
-					object.position.y = - 30;
-					scene.add( object );
+  light1 = new THREE.PointLight(0xff0040, 2, 50);
+  light1.add(
+    new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xff0040 }))
+  );
+  scene.add(light1);
 
-				} );
+  light2 = new THREE.PointLight(0x0040ff, 2, 50);
+  light2.add(
+    new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x0040ff }))
+  );
+  scene.add(light2);
 
-				const sphere = new THREE.SphereGeometry( 0.5, 16, 8 );
+  light3 = new THREE.PointLight(0x80ff80, 2, 50);
+  light3.add(
+    new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x80ff80 }))
+  );
+  scene.add(light3);
 
-				//lights
+  light4 = new THREE.PointLight(0xffaa00, 2, 50);
+  light4.add(
+    new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xffaa00 }))
+  );
+  scene.add(light4);
 
-				light1 = new THREE.PointLight( 0xff0040, 2, 50 );
-				light1.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xff0040 } ) ) );
-				scene.add( light1 );
+  //renderer
 
-				light2 = new THREE.PointLight( 0x0040ff, 2, 50 );
-				light2.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0x0040ff } ) ) );
-				scene.add( light2 );
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-				light3 = new THREE.PointLight( 0x80ff80, 2, 50 );
-				light3.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0x80ff80 } ) ) );
-				scene.add( light3 );
+  //stats
 
-				light4 = new THREE.PointLight( 0xffaa00, 2, 50 );
-				light4.add( new THREE.Mesh( sphere, new THREE.MeshBasicMaterial( { color: 0xffaa00 } ) ) );
-				scene.add( light4 );
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
 
-				//renderer
+  window.addEventListener("resize", onWindowResize);
+}
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-				//stats
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-				stats = new Stats();
-				document.body.appendChild( stats.dom );
+function animate() {
+  requestAnimationFrame(animate);
 
-				window.addEventListener( 'resize', onWindowResize );
+  render();
+  stats.update();
+}
 
-			}
+function render() {
+  const time = Date.now() * 0.0005;
+  const delta = clock.getDelta();
 
-			function onWindowResize() {
+  if (object) object.rotation.y -= 0.5 * delta;
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+  light1.position.x = Math.sin(time * 0.7) * 30;
+  light1.position.y = Math.cos(time * 0.5) * 40;
+  light1.position.z = Math.cos(time * 0.3) * 30;
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+  light2.position.x = Math.cos(time * 0.3) * 30;
+  light2.position.y = Math.sin(time * 0.5) * 40;
+  light2.position.z = Math.sin(time * 0.7) * 30;
 
-			}
+  light3.position.x = Math.sin(time * 0.7) * 30;
+  light3.position.y = Math.cos(time * 0.3) * 40;
+  light3.position.z = Math.sin(time * 0.5) * 30;
 
-			function animate() {
+  light4.position.x = Math.sin(time * 0.3) * 30;
+  light4.position.y = Math.cos(time * 0.7) * 40;
+  light4.position.z = Math.sin(time * 0.5) * 30;
 
-				requestAnimationFrame( animate );
-
-				render();
-				stats.update();
-
-			}
-
-			function render() {
-
-				const time = Date.now() * 0.0005;
-				const delta = clock.getDelta();
-
-				if ( object ) object.rotation.y -= 0.5 * delta;
-
-				light1.position.x = Math.sin( time * 0.7 ) * 30;
-				light1.position.y = Math.cos( time * 0.5 ) * 40;
-				light1.position.z = Math.cos( time * 0.3 ) * 30;
-
-				light2.position.x = Math.cos( time * 0.3 ) * 30;
-				light2.position.y = Math.sin( time * 0.5 ) * 40;
-				light2.position.z = Math.sin( time * 0.7 ) * 30;
-
-				light3.position.x = Math.sin( time * 0.7 ) * 30;
-				light3.position.y = Math.cos( time * 0.3 ) * 40;
-				light3.position.z = Math.sin( time * 0.5 ) * 30;
-
-				light4.position.x = Math.sin( time * 0.3 ) * 30;
-				light4.position.y = Math.cos( time * 0.7 ) * 40;
-				light4.position.z = Math.sin( time * 0.5 ) * 30;
-
-				renderer.render( scene, camera );
-
-			}
-
-		
+  renderer.render(scene, camera);
+}

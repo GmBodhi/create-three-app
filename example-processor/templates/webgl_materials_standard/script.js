@@ -1,175 +1,153 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
-			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
-			import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
-			import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-			import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
+const statsEnabled = true;
 
-			const statsEnabled = true;
+let container, stats;
 
-			let container, stats;
+let camera, scene, renderer, controls;
 
-			let camera, scene, renderer, controls;
+init();
+animate();
+
+function init() {
+  container = document.createElement("div");
+  document.body.appendChild(container);
+
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
+
+  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.toneMapping = THREE.ReinhardToneMapping;
+  renderer.toneMappingExposure = 3;
+
+  //
 
-			init();
-			animate();
+  scene = new THREE.Scene();
 
-			function init() {
+  camera = new THREE.PerspectiveCamera(
+    50,
+    window.innerWidth / window.innerHeight,
+    0.01,
+    1000
+  );
+  camera.position.z = 2;
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+  controls = new TrackballControls(camera, renderer.domElement);
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+  //
 
-				renderer.outputEncoding = THREE.sRGBEncoding;
-				renderer.toneMapping = THREE.ReinhardToneMapping;
-				renderer.toneMappingExposure = 3;
+  scene.add(new THREE.HemisphereLight(0x443333, 0x222233, 4));
 
-				//
+  //
 
-				scene = new THREE.Scene();
+  const material = new THREE.MeshStandardMaterial();
 
-				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 0.01, 1000 );
-				camera.position.z = 2;
+  new OBJLoader()
+    .setPath("models/obj/cerberus/")
+    .load("Cerberus.obj", function (group) {
+      const loader = new THREE.TextureLoader().setPath("models/obj/cerberus/");
 
-				controls = new TrackballControls( camera, renderer.domElement );
+      material.roughness = 1; // attenuates roughnessMap
+      material.metalness = 1; // attenuates metalnessMap
 
-				//
+      const diffuseMap = loader.load("Cerberus_A.jpg");
+      diffuseMap.encoding = THREE.sRGBEncoding;
+      material.map = diffuseMap;
+      // roughness is in G channel, metalness is in B channel
+      material.metalnessMap = material.roughnessMap =
+        loader.load("Cerberus_RM.jpg");
+      material.normalMap = loader.load("Cerberus_N.jpg");
 
-				scene.add( new THREE.HemisphereLight( 0x443333, 0x222233, 4 ) );
+      material.map.wrapS = THREE.RepeatWrapping;
+      material.roughnessMap.wrapS = THREE.RepeatWrapping;
+      material.metalnessMap.wrapS = THREE.RepeatWrapping;
+      material.normalMap.wrapS = THREE.RepeatWrapping;
 
-				//
+      group.traverse(function (child) {
+        if (child.isMesh) {
+          child.material = material;
+        }
+      });
 
-				const material = new THREE.MeshStandardMaterial();
+      group.position.x = -0.45;
+      group.rotation.y = -Math.PI / 2;
+      scene.add(group);
+    });
 
-				new OBJLoader()
-					.setPath( 'models/obj/cerberus/' )
-					.load( 'Cerberus.obj', function ( group ) {
+  const environments = {
+    "Venice Sunset": { filename: "venice_sunset_1k.hdr" },
+    Overpass: { filename: "pedestrian_overpass_1k.hdr" },
+  };
 
-						const loader = new THREE.TextureLoader()
-							.setPath( 'models/obj/cerberus/' );
+  function loadEnvironment(name) {
+    if (environments[name].texture !== undefined) {
+      scene.background = environments[name].texture;
+      scene.environment = environments[name].texture;
+      return;
+    }
 
-						material.roughness = 1; // attenuates roughnessMap
-						material.metalness = 1; // attenuates metalnessMap
+    const filename = environments[name].filename;
+    new RGBELoader()
+      .setPath("textures/equirectangular/")
+      .load(filename, function (hdrEquirect) {
+        hdrEquirect.mapping = THREE.EquirectangularReflectionMapping;
 
-						const diffuseMap = loader.load( 'Cerberus_A.jpg' );
-						diffuseMap.encoding = THREE.sRGBEncoding;
-						material.map = diffuseMap;
-						// roughness is in G channel, metalness is in B channel
-						material.metalnessMap = material.roughnessMap = loader.load( 'Cerberus_RM.jpg' );
-						material.normalMap = loader.load( 'Cerberus_N.jpg' );
+        scene.background = hdrEquirect;
+        scene.environment = hdrEquirect;
+        environments[name].texture = hdrEquirect;
+      });
+  }
 
-						material.map.wrapS = THREE.RepeatWrapping;
-						material.roughnessMap.wrapS = THREE.RepeatWrapping;
-						material.metalnessMap.wrapS = THREE.RepeatWrapping;
-						material.normalMap.wrapS = THREE.RepeatWrapping;
+  const params = {
+    environment: Object.keys(environments)[0],
+  };
+  loadEnvironment(params.environment);
 
-						group.traverse( function ( child ) {
+  const gui = new GUI();
+  gui
+    .add(params, "environment", Object.keys(environments))
+    .onChange(function (value) {
+      loadEnvironment(value);
+    });
+  gui.open();
 
-							if ( child.isMesh ) {
+  //
 
-								child.material = material;
+  if (statsEnabled) {
+    stats = new Stats();
+    container.appendChild(stats.dom);
+  }
 
-							}
+  window.addEventListener("resize", onWindowResize);
+}
 
-						} );
+//
 
-						group.position.x = - 0.45;
-						group.rotation.y = - Math.PI / 2;
-						scene.add( group );
+function onWindowResize() {
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
-					} );
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+}
 
-				const environments = {
+//
 
-					'Venice Sunset': { filename: 'venice_sunset_1k.hdr' },
-					'Overpass': { filename: 'pedestrian_overpass_1k.hdr' }
+function animate() {
+  requestAnimationFrame(animate);
 
-				};
+  controls.update();
+  renderer.render(scene, camera);
 
-				function loadEnvironment( name ) {
-
-					if ( environments[ name ].texture !== undefined ) {
-
-						scene.background = environments[ name ].texture;
-						scene.environment = environments[ name ].texture;
-						return;
-
-					}
-
-					const filename = environments[ name ].filename;
-					new RGBELoader()
-						.setPath( 'textures/equirectangular/' )
-						.load( filename, function ( hdrEquirect ) {
-
-							hdrEquirect.mapping = THREE.EquirectangularReflectionMapping;
-
-							scene.background = hdrEquirect;
-							scene.environment = hdrEquirect;
-							environments[ name ].texture = hdrEquirect;
-
-						} );
-
-				}
-
-				const params = {
-
-					environment: Object.keys( environments )[ 0 ]
-
-				};
-				loadEnvironment( params.environment );
-
-				const gui = new GUI();
-				gui.add( params, 'environment', Object.keys( environments ) ).onChange( function ( value ) {
-
-					loadEnvironment( value );
-
-				} );
-				gui.open();
-
-				//
-
-				if ( statsEnabled ) {
-
-					stats = new Stats();
-					container.appendChild( stats.dom );
-
-				}
-
-				window.addEventListener( 'resize', onWindowResize );
-
-			}
-
-			//
-
-			function onWindowResize() {
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-			}
-
-			//
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				controls.update();
-				renderer.render( scene, camera );
-
-				if ( statsEnabled ) stats.update();
-
-			}
-
-		
+  if (statsEnabled) stats.update();
+}

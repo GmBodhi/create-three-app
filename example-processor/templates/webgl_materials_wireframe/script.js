@@ -1,135 +1,122 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
-			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+const API = {
+  thickness: 1,
+};
 
-			const API = {
-				thickness: 1
-			};
+let renderer, scene, camera, mesh2;
 
-			let renderer, scene, camera, mesh2;
+init();
 
-			init();
+function init() {
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-			function init() {
+  scene = new THREE.Scene();
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
+  camera = new THREE.PerspectiveCamera(
+    40,
+    window.innerWidth / window.innerHeight,
+    1,
+    500
+  );
+  camera.position.z = 200;
 
-				scene = new THREE.Scene();
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
+  controls.enableZoom = false;
 
-				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 500 );
-				camera.position.z = 200;
+  new THREE.BufferGeometryLoader().load(
+    "models/json/WaltHeadLo_buffergeometry.json",
+    function (geometry) {
+      geometry.deleteAttribute("normal");
+      geometry.deleteAttribute("uv");
 
-				const controls = new OrbitControls( camera, renderer.domElement );
-				controls.enablePan = false;
-				controls.enableZoom = false;
+      setupAttributes(geometry);
 
-				new THREE.BufferGeometryLoader().load( 'models/json/WaltHeadLo_buffergeometry.json', function ( geometry ) {
+      // left
 
-					geometry.deleteAttribute( 'normal' );
-					geometry.deleteAttribute( 'uv' );
+      const material1 = new THREE.MeshBasicMaterial({
+        color: 0xe0e0ff,
+        wireframe: true,
+      });
 
-					setupAttributes( geometry );
+      const mesh1 = new THREE.Mesh(geometry, material1);
+      mesh1.position.set(-40, 0, 0);
 
-					// left
+      scene.add(mesh1);
 
-					const material1 = new THREE.MeshBasicMaterial( {
+      // right
 
-						color: 0xe0e0ff,
-						wireframe: true
+      const material2 = new THREE.ShaderMaterial({
+        uniforms: { thickness: { value: API.thickness } },
+        vertexShader: document.getElementById("vertexShader").textContent,
+        fragmentShader: document.getElementById("fragmentShader").textContent,
+        side: THREE.DoubleSide,
+        alphaToCoverage: true, // only works when WebGLRenderer's "antialias" is set to "true"
+      });
+      material2.extensions.derivatives = true;
 
-					} );
+      mesh2 = new THREE.Mesh(geometry, material2);
+      mesh2.position.set(40, 0, 0);
 
-					const mesh1 = new THREE.Mesh( geometry, material1 );
-					mesh1.position.set( - 40, 0, 0 );
+      scene.add(mesh2);
 
-					scene.add( mesh1 );
+      //
 
-					// right
+      animate();
+    }
+  );
 
-					const material2 = new THREE.ShaderMaterial( {
+  //
 
-						uniforms: { 'thickness': { value: API.thickness } },
-						vertexShader: document.getElementById( 'vertexShader' ).textContent,
-						fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
-						side: THREE.DoubleSide,
-						alphaToCoverage: true // only works when WebGLRenderer's "antialias" is set to "true"
+  const gui = new GUI();
 
-					} );
-					material2.extensions.derivatives = true;
+  gui.add(API, "thickness", 0, 4).onChange(function () {
+    mesh2.material.uniforms.thickness.value = API.thickness;
+  });
 
-					mesh2 = new THREE.Mesh( geometry, material2 );
-					mesh2.position.set( 40, 0, 0 );
+  gui.open();
 
-					scene.add( mesh2 );
+  //
 
-					//
+  window.addEventListener("resize", onWindowResize);
+}
 
-					animate();
+function setupAttributes(geometry) {
+  const vectors = [
+    new THREE.Vector3(1, 0, 0),
+    new THREE.Vector3(0, 1, 0),
+    new THREE.Vector3(0, 0, 1),
+  ];
 
-				} );
+  const position = geometry.attributes.position;
+  const centers = new Float32Array(position.count * 3);
 
-				//
+  for (let i = 0, l = position.count; i < l; i++) {
+    vectors[i % 3].toArray(centers, i * 3);
+  }
 
-				const gui = new GUI();
+  geometry.setAttribute("center", new THREE.BufferAttribute(centers, 3));
+}
 
-				gui.add( API, 'thickness', 0, 4 ).onChange( function () {
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-					mesh2.material.uniforms.thickness.value = API.thickness;
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-				} );
+function animate() {
+  requestAnimationFrame(animate);
 
-				gui.open();
-
-				//
-
-				window.addEventListener( 'resize', onWindowResize );
-
-			}
-
-			function setupAttributes( geometry ) {
-
-				const vectors = [
-					new THREE.Vector3( 1, 0, 0 ),
-					new THREE.Vector3( 0, 1, 0 ),
-					new THREE.Vector3( 0, 0, 1 )
-				];
-
-				const position = geometry.attributes.position;
-				const centers = new Float32Array( position.count * 3 );
-
-				for ( let i = 0, l = position.count; i < l; i ++ ) {
-
-					vectors[ i % 3 ].toArray( centers, i * 3 );
-
-				}
-
-				geometry.setAttribute( 'center', new THREE.BufferAttribute( centers, 3 ) );
-
-			}
-
-			function onWindowResize() {
-
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				renderer.render( scene, camera );
-
-			}
-
-		
+  renderer.render(scene, camera);
+}

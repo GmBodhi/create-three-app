@@ -1,147 +1,144 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import Stats from "three/examples/jsm/libs/stats.module.js";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
-			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 
-			import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
+let perspectiveCamera, orthographicCamera, controls, scene, renderer, stats;
 
-			let perspectiveCamera, orthographicCamera, controls, scene, renderer, stats;
+const params = {
+  orthographicCamera: false,
+};
 
-			const params = {
-				orthographicCamera: false
-			};
+const frustumSize = 400;
 
-			const frustumSize = 400;
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  const aspect = window.innerWidth / window.innerHeight;
 
-			function init() {
+  perspectiveCamera = new THREE.PerspectiveCamera(60, aspect, 1, 1000);
+  perspectiveCamera.position.z = 500;
 
-				const aspect = window.innerWidth / window.innerHeight;
+  orthographicCamera = new THREE.OrthographicCamera(
+    (frustumSize * aspect) / -2,
+    (frustumSize * aspect) / 2,
+    frustumSize / 2,
+    frustumSize / -2,
+    1,
+    1000
+  );
+  orthographicCamera.position.z = 500;
 
-				perspectiveCamera = new THREE.PerspectiveCamera( 60, aspect, 1, 1000 );
-				perspectiveCamera.position.z = 500;
+  // world
 
-				orthographicCamera = new THREE.OrthographicCamera( frustumSize * aspect / - 2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / - 2, 1, 1000 );
-				orthographicCamera.position.z = 500;
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xcccccc);
+  scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
 
-				// world
+  const geometry = new THREE.CylinderGeometry(0, 10, 30, 4, 1);
+  const material = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    flatShading: true,
+  });
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xcccccc );
-				scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
+  for (let i = 0; i < 500; i++) {
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.x = (Math.random() - 0.5) * 1000;
+    mesh.position.y = (Math.random() - 0.5) * 1000;
+    mesh.position.z = (Math.random() - 0.5) * 1000;
+    mesh.updateMatrix();
+    mesh.matrixAutoUpdate = false;
+    scene.add(mesh);
+  }
 
-				const geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );
-				const material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
+  // lights
 
-				for ( let i = 0; i < 500; i ++ ) {
+  const dirLight1 = new THREE.DirectionalLight(0xffffff);
+  dirLight1.position.set(1, 1, 1);
+  scene.add(dirLight1);
 
-					const mesh = new THREE.Mesh( geometry, material );
-					mesh.position.x = ( Math.random() - 0.5 ) * 1000;
-					mesh.position.y = ( Math.random() - 0.5 ) * 1000;
-					mesh.position.z = ( Math.random() - 0.5 ) * 1000;
-					mesh.updateMatrix();
-					mesh.matrixAutoUpdate = false;
-					scene.add( mesh );
+  const dirLight2 = new THREE.DirectionalLight(0x002288);
+  dirLight2.position.set(-1, -1, -1);
+  scene.add(dirLight2);
 
-				}
+  const ambientLight = new THREE.AmbientLight(0x222222);
+  scene.add(ambientLight);
 
-				// lights
+  // renderer
 
-				const dirLight1 = new THREE.DirectionalLight( 0xffffff );
-				dirLight1.position.set( 1, 1, 1 );
-				scene.add( dirLight1 );
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-				const dirLight2 = new THREE.DirectionalLight( 0x002288 );
-				dirLight2.position.set( - 1, - 1, - 1 );
-				scene.add( dirLight2 );
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
 
-				const ambientLight = new THREE.AmbientLight( 0x222222 );
-				scene.add( ambientLight );
+  //
 
-				// renderer
+  const gui = new GUI();
+  gui
+    .add(params, "orthographicCamera")
+    .name("use orthographic")
+    .onChange(function (value) {
+      controls.dispose();
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
+      createControls(value ? orthographicCamera : perspectiveCamera);
+    });
 
-				stats = new Stats();
-				document.body.appendChild( stats.dom );
+  //
 
-				//
+  window.addEventListener("resize", onWindowResize);
 
-				const gui = new GUI();
-				gui.add( params, 'orthographicCamera' ).name( 'use orthographic' ).onChange( function ( value ) {
+  createControls(perspectiveCamera);
+}
 
-					controls.dispose();
+function createControls(camera) {
+  controls = new TrackballControls(camera, renderer.domElement);
 
-					createControls( value ? orthographicCamera : perspectiveCamera );
+  controls.rotateSpeed = 1.0;
+  controls.zoomSpeed = 1.2;
+  controls.panSpeed = 0.8;
 
-				} );
+  controls.keys = ["KeyA", "KeyS", "KeyD"];
+}
 
-				//
+function onWindowResize() {
+  const aspect = window.innerWidth / window.innerHeight;
 
-				window.addEventListener( 'resize', onWindowResize );
+  perspectiveCamera.aspect = aspect;
+  perspectiveCamera.updateProjectionMatrix();
 
-				createControls( perspectiveCamera );
+  orthographicCamera.left = (-frustumSize * aspect) / 2;
+  orthographicCamera.right = (frustumSize * aspect) / 2;
+  orthographicCamera.top = frustumSize / 2;
+  orthographicCamera.bottom = -frustumSize / 2;
+  orthographicCamera.updateProjectionMatrix();
 
-			}
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
-			function createControls( camera ) {
+  controls.handleResize();
+}
 
-				controls = new TrackballControls( camera, renderer.domElement );
+function animate() {
+  requestAnimationFrame(animate);
 
-				controls.rotateSpeed = 1.0;
-				controls.zoomSpeed = 1.2;
-				controls.panSpeed = 0.8;
+  controls.update();
 
-				controls.keys = [ 'KeyA', 'KeyS', 'KeyD' ];
+  stats.update();
 
-			}
+  render();
+}
 
-			function onWindowResize() {
+function render() {
+  const camera = params.orthographicCamera
+    ? orthographicCamera
+    : perspectiveCamera;
 
-				const aspect = window.innerWidth / window.innerHeight;
-
-				perspectiveCamera.aspect = aspect;
-				perspectiveCamera.updateProjectionMatrix();
-
-				orthographicCamera.left = - frustumSize * aspect / 2;
-				orthographicCamera.right = frustumSize * aspect / 2;
-				orthographicCamera.top = frustumSize / 2;
-				orthographicCamera.bottom = - frustumSize / 2;
-				orthographicCamera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-				controls.handleResize();
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				controls.update();
-
-				stats.update();
-
-				render();
-
-			}
-
-			function render() {
-
-				const camera = ( params.orthographicCamera ) ? orthographicCamera : perspectiveCamera;
-
-				renderer.render( scene, camera );
-
-			}
-
-
-		
+  renderer.render(scene, camera);
+}

@@ -1,47 +1,46 @@
-<html><head>
-		<title>three.js webgl - postprocessing - unreal bloom selective</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		
-	</head>
-	<body style="overflow: hidden;">
+<html>
+  <head>
+    <title>three.js webgl - postprocessing - unreal bloom selective</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      Click on a sphere to toggle bloom<br />By
+      <a href="http://github.com/Temdog007" target="_blank" rel="noopener"
+        >Temdog007</a
+      >
+    </div>
 
-		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> Click on a sphere to toggle bloom<br>By <a href="http://github.com/Temdog007" target="_blank" rel="noopener">Temdog007</a>
-		</div>
+    <script type="x-shader/x-vertex" id="vertexshader">
 
-		<script type="x-shader/x-vertex" id="vertexshader">
+      varying vec2 vUv;
 
-			varying vec2 vUv;
+      void main() {
 
-			void main() {
+      	vUv = uv;
 
-				vUv = uv;
+      	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      }
+    </script>
 
-			}
+    <script type="x-shader/x-fragment" id="fragmentshader">
 
-		</script>
+      uniform sampler2D baseTexture;
+      uniform sampler2D bloomTexture;
 
-		<script type="x-shader/x-fragment" id="fragmentshader">
+      varying vec2 vUv;
 
-			uniform sampler2D baseTexture;
-			uniform sampler2D bloomTexture;
+      void main() {
 
-			varying vec2 vUv;
+      	gl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );
 
-			void main() {
-
-				gl_FragColor = ( texture2D( baseTexture, vUv ) + vec4( 1.0 ) * texture2D( bloomTexture, vUv ) );
-
-			}
-
-		</script>
-
-		
-
-	
-
-
-</body></html>
+      }
+    </script>
+  </body>
+</html>

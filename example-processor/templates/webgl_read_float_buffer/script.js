@@ -1,163 +1,182 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
+let container, stats;
 
-			let container, stats;
+let cameraRTT, sceneRTT, sceneScreen, renderer, zmesh1, zmesh2;
 
-			let cameraRTT, sceneRTT, sceneScreen, renderer, zmesh1, zmesh2;
+let mouseX = 0,
+  mouseY = 0;
 
-			let mouseX = 0, mouseY = 0;
+const windowHalfX = window.innerWidth / 2;
+const windowHalfY = window.innerHeight / 2;
 
-			const windowHalfX = window.innerWidth / 2;
-			const windowHalfY = window.innerHeight / 2;
+let rtTexture, material, quad;
 
-			let rtTexture, material, quad;
+let delta = 0.01;
+let valueNode;
 
-			let delta = 0.01;
-			let valueNode;
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  container = document.getElementById("container");
 
-			function init() {
+  cameraRTT = new THREE.OrthographicCamera(
+    window.innerWidth / -2,
+    window.innerWidth / 2,
+    window.innerHeight / 2,
+    window.innerHeight / -2,
+    -10000,
+    10000
+  );
+  cameraRTT.position.z = 100;
 
-				container = document.getElementById( 'container' );
+  //
 
-				cameraRTT = new THREE.OrthographicCamera( window.innerWidth / - 2, window.innerWidth / 2, window.innerHeight / 2, window.innerHeight / - 2, - 10000, 10000 );
-				cameraRTT.position.z = 100;
+  sceneRTT = new THREE.Scene();
+  sceneScreen = new THREE.Scene();
 
-				//
+  let light = new THREE.DirectionalLight(0xffffff);
+  light.position.set(0, 0, 1).normalize();
+  sceneRTT.add(light);
 
-				sceneRTT = new THREE.Scene();
-				sceneScreen = new THREE.Scene();
+  light = new THREE.DirectionalLight(0xffaaaa, 1.5);
+  light.position.set(0, 0, -1).normalize();
+  sceneRTT.add(light);
 
-				let light = new THREE.DirectionalLight( 0xffffff );
-				light.position.set( 0, 0, 1 ).normalize();
-				sceneRTT.add( light );
+  rtTexture = new THREE.WebGLRenderTarget(
+    window.innerWidth,
+    window.innerHeight,
+    {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.NearestFilter,
+      format: THREE.RGBAFormat,
+      type: THREE.FloatType,
+    }
+  );
 
-				light = new THREE.DirectionalLight( 0xffaaaa, 1.5 );
-				light.position.set( 0, 0, - 1 ).normalize();
-				sceneRTT.add( light );
+  material = new THREE.ShaderMaterial({
+    uniforms: { time: { value: 0.0 } },
+    vertexShader: document.getElementById("vertexShader").textContent,
+    fragmentShader: document.getElementById("fragment_shader_pass_1")
+      .textContent,
+  });
 
-				rtTexture = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter, format: THREE.RGBAFormat, type: THREE.FloatType } );
+  const materialScreen = new THREE.ShaderMaterial({
+    uniforms: { tDiffuse: { value: rtTexture.texture } },
+    vertexShader: document.getElementById("vertexShader").textContent,
+    fragmentShader: document.getElementById("fragment_shader_screen")
+      .textContent,
 
-				material = new THREE.ShaderMaterial( {
+    depthWrite: false,
+  });
 
-					uniforms: { "time": { value: 0.0 } },
-					vertexShader: document.getElementById( 'vertexShader' ).textContent,
-					fragmentShader: document.getElementById( 'fragment_shader_pass_1' ).textContent
+  const plane = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
 
-				} );
+  quad = new THREE.Mesh(plane, material);
+  quad.position.z = -100;
+  sceneRTT.add(quad);
 
-				const materialScreen = new THREE.ShaderMaterial( {
+  const geometry = new THREE.TorusGeometry(100, 25, 15, 30);
 
-					uniforms: { "tDiffuse": { value: rtTexture.texture } },
-					vertexShader: document.getElementById( 'vertexShader' ).textContent,
-					fragmentShader: document.getElementById( 'fragment_shader_screen' ).textContent,
+  const mat1 = new THREE.MeshPhongMaterial({
+    color: 0x555555,
+    specular: 0xffaa00,
+    shininess: 5,
+  });
+  const mat2 = new THREE.MeshPhongMaterial({
+    color: 0x550000,
+    specular: 0xff2200,
+    shininess: 5,
+  });
 
-					depthWrite: false
+  zmesh1 = new THREE.Mesh(geometry, mat1);
+  zmesh1.position.set(0, 0, 100);
+  zmesh1.scale.set(1.5, 1.5, 1.5);
+  sceneRTT.add(zmesh1);
 
-				} );
+  zmesh2 = new THREE.Mesh(geometry, mat2);
+  zmesh2.position.set(0, 150, 100);
+  zmesh2.scale.set(0.75, 0.75, 0.75);
+  sceneRTT.add(zmesh2);
 
-				const plane = new THREE.PlaneGeometry( window.innerWidth, window.innerHeight );
+  quad = new THREE.Mesh(plane, materialScreen);
+  quad.position.z = -100;
+  sceneScreen.add(quad);
 
-				quad = new THREE.Mesh( plane, material );
-				quad.position.z = - 100;
-				sceneRTT.add( quad );
+  renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.autoClear = false;
 
-				const geometry = new THREE.TorusGeometry( 100, 25, 15, 30 );
+  container.appendChild(renderer.domElement);
 
-				const mat1 = new THREE.MeshPhongMaterial( { color: 0x555555, specular: 0xffaa00, shininess: 5 } );
-				const mat2 = new THREE.MeshPhongMaterial( { color: 0x550000, specular: 0xff2200, shininess: 5 } );
+  stats = new Stats();
+  container.appendChild(stats.dom);
 
-				zmesh1 = new THREE.Mesh( geometry, mat1 );
-				zmesh1.position.set( 0, 0, 100 );
-				zmesh1.scale.set( 1.5, 1.5, 1.5 );
-				sceneRTT.add( zmesh1 );
+  valueNode = document.getElementById("values");
 
-				zmesh2 = new THREE.Mesh( geometry, mat2 );
-				zmesh2.position.set( 0, 150, 100 );
-				zmesh2.scale.set( 0.75, 0.75, 0.75 );
-				sceneRTT.add( zmesh2 );
+  document.addEventListener("mousemove", onDocumentMouseMove);
+}
 
-				quad = new THREE.Mesh( plane, materialScreen );
-				quad.position.z = - 100;
-				sceneScreen.add( quad );
+function onDocumentMouseMove(event) {
+  mouseX = event.clientX - windowHalfX;
+  mouseY = event.clientY - windowHalfY;
+}
 
-				renderer = new THREE.WebGLRenderer();
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.autoClear = false;
+//
 
-				container.appendChild( renderer.domElement );
+function animate() {
+  requestAnimationFrame(animate);
 
-				stats = new Stats();
-				container.appendChild( stats.dom );
+  render();
+  stats.update();
+}
 
-				valueNode = document.getElementById( 'values' );
+function render() {
+  const time = Date.now() * 0.0015;
 
-				document.addEventListener( 'mousemove', onDocumentMouseMove );
+  if (zmesh1 && zmesh2) {
+    zmesh1.rotation.y = -time;
+    zmesh2.rotation.y = -time + Math.PI / 2;
+  }
 
-			}
+  if (
+    material.uniforms["time"].value > 1 ||
+    material.uniforms["time"].value < 0
+  ) {
+    delta *= -1;
+  }
 
-			function onDocumentMouseMove( event ) {
+  material.uniforms["time"].value += delta;
 
-				mouseX = ( event.clientX - windowHalfX );
-				mouseY = ( event.clientY - windowHalfY );
+  renderer.clear();
 
-			}
+  // Render first scene into texture
 
-			//
+  renderer.setRenderTarget(rtTexture);
+  renderer.clear();
+  renderer.render(sceneRTT, cameraRTT);
 
-			function animate() {
+  // Render full screen quad with generated texture
 
-				requestAnimationFrame( animate );
+  renderer.setRenderTarget(null);
+  renderer.render(sceneScreen, cameraRTT);
 
-				render();
-				stats.update();
+  const read = new Float32Array(4);
+  renderer.readRenderTargetPixels(
+    rtTexture,
+    windowHalfX + mouseX,
+    windowHalfY - mouseY,
+    1,
+    1,
+    read
+  );
 
-			}
-
-			function render() {
-
-				const time = Date.now() * 0.0015;
-
-				if ( zmesh1 && zmesh2 ) {
-
-					zmesh1.rotation.y = - time;
-					zmesh2.rotation.y = - time + Math.PI / 2;
-
-				}
-
-				if ( material.uniforms[ "time" ].value > 1 || material.uniforms[ "time" ].value < 0 ) {
-
-					delta *= - 1;
-
-				}
-
-				material.uniforms[ "time" ].value += delta;
-
-				renderer.clear();
-
-				// Render first scene into texture
-
-				renderer.setRenderTarget( rtTexture );
-				renderer.clear();
-				renderer.render( sceneRTT, cameraRTT );
-
-				// Render full screen quad with generated texture
-
-				renderer.setRenderTarget( null );
-				renderer.render( sceneScreen, cameraRTT );
-
-				const read = new Float32Array( 4 );
-				renderer.readRenderTargetPixels( rtTexture, windowHalfX + mouseX, windowHalfY - mouseY, 1, 1, read );
-
-				valueNode.innerHTML = 'r:' + read[ 0 ] + '<br/>g:' + read[ 1 ] + '<br/>b:' + read[ 2 ];
-
-			}
-
-		
+  valueNode.innerHTML =
+    "r:" + read[0] + "<br/>g:" + read[1] + "<br/>b:" + read[2];
+}

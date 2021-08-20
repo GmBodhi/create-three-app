@@ -1,164 +1,149 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+let canvas, renderer;
 
-			let canvas, renderer;
+const scenes = [];
 
-			const scenes = [];
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  canvas = document.getElementById("c");
 
-			function init() {
+  const geometries = [
+    new THREE.BoxGeometry(1, 1, 1),
+    new THREE.SphereGeometry(0.5, 12, 8),
+    new THREE.DodecahedronGeometry(0.5),
+    new THREE.CylinderGeometry(0.5, 0.5, 1, 12),
+  ];
 
-				canvas = document.getElementById( "c" );
+  const content = document.getElementById("content");
 
-				const geometries = [
-					new THREE.BoxGeometry( 1, 1, 1 ),
-					new THREE.SphereGeometry( 0.5, 12, 8 ),
-					new THREE.DodecahedronGeometry( 0.5 ),
-					new THREE.CylinderGeometry( 0.5, 0.5, 1, 12 )
-				];
+  for (let i = 0; i < 40; i++) {
+    const scene = new THREE.Scene();
 
-				const content = document.getElementById( 'content' );
+    // make a list item
+    const element = document.createElement("div");
+    element.className = "list-item";
 
-				for ( let i = 0; i < 40; i ++ ) {
+    const sceneElement = document.createElement("div");
+    element.appendChild(sceneElement);
 
-					const scene = new THREE.Scene();
+    const descriptionElement = document.createElement("div");
+    descriptionElement.innerText = "Scene " + (i + 1);
+    element.appendChild(descriptionElement);
 
-					// make a list item
-					const element = document.createElement( 'div' );
-					element.className = 'list-item';
+    // the element that represents the area we want to render the scene
+    scene.userData.element = sceneElement;
+    content.appendChild(element);
 
-					const sceneElement = document.createElement( 'div' );
-					element.appendChild( sceneElement );
+    const camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
+    camera.position.z = 2;
+    scene.userData.camera = camera;
 
-					const descriptionElement = document.createElement( 'div' );
-					descriptionElement.innerText = 'Scene ' + ( i + 1 );
-					element.appendChild( descriptionElement );
+    const controls = new OrbitControls(
+      scene.userData.camera,
+      scene.userData.element
+    );
+    controls.minDistance = 2;
+    controls.maxDistance = 5;
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    scene.userData.controls = controls;
 
-					// the element that represents the area we want to render the scene
-					scene.userData.element = sceneElement;
-					content.appendChild( element );
+    // add one random mesh to each scene
+    const geometry = geometries[(geometries.length * Math.random()) | 0];
 
-					const camera = new THREE.PerspectiveCamera( 50, 1, 1, 10 );
-					camera.position.z = 2;
-					scene.userData.camera = camera;
+    const material = new THREE.MeshStandardMaterial({
+      color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
+      roughness: 0.5,
+      metalness: 0,
+      flatShading: true,
+    });
 
-					const controls = new OrbitControls( scene.userData.camera, scene.userData.element );
-					controls.minDistance = 2;
-					controls.maxDistance = 5;
-					controls.enablePan = false;
-					controls.enableZoom = false;
-					scene.userData.controls = controls;
+    scene.add(new THREE.Mesh(geometry, material));
 
-					// add one random mesh to each scene
-					const geometry = geometries[ geometries.length * Math.random() | 0 ];
+    scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
 
-					const material = new THREE.MeshStandardMaterial( {
+    const light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(1, 1, 1);
+    scene.add(light);
 
-						color: new THREE.Color().setHSL( Math.random(), 1, 0.75 ),
-						roughness: 0.5,
-						metalness: 0,
-						flatShading: true
+    scenes.push(scene);
+  }
 
-					} );
+  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.setClearColor(0xffffff, 1);
+  renderer.setPixelRatio(window.devicePixelRatio);
+}
 
-					scene.add( new THREE.Mesh( geometry, material ) );
+function updateSize() {
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
 
-					scene.add( new THREE.HemisphereLight( 0xaaaaaa, 0x444444 ) );
+  if (canvas.width !== width || canvas.height !== height) {
+    renderer.setSize(width, height, false);
+  }
+}
 
-					const light = new THREE.DirectionalLight( 0xffffff, 0.5 );
-					light.position.set( 1, 1, 1 );
-					scene.add( light );
+function animate() {
+  render();
+  requestAnimationFrame(animate);
+}
 
-					scenes.push( scene );
+function render() {
+  updateSize();
 
-				}
+  canvas.style.transform = `translateY(${window.scrollY}px)`;
 
+  renderer.setClearColor(0xffffff);
+  renderer.setScissorTest(false);
+  renderer.clear();
 
-				renderer = new THREE.WebGLRenderer( { canvas: canvas, antialias: true } );
-				renderer.setClearColor( 0xffffff, 1 );
-				renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setClearColor(0xe0e0e0);
+  renderer.setScissorTest(true);
 
-			}
+  scenes.forEach(function (scene) {
+    // so something moves
+    scene.children[0].rotation.y = Date.now() * 0.001;
 
-			function updateSize() {
+    // get the element that is a place holder for where we want to
+    // draw the scene
+    const element = scene.userData.element;
 
-				const width = canvas.clientWidth;
-				const height = canvas.clientHeight;
+    // get its position relative to the page's viewport
+    const rect = element.getBoundingClientRect();
 
-				if ( canvas.width !== width || canvas.height !== height ) {
+    // check if it's offscreen. If so skip it
+    if (
+      rect.bottom < 0 ||
+      rect.top > renderer.domElement.clientHeight ||
+      rect.right < 0 ||
+      rect.left > renderer.domElement.clientWidth
+    ) {
+      return; // it's off screen
+    }
 
-					renderer.setSize( width, height, false );
+    // set the viewport
+    const width = rect.right - rect.left;
+    const height = rect.bottom - rect.top;
+    const left = rect.left;
+    const bottom = renderer.domElement.clientHeight - rect.bottom;
 
-				}
+    renderer.setViewport(left, bottom, width, height);
+    renderer.setScissor(left, bottom, width, height);
 
-			}
+    const camera = scene.userData.camera;
 
-			function animate() {
+    //camera.aspect = width / height; // not changing in this example
+    //camera.updateProjectionMatrix();
 
-				render();
-				requestAnimationFrame( animate );
+    //scene.userData.controls.update();
 
-			}
-
-			function render() {
-
-				updateSize();
-
-				canvas.style.transform = `translateY(${window.scrollY}px)`;
-
-				renderer.setClearColor( 0xffffff );
-				renderer.setScissorTest( false );
-				renderer.clear();
-
-				renderer.setClearColor( 0xe0e0e0 );
-				renderer.setScissorTest( true );
-
-				scenes.forEach( function ( scene ) {
-
-					// so something moves
-					scene.children[ 0 ].rotation.y = Date.now() * 0.001;
-
-					// get the element that is a place holder for where we want to
-					// draw the scene
-					const element = scene.userData.element;
-
-					// get its position relative to the page's viewport
-					const rect = element.getBoundingClientRect();
-
-					// check if it's offscreen. If so skip it
-					if ( rect.bottom < 0 || rect.top > renderer.domElement.clientHeight ||
-						 rect.right < 0 || rect.left > renderer.domElement.clientWidth ) {
-
-						return; // it's off screen
-
-					}
-
-					// set the viewport
-					const width = rect.right - rect.left;
-					const height = rect.bottom - rect.top;
-					const left = rect.left;
-					const bottom = renderer.domElement.clientHeight - rect.bottom;
-
-					renderer.setViewport( left, bottom, width, height );
-					renderer.setScissor( left, bottom, width, height );
-
-					const camera = scene.userData.camera;
-
-					//camera.aspect = width / height; // not changing in this example
-					//camera.updateProjectionMatrix();
-
-					//scene.userData.controls.update();
-
-					renderer.render( scene, camera );
-
-				} );
-
-			}
-
-		
+    renderer.render(scene, camera);
+  });
+}
