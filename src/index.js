@@ -3,6 +3,8 @@
 // DO NOT EDIT OR DELETE THIS FILE.
 
 "use strict";
+console.log(process);
+console.log(process.argv);
 const { mkdirSync, existsSync } = require("fs");
 const chalk = require("chalk");
 const { domains, getConfig } = require("./scripts/utils");
