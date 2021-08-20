@@ -23,7 +23,31 @@ jobs:
       - name: Commit examples
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "automated(config): Examples generated (actions)"
+          commit_message: "automated: Examples generated (actions)"
+          file_pattern: "."
+          skip_dirty_check: false
+          skip_fetch: false
+  GenerateConfig:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+      - name: Install Node v14
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Install Dependencies
+        run: yarn install
+      - name: Generate examples
+        run: |
+          cd example-processor
+          node generateConfig.js
+          npm i prettier -g
+          prettier --write .
+      - name: Commit examples
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "automated(config): config file generated for threejs.org/examples (actions)"
           file_pattern: "."
           skip_dirty_check: false
           skip_fetch: false

@@ -23,21 +23,17 @@ async function download(url, dest) {
 }
 module.exports.download = download;
 
-// CDN domains
-let domains = {
-  "cdn.jsdelivr.net":
-    "https://cdn.jsdelivr.net/gh/gmbodhi/create-three-app@master/",
-  "raw.githubusercontent.com":
-    "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/",
-  "cdn.statically.io":
-    "https://cdn.statically.io/gh/GmBodhi/create-three-app/master/",
-};
-module.exports.domains = domains;
+module.exports.domain =
+  "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/";
 
 // Get Config
 async function getConfig(domain) {
-  return await fetch(domains[domain] + "examples/config.json").then((res) =>
+  return await fetch(domain + "examples/config.json").then((res) => res.json());
+}
+module.exports.getConfig = getConfig;
+
+async function getExamplesConfig(domain) {
+  return await fetch(domain + "example-processor/config.json").then((res) =>
     res.json()
   );
 }
-module.exports.getConfig = getConfig;

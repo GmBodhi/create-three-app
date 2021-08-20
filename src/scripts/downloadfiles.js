@@ -1,8 +1,8 @@
 const { mkdtempSync, mkdirSync } = require("fs");
-const { download, domains } = require("./utils");
+const { download } = require("./utils");
 
 function resolveUrl(domain, { url, example }, file) {
-  return `${domains[domain]}examples/${example}/${url ? url + "/" : ""}${file}`;
+  return `${domain}examples/${example}/${url ? url + "/" : ""}${file}`;
 }
 
 module.exports = async function (example, config, domain) {

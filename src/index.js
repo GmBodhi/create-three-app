@@ -7,7 +7,7 @@ console.log(process);
 console.log(process.argv);
 const { mkdirSync, existsSync } = require("fs");
 const chalk = require("chalk");
-const { domains, getConfig } = require("./scripts/utils");
+const { domain, getConfig } = require("./scripts/utils");
 // @ts-ignore
 const { Select, AutoComplete } = require("enquirer");
 const init = require("./scripts/initenv");
@@ -27,14 +27,8 @@ if (existsSync(dir)) {
   process.exit(1);
 }
 
-new Select({
-  name: "Domain",
-  message: "Which domain should we use to fetch the files?",
-  choices: Object.keys(domains),
-})
-  .run()
-  .then(async (domain) => {
-    const config = await getConfig(domain);
+getConfig(domain)
+  .then((config) => {
     new AutoComplete({
       name: "Example",
       message: "Which example do you want to use?",
@@ -61,4 +55,9 @@ new Select({
       })
       .catch((e) => console.log(chalk.red("Process aborted"), e));
   })
-  .catch((e) => console.log(chalk.red("Process aborted"), e));
+  .catch((e) =>
+    console.log(
+      chalk.red("An error occurred while fetching the config file"),
+      e
+    )
+  );
