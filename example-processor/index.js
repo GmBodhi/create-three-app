@@ -1,9 +1,9 @@
 const fetch = require("node-fetch");
 const fetch1 = require("./fetch");
 const rimraf = require("rimraf");
-const { mkdirSync, writeFileSync } = require("fs");
+const { mkdirSync, writeFileSync, existsSync } = require("fs");
 
-rimraf("./templates", () => {
+const init = () => {
   mkdirSync("./templates");
   fetch("https://threejs.org/examples/tags.json")
     .then((r) => r.json())
@@ -17,4 +17,8 @@ rimraf("./templates", () => {
       writeFileSync("assets.json", JSON.stringify(urls));
       await fetch1.close();
     });
-});
+};
+
+if (existsSync("./templates")) {
+  rimraf("./templates", init);
+} else init();
