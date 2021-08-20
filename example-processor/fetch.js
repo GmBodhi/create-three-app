@@ -16,11 +16,10 @@ module.exports.launch = async ({ urls }) => {
     if (!urls["noIdea"]) urls["noIdea"] = [];
     let url = request.frame()?.url();
     if (!url) {
-      console.log("No Idea");
       return urls["noIdea"].push(request.url());
     }
     if (!urls[url]) urls[url] = [];
-    console.log(urls[url].push(request.url()));
+    urls[url].push(request.url());
   });
   return;
 };
@@ -51,15 +50,10 @@ module.exports.close = async () => {
 };
 
 module.exports.fetch = async function (url, name) {
-  console.log(chalk.green(name));
-  page.tracing.start({ path: `templates/${name}/trace.json` });
-  let p = await page.goto(url, { timeout: 0 });
   console.log(chalk.red("Resolved: ", name));
+  let p = await page.goto(url, { timeout: 0 });
   mkdirSync("./templates/" + name);
-  console.log("Processing page");
   let body = await p.text();
-  await page.tracing.stop();
-  console.log("page traced");
   let script = parseScript(body);
   let style = parseStyle(body);
   let html = parseHtml(body);
