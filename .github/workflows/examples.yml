@@ -18,10 +18,11 @@ jobs:
         run: |
           cd example-processor
           node index.js
-      - name: Commit congif file
+          yarn run format
+      - name: Commit examples
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "automated(config): Config file generated (actions)"
+          commit_message: "automated(config): Examples generated (actions)"
           file_pattern: "."
           skip_dirty_check: false
           skip_fetch: false

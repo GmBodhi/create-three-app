@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src",
-    "config": "node generateConfig"
+    "config": "node generateConfig",
+    "format": "prettier --write ."
   },
   "author": "",
   "license": "ISC",
