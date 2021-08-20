@@ -1,9 +1,9 @@
-name: Config
+name: Example
 
 on: push
 
 jobs:
-  Config:
+  Example:
     runs-on: windows-latest
     steps:
       - name: Checkout repository
