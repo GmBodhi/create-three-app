@@ -1,0 +1,30 @@
+
+			body {
+				margin: 0px;
+				background-color: #111;
+				overflow: hidden;
+				font-family: arial;
+			}
+
+			.menu { color: #fff; font-weight: bold; font-size: 12px; z-index: 100; width: 75px; position: absolute; top: 0px; padding: 16px; }
+			.menu img, .menu canvas { width: 75px; margin: 10px 0 }
+
+			#images { background: rgba(0,0,0,0); left: 0px; }
+			#backgrounds { background: rgba(0,0,0,0.0); left: 107px; }
+			#labels { background: rgba(0,0,0,0.75); left: 214px; width: 100px }
+
+			.lbl { color: #fff; z-index: 150; float:left; padding: 0.25em; width: 75px; display: block  }
+			#lbl_dst { background:#800; }
+			#lbl_src { background:green; }
+
+			.btn { background: darkorange; width: 100px; cursor: pointer }
+
+			#btn_sub { background: transparent }
+			#btn_rsub { background: transparent }
+			#btn_min { background: transparent }
+			#btn_max { background: transparent }
+
+			#btn_pre { background: transparent }
+
+			#btn_max, #btn_nopre { margin-bottom: 2em }
+		
