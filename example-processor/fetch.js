@@ -13,8 +13,7 @@ module.exports.launch = async ({ urls, json }) => {
   browser = await puppeteer.launch({ args: ["--no-sandbox"] });
   page = await browser.newPage();
   page.on("request", (request) => {
-    if (!urls["noIdea"]) urls["noIdea"] = [];
-    let url = request.frame()?.url();
+    let url = request.frame()?.url() ?? "unknown";
     if (
       [
         "https://threejs.org/build/three.module.js",
@@ -25,9 +24,6 @@ module.exports.launch = async ({ urls, json }) => {
       json.includes(request.url()?.split("/").pop()?.split(".")[0])
     )
       return;
-    if (!url) {
-      return urls["noIdea"].push(request.url());
-    }
     if (!urls[url]) urls[url] = [];
     urls[url].push(request.url());
   });

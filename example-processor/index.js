@@ -3,6 +3,12 @@ const fetch1 = require("./fetch");
 const rimraf = require("rimraf");
 const { mkdirSync, writeFileSync, existsSync } = require("fs");
 
+function writeAssets(json) {
+  Object.entries(json).forEach(([key, value]) => {
+    writeFileSync(`./templates/${key}/assets.json`, JSON.stringify(value));
+  });
+}
+
 const init = () => {
   mkdirSync("./templates");
   fetch("https://threejs.org/examples/tags.json")
@@ -14,7 +20,7 @@ const init = () => {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         await fetch1.fetch(`https://threejs.org/examples/${key}.html`, key);
       }
-      writeFileSync("assets.json", JSON.stringify(urls));
+      writeAssets(urls);
       await fetch1.close();
     });
 };
