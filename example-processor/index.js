@@ -13,7 +13,6 @@ rimraf("./templates", () => {
       for (let key of Object.keys(json)) {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         await fetch1.fetch(`https://threejs.org/examples/${key}.html`, key);
-        console.log("Ok: " + key);
       }
       writeFileSync("assets.json", JSON.stringify(urls));
       await fetch1.close();
