@@ -2,9 +2,10 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
+const portFinderSync = require("portfinder-sync");
 
 module.exports = {
-  entry: path.resolve(__dirname, "../script.js"),
+  entry: path.resolve(__dirname, "../src/main.js"),
   output: {
     filename: "bundle.[contenthash].js",
     path: path.resolve(__dirname, "../dist"),
@@ -13,9 +14,21 @@ module.exports = {
     children: true,
   },
   devtool: "source-map",
+  devServer: {
+    host: "localhost",
+    port: portFinderSync.getPort(8080),
+    open: true,
+    https: false,
+    client: {
+      overlay: true,
+    },
+  },
   plugins: [
+    new CopyWebpackPlugin({
+      patterns: [{ from: path.resolve(__dirname, "../static") }],
+    }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, "../index.html"),
+      template: path.resolve(__dirname, "../src/index.html"),
     }),
     new MiniCSSExtractPlugin(),
   ],

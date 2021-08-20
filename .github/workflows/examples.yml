@@ -18,8 +18,6 @@ jobs:
         run: |
           cd example-processor
           node index.js
-          npm i prettier -g
-          prettier --write .
       - name: Generate Config
         run: |
           cd example-processor

@@ -5,7 +5,7 @@ const { error } = require("./utils");
 
 let dir = process.argv[2] || "my-three-app";
 
-async function installDeps(manager) {
+async function installDeps(manager, isExample) {
   console.log(
     chalk.dim(chalk.green(`Installing dependencies using ${manager}..!`))
   );
@@ -32,21 +32,27 @@ async function installDeps(manager) {
           )} for production\n`
         )
       );
+      if (isExample)
+        console.log(
+          chalk.yellowBright(
+            "You can find some info about assets in assets.json"
+          )
+        );
     })
     .on("error", (e) => {
       error(e.message);
     });
 }
 
-const init = (answer) => {
+const init = (answer, isExample = false) => {
   spawn("npm", ["init", "-y"], {
     cwd: path.join(process.cwd(), dir),
   })
     .on("exit", () => {
-      installDeps(answer);
+      installDeps(answer, isExample);
     })
     .on("error", (e) => {
-      error(e.message);
+      error(e);
     });
 };
 

@@ -63,9 +63,10 @@ module.exports.fetch = async function (url, name) {
   let script = parseScript(body);
   let style = parseStyle(body);
   let html = parseHtml(body);
-  writeFileSync(`./templates/${name}/index.html`, html);
-  writeFileSync(`./templates/${name}/script.js`, script);
-  writeFileSync(`./templates/${name}/style.css`, style);
+  mkdirSync("./templates/" + name + "/src");
+  writeFileSync(`./templates/${name}/src/index.html`, html);
+  writeFileSync(`./templates/${name}/src/main.js`, script);
+  writeFileSync(`./templates/${name}/src/style.css`, style);
   moveDir(path.resolve(__dirname, "utils"), `./templates/${name}`);
   console.log(chalk.blue("Finished: ", name));
   return;

@@ -1,6 +1,7 @@
 const chalk = require("chalk");
 const fetch = require("node-fetch");
 const fs = require("fs");
+const spawn = require("cross-spawn");
 
 // Error utils
 function error(message) {
@@ -33,7 +34,22 @@ async function getConfig(domain) {
 module.exports.getConfig = getConfig;
 
 async function getExamplesConfig(domain) {
-  return await fetch(domain + "example-processor/config.json").then((res) =>
-    res.json()
+  return await fetch(domain + "example-processor/templates/config.json").then(
+    (res) => res.json()
   );
 }
+
+module.exports.getExamplesConfig = getExamplesConfig;
+
+module.exports.checkYarn = function checkYarn(domain) {
+  return new Promise((resolve, reject) => {
+    spawn("yarn", ["--version"], { stdio: "ignore" })
+      .on("close", (code) => {
+        if (code !== 0) resolve("npm");
+        resolve("yarn");
+      })
+      .on("error", (err) => {
+        resolve("npm");
+      });
+  });
+};

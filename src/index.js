@@ -3,11 +3,14 @@
 // DO NOT EDIT OR DELETE THIS FILE.
 
 "use strict";
-console.log(process);
-console.log(process.argv);
 const { mkdirSync, existsSync } = require("fs");
 const chalk = require("chalk");
-const { domain, getConfig } = require("./scripts/utils");
+const {
+  domain,
+  getConfig,
+  getExamplesConfig,
+  checkYarn,
+} = require("./scripts/utils");
 // @ts-ignore
 const { Select, AutoComplete } = require("enquirer");
 const init = require("./scripts/initenv");
@@ -29,29 +32,46 @@ if (existsSync(dir)) {
 
 getConfig(domain)
   .then((config) => {
+    let examples = Object.keys(config);
+    examples.push("I'll select from threejs examples");
     new AutoComplete({
       name: "Example",
       message: "Which example do you want to use?",
-      choices: Object.keys(config),
+      choices: examples,
     })
       .run()
       .then((example) => {
-        new Select({
-          name: "deps",
-          message: "How do you want to instal dependecies?",
-          choices: ["yarn", "npm"],
-        })
-          .run()
-          .then((pkgManager) => {
-            mkdirSync(dir);
-            downloadfiles(example, config[example], domain).then(
-              (directory) => {
-                manageDir(directory);
-                init(pkgManager);
-              }
-            );
-          })
-          .catch((e) => console.log(chalk.red("Process aborted"), e));
+        if (example === "I'll select from threejs examples") {
+          getExamplesConfig(domain).then((config) => {
+            new AutoComplete({
+              name: "Example",
+              message: "Which example do you want to use?",
+              choices: Object.keys(config),
+            })
+              .run()
+              .then((res) => {
+                console.log(
+                  chalk.yellowBright("Note: "),
+                  "Using an example from three.js may cause unresolved resource urls, which you may have to resolve..."
+                );
+                mkdirSync(dir);
+                checkYarn().then((r) => init(r, true));
+
+                downloadfiles(res, config[res], domain, true).then(
+                  (directory) => {
+                    manageDir(directory);
+                  }
+                );
+              })
+              .catch((e) => console.error(chalk.red("Process aborted"), e));
+          });
+        } else {
+          mkdirSync(dir);
+          checkYarn().then((r) => init(r));
+          downloadfiles(example, config[example], domain).then((directory) => {
+            manageDir(directory);
+          });
+        }
       })
       .catch((e) => console.log(chalk.red("Process aborted"), e));
   })
