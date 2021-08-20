@@ -52,14 +52,14 @@ module.exports.close = async () => {
 
 module.exports.fetch = async function (url, name) {
   console.log(chalk.green(name));
+  page.tracing.start({ path: `templates/${name}/trace.json` });
   let p = await page.goto(url, { timeout: 0 });
   console.log(chalk.red("Resolved: ", name));
-  // let urls = await getUrls(page);
-  // console.log(chalk.yellow("Resolved urls: ", name));
   mkdirSync("./templates/" + name);
   console.log("Processing page");
   let body = await p.text();
-  console.log("page.text() complete");
+  await page.tracing.stop();
+  console.log("page traced");
   let script = parseScript(body);
   let style = parseStyle(body);
   let html = parseHtml(body);
