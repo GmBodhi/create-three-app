@@ -1,193 +1,201 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls.js";
-import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let container, stats;
-let camera, controls, scene, renderer;
-let mesh, texture;
+			import { FirstPersonControls } from 'three/examples/jsm/controls/FirstPersonControls.js';
+			import { ImprovedNoise } from 'three/examples/jsm/math/ImprovedNoise.js';
 
-const worldWidth = 256,
-  worldDepth = 256;
-const clock = new THREE.Clock();
+			let container, stats;
+			let camera, controls, scene, renderer;
+			let mesh, texture;
 
-init();
-animate();
+			const worldWidth = 256, worldDepth = 256;
+			const clock = new THREE.Clock();
 
-function init() {
-  container = document.getElementById("container");
+			init();
+			animate();
 
-  camera = new THREE.PerspectiveCamera(
-    60,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
+			function init() {
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xefd1b5);
-  scene.fog = new THREE.FogExp2(0xefd1b5, 0.0025);
+				container = document.getElementById( 'container' );
 
-  const data = generateHeight(worldWidth, worldDepth);
+				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 10000 );
 
-  camera.position.set(100, 800, -800);
-  camera.lookAt(-100, 810, -800);
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xefd1b5 );
+				scene.fog = new THREE.FogExp2( 0xefd1b5, 0.0025 );
 
-  const geometry = new THREE.PlaneGeometry(
-    7500,
-    7500,
-    worldWidth - 1,
-    worldDepth - 1
-  );
-  geometry.rotateX(-Math.PI / 2);
+				const data = generateHeight( worldWidth, worldDepth );
 
-  const vertices = geometry.attributes.position.array;
+				camera.position.set( 100, 800, - 800 );
+				camera.lookAt( - 100, 810, - 800 );
 
-  for (let i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
-    vertices[j + 1] = data[i] * 10;
-  }
+				const geometry = new THREE.PlaneGeometry( 7500, 7500, worldWidth - 1, worldDepth - 1 );
+				geometry.rotateX( - Math.PI / 2 );
 
-  texture = new THREE.CanvasTexture(
-    generateTexture(data, worldWidth, worldDepth)
-  );
-  texture.wrapS = THREE.ClampToEdgeWrapping;
-  texture.wrapT = THREE.ClampToEdgeWrapping;
+				const vertices = geometry.attributes.position.array;
 
-  mesh = new THREE.Mesh(
-    geometry,
-    new THREE.MeshBasicMaterial({ map: texture })
-  );
-  scene.add(mesh);
+				for ( let i = 0, j = 0, l = vertices.length; i < l; i ++, j += 3 ) {
 
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+					vertices[ j + 1 ] = data[ i ] * 10;
 
-  controls = new FirstPersonControls(camera, renderer.domElement);
-  controls.movementSpeed = 150;
-  controls.lookSpeed = 0.1;
+				}
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				texture = new THREE.CanvasTexture( generateTexture( data, worldWidth, worldDepth ) );
+				texture.wrapS = THREE.ClampToEdgeWrapping;
+				texture.wrapT = THREE.ClampToEdgeWrapping;
 
-  //
+				mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { map: texture } ) );
+				scene.add( mesh );
 
-  window.addEventListener("resize", onWindowResize);
-}
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				controls = new FirstPersonControls( camera, renderer.domElement );
+				controls.movementSpeed = 150;
+				controls.lookSpeed = 0.1;
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-  controls.handleResize();
-}
 
-function generateHeight(width, height) {
-  let seed = Math.PI / 4;
-  window.Math.random = function () {
-    const x = Math.sin(seed++) * 10000;
-    return x - Math.floor(x);
-  };
+				//
 
-  const size = width * height,
-    data = new Uint8Array(size);
-  const perlin = new ImprovedNoise(),
-    z = Math.random() * 100;
+				window.addEventListener( 'resize', onWindowResize );
 
-  let quality = 1;
+			}
 
-  for (let j = 0; j < 4; j++) {
-    for (let i = 0; i < size; i++) {
-      const x = i % width,
-        y = ~~(i / width);
-      data[i] += Math.abs(
-        perlin.noise(x / quality, y / quality, z) * quality * 1.75
-      );
-    }
+			function onWindowResize() {
 
-    quality *= 5;
-  }
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-  return data;
-}
+				renderer.setSize( window.innerWidth, window.innerHeight );
 
-function generateTexture(data, width, height) {
-  let context, image, imageData, shade;
+				controls.handleResize();
 
-  const vector3 = new THREE.Vector3(0, 0, 0);
+			}
 
-  const sun = new THREE.Vector3(1, 1, 1);
-  sun.normalize();
+			function generateHeight( width, height ) {
 
-  const canvas = document.createElement("canvas");
-  canvas.width = width;
-  canvas.height = height;
+				let seed = Math.PI / 4;
+				window.Math.random = function () {
 
-  context = canvas.getContext("2d");
-  context.fillStyle = "#000";
-  context.fillRect(0, 0, width, height);
+					const x = Math.sin( seed ++ ) * 10000;
+					return x - Math.floor( x );
 
-  image = context.getImageData(0, 0, canvas.width, canvas.height);
-  imageData = image.data;
+				};
 
-  for (let i = 0, j = 0, l = imageData.length; i < l; i += 4, j++) {
-    vector3.x = data[j - 2] - data[j + 2];
-    vector3.y = 2;
-    vector3.z = data[j - width * 2] - data[j + width * 2];
-    vector3.normalize();
+				const size = width * height, data = new Uint8Array( size );
+				const perlin = new ImprovedNoise(), z = Math.random() * 100;
 
-    shade = vector3.dot(sun);
+				let quality = 1;
 
-    imageData[i] = (96 + shade * 128) * (0.5 + data[j] * 0.007);
-    imageData[i + 1] = (32 + shade * 96) * (0.5 + data[j] * 0.007);
-    imageData[i + 2] = shade * 96 * (0.5 + data[j] * 0.007);
-  }
+				for ( let j = 0; j < 4; j ++ ) {
 
-  context.putImageData(image, 0, 0);
+					for ( let i = 0; i < size; i ++ ) {
 
-  // Scaled 4x
+						const x = i % width, y = ~ ~ ( i / width );
+						data[ i ] += Math.abs( perlin.noise( x / quality, y / quality, z ) * quality * 1.75 );
 
-  const canvasScaled = document.createElement("canvas");
-  canvasScaled.width = width * 4;
-  canvasScaled.height = height * 4;
+					}
 
-  context = canvasScaled.getContext("2d");
-  context.scale(4, 4);
-  context.drawImage(canvas, 0, 0);
+					quality *= 5;
 
-  image = context.getImageData(0, 0, canvasScaled.width, canvasScaled.height);
-  imageData = image.data;
+				}
 
-  for (let i = 0, l = imageData.length; i < l; i += 4) {
-    const v = ~~(Math.random() * 5);
+				return data;
 
-    imageData[i] += v;
-    imageData[i + 1] += v;
-    imageData[i + 2] += v;
-  }
+			}
 
-  context.putImageData(image, 0, 0);
+			function generateTexture( data, width, height ) {
 
-  return canvasScaled;
-}
+				let context, image, imageData, shade;
 
-//
+				const vector3 = new THREE.Vector3( 0, 0, 0 );
 
-function animate() {
-  requestAnimationFrame(animate);
+				const sun = new THREE.Vector3( 1, 1, 1 );
+				sun.normalize();
 
-  render();
-  stats.update();
-}
+				const canvas = document.createElement( 'canvas' );
+				canvas.width = width;
+				canvas.height = height;
 
-function render() {
-  controls.update(clock.getDelta());
-  renderer.render(scene, camera);
-}
+				context = canvas.getContext( '2d' );
+				context.fillStyle = '#000';
+				context.fillRect( 0, 0, width, height );
+
+				image = context.getImageData( 0, 0, canvas.width, canvas.height );
+				imageData = image.data;
+
+				for ( let i = 0, j = 0, l = imageData.length; i < l; i += 4, j ++ ) {
+
+					vector3.x = data[ j - 2 ] - data[ j + 2 ];
+					vector3.y = 2;
+					vector3.z = data[ j - width * 2 ] - data[ j + width * 2 ];
+					vector3.normalize();
+
+					shade = vector3.dot( sun );
+
+					imageData[ i ] = ( 96 + shade * 128 ) * ( 0.5 + data[ j ] * 0.007 );
+					imageData[ i + 1 ] = ( 32 + shade * 96 ) * ( 0.5 + data[ j ] * 0.007 );
+					imageData[ i + 2 ] = ( shade * 96 ) * ( 0.5 + data[ j ] * 0.007 );
+
+				}
+
+				context.putImageData( image, 0, 0 );
+
+				// Scaled 4x
+
+				const canvasScaled = document.createElement( 'canvas' );
+				canvasScaled.width = width * 4;
+				canvasScaled.height = height * 4;
+
+				context = canvasScaled.getContext( '2d' );
+				context.scale( 4, 4 );
+				context.drawImage( canvas, 0, 0 );
+
+				image = context.getImageData( 0, 0, canvasScaled.width, canvasScaled.height );
+				imageData = image.data;
+
+				for ( let i = 0, l = imageData.length; i < l; i += 4 ) {
+
+					const v = ~ ~ ( Math.random() * 5 );
+
+					imageData[ i ] += v;
+					imageData[ i + 1 ] += v;
+					imageData[ i + 2 ] += v;
+
+				}
+
+				context.putImageData( image, 0, 0 );
+
+				return canvasScaled;
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+
+			function render() {
+
+				controls.update( clock.getDelta() );
+				renderer.render( scene, camera );
+
+			}
+
+		

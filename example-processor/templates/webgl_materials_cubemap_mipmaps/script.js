@@ -1,129 +1,146 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+			import * as THREE from 'three';
 
-let container;
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-let camera, scene, renderer;
+			let container;
 
-init();
-animate();
+			let camera, scene, renderer;
 
-//load customized cube texture
-async function loadCubeTextureWithMipmaps() {
-  const path = "textures/cube/angus/";
-  const format = ".jpg";
-  const mipmaps = [];
-  const maxLevel = 8;
+			init();
+			animate();
 
-  async function loadCubeTexture(urls) {
-    return new Promise(function (resolve) {
-      new THREE.CubeTextureLoader().load(urls, function (cubeTexture) {
-        resolve(cubeTexture);
-      });
-    });
-  }
+			//load customized cube texture
+			async function loadCubeTextureWithMipmaps() {
 
-  // load mipmaps
-  const pendings = [];
+				const path = 'textures/cube/angus/';
+				const format = '.jpg';
+				const mipmaps = [];
+				const maxLevel = 8;
 
-  for (let level = 0; level <= maxLevel; ++level) {
-    const urls = [];
+				async function loadCubeTexture( urls ) {
 
-    for (let face = 0; face < 6; ++face) {
-      urls.push(path + "cube_m0" + level + "_c0" + face + format);
-    }
+					return new Promise( function ( resolve ) {
 
-    const mipmapLevel = level;
+						new THREE.CubeTextureLoader().load( urls, function ( cubeTexture ) {
 
-    pendings.push(
-      loadCubeTexture(urls).then(function (cubeTexture) {
-        mipmaps[mipmapLevel] = cubeTexture;
-      })
-    );
-  }
+							resolve( cubeTexture );
 
-  await Promise.all(pendings);
+						} );
 
-  const customizedCubeTexture = mipmaps.shift();
-  customizedCubeTexture.mipmaps = mipmaps;
-  customizedCubeTexture.minFilter = THREE.LinearMipMapLinearFilter;
-  customizedCubeTexture.magFilter = THREE.LinearFilter;
-  customizedCubeTexture.generateMipmaps = false;
-  customizedCubeTexture.needsUpdate = true;
 
-  return customizedCubeTexture;
-}
+					} );
 
-function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
+				}
 
-  camera = new THREE.PerspectiveCamera(
-    50,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
-  camera.position.z = 500;
+				// load mipmaps
+				const pendings = [];
 
-  scene = new THREE.Scene();
+				for ( let level = 0; level <= maxLevel; ++ level ) {
 
-  loadCubeTextureWithMipmaps().then(function (cubeTexture) {
-    //model
-    const sphere = new THREE.SphereGeometry(100, 128, 128);
+					const urls = [];
 
-    //manual mipmaps
-    let material = new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      envMap: cubeTexture,
-    });
-    material.name = "manual mipmaps";
+					for ( let face = 0; face < 6; ++ face ) {
 
-    let mesh = new THREE.Mesh(sphere, material);
-    mesh.position.set(100, 0, 0);
-    scene.add(mesh);
+						urls.push( path + 'cube_m0' + level + '_c0' + face + format );
 
-    //webgl mipmaps
-    material = material.clone();
-    material.name = "auto mipmaps";
+					}
 
-    const autoCubeTexture = cubeTexture.clone();
-    autoCubeTexture.mipmaps = [];
-    autoCubeTexture.generateMipmaps = true;
-    autoCubeTexture.needsUpdate = true;
+					const mipmapLevel = level;
 
-    material.envMap = autoCubeTexture;
+					pendings.push( loadCubeTexture( urls ).then( function ( cubeTexture ) {
 
-    mesh = new THREE.Mesh(sphere, material);
-    mesh.position.set(-100, 0, 0);
-    scene.add(mesh);
-  });
+						mipmaps[ mipmapLevel ] = cubeTexture;
 
-  //renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+					} ) );
 
-  //controls
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.minPolarAngle = Math.PI / 4;
-  controls.maxPolarAngle = Math.PI / 1.5;
+				}
 
-  window.addEventListener("resize", onWindowResize);
-}
+				await Promise.all( pendings );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				const customizedCubeTexture = mipmaps.shift();
+				customizedCubeTexture.mipmaps = mipmaps;
+				customizedCubeTexture.minFilter = THREE.LinearMipMapLinearFilter;
+				customizedCubeTexture.magFilter = THREE.LinearFilter;
+				customizedCubeTexture.generateMipmaps = false;
+				customizedCubeTexture.needsUpdate = true;
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				return customizedCubeTexture;
 
-function animate() {
-  requestAnimationFrame(animate);
-  renderer.render(scene, camera);
-}
+			}
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.z = 500;
+
+				scene = new THREE.Scene();
+
+				loadCubeTextureWithMipmaps().then( function ( cubeTexture ) {
+
+					//model
+					const sphere = new THREE.SphereGeometry( 100, 128, 128 );
+
+					//manual mipmaps
+					let material = new THREE.MeshBasicMaterial( { color: 0xffffff, envMap: cubeTexture } );
+					material.name = 'manual mipmaps';
+
+					let mesh = new THREE.Mesh( sphere, material );
+					mesh.position.set( 100, 0, 0 );
+					scene.add( mesh );
+
+
+					//webgl mipmaps
+					material = material.clone();
+					material.name = 'auto mipmaps';
+
+					const autoCubeTexture = cubeTexture.clone();
+					autoCubeTexture.mipmaps = [];
+					autoCubeTexture.generateMipmaps = true;
+					autoCubeTexture.needsUpdate = true;
+
+					material.envMap = autoCubeTexture;
+
+					mesh = new THREE.Mesh( sphere, material );
+					mesh.position.set( - 100, 0, 0 );
+					scene.add( mesh );
+
+				} );
+
+				//renderer
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+				//controls
+				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.minPolarAngle = Math.PI / 4;
+				controls.maxPolarAngle = Math.PI / 1.5;
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				renderer.render( scene, camera );
+
+			}
+
+		

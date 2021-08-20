@@ -1,159 +1,177 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { DragControls } from "three/examples/jsm/controls/DragControls.js";
+			import * as THREE from 'three';
 
-let container;
-let camera, scene, renderer;
-let controls, group;
-let enableSelection = false;
+			import { DragControls } from 'three/examples/jsm/controls/DragControls.js';
 
-const objects = [];
+			let container;
+			let camera, scene, renderer;
+			let controls, group;
+			let enableSelection = false;
 
-const mouse = new THREE.Vector2(),
-  raycaster = new THREE.Raycaster();
+			const objects = [];
 
-init();
+			const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
 
-function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
+			init();
 
-  camera = new THREE.PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    1,
-    5000
-  );
-  camera.position.z = 1000;
+			function init() {
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
 
-  scene.add(new THREE.AmbientLight(0x505050));
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 5000 );
+				camera.position.z = 1000;
 
-  const light = new THREE.SpotLight(0xffffff, 1.5);
-  light.position.set(0, 500, 2000);
-  light.angle = Math.PI / 9;
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xf0f0f0 );
 
-  light.castShadow = true;
-  light.shadow.camera.near = 1000;
-  light.shadow.camera.far = 4000;
-  light.shadow.mapSize.width = 1024;
-  light.shadow.mapSize.height = 1024;
+				scene.add( new THREE.AmbientLight( 0x505050 ) );
 
-  scene.add(light);
+				const light = new THREE.SpotLight( 0xffffff, 1.5 );
+				light.position.set( 0, 500, 2000 );
+				light.angle = Math.PI / 9;
 
-  group = new THREE.Group();
-  scene.add(group);
+				light.castShadow = true;
+				light.shadow.camera.near = 1000;
+				light.shadow.camera.far = 4000;
+				light.shadow.mapSize.width = 1024;
+				light.shadow.mapSize.height = 1024;
 
-  const geometry = new THREE.BoxGeometry(40, 40, 40);
+				scene.add( light );
 
-  for (let i = 0; i < 200; i++) {
-    const object = new THREE.Mesh(
-      geometry,
-      new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff })
-    );
+				group = new THREE.Group();
+				scene.add( group );
 
-    object.position.x = Math.random() * 1000 - 500;
-    object.position.y = Math.random() * 600 - 300;
-    object.position.z = Math.random() * 800 - 400;
+				const geometry = new THREE.BoxGeometry( 40, 40, 40 );
 
-    object.rotation.x = Math.random() * 2 * Math.PI;
-    object.rotation.y = Math.random() * 2 * Math.PI;
-    object.rotation.z = Math.random() * 2 * Math.PI;
+				for ( let i = 0; i < 200; i ++ ) {
 
-    object.scale.x = Math.random() * 2 + 1;
-    object.scale.y = Math.random() * 2 + 1;
-    object.scale.z = Math.random() * 2 + 1;
+					const object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: Math.random() * 0xffffff } ) );
 
-    object.castShadow = true;
-    object.receiveShadow = true;
+					object.position.x = Math.random() * 1000 - 500;
+					object.position.y = Math.random() * 600 - 300;
+					object.position.z = Math.random() * 800 - 400;
 
-    scene.add(object);
+					object.rotation.x = Math.random() * 2 * Math.PI;
+					object.rotation.y = Math.random() * 2 * Math.PI;
+					object.rotation.z = Math.random() * 2 * Math.PI;
 
-    objects.push(object);
-  }
+					object.scale.x = Math.random() * 2 + 1;
+					object.scale.y = Math.random() * 2 + 1;
+					object.scale.z = Math.random() * 2 + 1;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
+					object.castShadow = true;
+					object.receiveShadow = true;
 
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFShadowMap;
+					scene.add( object );
 
-  container.appendChild(renderer.domElement);
+					objects.push( object );
 
-  controls = new DragControls([...objects], camera, renderer.domElement);
-  controls.addEventListener("drag", render);
+				}
 
-  //
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
 
-  window.addEventListener("resize", onWindowResize);
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.PCFShadowMap;
 
-  document.addEventListener("click", onClick);
-  window.addEventListener("keydown", onKeyDown);
-  window.addEventListener("keyup", onKeyUp);
+				container.appendChild( renderer.domElement );
 
-  render();
-}
+				controls = new DragControls( [ ... objects ], camera, renderer.domElement );
+				controls.addEventListener( 'drag', render );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				//
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+				window.addEventListener( 'resize', onWindowResize );
 
-  render();
-}
+				document.addEventListener( 'click', onClick );
+				window.addEventListener( 'keydown', onKeyDown );
+				window.addEventListener( 'keyup', onKeyUp );
 
-function onKeyDown(event) {
-  enableSelection = event.keyCode === 16 ? true : false;
-}
+				render();
 
-function onKeyUp() {
-  enableSelection = false;
-}
+			}
 
-function onClick(event) {
-  event.preventDefault();
+			function onWindowResize() {
 
-  if (enableSelection === true) {
-    const draggableObjects = controls.getObjects();
-    draggableObjects.length = 0;
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+				renderer.setSize( window.innerWidth, window.innerHeight );
 
-    raycaster.setFromCamera(mouse, camera);
+				render();
 
-    const intersections = raycaster.intersectObjects(objects, true);
+			}
 
-    if (intersections.length > 0) {
-      const object = intersections[0].object;
+			function onKeyDown( event ) {
 
-      if (group.children.includes(object) === true) {
-        object.material.emissive.set(0x000000);
-        scene.attach(object);
-      } else {
-        object.material.emissive.set(0xaaaaaa);
-        group.attach(object);
-      }
+				enableSelection = ( event.keyCode === 16 ) ? true : false;
 
-      controls.transformGroup = true;
-      draggableObjects.push(group);
-    }
+			}
 
-    if (group.children.length === 0) {
-      controls.transformGroup = false;
-      draggableObjects.push(...objects);
-    }
-  }
+			function onKeyUp() {
 
-  render();
-}
+				enableSelection = false;
 
-function render() {
-  renderer.render(scene, camera);
-}
+			}
+
+			function onClick( event ) {
+
+				event.preventDefault();
+
+				if ( enableSelection === true ) {
+
+					const draggableObjects = controls.getObjects();
+					draggableObjects.length = 0;
+
+					mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+					mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+					raycaster.setFromCamera( mouse, camera );
+
+					const intersections = raycaster.intersectObjects( objects, true );
+
+					if ( intersections.length > 0 ) {
+
+						const object = intersections[ 0 ].object;
+
+						if ( group.children.includes( object ) === true ) {
+
+							object.material.emissive.set( 0x000000 );
+							scene.attach( object );
+
+						} else {
+
+							object.material.emissive.set( 0xaaaaaa );
+							group.attach( object );
+
+						}
+
+						controls.transformGroup = true;
+						draggableObjects.push( group );
+
+					}
+
+					if ( group.children.length === 0 ) {
+
+						controls.transformGroup = false;
+						draggableObjects.push( ...objects );
+
+					}
+
+				}
+
+				render();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+		

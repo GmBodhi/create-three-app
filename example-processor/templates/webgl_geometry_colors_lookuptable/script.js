@@ -1,159 +1,172 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+			import * as THREE from 'three';
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { Lut } from "three/examples/jsm/math/Lut.js";
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
 
-let container;
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+			import { Lut } from 'three/examples/jsm/math/Lut.js';
 
-let perpCamera, orthoCamera, renderer, lut;
+			let container;
 
-let mesh, sprite;
-let scene, uiScene;
+			let perpCamera, orthoCamera, renderer, lut;
 
-let params;
+			let mesh, sprite;
+			let scene, uiScene;
 
-init();
+			let params;
 
-function init() {
-  container = document.getElementById("container");
+			init();
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
+			function init() {
 
-  uiScene = new THREE.Scene();
+				container = document.getElementById( 'container' );
 
-  lut = new Lut();
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xffffff );
 
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+				uiScene = new THREE.Scene();
 
-  perpCamera = new THREE.PerspectiveCamera(60, width / height, 1, 100);
-  perpCamera.position.set(0, 0, 10);
-  scene.add(perpCamera);
+				lut = new Lut();
 
-  orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 2);
-  orthoCamera.position.set(0.5, 0, 1);
+				const width = window.innerWidth;
+				const height = window.innerHeight;
 
-  sprite = new THREE.Sprite(
-    new THREE.SpriteMaterial({
-      map: new THREE.CanvasTexture(lut.createCanvas()),
-    })
-  );
-  sprite.scale.x = 0.125;
-  uiScene.add(sprite);
+				perpCamera = new THREE.PerspectiveCamera( 60, width / height, 1, 100 );
+				perpCamera.position.set( 0, 0, 10 );
+				scene.add( perpCamera );
 
-  mesh = new THREE.Mesh(
-    undefined,
-    new THREE.MeshLambertMaterial({
-      side: THREE.DoubleSide,
-      color: 0xf5f5f5,
-      vertexColors: true,
-    })
-  );
-  scene.add(mesh);
+				orthoCamera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 1, 2 );
+				orthoCamera.position.set( 0.5, 0, 1 );
 
-  params = {
-    colorMap: "rainbow",
-  };
-  loadModel();
+				sprite = new THREE.Sprite( new THREE.SpriteMaterial( {
+					map: new THREE.CanvasTexture( lut.createCanvas() )
+				} ) );
+				sprite.scale.x = 0.125;
+				uiScene.add( sprite );
 
-  const pointLight = new THREE.PointLight(0xffffff, 1);
-  perpCamera.add(pointLight);
+				mesh = new THREE.Mesh( undefined, new THREE.MeshLambertMaterial( {
+					side: THREE.DoubleSide,
+					color: 0xF5F5F5,
+					vertexColors: true
+				} ) );
+				scene.add( mesh );
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.autoClear = false;
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(width, height);
-  container.appendChild(renderer.domElement);
+				params	= {
+					colorMap: 'rainbow',
+				};
+				loadModel( );
 
-  window.addEventListener("resize", onWindowResize);
+				const pointLight = new THREE.PointLight( 0xffffff, 1 );
+				perpCamera.add( pointLight );
 
-  const controls = new OrbitControls(perpCamera, renderer.domElement);
-  controls.addEventListener("change", render);
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.autoClear = false;
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( width, height );
+				container.appendChild( renderer.domElement );
 
-  const gui = new GUI();
+				window.addEventListener( 'resize', onWindowResize );
 
-  gui
-    .add(params, "colorMap", [
-      "rainbow",
-      "cooltowarm",
-      "blackbody",
-      "grayscale",
-    ])
-    .onChange(function () {
-      updateColors();
-      render();
-    });
-}
+				const controls = new OrbitControls( perpCamera, renderer.domElement );
+				controls.addEventListener( 'change', render );
 
-function onWindowResize() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+				const gui = new GUI();
 
-  perpCamera.aspect = width / height;
-  perpCamera.updateProjectionMatrix();
+				gui.add( params, 'colorMap', [ 'rainbow', 'cooltowarm', 'blackbody', 'grayscale' ] ).onChange( function () {
 
-  renderer.setSize(width, height);
-  render();
-}
+					updateColors();
+					render();
 
-function render() {
-  renderer.clear();
-  renderer.render(scene, perpCamera);
-  renderer.render(uiScene, orthoCamera);
-}
+				} );
 
-function loadModel() {
-  const loader = new THREE.BufferGeometryLoader();
-  loader.load("models/json/pressure.json", function (geometry) {
-    geometry.center();
-    geometry.computeVertexNormals();
+			}
 
-    // default color attribute
-    const colors = [];
+			function onWindowResize() {
 
-    for (let i = 0, n = geometry.attributes.position.count; i < n; ++i) {
-      colors.push(1, 1, 1);
-    }
+				const width = window.innerWidth;
+				const height = window.innerHeight;
 
-    geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+				perpCamera.aspect = width / height;
+				perpCamera.updateProjectionMatrix();
 
-    mesh.geometry = geometry;
-    updateColors();
+				renderer.setSize( width, height );
+				render();
 
-    render();
-  });
-}
+			}
 
-function updateColors() {
-  lut.setColorMap(params.colorMap);
+			function render() {
 
-  lut.setMax(2000);
-  lut.setMin(0);
+				renderer.clear();
+				renderer.render( scene, perpCamera );
+				renderer.render( uiScene, orthoCamera );
 
-  const geometry = mesh.geometry;
-  const pressures = geometry.attributes.pressure;
-  const colors = geometry.attributes.color;
+			}
 
-  for (let i = 0; i < pressures.array.length; i++) {
-    const colorValue = pressures.array[i];
+			function loadModel( ) {
 
-    const color = lut.getColor(colorValue);
+				const loader = new THREE.BufferGeometryLoader();
+				loader.load( 'models/json/pressure.json', function ( geometry ) {
 
-    if (color === undefined) {
-      console.log("Unable to determine color for value:", colorValue);
-    } else {
-      colors.setXYZ(i, color.r, color.g, color.b);
-    }
-  }
+					geometry.center();
+					geometry.computeVertexNormals();
 
-  colors.needsUpdate = true;
+					// default color attribute
+					const colors = [];
 
-  const map = sprite.material.map;
-  lut.updateCanvas(map.image);
-  map.needsUpdate = true;
-}
+					for ( let i = 0, n = geometry.attributes.position.count; i < n; ++ i ) {
+
+						colors.push( 1, 1, 1 );
+
+					}
+
+					geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+
+					mesh.geometry = geometry;
+					updateColors();
+
+					render();
+
+				} );
+
+			}
+
+			function updateColors() {
+
+				lut.setColorMap( params.colorMap );
+
+				lut.setMax( 2000 );
+				lut.setMin( 0 );
+
+				const geometry = mesh.geometry;
+				const pressures = geometry.attributes.pressure;
+				const colors = geometry.attributes.color;
+
+				for ( let i = 0; i < pressures.array.length; i ++ ) {
+
+					const colorValue = pressures.array[ i ];
+
+					const color = lut.getColor( colorValue );
+
+					if ( color === undefined ) {
+
+						console.log( 'Unable to determine color for value:', colorValue );
+
+					} else {
+
+						colors.setXYZ( i, color.r, color.g, color.b );
+
+					}
+
+				}
+
+				colors.needsUpdate = true;
+
+				const map = sprite.material.map;
+				lut.updateCanvas( map.image );
+				map.needsUpdate = true;
+
+			}
+
+		

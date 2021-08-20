@@ -1,158 +1,171 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { BufferGeometryUtils } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let renderer, scene, camera, stats;
+			import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
 
-let particles;
+			let renderer, scene, camera, stats;
 
-const PARTICLE_SIZE = 20;
+			let particles;
 
-let raycaster, intersects;
-let pointer, INTERSECTED;
+			const PARTICLE_SIZE = 20;
 
-init();
-animate();
+			let raycaster, intersects;
+			let pointer, INTERSECTED;
 
-function init() {
-  const container = document.getElementById("container");
+			init();
+			animate();
 
-  scene = new THREE.Scene();
+			function init() {
 
-  camera = new THREE.PerspectiveCamera(
-    45,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
-  camera.position.z = 250;
+				const container = document.getElementById( 'container' );
 
-  //
+				scene = new THREE.Scene();
 
-  let boxGeometry = new THREE.BoxGeometry(200, 200, 200, 16, 16, 16);
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.z = 250;
 
-  // if normal and uv attributes are not removed, mergeVertices() can't consolidate indentical vertices with different normal/uv data
+				//
 
-  boxGeometry.deleteAttribute("normal");
-  boxGeometry.deleteAttribute("uv");
+				let boxGeometry = new THREE.BoxGeometry( 200, 200, 200, 16, 16, 16 );
 
-  boxGeometry = BufferGeometryUtils.mergeVertices(boxGeometry);
+				// if normal and uv attributes are not removed, mergeVertices() can't consolidate indentical vertices with different normal/uv data
 
-  //
+				boxGeometry.deleteAttribute( 'normal' );
+				boxGeometry.deleteAttribute( 'uv' );
 
-  const positionAttribute = boxGeometry.getAttribute("position");
+				boxGeometry = BufferGeometryUtils.mergeVertices( boxGeometry );
 
-  const colors = [];
-  const sizes = [];
+				//
 
-  const color = new THREE.Color();
+				const positionAttribute = boxGeometry.getAttribute( 'position' );
 
-  for (let i = 0, l = positionAttribute.count; i < l; i++) {
-    color.setHSL(0.01 + 0.1 * (i / l), 1.0, 0.5);
-    color.toArray(colors, i * 3);
+				const colors = [];
+				const sizes = [];
 
-    sizes[i] = PARTICLE_SIZE * 0.5;
-  }
+				const color = new THREE.Color();
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", positionAttribute);
-  geometry.setAttribute(
-    "customColor",
-    new THREE.Float32BufferAttribute(colors, 3)
-  );
-  geometry.setAttribute("size", new THREE.Float32BufferAttribute(sizes, 1));
+				for ( let i = 0, l = positionAttribute.count; i < l; i ++ ) {
 
-  //
+					color.setHSL( 0.01 + 0.1 * ( i / l ), 1.0, 0.5 );
+					color.toArray( colors, i * 3 );
 
-  const material = new THREE.ShaderMaterial({
-    uniforms: {
-      color: { value: new THREE.Color(0xffffff) },
-      pointTexture: {
-        value: new THREE.TextureLoader().load("textures/sprites/disc.png"),
-      },
-    },
-    vertexShader: document.getElementById("vertexshader").textContent,
-    fragmentShader: document.getElementById("fragmentshader").textContent,
+					sizes[ i ] = PARTICLE_SIZE * 0.5;
 
-    alphaTest: 0.9,
-  });
+				}
 
-  //
+				const geometry = new THREE.BufferGeometry();
+				geometry.setAttribute( 'position', positionAttribute );
+				geometry.setAttribute( 'customColor', new THREE.Float32BufferAttribute( colors, 3 ) );
+				geometry.setAttribute( 'size', new THREE.Float32BufferAttribute( sizes, 1 ) );
 
-  particles = new THREE.Points(geometry, material);
-  scene.add(particles);
+				//
 
-  //
+				const material = new THREE.ShaderMaterial( {
 
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+					uniforms: {
+						color: { value: new THREE.Color( 0xffffff ) },
+						pointTexture: { value: new THREE.TextureLoader().load( 'textures/sprites/disc.png' ) }
+					},
+					vertexShader: document.getElementById( 'vertexshader' ).textContent,
+					fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
 
-  //
+					alphaTest: 0.9
 
-  raycaster = new THREE.Raycaster();
-  pointer = new THREE.Vector2();
+				} );
 
-  //
+				//
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				particles = new THREE.Points( geometry, material );
+				scene.add( particles );
 
-  //
+				//
 
-  window.addEventListener("resize", onWindowResize);
-  document.addEventListener("pointermove", onPointerMove);
-}
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
 
-function onPointerMove(event) {
-  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-}
+				//
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				raycaster = new THREE.Raycaster();
+				pointer = new THREE.Vector2();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				//
 
-function animate() {
-  requestAnimationFrame(animate);
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-  render();
-  stats.update();
-}
+				//
 
-function render() {
-  particles.rotation.x += 0.0005;
-  particles.rotation.y += 0.001;
+				window.addEventListener( 'resize', onWindowResize );
+				document.addEventListener( 'pointermove', onPointerMove );
 
-  const geometry = particles.geometry;
-  const attributes = geometry.attributes;
+			}
 
-  raycaster.setFromCamera(pointer, camera);
+			function onPointerMove( event ) {
 
-  intersects = raycaster.intersectObject(particles);
+				pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-  if (intersects.length > 0) {
-    if (INTERSECTED != intersects[0].index) {
-      attributes.size.array[INTERSECTED] = PARTICLE_SIZE;
+			}
 
-      INTERSECTED = intersects[0].index;
+			function onWindowResize() {
 
-      attributes.size.array[INTERSECTED] = PARTICLE_SIZE * 1.25;
-      attributes.size.needsUpdate = true;
-    }
-  } else if (INTERSECTED !== null) {
-    attributes.size.array[INTERSECTED] = PARTICLE_SIZE;
-    attributes.size.needsUpdate = true;
-    INTERSECTED = null;
-  }
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-  renderer.render(scene, camera);
-}
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				particles.rotation.x += 0.0005;
+				particles.rotation.y += 0.001;
+
+				const geometry = particles.geometry;
+				const attributes = geometry.attributes;
+
+				raycaster.setFromCamera( pointer, camera );
+
+				intersects = raycaster.intersectObject( particles );
+
+				if ( intersects.length > 0 ) {
+
+					if ( INTERSECTED != intersects[ 0 ].index ) {
+
+						attributes.size.array[ INTERSECTED ] = PARTICLE_SIZE;
+
+						INTERSECTED = intersects[ 0 ].index;
+
+						attributes.size.array[ INTERSECTED ] = PARTICLE_SIZE * 1.25;
+						attributes.size.needsUpdate = true;
+
+					}
+
+				} else if ( INTERSECTED !== null ) {
+
+					attributes.size.array[ INTERSECTED ] = PARTICLE_SIZE;
+					attributes.size.needsUpdate = true;
+					INTERSECTED = null;
+
+				}
+
+				renderer.render( scene, camera );
+
+			}
+
+		

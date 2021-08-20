@@ -1,111 +1,121 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let container, stats;
-let camera, scene, renderer;
-let mesh, mixer;
+			import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-const radius = 600;
-let theta = 0;
-let prevTime = Date.now();
+			let container, stats;
+			let camera, scene, renderer;
+			let mesh, mixer;
 
-init();
-animate();
+			const radius = 600;
+			let theta = 0;
+			let prevTime = Date.now();
 
-function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
+			init();
+			animate();
 
-  //
+			function init() {
 
-  camera = new THREE.PerspectiveCamera(
-    50,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
-  camera.position.y = 300;
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+				//
 
-  //
+				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.y = 300;
 
-  const light1 = new THREE.DirectionalLight(0xefefff, 1.5);
-  light1.position.set(1, 1, 1).normalize();
-  scene.add(light1);
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xf0f0f0 );
 
-  const light2 = new THREE.DirectionalLight(0xffefef, 1.5);
-  light2.position.set(-1, -1, -1).normalize();
-  scene.add(light2);
+				//
 
-  const loader = new GLTFLoader();
-  loader.load("models/gltf/Horse.glb", function (gltf) {
-    mesh = gltf.scene.children[0];
-    mesh.scale.set(1.5, 1.5, 1.5);
-    scene.add(mesh);
+				const light1 = new THREE.DirectionalLight( 0xefefff, 1.5 );
+				light1.position.set( 1, 1, 1 ).normalize();
+				scene.add( light1 );
 
-    mixer = new THREE.AnimationMixer(mesh);
+				const light2 = new THREE.DirectionalLight( 0xffefef, 1.5 );
+				light2.position.set( - 1, - 1, - 1 ).normalize();
+				scene.add( light2 );
 
-    mixer.clipAction(gltf.animations[0]).setDuration(1).play();
-  });
+				const loader = new GLTFLoader();
+				loader.load( "models/gltf/Horse.glb", function ( gltf ) {
 
-  //
+					mesh = gltf.scene.children[ 0 ];
+					mesh.scale.set( 1.5, 1.5, 1.5 );
+					scene.add( mesh );
 
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
+					mixer = new THREE.AnimationMixer( mesh );
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
+					mixer.clipAction( gltf.animations[ 0 ] ).setDuration( 1 ).play();
 
-  container.appendChild(renderer.domElement);
+				} );
 
-  //
+				//
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
 
-  //
+				renderer.outputEncoding = THREE.sRGBEncoding;
 
-  window.addEventListener("resize", onWindowResize);
-}
+				container.appendChild( renderer.domElement );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				//
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-//
+				//
 
-function animate() {
-  requestAnimationFrame(animate);
+				window.addEventListener( 'resize', onWindowResize );
 
-  render();
-  stats.update();
-}
+			}
 
-function render() {
-  theta += 0.1;
+			function onWindowResize() {
 
-  camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-  camera.lookAt(0, 150, 0);
+				renderer.setSize( window.innerWidth, window.innerHeight );
 
-  if (mixer) {
-    const time = Date.now();
+			}
 
-    mixer.update((time - prevTime) * 0.001);
+			//
 
-    prevTime = time;
-  }
+			function animate() {
 
-  renderer.render(scene, camera);
-}
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				theta += 0.1;
+
+				camera.position.x = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+				camera.position.z = radius * Math.cos( THREE.MathUtils.degToRad( theta ) );
+
+				camera.lookAt( 0, 150, 0 );
+
+				if ( mixer ) {
+
+					const time = Date.now();
+
+					mixer.update( ( time - prevTime ) * 0.001 );
+
+					prevTime = time;
+
+				}
+
+				renderer.render( scene, camera );
+
+			}
+
+		

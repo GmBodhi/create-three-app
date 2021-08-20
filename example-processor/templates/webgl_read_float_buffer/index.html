@@ -1,59 +1,62 @@
-<html>
-  <head>
-    <title>three.js webgl - read float pixels</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
-  </head>
-  <body style="overflow: hidden">
-    <div id="container"></div>
-    <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      read float pixels webgl example<br />
-      <span id="values"></span>
-    </div>
+<html><head>
+		<title>three.js webgl - read float pixels</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
+	</head>
+	<body style="overflow: hidden;">
 
-    <script id="fragment_shader_screen" type="x-shader/x-fragment">
+		<div id="container"></div>
+		<div id="info">
+			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> read float pixels webgl example<br>
+			<span id="values"></span>
+		</div>
 
-      varying vec2 vUv;
-      uniform sampler2D tDiffuse;
+		<script id="fragment_shader_screen" type="x-shader/x-fragment">
 
-      void main() {
+			varying vec2 vUv;
+			uniform sampler2D tDiffuse;
 
-      	gl_FragColor = texture2D( tDiffuse, vUv );
+			void main() {
 
-      }
-    </script>
+				gl_FragColor = texture2D( tDiffuse, vUv );
 
-    <script id="fragment_shader_pass_1" type="x-shader/x-fragment">
+			}
 
-      varying vec2 vUv;
-      uniform float time;
+		</script>
 
-      void main() {
+		<script id="fragment_shader_pass_1" type="x-shader/x-fragment">
 
-      	float r = vUv.x;
-      	if( vUv.y < 0.5 ) r = 0.0;
-      	float g = vUv.y;
-      	if( vUv.x < 0.5 ) g = 0.0;
+			varying vec2 vUv;
+			uniform float time;
 
-      	gl_FragColor = vec4( r, g, time, 1.0 );
+			void main() {
 
-      }
-    </script>
+				float r = vUv.x;
+				if( vUv.y < 0.5 ) r = 0.0;
+				float g = vUv.y;
+				if( vUv.x < 0.5 ) g = 0.0;
 
-    <script id="vertexShader" type="x-shader/x-vertex">
+				gl_FragColor = vec4( r, g, time, 1.0 );
 
-      varying vec2 vUv;
+			}
 
-      void main() {
+		</script>
 
-      	vUv = uv;
-      	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+		<script id="vertexShader" type="x-shader/x-vertex">
 
-      }
-    </script>
-  </body>
-</html>
+			varying vec2 vUv;
+
+			void main() {
+
+				vUv = uv;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+			}
+
+		</script>
+
+		
+	
+
+</body></html>

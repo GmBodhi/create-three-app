@@ -1,181 +1,183 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let stats;
-let camera, scene, renderer;
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-let group;
+			let stats;
+			let camera, scene, renderer;
 
-init();
-animate();
+			let group;
 
-function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
+			init();
+			animate();
 
-  // scene
+			function init() {
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xcce0ff, 5, 100);
+				const container = document.createElement( 'div' );
+				document.body.appendChild( container );
 
-  // camera
+				// scene
 
-  camera = new THREE.PerspectiveCamera(
-    30,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
+				scene = new THREE.Scene();
+				scene.fog = new THREE.Fog( 0xcce0ff, 5, 100 );
 
-  // We use this particular camera position in order to expose a bug that can sometimes happen presumably
-  // due to lack of precision when interpolating values over really large triangles.
-  // It reproduced on at least NVIDIA GTX 1080 and GTX 1050 Ti GPUs when the ground plane was not
-  // subdivided into segments.
-  camera.position.x = 7;
-  camera.position.y = 13;
-  camera.position.z = 7;
+				// camera
 
-  scene.add(camera);
+				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 10000 );
 
-  // lights
+				// We use this particular camera position in order to expose a bug that can sometimes happen presumably
+				// due to lack of precision when interpolating values over really large triangles.
+				// It reproduced on at least NVIDIA GTX 1080 and GTX 1050 Ti GPUs when the ground plane was not
+				// subdivided into segments.
+				camera.position.x = 7;
+				camera.position.y = 13;
+				camera.position.z = 7;
 
-  scene.add(new THREE.AmbientLight(0x666666));
+				scene.add( camera );
 
-  const light = new THREE.DirectionalLight(0xdfebff, 1.75);
-  light.position.set(2, 8, 4);
+				// lights
 
-  light.castShadow = true;
-  light.shadow.mapSize.width = 1024;
-  light.shadow.mapSize.height = 1024;
-  light.shadow.camera.far = 20;
+				scene.add( new THREE.AmbientLight( 0x666666 ) );
 
-  scene.add(light);
+				const light = new THREE.DirectionalLight( 0xdfebff, 1.75 );
+				light.position.set( 2, 8, 4 );
 
-  // scene.add( new DirectionalLightHelper( light ) );
-  scene.add(new THREE.CameraHelper(light.shadow.camera));
+				light.castShadow = true;
+				light.shadow.mapSize.width = 1024;
+				light.shadow.mapSize.height = 1024;
+				light.shadow.camera.far = 20;
 
-  // group
+				scene.add( light );
 
-  group = new THREE.Group();
-  scene.add(group);
+				// scene.add( new DirectionalLightHelper( light ) );
+				scene.add( new THREE.CameraHelper( light.shadow.camera ) );
 
-  const geometry = new THREE.SphereGeometry(0.3, 20, 20);
+				// group
 
-  for (let i = 0; i < 20; i++) {
-    const material = new THREE.MeshPhongMaterial({
-      color: Math.random() * 0xffffff,
-    });
+				group = new THREE.Group();
+				scene.add( group );
 
-    const sphere = new THREE.Mesh(geometry, material);
-    sphere.position.x = Math.random() - 0.5;
-    sphere.position.z = Math.random() - 0.5;
-    sphere.position.normalize();
-    sphere.position.multiplyScalar(Math.random() * 2 + 1);
-    sphere.castShadow = true;
-    sphere.receiveShadow = true;
-    sphere.userData.phase = Math.random() * Math.PI;
-    group.add(sphere);
-  }
+				const geometry = new THREE.SphereGeometry( 0.3, 20, 20 );
 
-  // ground
+				for ( let i = 0; i < 20; i ++ ) {
 
-  const groundMaterial = new THREE.MeshPhongMaterial({
-    color: 0x404040,
-    specular: 0x111111,
-  });
+					const material = new THREE.MeshPhongMaterial( { color: Math.random() * 0xffffff } );
 
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(20000, 20000, 8, 8),
-    groundMaterial
-  );
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
-  scene.add(ground);
+					const sphere = new THREE.Mesh( geometry, material );
+					sphere.position.x = Math.random() - 0.5;
+					sphere.position.z = Math.random() - 0.5;
+					sphere.position.normalize();
+					sphere.position.multiplyScalar( Math.random() * 2 + 1 );
+					sphere.castShadow = true;
+					sphere.receiveShadow = true;
+					sphere.userData.phase = Math.random() * Math.PI;
+					group.add( sphere );
 
-  // column
+				}
 
-  const column = new THREE.Mesh(new THREE.BoxGeometry(1, 4, 1), groundMaterial);
-  column.position.y = 2;
-  column.castShadow = true;
-  column.receiveShadow = true;
-  scene.add(column);
+				// ground
 
-  // overwrite shadowmap code
+				const groundMaterial = new THREE.MeshPhongMaterial( { color: 0x404040, specular: 0x111111 } );
 
-  let shader = THREE.ShaderChunk.shadowmap_pars_fragment;
+				const ground = new THREE.Mesh( new THREE.PlaneGeometry( 20000, 20000, 8, 8 ), groundMaterial );
+				ground.rotation.x = - Math.PI / 2;
+				ground.receiveShadow = true;
+				scene.add( ground );
 
-  shader = shader.replace(
-    "#ifdef USE_SHADOWMAP",
-    "#ifdef USE_SHADOWMAP" + document.getElementById("PCSS").textContent
-  );
+				// column
 
-  shader = shader.replace(
-    "#if defined( SHADOWMAP_TYPE_PCF )",
-    document.getElementById("PCSSGetShadow").textContent +
-      "#if defined( SHADOWMAP_TYPE_PCF )"
-  );
+				const column = new THREE.Mesh( new THREE.BoxGeometry( 1, 4, 1 ), groundMaterial );
+				column.position.y = 2;
+				column.castShadow = true;
+				column.receiveShadow = true;
+				scene.add( column );
 
-  THREE.ShaderChunk.shadowmap_pars_fragment = shader;
+				// overwrite shadowmap code
 
-  // renderer
+				let shader = THREE.ShaderChunk.shadowmap_pars_fragment;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(scene.fog.color);
+				shader = shader.replace(
+					'#ifdef USE_SHADOWMAP',
+					'#ifdef USE_SHADOWMAP' +
+					document.getElementById( 'PCSS' ).textContent
+				);
 
-  container.appendChild(renderer.domElement);
+				shader = shader.replace(
+					'#if defined( SHADOWMAP_TYPE_PCF )',
+					document.getElementById( 'PCSSGetShadow' ).textContent +
+					'#if defined( SHADOWMAP_TYPE_PCF )'
+				);
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.shadowMap.enabled = true;
+				THREE.ShaderChunk.shadowmap_pars_fragment = shader;
 
-  // controls
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.maxPolarAngle = Math.PI * 0.5;
-  controls.minDistance = 10;
-  controls.maxDistance = 75;
-  controls.target.set(0, 2.5, 0);
-  controls.update();
+				// renderer
 
-  // performance monitor
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.setClearColor( scene.fog.color );
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				container.appendChild( renderer.domElement );
 
-  //
+				renderer.outputEncoding = THREE.sRGBEncoding;
+				renderer.shadowMap.enabled = true;
 
-  window.addEventListener("resize", onWindowResize);
-}
+				// controls
+				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.maxPolarAngle = Math.PI * 0.5;
+				controls.minDistance = 10;
+				controls.maxDistance = 75;
+				controls.target.set( 0, 2.5, 0 );
+				controls.update();
 
-//
+				// performance monitor
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				//
 
-//
+				window.addEventListener( 'resize', onWindowResize );
 
-function animate() {
-  const time = performance.now() / 1000;
+			}
 
-  group.traverse(function (child) {
-    if ("phase" in child.userData) {
-      child.position.y =
-        Math.abs(Math.sin(time + child.userData.phase)) * 4 + 0.3;
-    }
-  });
+			//
 
-  renderer.render(scene, camera);
+			function onWindowResize() {
 
-  stats.update();
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-  requestAnimationFrame(animate);
-}
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function animate() {
+
+				const time = performance.now() / 1000;
+
+				group.traverse( function ( child ) {
+
+					if ( 'phase' in child.userData ) {
+
+						child.position.y = Math.abs( Math.sin( time + child.userData.phase ) ) * 4 + 0.3;
+
+					}
+
+				} );
+
+				renderer.render( scene, camera );
+
+				stats.update();
+
+				requestAnimationFrame( animate );
+
+			}
+
+		

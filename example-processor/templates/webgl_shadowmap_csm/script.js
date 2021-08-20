@@ -1,259 +1,275 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
-import { CSM } from "three/examples/jsm/csm/CSM.js";
-import { CSMHelper } from "three/examples/jsm/csm/CSMHelper.js";
+			import * as THREE from 'three';
 
-let renderer, scene, camera, orthoCamera, controls, csm, csmHelper;
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+			import { CSM } from 'three/examples/jsm/csm/CSM.js';
+			import { CSMHelper } from 'three/examples/jsm/csm/CSMHelper.js';
 
-const params = {
-  orthographic: false,
-  fade: false,
-  far: 1000,
-  mode: "practical",
-  lightX: -1,
-  lightY: -1,
-  lightZ: -1,
-  margin: 100,
-  lightFar: 5000,
-  lightNear: 1,
-  autoUpdateHelper: true,
-  updateHelper: function () {
-    csmHelper.update();
-  },
-};
+			let renderer, scene, camera, orthoCamera, controls, csm, csmHelper;
 
-init();
-animate();
+			const params = {
+				orthographic: false,
+				fade: false,
+				far: 1000,
+				mode: 'practical',
+				lightX: - 1,
+				lightY: - 1,
+				lightZ: - 1,
+				margin: 100,
+				lightFar: 5000,
+				lightNear: 1,
+				autoUpdateHelper: true,
+				updateHelper: function () {
 
-function updateOrthoCamera() {
-  const size = controls.target.distanceTo(camera.position);
-  const aspect = camera.aspect;
+					csmHelper.update();
 
-  orthoCamera.left = (size * aspect) / -2;
-  orthoCamera.right = (size * aspect) / 2;
+				}
+			};
 
-  orthoCamera.top = size / 2;
-  orthoCamera.bottom = size / -2;
-  orthoCamera.position.copy(camera.position);
-  orthoCamera.rotation.copy(camera.rotation);
-  orthoCamera.updateProjectionMatrix();
-}
+			init();
+			animate();
 
-function init() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color("#454e61");
-  camera = new THREE.PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    5000
-  );
-  orthoCamera = new THREE.OrthographicCamera();
+			function updateOrthoCamera() {
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+				const size = controls.target.distanceTo( camera.position );
+				const aspect = camera.aspect;
 
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.maxPolarAngle = Math.PI / 2;
-  camera.position.set(60, 60, 0);
-  controls.target = new THREE.Vector3(-100, 10, 0);
-  controls.update();
+				orthoCamera.left = size * aspect / - 2;
+				orthoCamera.right = size * aspect / 2;
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-  scene.add(ambientLight);
+				orthoCamera.top = size / 2;
+				orthoCamera.bottom = size / - 2;
+				orthoCamera.position.copy( camera.position );
+				orthoCamera.rotation.copy( camera.rotation );
+				orthoCamera.updateProjectionMatrix();
 
-  csm = new CSM({
-    maxFar: params.far,
-    cascades: 4,
-    mode: params.mode,
-    parent: scene,
-    shadowMapSize: 1024,
-    lightDirection: new THREE.Vector3(
-      params.lightX,
-      params.lightY,
-      params.lightZ
-    ).normalize(),
-    camera: camera,
-  });
+			}
 
-  csmHelper = new CSMHelper(csm);
-  csmHelper.visible = false;
-  scene.add(csmHelper);
+			function init() {
 
-  const floorMaterial = new THREE.MeshPhongMaterial({ color: "#252a34" });
-  csm.setupMaterial(floorMaterial);
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( '#454e61' );
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 5000 );
+				orthoCamera = new THREE.OrthographicCamera();
 
-  const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(10000, 10000, 8, 8),
-    floorMaterial
-  );
-  floor.rotation.x = -Math.PI / 2;
-  floor.castShadow = true;
-  floor.receiveShadow = true;
-  scene.add(floor);
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
-  const material1 = new THREE.MeshPhongMaterial({ color: "#08d9d6" });
-  csm.setupMaterial(material1);
+				controls = new OrbitControls( camera, renderer.domElement );
+				controls.maxPolarAngle = Math.PI / 2;
+				camera.position.set( 60, 60, 0 );
+				controls.target = new THREE.Vector3( - 100, 10, 0 );
+				controls.update();
 
-  const material2 = new THREE.MeshPhongMaterial({ color: "#ff2e63" });
-  csm.setupMaterial(material2);
+				const ambientLight = new THREE.AmbientLight( 0xffffff, 0.5 );
+				scene.add( ambientLight );
 
-  const geometry = new THREE.BoxGeometry(10, 10, 10);
+				csm = new CSM( {
+					maxFar: params.far,
+					cascades: 4,
+					mode: params.mode,
+					parent: scene,
+					shadowMapSize: 1024,
+					lightDirection: new THREE.Vector3( params.lightX, params.lightY, params.lightZ ).normalize(),
+					camera: camera
+				} );
 
-  for (let i = 0; i < 40; i++) {
-    const cube1 = new THREE.Mesh(geometry, i % 2 === 0 ? material1 : material2);
-    cube1.castShadow = true;
-    cube1.receiveShadow = true;
-    scene.add(cube1);
-    cube1.position.set(-i * 25, 20, 30);
-    cube1.scale.y = Math.random() * 2 + 6;
+				csmHelper = new CSMHelper( csm );
+				csmHelper.visible = false;
+				scene.add( csmHelper );
 
-    const cube2 = new THREE.Mesh(geometry, i % 2 === 0 ? material2 : material1);
-    cube2.castShadow = true;
-    cube2.receiveShadow = true;
-    scene.add(cube2);
-    cube2.position.set(-i * 25, 20, -30);
-    cube2.scale.y = Math.random() * 2 + 6;
-  }
+				const floorMaterial = new THREE.MeshPhongMaterial( { color: '#252a34' } );
+				csm.setupMaterial( floorMaterial );
 
-  const gui = new GUI();
+				const floor = new THREE.Mesh( new THREE.PlaneGeometry( 10000, 10000, 8, 8 ), floorMaterial );
+				floor.rotation.x = - Math.PI / 2;
+				floor.castShadow = true;
+				floor.receiveShadow = true;
+				scene.add( floor );
 
-  gui.add(params, "orthographic").onChange(function (value) {
-    csm.camera = value ? orthoCamera : camera;
-    csm.updateFrustums();
-  });
+				const material1 = new THREE.MeshPhongMaterial( { color: '#08d9d6' } );
+				csm.setupMaterial( material1 );
 
-  gui.add(params, "fade").onChange(function (value) {
-    csm.fade = value;
-    csm.updateFrustums();
-  });
+				const material2 = new THREE.MeshPhongMaterial( { color: '#ff2e63' } );
+				csm.setupMaterial( material2 );
 
-  gui
-    .add(params, "far", 1, 5000)
-    .step(1)
-    .name("shadow far")
-    .onChange(function (value) {
-      csm.maxFar = value;
-      csm.updateFrustums();
-    });
+				const geometry = new THREE.BoxGeometry( 10, 10, 10 );
 
-  gui
-    .add(params, "mode", ["uniform", "logarithmic", "practical"])
-    .name("frustum split mode")
-    .onChange(function (value) {
-      csm.mode = value;
-      csm.updateFrustums();
-    });
+				for ( let i = 0; i < 40; i ++ ) {
 
-  gui
-    .add(params, "lightX", -1, 1)
-    .name("light direction x")
-    .onChange(function (value) {
-      csm.lightDirection.x = value;
-    });
+					const cube1 = new THREE.Mesh( geometry, i % 2 === 0 ? material1 : material2 );
+					cube1.castShadow = true;
+					cube1.receiveShadow = true;
+					scene.add( cube1 );
+					cube1.position.set( - i * 25, 20, 30 );
+					cube1.scale.y = Math.random() * 2 + 6;
 
-  gui
-    .add(params, "lightY", -1, 1)
-    .name("light direction y")
-    .onChange(function (value) {
-      csm.lightDirection.y = value;
-    });
+					const cube2 = new THREE.Mesh( geometry, i % 2 === 0 ? material2 : material1 );
+					cube2.castShadow = true;
+					cube2.receiveShadow = true;
+					scene.add( cube2 );
+					cube2.position.set( - i * 25, 20, - 30 );
+					cube2.scale.y = Math.random() * 2 + 6;
 
-  gui
-    .add(params, "lightZ", -1, 1)
-    .name("light direction z")
-    .onChange(function (value) {
-      csm.lightDirection.z = value;
-    });
+				}
 
-  gui
-    .add(params, "margin", 0, 200)
-    .name("light margin")
-    .onChange(function (value) {
-      csm.lightMargin = value;
-    });
+				const gui = new GUI();
 
-  gui
-    .add(params, "lightNear", 1, 10000)
-    .name("light near")
-    .onChange(function (value) {
-      for (let i = 0; i < csm.lights.length; i++) {
-        csm.lights[i].shadow.camera.near = value;
-        csm.lights[i].shadow.camera.updateProjectionMatrix();
-      }
-    });
+				gui.add( params, 'orthographic' ).onChange( function ( value ) {
 
-  gui
-    .add(params, "lightFar", 1, 10000)
-    .name("light far")
-    .onChange(function (value) {
-      for (let i = 0; i < csm.lights.length; i++) {
-        csm.lights[i].shadow.camera.far = value;
-        csm.lights[i].shadow.camera.updateProjectionMatrix();
-      }
-    });
+					csm.camera = value ? orthoCamera : camera;
+					csm.updateFrustums();
 
-  const helperFolder = gui.addFolder("helper");
+				} );
 
-  helperFolder.add(csmHelper, "visible");
+				gui.add( params, 'fade' ).onChange( function ( value ) {
 
-  helperFolder.add(csmHelper, "displayFrustum").onChange(function () {
-    csmHelper.updateVisibility();
-  });
+					csm.fade = value;
+					csm.updateFrustums();
 
-  helperFolder.add(csmHelper, "displayPlanes").onChange(function () {
-    csmHelper.updateVisibility();
-  });
+				} );
 
-  helperFolder.add(csmHelper, "displayShadowBounds").onChange(function () {
-    csmHelper.updateVisibility();
-  });
+				gui.add( params, 'far', 1, 5000 ).step( 1 ).name( 'shadow far' ).onChange( function ( value ) {
 
-  helperFolder.add(params, "autoUpdateHelper").name("auto update");
+					csm.maxFar = value;
+					csm.updateFrustums();
 
-  helperFolder.add(params, "updateHelper").name("update");
+				} );
 
-  helperFolder.open();
+				gui.add( params, 'mode', [ 'uniform', 'logarithmic', 'practical' ] ).name( 'frustum split mode' ).onChange( function ( value ) {
 
-  window.addEventListener("resize", function () {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+					csm.mode = value;
+					csm.updateFrustums();
 
-    updateOrthoCamera();
-    csm.updateFrustums();
+				} );
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
-}
+				gui.add( params, 'lightX', - 1, 1 ).name( 'light direction x' ).onChange( function ( value ) {
 
-function animate() {
-  requestAnimationFrame(animate);
+					csm.lightDirection.x = value;
 
-  camera.updateMatrixWorld();
-  csm.update();
-  controls.update();
+				} );
 
-  if (params.orthographic) {
-    updateOrthoCamera();
-    csm.updateFrustums();
+				gui.add( params, 'lightY', - 1, 1 ).name( 'light direction y' ).onChange( function ( value ) {
 
-    if (params.autoUpdateHelper) {
-      csmHelper.update();
-    }
+					csm.lightDirection.y = value;
 
-    renderer.render(scene, orthoCamera);
-  } else {
-    if (params.autoUpdateHelper) {
-      csmHelper.update();
-    }
+				} );
 
-    renderer.render(scene, camera);
-  }
-}
+				gui.add( params, 'lightZ', - 1, 1 ).name( 'light direction z' ).onChange( function ( value ) {
+
+					csm.lightDirection.z = value;
+
+				} );
+
+				gui.add( params, 'margin', 0, 200 ).name( 'light margin' ).onChange( function ( value ) {
+
+					csm.lightMargin = value;
+
+				} );
+
+				gui.add( params, 'lightNear', 1, 10000 ).name( 'light near' ).onChange( function ( value ) {
+
+					for ( let i = 0; i < csm.lights.length; i ++ ) {
+
+						csm.lights[ i ].shadow.camera.near = value;
+						csm.lights[ i ].shadow.camera.updateProjectionMatrix();
+
+					}
+
+				} );
+
+				gui.add( params, 'lightFar', 1, 10000 ).name( 'light far' ).onChange( function ( value ) {
+
+					for ( let i = 0; i < csm.lights.length; i ++ ) {
+
+						csm.lights[ i ].shadow.camera.far = value;
+						csm.lights[ i ].shadow.camera.updateProjectionMatrix();
+
+					}
+
+				} );
+
+				const helperFolder = gui.addFolder( 'helper' );
+
+				helperFolder.add( csmHelper, 'visible' );
+
+				helperFolder.add( csmHelper, 'displayFrustum' ).onChange( function () {
+
+					csmHelper.updateVisibility();
+
+				} );
+
+				helperFolder.add( csmHelper, 'displayPlanes' ).onChange( function () {
+
+					csmHelper.updateVisibility();
+
+				} );
+
+				helperFolder.add( csmHelper, 'displayShadowBounds' ).onChange( function () {
+
+					csmHelper.updateVisibility();
+
+				} );
+
+				helperFolder.add( params, 'autoUpdateHelper' ).name( 'auto update' );
+
+				helperFolder.add( params, 'updateHelper' ).name( 'update' );
+
+				helperFolder.open();
+
+				window.addEventListener( 'resize', function () {
+
+					camera.aspect = window.innerWidth / window.innerHeight;
+					camera.updateProjectionMatrix();
+
+					updateOrthoCamera();
+					csm.updateFrustums();
+
+					renderer.setSize( window.innerWidth, window.innerHeight );
+
+				} );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				camera.updateMatrixWorld();
+				csm.update();
+				controls.update();
+
+				if ( params.orthographic ) {
+
+					updateOrthoCamera();
+					csm.updateFrustums();
+
+					if ( params.autoUpdateHelper ) {
+
+						csmHelper.update();
+
+					}
+
+					renderer.render( scene, orthoCamera );
+
+				} else {
+
+					if ( params.autoUpdateHelper ) {
+
+						csmHelper.update();
+
+					}
+
+					renderer.render( scene, camera );
+
+				}
+
+			}
+
+		

@@ -1,179 +1,186 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
+			import * as THREE from 'three';
 
-let cameraPersp, cameraOrtho, currentCamera;
-let scene, renderer, control, orbit;
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+			import { TransformControls } from 'three/examples/jsm/controls/TransformControls.js';
 
-init();
-render();
+			let cameraPersp, cameraOrtho, currentCamera;
+			let scene, renderer, control, orbit;
 
-function init() {
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+			init();
+			render();
 
-  const aspect = window.innerWidth / window.innerHeight;
+			function init() {
 
-  cameraPersp = new THREE.PerspectiveCamera(50, aspect, 0.01, 30000);
-  cameraOrtho = new THREE.OrthographicCamera(
-    -600 * aspect,
-    600 * aspect,
-    600,
-    -600,
-    0.01,
-    30000
-  );
-  currentCamera = cameraPersp;
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
 
-  currentCamera.position.set(1000, 500, 1000);
-  currentCamera.lookAt(0, 200, 0);
+				const aspect = window.innerWidth / window.innerHeight;
 
-  scene = new THREE.Scene();
-  scene.add(new THREE.GridHelper(1000, 10, 0x888888, 0x444444));
+				cameraPersp = new THREE.PerspectiveCamera( 50, aspect, 0.01, 30000 );
+				cameraOrtho = new THREE.OrthographicCamera( - 600 * aspect, 600 * aspect, 600, - 600, 0.01, 30000 );
+				currentCamera = cameraPersp;
 
-  const light = new THREE.DirectionalLight(0xffffff, 2);
-  light.position.set(1, 1, 1);
-  scene.add(light);
+				currentCamera.position.set( 1000, 500, 1000 );
+				currentCamera.lookAt( 0, 200, 0 );
 
-  const texture = new THREE.TextureLoader().load("textures/crate.gif", render);
-  texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+				scene = new THREE.Scene();
+				scene.add( new THREE.GridHelper( 1000, 10, 0x888888, 0x444444 ) );
 
-  const geometry = new THREE.BoxGeometry(200, 200, 200);
-  const material = new THREE.MeshLambertMaterial({
-    map: texture,
-    transparent: true,
-  });
+				const light = new THREE.DirectionalLight( 0xffffff, 2 );
+				light.position.set( 1, 1, 1 );
+				scene.add( light );
 
-  orbit = new OrbitControls(currentCamera, renderer.domElement);
-  orbit.update();
-  orbit.addEventListener("change", render);
+				const texture = new THREE.TextureLoader().load( 'textures/crate.gif', render );
+				texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
-  control = new TransformControls(currentCamera, renderer.domElement);
-  control.addEventListener("change", render);
+				const geometry = new THREE.BoxGeometry( 200, 200, 200 );
+				const material = new THREE.MeshLambertMaterial( { map: texture, transparent: true } );
 
-  control.addEventListener("dragging-changed", function (event) {
-    orbit.enabled = !event.value;
-  });
+				orbit = new OrbitControls( currentCamera, renderer.domElement );
+				orbit.update();
+				orbit.addEventListener( 'change', render );
 
-  const mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+				control = new TransformControls( currentCamera, renderer.domElement );
+				control.addEventListener( 'change', render );
 
-  control.attach(mesh);
-  scene.add(control);
+				control.addEventListener( 'dragging-changed', function ( event ) {
 
-  window.addEventListener("resize", onWindowResize);
+					orbit.enabled = ! event.value;
 
-  window.addEventListener("keydown", function (event) {
-    switch (event.keyCode) {
-      case 81: // Q
-        control.setSpace(control.space === "local" ? "world" : "local");
-        break;
+				} );
 
-      case 16: // Shift
-        control.setTranslationSnap(100);
-        control.setRotationSnap(THREE.MathUtils.degToRad(15));
-        control.setScaleSnap(0.25);
-        break;
+				const mesh = new THREE.Mesh( geometry, material );
+				scene.add( mesh );
 
-      case 87: // W
-        control.setMode("translate");
-        break;
+				control.attach( mesh );
+				scene.add( control );
 
-      case 69: // E
-        control.setMode("rotate");
-        break;
+				window.addEventListener( 'resize', onWindowResize );
 
-      case 82: // R
-        control.setMode("scale");
-        break;
+				window.addEventListener( 'keydown', function ( event ) {
 
-      case 67: // C
-        const position = currentCamera.position.clone();
+					switch ( event.keyCode ) {
 
-        currentCamera = currentCamera.isPerspectiveCamera
-          ? cameraOrtho
-          : cameraPersp;
-        currentCamera.position.copy(position);
+						case 81: // Q
+							control.setSpace( control.space === 'local' ? 'world' : 'local' );
+							break;
 
-        orbit.object = currentCamera;
-        control.camera = currentCamera;
+						case 16: // Shift
+							control.setTranslationSnap( 100 );
+							control.setRotationSnap( THREE.MathUtils.degToRad( 15 ) );
+							control.setScaleSnap( 0.25 );
+							break;
 
-        currentCamera.lookAt(orbit.target.x, orbit.target.y, orbit.target.z);
-        onWindowResize();
-        break;
+						case 87: // W
+							control.setMode( 'translate' );
+							break;
 
-      case 86: // V
-        const randomFoV = Math.random() + 0.1;
-        const randomZoom = Math.random() + 0.1;
+						case 69: // E
+							control.setMode( 'rotate' );
+							break;
 
-        cameraPersp.fov = randomFoV * 160;
-        cameraOrtho.bottom = -randomFoV * 500;
-        cameraOrtho.top = randomFoV * 500;
+						case 82: // R
+							control.setMode( 'scale' );
+							break;
 
-        cameraPersp.zoom = randomZoom * 5;
-        cameraOrtho.zoom = randomZoom * 5;
-        onWindowResize();
-        break;
+						case 67: // C
+							const position = currentCamera.position.clone();
 
-      case 187:
-      case 107: // +, =, num+
-        control.setSize(control.size + 0.1);
-        break;
+							currentCamera = currentCamera.isPerspectiveCamera ? cameraOrtho : cameraPersp;
+							currentCamera.position.copy( position );
 
-      case 189:
-      case 109: // -, _, num-
-        control.setSize(Math.max(control.size - 0.1, 0.1));
-        break;
+							orbit.object = currentCamera;
+							control.camera = currentCamera;
 
-      case 88: // X
-        control.showX = !control.showX;
-        break;
+							currentCamera.lookAt( orbit.target.x, orbit.target.y, orbit.target.z );
+							onWindowResize();
+							break;
 
-      case 89: // Y
-        control.showY = !control.showY;
-        break;
+						case 86: // V
+							const randomFoV = Math.random() + 0.1;
+							const randomZoom = Math.random() + 0.1;
 
-      case 90: // Z
-        control.showZ = !control.showZ;
-        break;
+							cameraPersp.fov = randomFoV * 160;
+							cameraOrtho.bottom = - randomFoV * 500;
+							cameraOrtho.top = randomFoV * 500;
 
-      case 32: // Spacebar
-        control.enabled = !control.enabled;
-        break;
-    }
-  });
+							cameraPersp.zoom = randomZoom * 5;
+							cameraOrtho.zoom = randomZoom * 5;
+							onWindowResize();
+							break;
 
-  window.addEventListener("keyup", function (event) {
-    switch (event.keyCode) {
-      case 16: // Shift
-        control.setTranslationSnap(null);
-        control.setRotationSnap(null);
-        control.setScaleSnap(null);
-        break;
-    }
-  });
-}
+						case 187:
+						case 107: // +, =, num+
+							control.setSize( control.size + 0.1 );
+							break;
 
-function onWindowResize() {
-  const aspect = window.innerWidth / window.innerHeight;
+						case 189:
+						case 109: // -, _, num-
+							control.setSize( Math.max( control.size - 0.1, 0.1 ) );
+							break;
 
-  cameraPersp.aspect = aspect;
-  cameraPersp.updateProjectionMatrix();
+						case 88: // X
+							control.showX = ! control.showX;
+							break;
 
-  cameraOrtho.left = cameraOrtho.bottom * aspect;
-  cameraOrtho.right = cameraOrtho.top * aspect;
-  cameraOrtho.updateProjectionMatrix();
+						case 89: // Y
+							control.showY = ! control.showY;
+							break;
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+						case 90: // Z
+							control.showZ = ! control.showZ;
+							break;
 
-  render();
-}
+						case 32: // Spacebar
+							control.enabled = ! control.enabled;
+							break;
 
-function render() {
-  renderer.render(scene, currentCamera);
-}
+					}
+
+				} );
+
+				window.addEventListener( 'keyup', function ( event ) {
+
+					switch ( event.keyCode ) {
+
+						case 16: // Shift
+							control.setTranslationSnap( null );
+							control.setRotationSnap( null );
+							control.setScaleSnap( null );
+							break;
+
+					}
+
+				} );
+
+			}
+
+			function onWindowResize() {
+
+				const aspect = window.innerWidth / window.innerHeight;
+
+				cameraPersp.aspect = aspect;
+				cameraPersp.updateProjectionMatrix();
+
+				cameraOrtho.left = cameraOrtho.bottom * aspect;
+				cameraOrtho.right = cameraOrtho.top * aspect;
+				cameraOrtho.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				render();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, currentCamera );
+
+			}
+
+		

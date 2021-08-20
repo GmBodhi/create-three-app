@@ -1,259 +1,262 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-let container, stats;
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let camera, scene, renderer;
+			let container, stats;
 
-let raycaster, pointer;
+			let camera, scene, renderer;
 
-let mesh, line;
+			let raycaster, pointer;
 
-init();
-animate();
+			let mesh, line;
 
-function init() {
-  container = document.getElementById("container");
+			init();
+			animate();
 
-  //
+			function init() {
 
-  camera = new THREE.PerspectiveCamera(
-    27,
-    window.innerWidth / window.innerHeight,
-    1,
-    3500
-  );
-  camera.position.z = 2750;
+				container = document.getElementById( 'container' );
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x050505);
-  scene.fog = new THREE.Fog(0x050505, 2000, 3500);
+				//
 
-  //
+				camera = new THREE.PerspectiveCamera( 27, window.innerWidth / window.innerHeight, 1, 3500 );
+				camera.position.z = 2750;
 
-  scene.add(new THREE.AmbientLight(0x444444));
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0x050505 );
+				scene.fog = new THREE.Fog( 0x050505, 2000, 3500 );
 
-  const light1 = new THREE.DirectionalLight(0xffffff, 0.5);
-  light1.position.set(1, 1, 1);
-  scene.add(light1);
+				//
 
-  const light2 = new THREE.DirectionalLight(0xffffff, 1.5);
-  light2.position.set(0, -1, 0);
-  scene.add(light2);
+				scene.add( new THREE.AmbientLight( 0x444444 ) );
 
-  //
+				const light1 = new THREE.DirectionalLight( 0xffffff, 0.5 );
+				light1.position.set( 1, 1, 1 );
+				scene.add( light1 );
 
-  const triangles = 5000;
+				const light2 = new THREE.DirectionalLight( 0xffffff, 1.5 );
+				light2.position.set( 0, - 1, 0 );
+				scene.add( light2 );
 
-  let geometry = new THREE.BufferGeometry();
+				//
 
-  const positions = new Float32Array(triangles * 3 * 3);
-  const normals = new Float32Array(triangles * 3 * 3);
-  const colors = new Float32Array(triangles * 3 * 3);
+				const triangles = 5000;
 
-  const color = new THREE.Color();
+				let geometry = new THREE.BufferGeometry();
 
-  const n = 800,
-    n2 = n / 2; // triangles spread in the cube
-  const d = 120,
-    d2 = d / 2; // individual triangle size
+				const positions = new Float32Array( triangles * 3 * 3 );
+				const normals = new Float32Array( triangles * 3 * 3 );
+				const colors = new Float32Array( triangles * 3 * 3 );
 
-  const pA = new THREE.Vector3();
-  const pB = new THREE.Vector3();
-  const pC = new THREE.Vector3();
+				const color = new THREE.Color();
 
-  const cb = new THREE.Vector3();
-  const ab = new THREE.Vector3();
+				const n = 800, n2 = n / 2;	// triangles spread in the cube
+				const d = 120, d2 = d / 2;	// individual triangle size
 
-  for (let i = 0; i < positions.length; i += 9) {
-    // positions
+				const pA = new THREE.Vector3();
+				const pB = new THREE.Vector3();
+				const pC = new THREE.Vector3();
 
-    const x = Math.random() * n - n2;
-    const y = Math.random() * n - n2;
-    const z = Math.random() * n - n2;
+				const cb = new THREE.Vector3();
+				const ab = new THREE.Vector3();
 
-    const ax = x + Math.random() * d - d2;
-    const ay = y + Math.random() * d - d2;
-    const az = z + Math.random() * d - d2;
+				for ( let i = 0; i < positions.length; i += 9 ) {
 
-    const bx = x + Math.random() * d - d2;
-    const by = y + Math.random() * d - d2;
-    const bz = z + Math.random() * d - d2;
+					// positions
 
-    const cx = x + Math.random() * d - d2;
-    const cy = y + Math.random() * d - d2;
-    const cz = z + Math.random() * d - d2;
+					const x = Math.random() * n - n2;
+					const y = Math.random() * n - n2;
+					const z = Math.random() * n - n2;
 
-    positions[i] = ax;
-    positions[i + 1] = ay;
-    positions[i + 2] = az;
+					const ax = x + Math.random() * d - d2;
+					const ay = y + Math.random() * d - d2;
+					const az = z + Math.random() * d - d2;
 
-    positions[i + 3] = bx;
-    positions[i + 4] = by;
-    positions[i + 5] = bz;
+					const bx = x + Math.random() * d - d2;
+					const by = y + Math.random() * d - d2;
+					const bz = z + Math.random() * d - d2;
 
-    positions[i + 6] = cx;
-    positions[i + 7] = cy;
-    positions[i + 8] = cz;
+					const cx = x + Math.random() * d - d2;
+					const cy = y + Math.random() * d - d2;
+					const cz = z + Math.random() * d - d2;
 
-    // flat face normals
+					positions[ i ] = ax;
+					positions[ i + 1 ] = ay;
+					positions[ i + 2 ] = az;
 
-    pA.set(ax, ay, az);
-    pB.set(bx, by, bz);
-    pC.set(cx, cy, cz);
+					positions[ i + 3 ] = bx;
+					positions[ i + 4 ] = by;
+					positions[ i + 5 ] = bz;
 
-    cb.subVectors(pC, pB);
-    ab.subVectors(pA, pB);
-    cb.cross(ab);
+					positions[ i + 6 ] = cx;
+					positions[ i + 7 ] = cy;
+					positions[ i + 8 ] = cz;
 
-    cb.normalize();
+					// flat face normals
 
-    const nx = cb.x;
-    const ny = cb.y;
-    const nz = cb.z;
+					pA.set( ax, ay, az );
+					pB.set( bx, by, bz );
+					pC.set( cx, cy, cz );
 
-    normals[i] = nx;
-    normals[i + 1] = ny;
-    normals[i + 2] = nz;
+					cb.subVectors( pC, pB );
+					ab.subVectors( pA, pB );
+					cb.cross( ab );
 
-    normals[i + 3] = nx;
-    normals[i + 4] = ny;
-    normals[i + 5] = nz;
+					cb.normalize();
 
-    normals[i + 6] = nx;
-    normals[i + 7] = ny;
-    normals[i + 8] = nz;
+					const nx = cb.x;
+					const ny = cb.y;
+					const nz = cb.z;
 
-    // colors
+					normals[ i ] = nx;
+					normals[ i + 1 ] = ny;
+					normals[ i + 2 ] = nz;
 
-    const vx = x / n + 0.5;
-    const vy = y / n + 0.5;
-    const vz = z / n + 0.5;
+					normals[ i + 3 ] = nx;
+					normals[ i + 4 ] = ny;
+					normals[ i + 5 ] = nz;
 
-    color.setRGB(vx, vy, vz);
+					normals[ i + 6 ] = nx;
+					normals[ i + 7 ] = ny;
+					normals[ i + 8 ] = nz;
 
-    colors[i] = color.r;
-    colors[i + 1] = color.g;
-    colors[i + 2] = color.b;
+					// colors
 
-    colors[i + 3] = color.r;
-    colors[i + 4] = color.g;
-    colors[i + 5] = color.b;
+					const vx = ( x / n ) + 0.5;
+					const vy = ( y / n ) + 0.5;
+					const vz = ( z / n ) + 0.5;
 
-    colors[i + 6] = color.r;
-    colors[i + 7] = color.g;
-    colors[i + 8] = color.b;
-  }
+					color.setRGB( vx, vy, vz );
 
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
-  geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+					colors[ i ] = color.r;
+					colors[ i + 1 ] = color.g;
+					colors[ i + 2 ] = color.b;
 
-  geometry.computeBoundingSphere();
+					colors[ i + 3 ] = color.r;
+					colors[ i + 4 ] = color.g;
+					colors[ i + 5 ] = color.b;
 
-  let material = new THREE.MeshPhongMaterial({
-    color: 0xaaaaaa,
-    specular: 0xffffff,
-    shininess: 250,
-    side: THREE.DoubleSide,
-    vertexColors: true,
-  });
+					colors[ i + 6 ] = color.r;
+					colors[ i + 7 ] = color.g;
+					colors[ i + 8 ] = color.b;
 
-  mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+				}
 
-  //
+				geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+				geometry.setAttribute( 'normal', new THREE.BufferAttribute( normals, 3 ) );
+				geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
 
-  raycaster = new THREE.Raycaster();
+				geometry.computeBoundingSphere();
 
-  pointer = new THREE.Vector2();
+				let material = new THREE.MeshPhongMaterial( {
+					color: 0xaaaaaa, specular: 0xffffff, shininess: 250,
+					side: THREE.DoubleSide, vertexColors: true
+				} );
 
-  geometry = new THREE.BufferGeometry();
-  geometry.setAttribute(
-    "position",
-    new THREE.BufferAttribute(new Float32Array(4 * 3), 3)
-  );
+				mesh = new THREE.Mesh( geometry, material );
+				scene.add( mesh );
 
-  material = new THREE.LineBasicMaterial({
-    color: 0xffffff,
-    transparent: true,
-  });
+				//
 
-  line = new THREE.Line(geometry, material);
-  scene.add(line);
+				raycaster = new THREE.Raycaster();
 
-  //
+				pointer = new THREE.Vector2();
 
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+				geometry = new THREE.BufferGeometry();
+				geometry.setAttribute( 'position', new THREE.BufferAttribute( new Float32Array( 4 * 3 ), 3 ) );
 
-  //
+				material = new THREE.LineBasicMaterial( { color: 0xffffff, transparent: true } );
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				line = new THREE.Line( geometry, material );
+				scene.add( line );
 
-  //
+				//
 
-  window.addEventListener("resize", onWindowResize);
-  document.addEventListener("pointermove", onPointerMove);
-}
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				//
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-function onPointerMove(event) {
-  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-}
+				//
 
-//
+				window.addEventListener( 'resize', onWindowResize );
+				document.addEventListener( 'pointermove', onPointerMove );
 
-function animate() {
-  requestAnimationFrame(animate);
+			}
 
-  render();
-  stats.update();
-}
+			function onWindowResize() {
 
-function render() {
-  const time = Date.now() * 0.001;
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-  mesh.rotation.x = time * 0.15;
-  mesh.rotation.y = time * 0.25;
+				renderer.setSize( window.innerWidth, window.innerHeight );
 
-  raycaster.setFromCamera(pointer, camera);
+			}
 
-  const intersects = raycaster.intersectObject(mesh);
+			function onPointerMove( event ) {
 
-  if (intersects.length > 0) {
-    const intersect = intersects[0];
-    const face = intersect.face;
+				pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
 
-    const linePosition = line.geometry.attributes.position;
-    const meshPosition = mesh.geometry.attributes.position;
+			}
 
-    linePosition.copyAt(0, meshPosition, face.a);
-    linePosition.copyAt(1, meshPosition, face.b);
-    linePosition.copyAt(2, meshPosition, face.c);
-    linePosition.copyAt(3, meshPosition, face.a);
+			//
 
-    mesh.updateMatrix();
+			function animate() {
 
-    line.geometry.applyMatrix4(mesh.matrix);
+				requestAnimationFrame( animate );
 
-    line.visible = true;
-  } else {
-    line.visible = false;
-  }
+				render();
+				stats.update();
 
-  renderer.render(scene, camera);
-}
+			}
+
+			function render() {
+
+				const time = Date.now() * 0.001;
+
+				mesh.rotation.x = time * 0.15;
+				mesh.rotation.y = time * 0.25;
+
+				raycaster.setFromCamera( pointer, camera );
+
+				const intersects = raycaster.intersectObject( mesh );
+
+				if ( intersects.length > 0 ) {
+
+					const intersect = intersects[ 0 ];
+					const face = intersect.face;
+
+					const linePosition = line.geometry.attributes.position;
+					const meshPosition = mesh.geometry.attributes.position;
+
+					linePosition.copyAt( 0, meshPosition, face.a );
+					linePosition.copyAt( 1, meshPosition, face.b );
+					linePosition.copyAt( 2, meshPosition, face.c );
+					linePosition.copyAt( 3, meshPosition, face.a );
+
+					mesh.updateMatrix();
+
+					line.geometry.applyMatrix4( mesh.matrix );
+
+					line.visible = true;
+
+				} else {
+
+					line.visible = false;
+
+				}
+
+				renderer.render( scene, camera );
+
+			}
+
+		

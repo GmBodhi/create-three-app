@@ -1,137 +1,154 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+			import * as THREE from 'three';
 
-let container, stats;
-let camera, scene, renderer;
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
 
-let theta = 0;
-const radius = 100;
+			let container, stats;
+			let camera, scene, renderer;
 
-init();
-animate();
+			let theta = 0;
+			const radius = 100;
 
-function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
+			init();
+			animate();
 
-  camera = new THREE.PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
-  camera.layers.enable(0); // enabled by default
-  camera.layers.enable(1);
-  camera.layers.enable(2);
+			function init() {
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
 
-  const light = new THREE.PointLight(0xffffff, 1);
-  light.layers.enable(0);
-  light.layers.enable(1);
-  light.layers.enable(2);
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.layers.enable( 0 ); // enabled by default
+				camera.layers.enable( 1 );
+				camera.layers.enable( 2 );
 
-  scene.add(camera);
-  camera.add(light);
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xf0f0f0 );
 
-  const colors = [0xff0000, 0x00ff00, 0x0000ff];
-  const geometry = new THREE.BoxGeometry(20, 20, 20);
+				const light = new THREE.PointLight( 0xffffff, 1 );
+				light.layers.enable( 0 );
+				light.layers.enable( 1 );
+				light.layers.enable( 2 );
 
-  for (let i = 0; i < 300; i++) {
-    const layer = i % 3;
+				scene.add( camera );
+				camera.add( light );
 
-    const object = new THREE.Mesh(
-      geometry,
-      new THREE.MeshLambertMaterial({ color: colors[layer] })
-    );
+				const colors = [ 0xff0000, 0x00ff00, 0x0000ff ];
+				const geometry = new THREE.BoxGeometry( 20, 20, 20 );
 
-    object.position.x = Math.random() * 800 - 400;
-    object.position.y = Math.random() * 800 - 400;
-    object.position.z = Math.random() * 800 - 400;
+				for ( let i = 0; i < 300; i ++ ) {
 
-    object.rotation.x = Math.random() * 2 * Math.PI;
-    object.rotation.y = Math.random() * 2 * Math.PI;
-    object.rotation.z = Math.random() * 2 * Math.PI;
+					const layer = ( i % 3 );
 
-    object.scale.x = Math.random() + 0.5;
-    object.scale.y = Math.random() + 0.5;
-    object.scale.z = Math.random() + 0.5;
+					const object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: colors[ layer ] } ) );
 
-    object.layers.set(layer);
+					object.position.x = Math.random() * 800 - 400;
+					object.position.y = Math.random() * 800 - 400;
+					object.position.z = Math.random() * 800 - 400;
 
-    scene.add(object);
-  }
+					object.rotation.x = Math.random() * 2 * Math.PI;
+					object.rotation.y = Math.random() * 2 * Math.PI;
+					object.rotation.z = Math.random() * 2 * Math.PI;
 
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+					object.scale.x = Math.random() + 0.5;
+					object.scale.y = Math.random() + 0.5;
+					object.scale.z = Math.random() + 0.5;
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+					object.layers.set( layer );
 
-  const layers = {
-    "toggle red": function () {
-      camera.layers.toggle(0);
-    },
+					scene.add( object );
 
-    "toggle green": function () {
-      camera.layers.toggle(1);
-    },
+				}
 
-    "toggle blue": function () {
-      camera.layers.toggle(2);
-    },
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
 
-    "enable all": function () {
-      camera.layers.enableAll();
-    },
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-    "disable all": function () {
-      camera.layers.disableAll();
-    },
-  };
+				const layers = {
 
-  //
-  // Init gui
-  const gui = new GUI();
-  gui.add(layers, "toggle red");
-  gui.add(layers, "toggle green");
-  gui.add(layers, "toggle blue");
-  gui.add(layers, "enable all");
-  gui.add(layers, "disable all");
+					'toggle red': function () {
 
-  window.addEventListener("resize", onWindowResize);
-}
+						camera.layers.toggle( 0 );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+					},
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+					'toggle green': function () {
 
-//
+						camera.layers.toggle( 1 );
 
-function animate() {
-  requestAnimationFrame(animate);
+					},
 
-  render();
-  stats.update();
-}
+					'toggle blue': function () {
 
-function render() {
-  theta += 0.1;
+						camera.layers.toggle( 2 );
 
-  camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.y = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
-  camera.lookAt(scene.position);
+					},
 
-  renderer.render(scene, camera);
-}
+					'enable all': function () {
+
+						camera.layers.enableAll();
+
+					},
+
+					'disable all': function () {
+
+						camera.layers.disableAll();
+
+					}
+
+				};
+
+				//
+				// Init gui
+				const gui = new GUI();
+				gui.add( layers, 'toggle red' );
+				gui.add( layers, 'toggle green' );
+				gui.add( layers, 'toggle blue' );
+				gui.add( layers, 'enable all' );
+				gui.add( layers, 'disable all' );
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				theta += 0.1;
+
+				camera.position.x = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+				camera.position.y = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
+				camera.position.z = radius * Math.cos( THREE.MathUtils.degToRad( theta ) );
+				camera.lookAt( scene.position );
+
+				renderer.render( scene, camera );
+
+			}
+
+		

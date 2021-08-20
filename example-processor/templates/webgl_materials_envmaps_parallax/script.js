@@ -1,14 +1,15 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
-import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
+			import * as THREE from 'three';
 
-// shader injection for box projected cube environment mapping
-const worldposReplace = /* glsl */ `
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+			import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js';
+			import { RectAreaLightUniformsLib } from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
+
+			// shader injection for box projected cube environment mapping
+			const worldposReplace = /* glsl */`
 			#define BOX_PROJECTED_ENV_MAP
 
 			#if defined( USE_ENVMAP ) || defined( DISTANCE ) || defined ( USE_SHADOWMAP )
@@ -24,7 +25,7 @@ const worldposReplace = /* glsl */ `
 			#endif
 			`;
 
-const envmapPhysicalParsReplace = /* glsl */ `
+			const envmapPhysicalParsReplace = /* glsl */`
 			#if defined( USE_ENVMAP )
 
 				#define BOX_PROJECTED_ENV_MAP
@@ -165,225 +166,231 @@ const envmapPhysicalParsReplace = /* glsl */ `
 			#endif
 			`;
 
-// scene size
-const WIDTH = window.innerWidth;
-const HEIGHT = window.innerHeight;
+			// scene size
+			const WIDTH = window.innerWidth;
+			const HEIGHT = window.innerHeight;
 
-// camera
-const VIEW_ANGLE = 45;
-const ASPECT = WIDTH / HEIGHT;
-const NEAR = 1;
-const FAR = 800;
+			// camera
+			const VIEW_ANGLE = 45;
+			const ASPECT = WIDTH / HEIGHT;
+			const NEAR = 1;
+			const FAR = 800;
 
-let camera, cubeCamera, scene, renderer;
+			let camera, cubeCamera, scene, renderer;
 
-let cameraControls;
+			let cameraControls;
 
-let groundPlane, wallMat;
+			let groundPlane, wallMat;
 
-init();
+			init();
 
-function init() {
-  const container = document.getElementById("container");
+			function init() {
 
-  // renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(WIDTH, HEIGHT);
-  container.appendChild(renderer.domElement);
+				const container = document.getElementById( 'container' );
 
-  // gui controls
-  const gui = new GUI();
-  const params = {
-    "box projected": true,
-  };
-  const bpcemGui = gui.add(params, "box projected");
+				// renderer
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( WIDTH, HEIGHT );
+				container.appendChild( renderer.domElement );
 
-  bpcemGui.onChange(function (value) {
-    if (value) {
-      groundPlane.material = boxProjectedMat;
-    } else {
-      groundPlane.material = defaultMat;
-    }
+				// gui controls
+				const gui = new GUI();
+				const params = {
+					'box projected': true
+				};
+				const bpcemGui = gui.add( params, 'box projected' );
 
-    render();
-  });
+				bpcemGui.onChange( function ( value ) {
 
-  // scene
-  scene = new THREE.Scene();
+					if ( value ) {
 
-  // camera
-  camera = new THREE.PerspectiveCamera(VIEW_ANGLE, ASPECT, NEAR, FAR);
-  camera.position.set(280, 106, -5);
+						groundPlane.material = boxProjectedMat;
 
-  cameraControls = new OrbitControls(camera, renderer.domElement);
-  cameraControls.target.set(0, -10, 0);
-  cameraControls.maxDistance = 400;
-  cameraControls.minDistance = 10;
-  cameraControls.addEventListener("change", render);
-  cameraControls.update();
+					} else {
 
-  // cube camera for environment map
+						groundPlane.material = defaultMat;
 
-  const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(512, {
-    format: THREE.RGBFormat,
-    generateMipmaps: true,
-    minFilter: THREE.LinearMipmapLinearFilter,
-  });
-  cubeCamera = new THREE.CubeCamera(1, 1000, cubeRenderTarget);
+					}
 
-  cubeCamera.position.set(0, -100, 0);
-  scene.add(cubeCamera);
+					render();
 
-  // ground floor ( with box projected environment mapping )
-  const loader = new THREE.TextureLoader();
-  const rMap = loader.load("textures/lava/lavatile.jpg");
-  rMap.wrapS = THREE.RepeatWrapping;
-  rMap.wrapT = THREE.RepeatWrapping;
-  rMap.repeat.set(2, 1);
+				} );
 
-  const defaultMat = new THREE.MeshPhysicalMaterial({
-    roughness: 1,
-    envMap: cubeRenderTarget.texture,
-    roughnessMap: rMap,
-  });
+				// scene
+				scene = new THREE.Scene();
 
-  const boxProjectedMat = new THREE.MeshPhysicalMaterial({
-    color: new THREE.Color("#ffffff"),
-    roughness: 1,
-    envMap: cubeRenderTarget.texture,
-    roughnessMap: rMap,
-  });
+				// camera
+				camera = new THREE.PerspectiveCamera( VIEW_ANGLE, ASPECT, NEAR, FAR );
+				camera.position.set( 280, 106, - 5 );
 
-  boxProjectedMat.onBeforeCompile = function (shader) {
-    //these parameters are for the cubeCamera texture
-    shader.uniforms.cubeMapSize = { value: new THREE.Vector3(200, 200, 100) };
-    shader.uniforms.cubeMapPos = { value: new THREE.Vector3(0, -50, 0) };
+				cameraControls = new OrbitControls( camera, renderer.domElement );
+				cameraControls.target.set( 0, - 10, 0 );
+				cameraControls.maxDistance = 400;
+				cameraControls.minDistance = 10;
+				cameraControls.addEventListener( 'change', render );
+				cameraControls.update();
 
-    //replace shader chunks with box projection chunks
-    shader.vertexShader =
-      "varying vec3 vWorldPosition;\n" + shader.vertexShader;
+				// cube camera for environment map
 
-    shader.vertexShader = shader.vertexShader.replace(
-      "#include <worldpos_vertex>",
-      worldposReplace
-    );
+				const cubeRenderTarget = new THREE.WebGLCubeRenderTarget( 512, {
+					format: THREE.RGBFormat,
+					generateMipmaps: true,
+					minFilter: THREE.LinearMipmapLinearFilter
+				} );
+				cubeCamera = new THREE.CubeCamera( 1, 1000, cubeRenderTarget );
 
-    shader.fragmentShader = shader.fragmentShader.replace(
-      "#include <envmap_physical_pars_fragment>",
-      envmapPhysicalParsReplace
-    );
-  };
+				cubeCamera.position.set( 0, - 100, 0 );
+				scene.add( cubeCamera );
 
-  groundPlane = new THREE.Mesh(
-    new THREE.PlaneGeometry(200, 100, 100),
-    boxProjectedMat
-  );
-  groundPlane.rotateX(-Math.PI / 2);
-  groundPlane.position.set(0, -49, 0);
-  scene.add(groundPlane);
+				// ground floor ( with box projected environment mapping )
+				const loader = new THREE.TextureLoader();
+				const rMap = loader.load( 'textures/lava/lavatile.jpg' );
+				rMap.wrapS = THREE.RepeatWrapping;
+				rMap.wrapT = THREE.RepeatWrapping;
+				rMap.repeat.set( 2, 1 );
 
-  // walls
-  const diffuseTex = loader.load("textures/brick_diffuse.jpg", function () {
-    updateCubeMap();
-  });
-  const bumpTex = loader.load("textures/brick_bump.jpg", function () {
-    updateCubeMap();
-  });
+				const defaultMat = new THREE.MeshPhysicalMaterial( {
+					roughness: 1,
+					envMap: cubeRenderTarget.texture,
+					roughnessMap: rMap
+				} );
 
-  wallMat = new THREE.MeshPhysicalMaterial({
-    map: diffuseTex,
-    bumpMap: bumpTex,
-    bumpScale: 0.3,
-  });
+				const boxProjectedMat = new THREE.MeshPhysicalMaterial( {
+					color: new THREE.Color( '#ffffff' ),
+					roughness: 1,
+					envMap: cubeRenderTarget.texture,
+					roughnessMap: rMap
+				} );
 
-  const planeGeo = new THREE.PlaneGeometry(100, 100);
+				boxProjectedMat.onBeforeCompile = function ( shader ) {
 
-  const planeBack1 = new THREE.Mesh(planeGeo, wallMat);
-  planeBack1.position.z = -50;
-  planeBack1.position.x = -50;
-  scene.add(planeBack1);
+					//these parameters are for the cubeCamera texture
+					shader.uniforms.cubeMapSize = { value: new THREE.Vector3( 200, 200, 100 ) };
+					shader.uniforms.cubeMapPos = { value: new THREE.Vector3( 0, - 50, 0 ) };
 
-  const planeBack2 = new THREE.Mesh(planeGeo, wallMat);
-  planeBack2.position.z = -50;
-  planeBack2.position.x = 50;
-  scene.add(planeBack2);
+					//replace shader chunks with box projection chunks
+					shader.vertexShader = 'varying vec3 vWorldPosition;\n' + shader.vertexShader;
 
-  const planeFront1 = new THREE.Mesh(planeGeo, wallMat);
-  planeFront1.position.z = 50;
-  planeFront1.position.x = -50;
-  planeFront1.rotateY(Math.PI);
-  scene.add(planeFront1);
+					shader.vertexShader = shader.vertexShader.replace(
+						'#include <worldpos_vertex>',
+						worldposReplace
+					);
 
-  const planeFront2 = new THREE.Mesh(planeGeo, wallMat);
-  planeFront2.position.z = 50;
-  planeFront2.position.x = 50;
-  planeFront2.rotateY(Math.PI);
-  scene.add(planeFront2);
+					shader.fragmentShader = shader.fragmentShader.replace(
+						'#include <envmap_physical_pars_fragment>',
+						envmapPhysicalParsReplace
+					);
 
-  const planeRight = new THREE.Mesh(planeGeo, wallMat);
-  planeRight.position.x = 100;
-  planeRight.rotateY(-Math.PI / 2);
-  scene.add(planeRight);
+				};
 
-  const planeLeft = new THREE.Mesh(planeGeo, wallMat);
-  planeLeft.position.x = -100;
-  planeLeft.rotateY(Math.PI / 2);
-  scene.add(planeLeft);
+				groundPlane = new THREE.Mesh( new THREE.PlaneGeometry( 200, 100, 100 ), boxProjectedMat );
+				groundPlane.rotateX( - Math.PI / 2 );
+				groundPlane.position.set( 0, - 49, 0 );
+				scene.add( groundPlane );
 
-  //lights
-  const width = 50;
-  const height = 50;
-  const intensity = 10;
+				// walls
+				const diffuseTex = loader.load( 'textures/brick_diffuse.jpg', function () {
 
-  RectAreaLightUniformsLib.init();
+					updateCubeMap();
 
-  const blueRectLight = new THREE.RectAreaLight(
-    0x9aaeff,
-    intensity,
-    width,
-    height
-  );
-  blueRectLight.position.set(99, 5, 0);
-  blueRectLight.lookAt(0, 5, 0);
-  scene.add(blueRectLight);
+				} );
+				const bumpTex = loader.load( 'textures/brick_bump.jpg', function () {
 
-  const blueRectLightHelper = new RectAreaLightHelper(blueRectLight);
-  blueRectLight.add(blueRectLightHelper);
+					updateCubeMap();
 
-  const redRectLight = new THREE.RectAreaLight(
-    0xf3aaaa,
-    intensity,
-    width,
-    height
-  );
-  redRectLight.position.set(-99, 5, 0);
-  redRectLight.lookAt(0, 5, 0);
-  scene.add(redRectLight);
+				} );
 
-  const redRectLightHelper = new RectAreaLightHelper(redRectLight);
-  redRectLight.add(redRectLightHelper);
+				wallMat = new THREE.MeshPhysicalMaterial( {
+					map: diffuseTex,
+					bumpMap: bumpTex,
+					bumpScale: 0.3,
+				} );
 
-  render();
-}
+				const planeGeo = new THREE.PlaneGeometry( 100, 100 );
 
-function updateCubeMap() {
-  //disable specular highlights on walls in the environment map
-  wallMat.roughness = 1;
+				const planeBack1 = new THREE.Mesh( planeGeo, wallMat );
+				planeBack1.position.z = - 50;
+				planeBack1.position.x = - 50;
+				scene.add( planeBack1 );
 
-  groundPlane.visible = false;
+				const planeBack2 = new THREE.Mesh( planeGeo, wallMat );
+				planeBack2.position.z = - 50;
+				planeBack2.position.x = 50;
+				scene.add( planeBack2 );
 
-  cubeCamera.position.copy(groundPlane.position);
+				const planeFront1 = new THREE.Mesh( planeGeo, wallMat );
+				planeFront1.position.z = 50;
+				planeFront1.position.x = - 50;
+				planeFront1.rotateY( Math.PI );
+				scene.add( planeFront1 );
 
-  cubeCamera.update(renderer, scene);
+				const planeFront2 = new THREE.Mesh( planeGeo, wallMat );
+				planeFront2.position.z = 50;
+				planeFront2.position.x = 50;
+				planeFront2.rotateY( Math.PI );
+				scene.add( planeFront2 );
 
-  wallMat.roughness = 0.6;
+				const planeRight = new THREE.Mesh( planeGeo, wallMat );
+				planeRight.position.x = 100;
+				planeRight.rotateY( - Math.PI / 2 );
+				scene.add( planeRight );
 
-  groundPlane.visible = true;
+				const planeLeft = new THREE.Mesh( planeGeo, wallMat );
+				planeLeft.position.x = - 100;
+				planeLeft.rotateY( Math.PI / 2 );
+				scene.add( planeLeft );
 
-  render();
-}
+				//lights
+				const width = 50;
+				const height = 50;
+				const intensity = 10;
 
-function render() {
-  renderer.render(scene, camera);
-}
+				RectAreaLightUniformsLib.init();
+
+				const blueRectLight = new THREE.RectAreaLight( 0x9aaeff, intensity, width, height );
+				blueRectLight.position.set( 99, 5, 0 );
+				blueRectLight.lookAt( 0, 5, 0 );
+				scene.add( blueRectLight );
+
+				const blueRectLightHelper = new RectAreaLightHelper( blueRectLight );
+				blueRectLight.add( blueRectLightHelper );
+
+				const redRectLight = new THREE.RectAreaLight( 0xf3aaaa, intensity, width, height );
+				redRectLight.position.set( - 99, 5, 0 );
+				redRectLight.lookAt( 0, 5, 0 );
+				scene.add( redRectLight );
+
+				const redRectLightHelper = new RectAreaLightHelper( redRectLight );
+				redRectLight.add( redRectLightHelper );
+
+				render();
+
+			}
+
+			function updateCubeMap() {
+
+				//disable specular highlights on walls in the environment map
+				wallMat.roughness = 1;
+
+				groundPlane.visible = false;
+
+				cubeCamera.position.copy( groundPlane.position );
+
+				cubeCamera.update( renderer, scene );
+
+				wallMat.roughness = 0.6;
+
+				groundPlane.visible = true;
+
+				render();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+		

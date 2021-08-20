@@ -1,246 +1,263 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-let renderer, scene, camera, stats;
-let pointclouds;
-let raycaster;
-let intersection = null;
-let spheresIndex = 0;
-let clock;
-let toggle = 0;
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-const pointer = new THREE.Vector2();
-const spheres = [];
+			let renderer, scene, camera, stats;
+			let pointclouds;
+			let raycaster;
+			let intersection = null;
+			let spheresIndex = 0;
+			let clock;
+			let toggle = 0;
 
-const threshold = 0.1;
-const pointSize = 0.05;
-const width = 80;
-const length = 160;
-const rotateY = new THREE.Matrix4().makeRotationY(0.005);
+			const pointer = new THREE.Vector2();
+			const spheres = [];
 
-init();
-animate();
+			const threshold = 0.1;
+			const pointSize = 0.05;
+			const width = 80;
+			const length = 160;
+			const rotateY = new THREE.Matrix4().makeRotationY( 0.005 );
 
-function generatePointCloudGeometry(color, width, length) {
-  const geometry = new THREE.BufferGeometry();
-  const numPoints = width * length;
+			init();
+			animate();
 
-  const positions = new Float32Array(numPoints * 3);
-  const colors = new Float32Array(numPoints * 3);
+			function generatePointCloudGeometry( color, width, length ) {
 
-  let k = 0;
+				const geometry = new THREE.BufferGeometry();
+				const numPoints = width * length;
 
-  for (let i = 0; i < width; i++) {
-    for (let j = 0; j < length; j++) {
-      const u = i / width;
-      const v = j / length;
-      const x = u - 0.5;
-      const y = (Math.cos(u * Math.PI * 4) + Math.sin(v * Math.PI * 8)) / 20;
-      const z = v - 0.5;
+				const positions = new Float32Array( numPoints * 3 );
+				const colors = new Float32Array( numPoints * 3 );
 
-      positions[3 * k] = x;
-      positions[3 * k + 1] = y;
-      positions[3 * k + 2] = z;
+				let k = 0;
 
-      const intensity = (y + 0.1) * 5;
-      colors[3 * k] = color.r * intensity;
-      colors[3 * k + 1] = color.g * intensity;
-      colors[3 * k + 2] = color.b * intensity;
+				for ( let i = 0; i < width; i ++ ) {
 
-      k++;
-    }
-  }
+					for ( let j = 0; j < length; j ++ ) {
 
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
-  geometry.computeBoundingBox();
+						const u = i / width;
+						const v = j / length;
+						const x = u - 0.5;
+						const y = ( Math.cos( u * Math.PI * 4 ) + Math.sin( v * Math.PI * 8 ) ) / 20;
+						const z = v - 0.5;
 
-  return geometry;
-}
+						positions[ 3 * k ] = x;
+						positions[ 3 * k + 1 ] = y;
+						positions[ 3 * k + 2 ] = z;
 
-function generatePointcloud(color, width, length) {
-  const geometry = generatePointCloudGeometry(color, width, length);
-  const material = new THREE.PointsMaterial({
-    size: pointSize,
-    vertexColors: true,
-  });
+						const intensity = ( y + 0.1 ) * 5;
+						colors[ 3 * k ] = color.r * intensity;
+						colors[ 3 * k + 1 ] = color.g * intensity;
+						colors[ 3 * k + 2 ] = color.b * intensity;
 
-  return new THREE.Points(geometry, material);
-}
+						k ++;
 
-function generateIndexedPointcloud(color, width, length) {
-  const geometry = generatePointCloudGeometry(color, width, length);
-  const numPoints = width * length;
-  const indices = new Uint16Array(numPoints);
+					}
 
-  let k = 0;
+				}
 
-  for (let i = 0; i < width; i++) {
-    for (let j = 0; j < length; j++) {
-      indices[k] = k;
-      k++;
-    }
-  }
+				geometry.setAttribute( 'position', new THREE.BufferAttribute( positions, 3 ) );
+				geometry.setAttribute( 'color', new THREE.BufferAttribute( colors, 3 ) );
+				geometry.computeBoundingBox();
 
-  geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+				return geometry;
 
-  const material = new THREE.PointsMaterial({
-    size: pointSize,
-    vertexColors: true,
-  });
+			}
 
-  return new THREE.Points(geometry, material);
-}
+			function generatePointcloud( color, width, length ) {
 
-function generateIndexedWithOffsetPointcloud(color, width, length) {
-  const geometry = generatePointCloudGeometry(color, width, length);
-  const numPoints = width * length;
-  const indices = new Uint16Array(numPoints);
+				const geometry = generatePointCloudGeometry( color, width, length );
+				const material = new THREE.PointsMaterial( { size: pointSize, vertexColors: true } );
 
-  let k = 0;
+				return new THREE.Points( geometry, material );
 
-  for (let i = 0; i < width; i++) {
-    for (let j = 0; j < length; j++) {
-      indices[k] = k;
-      k++;
-    }
-  }
+			}
 
-  geometry.setIndex(new THREE.BufferAttribute(indices, 1));
-  geometry.addGroup(0, indices.length);
+			function generateIndexedPointcloud( color, width, length ) {
 
-  const material = new THREE.PointsMaterial({
-    size: pointSize,
-    vertexColors: true,
-  });
+				const geometry = generatePointCloudGeometry( color, width, length );
+				const numPoints = width * length;
+				const indices = new Uint16Array( numPoints );
 
-  return new THREE.Points(geometry, material);
-}
+				let k = 0;
 
-function init() {
-  const container = document.getElementById("container");
+				for ( let i = 0; i < width; i ++ ) {
 
-  scene = new THREE.Scene();
+					for ( let j = 0; j < length; j ++ ) {
 
-  clock = new THREE.Clock();
+						indices[ k ] = k;
+						k ++;
 
-  camera = new THREE.PerspectiveCamera(
-    45,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
-  camera.position.set(10, 10, 10);
-  camera.lookAt(scene.position);
-  camera.updateMatrix();
+					}
 
-  //
+				}
 
-  const pcBuffer = generatePointcloud(new THREE.Color(1, 0, 0), width, length);
-  pcBuffer.scale.set(5, 10, 10);
-  pcBuffer.position.set(-5, 0, 0);
-  scene.add(pcBuffer);
+				geometry.setIndex( new THREE.BufferAttribute( indices, 1 ) );
 
-  const pcIndexed = generateIndexedPointcloud(
-    new THREE.Color(0, 1, 0),
-    width,
-    length
-  );
-  pcIndexed.scale.set(5, 10, 10);
-  pcIndexed.position.set(0, 0, 0);
-  scene.add(pcIndexed);
+				const material = new THREE.PointsMaterial( { size: pointSize, vertexColors: true } );
 
-  const pcIndexedOffset = generateIndexedWithOffsetPointcloud(
-    new THREE.Color(0, 1, 1),
-    width,
-    length
-  );
-  pcIndexedOffset.scale.set(5, 10, 10);
-  pcIndexedOffset.position.set(5, 0, 0);
-  scene.add(pcIndexedOffset);
+				return new THREE.Points( geometry, material );
 
-  pointclouds = [pcBuffer, pcIndexed, pcIndexedOffset];
+			}
 
-  //
+			function generateIndexedWithOffsetPointcloud( color, width, length ) {
 
-  const sphereGeometry = new THREE.SphereGeometry(0.1, 32, 32);
-  const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+				const geometry = generatePointCloudGeometry( color, width, length );
+				const numPoints = width * length;
+				const indices = new Uint16Array( numPoints );
 
-  for (let i = 0; i < 40; i++) {
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
-    scene.add(sphere);
-    spheres.push(sphere);
-  }
+				let k = 0;
 
-  //
+				for ( let i = 0; i < width; i ++ ) {
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+					for ( let j = 0; j < length; j ++ ) {
 
-  //
+						indices[ k ] = k;
+						k ++;
 
-  raycaster = new THREE.Raycaster();
-  raycaster.params.Points.threshold = threshold;
+					}
 
-  //
+				}
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				geometry.setIndex( new THREE.BufferAttribute( indices, 1 ) );
+				geometry.addGroup( 0, indices.length );
 
-  //
+				const material = new THREE.PointsMaterial( { size: pointSize, vertexColors: true } );
 
-  window.addEventListener("resize", onWindowResize);
-  document.addEventListener("pointermove", onPointerMove);
-}
+				return new THREE.Points( geometry, material );
 
-function onPointerMove(event) {
-  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-}
+			}
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+			function init() {
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				const container = document.getElementById( 'container' );
 
-function animate() {
-  requestAnimationFrame(animate);
+				scene = new THREE.Scene();
 
-  render();
-  stats.update();
-}
+				clock = new THREE.Clock();
 
-function render() {
-  camera.applyMatrix4(rotateY);
-  camera.updateMatrixWorld();
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.set( 10, 10, 10 );
+				camera.lookAt( scene.position );
+				camera.updateMatrix();
 
-  raycaster.setFromCamera(pointer, camera);
+				//
 
-  const intersections = raycaster.intersectObjects(pointclouds);
-  intersection = intersections.length > 0 ? intersections[0] : null;
+				const pcBuffer = generatePointcloud( new THREE.Color( 1, 0, 0 ), width, length );
+				pcBuffer.scale.set( 5, 10, 10 );
+				pcBuffer.position.set( - 5, 0, 0 );
+				scene.add( pcBuffer );
 
-  if (toggle > 0.02 && intersection !== null) {
-    spheres[spheresIndex].position.copy(intersection.point);
-    spheres[spheresIndex].scale.set(1, 1, 1);
-    spheresIndex = (spheresIndex + 1) % spheres.length;
+				const pcIndexed = generateIndexedPointcloud( new THREE.Color( 0, 1, 0 ), width, length );
+				pcIndexed.scale.set( 5, 10, 10 );
+				pcIndexed.position.set( 0, 0, 0 );
+				scene.add( pcIndexed );
 
-    toggle = 0;
-  }
+				const pcIndexedOffset = generateIndexedWithOffsetPointcloud( new THREE.Color( 0, 1, 1 ), width, length );
+				pcIndexedOffset.scale.set( 5, 10, 10 );
+				pcIndexedOffset.position.set( 5, 0, 0 );
+				scene.add( pcIndexedOffset );
 
-  for (let i = 0; i < spheres.length; i++) {
-    const sphere = spheres[i];
-    sphere.scale.multiplyScalar(0.98);
-    sphere.scale.clampScalar(0.01, 1);
-  }
+				pointclouds = [ pcBuffer, pcIndexed, pcIndexedOffset ];
 
-  toggle += clock.getDelta();
+				//
 
-  renderer.render(scene, camera);
-}
+				const sphereGeometry = new THREE.SphereGeometry( 0.1, 32, 32 );
+				const sphereMaterial = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+
+				for ( let i = 0; i < 40; i ++ ) {
+
+					const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
+					scene.add( sphere );
+					spheres.push( sphere );
+
+				}
+
+				//
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+
+				//
+
+				raycaster = new THREE.Raycaster();
+				raycaster.params.Points.threshold = threshold;
+
+				//
+
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize );
+				document.addEventListener( 'pointermove', onPointerMove );
+
+			}
+
+			function onPointerMove( event ) {
+
+				pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+				pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				camera.applyMatrix4( rotateY );
+				camera.updateMatrixWorld();
+
+				raycaster.setFromCamera( pointer, camera );
+
+				const intersections = raycaster.intersectObjects( pointclouds );
+				intersection = ( intersections.length ) > 0 ? intersections[ 0 ] : null;
+
+				if ( toggle > 0.02 && intersection !== null ) {
+
+					spheres[ spheresIndex ].position.copy( intersection.point );
+					spheres[ spheresIndex ].scale.set( 1, 1, 1 );
+					spheresIndex = ( spheresIndex + 1 ) % spheres.length;
+
+					toggle = 0;
+
+				}
+
+				for ( let i = 0; i < spheres.length; i ++ ) {
+
+					const sphere = spheres[ i ];
+					sphere.scale.multiplyScalar( 0.98 );
+					sphere.scale.clampScalar( 0.01, 1 );
+
+				}
+
+				toggle += clock.getDelta();
+
+				renderer.render( scene, camera );
+
+			}
+
+		

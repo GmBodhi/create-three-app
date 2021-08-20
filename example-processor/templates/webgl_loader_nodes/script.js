@@ -1,176 +1,192 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { NodeMaterialLoader } from "three/examples/jsm/loaders/NodeMaterialLoader.js";
-import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
-import { NodeFrame } from "three/examples/jsm/nodes/core/NodeFrame.js";
-import { NodeMaterial } from "three/examples/jsm/nodes/materials/NodeMaterial.js";
+				import * as THREE from 'three';
 
-const container = document.getElementById("container");
+				import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+				import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+				import { NodeMaterialLoader } from 'three/examples/jsm/loaders/NodeMaterialLoader.js';
+				import { TeapotGeometry } from 'three/examples/jsm/geometries/TeapotGeometry.js';
+				import { NodeFrame } from 'three/examples/jsm/nodes/core/NodeFrame.js';
+				import { NodeMaterial } from 'three/examples/jsm/nodes/materials/NodeMaterial.js';
 
-let renderer, scene, camera;
-const clock = new THREE.Clock(),
-  fov = 50;
-const frame = new NodeFrame();
-let teapot, mesh, cloud;
-let controls;
-let gui;
+				const container = document.getElementById( 'container' );
 
-const param = { load: "caustic" };
+				let renderer, scene, camera;
+				const clock = new THREE.Clock(), fov = 50;
+				const frame = new NodeFrame();
+				let teapot, mesh, cloud;
+				let controls;
+				let gui;
 
-window.addEventListener("load", init);
+				const param = { load: 'caustic' };
 
-function init() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+				window.addEventListener( 'load', init );
 
-  scene = new THREE.Scene();
+				function init() {
 
-  camera = new THREE.PerspectiveCamera(
-    fov,
-    window.innerWidth / window.innerHeight,
-    1,
-    1000
-  );
-  camera.position.x = 50;
-  camera.position.z = -50;
-  camera.position.y = 30;
+					renderer = new THREE.WebGLRenderer( { antialias: true } );
+					renderer.setPixelRatio( window.devicePixelRatio );
+					renderer.setSize( window.innerWidth, window.innerHeight );
+					container.appendChild( renderer.domElement );
 
-  cloud = new THREE.TextureLoader().load("textures/lava/cloud.png");
-  cloud.wrapS = cloud.wrapT = THREE.RepeatWrapping;
+					scene = new THREE.Scene();
 
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 50;
-  controls.maxDistance = 200;
+					camera = new THREE.PerspectiveCamera( fov, window.innerWidth / window.innerHeight, 1, 1000 );
+					camera.position.x = 50;
+					camera.position.z = - 50;
+					camera.position.y = 30;
 
-  scene.add(new THREE.AmbientLight(0x464646));
+					cloud = new THREE.TextureLoader().load( 'textures/lava/cloud.png' );
+					cloud.wrapS = cloud.wrapT = THREE.RepeatWrapping;
 
-  const light1 = new THREE.DirectionalLight(0xffddcc, 1);
-  light1.position.set(1, 0.75, 0.5);
-  scene.add(light1);
+					controls = new OrbitControls( camera, renderer.domElement );
+					controls.minDistance = 50;
+					controls.maxDistance = 200;
 
-  const light2 = new THREE.DirectionalLight(0xccccff, 1);
-  light2.position.set(-1, 0.75, -0.5);
-  scene.add(light2);
+					scene.add( new THREE.AmbientLight( 0x464646 ) );
 
-  teapot = new TeapotGeometry(15, 18);
+					const light1 = new THREE.DirectionalLight( 0xffddcc, 1 );
+					light1.position.set( 1, 0.75, 0.5 );
+					scene.add( light1 );
 
-  mesh = new THREE.Mesh(teapot);
-  scene.add(mesh);
+					const light2 = new THREE.DirectionalLight( 0xccccff, 1 );
+					light2.position.set( - 1, 0.75, - 0.5 );
+					scene.add( light2 );
 
-  window.addEventListener("resize", onWindowResize);
+					teapot = new TeapotGeometry( 15, 18 );
 
-  updateMaterial();
+					mesh = new THREE.Mesh( teapot );
+					scene.add( mesh );
 
-  onWindowResize();
-  animate();
-}
+					window.addEventListener( 'resize', onWindowResize );
 
-function clearGui() {
-  if (gui) gui.destroy();
+					updateMaterial();
 
-  gui = new GUI();
+					onWindowResize();
+					animate();
 
-  gui
-    .add(param, "load", {
-      caustic: "caustic",
-      displace: "displace",
-      wave: "wave",
-      xray: "xray",
-    })
-    .onFinishChange(function () {
-      updateMaterial();
-    });
+				}
 
-  gui.open();
-}
+				function clearGui() {
 
-function addGui(name, value, callback, isColor, min, max) {
-  let node;
+					if ( gui ) gui.destroy();
 
-  param[name] = value;
+					gui = new GUI();
 
-  if (isColor) {
-    node = gui.addColor(param, name).onChange(function () {
-      callback(param[name]);
-    });
-  } else if (typeof value == "object") {
-    node = gui.add(param, name, value).onChange(function () {
-      callback(param[name]);
-    });
-  } else {
-    node = gui.add(param, name, min, max).onChange(function () {
-      callback(param[name]);
-    });
-  }
+					gui.add( param, 'load', {
+						'caustic': 'caustic',
+						'displace': 'displace',
+						'wave': 'wave',
+						'xray': 'xray'
+					} ).onFinishChange( function () {
 
-  return node;
-}
+						updateMaterial();
 
-function updateMaterial() {
-  if (mesh.material) mesh.material.dispose();
+					} );
 
-  clearGui();
+					gui.open();
 
-  const url = "nodes/" + param.load + ".json";
+				}
 
-  const library = {
-    cloud: cloud,
-  };
+				function addGui( name, value, callback, isColor, min, max ) {
 
-  const loader = new NodeMaterialLoader(undefined, library).load(
-    url,
-    function () {
-      const time = loader.getObjectByName("time");
+					let node;
 
-      if (time) {
-        // enable time scale
+					param[ name ] = value;
 
-        time.timeScale = true;
+					if ( isColor ) {
 
-        // gui
+						node = gui.addColor( param, name ).onChange( function () {
 
-        addGui(
-          "timeScale",
-          time.scale,
-          function (val) {
-            time.scale = val;
-          },
-          false,
-          -2,
-          2
-        );
-      }
+							callback( param[ name ] );
 
-      // set material
-      mesh.material = loader.material;
-    }
-  );
-}
+						} );
 
-function onWindowResize() {
-  const width = window.innerWidth,
-    height = window.innerHeight;
+					} else if ( typeof value == 'object' ) {
 
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
+						node = gui.add( param, name, value ).onChange( function () {
 
-  renderer.setSize(width, height);
-}
+							callback( param[ name ] );
 
-function animate() {
-  const delta = clock.getDelta();
+						} );
 
-  // update material animation and/or gpu calcs (pre-renderer)
-  if (mesh.material instanceof NodeMaterial)
-    frame.update(delta).updateNode(mesh.material);
+					} else {
 
-  renderer.render(scene, camera);
+						node = gui.add( param, name, min, max ).onChange( function () {
 
-  requestAnimationFrame(animate);
-}
+							callback( param[ name ] );
+
+						} );
+
+					}
+
+					return node;
+
+				}
+
+
+				function updateMaterial() {
+
+					if ( mesh.material ) mesh.material.dispose();
+
+					clearGui();
+
+					const url = "nodes/" + param.load + ".json";
+
+					const library = {
+						"cloud": cloud
+					};
+
+					const loader = new NodeMaterialLoader( undefined, library ).load( url, function () {
+
+						const time = loader.getObjectByName( "time" );
+
+						if ( time ) {
+
+							// enable time scale
+
+							time.timeScale = true;
+
+							// gui
+
+							addGui( 'timeScale', time.scale, function ( val ) {
+
+								time.scale = val;
+
+							}, false, - 2, 2 );
+
+						}
+
+						// set material
+						mesh.material = loader.material;
+
+					} );
+
+				}
+
+				function onWindowResize() {
+
+					const width = window.innerWidth, height = window.innerHeight;
+
+					camera.aspect = width / height;
+					camera.updateProjectionMatrix();
+
+					renderer.setSize( width, height );
+
+				}
+
+				function animate() {
+
+					const delta = clock.getDelta();
+
+					// update material animation and/or gpu calcs (pre-renderer)
+					if ( mesh.material instanceof NodeMaterial ) frame.update( delta ).updateNode( mesh.material );
+
+					renderer.render( scene, camera );
+
+					requestAnimationFrame( animate );
+
+				}
+
+		

@@ -1,124 +1,139 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
+			import * as THREE from 'three';
 
-let camera, scene, renderer;
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+			import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
 
-init();
-animate();
+			let camera, scene, renderer;
 
-function init() {
-  camera = new THREE.PerspectiveCamera(
-    45,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
-  camera.position.set(0, -400, 600);
+			init();
+			animate();
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+			function init( ) {
 
-  const loader = new THREE.FontLoader();
-  loader.load("fonts/helvetiker_regular.typeface.json", function (font) {
-    const color = new THREE.Color(0x006699);
+				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.set( 0, - 400, 600 );
 
-    const matDark = new THREE.MeshBasicMaterial({
-      color: color,
-      side: THREE.DoubleSide,
-    });
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xf0f0f0 );
 
-    const matLite = new THREE.MeshBasicMaterial({
-      color: color,
-      transparent: true,
-      opacity: 0.4,
-      side: THREE.DoubleSide,
-    });
+				const loader = new THREE.FontLoader();
+				loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
 
-    const message = "   Three.js\nStroke text.";
+					const color = new THREE.Color( 0x006699 );
 
-    const shapes = font.generateShapes(message, 100);
+					const matDark = new THREE.MeshBasicMaterial( {
+						color: color,
+						side: THREE.DoubleSide
+					} );
 
-    const geometry = new THREE.ShapeGeometry(shapes);
+					const matLite = new THREE.MeshBasicMaterial( {
+						color: color,
+						transparent: true,
+						opacity: 0.4,
+						side: THREE.DoubleSide
+					} );
 
-    geometry.computeBoundingBox();
+					const message = "   Three.js\nStroke text.";
 
-    const xMid =
-      -0.5 * (geometry.boundingBox.max.x - geometry.boundingBox.min.x);
+					const shapes = font.generateShapes( message, 100 );
 
-    geometry.translate(xMid, 0, 0);
+					const geometry = new THREE.ShapeGeometry( shapes );
 
-    // make shape ( N.B. edge view not visible )
+					geometry.computeBoundingBox();
 
-    const text = new THREE.Mesh(geometry, matLite);
-    text.position.z = -150;
-    scene.add(text);
+					const xMid = - 0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
 
-    // make line shape ( N.B. edge view remains visible )
+					geometry.translate( xMid, 0, 0 );
 
-    const holeShapes = [];
+					// make shape ( N.B. edge view not visible )
 
-    for (let i = 0; i < shapes.length; i++) {
-      const shape = shapes[i];
+					const text = new THREE.Mesh( geometry, matLite );
+					text.position.z = - 150;
+					scene.add( text );
 
-      if (shape.holes && shape.holes.length > 0) {
-        for (let j = 0; j < shape.holes.length; j++) {
-          const hole = shape.holes[j];
-          holeShapes.push(hole);
-        }
-      }
-    }
+					// make line shape ( N.B. edge view remains visible )
 
-    shapes.push.apply(shapes, holeShapes);
+					const holeShapes = [];
 
-    const style = SVGLoader.getStrokeStyle(5, color.getStyle());
+					for ( let i = 0; i < shapes.length; i ++ ) {
 
-    const strokeText = new THREE.Group();
+						const shape = shapes[ i ];
 
-    for (let i = 0; i < shapes.length; i++) {
-      const shape = shapes[i];
+						if ( shape.holes && shape.holes.length > 0 ) {
 
-      const points = shape.getPoints();
+							for ( let j = 0; j < shape.holes.length; j ++ ) {
 
-      const geometry = SVGLoader.pointsToStroke(points, style);
+								const hole = shape.holes[ j ];
+								holeShapes.push( hole );
 
-      geometry.translate(xMid, 0, 0);
+							}
 
-      const strokeMesh = new THREE.Mesh(geometry, matDark);
-      strokeText.add(strokeMesh);
-    }
+						}
 
-    scene.add(strokeText);
-  }); //end load function
+					}
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+					shapes.push.apply( shapes, holeShapes );
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 0, 0);
-  controls.update();
+					const style = SVGLoader.getStrokeStyle( 5, color.getStyle() );
 
-  window.addEventListener("resize", onWindowResize);
-} // end init
+					const strokeText = new THREE.Group();
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+					for ( let i = 0; i < shapes.length; i ++ ) {
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+						const shape = shapes[ i ];
 
-function animate() {
-  requestAnimationFrame(animate);
+						const points = shape.getPoints();
 
-  render();
-}
+						const geometry = SVGLoader.pointsToStroke( points, style );
 
-function render() {
-  renderer.render(scene, camera);
-}
+						geometry.translate( xMid, 0, 0 );
+
+						const strokeMesh = new THREE.Mesh( geometry, matDark );
+						strokeText.add( strokeMesh );
+
+					}
+
+					scene.add( strokeText );
+
+				} ); //end load function
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
+
+				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.target.set( 0, 0, 0 );
+				controls.update();
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			} // end init
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+		

@@ -1,285 +1,276 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
-
-import Stats from "three/examples/jsm/libs/stats.module.js";
-
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-
-let stats;
-
-let camera, scene, renderer;
-
-const params = {
-  material: "normal",
-  camera: "perspective",
-  side: "double",
-};
-
-const sides = {
-  front: THREE.FrontSide,
-  back: THREE.BackSide,
-  double: THREE.DoubleSide,
-};
-
-let cameraOrtho, cameraPerspective;
-let controlsOrtho, controlsPerspective;
-
-let mesh,
-  materialStandard,
-  materialDepthBasic,
-  materialDepthRGBA,
-  materialNormal;
-
-const SCALE = 2.436143; // from original model
-const BIAS = -0.428408; // from original model
-
-init();
-animate();
-initGui();
-
-// Init gui
-function initGui() {
-  const gui = new GUI();
-  gui.add(params, "material", [
-    "standard",
-    "normal",
-    "depthBasic",
-    "depthRGBA",
-  ]);
-  gui.add(params, "camera", ["perspective", "ortho"]);
-  gui.add(params, "side", ["front", "back", "double"]);
-}
-
-function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
-
-  //
-
-  scene = new THREE.Scene();
-
-  const aspect = window.innerWidth / window.innerHeight;
-  cameraPerspective = new THREE.PerspectiveCamera(45, aspect, 500, 3000);
-  cameraPerspective.position.z = 1500;
-  scene.add(cameraPerspective);
-
-  const height = 500;
-  cameraOrtho = new THREE.OrthographicCamera(
-    -height * aspect,
-    height * aspect,
-    height,
-    -height,
-    1000,
-    2500
-  );
-  cameraOrtho.position.z = 1500;
-  scene.add(cameraOrtho);
 
-  camera = cameraPerspective;
+			import * as THREE from 'three';
 
-  controlsPerspective = new OrbitControls(
-    cameraPerspective,
-    renderer.domElement
-  );
-  controlsPerspective.minDistance = 1000;
-  controlsPerspective.maxDistance = 2400;
-  controlsPerspective.enablePan = false;
-  controlsPerspective.enableDamping = true;
-
-  controlsOrtho = new OrbitControls(cameraOrtho, renderer.domElement);
-  controlsOrtho.minZoom = 0.5;
-  controlsOrtho.maxZoom = 1.5;
-  controlsOrtho.enablePan = false;
-  controlsOrtho.enableDamping = true;
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-  // lights
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+			import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
-  scene.add(ambientLight);
+			let stats;
 
-  const pointLight = new THREE.PointLight(0xff0000, 0.5);
-  pointLight.position.z = 2500;
-  scene.add(pointLight);
+			let camera, scene, renderer;
 
-  const pointLight2 = new THREE.PointLight(0xff6666, 1);
-  camera.add(pointLight2);
+			const params = {
+				material: 'normal',
+				camera: 'perspective',
+				side: 'double'
+			};
 
-  const pointLight3 = new THREE.PointLight(0x0000ff, 0.5);
-  pointLight3.position.x = -1000;
-  pointLight3.position.z = 1000;
-  scene.add(pointLight3);
+			const sides = {
+				'front': THREE.FrontSide,
+				'back': THREE.BackSide,
+				'double': THREE.DoubleSide
+			};
 
-  // textures
+			let cameraOrtho, cameraPerspective;
+			let controlsOrtho, controlsPerspective;
 
-  const textureLoader = new THREE.TextureLoader();
-  const normalMap = textureLoader.load("models/obj/ninja/normal.png");
-  const aoMap = textureLoader.load("models/obj/ninja/ao.jpg");
-  const displacementMap = textureLoader.load(
-    "models/obj/ninja/displacement.jpg"
-  );
+			let mesh, materialStandard, materialDepthBasic, materialDepthRGBA, materialNormal;
 
-  // material
+			const SCALE = 2.436143; // from original model
+			const BIAS = - 0.428408; // from original model
 
-  materialStandard = new THREE.MeshStandardMaterial({
-    color: 0xffffff,
+			init();
+			animate();
+			initGui();
 
-    metalness: 0.5,
-    roughness: 0.6,
+			// Init gui
+			function initGui() {
 
-    displacementMap: displacementMap,
-    displacementScale: SCALE,
-    displacementBias: BIAS,
+				const gui = new GUI();
+				gui.add( params, 'material', [ 'standard', 'normal', 'depthBasic', 'depthRGBA' ] );
+				gui.add( params, 'camera', [ 'perspective', 'ortho' ] );
+				gui.add( params, 'side', [ 'front', 'back', 'double' ] );
 
-    aoMap: aoMap,
+			}
 
-    normalMap: normalMap,
-    normalScale: new THREE.Vector2(1, -1),
+			function init() {
 
-    //flatShading: true,
+				const container = document.createElement( 'div' );
+				document.body.appendChild( container );
 
-    side: THREE.DoubleSide,
-  });
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
 
-  materialDepthBasic = new THREE.MeshDepthMaterial({
-    depthPacking: THREE.BasicDepthPacking,
+				//
 
-    displacementMap: displacementMap,
-    displacementScale: SCALE,
-    displacementBias: BIAS,
+				scene = new THREE.Scene();
 
-    side: THREE.DoubleSide,
-  });
+				const aspect = window.innerWidth / window.innerHeight;
+				cameraPerspective = new THREE.PerspectiveCamera( 45, aspect, 500, 3000 );
+				cameraPerspective.position.z = 1500;
+				scene.add( cameraPerspective );
 
-  materialDepthRGBA = new THREE.MeshDepthMaterial({
-    depthPacking: THREE.RGBADepthPacking,
+				const height = 500;
+				cameraOrtho = new THREE.OrthographicCamera( - height * aspect, height * aspect, height, - height, 1000, 2500 );
+				cameraOrtho.position.z = 1500;
+				scene.add( cameraOrtho );
 
-    displacementMap: displacementMap,
-    displacementScale: SCALE,
-    displacementBias: BIAS,
+				camera = cameraPerspective;
 
-    side: THREE.DoubleSide,
-  });
+				controlsPerspective = new OrbitControls( cameraPerspective, renderer.domElement );
+				controlsPerspective.minDistance = 1000;
+				controlsPerspective.maxDistance = 2400;
+				controlsPerspective.enablePan = false;
+				controlsPerspective.enableDamping = true;
 
-  materialNormal = new THREE.MeshNormalMaterial({
-    displacementMap: displacementMap,
-    displacementScale: SCALE,
-    displacementBias: BIAS,
+				controlsOrtho = new OrbitControls( cameraOrtho, renderer.domElement );
+				controlsOrtho.minZoom = 0.5;
+				controlsOrtho.maxZoom = 1.5;
+				controlsOrtho.enablePan = false;
+				controlsOrtho.enableDamping = true;
 
-    normalMap: normalMap,
-    normalScale: new THREE.Vector2(1, -1),
+				// lights
 
-    //flatShading: true,
+				const ambientLight = new THREE.AmbientLight( 0xffffff, 0.1 );
+				scene.add( ambientLight );
 
-    side: THREE.DoubleSide,
-  });
+				const pointLight = new THREE.PointLight( 0xff0000, 0.5 );
+				pointLight.position.z = 2500;
+				scene.add( pointLight );
 
-  //
+				const pointLight2 = new THREE.PointLight( 0xff6666, 1 );
+				camera.add( pointLight2 );
 
-  const loader = new OBJLoader();
-  loader.load("models/obj/ninja/ninjaHead_Low.obj", function (group) {
-    const geometry = group.children[0].geometry;
-    geometry.attributes.uv2 = geometry.attributes.uv;
-    geometry.center();
+				const pointLight3 = new THREE.PointLight( 0x0000ff, 0.5 );
+				pointLight3.position.x = - 1000;
+				pointLight3.position.z = 1000;
+				scene.add( pointLight3 );
 
-    mesh = new THREE.Mesh(geometry, materialNormal);
-    mesh.scale.multiplyScalar(25);
-    scene.add(mesh);
-  });
+				// textures
 
-  //
+				const textureLoader = new THREE.TextureLoader();
+				const normalMap = textureLoader.load( "models/obj/ninja/normal.png" );
+				const aoMap = textureLoader.load( "models/obj/ninja/ao.jpg" );
+				const displacementMap = textureLoader.load( "models/obj/ninja/displacement.jpg" );
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				// material
 
-  //
+				materialStandard = new THREE.MeshStandardMaterial( {
+					color: 0xffffff,
 
-  window.addEventListener("resize", onWindowResize);
-}
+					metalness: 0.5,
+					roughness: 0.6,
 
-function onWindowResize() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-  const aspect = window.innerWidth / window.innerHeight;
+					displacementMap: displacementMap,
+					displacementScale: SCALE,
+					displacementBias: BIAS,
 
-  camera.aspect = aspect;
+					aoMap: aoMap,
 
-  camera.left = -height * aspect;
-  camera.right = height * aspect;
-  camera.top = height;
-  camera.bottom = -height;
+					normalMap: normalMap,
+					normalScale: new THREE.Vector2( 1, - 1 ),
 
-  camera.updateProjectionMatrix();
+					//flatShading: true,
 
-  renderer.setSize(width, height);
-}
+					side: THREE.DoubleSide
+				} );
 
-//
+				materialDepthBasic = new THREE.MeshDepthMaterial( {
+					depthPacking: THREE.BasicDepthPacking,
 
-function animate() {
-  requestAnimationFrame(animate);
+					displacementMap: displacementMap,
+					displacementScale: SCALE,
+					displacementBias: BIAS,
 
-  stats.begin();
-  render();
-  stats.end();
-}
+					side: THREE.DoubleSide
+				} );
 
-function render() {
-  if (mesh) {
-    let material = mesh.material;
+				materialDepthRGBA = new THREE.MeshDepthMaterial( {
+					depthPacking: THREE.RGBADepthPacking,
 
-    switch (params.material) {
-      case "standard":
-        material = materialStandard;
-        break;
-      case "depthBasic":
-        material = materialDepthBasic;
-        break;
-      case "depthRGBA":
-        material = materialDepthRGBA;
-        break;
-      case "normal":
-        material = materialNormal;
-        break;
-    }
+					displacementMap: displacementMap,
+					displacementScale: SCALE,
+					displacementBias: BIAS,
 
-    if (sides[params.side] !== material.side) {
-      switch (params.side) {
-        case "front":
-          material.side = THREE.FrontSide;
-          break;
-        case "back":
-          material.side = THREE.BackSide;
-          break;
-        case "double":
-          material.side = THREE.DoubleSide;
-          break;
-      }
+					side: THREE.DoubleSide
+				} );
 
-      material.needsUpdate = true;
-    }
+				materialNormal = new THREE.MeshNormalMaterial( {
+					displacementMap: displacementMap,
+					displacementScale: SCALE,
+					displacementBias: BIAS,
 
-    mesh.material = material;
-  }
+					normalMap: normalMap,
+					normalScale: new THREE.Vector2( 1, - 1 ),
 
-  switch (params.camera) {
-    case "perspective":
-      camera = cameraPerspective;
-      break;
-    case "ortho":
-      camera = cameraOrtho;
-      break;
-  }
+					//flatShading: true,
 
-  controlsPerspective.update();
-  controlsOrtho.update(); // must update both controls for damping to complete
+					side: THREE.DoubleSide
+				} );
 
-  renderer.render(scene, camera);
-}
+				//
+
+				const loader = new OBJLoader();
+				loader.load( "models/obj/ninja/ninjaHead_Low.obj", function ( group ) {
+
+					const geometry = group.children[ 0 ].geometry;
+					geometry.attributes.uv2 = geometry.attributes.uv;
+					geometry.center();
+
+					mesh = new THREE.Mesh( geometry, materialNormal );
+					mesh.scale.multiplyScalar( 25 );
+					scene.add( mesh );
+
+				} );
+
+
+				//
+
+				stats = new Stats();
+				container.appendChild( stats.dom );
+
+				//
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			}
+
+			function onWindowResize() {
+
+				const width = window.innerWidth;
+				const height = window.innerHeight;
+				const aspect = window.innerWidth / window.innerHeight;
+
+				camera.aspect = aspect;
+
+				camera.left = - height * aspect;
+				camera.right = height * aspect;
+				camera.top = height;
+				camera.bottom = - height;
+
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( width, height );
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				stats.begin();
+				render();
+				stats.end();
+
+			}
+
+			function render() {
+
+				if ( mesh ) {
+
+					let material = mesh.material;
+
+					switch ( params.material ) {
+
+						case 'standard': material = materialStandard; break;
+						case 'depthBasic': material = materialDepthBasic; break;
+						case 'depthRGBA': material = materialDepthRGBA; break;
+						case 'normal': material = materialNormal; break;
+
+					}
+
+					if ( sides[ params.side ] !== material.side ) {
+
+						switch ( params.side ) {
+
+							case 'front': material.side = THREE.FrontSide; break;
+							case 'back': material.side = THREE.BackSide; break;
+							case 'double': material.side = THREE.DoubleSide; break;
+
+						}
+
+						material.needsUpdate = true;
+
+					}
+
+					mesh.material = material;
+
+				}
+
+				switch ( params.camera ) {
+
+					case 'perspective':
+						camera = cameraPerspective;
+						break;
+					case 'ortho':
+						camera = cameraOrtho;
+						break;
+
+				}
+
+				controlsPerspective.update();
+				controlsOrtho.update(); // must update both controls for damping to complete
+
+				renderer.render( scene, camera );
+
+			}
+
+		

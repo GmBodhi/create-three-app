@@ -1,115 +1,119 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { Sky } from "three/examples/jsm/objects/Sky.js";
+			import * as THREE from 'three';
 
-let camera, scene, renderer;
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+			import { Sky } from 'three/examples/jsm/objects/Sky.js';
 
-let sky, sun;
+			let camera, scene, renderer;
 
-init();
-render();
+			let sky, sun;
 
-function initSky() {
-  // Add Sky
-  sky = new Sky();
-  sky.scale.setScalar(450000);
-  scene.add(sky);
+			init();
+			render();
 
-  sun = new THREE.Vector3();
+			function initSky() {
 
-  /// GUI
+				// Add Sky
+				sky = new Sky();
+				sky.scale.setScalar( 450000 );
+				scene.add( sky );
 
-  const effectController = {
-    turbidity: 10,
-    rayleigh: 3,
-    mieCoefficient: 0.005,
-    mieDirectionalG: 0.7,
-    elevation: 2,
-    azimuth: 180,
-    exposure: renderer.toneMappingExposure,
-  };
+				sun = new THREE.Vector3();
 
-  function guiChanged() {
-    const uniforms = sky.material.uniforms;
-    uniforms["turbidity"].value = effectController.turbidity;
-    uniforms["rayleigh"].value = effectController.rayleigh;
-    uniforms["mieCoefficient"].value = effectController.mieCoefficient;
-    uniforms["mieDirectionalG"].value = effectController.mieDirectionalG;
+				/// GUI
 
-    const phi = THREE.MathUtils.degToRad(90 - effectController.elevation);
-    const theta = THREE.MathUtils.degToRad(effectController.azimuth);
+				const effectController = {
+					turbidity: 10,
+					rayleigh: 3,
+					mieCoefficient: 0.005,
+					mieDirectionalG: 0.7,
+					elevation: 2,
+					azimuth: 180,
+					exposure: renderer.toneMappingExposure
+				};
 
-    sun.setFromSphericalCoords(1, phi, theta);
+				function guiChanged() {
 
-    uniforms["sunPosition"].value.copy(sun);
+					const uniforms = sky.material.uniforms;
+					uniforms[ 'turbidity' ].value = effectController.turbidity;
+					uniforms[ 'rayleigh' ].value = effectController.rayleigh;
+					uniforms[ 'mieCoefficient' ].value = effectController.mieCoefficient;
+					uniforms[ 'mieDirectionalG' ].value = effectController.mieDirectionalG;
 
-    renderer.toneMappingExposure = effectController.exposure;
-    renderer.render(scene, camera);
-  }
+					const phi = THREE.MathUtils.degToRad( 90 - effectController.elevation );
+					const theta = THREE.MathUtils.degToRad( effectController.azimuth );
 
-  const gui = new GUI();
+					sun.setFromSphericalCoords( 1, phi, theta );
 
-  gui.add(effectController, "turbidity", 0.0, 20.0, 0.1).onChange(guiChanged);
-  gui.add(effectController, "rayleigh", 0.0, 4, 0.001).onChange(guiChanged);
-  gui
-    .add(effectController, "mieCoefficient", 0.0, 0.1, 0.001)
-    .onChange(guiChanged);
-  gui
-    .add(effectController, "mieDirectionalG", 0.0, 1, 0.001)
-    .onChange(guiChanged);
-  gui.add(effectController, "elevation", 0, 90, 0.1).onChange(guiChanged);
-  gui.add(effectController, "azimuth", -180, 180, 0.1).onChange(guiChanged);
-  gui.add(effectController, "exposure", 0, 1, 0.0001).onChange(guiChanged);
+					uniforms[ 'sunPosition' ].value.copy( sun );
 
-  guiChanged();
-}
+					renderer.toneMappingExposure = effectController.exposure;
+					renderer.render( scene, camera );
 
-function init() {
-  camera = new THREE.PerspectiveCamera(
-    60,
-    window.innerWidth / window.innerHeight,
-    100,
-    2000000
-  );
-  camera.position.set(0, 100, 2000);
+				}
 
-  scene = new THREE.Scene();
+				const gui = new GUI();
 
-  const helper = new THREE.GridHelper(10000, 2, 0xffffff, 0xffffff);
-  scene.add(helper);
+				gui.add( effectController, 'turbidity', 0.0, 20.0, 0.1 ).onChange( guiChanged );
+				gui.add( effectController, 'rayleigh', 0.0, 4, 0.001 ).onChange( guiChanged );
+				gui.add( effectController, 'mieCoefficient', 0.0, 0.1, 0.001 ).onChange( guiChanged );
+				gui.add( effectController, 'mieDirectionalG', 0.0, 1, 0.001 ).onChange( guiChanged );
+				gui.add( effectController, 'elevation', 0, 90, 0.1 ).onChange( guiChanged );
+				gui.add( effectController, 'azimuth', - 180, 180, 0.1 ).onChange( guiChanged );
+				gui.add( effectController, 'exposure', 0, 1, 0.0001 ).onChange( guiChanged );
 
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.5;
-  document.body.appendChild(renderer.domElement);
+				guiChanged();
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render);
-  //controls.maxPolarAngle = Math.PI / 2;
-  controls.enableZoom = false;
-  controls.enablePan = false;
+			}
 
-  initSky();
+			function init() {
 
-  window.addEventListener("resize", onWindowResize);
-}
+				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 100, 2000000 );
+				camera.position.set( 0, 100, 2000 );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				scene = new THREE.Scene();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+				const helper = new THREE.GridHelper( 10000, 2, 0xffffff, 0xffffff );
+				scene.add( helper );
 
-  render();
-}
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.outputEncoding = THREE.sRGBEncoding;
+				renderer.toneMapping = THREE.ACESFilmicToneMapping;
+				renderer.toneMappingExposure = 0.5;
+				document.body.appendChild( renderer.domElement );
 
-function render() {
-  renderer.render(scene, camera);
-}
+				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.addEventListener( 'change', render );
+				//controls.maxPolarAngle = Math.PI / 2;
+				controls.enableZoom = false;
+				controls.enablePan = false;
+
+				initSky();
+
+				window.addEventListener( 'resize', onWindowResize );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				render();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+		

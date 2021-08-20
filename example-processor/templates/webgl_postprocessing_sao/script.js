@@ -1,143 +1,157 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+			import * as THREE from 'three';
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { SAOPass } from "three/examples/jsm/postprocessing/SAOPass.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
 
-let container, stats;
-let camera, scene, renderer;
-let composer, renderPass, saoPass;
-let group;
+			import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+			import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+			import { SAOPass } from 'three/examples/jsm/postprocessing/SAOPass.js';
 
-init();
-animate();
+			let container, stats;
+			let camera, scene, renderer;
+			let composer, renderPass, saoPass;
+			let group;
 
-function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
+			init();
+			animate();
 
-  const width = window.innerWidth || 1;
-  const height = window.innerHeight || 1;
-  const devicePixelRatio = window.devicePixelRatio || 1;
+			function init() {
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setClearColor(0x000000);
-  renderer.setPixelRatio(devicePixelRatio);
-  renderer.setSize(width, height);
-  document.body.appendChild(renderer.domElement);
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
 
-  camera = new THREE.PerspectiveCamera(65, width / height, 3, 10);
-  camera.position.z = 7;
+				const width = window.innerWidth || 1;
+				const height = window.innerHeight || 1;
+				const devicePixelRatio = window.devicePixelRatio || 1;
 
-  scene = new THREE.Scene();
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setClearColor( 0x000000 );
+				renderer.setPixelRatio( devicePixelRatio );
+				renderer.setSize( width, height );
+				document.body.appendChild( renderer.domElement );
 
-  group = new THREE.Object3D();
-  scene.add(group);
+				camera = new THREE.PerspectiveCamera( 65, width / height, 3, 10 );
+				camera.position.z = 7;
 
-  const light = new THREE.PointLight(0xddffdd, 0.8);
-  light.position.z = 70;
-  light.position.y = -70;
-  light.position.x = -70;
-  scene.add(light);
+				scene = new THREE.Scene();
 
-  const light2 = new THREE.PointLight(0xffdddd, 0.8);
-  light2.position.z = 70;
-  light2.position.x = -70;
-  light2.position.y = 70;
-  scene.add(light2);
+				group = new THREE.Object3D();
+				scene.add( group );
 
-  const light3 = new THREE.PointLight(0xddddff, 0.8);
-  light3.position.z = 70;
-  light3.position.x = 70;
-  light3.position.y = -70;
-  scene.add(light3);
+				const light = new THREE.PointLight( 0xddffdd, 0.8 );
+				light.position.z = 70;
+				light.position.y = - 70;
+				light.position.x = - 70;
+				scene.add( light );
 
-  const light4 = new THREE.AmbientLight(0xffffff, 0.05);
-  scene.add(light4);
+				const light2 = new THREE.PointLight( 0xffdddd, 0.8 );
+				light2.position.z = 70;
+				light2.position.x = - 70;
+				light2.position.y = 70;
+				scene.add( light2 );
 
-  const geometry = new THREE.SphereGeometry(3, 48, 24);
+				const light3 = new THREE.PointLight( 0xddddff, 0.8 );
+				light3.position.z = 70;
+				light3.position.x = 70;
+				light3.position.y = - 70;
+				scene.add( light3 );
 
-  for (let i = 0; i < 120; i++) {
-    const material = new THREE.MeshStandardMaterial();
-    material.roughness = 0.5 * Math.random() + 0.25;
-    material.metalness = 0;
-    material.color.setHSL(Math.random(), 1.0, 0.3);
+				const light4 = new THREE.AmbientLight( 0xffffff, 0.05 );
+				scene.add( light4 );
 
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.x = Math.random() * 4 - 2;
-    mesh.position.y = Math.random() * 4 - 2;
-    mesh.position.z = Math.random() * 4 - 2;
-    mesh.rotation.x = Math.random();
-    mesh.rotation.y = Math.random();
-    mesh.rotation.z = Math.random();
+				const geometry = new THREE.SphereGeometry( 3, 48, 24 );
 
-    mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 0.2 + 0.05;
-    group.add(mesh);
-  }
+				for ( let i = 0; i < 120; i ++ ) {
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+					const material = new THREE.MeshStandardMaterial();
+					material.roughness = 0.5 * Math.random() + 0.25;
+					material.metalness = 0;
+					material.color.setHSL( Math.random(), 1.0, 0.3 );
 
-  composer = new EffectComposer(renderer);
-  renderPass = new RenderPass(scene, camera);
-  composer.addPass(renderPass);
-  saoPass = new SAOPass(scene, camera, false, true);
-  composer.addPass(saoPass);
+					const mesh = new THREE.Mesh( geometry, material );
+					mesh.position.x = Math.random() * 4 - 2;
+					mesh.position.y = Math.random() * 4 - 2;
+					mesh.position.z = Math.random() * 4 - 2;
+					mesh.rotation.x = Math.random();
+					mesh.rotation.y = Math.random();
+					mesh.rotation.z = Math.random();
 
-  // Init gui
-  const gui = new GUI();
-  gui
-    .add(saoPass.params, "output", {
-      Beauty: SAOPass.OUTPUT.Beauty,
-      "Beauty+SAO": SAOPass.OUTPUT.Default,
-      SAO: SAOPass.OUTPUT.SAO,
-      Depth: SAOPass.OUTPUT.Depth,
-      Normal: SAOPass.OUTPUT.Normal,
-    })
-    .onChange(function (value) {
-      saoPass.params.output = parseInt(value);
-    });
-  gui.add(saoPass.params, "saoBias", -1, 1);
-  gui.add(saoPass.params, "saoIntensity", 0, 1);
-  gui.add(saoPass.params, "saoScale", 0, 10);
-  gui.add(saoPass.params, "saoKernelRadius", 1, 100);
-  gui.add(saoPass.params, "saoMinResolution", 0, 1);
-  gui.add(saoPass.params, "saoBlur");
-  gui.add(saoPass.params, "saoBlurRadius", 0, 200);
-  gui.add(saoPass.params, "saoBlurStdDev", 0.5, 150);
-  gui.add(saoPass.params, "saoBlurDepthCutoff", 0.0, 0.1);
+					mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 0.2 + 0.05;
+					group.add( mesh );
 
-  window.addEventListener("resize", onWindowResize);
-}
+				}
 
-function onWindowResize() {
-  const width = window.innerWidth || 1;
-  const height = window.innerHeight || 1;
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
-  renderer.setSize(width, height);
+				composer = new EffectComposer( renderer );
+				renderPass = new RenderPass( scene, camera );
+				composer.addPass( renderPass );
+				saoPass = new SAOPass( scene, camera, false, true );
+				composer.addPass( saoPass );
 
-  composer.setSize(width, height);
-}
+				// Init gui
+				const gui = new GUI();
+				gui.add( saoPass.params, 'output', {
+					'Beauty': SAOPass.OUTPUT.Beauty,
+					'Beauty+SAO': SAOPass.OUTPUT.Default,
+					'SAO': SAOPass.OUTPUT.SAO,
+					'Depth': SAOPass.OUTPUT.Depth,
+					'Normal': SAOPass.OUTPUT.Normal
+				} ).onChange( function ( value ) {
 
-function animate() {
-  requestAnimationFrame(animate);
+					saoPass.params.output = parseInt( value );
 
-  stats.begin();
-  render();
-  stats.end();
-}
+				} );
+				gui.add( saoPass.params, 'saoBias', - 1, 1 );
+				gui.add( saoPass.params, 'saoIntensity', 0, 1 );
+				gui.add( saoPass.params, 'saoScale', 0, 10 );
+				gui.add( saoPass.params, 'saoKernelRadius', 1, 100 );
+				gui.add( saoPass.params, 'saoMinResolution', 0, 1 );
+				gui.add( saoPass.params, 'saoBlur' );
+				gui.add( saoPass.params, 'saoBlurRadius', 0, 200 );
+				gui.add( saoPass.params, 'saoBlurStdDev', 0.5, 150 );
+				gui.add( saoPass.params, 'saoBlurDepthCutoff', 0.0, 0.1 );
 
-function render() {
-  const timer = performance.now();
-  group.rotation.x = timer * 0.0002;
-  group.rotation.y = timer * 0.0001;
+				window.addEventListener( 'resize', onWindowResize );
 
-  composer.render();
-}
+			}
+
+			function onWindowResize() {
+
+				const width = window.innerWidth || 1;
+				const height = window.innerHeight || 1;
+
+				camera.aspect = width / height;
+				camera.updateProjectionMatrix();
+				renderer.setSize( width, height );
+
+				composer.setSize( width, height );
+
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				stats.begin();
+				render();
+				stats.end();
+
+			}
+
+			function render() {
+
+				const timer = performance.now();
+				group.rotation.x = timer * 0.0002;
+				group.rotation.y = timer * 0.0001;
+
+				composer.render();
+
+			}
+
+		

@@ -1,43 +1,48 @@
-<html>
-  <head>
-    <title>three.js webgl - materials - lightmap</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
-  </head>
+<html><head>
+		<title>three.js webgl - materials - lightmap</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
+	</head>
 
-  <body style="overflow: hidden">
-    <script type="x-shader/x-vertex" id="vertexShader">
+	<body style="overflow: hidden;">
 
-      varying vec3 vWorldPosition;
+		<script type="x-shader/x-vertex" id="vertexShader">
 
-      void main() {
+			varying vec3 vWorldPosition;
 
-      	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
-      	vWorldPosition = worldPosition.xyz;
+			void main() {
 
-      	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+				vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+				vWorldPosition = worldPosition.xyz;
 
-      }
-    </script>
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
-    <script type="x-shader/x-fragment" id="fragmentShader">
+			}
 
-      uniform vec3 topColor;
-      uniform vec3 bottomColor;
-      uniform float offset;
-      uniform float exponent;
+		</script>
 
-      varying vec3 vWorldPosition;
+		<script type="x-shader/x-fragment" id="fragmentShader">
 
-      void main() {
+			uniform vec3 topColor;
+			uniform vec3 bottomColor;
+			uniform float offset;
+			uniform float exponent;
 
-      	float h = normalize( vWorldPosition + offset ).y;
-      	gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h, 0.0 ), exponent ), 0.0 ) ), 1.0 );
+			varying vec3 vWorldPosition;
 
-      }
-    </script>
-  </body>
-</html>
+			void main() {
+
+				float h = normalize( vWorldPosition + offset ).y;
+				gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h, 0.0 ), exponent ), 0.0 ) ), 1.0 );
+
+			}
+
+		</script>
+
+		
+
+	
+
+
+</body></html>

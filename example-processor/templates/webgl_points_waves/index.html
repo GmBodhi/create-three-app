@@ -1,44 +1,46 @@
-<html>
-  <head>
-    <title>three.js webgl - particles - waves</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
-  </head>
-  <body style="overflow: hidden">
-    <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - webgl particles waves example
-    </div>
+<html><head>
+		<title>three.js webgl - particles - waves</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
+	</head>
+	<body style="overflow: hidden;">
 
-    <script type="x-shader/x-vertex" id="vertexshader">
+		<div id="info">
+			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl particles waves example
+		</div>
 
-      attribute float scale;
+		<script type="x-shader/x-vertex" id="vertexshader">
 
-      void main() {
+			attribute float scale;
 
-      	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+			void main() {
 
-      	gl_PointSize = scale * ( 300.0 / - mvPosition.z );
+				vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
 
-      	gl_Position = projectionMatrix * mvPosition;
+				gl_PointSize = scale * ( 300.0 / - mvPosition.z );
 
-      }
-    </script>
+				gl_Position = projectionMatrix * mvPosition;
 
-    <script type="x-shader/x-fragment" id="fragmentshader">
+			}
 
-      uniform vec3 color;
+		</script>
 
-      void main() {
+		<script type="x-shader/x-fragment" id="fragmentshader">
 
-      	if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.475 ) discard;
+			uniform vec3 color;
 
-      	gl_FragColor = vec4( color, 1.0 );
+			void main() {
 
-      }
-    </script>
-  </body>
-</html>
+				if ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.475 ) discard;
+
+				gl_FragColor = vec4( color, 1.0 );
+
+			}
+
+		</script>
+
+		
+	
+
+</body></html>

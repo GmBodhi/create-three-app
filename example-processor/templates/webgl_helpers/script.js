@@ -1,133 +1,133 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+			import * as THREE from 'three';
 
-import { VertexNormalsHelper } from "three/examples/jsm/helpers/VertexNormalsHelper.js";
-import { VertexTangentsHelper } from "three/examples/jsm/helpers/VertexTangentsHelper.js";
+			import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-let scene, renderer;
-let camera, light;
-let vnh;
-let vth;
+			import { VertexNormalsHelper } from 'three/examples/jsm/helpers/VertexNormalsHelper.js';
+			import { VertexTangentsHelper } from 'three/examples/jsm/helpers/VertexTangentsHelper.js';
 
-init();
-animate();
+			let scene, renderer;
+			let camera, light;
+			let vnh;
+			let vth;
 
-function init() {
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+			init();
+			animate();
 
-  //
+			function init() {
 
-  camera = new THREE.PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    1,
-    1000
-  );
-  camera.position.z = 400;
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
 
-  scene = new THREE.Scene();
+				//
 
-  light = new THREE.PointLight();
-  light.position.set(200, 100, 150);
-  scene.add(light);
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera.position.z = 400;
 
-  scene.add(new THREE.PointLightHelper(light, 15));
+				scene = new THREE.Scene();
 
-  const gridHelper = new THREE.GridHelper(400, 40, 0x0000ff, 0x808080);
-  gridHelper.position.y = -150;
-  gridHelper.position.x = -150;
-  scene.add(gridHelper);
+				light = new THREE.PointLight();
+				light.position.set( 200, 100, 150 );
+				scene.add( light );
 
-  const polarGridHelper = new THREE.PolarGridHelper(
-    200,
-    16,
-    8,
-    64,
-    0x0000ff,
-    0x808080
-  );
-  polarGridHelper.position.y = -150;
-  polarGridHelper.position.x = 200;
-  scene.add(polarGridHelper);
+				scene.add( new THREE.PointLightHelper( light, 15 ) );
 
-  const loader = new GLTFLoader();
-  loader.load("models/gltf/LeePerrySmith/LeePerrySmith.glb", function (gltf) {
-    const mesh = gltf.scene.children[0];
+				const gridHelper = new THREE.GridHelper( 400, 40, 0x0000ff, 0x808080 );
+				gridHelper.position.y = - 150;
+				gridHelper.position.x = - 150;
+				scene.add( gridHelper );
 
-    mesh.geometry.computeTangents(); // generates bad data due to degenerate UVs
+				const polarGridHelper = new THREE.PolarGridHelper( 200, 16, 8, 64, 0x0000ff, 0x808080 );
+				polarGridHelper.position.y = - 150;
+				polarGridHelper.position.x = 200;
+				scene.add( polarGridHelper );
 
-    const group = new THREE.Group();
-    group.scale.multiplyScalar(50);
-    scene.add(group);
+				const loader = new GLTFLoader();
+				loader.load( 'models/gltf/LeePerrySmith/LeePerrySmith.glb', function ( gltf ) {
 
-    // To make sure that the matrixWorld is up to date for the boxhelpers
-    group.updateMatrixWorld(true);
+					const mesh = gltf.scene.children[ 0 ];
 
-    group.add(mesh);
+					mesh.geometry.computeTangents(); // generates bad data due to degenerate UVs
 
-    vnh = new VertexNormalsHelper(mesh, 5);
-    scene.add(vnh);
+					const group = new THREE.Group();
+					group.scale.multiplyScalar( 50 );
+					scene.add( group );
 
-    vth = new VertexTangentsHelper(mesh, 5);
-    scene.add(vth);
+					// To make sure that the matrixWorld is up to date for the boxhelpers
+					group.updateMatrixWorld( true );
 
-    scene.add(new THREE.BoxHelper(mesh));
+					group.add( mesh );
 
-    const wireframe = new THREE.WireframeGeometry(mesh.geometry);
-    let line = new THREE.LineSegments(wireframe);
-    line.material.depthTest = false;
-    line.material.opacity = 0.25;
-    line.material.transparent = true;
-    line.position.x = 4;
-    group.add(line);
-    scene.add(new THREE.BoxHelper(line));
+					vnh = new VertexNormalsHelper( mesh, 5 );
+					scene.add( vnh );
 
-    const edges = new THREE.EdgesGeometry(mesh.geometry);
-    line = new THREE.LineSegments(edges);
-    line.material.depthTest = false;
-    line.material.opacity = 0.25;
-    line.material.transparent = true;
-    line.position.x = -4;
-    group.add(line);
-    scene.add(new THREE.BoxHelper(line));
+					vth = new VertexTangentsHelper( mesh, 5 );
+					scene.add( vth );
 
-    scene.add(new THREE.BoxHelper(group));
-    scene.add(new THREE.BoxHelper(scene));
-  });
+					scene.add( new THREE.BoxHelper( mesh ) );
 
-  //
+					const wireframe = new THREE.WireframeGeometry( mesh.geometry );
+					let line = new THREE.LineSegments( wireframe );
+					line.material.depthTest = false;
+					line.material.opacity = 0.25;
+					line.material.transparent = true;
+					line.position.x = 4;
+					group.add( line );
+					scene.add( new THREE.BoxHelper( line ) );
 
-  window.addEventListener("resize", onWindowResize);
-}
+					const edges = new THREE.EdgesGeometry( mesh.geometry );
+					line = new THREE.LineSegments( edges );
+					line.material.depthTest = false;
+					line.material.opacity = 0.25;
+					line.material.transparent = true;
+					line.position.x = - 4;
+					group.add( line );
+					scene.add( new THREE.BoxHelper( line ) );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+					scene.add( new THREE.BoxHelper( group ) );
+					scene.add( new THREE.BoxHelper( scene ) );
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
 
-function animate() {
-  requestAnimationFrame(animate);
+				} );
 
-  const time = -performance.now() * 0.0003;
+				//
 
-  camera.position.x = 400 * Math.cos(time);
-  camera.position.z = 400 * Math.sin(time);
-  camera.lookAt(scene.position);
+				window.addEventListener( 'resize', onWindowResize );
 
-  light.position.x = Math.sin(time * 1.7) * 300;
-  light.position.y = Math.cos(time * 1.5) * 400;
-  light.position.z = Math.cos(time * 1.3) * 300;
+			}
 
-  if (vnh) vnh.update();
-  if (vth) vth.update();
+			function onWindowResize() {
 
-  renderer.render(scene, camera);
-}
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				const time = - performance.now() * 0.0003;
+
+				camera.position.x = 400 * Math.cos( time );
+				camera.position.z = 400 * Math.sin( time );
+				camera.lookAt( scene.position );
+
+				light.position.x = Math.sin( time * 1.7 ) * 300;
+				light.position.y = Math.cos( time * 1.5 ) * 400;
+				light.position.z = Math.cos( time * 1.3 ) * 300;
+
+				if ( vnh ) vnh.update();
+				if ( vth ) vth.update();
+
+				renderer.render( scene, camera );
+
+			}
+
+		

@@ -1,131 +1,133 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let camera, scene, renderer, stats, material;
-let mouseX = 0,
-  mouseY = 0;
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
 
-let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2;
+			let camera, scene, renderer, stats, material;
+			let mouseX = 0, mouseY = 0;
 
-init();
-animate();
+			let windowHalfX = window.innerWidth / 2;
+			let windowHalfY = window.innerHeight / 2;
 
-function init() {
-  camera = new THREE.PerspectiveCamera(
-    55,
-    window.innerWidth / window.innerHeight,
-    2,
-    2000
-  );
-  camera.position.z = 1000;
+			init();
+			animate();
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x000000, 0.001);
+			function init() {
 
-  const geometry = new THREE.BufferGeometry();
-  const vertices = [];
+				camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 2, 2000 );
+				camera.position.z = 1000;
 
-  const sprite = new THREE.TextureLoader().load("textures/sprites/disc.png");
+				scene = new THREE.Scene();
+				scene.fog = new THREE.FogExp2( 0x000000, 0.001 );
 
-  for (let i = 0; i < 10000; i++) {
-    const x = 2000 * Math.random() - 1000;
-    const y = 2000 * Math.random() - 1000;
-    const z = 2000 * Math.random() - 1000;
+				const geometry = new THREE.BufferGeometry();
+				const vertices = [];
 
-    vertices.push(x, y, z);
-  }
+				const sprite = new THREE.TextureLoader().load( 'textures/sprites/disc.png' );
 
-  geometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(vertices, 3)
-  );
+				for ( let i = 0; i < 10000; i ++ ) {
 
-  material = new THREE.PointsMaterial({
-    size: 35,
-    sizeAttenuation: true,
-    map: sprite,
-    alphaTest: 0.5,
-    transparent: true,
-  });
-  material.color.setHSL(1.0, 0.3, 0.7);
+					const x = 2000 * Math.random() - 1000;
+					const y = 2000 * Math.random() - 1000;
+					const z = 2000 * Math.random() - 1000;
 
-  const particles = new THREE.Points(geometry, material);
-  scene.add(particles);
+					vertices.push( x, y, z );
 
-  //
+				}
 
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+				geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( vertices, 3 ) );
 
-  //
+				material = new THREE.PointsMaterial( { size: 35, sizeAttenuation: true, map: sprite, alphaTest: 0.5, transparent: true } );
+				material.color.setHSL( 1.0, 0.3, 0.7 );
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+				const particles = new THREE.Points( geometry, material );
+				scene.add( particles );
 
-  //
+				//
 
-  const gui = new GUI();
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
 
-  gui.add(material, "sizeAttenuation").onChange(function () {
-    material.needsUpdate = true;
-  });
+				//
 
-  gui.open();
+				stats = new Stats();
+				document.body.appendChild( stats.dom );
 
-  //
+				//
 
-  document.body.style.touchAction = "none";
-  document.body.addEventListener("pointermove", onPointerMove);
+				const gui = new GUI();
 
-  //
+				gui.add( material, 'sizeAttenuation' ).onChange( function () {
 
-  window.addEventListener("resize", onWindowResize);
-}
+					material.needsUpdate = true;
 
-function onWindowResize() {
-  windowHalfX = window.innerWidth / 2;
-  windowHalfY = window.innerHeight / 2;
+				} );
 
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				gui.open();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				//
 
-function onPointerMove(event) {
-  if (event.isPrimary === false) return;
+				document.body.style.touchAction = 'none';
+				document.body.addEventListener( 'pointermove', onPointerMove );
 
-  mouseX = event.clientX - windowHalfX;
-  mouseY = event.clientY - windowHalfY;
-}
+				//
 
-//
+				window.addEventListener( 'resize', onWindowResize );
 
-function animate() {
-  requestAnimationFrame(animate);
+			}
 
-  render();
-  stats.update();
-}
+			function onWindowResize() {
 
-function render() {
-  const time = Date.now() * 0.00005;
+				windowHalfX = window.innerWidth / 2;
+				windowHalfY = window.innerHeight / 2;
 
-  camera.position.x += (mouseX - camera.position.x) * 0.05;
-  camera.position.y += (-mouseY - camera.position.y) * 0.05;
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-  camera.lookAt(scene.position);
+				renderer.setSize( window.innerWidth, window.innerHeight );
 
-  const h = ((360 * (1.0 + time)) % 360) / 360;
-  material.color.setHSL(h, 0.5, 0.5);
+			}
 
-  renderer.render(scene, camera);
-}
+			function onPointerMove( event ) {
+
+				if ( event.isPrimary === false ) return;
+
+				mouseX = event.clientX - windowHalfX;
+				mouseY = event.clientY - windowHalfY;
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				const time = Date.now() * 0.00005;
+
+				camera.position.x += ( mouseX - camera.position.x ) * 0.05;
+				camera.position.y += ( - mouseY - camera.position.y ) * 0.05;
+
+				camera.lookAt( scene.position );
+
+				const h = ( 360 * ( 1.0 + time ) % 360 ) / 360;
+				material.color.setHSL( h, 0.5, 0.5 );
+
+				renderer.render( scene, camera );
+
+			}
+
+		

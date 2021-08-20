@@ -1,91 +1,101 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+			import * as THREE from 'three';
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { AfterimagePass } from "three/examples/jsm/postprocessing/AfterimagePass.js";
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
 
-let camera, scene, renderer, composer;
-let mesh;
+			import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+			import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+			import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass.js';
 
-let afterimagePass;
+			let camera, scene, renderer, composer;
+			let mesh;
 
-const params = {
-  enable: true,
-};
+			let afterimagePass;
 
-init();
-createGUI();
-animate();
+			const params = {
 
-function init() {
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+				enable: true
 
-  camera = new THREE.PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    1,
-    1000
-  );
-  camera.position.z = 400;
+			};
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x000000, 1, 1000);
+			init();
+			createGUI();
+			animate();
 
-  const geometry = new THREE.BoxGeometry(150, 150, 150, 2, 2, 2);
-  const material = new THREE.MeshNormalMaterial();
-  mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+			function init() {
 
-  // postprocessing
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
 
-  composer = new EffectComposer(renderer);
-  composer.addPass(new RenderPass(scene, camera));
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera.position.z = 400;
 
-  afterimagePass = new AfterimagePass();
-  composer.addPass(afterimagePass);
+				scene = new THREE.Scene();
+				scene.fog = new THREE.Fog( 0x000000, 1, 1000 );
 
-  window.addEventListener("resize", onWindowResize);
+				const geometry = new THREE.BoxGeometry( 150, 150, 150, 2, 2, 2 );
+				const material = new THREE.MeshNormalMaterial();
+				mesh = new THREE.Mesh( geometry, material );
+				scene.add( mesh );
 
-  if (typeof TESTING !== "undefined") {
-    for (let i = 0; i < 45; i++) {
-      render();
-    }
-  }
-}
+				// postprocessing
 
-function createGUI() {
-  const gui = new GUI({ name: "Damp setting" });
-  gui.add(afterimagePass.uniforms["damp"], "value", 0, 1).step(0.001);
-  gui.add(params, "enable");
-}
+				composer = new EffectComposer( renderer );
+				composer.addPass( new RenderPass( scene, camera ) );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				afterimagePass = new AfterimagePass();
+				composer.addPass( afterimagePass );
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  composer.setSize(window.innerWidth, window.innerHeight);
-}
+				window.addEventListener( 'resize', onWindowResize );
 
-function render() {
-  mesh.rotation.x += 0.005;
-  mesh.rotation.y += 0.01;
+				if ( typeof TESTING !== 'undefined' ) { for ( let i = 0; i < 45; i ++ ) { render(); }; };
 
-  if (params.enable) {
-    composer.render();
-  } else {
-    renderer.render(scene, camera);
-  }
-}
+			}
 
-function animate() {
-  requestAnimationFrame(animate);
-  render();
-}
+			function createGUI() {
+
+				const gui = new GUI( { name: 'Damp setting' } );
+				gui.add( afterimagePass.uniforms[ "damp" ], 'value', 0, 1 ).step( 0.001 );
+				gui.add( params, 'enable' );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				composer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function render() {
+
+				mesh.rotation.x += 0.005;
+				mesh.rotation.y += 0.01;
+
+				if ( params.enable ) {
+
+					composer.render();
+
+				} else {
+
+					renderer.render( scene, camera );
+
+				}
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				render();
+
+			}
+
+		

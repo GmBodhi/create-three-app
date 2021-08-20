@@ -1,66 +1,67 @@
-* {
-  box-sizing: border-box;
-  -moz-box-sizing: border-box;
-}
 
-body {
-  background-color: #fff;
-  color: #444;
-  margin: auto;
-  padding: 0.5in;
-  max-width: 7in;
-  text-align: justify;
-}
+			* {
+				box-sizing: border-box;
+				-moz-box-sizing: border-box;
+			}
 
-a {
-  color: #08f;
-}
+			body {
+				background-color: #fff;
+				color: #444;
+				margin: auto;
+				padding: .5in;
+				max-width: 7in;
+				text-align: justify;
+			}
 
-#info {
-  left: 0px;
-}
+			a {
+				color: #08f;
+			}
 
-.view {
-  width: 5in;
-  height: 5in;
-  margin: auto;
-}
+			#info {
+				left: 0px;
+			}
 
-#c {
-  position: fixed;
-  left: 0px;
-  top: 0px;
-  width: 100%;
-  height: 100%;
-  background-color: #fff;
-  z-index: -1;
-}
+			.view {
+				width: 5in;
+				height: 5in;
+				margin: auto;
+			}
 
-.math {
-  text-align: center;
-}
+			#c {
+				position: fixed;
+				left: 0px; top: 0px;
+				width: 100%;
+				height: 100%;
+				background-color: #fff;
+				z-index: -1;
+			}
 
-.math-frac {
-  display: inline-block;
-  vertical-align: middle;
-}
+			.math {
+				text-align: center;
+			}
 
-.math-num {
-  display: block;
-}
+			.math-frac {
+				display: inline-block;
+				vertical-align: middle;
+			}
 
-.math-denom {
-  display: block;
-  border-top: 1px solid;
-}
+			.math-num {
+				display: block;
+			}
 
-.math-sqrt {
-  display: inline-block;
-  transform: scale(1, 1.3);
-}
+			.math-denom {
+				display: block;
+				border-top: 1px solid;
+			}
 
-.math-sqrt-stem {
-  display: inline-block;
-  border-top: 1px solid;
-  margin-top: 5px;
-}
+			.math-sqrt {
+				display: inline-block;
+				transform: scale(1, 1.3);
+			}
+
+			.math-sqrt-stem {
+				display: inline-block;
+				border-top: 1px solid;
+				margin-top: 5px;
+			}
+		

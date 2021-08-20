@@ -1,111 +1,115 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-const SCREEN_WIDTH = window.innerWidth;
-const SCREEN_HEIGHT = window.innerHeight;
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-let container, stats;
-let camera, scene, renderer;
+			const SCREEN_WIDTH = window.innerWidth;
+			const SCREEN_HEIGHT = window.innerHeight;
 
-await init();
-animate();
+			let container, stats;
+			let camera, scene, renderer;
 
-async function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
+			await init();
+			animate();
 
-  // CAMERA
+			async function init() {
 
-  camera = new THREE.PerspectiveCamera(
-    40,
-    SCREEN_WIDTH / SCREEN_HEIGHT,
-    1,
-    10000
-  );
-  camera.position.set(700, 200, -500);
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
 
-  // SCENE
+				// CAMERA
 
-  scene = new THREE.Scene();
+				camera = new THREE.PerspectiveCamera( 40, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000 );
+				camera.position.set( 700, 200, - 500 );
 
-  // LIGHTS
+				// SCENE
 
-  const light = new THREE.DirectionalLight(0xaabbff, 0.3);
-  light.position.x = 300;
-  light.position.y = 250;
-  light.position.z = -500;
-  scene.add(light);
+				scene = new THREE.Scene();
 
-  // SKYDOME
+				// LIGHTS
 
-  const vertexShader = document.getElementById("vertexShader").textContent;
-  const fragmentShader = document.getElementById("fragmentShader").textContent;
-  const uniforms = {
-    topColor: { value: new THREE.Color(0x0077ff) },
-    bottomColor: { value: new THREE.Color(0xffffff) },
-    offset: { value: 400 },
-    exponent: { value: 0.6 },
-  };
-  uniforms.topColor.value.copy(light.color);
+				const light = new THREE.DirectionalLight( 0xaabbff, 0.3 );
+				light.position.x = 300;
+				light.position.y = 250;
+				light.position.z = - 500;
+				scene.add( light );
 
-  const skyGeo = new THREE.SphereGeometry(4000, 32, 15);
-  const skyMat = new THREE.ShaderMaterial({
-    uniforms: uniforms,
-    vertexShader: vertexShader,
-    fragmentShader: fragmentShader,
-    side: THREE.BackSide,
-  });
+				// SKYDOME
 
-  const sky = new THREE.Mesh(skyGeo, skyMat);
-  scene.add(sky);
+				const vertexShader = document.getElementById( 'vertexShader' ).textContent;
+				const fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
+				const uniforms = {
+					topColor: { value: new THREE.Color( 0x0077ff ) },
+					bottomColor: { value: new THREE.Color( 0xffffff ) },
+					offset: { value: 400 },
+					exponent: { value: 0.6 }
+				};
+				uniforms.topColor.value.copy( light.color );
 
-  // RENDERER
+				const skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
+				const skyMat = new THREE.ShaderMaterial( {
+					uniforms: uniforms,
+					vertexShader: vertexShader,
+					fragmentShader: fragmentShader,
+					side: THREE.BackSide
+				} );
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  container.appendChild(renderer.domElement);
-  renderer.outputEncoding = THREE.sRGBEncoding;
+				const sky = new THREE.Mesh( skyGeo, skyMat );
+				scene.add( sky );
 
-  // CONTROLS
+				// RENDERER
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.maxPolarAngle = (0.9 * Math.PI) / 2;
-  controls.enableZoom = false;
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+				container.appendChild( renderer.domElement );
+				renderer.outputEncoding = THREE.sRGBEncoding;
 
-  // STATS
+				// CONTROLS
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.maxPolarAngle = 0.9 * Math.PI / 2;
+				controls.enableZoom = false;
 
-  // MODEL
+				// STATS
 
-  const loader = new THREE.ObjectLoader();
-  const object = await loader.loadAsync("models/json/lightmap/lightmap.json");
-  scene.add(object);
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-  //
+				// MODEL
 
-  window.addEventListener("resize", onWindowResize);
-}
+				const loader = new THREE.ObjectLoader();
+				const object = await loader.loadAsync( "models/json/lightmap/lightmap.json" );
+				scene.add( object );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				//
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				window.addEventListener( 'resize', onWindowResize );
 
-//
+			}
 
-function animate() {
-  requestAnimationFrame(animate);
+			function onWindowResize() {
 
-  renderer.render(scene, camera);
-  stats.update();
-}
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				renderer.render( scene, camera );
+				stats.update();
+
+			}
+
+		

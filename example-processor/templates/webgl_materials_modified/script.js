@@ -1,124 +1,144 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let camera, scene, renderer, stats;
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+			import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-init();
-animate();
+			let camera, scene, renderer, stats;
 
-function init() {
-  camera = new THREE.PerspectiveCamera(
-    27,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    100
-  );
-  camera.position.z = 20;
+			init();
+			animate();
 
-  scene = new THREE.Scene();
+			function init() {
 
-  const loader = new GLTFLoader();
-  loader.load("models/gltf/LeePerrySmith/LeePerrySmith.glb", function (gltf) {
-    const geometry = gltf.scene.children[0].geometry;
+				camera = new THREE.PerspectiveCamera( 27, window.innerWidth / window.innerHeight, 0.1, 100 );
+				camera.position.z = 20;
 
-    let mesh = new THREE.Mesh(geometry, buildTwistMaterial(2.0));
-    mesh.position.x = -3.5;
-    mesh.position.y = -0.5;
-    scene.add(mesh);
+				scene = new THREE.Scene();
 
-    mesh = new THREE.Mesh(geometry, buildTwistMaterial(-2.0));
-    mesh.position.x = 3.5;
-    mesh.position.y = -0.5;
-    scene.add(mesh);
-  });
+				const loader = new GLTFLoader();
+				loader.load( 'models/gltf/LeePerrySmith/LeePerrySmith.glb', function ( gltf ) {
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+					const geometry = gltf.scene.children[ 0 ].geometry;
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 10;
-  controls.maxDistance = 50;
+					let mesh = new THREE.Mesh( geometry, buildTwistMaterial( 2.0 ) );
+					mesh.position.x = - 3.5;
+					mesh.position.y = - 0.5;
+					scene.add( mesh );
 
-  //
+					mesh = new THREE.Mesh( geometry, buildTwistMaterial( - 2.0 ) );
+					mesh.position.x = 3.5;
+					mesh.position.y = - 0.5;
+					scene.add( mesh );
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+				} );
 
-  // EVENTS
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
 
-  window.addEventListener("resize", onWindowResize);
-}
+				const controls = new OrbitControls( camera, renderer.domElement );
+				controls.minDistance = 10;
+				controls.maxDistance = 50;
 
-function buildTwistMaterial(amount) {
-  const material = new THREE.MeshNormalMaterial();
-  material.onBeforeCompile = function (shader) {
-    shader.uniforms.time = { value: 0 };
+				//
 
-    shader.vertexShader = "uniform float time;\n" + shader.vertexShader;
-    shader.vertexShader = shader.vertexShader.replace(
-      "#include <begin_vertex>",
-      [
-        `float theta = sin( time + position.y ) / ${amount.toFixed(1)};`,
-        "float c = cos( theta );",
-        "float s = sin( theta );",
-        "mat3 m = mat3( c, 0, s, 0, 1, 0, -s, 0, c );",
-        "vec3 transformed = vec3( position ) * m;",
-        "vNormal = vNormal * m;",
-      ].join("\n")
-    );
+				stats = new Stats();
+				document.body.appendChild( stats.dom );
 
-    material.userData.shader = shader;
-  };
+				// EVENTS
 
-  // Make sure WebGLRenderer doesnt reuse a single program
+				window.addEventListener( 'resize', onWindowResize );
 
-  material.customProgramCacheKey = function () {
-    return amount;
-  };
+			}
 
-  return material;
-}
+			function buildTwistMaterial( amount ) {
 
-//
+				const material = new THREE.MeshNormalMaterial();
+				material.onBeforeCompile = function ( shader ) {
 
-function onWindowResize() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+					shader.uniforms.time = { value: 0 };
 
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
+					shader.vertexShader = 'uniform float time;\n' + shader.vertexShader;
+					shader.vertexShader = shader.vertexShader.replace(
+						'#include <begin_vertex>',
+						[
+							`float theta = sin( time + position.y ) / ${ amount.toFixed( 1 ) };`,
+							'float c = cos( theta );',
+							'float s = sin( theta );',
+							'mat3 m = mat3( c, 0, s, 0, 1, 0, -s, 0, c );',
+							'vec3 transformed = vec3( position ) * m;',
+							'vNormal = vNormal * m;'
+						].join( '\n' )
+					);
 
-  renderer.setSize(width, height);
-}
+					material.userData.shader = shader;
 
-//
+				};
 
-function animate() {
-  requestAnimationFrame(animate);
+				// Make sure WebGLRenderer doesnt reuse a single program
 
-  render();
+				material.customProgramCacheKey = function () {
 
-  stats.update();
-}
+					return amount;
 
-function render() {
-  scene.traverse(function (child) {
-    if (child.isMesh) {
-      const shader = child.material.userData.shader;
+				};
 
-      if (shader) {
-        shader.uniforms.time.value = performance.now() / 1000;
-      }
-    }
-  });
+				return material;
 
-  renderer.render(scene, camera);
-}
+			}
+
+			//
+
+			function onWindowResize() {
+
+				const width = window.innerWidth;
+				const height = window.innerHeight;
+
+				camera.aspect = width / height;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( width, height );
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+
+				stats.update();
+
+			}
+
+			function render() {
+
+				scene.traverse( function ( child ) {
+
+					if ( child.isMesh ) {
+
+						const shader = child.material.userData.shader;
+
+						if ( shader ) {
+
+							shader.uniforms.time.value = performance.now() / 1000;
+
+						}
+
+					}
+
+				} );
+
+				renderer.render( scene, camera );
+
+			}
+
+		

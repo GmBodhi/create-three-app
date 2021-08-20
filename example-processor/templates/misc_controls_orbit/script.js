@@ -1,101 +1,106 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+			import * as THREE from 'three';
 
-let camera, controls, scene, renderer;
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-init();
-//render(); // remove when using next line for animation loop (requestAnimationFrame)
-animate();
+			let camera, controls, scene, renderer;
 
-function init() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xcccccc);
-  scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+			init();
+			//render(); // remove when using next line for animation loop (requestAnimationFrame)
+			animate();
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+			function init() {
 
-  camera = new THREE.PerspectiveCamera(
-    60,
-    window.innerWidth / window.innerHeight,
-    1,
-    1000
-  );
-  camera.position.set(400, 200, 0);
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xcccccc );
+				scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
 
-  // controls
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
 
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.listenToKeyEvents(window); // optional
+				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
+				camera.position.set( 400, 200, 0 );
 
-  //controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
+				// controls
 
-  controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-  controls.dampingFactor = 0.05;
+				controls = new OrbitControls( camera, renderer.domElement );
+				controls.listenToKeyEvents( window ); // optional
 
-  controls.screenSpacePanning = false;
+				//controls.addEventListener( 'change', render ); // call this only in static scenes (i.e., if there is no animation loop)
 
-  controls.minDistance = 100;
-  controls.maxDistance = 500;
+				controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
+				controls.dampingFactor = 0.05;
 
-  controls.maxPolarAngle = Math.PI / 2;
+				controls.screenSpacePanning = false;
 
-  // world
+				controls.minDistance = 100;
+				controls.maxDistance = 500;
 
-  const geometry = new THREE.CylinderGeometry(0, 10, 30, 4, 1);
-  const material = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
-    flatShading: true,
-  });
+				controls.maxPolarAngle = Math.PI / 2;
 
-  for (let i = 0; i < 500; i++) {
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.x = Math.random() * 1600 - 800;
-    mesh.position.y = 0;
-    mesh.position.z = Math.random() * 1600 - 800;
-    mesh.updateMatrix();
-    mesh.matrixAutoUpdate = false;
-    scene.add(mesh);
-  }
+				// world
 
-  // lights
+				const geometry = new THREE.CylinderGeometry( 0, 10, 30, 4, 1 );
+				const material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
 
-  const dirLight1 = new THREE.DirectionalLight(0xffffff);
-  dirLight1.position.set(1, 1, 1);
-  scene.add(dirLight1);
+				for ( let i = 0; i < 500; i ++ ) {
 
-  const dirLight2 = new THREE.DirectionalLight(0x002288);
-  dirLight2.position.set(-1, -1, -1);
-  scene.add(dirLight2);
+					const mesh = new THREE.Mesh( geometry, material );
+					mesh.position.x = Math.random() * 1600 - 800;
+					mesh.position.y = 0;
+					mesh.position.z = Math.random() * 1600 - 800;
+					mesh.updateMatrix();
+					mesh.matrixAutoUpdate = false;
+					scene.add( mesh );
 
-  const ambientLight = new THREE.AmbientLight(0x222222);
-  scene.add(ambientLight);
+				}
 
-  //
+				// lights
 
-  window.addEventListener("resize", onWindowResize);
-}
+				const dirLight1 = new THREE.DirectionalLight( 0xffffff );
+				dirLight1.position.set( 1, 1, 1 );
+				scene.add( dirLight1 );
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				const dirLight2 = new THREE.DirectionalLight( 0x002288 );
+				dirLight2.position.set( - 1, - 1, - 1 );
+				scene.add( dirLight2 );
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				const ambientLight = new THREE.AmbientLight( 0x222222 );
+				scene.add( ambientLight );
 
-function animate() {
-  requestAnimationFrame(animate);
+				//
 
-  controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
+				window.addEventListener( 'resize', onWindowResize );
 
-  render();
-}
+			}
 
-function render() {
-  renderer.render(scene, camera);
-}
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
+
+				render();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+		

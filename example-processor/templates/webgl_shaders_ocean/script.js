@@ -1,172 +1,180 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { Water } from "three/examples/jsm/objects/Water.js";
-import { Sky } from "three/examples/jsm/objects/Sky.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let container, stats;
-let camera, scene, renderer;
-let controls, water, sun, mesh;
+			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+			import { Water } from 'three/examples/jsm/objects/Water.js';
+			import { Sky } from 'three/examples/jsm/objects/Sky.js';
 
-init();
-animate();
+			let container, stats;
+			let camera, scene, renderer;
+			let controls, water, sun, mesh;
 
-function init() {
-  container = document.getElementById("container");
+			init();
+			animate();
 
-  //
+			function init() {
 
-  renderer = new THREE.WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  container.appendChild(renderer.domElement);
+				container = document.getElementById( 'container' );
 
-  //
+				//
 
-  scene = new THREE.Scene();
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.toneMapping = THREE.ACESFilmicToneMapping;
+				container.appendChild( renderer.domElement );
 
-  camera = new THREE.PerspectiveCamera(
-    55,
-    window.innerWidth / window.innerHeight,
-    1,
-    20000
-  );
-  camera.position.set(30, 30, 100);
+				//
 
-  //
+				scene = new THREE.Scene();
 
-  sun = new THREE.Vector3();
+				camera = new THREE.PerspectiveCamera( 55, window.innerWidth / window.innerHeight, 1, 20000 );
+				camera.position.set( 30, 30, 100 );
 
-  // Water
+				//
 
-  const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
+				sun = new THREE.Vector3();
 
-  water = new Water(waterGeometry, {
-    textureWidth: 512,
-    textureHeight: 512,
-    waterNormals: new THREE.TextureLoader().load(
-      "textures/waternormals.jpg",
-      function (texture) {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-      }
-    ),
-    sunDirection: new THREE.Vector3(),
-    sunColor: 0xffffff,
-    waterColor: 0x001e0f,
-    distortionScale: 3.7,
-    fog: scene.fog !== undefined,
-  });
+				// Water
 
-  water.rotation.x = -Math.PI / 2;
+				const waterGeometry = new THREE.PlaneGeometry( 10000, 10000 );
 
-  scene.add(water);
+				water = new Water(
+					waterGeometry,
+					{
+						textureWidth: 512,
+						textureHeight: 512,
+						waterNormals: new THREE.TextureLoader().load( 'textures/waternormals.jpg', function ( texture ) {
 
-  // Skybox
+							texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
 
-  const sky = new Sky();
-  sky.scale.setScalar(10000);
-  scene.add(sky);
+						} ),
+						sunDirection: new THREE.Vector3(),
+						sunColor: 0xffffff,
+						waterColor: 0x001e0f,
+						distortionScale: 3.7,
+						fog: scene.fog !== undefined
+					}
+				);
 
-  const skyUniforms = sky.material.uniforms;
+				water.rotation.x = - Math.PI / 2;
 
-  skyUniforms["turbidity"].value = 10;
-  skyUniforms["rayleigh"].value = 2;
-  skyUniforms["mieCoefficient"].value = 0.005;
-  skyUniforms["mieDirectionalG"].value = 0.8;
+				scene.add( water );
 
-  const parameters = {
-    elevation: 2,
-    azimuth: 180,
-  };
+				// Skybox
 
-  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+				const sky = new Sky();
+				sky.scale.setScalar( 10000 );
+				scene.add( sky );
 
-  function updateSun() {
-    const phi = THREE.MathUtils.degToRad(90 - parameters.elevation);
-    const theta = THREE.MathUtils.degToRad(parameters.azimuth);
+				const skyUniforms = sky.material.uniforms;
 
-    sun.setFromSphericalCoords(1, phi, theta);
+				skyUniforms[ 'turbidity' ].value = 10;
+				skyUniforms[ 'rayleigh' ].value = 2;
+				skyUniforms[ 'mieCoefficient' ].value = 0.005;
+				skyUniforms[ 'mieDirectionalG' ].value = 0.8;
 
-    sky.material.uniforms["sunPosition"].value.copy(sun);
-    water.material.uniforms["sunDirection"].value.copy(sun).normalize();
+				const parameters = {
+					elevation: 2,
+					azimuth: 180
+				};
 
-    scene.environment = pmremGenerator.fromScene(sky).texture;
-  }
+				const pmremGenerator = new THREE.PMREMGenerator( renderer );
 
-  updateSun();
+				function updateSun() {
 
-  //
+					const phi = THREE.MathUtils.degToRad( 90 - parameters.elevation );
+					const theta = THREE.MathUtils.degToRad( parameters.azimuth );
 
-  const geometry = new THREE.BoxGeometry(30, 30, 30);
-  const material = new THREE.MeshStandardMaterial({ roughness: 0 });
+					sun.setFromSphericalCoords( 1, phi, theta );
 
-  mesh = new THREE.Mesh(geometry, material);
-  scene.add(mesh);
+					sky.material.uniforms[ 'sunPosition' ].value.copy( sun );
+					water.material.uniforms[ 'sunDirection' ].value.copy( sun ).normalize();
 
-  //
+					scene.environment = pmremGenerator.fromScene( sky ).texture;
 
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.maxPolarAngle = Math.PI * 0.495;
-  controls.target.set(0, 10, 0);
-  controls.minDistance = 40.0;
-  controls.maxDistance = 200.0;
-  controls.update();
+				}
 
-  //
+				updateSun();
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				//
 
-  // GUI
+				const geometry = new THREE.BoxGeometry( 30, 30, 30 );
+				const material = new THREE.MeshStandardMaterial( { roughness: 0 } );
 
-  const gui = new GUI();
+				mesh = new THREE.Mesh( geometry, material );
+				scene.add( mesh );
 
-  const folderSky = gui.addFolder("Sky");
-  folderSky.add(parameters, "elevation", 0, 90, 0.1).onChange(updateSun);
-  folderSky.add(parameters, "azimuth", -180, 180, 0.1).onChange(updateSun);
-  folderSky.open();
+				//
 
-  const waterUniforms = water.material.uniforms;
+				controls = new OrbitControls( camera, renderer.domElement );
+				controls.maxPolarAngle = Math.PI * 0.495;
+				controls.target.set( 0, 10, 0 );
+				controls.minDistance = 40.0;
+				controls.maxDistance = 200.0;
+				controls.update();
 
-  const folderWater = gui.addFolder("Water");
-  folderWater
-    .add(waterUniforms.distortionScale, "value", 0, 8, 0.1)
-    .name("distortionScale");
-  folderWater.add(waterUniforms.size, "value", 0.1, 10, 0.1).name("size");
-  folderWater.open();
+				//
 
-  //
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-  window.addEventListener("resize", onWindowResize);
-}
+				// GUI
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				const gui = new GUI();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				const folderSky = gui.addFolder( 'Sky' );
+				folderSky.add( parameters, 'elevation', 0, 90, 0.1 ).onChange( updateSun );
+				folderSky.add( parameters, 'azimuth', - 180, 180, 0.1 ).onChange( updateSun );
+				folderSky.open();
 
-function animate() {
-  requestAnimationFrame(animate);
-  render();
-  stats.update();
-}
+				const waterUniforms = water.material.uniforms;
 
-function render() {
-  const time = performance.now() * 0.001;
+				const folderWater = gui.addFolder( 'Water' );
+				folderWater.add( waterUniforms.distortionScale, 'value', 0, 8, 0.1 ).name( 'distortionScale' );
+				folderWater.add( waterUniforms.size, 'value', 0.1, 10, 0.1 ).name( 'size' );
+				folderWater.open();
 
-  mesh.position.y = Math.sin(time) * 20 + 5;
-  mesh.rotation.x = time * 0.5;
-  mesh.rotation.z = time * 0.51;
+				//
 
-  water.material.uniforms["time"].value += 1.0 / 60.0;
+				window.addEventListener( 'resize', onWindowResize );
 
-  renderer.render(scene, camera);
-}
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				const time = performance.now() * 0.001;
+
+				mesh.position.y = Math.sin( time ) * 20 + 5;
+				mesh.rotation.x = time * 0.5;
+				mesh.rotation.z = time * 0.51;
+
+				water.material.uniforms[ 'time' ].value += 1.0 / 60.0;
+
+				renderer.render( scene, camera );
+
+			}
+
+		

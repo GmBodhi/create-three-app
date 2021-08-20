@@ -1,60 +1,58 @@
-<html>
-  <head>
-    <title>three.js webgl - Depth Texture</title>
-    <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
-    />
+<html><head>
+		<title>three.js webgl - Depth Texture</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		
+		
 
-    <script id="post-vert" type="x-shader/x-vertex">
-      varying vec2 vUv;
+		<script id="post-vert" type="x-shader/x-vertex">
+			varying vec2 vUv;
 
-      void main() {
-      	vUv = uv;
-      	gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-      }
-    </script>
-    <script id="post-frag" type="x-shader/x-fragment">
-      #include <packing>
+			void main() {
+				vUv = uv;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+			}
+		</script>
+		<script id="post-frag" type="x-shader/x-fragment">
+			#include <packing>
 
-      varying vec2 vUv;
-      uniform sampler2D tDiffuse;
-      uniform sampler2D tDepth;
-      uniform float cameraNear;
-      uniform float cameraFar;
+			varying vec2 vUv;
+			uniform sampler2D tDiffuse;
+			uniform sampler2D tDepth;
+			uniform float cameraNear;
+			uniform float cameraFar;
 
 
-      float readDepth( sampler2D depthSampler, vec2 coord ) {
-      	float fragCoordZ = texture2D( depthSampler, coord ).x;
-      	float viewZ = perspectiveDepthToViewZ( fragCoordZ, cameraNear, cameraFar );
-      	return viewZToOrthographicDepth( viewZ, cameraNear, cameraFar );
-      }
+			float readDepth( sampler2D depthSampler, vec2 coord ) {
+				float fragCoordZ = texture2D( depthSampler, coord ).x;
+				float viewZ = perspectiveDepthToViewZ( fragCoordZ, cameraNear, cameraFar );
+				return viewZToOrthographicDepth( viewZ, cameraNear, cameraFar );
+			}
 
-      void main() {
-      	//vec3 diffuse = texture2D( tDiffuse, vUv ).rgb;
-      	float depth = readDepth( tDepth, vUv );
+			void main() {
+				//vec3 diffuse = texture2D( tDiffuse, vUv ).rgb;
+				float depth = readDepth( tDepth, vUv );
 
-      	gl_FragColor.rgb = 1.0 - vec3( depth );
-      	gl_FragColor.a = 1.0;
-      }
-    </script>
-  </head>
-  <body style="overflow: hidden">
-    <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener">threejs</a>
-      webgl - depth texture<br />
-      Stores render target depth in a texture attachment.<br />
-      Created by
-      <a href="http://twitter.com/mattdesl" target="_blank" rel="noopener"
-        >@mattdesl</a
-      >.
+				gl_FragColor.rgb = 1.0 - vec3( depth );
+				gl_FragColor.a = 1.0;
+			}
+		</script>
 
-      <div id="error" style="display: none">
-        Your browser does not support
-        <strong>WEBGL_depth_texture</strong>.<br /><br />
-        This demo will not work.
-      </div>
-    </div>
-  </body>
-</html>
+	</head>
+	<body style="overflow: hidden;">
+		<div id="info">
+			<a href="https://threejs.org" target="_blank" rel="noopener">threejs</a> webgl - depth texture<br>
+			Stores render target depth in a texture attachment.<br>
+			Created by <a href="http://twitter.com/mattdesl" target="_blank" rel="noopener">@mattdesl</a>.
+
+			<div id="error" style="display: none;">
+			Your browser does not support <strong>WEBGL_depth_texture</strong>.<br><br>
+			This demo will not work.
+			</div>
+		</div>
+
+		
+
+	
+
+</body></html>

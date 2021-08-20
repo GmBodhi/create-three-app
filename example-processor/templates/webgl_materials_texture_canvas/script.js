@@ -1,101 +1,117 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-let camera, scene, renderer, mesh, material;
-const drawStartPos = new THREE.Vector2();
+			import * as THREE from 'three';
 
-init();
-setupCanvasDrawing();
-animate();
+			let camera, scene, renderer, mesh, material;
+			const drawStartPos = new THREE.Vector2();
 
-function init() {
-  camera = new THREE.PerspectiveCamera(
-    50,
-    window.innerWidth / window.innerHeight,
-    1,
-    2000
-  );
-  camera.position.z = 500;
+			init();
+			setupCanvasDrawing();
+			animate();
 
-  scene = new THREE.Scene();
+			function init() {
 
-  material = new THREE.MeshBasicMaterial();
+				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.z = 500;
 
-  mesh = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
-  scene.add(mesh);
+				scene = new THREE.Scene();
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+				material = new THREE.MeshBasicMaterial();
 
-  window.addEventListener("resize", onWindowResize);
-}
+				mesh = new THREE.Mesh( new THREE.BoxGeometry( 200, 200, 200 ), material );
+				scene.add( mesh );
 
-// Sets up the drawing canvas and adds it as the material map
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.body.appendChild( renderer.domElement );
 
-function setupCanvasDrawing() {
-  // get canvas and context
+				window.addEventListener( 'resize', onWindowResize );
 
-  const drawingCanvas = document.getElementById("drawing-canvas");
-  const drawingContext = drawingCanvas.getContext("2d");
+			}
 
-  // draw white background
+			// Sets up the drawing canvas and adds it as the material map
 
-  drawingContext.fillStyle = "#FFFFFF";
-  drawingContext.fillRect(0, 0, 128, 128);
+			function setupCanvasDrawing() {
 
-  // set canvas as material.map (this could be done to any map, bump, displacement etc.)
+				// get canvas and context
 
-  material.map = new THREE.CanvasTexture(drawingCanvas);
+				const drawingCanvas = document.getElementById( 'drawing-canvas' );
+				const drawingContext = drawingCanvas.getContext( '2d' );
 
-  // set the variable to keep track of when to draw
+				// draw white background
 
-  let paint = false;
+				drawingContext.fillStyle = '#FFFFFF';
+				drawingContext.fillRect( 0, 0, 128, 128 );
 
-  // add canvas event listeners
-  drawingCanvas.addEventListener("pointerdown", function (e) {
-    paint = true;
-    drawStartPos.set(e.offsetX, e.offsetY);
-  });
+				// set canvas as material.map (this could be done to any map, bump, displacement etc.)
 
-  drawingCanvas.addEventListener("pointermove", function (e) {
-    if (paint) draw(drawingContext, e.offsetX, e.offsetY);
-  });
+				material.map = new THREE.CanvasTexture( drawingCanvas );
 
-  drawingCanvas.addEventListener("pointerup", function () {
-    paint = false;
-  });
+				// set the variable to keep track of when to draw
 
-  drawingCanvas.addEventListener("pointerleave", function () {
-    paint = false;
-  });
-}
+				let paint = false;
 
-function draw(drawContext, x, y) {
-  drawContext.moveTo(drawStartPos.x, drawStartPos.y);
-  drawContext.strokeStyle = "#000000";
-  drawContext.lineTo(x, y);
-  drawContext.stroke();
-  // reset drawing start position to current position.
-  drawStartPos.set(x, y);
-  // need to flag the map as needing updating.
-  material.map.needsUpdate = true;
-}
+				// add canvas event listeners
+				drawingCanvas.addEventListener( 'pointerdown', function ( e ) {
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+					paint = true;
+					drawStartPos.set( e.offsetX, e.offsetY );
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				} );
 
-function animate() {
-  requestAnimationFrame(animate);
+				drawingCanvas.addEventListener( 'pointermove', function ( e ) {
 
-  mesh.rotation.x += 0.01;
-  mesh.rotation.y += 0.01;
+					if ( paint ) draw( drawingContext, e.offsetX, e.offsetY );
 
-  renderer.render(scene, camera);
-}
+				} );
+
+				drawingCanvas.addEventListener( 'pointerup', function () {
+
+					paint = false;
+
+				} );
+
+				drawingCanvas.addEventListener( 'pointerleave', function () {
+
+					paint = false;
+
+				} );
+
+			}
+
+			function draw( drawContext, x, y ) {
+
+				drawContext.moveTo( drawStartPos.x, drawStartPos.y );
+				drawContext.strokeStyle = '#000000';
+				drawContext.lineTo( x, y );
+				drawContext.stroke();
+				// reset drawing start position to current position.
+				drawStartPos.set( x, y );
+				// need to flag the map as needing updating.
+				material.map.needsUpdate = true;
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				mesh.rotation.x += 0.01;
+				mesh.rotation.y += 0.01;
+
+				renderer.render( scene, camera );
+
+			}
+
+		

@@ -1,225 +1,222 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { NURBSCurve } from "three/examples/jsm/curves/NURBSCurve.js";
-import { NURBSSurface } from "three/examples/jsm/curves/NURBSSurface.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let container, stats;
+			import { NURBSCurve } from 'three/examples/jsm/curves/NURBSCurve.js';
+			import { NURBSSurface } from 'three/examples/jsm/curves/NURBSSurface.js';
 
-let camera, scene, renderer;
-let group;
+			let container, stats;
 
-let targetRotation = 0;
-let targetRotationOnPointerDown = 0;
+			let camera, scene, renderer;
+			let group;
 
-let pointerX = 0;
-let pointerXOnPointerDown = 0;
+			let targetRotation = 0;
+			let targetRotationOnPointerDown = 0;
 
-let windowHalfX = window.innerWidth / 2;
+			let pointerX = 0;
+			let pointerXOnPointerDown = 0;
 
-init();
-animate();
+			let windowHalfX = window.innerWidth / 2;
 
-function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
+			init();
+			animate();
 
-  camera = new THREE.PerspectiveCamera(
-    50,
-    window.innerWidth / window.innerHeight,
-    1,
-    2000
-  );
-  camera.position.set(0, 150, 750);
+			function init() {
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
 
-  scene.add(new THREE.AmbientLight(0x808080));
+				camera = new THREE.PerspectiveCamera( 50, window.innerWidth / window.innerHeight, 1, 2000 );
+				camera.position.set( 0, 150, 750 );
 
-  const light = new THREE.DirectionalLight(0xffffff, 1);
-  light.position.set(1, 1, 1);
-  scene.add(light);
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xf0f0f0 );
 
-  group = new THREE.Group();
-  group.position.y = 50;
-  scene.add(group);
+				scene.add( new THREE.AmbientLight( 0x808080 ) );
 
-  // NURBS curve
+				const light = new THREE.DirectionalLight( 0xffffff, 1 );
+				light.position.set( 1, 1, 1 );
+				scene.add( light );
 
-  const nurbsControlPoints = [];
-  const nurbsKnots = [];
-  const nurbsDegree = 3;
+				group = new THREE.Group();
+				group.position.y = 50;
+				scene.add( group );
 
-  for (let i = 0; i <= nurbsDegree; i++) {
-    nurbsKnots.push(0);
-  }
+				// NURBS curve
 
-  for (let i = 0, j = 20; i < j; i++) {
-    nurbsControlPoints.push(
-      new THREE.Vector4(
-        Math.random() * 400 - 200,
-        Math.random() * 400,
-        Math.random() * 400 - 200,
-        1 // weight of control point: higher means stronger attraction
-      )
-    );
+				const nurbsControlPoints = [];
+				const nurbsKnots = [];
+				const nurbsDegree = 3;
 
-    const knot = (i + 1) / (j - nurbsDegree);
-    nurbsKnots.push(THREE.MathUtils.clamp(knot, 0, 1));
-  }
+				for ( let i = 0; i <= nurbsDegree; i ++ ) {
 
-  const nurbsCurve = new NURBSCurve(
-    nurbsDegree,
-    nurbsKnots,
-    nurbsControlPoints
-  );
+					nurbsKnots.push( 0 );
 
-  const nurbsGeometry = new THREE.BufferGeometry();
-  nurbsGeometry.setFromPoints(nurbsCurve.getPoints(200));
+				}
 
-  const nurbsMaterial = new THREE.LineBasicMaterial({ color: 0x333333 });
+				for ( let i = 0, j = 20; i < j; i ++ ) {
 
-  const nurbsLine = new THREE.Line(nurbsGeometry, nurbsMaterial);
-  nurbsLine.position.set(200, -100, 0);
-  group.add(nurbsLine);
+					nurbsControlPoints.push(
+						new THREE.Vector4(
+							Math.random() * 400 - 200,
+							Math.random() * 400,
+							Math.random() * 400 - 200,
+							1 // weight of control point: higher means stronger attraction
+						)
+					);
 
-  const nurbsControlPointsGeometry = new THREE.BufferGeometry();
-  nurbsControlPointsGeometry.setFromPoints(nurbsCurve.controlPoints);
+					const knot = ( i + 1 ) / ( j - nurbsDegree );
+					nurbsKnots.push( THREE.MathUtils.clamp( knot, 0, 1 ) );
 
-  const nurbsControlPointsMaterial = new THREE.LineBasicMaterial({
-    color: 0x333333,
-    opacity: 0.25,
-    transparent: true,
-  });
+				}
 
-  const nurbsControlPointsLine = new THREE.Line(
-    nurbsControlPointsGeometry,
-    nurbsControlPointsMaterial
-  );
-  nurbsControlPointsLine.position.copy(nurbsLine.position);
-  group.add(nurbsControlPointsLine);
+				const nurbsCurve = new NURBSCurve( nurbsDegree, nurbsKnots, nurbsControlPoints );
 
-  // NURBS surface
+				const nurbsGeometry = new THREE.BufferGeometry();
+				nurbsGeometry.setFromPoints( nurbsCurve.getPoints( 200 ) );
 
-  const nsControlPoints = [
-    [
-      new THREE.Vector4(-200, -200, 100, 1),
-      new THREE.Vector4(-200, -100, -200, 1),
-      new THREE.Vector4(-200, 100, 250, 1),
-      new THREE.Vector4(-200, 200, -100, 1),
-    ],
-    [
-      new THREE.Vector4(0, -200, 0, 1),
-      new THREE.Vector4(0, -100, -100, 5),
-      new THREE.Vector4(0, 100, 150, 5),
-      new THREE.Vector4(0, 200, 0, 1),
-    ],
-    [
-      new THREE.Vector4(200, -200, -100, 1),
-      new THREE.Vector4(200, -100, 200, 1),
-      new THREE.Vector4(200, 100, -250, 1),
-      new THREE.Vector4(200, 200, 100, 1),
-    ],
-  ];
-  const degree1 = 2;
-  const degree2 = 3;
-  const knots1 = [0, 0, 0, 1, 1, 1];
-  const knots2 = [0, 0, 0, 0, 1, 1, 1, 1];
-  const nurbsSurface = new NURBSSurface(
-    degree1,
-    degree2,
-    knots1,
-    knots2,
-    nsControlPoints
-  );
+				const nurbsMaterial = new THREE.LineBasicMaterial( { color: 0x333333 } );
 
-  const map = new THREE.TextureLoader().load("textures/uv_grid_opengl.jpg");
-  map.wrapS = map.wrapT = THREE.RepeatWrapping;
-  map.anisotropy = 16;
+				const nurbsLine = new THREE.Line( nurbsGeometry, nurbsMaterial );
+				nurbsLine.position.set( 200, - 100, 0 );
+				group.add( nurbsLine );
 
-  function getSurfacePoint(u, v, target) {
-    return nurbsSurface.getPoint(u, v, target);
-  }
+				const nurbsControlPointsGeometry = new THREE.BufferGeometry();
+				nurbsControlPointsGeometry.setFromPoints( nurbsCurve.controlPoints );
 
-  const geometry = new THREE.ParametricBufferGeometry(getSurfacePoint, 20, 20);
-  const material = new THREE.MeshLambertMaterial({
-    map: map,
-    side: THREE.DoubleSide,
-  });
-  const object = new THREE.Mesh(geometry, material);
-  object.position.set(-200, 100, 0);
-  object.scale.multiplyScalar(1);
-  group.add(object);
+				const nurbsControlPointsMaterial = new THREE.LineBasicMaterial( { color: 0x333333, opacity: 0.25, transparent: true } );
 
-  //
+				const nurbsControlPointsLine = new THREE.Line( nurbsControlPointsGeometry, nurbsControlPointsMaterial );
+				nurbsControlPointsLine.position.copy( nurbsLine.position );
+				group.add( nurbsControlPointsLine );
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+				// NURBS surface
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+				const nsControlPoints = [
+					[
+						new THREE.Vector4( - 200, - 200, 100, 1 ),
+						new THREE.Vector4( - 200, - 100, - 200, 1 ),
+						new THREE.Vector4( - 200, 100, 250, 1 ),
+						new THREE.Vector4( - 200, 200, - 100, 1 )
+					],
+					[
+						new THREE.Vector4( 0, - 200, 0, 1 ),
+						new THREE.Vector4( 0, - 100, - 100, 5 ),
+						new THREE.Vector4( 0, 100, 150, 5 ),
+						new THREE.Vector4( 0, 200, 0, 1 )
+					],
+					[
+						new THREE.Vector4( 200, - 200, - 100, 1 ),
+						new THREE.Vector4( 200, - 100, 200, 1 ),
+						new THREE.Vector4( 200, 100, - 250, 1 ),
+						new THREE.Vector4( 200, 200, 100, 1 )
+					]
+				];
+				const degree1 = 2;
+				const degree2 = 3;
+				const knots1 = [ 0, 0, 0, 1, 1, 1 ];
+				const knots2 = [ 0, 0, 0, 0, 1, 1, 1, 1 ];
+				const nurbsSurface = new NURBSSurface( degree1, degree2, knots1, knots2, nsControlPoints );
 
-  container.style.touchAction = "none";
-  container.addEventListener("pointerdown", onPointerDown);
+				const map = new THREE.TextureLoader().load( 'textures/uv_grid_opengl.jpg' );
+				map.wrapS = map.wrapT = THREE.RepeatWrapping;
+				map.anisotropy = 16;
 
-  //
+				function getSurfacePoint( u, v, target ) {
 
-  window.addEventListener("resize", onWindowResize);
-}
+					return nurbsSurface.getPoint( u, v, target );
 
-function onWindowResize() {
-  windowHalfX = window.innerWidth / 2;
+				}
 
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				const geometry = new THREE.ParametricBufferGeometry( getSurfacePoint, 20, 20 );
+				const material = new THREE.MeshLambertMaterial( { map: map, side: THREE.DoubleSide } );
+				const object = new THREE.Mesh( geometry, material );
+				object.position.set( - 200, 100, 0 );
+				object.scale.multiplyScalar( 1 );
+				group.add( object );
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				//
 
-//
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
 
-function onPointerDown(event) {
-  if (event.isPrimary === false) return;
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-  pointerXOnPointerDown = event.clientX - windowHalfX;
-  targetRotationOnPointerDown = targetRotation;
+				container.style.touchAction = 'none';
+				container.addEventListener( 'pointerdown', onPointerDown );
 
-  document.addEventListener("pointermove", onPointerMove);
-  document.addEventListener("pointerup", onPointerUp);
-}
+				//
 
-function onPointerMove(event) {
-  if (event.isPrimary === false) return;
+				window.addEventListener( 'resize', onWindowResize );
 
-  pointerX = event.clientX - windowHalfX;
+			}
 
-  targetRotation =
-    targetRotationOnPointerDown + (pointerX - pointerXOnPointerDown) * 0.02;
-}
+			function onWindowResize() {
 
-function onPointerUp() {
-  if (event.isPrimary === false) return;
+				windowHalfX = window.innerWidth / 2;
 
-  document.removeEventListener("pointermove", onPointerMove);
-  document.removeEventListener("pointerup", onPointerUp);
-}
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
 
-//
+				renderer.setSize( window.innerWidth, window.innerHeight );
 
-function animate() {
-  requestAnimationFrame(animate);
+			}
 
-  render();
-  stats.update();
-}
+			//
 
-function render() {
-  group.rotation.y += (targetRotation - group.rotation.y) * 0.05;
-  renderer.render(scene, camera);
-}
+			function onPointerDown( event ) {
+
+				if ( event.isPrimary === false ) return;
+
+				pointerXOnPointerDown = event.clientX - windowHalfX;
+				targetRotationOnPointerDown = targetRotation;
+
+				document.addEventListener( 'pointermove', onPointerMove );
+				document.addEventListener( 'pointerup', onPointerUp );
+
+			}
+
+			function onPointerMove( event ) {
+
+				if ( event.isPrimary === false ) return;
+
+				pointerX = event.clientX - windowHalfX;
+
+				targetRotation = targetRotationOnPointerDown + ( pointerX - pointerXOnPointerDown ) * 0.02;
+
+			}
+
+			function onPointerUp() {
+
+				if ( event.isPrimary === false ) return;
+
+				document.removeEventListener( 'pointermove', onPointerMove );
+				document.removeEventListener( 'pointerup', onPointerUp );
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				group.rotation.y += ( targetRotation - group.rotation.y ) * 0.05;
+				renderer.render( scene, camera );
+
+			}
+
+		

@@ -1,184 +1,199 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+			import * as THREE from 'three';
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+			import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-let camera, scene, renderer;
-const mixers = [];
-let stats;
+			import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-const clock = new THREE.Clock();
 
-init();
-animate();
+			let camera, scene, renderer;
+			const mixers = [];
+			let stats;
 
-function init() {
-  const container = document.getElementById("container");
+			const clock = new THREE.Clock();
 
-  camera = new THREE.PerspectiveCamera(
-    30,
-    window.innerWidth / window.innerHeight,
-    1,
-    5000
-  );
-  camera.position.set(0, 0, 250);
+			init();
+			animate();
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color().setHSL(0.6, 0, 1);
-  scene.fog = new THREE.Fog(scene.background, 1, 5000);
+			function init() {
 
-  // LIGHTS
+				const container = document.getElementById( 'container' );
 
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.6);
-  hemiLight.color.setHSL(0.6, 1, 0.6);
-  hemiLight.groundColor.setHSL(0.095, 1, 0.75);
-  hemiLight.position.set(0, 50, 0);
-  scene.add(hemiLight);
+				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 5000 );
+				camera.position.set( 0, 0, 250 );
 
-  const hemiLightHelper = new THREE.HemisphereLightHelper(hemiLight, 10);
-  scene.add(hemiLightHelper);
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color().setHSL( 0.6, 0, 1 );
+				scene.fog = new THREE.Fog( scene.background, 1, 5000 );
 
-  //
+				// LIGHTS
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
-  dirLight.color.setHSL(0.1, 1, 0.95);
-  dirLight.position.set(-1, 1.75, 1);
-  dirLight.position.multiplyScalar(30);
-  scene.add(dirLight);
+				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+				hemiLight.color.setHSL( 0.6, 1, 0.6 );
+				hemiLight.groundColor.setHSL( 0.095, 1, 0.75 );
+				hemiLight.position.set( 0, 50, 0 );
+				scene.add( hemiLight );
 
-  dirLight.castShadow = true;
+				const hemiLightHelper = new THREE.HemisphereLightHelper( hemiLight, 10 );
+				scene.add( hemiLightHelper );
 
-  dirLight.shadow.mapSize.width = 2048;
-  dirLight.shadow.mapSize.height = 2048;
+				//
 
-  const d = 50;
+				const dirLight = new THREE.DirectionalLight( 0xffffff, 1 );
+				dirLight.color.setHSL( 0.1, 1, 0.95 );
+				dirLight.position.set( - 1, 1.75, 1 );
+				dirLight.position.multiplyScalar( 30 );
+				scene.add( dirLight );
 
-  dirLight.shadow.camera.left = -d;
-  dirLight.shadow.camera.right = d;
-  dirLight.shadow.camera.top = d;
-  dirLight.shadow.camera.bottom = -d;
+				dirLight.castShadow = true;
 
-  dirLight.shadow.camera.far = 3500;
-  dirLight.shadow.bias = -0.0001;
+				dirLight.shadow.mapSize.width = 2048;
+				dirLight.shadow.mapSize.height = 2048;
 
-  const dirLightHelper = new THREE.DirectionalLightHelper(dirLight, 10);
-  scene.add(dirLightHelper);
+				const d = 50;
 
-  // GROUND
+				dirLight.shadow.camera.left = - d;
+				dirLight.shadow.camera.right = d;
+				dirLight.shadow.camera.top = d;
+				dirLight.shadow.camera.bottom = - d;
 
-  const groundGeo = new THREE.PlaneGeometry(10000, 10000);
-  const groundMat = new THREE.MeshLambertMaterial({ color: 0xffffff });
-  groundMat.color.setHSL(0.095, 1, 0.75);
+				dirLight.shadow.camera.far = 3500;
+				dirLight.shadow.bias = - 0.0001;
 
-  const ground = new THREE.Mesh(groundGeo, groundMat);
-  ground.position.y = -33;
-  ground.rotation.x = -Math.PI / 2;
-  ground.receiveShadow = true;
-  scene.add(ground);
+				const dirLightHelper = new THREE.DirectionalLightHelper( dirLight, 10 );
+				scene.add( dirLightHelper );
 
-  // SKYDOME
+				// GROUND
 
-  const vertexShader = document.getElementById("vertexShader").textContent;
-  const fragmentShader = document.getElementById("fragmentShader").textContent;
-  const uniforms = {
-    topColor: { value: new THREE.Color(0x0077ff) },
-    bottomColor: { value: new THREE.Color(0xffffff) },
-    offset: { value: 33 },
-    exponent: { value: 0.6 },
-  };
-  uniforms["topColor"].value.copy(hemiLight.color);
+				const groundGeo = new THREE.PlaneGeometry( 10000, 10000 );
+				const groundMat = new THREE.MeshLambertMaterial( { color: 0xffffff } );
+				groundMat.color.setHSL( 0.095, 1, 0.75 );
 
-  scene.fog.color.copy(uniforms["bottomColor"].value);
+				const ground = new THREE.Mesh( groundGeo, groundMat );
+				ground.position.y = - 33;
+				ground.rotation.x = - Math.PI / 2;
+				ground.receiveShadow = true;
+				scene.add( ground );
 
-  const skyGeo = new THREE.SphereGeometry(4000, 32, 15);
-  const skyMat = new THREE.ShaderMaterial({
-    uniforms: uniforms,
-    vertexShader: vertexShader,
-    fragmentShader: fragmentShader,
-    side: THREE.BackSide,
-  });
+				// SKYDOME
 
-  const sky = new THREE.Mesh(skyGeo, skyMat);
-  scene.add(sky);
+				const vertexShader = document.getElementById( 'vertexShader' ).textContent;
+				const fragmentShader = document.getElementById( 'fragmentShader' ).textContent;
+				const uniforms = {
+					"topColor": { value: new THREE.Color( 0x0077ff ) },
+					"bottomColor": { value: new THREE.Color( 0xffffff ) },
+					"offset": { value: 33 },
+					"exponent": { value: 0.6 }
+				};
+				uniforms[ "topColor" ].value.copy( hemiLight.color );
 
-  // MODEL
+				scene.fog.color.copy( uniforms[ "bottomColor" ].value );
 
-  const loader = new GLTFLoader();
+				const skyGeo = new THREE.SphereGeometry( 4000, 32, 15 );
+				const skyMat = new THREE.ShaderMaterial( {
+					uniforms: uniforms,
+					vertexShader: vertexShader,
+					fragmentShader: fragmentShader,
+					side: THREE.BackSide
+				} );
 
-  loader.load("models/gltf/Flamingo.glb", function (gltf) {
-    const mesh = gltf.scene.children[0];
+				const sky = new THREE.Mesh( skyGeo, skyMat );
+				scene.add( sky );
 
-    const s = 0.35;
-    mesh.scale.set(s, s, s);
-    mesh.position.y = 15;
-    mesh.rotation.y = -1;
+				// MODEL
 
-    mesh.castShadow = true;
-    mesh.receiveShadow = true;
+				const loader = new GLTFLoader();
 
-    scene.add(mesh);
+				loader.load( 'models/gltf/Flamingo.glb', function ( gltf ) {
 
-    const mixer = new THREE.AnimationMixer(mesh);
-    mixer.clipAction(gltf.animations[0]).setDuration(1).play();
-    mixers.push(mixer);
-  });
+					const mesh = gltf.scene.children[ 0 ];
 
-  // RENDERER
+					const s = 0.35;
+					mesh.scale.set( s, s, s );
+					mesh.position.y = 15;
+					mesh.rotation.y = - 1;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.shadowMap.enabled = true;
+					mesh.castShadow = true;
+					mesh.receiveShadow = true;
 
-  // STATS
+					scene.add( mesh );
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+					const mixer = new THREE.AnimationMixer( mesh );
+					mixer.clipAction( gltf.animations[ 0 ] ).setDuration( 1 ).play();
+					mixers.push( mixer );
 
-  //
+				} );
 
-  window.addEventListener("resize", onWindowResize);
+				// RENDERER
 
-  const hemisphereButton = document.getElementById("hemisphereButton");
-  hemisphereButton.addEventListener("click", function () {
-    hemiLight.visible = !hemiLight.visible;
-    hemiLightHelper.visible = !hemiLightHelper.visible;
-  });
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				container.appendChild( renderer.domElement );
+				renderer.outputEncoding = THREE.sRGBEncoding;
+				renderer.shadowMap.enabled = true;
 
-  const directionalButton = document.getElementById("directionalButton");
-  directionalButton.addEventListener("click", function () {
-    dirLight.visible = !dirLight.visible;
-    dirLightHelper.visible = !dirLightHelper.visible;
-  });
-}
+				// STATS
 
-function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+				stats = new Stats();
+				container.appendChild( stats.dom );
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-}
+				//
 
-//
+				window.addEventListener( 'resize', onWindowResize );
 
-function animate() {
-  requestAnimationFrame(animate);
+				const hemisphereButton = document.getElementById( 'hemisphereButton' );
+				hemisphereButton.addEventListener( 'click', function () {
 
-  render();
-  stats.update();
-}
+					hemiLight.visible = ! hemiLight.visible;
+					hemiLightHelper.visible = ! hemiLightHelper.visible;
 
-function render() {
-  const delta = clock.getDelta();
+				} );
 
-  for (let i = 0; i < mixers.length; i++) {
-    mixers[i].update(delta);
-  }
+				const directionalButton = document.getElementById( 'directionalButton' );
+				directionalButton.addEventListener( 'click', function () {
 
-  renderer.render(scene, camera);
-}
+					dirLight.visible = ! dirLight.visible;
+					dirLightHelper.visible = ! dirLightHelper.visible;
+
+				} );
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+			}
+
+			//
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				render();
+				stats.update();
+
+			}
+
+			function render() {
+
+				const delta = clock.getDelta();
+
+				for ( let i = 0; i < mixers.length; i ++ ) {
+
+					mixers[ i ].update( delta );
+
+				}
+
+				renderer.render( scene, camera );
+
+			}
+
+		
