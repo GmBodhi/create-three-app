@@ -15,6 +15,15 @@ module.exports.launch = async ({ urls }) => {
   page.on("request", (request) => {
     if (!urls["noIdea"]) urls["noIdea"] = [];
     let url = request.frame()?.url();
+    if (
+      [
+        "https://threejs.org/build/three.module.js",
+        "https://threejs.org/examples/jsm/libs/stats.module.js",
+        "https://threejs.org/examples/jsm/libs/dat.gui.module.js",
+      ].includes(url) ||
+      url?.endsWith(".js")
+    )
+      return;
     if (!url) {
       return urls["noIdea"].push(request.url());
     }
