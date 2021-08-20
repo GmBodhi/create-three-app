@@ -18,6 +18,8 @@ jobs:
         run: |
           cd example-processor
           node index.js
+      - name: Format code
+        run: |
           npm i -g prettier
           prettier --write .
       - name: Commit examples
