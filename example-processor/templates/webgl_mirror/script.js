@@ -1,184 +1,219 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { Reflector } from "three/examples/jsm/objects/Reflector.js";
 
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-			import { Reflector } from 'three/examples/jsm/objects/Reflector.js';
+let camera, scene, renderer;
 
-			let camera, scene, renderer;
+let cameraControls;
 
-			let cameraControls;
+let sphereGroup, smallSphere;
 
-			let sphereGroup, smallSphere;
+let groundMirror, verticalMirror;
 
-			let groundMirror, verticalMirror;
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  const container = document.getElementById("container");
 
-			function init() {
+  // renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
 
-				const container = document.getElementById( 'container' );
+  // scene
+  scene = new THREE.Scene();
 
-				// renderer
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+  // camera
+  camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    1,
+    500
+  );
+  camera.position.set(0, 75, 160);
 
-				// scene
-				scene = new THREE.Scene();
+  cameraControls = new OrbitControls(camera, renderer.domElement);
+  cameraControls.target.set(0, 40, 0);
+  cameraControls.maxDistance = 400;
+  cameraControls.minDistance = 10;
+  cameraControls.update();
 
-				// camera
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
-				camera.position.set( 0, 75, 160 );
+  //
 
-				cameraControls = new OrbitControls( camera, renderer.domElement );
-				cameraControls.target.set( 0, 40, 0 );
-				cameraControls.maxDistance = 400;
-				cameraControls.minDistance = 10;
-				cameraControls.update();
+  const planeGeo = new THREE.PlaneGeometry(100.1, 100.1);
 
-				//
+  // reflectors/mirrors
 
-				const planeGeo = new THREE.PlaneGeometry( 100.1, 100.1 );
+  let geometry, material;
 
-				// reflectors/mirrors
+  geometry = new THREE.CircleGeometry(40, 64);
+  groundMirror = new Reflector(geometry, {
+    clipBias: 0.003,
+    textureWidth: window.innerWidth * window.devicePixelRatio,
+    textureHeight: window.innerHeight * window.devicePixelRatio,
+    color: 0x777777,
+  });
+  groundMirror.position.y = 0.5;
+  groundMirror.rotateX(-Math.PI / 2);
+  scene.add(groundMirror);
 
-				let geometry, material;
+  geometry = new THREE.PlaneGeometry(100, 100);
+  verticalMirror = new Reflector(geometry, {
+    clipBias: 0.003,
+    textureWidth: window.innerWidth * window.devicePixelRatio,
+    textureHeight: window.innerHeight * window.devicePixelRatio,
+    color: 0x889999,
+  });
+  verticalMirror.position.y = 50;
+  verticalMirror.position.z = -50;
+  scene.add(verticalMirror);
 
-				geometry = new THREE.CircleGeometry( 40, 64 );
-				groundMirror = new Reflector( geometry, {
-					clipBias: 0.003,
-					textureWidth: window.innerWidth * window.devicePixelRatio,
-					textureHeight: window.innerHeight * window.devicePixelRatio,
-					color: 0x777777
-				} );
-				groundMirror.position.y = 0.5;
-				groundMirror.rotateX( - Math.PI / 2 );
-				scene.add( groundMirror );
+  sphereGroup = new THREE.Object3D();
+  scene.add(sphereGroup);
 
-				geometry = new THREE.PlaneGeometry( 100, 100 );
-				verticalMirror = new Reflector( geometry, {
-					clipBias: 0.003,
-					textureWidth: window.innerWidth * window.devicePixelRatio,
-					textureHeight: window.innerHeight * window.devicePixelRatio,
-					color: 0x889999
-				} );
-				verticalMirror.position.y = 50;
-				verticalMirror.position.z = - 50;
-				scene.add( verticalMirror );
+  geometry = new THREE.CylinderGeometry(
+    0.1,
+    15 * Math.cos((Math.PI / 180) * 30),
+    0.1,
+    24,
+    1
+  );
+  material = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    emissive: 0x444444,
+  });
+  const sphereCap = new THREE.Mesh(geometry, material);
+  sphereCap.position.y = -15 * Math.sin((Math.PI / 180) * 30) - 0.05;
+  sphereCap.rotateX(-Math.PI);
 
+  geometry = new THREE.SphereGeometry(
+    15,
+    24,
+    24,
+    Math.PI / 2,
+    Math.PI * 2,
+    0,
+    (Math.PI / 180) * 120
+  );
+  const halfSphere = new THREE.Mesh(geometry, material);
+  halfSphere.add(sphereCap);
+  halfSphere.rotateX((-Math.PI / 180) * 135);
+  halfSphere.rotateZ((-Math.PI / 180) * 20);
+  halfSphere.position.y = 7.5 + 15 * Math.sin((Math.PI / 180) * 30);
 
-				sphereGroup = new THREE.Object3D();
-				scene.add( sphereGroup );
+  sphereGroup.add(halfSphere);
 
-				geometry = new THREE.CylinderGeometry( 0.1, 15 * Math.cos( Math.PI / 180 * 30 ), 0.1, 24, 1 );
-				material = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0x444444 } );
-				const sphereCap = new THREE.Mesh( geometry, material );
-				sphereCap.position.y = - 15 * Math.sin( Math.PI / 180 * 30 ) - 0.05;
-				sphereCap.rotateX( - Math.PI );
+  geometry = new THREE.IcosahedronGeometry(5, 0);
+  material = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    emissive: 0x333333,
+    flatShading: true,
+  });
+  smallSphere = new THREE.Mesh(geometry, material);
+  scene.add(smallSphere);
 
-				geometry = new THREE.SphereGeometry( 15, 24, 24, Math.PI / 2, Math.PI * 2, 0, Math.PI / 180 * 120 );
-				const halfSphere = new THREE.Mesh( geometry, material );
-				halfSphere.add( sphereCap );
-				halfSphere.rotateX( - Math.PI / 180 * 135 );
-				halfSphere.rotateZ( - Math.PI / 180 * 20 );
-				halfSphere.position.y = 7.5 + 15 * Math.sin( Math.PI / 180 * 30 );
+  // walls
+  const planeTop = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0xffffff })
+  );
+  planeTop.position.y = 100;
+  planeTop.rotateX(Math.PI / 2);
+  scene.add(planeTop);
 
-				sphereGroup.add( halfSphere );
+  const planeBottom = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0xffffff })
+  );
+  planeBottom.rotateX(-Math.PI / 2);
+  scene.add(planeBottom);
 
-				geometry = new THREE.IcosahedronGeometry( 5, 0 );
-				material = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0x333333, flatShading: true } );
-				smallSphere = new THREE.Mesh( geometry, material );
-				scene.add( smallSphere );
+  const planeFront = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0x7f7fff })
+  );
+  planeFront.position.z = 50;
+  planeFront.position.y = 50;
+  planeFront.rotateY(Math.PI);
+  scene.add(planeFront);
 
-				// walls
-				const planeTop = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0xffffff } ) );
-				planeTop.position.y = 100;
-				planeTop.rotateX( Math.PI / 2 );
-				scene.add( planeTop );
+  const planeRight = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0x00ff00 })
+  );
+  planeRight.position.x = 50;
+  planeRight.position.y = 50;
+  planeRight.rotateY(-Math.PI / 2);
+  scene.add(planeRight);
 
-				const planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0xffffff } ) );
-				planeBottom.rotateX( - Math.PI / 2 );
-				scene.add( planeBottom );
+  const planeLeft = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0xff0000 })
+  );
+  planeLeft.position.x = -50;
+  planeLeft.position.y = 50;
+  planeLeft.rotateY(Math.PI / 2);
+  scene.add(planeLeft);
 
-				const planeFront = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0x7f7fff } ) );
-				planeFront.position.z = 50;
-				planeFront.position.y = 50;
-				planeFront.rotateY( Math.PI );
-				scene.add( planeFront );
+  // lights
+  const mainLight = new THREE.PointLight(0xcccccc, 1.5, 250);
+  mainLight.position.y = 60;
+  scene.add(mainLight);
 
-				const planeRight = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0x00ff00 } ) );
-				planeRight.position.x = 50;
-				planeRight.position.y = 50;
-				planeRight.rotateY( - Math.PI / 2 );
-				scene.add( planeRight );
+  const greenLight = new THREE.PointLight(0x00ff00, 0.25, 1000);
+  greenLight.position.set(550, 50, 0);
+  scene.add(greenLight);
 
-				const planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0xff0000 } ) );
-				planeLeft.position.x = - 50;
-				planeLeft.position.y = 50;
-				planeLeft.rotateY( Math.PI / 2 );
-				scene.add( planeLeft );
+  const redLight = new THREE.PointLight(0xff0000, 0.25, 1000);
+  redLight.position.set(-550, 50, 0);
+  scene.add(redLight);
 
-				// lights
-				const mainLight = new THREE.PointLight( 0xcccccc, 1.5, 250 );
-				mainLight.position.y = 60;
-				scene.add( mainLight );
+  const blueLight = new THREE.PointLight(0x7f7fff, 0.25, 1000);
+  blueLight.position.set(0, 50, 550);
+  scene.add(blueLight);
 
-				const greenLight = new THREE.PointLight( 0x00ff00, 0.25, 1000 );
-				greenLight.position.set( 550, 50, 0 );
-				scene.add( greenLight );
+  window.addEventListener("resize", onWindowResize);
+}
 
-				const redLight = new THREE.PointLight( 0xff0000, 0.25, 1000 );
-				redLight.position.set( - 550, 50, 0 );
-				scene.add( redLight );
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-				const blueLight = new THREE.PointLight( 0x7f7fff, 0.25, 1000 );
-				blueLight.position.set( 0, 50, 550 );
-				scene.add( blueLight );
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
-				window.addEventListener( 'resize', onWindowResize );
+  groundMirror
+    .getRenderTarget()
+    .setSize(
+      window.innerWidth * window.devicePixelRatio,
+      window.innerHeight * window.devicePixelRatio
+    );
+  verticalMirror
+    .getRenderTarget()
+    .setSize(
+      window.innerWidth * window.devicePixelRatio,
+      window.innerHeight * window.devicePixelRatio
+    );
+}
 
-			}
+function animate() {
+  requestAnimationFrame(animate);
 
-			function onWindowResize() {
+  const timer = Date.now() * 0.01;
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+  sphereGroup.rotation.y -= 0.002;
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+  smallSphere.position.set(
+    Math.cos(timer * 0.1) * 30,
+    Math.abs(Math.cos(timer * 0.2)) * 20 + 5,
+    Math.sin(timer * 0.1) * 30
+  );
+  smallSphere.rotation.y = Math.PI / 2 - timer * 0.1;
+  smallSphere.rotation.z = timer * 0.8;
 
-				groundMirror.getRenderTarget().setSize(
-					window.innerWidth * window.devicePixelRatio,
-					window.innerHeight * window.devicePixelRatio
-				);
-				verticalMirror.getRenderTarget().setSize(
-					window.innerWidth * window.devicePixelRatio,
-					window.innerHeight * window.devicePixelRatio
-				);
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				const timer = Date.now() * 0.01;
-
-				sphereGroup.rotation.y -= 0.002;
-
-				smallSphere.position.set(
-					Math.cos( timer * 0.1 ) * 30,
-					Math.abs( Math.cos( timer * 0.2 ) ) * 20 + 5,
-					Math.sin( timer * 0.1 ) * 30
-				);
-				smallSphere.rotation.y = ( Math.PI / 2 ) - timer * 0.1;
-				smallSphere.rotation.z = timer * 0.8;
-
-				renderer.render( scene, camera );
-
-			}
-
-		
+  renderer.render(scene, camera);
+}

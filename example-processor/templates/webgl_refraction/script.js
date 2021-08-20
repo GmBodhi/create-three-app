@@ -1,153 +1,169 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { Refractor } from "three/examples/jsm/objects/Refractor.js";
+import { WaterRefractionShader } from "three/examples/jsm/shaders/WaterRefractionShader.js";
 
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-			import { Refractor } from 'three/examples/jsm/objects/Refractor.js';
-			import { WaterRefractionShader } from 'three/examples/jsm/shaders/WaterRefractionShader.js';
+let camera, scene, renderer, clock;
 
-			let camera, scene, renderer, clock;
+let refractor, smallSphere;
 
-			let refractor, smallSphere;
+init();
 
-			init();
+function init() {
+  const container = document.getElementById("container");
 
-			function init() {
+  clock = new THREE.Clock();
 
-				const container = document.getElementById( 'container' );
+  // renderer
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
 
-				clock = new THREE.Clock();
+  // scene
+  scene = new THREE.Scene();
 
-				// renderer
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+  // camera
+  camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    1,
+    500
+  );
+  camera.position.set(0, 75, 160);
 
-				// scene
-				scene = new THREE.Scene();
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 40, 0);
+  controls.maxDistance = 400;
+  controls.minDistance = 10;
+  controls.update();
 
-				// camera
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 500 );
-				camera.position.set( 0, 75, 160 );
+  // refractor
 
-				const controls = new OrbitControls( camera, renderer.domElement );
-				controls.target.set( 0, 40, 0 );
-				controls.maxDistance = 400;
-				controls.minDistance = 10;
-				controls.update();
+  const refractorGeometry = new THREE.PlaneGeometry(90, 90);
 
-				// refractor
+  refractor = new Refractor(refractorGeometry, {
+    color: 0x999999,
+    textureWidth: 1024,
+    textureHeight: 1024,
+    shader: WaterRefractionShader,
+  });
 
-				const refractorGeometry = new THREE.PlaneGeometry( 90, 90 );
+  refractor.position.set(0, 50, 0);
 
-				refractor = new Refractor( refractorGeometry, {
-					color: 0x999999,
-					textureWidth: 1024,
-					textureHeight: 1024,
-					shader: WaterRefractionShader
-				} );
+  scene.add(refractor);
 
-				refractor.position.set( 0, 50, 0 );
+  // load dudv map for distortion effect
 
-				scene.add( refractor );
+  const dudvMap = new THREE.TextureLoader().load(
+    "textures/waterdudv.jpg",
+    function () {
+      animate();
+    }
+  );
 
-				// load dudv map for distortion effect
+  dudvMap.wrapS = dudvMap.wrapT = THREE.RepeatWrapping;
+  refractor.material.uniforms.tDudv.value = dudvMap;
 
-				const dudvMap = new THREE.TextureLoader().load( 'textures/waterdudv.jpg', function () {
+  //
 
-					animate();
+  const geometry = new THREE.IcosahedronGeometry(5, 0);
+  const material = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    emissive: 0x333333,
+    flatShading: true,
+  });
+  smallSphere = new THREE.Mesh(geometry, material);
+  scene.add(smallSphere);
 
-				} );
+  // walls
+  const planeGeo = new THREE.PlaneGeometry(100.1, 100.1);
 
-				dudvMap.wrapS = dudvMap.wrapT = THREE.RepeatWrapping;
-				refractor.material.uniforms.tDudv.value = dudvMap;
+  const planeTop = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0xffffff })
+  );
+  planeTop.position.y = 100;
+  planeTop.rotateX(Math.PI / 2);
+  scene.add(planeTop);
 
-				//
+  const planeBottom = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0xffffff })
+  );
+  planeBottom.rotateX(-Math.PI / 2);
+  scene.add(planeBottom);
 
-				const geometry = new THREE.IcosahedronGeometry( 5, 0 );
-				const material = new THREE.MeshPhongMaterial( { color: 0xffffff, emissive: 0x333333, flatShading: true } );
-				smallSphere = new THREE.Mesh( geometry, material );
-				scene.add( smallSphere );
+  const planeBack = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0x7f7fff })
+  );
+  planeBack.position.z = -50;
+  planeBack.position.y = 50;
+  scene.add(planeBack);
 
-				// walls
-				const planeGeo = new THREE.PlaneGeometry( 100.1, 100.1 );
+  const planeRight = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0x00ff00 })
+  );
+  planeRight.position.x = 50;
+  planeRight.position.y = 50;
+  planeRight.rotateY(-Math.PI / 2);
+  scene.add(planeRight);
 
-				const planeTop = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0xffffff } ) );
-				planeTop.position.y = 100;
-				planeTop.rotateX( Math.PI / 2 );
-				scene.add( planeTop );
+  const planeLeft = new THREE.Mesh(
+    planeGeo,
+    new THREE.MeshPhongMaterial({ color: 0xff0000 })
+  );
+  planeLeft.position.x = -50;
+  planeLeft.position.y = 50;
+  planeLeft.rotateY(Math.PI / 2);
+  scene.add(planeLeft);
 
-				const planeBottom = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0xffffff } ) );
-				planeBottom.rotateX( - Math.PI / 2 );
-				scene.add( planeBottom );
+  // lights
+  const mainLight = new THREE.PointLight(0xcccccc, 1.5, 250);
+  mainLight.position.y = 60;
+  scene.add(mainLight);
 
-				const planeBack = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0x7f7fff } ) );
-				planeBack.position.z = - 50;
-				planeBack.position.y = 50;
-				scene.add( planeBack );
+  const greenLight = new THREE.PointLight(0x00ff00, 0.25, 1000);
+  greenLight.position.set(550, 50, 0);
+  scene.add(greenLight);
 
-				const planeRight = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0x00ff00 } ) );
-				planeRight.position.x = 50;
-				planeRight.position.y = 50;
-				planeRight.rotateY( - Math.PI / 2 );
-				scene.add( planeRight );
+  const redLight = new THREE.PointLight(0xff0000, 0.25, 1000);
+  redLight.position.set(-550, 50, 0);
+  scene.add(redLight);
 
-				const planeLeft = new THREE.Mesh( planeGeo, new THREE.MeshPhongMaterial( { color: 0xff0000 } ) );
-				planeLeft.position.x = - 50;
-				planeLeft.position.y = 50;
-				planeLeft.rotateY( Math.PI / 2 );
-				scene.add( planeLeft );
+  const blueLight = new THREE.PointLight(0x7f7fff, 0.25, 1000);
+  blueLight.position.set(0, 50, 550);
+  scene.add(blueLight);
 
-				// lights
-				const mainLight = new THREE.PointLight( 0xcccccc, 1.5, 250 );
-				mainLight.position.y = 60;
-				scene.add( mainLight );
+  window.addEventListener("resize", onWindowResize);
+}
 
-				const greenLight = new THREE.PointLight( 0x00ff00, 0.25, 1000 );
-				greenLight.position.set( 550, 50, 0 );
-				scene.add( greenLight );
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-				const redLight = new THREE.PointLight( 0xff0000, 0.25, 1000 );
-				redLight.position.set( - 550, 50, 0 );
-				scene.add( redLight );
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-				const blueLight = new THREE.PointLight( 0x7f7fff, 0.25, 1000 );
-				blueLight.position.set( 0, 50, 550 );
-				scene.add( blueLight );
+function animate() {
+  requestAnimationFrame(animate);
 
-				window.addEventListener( 'resize', onWindowResize );
+  const time = clock.getElapsedTime();
 
-			}
+  refractor.material.uniforms.time.value = time;
 
-			function onWindowResize() {
+  smallSphere.position.set(
+    Math.cos(time) * 30,
+    Math.abs(Math.cos(time * 2)) * 20 + 5,
+    Math.sin(time) * 30
+  );
+  smallSphere.rotation.y = Math.PI / 2 - time;
+  smallSphere.rotation.z = time * 8;
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				const time = clock.getElapsedTime();
-
-				refractor.material.uniforms.time.value = time;
-
-				smallSphere.position.set(
-					Math.cos( time ) * 30,
-					Math.abs( Math.cos( time * 2 ) ) * 20 + 5,
-					Math.sin( time ) * 30
-				);
-				smallSphere.rotation.y = ( Math.PI / 2 ) - time;
-				smallSphere.rotation.z = time * 8;
-
-				renderer.render( scene, camera );
-
-			}
-
-	
+  renderer.render(scene, camera);
+}

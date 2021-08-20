@@ -1,106 +1,104 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+let camera, controls;
+let renderer;
+let scene;
 
-			let camera, controls;
-			let renderer;
-			let scene;
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  const container = document.getElementById("container");
 
-			function init() {
+  renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
 
-				const container = document.getElementById( 'container' );
+  scene = new THREE.Scene();
 
-				renderer = new THREE.WebGLRenderer();
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+  camera = new THREE.PerspectiveCamera(
+    90,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    100
+  );
+  camera.position.z = 0.01;
 
-				scene = new THREE.Scene();
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableZoom = false;
+  controls.enablePan = false;
+  controls.enableDamping = true;
+  controls.rotateSpeed = -0.25;
 
-				camera = new THREE.PerspectiveCamera( 90, window.innerWidth / window.innerHeight, 0.1, 100 );
-				camera.position.z = 0.01;
+  const textures = getTexturesFromAtlasFile(
+    "textures/cube/sun_temple_stripe.jpg",
+    6
+  );
 
-				controls = new OrbitControls( camera, renderer.domElement );
-				controls.enableZoom = false;
-				controls.enablePan = false;
-				controls.enableDamping = true;
-				controls.rotateSpeed = - 0.25;
+  const materials = [];
 
-				const textures = getTexturesFromAtlasFile( "textures/cube/sun_temple_stripe.jpg", 6 );
+  for (let i = 0; i < 6; i++) {
+    materials.push(new THREE.MeshBasicMaterial({ map: textures[i] }));
+  }
 
-				const materials = [];
+  const skyBox = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), materials);
+  skyBox.geometry.scale(1, 1, -1);
+  scene.add(skyBox);
 
-				for ( let i = 0; i < 6; i ++ ) {
+  window.addEventListener("resize", onWindowResize);
+}
 
-					materials.push( new THREE.MeshBasicMaterial( { map: textures[ i ] } ) );
+function getTexturesFromAtlasFile(atlasImgUrl, tilesNum) {
+  const textures = [];
 
-				}
+  for (let i = 0; i < tilesNum; i++) {
+    textures[i] = new THREE.Texture();
+  }
 
-				const skyBox = new THREE.Mesh( new THREE.BoxGeometry( 1, 1, 1 ), materials );
-				skyBox.geometry.scale( 1, 1, - 1 );
-				scene.add( skyBox );
+  new THREE.ImageLoader().load(atlasImgUrl, (image) => {
+    let canvas, context;
+    const tileWidth = image.height;
 
-				window.addEventListener( 'resize', onWindowResize );
+    for (let i = 0; i < textures.length; i++) {
+      canvas = document.createElement("canvas");
+      context = canvas.getContext("2d");
+      canvas.height = tileWidth;
+      canvas.width = tileWidth;
+      context.drawImage(
+        image,
+        tileWidth * i,
+        0,
+        tileWidth,
+        tileWidth,
+        0,
+        0,
+        tileWidth,
+        tileWidth
+      );
+      textures[i].image = canvas;
+      textures[i].needsUpdate = true;
+    }
+  });
 
-			}
+  return textures;
+}
 
-			function getTexturesFromAtlasFile( atlasImgUrl, tilesNum ) {
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-				const textures = [];
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-				for ( let i = 0; i < tilesNum; i ++ ) {
+function animate() {
+  requestAnimationFrame(animate);
 
-					textures[ i ] = new THREE.Texture();
+  controls.update(); // required when damping is enabled
 
-				}
-
-				new THREE.ImageLoader()
-					.load( atlasImgUrl, ( image ) => {
-
-						let canvas, context;
-						const tileWidth = image.height;
-
-						for ( let i = 0; i < textures.length; i ++ ) {
-
-							canvas = document.createElement( 'canvas' );
-							context = canvas.getContext( '2d' );
-							canvas.height = tileWidth;
-							canvas.width = tileWidth;
-							context.drawImage( image, tileWidth * i, 0, tileWidth, tileWidth, 0, 0, tileWidth, tileWidth );
-							textures[ i ].image = canvas;
-							textures[ i ].needsUpdate = true;
-
-						}
-
-					} );
-
-				return textures;
-
-			}
-
-			function onWindowResize() {
-
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				controls.update(); // required when damping is enabled
-
-				renderer.render( scene, camera );
-
-			}
-
-		
+  renderer.render(scene, camera);
+}

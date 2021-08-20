@@ -1,140 +1,134 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import Stats from "three/examples/jsm/libs/stats.module.js";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
-			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass.js";
 
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-			import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-			import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-			import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-			import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js';
+let camera, stats;
+let composer, renderer, mixer, clock;
 
-			let camera, stats;
-			let composer, renderer, mixer, clock;
+const params = {
+  exposure: 1,
+  bloomStrength: 1.5,
+  bloomThreshold: 0,
+  bloomRadius: 0,
+};
 
-			const params = {
-				exposure: 1,
-				bloomStrength: 1.5,
-				bloomThreshold: 0,
-				bloomRadius: 0
-			};
+init();
 
-			init();
+function init() {
+  const container = document.getElementById("container");
 
-			function init() {
+  stats = new Stats();
+  container.appendChild(stats.dom);
 
-				const container = document.getElementById( 'container' );
+  clock = new THREE.Clock();
 
-				stats = new Stats();
-				container.appendChild( stats.dom );
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.toneMapping = THREE.ReinhardToneMapping;
+  container.appendChild(renderer.domElement);
 
-				clock = new THREE.Clock();
+  const scene = new THREE.Scene();
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.toneMapping = THREE.ReinhardToneMapping;
-				container.appendChild( renderer.domElement );
+  camera = new THREE.PerspectiveCamera(
+    40,
+    window.innerWidth / window.innerHeight,
+    1,
+    100
+  );
+  camera.position.set(-5, 2.5, -3.5);
+  scene.add(camera);
 
-				const scene = new THREE.Scene();
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.maxPolarAngle = Math.PI * 0.5;
+  controls.minDistance = 1;
+  controls.maxDistance = 10;
 
-				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 100 );
-				camera.position.set( - 5, 2.5, - 3.5 );
-				scene.add( camera );
+  scene.add(new THREE.AmbientLight(0x404040));
 
-				const controls = new OrbitControls( camera, renderer.domElement );
-				controls.maxPolarAngle = Math.PI * 0.5;
-				controls.minDistance = 1;
-				controls.maxDistance = 10;
+  const pointLight = new THREE.PointLight(0xffffff, 1);
+  camera.add(pointLight);
 
-				scene.add( new THREE.AmbientLight( 0x404040 ) );
+  const renderScene = new RenderPass(scene, camera);
 
-				const pointLight = new THREE.PointLight( 0xffffff, 1 );
-				camera.add( pointLight );
+  const bloomPass = new UnrealBloomPass(
+    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+  );
+  bloomPass.threshold = params.bloomThreshold;
+  bloomPass.strength = params.bloomStrength;
+  bloomPass.radius = params.bloomRadius;
 
-				const renderScene = new RenderPass( scene, camera );
+  composer = new EffectComposer(renderer);
+  composer.addPass(renderScene);
+  composer.addPass(bloomPass);
 
-				const bloomPass = new UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
-				bloomPass.threshold = params.bloomThreshold;
-				bloomPass.strength = params.bloomStrength;
-				bloomPass.radius = params.bloomRadius;
+  new GLTFLoader().load("models/gltf/PrimaryIonDrive.glb", function (gltf) {
+    const model = gltf.scene;
 
-				composer = new EffectComposer( renderer );
-				composer.addPass( renderScene );
-				composer.addPass( bloomPass );
+    scene.add(model);
 
-				new GLTFLoader().load( 'models/gltf/PrimaryIonDrive.glb', function ( gltf ) {
+    mixer = new THREE.AnimationMixer(model);
+    const clip = gltf.animations[0];
+    mixer.clipAction(clip.optimize()).play();
 
-					const model = gltf.scene;
+    animate();
+  });
 
-					scene.add( model );
+  const gui = new GUI();
 
-					mixer = new THREE.AnimationMixer( model );
-					const clip = gltf.animations[ 0 ];
-					mixer.clipAction( clip.optimize() ).play();
+  gui.add(params, "exposure", 0.1, 2).onChange(function (value) {
+    renderer.toneMappingExposure = Math.pow(value, 4.0);
+  });
 
-					animate();
+  gui.add(params, "bloomThreshold", 0.0, 1.0).onChange(function (value) {
+    bloomPass.threshold = Number(value);
+  });
 
-				} );
+  gui.add(params, "bloomStrength", 0.0, 3.0).onChange(function (value) {
+    bloomPass.strength = Number(value);
+  });
 
-				const gui = new GUI();
+  gui
+    .add(params, "bloomRadius", 0.0, 1.0)
+    .step(0.01)
+    .onChange(function (value) {
+      bloomPass.radius = Number(value);
+    });
 
-				gui.add( params, 'exposure', 0.1, 2 ).onChange( function ( value ) {
+  window.addEventListener("resize", onWindowResize);
+}
 
-					renderer.toneMappingExposure = Math.pow( value, 4.0 );
+function onWindowResize() {
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
-				} );
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
 
-				gui.add( params, 'bloomThreshold', 0.0, 1.0 ).onChange( function ( value ) {
+  renderer.setSize(width, height);
+  composer.setSize(width, height);
+}
 
-					bloomPass.threshold = Number( value );
+function animate() {
+  requestAnimationFrame(animate);
 
-				} );
+  const delta = clock.getDelta();
 
-				gui.add( params, 'bloomStrength', 0.0, 3.0 ).onChange( function ( value ) {
+  mixer.update(delta);
 
-					bloomPass.strength = Number( value );
+  stats.update();
 
-				} );
-
-				gui.add( params, 'bloomRadius', 0.0, 1.0 ).step( 0.01 ).onChange( function ( value ) {
-
-					bloomPass.radius = Number( value );
-
-				} );
-
-				window.addEventListener( 'resize', onWindowResize );
-
-			}
-
-			function onWindowResize() {
-
-				const width = window.innerWidth;
-				const height = window.innerHeight;
-
-				camera.aspect = width / height;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( width, height );
-				composer.setSize( width, height );
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				const delta = clock.getDelta();
-
-				mixer.update( delta );
-
-				stats.update();
-
-				composer.render();
-
-			}
-
-		
+  composer.render();
+}

@@ -1,129 +1,125 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
-			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 
-			import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-			import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-			import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { LuminosityShader } from "three/examples/jsm/shaders/LuminosityShader.js";
+import { SobelOperatorShader } from "three/examples/jsm/shaders/SobelOperatorShader.js";
 
-			import { LuminosityShader } from 'three/examples/jsm/shaders/LuminosityShader.js';
-			import { SobelOperatorShader } from 'three/examples/jsm/shaders/SobelOperatorShader.js';
+let camera, scene, renderer, composer;
 
-			let camera, scene, renderer, composer;
+let effectSobel;
 
-			let effectSobel;
+const params = {
+  enable: true,
+};
 
-			const params = {
-				enable: true
-			};
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  //
 
-			function init() {
+  scene = new THREE.Scene();
 
-				//
+  camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    200
+  );
+  camera.position.set(0, 10, 25);
+  camera.lookAt(scene.position);
 
-				scene = new THREE.Scene();
+  //
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 200 );
-				camera.position.set( 0, 10, 25 );
-				camera.lookAt( scene.position );
+  const geometry = new THREE.TorusKnotGeometry(8, 3, 256, 32, 2, 3);
+  const material = new THREE.MeshPhongMaterial({ color: 0xffff00 });
 
-				//
+  const mesh = new THREE.Mesh(geometry, material);
+  scene.add(mesh);
 
-				const geometry = new THREE.TorusKnotGeometry( 8, 3, 256, 32, 2, 3 );
-				const material = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
+  //
 
-				const mesh = new THREE.Mesh( geometry, material );
-				scene.add( mesh );
+  const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+  scene.add(ambientLight);
 
-				//
+  const pointLight = new THREE.PointLight(0xffffff, 0.8);
+  camera.add(pointLight);
+  scene.add(camera);
 
-				const ambientLight = new THREE.AmbientLight( 0xcccccc, 0.4 );
-				scene.add( ambientLight );
+  //
 
-				const pointLight = new THREE.PointLight( 0xffffff, 0.8 );
-				camera.add( pointLight );
-				scene.add( camera );
+  renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-				//
+  // postprocessing
 
-				renderer = new THREE.WebGLRenderer();
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
+  composer = new EffectComposer(renderer);
+  const renderPass = new RenderPass(scene, camera);
+  composer.addPass(renderPass);
 
-				// postprocessing
+  // color to grayscale conversion
 
-				composer = new EffectComposer( renderer );
-				const renderPass = new RenderPass( scene, camera );
-				composer.addPass( renderPass );
+  const effectGrayScale = new ShaderPass(LuminosityShader);
+  composer.addPass(effectGrayScale);
 
-				// color to grayscale conversion
+  // you might want to use a gaussian blur filter before
+  // the next pass to improve the result of the Sobel operator
 
-				const effectGrayScale = new ShaderPass( LuminosityShader );
-				composer.addPass( effectGrayScale );
+  // Sobel operator
 
-				// you might want to use a gaussian blur filter before
-				// the next pass to improve the result of the Sobel operator
+  effectSobel = new ShaderPass(SobelOperatorShader);
+  effectSobel.uniforms["resolution"].value.x =
+    window.innerWidth * window.devicePixelRatio;
+  effectSobel.uniforms["resolution"].value.y =
+    window.innerHeight * window.devicePixelRatio;
+  composer.addPass(effectSobel);
 
-				// Sobel operator
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 10;
+  controls.maxDistance = 100;
 
-				effectSobel = new ShaderPass( SobelOperatorShader );
-				effectSobel.uniforms[ 'resolution' ].value.x = window.innerWidth * window.devicePixelRatio;
-				effectSobel.uniforms[ 'resolution' ].value.y = window.innerHeight * window.devicePixelRatio;
-				composer.addPass( effectSobel );
+  //
 
-				const controls = new OrbitControls( camera, renderer.domElement );
-				controls.minDistance = 10;
-				controls.maxDistance = 100;
+  const gui = new GUI();
 
-				//
+  gui.add(params, "enable");
+  gui.open();
 
-				const gui = new GUI();
+  //
 
-				gui.add( params, 'enable' );
-				gui.open();
+  window.addEventListener("resize", onWindowResize);
+}
 
-				//
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-				window.addEventListener( 'resize', onWindowResize );
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  composer.setSize(window.innerWidth, window.innerHeight);
 
-			}
+  effectSobel.uniforms["resolution"].value.x =
+    window.innerWidth * window.devicePixelRatio;
+  effectSobel.uniforms["resolution"].value.y =
+    window.innerHeight * window.devicePixelRatio;
+}
 
-			function onWindowResize() {
+function animate() {
+  requestAnimationFrame(animate);
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				composer.setSize( window.innerWidth, window.innerHeight );
-
-				effectSobel.uniforms[ 'resolution' ].value.x = window.innerWidth * window.devicePixelRatio;
-				effectSobel.uniforms[ 'resolution' ].value.y = window.innerHeight * window.devicePixelRatio;
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				if ( params.enable === true ) {
-
-					composer.render();
-
-				} else {
-
-					renderer.render( scene, camera );
-
-				}
-
-			}
-
-		
+  if (params.enable === true) {
+    composer.render();
+  } else {
+    renderer.render(scene, camera);
+  }
+}

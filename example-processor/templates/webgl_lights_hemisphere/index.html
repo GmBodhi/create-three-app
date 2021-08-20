@@ -1,54 +1,54 @@
-<html><head>
-		<title>three.js webgl - lights - hemisphere light</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-		
-		
-	</head>
-	<body style="overflow: hidden;">
+<html>
+  <head>
+    <title>three.js webgl - lights - hemisphere light</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body style="overflow: hidden">
+    <div id="container"></div>
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      - webgl hemisphere light example<br />
+      flamingo by
+      <a href="https://mirada.com/" target="_blank" rel="noopener">mirada</a>
+      from <a href="http://www.ro.me" target="_blank" rel="noopener">ro.me</a
+      ><br /><br />
+      <button id="hemisphereButton">toggle hemisphere light</button>
+      <button id="directionalButton">toggle directional light</button>
+    </div>
 
-		<div id="container"></div>
-		<div id="info">
-			<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - webgl hemisphere light example<br>
-			flamingo by <a href="https://mirada.com/" target="_blank" rel="noopener">mirada</a> from <a href="http://www.ro.me" target="_blank" rel="noopener">ro.me</a><br><br>
-			<button id="hemisphereButton">toggle hemisphere light</button>
-			<button id="directionalButton">toggle directional light</button>
-		</div>
+    <script type="x-shader/x-vertex" id="vertexShader">
 
-		<script type="x-shader/x-vertex" id="vertexShader">
+      varying vec3 vWorldPosition;
 
-			varying vec3 vWorldPosition;
+      void main() {
 
-			void main() {
+      	vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
+      	vWorldPosition = worldPosition.xyz;
 
-				vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
-				vWorldPosition = worldPosition.xyz;
+      	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
 
-				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+      }
+    </script>
 
-			}
+    <script type="x-shader/x-fragment" id="fragmentShader">
 
-		</script>
+      uniform vec3 topColor;
+      uniform vec3 bottomColor;
+      uniform float offset;
+      uniform float exponent;
 
-		<script type="x-shader/x-fragment" id="fragmentShader">
+      varying vec3 vWorldPosition;
 
-			uniform vec3 topColor;
-			uniform vec3 bottomColor;
-			uniform float offset;
-			uniform float exponent;
+      void main() {
 
-			varying vec3 vWorldPosition;
+      	float h = normalize( vWorldPosition + offset ).y;
+      	gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h , 0.0), exponent ), 0.0 ) ), 1.0 );
 
-			void main() {
-
-				float h = normalize( vWorldPosition + offset ).y;
-				gl_FragColor = vec4( mix( bottomColor, topColor, max( pow( max( h , 0.0), exponent ), 0.0 ) ), 1.0 );
-
-			}
-
-		</script>
-
-		
-	
-
-</body></html>
+      }
+    </script>
+  </body>
+</html>

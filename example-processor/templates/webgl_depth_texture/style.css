@@ -1,10 +1,8 @@
-
-			#error {
-				margin: auto;
-				margin-top: 40px;
-				display: block;
-				max-width: 400px;
-				padding: 20px;
-				background: #CE0808;
-			}
-		
+#error {
+  margin: auto;
+  margin-top: 40px;
+  display: block;
+  max-width: 400px;
+  padding: 20px;
+  background: #ce0808;
+}

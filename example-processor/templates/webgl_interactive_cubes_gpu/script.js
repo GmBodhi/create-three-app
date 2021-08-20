@@ -1,228 +1,226 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
+import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
+import { BufferGeometryUtils } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
-			import { TrackballControls } from 'three/examples/jsm/controls/TrackballControls.js';
-			import { BufferGeometryUtils } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+let container, stats;
+let camera, controls, scene, renderer;
+let pickingTexture, pickingScene;
+let highlightBox;
 
-			let container, stats;
-			let camera, controls, scene, renderer;
-			let pickingTexture, pickingScene;
-			let highlightBox;
+const pickingData = [];
 
-			const pickingData = [];
+const pointer = new THREE.Vector2();
+const offset = new THREE.Vector3(10, 10, 10);
 
-			const pointer = new THREE.Vector2();
-			const offset = new THREE.Vector3( 10, 10, 10 );
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  container = document.getElementById("container");
 
-			function init() {
+  camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    1,
+    10000
+  );
+  camera.position.z = 1000;
 
-				container = document.getElementById( 'container' );
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xffffff);
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.z = 1000;
+  pickingScene = new THREE.Scene();
+  pickingTexture = new THREE.WebGLRenderTarget(1, 1);
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xffffff );
+  scene.add(new THREE.AmbientLight(0x555555));
 
-				pickingScene = new THREE.Scene();
-				pickingTexture = new THREE.WebGLRenderTarget( 1, 1 );
+  const light = new THREE.SpotLight(0xffffff, 1.5);
+  light.position.set(0, 500, 2000);
+  scene.add(light);
 
-				scene.add( new THREE.AmbientLight( 0x555555 ) );
+  const pickingMaterial = new THREE.MeshBasicMaterial({ vertexColors: true });
+  const defaultMaterial = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    flatShading: true,
+    vertexColors: true,
+    shininess: 0,
+  });
 
-				const light = new THREE.SpotLight( 0xffffff, 1.5 );
-				light.position.set( 0, 500, 2000 );
-				scene.add( light );
+  function applyVertexColors(geometry, color) {
+    const position = geometry.attributes.position;
+    const colors = [];
 
-				const pickingMaterial = new THREE.MeshBasicMaterial( { vertexColors: true } );
-				const defaultMaterial = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true, vertexColors: true, shininess: 0	} );
+    for (let i = 0; i < position.count; i++) {
+      colors.push(color.r, color.g, color.b);
+    }
 
-				function applyVertexColors( geometry, color ) {
+    geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+  }
 
-					const position = geometry.attributes.position;
-					const colors = [];
+  const geometriesDrawn = [];
+  const geometriesPicking = [];
 
-					for ( let i = 0; i < position.count; i ++ ) {
+  const matrix = new THREE.Matrix4();
+  const quaternion = new THREE.Quaternion();
+  const color = new THREE.Color();
 
-						colors.push( color.r, color.g, color.b );
+  for (let i = 0; i < 5000; i++) {
+    let geometry = new THREE.BoxGeometry();
 
-					}
+    const position = new THREE.Vector3();
+    position.x = Math.random() * 10000 - 5000;
+    position.y = Math.random() * 6000 - 3000;
+    position.z = Math.random() * 8000 - 4000;
 
-					geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+    const rotation = new THREE.Euler();
+    rotation.x = Math.random() * 2 * Math.PI;
+    rotation.y = Math.random() * 2 * Math.PI;
+    rotation.z = Math.random() * 2 * Math.PI;
 
-				}
+    const scale = new THREE.Vector3();
+    scale.x = Math.random() * 200 + 100;
+    scale.y = Math.random() * 200 + 100;
+    scale.z = Math.random() * 200 + 100;
 
-				const geometriesDrawn = [];
-				const geometriesPicking = [];
+    quaternion.setFromEuler(rotation);
+    matrix.compose(position, quaternion, scale);
 
-				const matrix = new THREE.Matrix4();
-				const quaternion = new THREE.Quaternion();
-				const color = new THREE.Color();
+    geometry.applyMatrix4(matrix);
 
-				for ( let i = 0; i < 5000; i ++ ) {
+    // give the geometry's vertices a random color, to be displayed
 
-					let geometry = new THREE.BoxGeometry();
+    applyVertexColors(geometry, color.setHex(Math.random() * 0xffffff));
 
-					const position = new THREE.Vector3();
-					position.x = Math.random() * 10000 - 5000;
-					position.y = Math.random() * 6000 - 3000;
-					position.z = Math.random() * 8000 - 4000;
+    geometriesDrawn.push(geometry);
 
-					const rotation = new THREE.Euler();
-					rotation.x = Math.random() * 2 * Math.PI;
-					rotation.y = Math.random() * 2 * Math.PI;
-					rotation.z = Math.random() * 2 * Math.PI;
+    geometry = geometry.clone();
 
-					const scale = new THREE.Vector3();
-					scale.x = Math.random() * 200 + 100;
-					scale.y = Math.random() * 200 + 100;
-					scale.z = Math.random() * 200 + 100;
+    // give the geometry's vertices a color corresponding to the "id"
 
-					quaternion.setFromEuler( rotation );
-					matrix.compose( position, quaternion, scale );
+    applyVertexColors(geometry, color.setHex(i));
 
-					geometry.applyMatrix4( matrix );
+    geometriesPicking.push(geometry);
 
-					// give the geometry's vertices a random color, to be displayed
+    pickingData[i] = {
+      position: position,
+      rotation: rotation,
+      scale: scale,
+    };
+  }
 
-					applyVertexColors( geometry, color.setHex( Math.random() * 0xffffff ) );
+  const objects = new THREE.Mesh(
+    BufferGeometryUtils.mergeBufferGeometries(geometriesDrawn),
+    defaultMaterial
+  );
+  scene.add(objects);
 
-					geometriesDrawn.push( geometry );
+  pickingScene.add(
+    new THREE.Mesh(
+      BufferGeometryUtils.mergeBufferGeometries(geometriesPicking),
+      pickingMaterial
+    )
+  );
 
-					geometry = geometry.clone();
+  highlightBox = new THREE.Mesh(
+    new THREE.BoxGeometry(),
+    new THREE.MeshLambertMaterial({ color: 0xffff00 })
+  );
+  scene.add(highlightBox);
 
-					// give the geometry's vertices a color corresponding to the "id"
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
 
-					applyVertexColors( geometry, color.setHex( i ) );
+  controls = new TrackballControls(camera, renderer.domElement);
+  controls.rotateSpeed = 1.0;
+  controls.zoomSpeed = 1.2;
+  controls.panSpeed = 0.8;
+  controls.noZoom = false;
+  controls.noPan = false;
+  controls.staticMoving = true;
+  controls.dynamicDampingFactor = 0.3;
 
-					geometriesPicking.push( geometry );
+  stats = new Stats();
+  container.appendChild(stats.dom);
 
-					pickingData[ i ] = {
+  renderer.domElement.addEventListener("pointermove", onPointerMove);
+}
 
-						position: position,
-						rotation: rotation,
-						scale: scale
+//
 
-					};
+function onPointerMove(e) {
+  pointer.x = e.clientX;
+  pointer.y = e.clientY;
+}
 
-				}
+function animate() {
+  requestAnimationFrame(animate);
 
-				const objects = new THREE.Mesh( BufferGeometryUtils.mergeBufferGeometries( geometriesDrawn ), defaultMaterial );
-				scene.add( objects );
+  render();
+  stats.update();
+}
 
-				pickingScene.add( new THREE.Mesh( BufferGeometryUtils.mergeBufferGeometries( geometriesPicking ), pickingMaterial ) );
+function pick() {
+  //render the picking scene off-screen
 
-				highlightBox = new THREE.Mesh(
-					new THREE.BoxGeometry(),
-					new THREE.MeshLambertMaterial( { color: 0xffff00 }
-					) );
-				scene.add( highlightBox );
+  // set the view offset to represent just a single pixel under the mouse
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+  camera.setViewOffset(
+    renderer.domElement.width,
+    renderer.domElement.height,
+    (pointer.x * window.devicePixelRatio) | 0,
+    (pointer.y * window.devicePixelRatio) | 0,
+    1,
+    1
+  );
 
-				controls = new TrackballControls( camera, renderer.domElement );
-				controls.rotateSpeed = 1.0;
-				controls.zoomSpeed = 1.2;
-				controls.panSpeed = 0.8;
-				controls.noZoom = false;
-				controls.noPan = false;
-				controls.staticMoving = true;
-				controls.dynamicDampingFactor = 0.3;
+  // render the scene
 
-				stats = new Stats();
-				container.appendChild( stats.dom );
+  renderer.setRenderTarget(pickingTexture);
+  renderer.render(pickingScene, camera);
 
-				renderer.domElement.addEventListener( 'pointermove', onPointerMove );
+  // clear the view offset so rendering returns to normal
 
-			}
+  camera.clearViewOffset();
 
-			//
+  //create buffer for reading single pixel
 
-			function onPointerMove( e ) {
+  const pixelBuffer = new Uint8Array(4);
 
-				pointer.x = e.clientX;
-				pointer.y = e.clientY;
+  //read the pixel
 
-			}
+  renderer.readRenderTargetPixels(pickingTexture, 0, 0, 1, 1, pixelBuffer);
 
-			function animate() {
+  //interpret the pixel as an ID
 
-				requestAnimationFrame( animate );
+  const id = (pixelBuffer[0] << 16) | (pixelBuffer[1] << 8) | pixelBuffer[2];
+  const data = pickingData[id];
 
-				render();
-				stats.update();
+  if (data) {
+    //move our highlightBox so that it surrounds the picked object
 
-			}
+    if (data.position && data.rotation && data.scale) {
+      highlightBox.position.copy(data.position);
+      highlightBox.rotation.copy(data.rotation);
+      highlightBox.scale.copy(data.scale).add(offset);
+      highlightBox.visible = true;
+    }
+  } else {
+    highlightBox.visible = false;
+  }
+}
 
-			function pick() {
+function render() {
+  controls.update();
 
-				//render the picking scene off-screen
+  pick();
 
-				// set the view offset to represent just a single pixel under the mouse
-
-				camera.setViewOffset( renderer.domElement.width, renderer.domElement.height, pointer.x * window.devicePixelRatio | 0, pointer.y * window.devicePixelRatio | 0, 1, 1 );
-
-				// render the scene
-
-				renderer.setRenderTarget( pickingTexture );
-				renderer.render( pickingScene, camera );
-
-				// clear the view offset so rendering returns to normal
-
-				camera.clearViewOffset();
-
-				//create buffer for reading single pixel
-
-				const pixelBuffer = new Uint8Array( 4 );
-
-				//read the pixel
-
-				renderer.readRenderTargetPixels( pickingTexture, 0, 0, 1, 1, pixelBuffer );
-
-				//interpret the pixel as an ID
-
-				const id = ( pixelBuffer[ 0 ] << 16 ) | ( pixelBuffer[ 1 ] << 8 ) | ( pixelBuffer[ 2 ] );
-				const data = pickingData[ id ];
-
-				if ( data ) {
-
-					//move our highlightBox so that it surrounds the picked object
-
-					if ( data.position && data.rotation && data.scale ) {
-
-						highlightBox.position.copy( data.position );
-						highlightBox.rotation.copy( data.rotation );
-						highlightBox.scale.copy( data.scale ).add( offset );
-						highlightBox.visible = true;
-
-					}
-
-				} else {
-
-					highlightBox.visible = false;
-
-				}
-
-			}
-
-			function render() {
-
-				controls.update();
-
-				pick();
-
-				renderer.setRenderTarget( null );
-				renderer.render( scene, camera );
-
-			}
-
-		
+  renderer.setRenderTarget(null);
+  renderer.render(scene, camera);
+}

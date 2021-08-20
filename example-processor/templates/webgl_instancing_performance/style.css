@@ -1,9 +1,7 @@
+#info {
+  background-color: rgba(0, 0, 0, 0.75);
+}
 
-		#info {
-			background-color: rgba(0,0,0,0.75);
-		}
-
-		.dg .folder .gui-stats {
-			height: auto;
-		}
-	
+.dg .folder .gui-stats {
+  height: auto;
+}
