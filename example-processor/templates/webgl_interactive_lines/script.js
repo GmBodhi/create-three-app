@@ -1,188 +1,174 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
+
+import Stats from "three/examples/jsm/libs/stats.module.js";
+
+let container, stats;
+let camera, scene, raycaster, renderer, parentTransform, sphereInter;
+
+const pointer = new THREE.Vector2();
+const radius = 100;
+let theta = 0;
+
+init();
+animate();
+
+function init() {
+  container = document.createElement("div");
+  document.body.appendChild(container);
+
+  const info = document.createElement("div");
+  info.style.position = "absolute";
+  info.style.top = "10px";
+  info.style.width = "100%";
+  info.style.textAlign = "center";
+  info.innerHTML =
+    '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - interactive lines';
+  container.appendChild(info);
 
-			import * as THREE from 'three';
+  camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    1,
+    10000
+  );
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xf0f0f0);
 
-			let container, stats;
-			let camera, scene, raycaster, renderer, parentTransform, sphereInter;
+  const geometry = new THREE.SphereGeometry(5);
+  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
 
-			const pointer = new THREE.Vector2();
-			const radius = 100;
-			let theta = 0;
+  sphereInter = new THREE.Mesh(geometry, material);
+  sphereInter.visible = false;
+  scene.add(sphereInter);
 
-			init();
-			animate();
+  const lineGeometry = new THREE.BufferGeometry();
+  const points = [];
 
-			function init() {
+  const point = new THREE.Vector3();
+  const direction = new THREE.Vector3();
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+  for (let i = 0; i < 50; i++) {
+    direction.x += Math.random() - 0.5;
+    direction.y += Math.random() - 0.5;
+    direction.z += Math.random() - 0.5;
+    direction.normalize().multiplyScalar(10);
 
-				const info = document.createElement( 'div' );
-				info.style.position = 'absolute';
-				info.style.top = '10px';
-				info.style.width = '100%';
-				info.style.textAlign = 'center';
-				info.innerHTML = '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - interactive lines';
-				container.appendChild( info );
+    point.add(direction);
+    points.push(point.x, point.y, point.z);
+  }
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 10000 );
+  lineGeometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(points, 3)
+  );
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xf0f0f0 );
+  parentTransform = new THREE.Object3D();
+  parentTransform.position.x = Math.random() * 40 - 20;
+  parentTransform.position.y = Math.random() * 40 - 20;
+  parentTransform.position.z = Math.random() * 40 - 20;
 
-				const geometry = new THREE.SphereGeometry( 5 );
-				const material = new THREE.MeshBasicMaterial( { color: 0xff0000 } );
+  parentTransform.rotation.x = Math.random() * 2 * Math.PI;
+  parentTransform.rotation.y = Math.random() * 2 * Math.PI;
+  parentTransform.rotation.z = Math.random() * 2 * Math.PI;
 
-				sphereInter = new THREE.Mesh( geometry, material );
-				sphereInter.visible = false;
-				scene.add( sphereInter );
+  parentTransform.scale.x = Math.random() + 0.5;
+  parentTransform.scale.y = Math.random() + 0.5;
+  parentTransform.scale.z = Math.random() + 0.5;
 
-				const lineGeometry = new THREE.BufferGeometry();
-				const points = [];
+  for (let i = 0; i < 50; i++) {
+    let object;
 
-				const point = new THREE.Vector3();
-				const direction = new THREE.Vector3();
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: Math.random() * 0xffffff,
+    });
 
-				for ( let i = 0; i < 50; i ++ ) {
+    if (Math.random() > 0.5) {
+      object = new THREE.Line(lineGeometry, lineMaterial);
+    } else {
+      object = new THREE.LineSegments(lineGeometry, lineMaterial);
+    }
 
-					direction.x += Math.random() - 0.5;
-					direction.y += Math.random() - 0.5;
-					direction.z += Math.random() - 0.5;
-					direction.normalize().multiplyScalar( 10 );
+    object.position.x = Math.random() * 400 - 200;
+    object.position.y = Math.random() * 400 - 200;
+    object.position.z = Math.random() * 400 - 200;
 
-					point.add( direction );
-					points.push( point.x, point.y, point.z );
+    object.rotation.x = Math.random() * 2 * Math.PI;
+    object.rotation.y = Math.random() * 2 * Math.PI;
+    object.rotation.z = Math.random() * 2 * Math.PI;
 
-				}
+    object.scale.x = Math.random() + 0.5;
+    object.scale.y = Math.random() + 0.5;
+    object.scale.z = Math.random() + 0.5;
 
-				lineGeometry.setAttribute( 'position', new THREE.Float32BufferAttribute( points, 3 ) );
+    parentTransform.add(object);
+  }
 
-				parentTransform = new THREE.Object3D();
-				parentTransform.position.x = Math.random() * 40 - 20;
-				parentTransform.position.y = Math.random() * 40 - 20;
-				parentTransform.position.z = Math.random() * 40 - 20;
+  scene.add(parentTransform);
 
-				parentTransform.rotation.x = Math.random() * 2 * Math.PI;
-				parentTransform.rotation.y = Math.random() * 2 * Math.PI;
-				parentTransform.rotation.z = Math.random() * 2 * Math.PI;
+  raycaster = new THREE.Raycaster();
+  raycaster.params.Line.threshold = 3;
 
-				parentTransform.scale.x = Math.random() + 0.5;
-				parentTransform.scale.y = Math.random() + 0.5;
-				parentTransform.scale.z = Math.random() + 0.5;
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
 
-				for ( let i = 0; i < 50; i ++ ) {
+  stats = new Stats();
+  container.appendChild(stats.dom);
 
-					let object;
+  document.addEventListener("pointermove", onPointerMove);
 
-					const lineMaterial = new THREE.LineBasicMaterial( { color: Math.random() * 0xffffff } );
+  //
 
-					if ( Math.random() > 0.5 ) {
+  window.addEventListener("resize", onWindowResize);
+}
 
-						object = new THREE.Line( lineGeometry, lineMaterial );
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-					} else {
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-						object = new THREE.LineSegments( lineGeometry, lineMaterial );
+function onPointerMove(event) {
+  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+}
 
-					}
+//
 
-					object.position.x = Math.random() * 400 - 200;
-					object.position.y = Math.random() * 400 - 200;
-					object.position.z = Math.random() * 400 - 200;
+function animate() {
+  requestAnimationFrame(animate);
 
-					object.rotation.x = Math.random() * 2 * Math.PI;
-					object.rotation.y = Math.random() * 2 * Math.PI;
-					object.rotation.z = Math.random() * 2 * Math.PI;
+  render();
+  stats.update();
+}
 
-					object.scale.x = Math.random() + 0.5;
-					object.scale.y = Math.random() + 0.5;
-					object.scale.z = Math.random() + 0.5;
+function render() {
+  theta += 0.1;
 
-					parentTransform.add( object );
+  camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
+  camera.position.y = radius * Math.sin(THREE.MathUtils.degToRad(theta));
+  camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
+  camera.lookAt(scene.position);
 
-				}
+  camera.updateMatrixWorld();
 
-				scene.add( parentTransform );
+  // find intersections
 
-				raycaster = new THREE.Raycaster();
-				raycaster.params.Line.threshold = 3;
+  raycaster.setFromCamera(pointer, camera);
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+  const intersects = raycaster.intersectObjects(parentTransform.children, true);
 
-				stats = new Stats();
-				container.appendChild( stats.dom );
+  if (intersects.length > 0) {
+    sphereInter.visible = true;
+    sphereInter.position.copy(intersects[0].point);
+  } else {
+    sphereInter.visible = false;
+  }
 
-				document.addEventListener( 'pointermove', onPointerMove );
-
-				//
-
-				window.addEventListener( 'resize', onWindowResize );
-
-			}
-
-			function onWindowResize() {
-
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
-
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-			}
-
-			function onPointerMove( event ) {
-
-				pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-				pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-
-			}
-
-			//
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				render();
-				stats.update();
-
-			}
-
-			function render() {
-
-				theta += 0.1;
-
-				camera.position.x = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
-				camera.position.y = radius * Math.sin( THREE.MathUtils.degToRad( theta ) );
-				camera.position.z = radius * Math.cos( THREE.MathUtils.degToRad( theta ) );
-				camera.lookAt( scene.position );
-
-				camera.updateMatrixWorld();
-
-				// find intersections
-
-				raycaster.setFromCamera( pointer, camera );
-
-				const intersects = raycaster.intersectObjects( parentTransform.children, true );
-
-				if ( intersects.length > 0 ) {
-
-					sphereInter.visible = true;
-					sphereInter.position.copy( intersects[ 0 ].point );
-
-				} else {
-
-					sphereInter.visible = false;
-
-				}
-
-				renderer.render( scene, camera );
-
-			}
-
-		
+  renderer.render(scene, camera);
+}

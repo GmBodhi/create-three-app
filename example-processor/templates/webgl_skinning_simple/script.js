@@ -1,117 +1,115 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-			import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+let stats, mixer, camera, scene, renderer, clock;
 
-			let stats, mixer, camera, scene, renderer, clock;
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  const container = document.createElement("div");
+  document.body.appendChild(container);
 
-			function init() {
+  camera = new THREE.PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    1,
+    1000
+  );
+  camera.position.set(18, 6, 18);
 
-				const container = document.createElement( 'div' );
-				document.body.appendChild( container );
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xa0a0a0);
+  scene.fog = new THREE.Fog(0xa0a0a0, 70, 100);
 
-				camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 1000 );
-				camera.position.set( 18, 6, 18 );
+  clock = new THREE.Clock();
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xa0a0a0 );
-				scene.fog = new THREE.Fog( 0xa0a0a0, 70, 100 );
+  // ground
 
-				clock = new THREE.Clock();
+  const geometry = new THREE.PlaneGeometry(500, 500);
+  const material = new THREE.MeshPhongMaterial({
+    color: 0x999999,
+    depthWrite: false,
+  });
 
-				// ground
+  const ground = new THREE.Mesh(geometry, material);
+  ground.position.set(0, -5, 0);
+  ground.rotation.x = -Math.PI / 2;
+  ground.receiveShadow = true;
+  scene.add(ground);
 
-				const geometry = new THREE.PlaneGeometry( 500, 500 );
-				const material = new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } );
+  const grid = new THREE.GridHelper(500, 100, 0x000000, 0x000000);
+  grid.position.y = -5;
+  grid.material.opacity = 0.2;
+  grid.material.transparent = true;
+  scene.add(grid);
 
-				const ground = new THREE.Mesh( geometry, material );
-				ground.position.set( 0, - 5, 0 );
-				ground.rotation.x = - Math.PI / 2;
-				ground.receiveShadow = true;
-				scene.add( ground );
+  // lights
 
-				const grid = new THREE.GridHelper( 500, 100, 0x000000, 0x000000 );
-				grid.position.y = - 5;
-				grid.material.opacity = 0.2;
-				grid.material.transparent = true;
-				scene.add( grid );
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444, 0.6);
+  hemiLight.position.set(0, 200, 0);
+  scene.add(hemiLight);
 
-				// lights
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(0, 20, 10);
+  dirLight.castShadow = true;
+  dirLight.shadow.camera.top = 18;
+  dirLight.shadow.camera.bottom = -10;
+  dirLight.shadow.camera.left = -12;
+  dirLight.shadow.camera.right = 12;
+  scene.add(dirLight);
 
-				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444, 0.6 );
-				hemiLight.position.set( 0, 200, 0 );
-				scene.add( hemiLight );
+  //
 
-				const dirLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
-				dirLight.position.set( 0, 20, 10 );
-				dirLight.castShadow = true;
-				dirLight.shadow.camera.top = 18;
-				dirLight.shadow.camera.bottom = - 10;
-				dirLight.shadow.camera.left = - 12;
-				dirLight.shadow.camera.right = 12;
-				scene.add( dirLight );
+  const loader = new GLTFLoader();
+  loader.load(
+    "three/examples/models/gltf/SimpleSkinning.gltf",
+    function (gltf) {
+      scene.add(gltf.scene);
 
-				//
+      gltf.scene.traverse(function (child) {
+        if (child.isSkinnedMesh) child.castShadow = true;
+      });
 
-				const loader = new GLTFLoader();
-				loader.load( 'three/examples/models/gltf/SimpleSkinning.gltf', function ( gltf ) {
+      mixer = new THREE.AnimationMixer(gltf.scene);
+      mixer.clipAction(gltf.animations[0]).play();
+    }
+  );
 
-					scene.add( gltf.scene );
+  //
 
-					gltf.scene.traverse( function ( child ) {
+  renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  container.appendChild(renderer.domElement);
 
-						if ( child.isSkinnedMesh ) child.castShadow = true;
+  //
 
-					} );
+  stats = new Stats();
+  container.appendChild(stats.dom);
 
-					mixer = new THREE.AnimationMixer( gltf.scene );
-					mixer.clipAction( gltf.animations[ 0 ] ).play();
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
+  controls.minDistance = 5;
+  controls.maxDistance = 50;
+}
 
-				} );
+function animate() {
+  requestAnimationFrame(animate);
 
-				//
+  if (mixer) mixer.update(clock.getDelta());
 
-				renderer = new THREE.WebGLRenderer();
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				renderer.shadowMap.enabled = true;
-				container.appendChild( renderer.domElement );
+  render();
+  stats.update();
+}
 
-				//
-
-				stats = new Stats();
-				container.appendChild( stats.dom );
-
-				const controls = new OrbitControls( camera, renderer.domElement );
-				controls.enablePan = false;
-				controls.minDistance = 5;
-				controls.maxDistance = 50;
-
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				if ( mixer ) mixer.update( clock.getDelta() );
-
-				render();
-				stats.update();
-
-			}
-
-			function render() {
-
-				renderer.render( scene, camera );
-
-			}
-
-		
+function render() {
+  renderer.render(scene, camera);
+}

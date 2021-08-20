@@ -1,224 +1,204 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { OBB } from "three/examples/jsm/math/OBB.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-			import { OBB } from 'three/examples/jsm/math/OBB.js';
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
+let camera, scene, renderer, clock, controls, stats, raycaster, hitbox;
 
-			let camera, scene, renderer, clock, controls, stats, raycaster, hitbox;
+const objects = [],
+  mouse = new THREE.Vector2();
 
-			const objects = [], mouse = new THREE.Vector2();
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    1,
+    1000
+  );
+  camera.position.set(0, 0, 75);
 
-			function init() {
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xffffff);
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 1000 );
-				camera.position.set( 0, 0, 75 );
+  clock = new THREE.Clock();
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xffffff );
+  raycaster = new THREE.Raycaster();
 
-				clock = new THREE.Clock();
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x222222, 1.5);
+  hemiLight.position.set(1, 1, 1);
+  scene.add(hemiLight);
 
-				raycaster = new THREE.Raycaster();
+  const size = new THREE.Vector3(10, 5, 6);
+  const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
 
-				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x222222, 1.5 );
-				hemiLight.position.set( 1, 1, 1 );
-				scene.add( hemiLight );
+  // setup OBB on geometry level (doing this manually for now)
 
-				const size = new THREE.Vector3( 10, 5, 6 );
-				const geometry = new THREE.BoxGeometry( size.x, size.y, size.z );
+  geometry.userData.obb = new OBB();
+  geometry.userData.obb.halfSize.copy(size).multiplyScalar(0.5);
 
-				// setup OBB on geometry level (doing this manually for now)
+  for (let i = 0; i < 100; i++) {
+    const object = new THREE.Mesh(
+      geometry,
+      new THREE.MeshLambertMaterial({ color: 0x00ff00 })
+    );
+    object.matrixAutoUpdate = false;
 
-				geometry.userData.obb = new OBB();
-				geometry.userData.obb.halfSize.copy( size ).multiplyScalar( 0.5 );
+    object.position.x = Math.random() * 80 - 40;
+    object.position.y = Math.random() * 80 - 40;
+    object.position.z = Math.random() * 80 - 40;
 
-				for ( let i = 0; i < 100; i ++ ) {
+    object.rotation.x = Math.random() * 2 * Math.PI;
+    object.rotation.y = Math.random() * 2 * Math.PI;
+    object.rotation.z = Math.random() * 2 * Math.PI;
 
-					const object = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0x00ff00 } ) );
-					object.matrixAutoUpdate = false;
+    object.scale.x = Math.random() + 0.5;
+    object.scale.y = Math.random() + 0.5;
+    object.scale.z = Math.random() + 0.5;
 
-					object.position.x = Math.random() * 80 - 40;
-					object.position.y = Math.random() * 80 - 40;
-					object.position.z = Math.random() * 80 - 40;
+    scene.add(object);
 
-					object.rotation.x = Math.random() * 2 * Math.PI;
-					object.rotation.y = Math.random() * 2 * Math.PI;
-					object.rotation.z = Math.random() * 2 * Math.PI;
+    // bounding volume on object level (this will reflect the current world transform)
 
-					object.scale.x = Math.random() + 0.5;
-					object.scale.y = Math.random() + 0.5;
-					object.scale.z = Math.random() + 0.5;
+    object.userData.obb = new OBB();
 
-					scene.add( object );
+    objects.push(object);
+  }
 
-					// bounding volume on object level (this will reflect the current world transform)
+  //
 
-					object.userData.obb = new OBB();
+  hitbox = new THREE.Mesh(
+    geometry,
+    new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true })
+  );
 
-					objects.push( object );
+  //
 
-				}
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-				//
+  //
 
-				hitbox = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { color: 0x000000, wireframe: true } ) );
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
 
-				//
+  //
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
 
-				//
+  //
 
-				controls = new OrbitControls( camera, renderer.domElement );
-				controls.enableDamping = true;
+  window.addEventListener("resize", onWindowResize);
 
-				//
+  document.addEventListener("click", onClick);
+}
 
-				stats = new Stats();
-				document.body.appendChild( stats.dom );
+function onClick(event) {
+  event.preventDefault();
 
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-				//
+  raycaster.setFromCamera(mouse, camera);
 
-				window.addEventListener( 'resize', onWindowResize );
+  const intersectionPoint = new THREE.Vector3();
+  const intersections = [];
 
-				document.addEventListener( 'click', onClick );
+  for (let i = 0, il = objects.length; i < il; i++) {
+    const object = objects[i];
+    const obb = object.userData.obb;
 
-			}
+    const ray = raycaster.ray;
 
-			function onClick( event ) {
+    if (obb.intersectRay(ray, intersectionPoint) !== null) {
+      const distance = ray.origin.distanceTo(intersectionPoint);
+      intersections.push({ distance: distance, object: object });
+    }
+  }
 
-				event.preventDefault();
+  if (intersections.length > 0) {
+    // determine closest intersection and highlight the respective 3D object
 
-				mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
-				mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+    intersections.sort(sortIntersections);
 
-				raycaster.setFromCamera( mouse, camera );
+    intersections[0].object.add(hitbox);
+  } else {
+    const parent = hitbox.parent;
 
-				const intersectionPoint = new THREE.Vector3();
-				const intersections = [];
+    if (parent) parent.remove(hitbox);
+  }
+}
 
-				for ( let i = 0, il = objects.length; i < il; i ++ ) {
+function sortIntersections(a, b) {
+  return a.distance - b.distance;
+}
 
-					const object = objects[ i ];
-					const obb = object.userData.obb;
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-					const ray = raycaster.ray;
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-					if ( obb.intersectRay( ray, intersectionPoint ) !== null ) {
+//
 
-						const distance = ray.origin.distanceTo( intersectionPoint );
-						intersections.push( { distance: distance, object: object } );
+function animate() {
+  requestAnimationFrame(animate);
 
-					}
+  controls.update();
 
-				}
+  // transform cubes
 
-				if ( intersections.length > 0 ) {
+  const delta = clock.getDelta();
 
-					// determine closest intersection and highlight the respective 3D object
+  for (let i = 0, il = objects.length; i < il; i++) {
+    const object = objects[i];
 
-					intersections.sort( sortIntersections );
+    object.rotation.x += delta * Math.PI * 0.2;
+    object.rotation.y += delta * Math.PI * 0.1;
 
-					intersections[ 0 ].object.add( hitbox );
+    object.updateMatrix();
+    object.updateMatrixWorld();
 
-				} else {
+    // update OBB
 
-					const parent = hitbox.parent;
+    object.userData.obb.copy(object.geometry.userData.obb);
+    object.userData.obb.applyMatrix4(object.matrixWorld);
 
-					if ( parent ) parent.remove( hitbox );
+    // reset
 
-				}
+    object.material.color.setHex(0x00ff00);
+  }
 
-			}
+  // collision detection
 
-			function sortIntersections( a, b ) {
+  for (let i = 0, il = objects.length; i < il; i++) {
+    const object = objects[i];
+    const obb = object.userData.obb;
 
-				return a.distance - b.distance;
+    for (let j = i + 1, jl = objects.length; j < jl; j++) {
+      const objectToTest = objects[j];
+      const obbToTest = objectToTest.userData.obb;
 
-			}
+      // now perform intersection test
 
-			function onWindowResize() {
+      if (obb.intersectsOBB(obbToTest) === true) {
+        object.material.color.setHex(0xff0000);
+        objectToTest.material.color.setHex(0xff0000);
+      }
+    }
+  }
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+  renderer.render(scene, camera);
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-			}
-
-			//
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				controls.update();
-
-				// transform cubes
-
-				const delta = clock.getDelta();
-
-				for ( let i = 0, il = objects.length; i < il; i ++ ) {
-
-					const object = objects[ i ];
-
-					object.rotation.x += delta * Math.PI * 0.20;
-					object.rotation.y += delta * Math.PI * 0.1;
-
-					object.updateMatrix();
-					object.updateMatrixWorld();
-
-					// update OBB
-
-					object.userData.obb.copy( object.geometry.userData.obb );
-					object.userData.obb.applyMatrix4( object.matrixWorld );
-
-					// reset
-
-					object.material.color.setHex( 0x00ff00 );
-
-				}
-
-				// collision detection
-
-				for ( let i = 0, il = objects.length; i < il; i ++ ) {
-
-					const object = objects[ i ];
-					const obb = object.userData.obb;
-
-					for ( let j = i + 1, jl = objects.length; j < jl; j ++ ) {
-
-						const objectToTest = objects[ j ];
-						const obbToTest = objectToTest.userData.obb;
-
-						// now perform intersection test
-
-						if ( obb.intersectsOBB( obbToTest ) === true ) {
-
-							object.material.color.setHex( 0xff0000 );
-							objectToTest.material.color.setHex( 0xff0000 );
-
-						}
-
-					}
-
-				}
-
-				renderer.render( scene, camera );
-
-				stats.update();
-
-			}
-
-	
+  stats.update();
+}

@@ -1,143 +1,144 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
+import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader.js";
 
-			import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
-			import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
-			import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
-			import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js';
-			import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';
+let camera, scene, renderer, clock, group, container;
 
-			let camera, scene, renderer, clock, group, container;
+let composer1, composer2, fxaaPass;
 
-			let composer1, composer2, fxaaPass;
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  container = document.getElementById("container");
 
-			function init() {
+  camera = new THREE.PerspectiveCamera(
+    45,
+    container.offsetWidth / container.offsetHeight,
+    1,
+    2000
+  );
+  camera.position.z = 500;
 
-				container = document.getElementById( 'container' );
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0xffffff);
+  scene.fog = new THREE.Fog(0xcccccc, 100, 1500);
 
-				camera = new THREE.PerspectiveCamera( 45, container.offsetWidth / container.offsetHeight, 1, 2000 );
-				camera.position.z = 500;
+  clock = new THREE.Clock();
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0xffffff );
-				scene.fog = new THREE.Fog( 0xcccccc, 100, 1500 );
+  //
 
-				clock = new THREE.Clock();
+  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
+  hemiLight.position.set(0, 1000, 0);
+  scene.add(hemiLight);
 
-				//
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  dirLight.position.set(-3000, 1000, -1000);
+  scene.add(dirLight);
 
-				const hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
-				hemiLight.position.set( 0, 1000, 0 );
-				scene.add( hemiLight );
+  //
 
-				const dirLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
-				dirLight.position.set( - 3000, 1000, - 1000 );
-				scene.add( dirLight );
+  group = new THREE.Group();
 
-				//
+  const geometry = new THREE.TetrahedronGeometry(10);
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xee0808,
+    flatShading: true,
+  });
 
-				group = new THREE.Group();
+  for (let i = 0; i < 100; i++) {
+    const mesh = new THREE.Mesh(geometry, material);
 
-				const geometry = new THREE.TetrahedronGeometry( 10 );
-				const material = new THREE.MeshStandardMaterial( { color: 0xee0808, flatShading: true } );
+    mesh.position.x = Math.random() * 500 - 250;
+    mesh.position.y = Math.random() * 500 - 250;
+    mesh.position.z = Math.random() * 500 - 250;
 
-				for ( let i = 0; i < 100; i ++ ) {
+    mesh.scale.setScalar(Math.random() * 2 + 1);
 
-					const mesh = new THREE.Mesh( geometry, material );
+    mesh.rotation.x = Math.random() * Math.PI;
+    mesh.rotation.y = Math.random() * Math.PI;
+    mesh.rotation.z = Math.random() * Math.PI;
 
-					mesh.position.x = Math.random() * 500 - 250;
-					mesh.position.y = Math.random() * 500 - 250;
-					mesh.position.z = Math.random() * 500 - 250;
+    group.add(mesh);
+  }
 
-					mesh.scale.setScalar( Math.random() * 2 + 1 );
+  scene.add(group);
 
-					mesh.rotation.x = Math.random() * Math.PI;
-					mesh.rotation.y = Math.random() * Math.PI;
-					mesh.rotation.z = Math.random() * Math.PI;
+  //
 
-					group.add( mesh );
+  renderer = new THREE.WebGLRenderer();
+  renderer.autoClear = false;
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(container.offsetWidth, container.offsetHeight);
+  container.appendChild(renderer.domElement);
 
-				}
+  //
 
-				scene.add( group );
+  const renderPass = new RenderPass(scene, camera);
 
-				//
+  //
 
-				renderer = new THREE.WebGLRenderer();
-				renderer.autoClear = false;
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( container.offsetWidth, container.offsetHeight );
-				container.appendChild( renderer.domElement );
+  fxaaPass = new ShaderPass(FXAAShader);
+  const copyPass = new ShaderPass(CopyShader);
 
-				//
+  composer1 = new EffectComposer(renderer);
+  composer1.addPass(renderPass);
+  composer1.addPass(copyPass);
 
-				const renderPass = new RenderPass( scene, camera );
+  //
 
-				//
+  const pixelRatio = renderer.getPixelRatio();
 
-				fxaaPass = new ShaderPass( FXAAShader );
-				const copyPass = new ShaderPass( CopyShader );
+  fxaaPass.material.uniforms["resolution"].value.x =
+    1 / (container.offsetWidth * pixelRatio);
+  fxaaPass.material.uniforms["resolution"].value.y =
+    1 / (container.offsetHeight * pixelRatio);
 
-				composer1 = new EffectComposer( renderer );
-				composer1.addPass( renderPass );
-				composer1.addPass( copyPass );
+  composer2 = new EffectComposer(renderer);
+  composer2.addPass(renderPass);
+  composer2.addPass(fxaaPass);
 
-				//
+  //
 
-				const pixelRatio = renderer.getPixelRatio();
+  window.addEventListener("resize", onWindowResize);
+}
 
-				fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( container.offsetWidth * pixelRatio );
-				fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( container.offsetHeight * pixelRatio );
+function onWindowResize() {
+  camera.aspect = container.offsetWidth / container.offsetHeight;
+  camera.updateProjectionMatrix();
 
-				composer2 = new EffectComposer( renderer );
-				composer2.addPass( renderPass );
-				composer2.addPass( fxaaPass );
+  renderer.setSize(container.offsetWidth, container.offsetHeight);
+  composer1.setSize(container.offsetWidth, container.offsetHeight);
+  composer2.setSize(container.offsetWidth, container.offsetHeight);
 
-				//
+  const pixelRatio = renderer.getPixelRatio();
 
-				window.addEventListener( 'resize', onWindowResize );
+  fxaaPass.material.uniforms["resolution"].value.x =
+    1 / (container.offsetWidth * pixelRatio);
+  fxaaPass.material.uniforms["resolution"].value.y =
+    1 / (container.offsetHeight * pixelRatio);
+}
 
-			}
+function animate() {
+  requestAnimationFrame(animate);
 
-			function onWindowResize() {
+  const halfWidth = container.offsetWidth / 2;
 
-				camera.aspect = container.offsetWidth / container.offsetHeight;
-				camera.updateProjectionMatrix();
+  group.rotation.y += clock.getDelta() * 0.1;
 
-				renderer.setSize( container.offsetWidth, container.offsetHeight );
-				composer1.setSize( container.offsetWidth, container.offsetHeight );
-				composer2.setSize( container.offsetWidth, container.offsetHeight );
+  renderer.setScissorTest(true);
 
-				const pixelRatio = renderer.getPixelRatio();
+  renderer.setScissor(0, 0, halfWidth - 1, container.offsetHeight);
+  composer1.render();
 
-				fxaaPass.material.uniforms[ 'resolution' ].value.x = 1 / ( container.offsetWidth * pixelRatio );
-				fxaaPass.material.uniforms[ 'resolution' ].value.y = 1 / ( container.offsetHeight * pixelRatio );
+  renderer.setScissor(halfWidth, 0, halfWidth, container.offsetHeight);
+  composer2.render();
 
-			}
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				const halfWidth = container.offsetWidth / 2;
-
-				group.rotation.y += clock.getDelta() * 0.1;
-
-				renderer.setScissorTest( true );
-
-				renderer.setScissor( 0, 0, halfWidth - 1, container.offsetHeight );
-				composer1.render();
-
-				renderer.setScissor( halfWidth, 0, halfWidth, container.offsetHeight );
-				composer2.render();
-
-				renderer.setScissorTest( false );
-
-			}
-
-		
+  renderer.setScissorTest(false);
+}

@@ -1,180 +1,172 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
-			import Stats from 'three/examples/jsm/libs/stats.module.js';
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-			import { GUI } from 'three/examples/jsm/libs/dat.gui.module.js';
-			import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+let camera, scene, renderer, controls, stats;
+let target;
+let postScene, postCamera, postMaterial;
+let supportsExtension = true;
 
-			let camera, scene, renderer, controls, stats;
-			let target;
-			let postScene, postCamera, postMaterial;
-			let supportsExtension = true;
+const params = {
+  format: THREE.DepthFormat,
+  type: THREE.UnsignedShortType,
+};
 
-			const params = {
-				format: THREE.DepthFormat,
-				type: THREE.UnsignedShortType
-			};
+const formats = {
+  DepthFormat: THREE.DepthFormat,
+  DepthStencilFormat: THREE.DepthStencilFormat,
+};
+const types = {
+  UnsignedShortType: THREE.UnsignedShortType,
+  UnsignedIntType: THREE.UnsignedIntType,
+  UnsignedInt248Type: THREE.UnsignedInt248Type,
+};
 
-			const formats = { DepthFormat: THREE.DepthFormat, DepthStencilFormat: THREE.DepthStencilFormat };
-			const types = { UnsignedShortType: THREE.UnsignedShortType, UnsignedIntType: THREE.UnsignedIntType, UnsignedInt248Type: THREE.UnsignedInt248Type };
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  renderer = new THREE.WebGLRenderer();
 
-			function init() {
+  if (
+    renderer.capabilities.isWebGL2 === false &&
+    renderer.extensions.has("WEBGL_depth_texture") === false
+  ) {
+    supportsExtension = false;
+    document.querySelector("#error").style.display = "block";
+    return;
+  }
 
-				renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
-				if ( renderer.capabilities.isWebGL2 === false && renderer.extensions.has( 'WEBGL_depth_texture' ) === false ) {
+  //
 
-					supportsExtension = false;
-					document.querySelector( '#error' ).style.display = 'block';
-					return;
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
 
-				}
+  camera = new THREE.PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    0.01,
+    50
+  );
+  camera.position.z = 4;
 
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				document.body.appendChild( renderer.domElement );
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
 
-				//
+  // Create a render target with depth texture
+  setupRenderTarget();
 
-				stats = new Stats();
-				document.body.appendChild( stats.dom );
+  // Our scene
+  setupScene();
 
-				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.01, 50 );
-				camera.position.z = 4;
+  // Setup post-processing step
+  setupPost();
 
-				controls = new OrbitControls( camera, renderer.domElement );
-				controls.enableDamping = true;
+  onWindowResize();
+  window.addEventListener("resize", onWindowResize);
 
-				// Create a render target with depth texture
-				setupRenderTarget();
+  //
+  const gui = new GUI({ width: 300 });
 
-				// Our scene
-				setupScene();
+  gui.add(params, "format", formats).onChange(setupRenderTarget);
+  gui.add(params, "type", types).onChange(setupRenderTarget);
+  gui.open();
+}
 
-				// Setup post-processing step
-				setupPost();
+function setupRenderTarget() {
+  if (target) target.dispose();
 
-				onWindowResize();
-				window.addEventListener( 'resize', onWindowResize );
+  const format = parseFloat(params.format);
+  const type = parseFloat(params.type);
 
-				//
-				const gui = new GUI( { width: 300 } );
+  target = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+  target.texture.format = THREE.RGBFormat;
+  target.texture.minFilter = THREE.NearestFilter;
+  target.texture.magFilter = THREE.NearestFilter;
+  target.texture.generateMipmaps = false;
+  target.stencilBuffer = format === THREE.DepthStencilFormat ? true : false;
+  target.depthBuffer = true;
+  target.depthTexture = new THREE.DepthTexture();
+  target.depthTexture.format = format;
+  target.depthTexture.type = type;
+}
 
-				gui.add( params, 'format', formats ).onChange( setupRenderTarget );
-				gui.add( params, 'type', types ).onChange( setupRenderTarget );
-				gui.open();
+function setupPost() {
+  // Setup post processing stage
+  postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  postMaterial = new THREE.ShaderMaterial({
+    vertexShader: document.querySelector("#post-vert").textContent.trim(),
+    fragmentShader: document.querySelector("#post-frag").textContent.trim(),
+    uniforms: {
+      cameraNear: { value: camera.near },
+      cameraFar: { value: camera.far },
+      tDiffuse: { value: null },
+      tDepth: { value: null },
+    },
+  });
+  const postPlane = new THREE.PlaneGeometry(2, 2);
+  const postQuad = new THREE.Mesh(postPlane, postMaterial);
+  postScene = new THREE.Scene();
+  postScene.add(postQuad);
+}
 
-			}
+function setupScene() {
+  scene = new THREE.Scene();
 
-			function setupRenderTarget() {
+  const geometry = new THREE.TorusKnotGeometry(1, 0.3, 128, 64);
+  const material = new THREE.MeshBasicMaterial({ color: "blue" });
 
-				if ( target ) target.dispose();
+  const count = 50;
+  const scale = 5;
 
-				const format = parseFloat( params.format );
-				const type = parseFloat( params.type );
+  for (let i = 0; i < count; i++) {
+    const r = Math.random() * 2.0 * Math.PI;
+    const z = Math.random() * 2.0 - 1.0;
+    const zScale = Math.sqrt(1.0 - z * z) * scale;
 
-				target = new THREE.WebGLRenderTarget( window.innerWidth, window.innerHeight );
-				target.texture.format = THREE.RGBFormat;
-				target.texture.minFilter = THREE.NearestFilter;
-				target.texture.magFilter = THREE.NearestFilter;
-				target.texture.generateMipmaps = false;
-				target.stencilBuffer = ( format === THREE.DepthStencilFormat ) ? true : false;
-				target.depthBuffer = true;
-				target.depthTexture = new THREE.DepthTexture();
-				target.depthTexture.format = format;
-				target.depthTexture.type = type;
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(Math.cos(r) * zScale, Math.sin(r) * zScale, z * scale);
+    mesh.rotation.set(Math.random(), Math.random(), Math.random());
+    scene.add(mesh);
+  }
+}
 
-			}
+function onWindowResize() {
+  const aspect = window.innerWidth / window.innerHeight;
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
 
-			function setupPost() {
+  const dpr = renderer.getPixelRatio();
+  target.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-				// Setup post processing stage
-				postCamera = new THREE.OrthographicCamera( - 1, 1, 1, - 1, 0, 1 );
-				postMaterial = new THREE.ShaderMaterial( {
-					vertexShader: document.querySelector( '#post-vert' ).textContent.trim(),
-					fragmentShader: document.querySelector( '#post-frag' ).textContent.trim(),
-					uniforms: {
-						cameraNear: { value: camera.near },
-						cameraFar: { value: camera.far },
-						tDiffuse: { value: null },
-						tDepth: { value: null }
-					}
-				} );
-				const postPlane = new THREE.PlaneGeometry( 2, 2 );
-				const postQuad = new THREE.Mesh( postPlane, postMaterial );
-				postScene = new THREE.Scene();
-				postScene.add( postQuad );
+function animate() {
+  if (!supportsExtension) return;
 
-			}
+  requestAnimationFrame(animate);
 
-			function setupScene() {
+  // render scene into target
+  renderer.setRenderTarget(target);
+  renderer.render(scene, camera);
 
-				scene = new THREE.Scene();
+  // render post FX
+  postMaterial.uniforms.tDiffuse.value = target.texture;
+  postMaterial.uniforms.tDepth.value = target.depthTexture;
 
-				const geometry = new THREE.TorusKnotGeometry( 1, 0.3, 128, 64 );
-				const material = new THREE.MeshBasicMaterial( { color: 'blue' } );
+  renderer.setRenderTarget(null);
+  renderer.render(postScene, postCamera);
 
-				const count = 50;
-				const scale = 5;
+  controls.update(); // required because damping is enabled
 
-				for ( let i = 0; i < count; i ++ ) {
-
-					const r = Math.random() * 2.0 * Math.PI;
-					const z = ( Math.random() * 2.0 ) - 1.0;
-					const zScale = Math.sqrt( 1.0 - z * z ) * scale;
-
-					const mesh = new THREE.Mesh( geometry, material );
-					mesh.position.set(
-						Math.cos( r ) * zScale,
-						Math.sin( r ) * zScale,
-						z * scale
-					);
-					mesh.rotation.set( Math.random(), Math.random(), Math.random() );
-					scene.add( mesh );
-
-				}
-
-			}
-
-			function onWindowResize() {
-
-				const aspect = window.innerWidth / window.innerHeight;
-				camera.aspect = aspect;
-				camera.updateProjectionMatrix();
-
-				const dpr = renderer.getPixelRatio();
-				target.setSize( window.innerWidth * dpr, window.innerHeight * dpr );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-
-			}
-
-			function animate() {
-
-				if ( ! supportsExtension ) return;
-
-				requestAnimationFrame( animate );
-
-				// render scene into target
-				renderer.setRenderTarget( target );
-				renderer.render( scene, camera );
-
-				// render post FX
-				postMaterial.uniforms.tDiffuse.value = target.texture;
-				postMaterial.uniforms.tDepth.value = target.depthTexture;
-
-				renderer.setRenderTarget( null );
-				renderer.render( postScene, postCamera );
-
-				controls.update(); // required because damping is enabled
-
-				stats.update();
-
-			}
-
-		
+  stats.update();
+}

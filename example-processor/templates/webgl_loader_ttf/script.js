@@ -1,270 +1,247 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three";
 
-			import * as THREE from 'three';
+import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
 
-			import { TTFLoader } from 'three/examples/jsm/loaders/TTFLoader.js';
+let container;
+let camera, cameraTarget, scene, renderer;
+let group, textMesh1, textMesh2, textGeo, material;
+let firstLetter = true;
 
-			let container;
-			let camera, cameraTarget, scene, renderer;
-			let group, textMesh1, textMesh2, textGeo, material;
-			let firstLetter = true;
+let text = "three.js";
+const height = 20,
+  size = 70,
+  hover = 30,
+  curveSegments = 4,
+  bevelThickness = 2,
+  bevelSize = 1.5;
 
-			let text = 'three.js';
-			const height = 20,
-				size = 70,
-				hover = 30,
-				curveSegments = 4,
-				bevelThickness = 2,
-				bevelSize = 1.5;
+let font = null;
+const mirror = true;
 
-			let font = null;
-			const mirror = true;
+let targetRotation = 0;
+let targetRotationOnPointerDown = 0;
 
-			let targetRotation = 0;
-			let targetRotationOnPointerDown = 0;
+let pointerX = 0;
+let pointerXOnPointerDown = 0;
 
-			let pointerX = 0;
-			let pointerXOnPointerDown = 0;
+let windowHalfX = window.innerWidth / 2;
 
-			let windowHalfX = window.innerWidth / 2;
+init();
+animate();
 
-			init();
-			animate();
+function init() {
+  container = document.createElement("div");
+  document.body.appendChild(container);
 
-			function init() {
+  // CAMERA
 
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
+  camera = new THREE.PerspectiveCamera(
+    30,
+    window.innerWidth / window.innerHeight,
+    1,
+    1500
+  );
+  camera.position.set(0, 400, 700);
 
-				// CAMERA
+  cameraTarget = new THREE.Vector3(0, 150, 0);
 
-				camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 1500 );
-				camera.position.set( 0, 400, 700 );
+  // SCENE
 
-				cameraTarget = new THREE.Vector3( 0, 150, 0 );
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x000000);
+  scene.fog = new THREE.Fog(0x000000, 250, 1400);
 
-				// SCENE
+  // LIGHTS
 
-				scene = new THREE.Scene();
-				scene.background = new THREE.Color( 0x000000 );
-				scene.fog = new THREE.Fog( 0x000000, 250, 1400 );
+  const dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
+  dirLight.position.set(0, 0, 1).normalize();
+  scene.add(dirLight);
 
-				// LIGHTS
+  const pointLight = new THREE.PointLight(0xffffff, 1.5);
+  pointLight.position.set(0, 100, 90);
+  pointLight.color.setHSL(Math.random(), 1, 0.5);
+  scene.add(pointLight);
 
-				const dirLight = new THREE.DirectionalLight( 0xffffff, 0.125 );
-				dirLight.position.set( 0, 0, 1 ).normalize();
-				scene.add( dirLight );
+  material = new THREE.MeshPhongMaterial({
+    color: 0xffffff,
+    flatShading: true,
+  });
 
-				const pointLight = new THREE.PointLight( 0xffffff, 1.5 );
-				pointLight.position.set( 0, 100, 90 );
-				pointLight.color.setHSL( Math.random(), 1, 0.5 );
-				scene.add( pointLight );
+  group = new THREE.Group();
+  group.position.y = 100;
 
-				material = new THREE.MeshPhongMaterial( { color: 0xffffff, flatShading: true } );
+  scene.add(group);
 
-				group = new THREE.Group();
-				group.position.y = 100;
+  const loader = new TTFLoader();
 
-				scene.add( group );
+  loader.load("fonts/ttf/kenpixel.ttf", function (json) {
+    font = new THREE.Font(json);
+    createText();
+  });
 
-				const loader = new TTFLoader();
+  const plane = new THREE.Mesh(
+    new THREE.PlaneGeometry(10000, 10000),
+    new THREE.MeshBasicMaterial({
+      color: 0xffffff,
+      opacity: 0.5,
+      transparent: true,
+    })
+  );
+  plane.position.y = 100;
+  plane.rotation.x = -Math.PI / 2;
+  scene.add(plane);
 
-				loader.load( 'fonts/ttf/kenpixel.ttf', function ( json ) {
+  // RENDERER
 
-					font = new THREE.Font( json );
-					createText();
+  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
 
-				} );
+  // EVENTS
 
-				const plane = new THREE.Mesh(
-					new THREE.PlaneGeometry( 10000, 10000 ),
-					new THREE.MeshBasicMaterial( { color: 0xffffff, opacity: 0.5, transparent: true } )
-				);
-				plane.position.y = 100;
-				plane.rotation.x = - Math.PI / 2;
-				scene.add( plane );
+  container.style.touchAction = "none";
+  container.addEventListener("pointerdown", onPointerDown);
 
-				// RENDERER
+  document.addEventListener("keypress", onDocumentKeyPress);
+  document.addEventListener("keydown", onDocumentKeyDown);
 
-				renderer = new THREE.WebGLRenderer( { antialias: true } );
-				renderer.setPixelRatio( window.devicePixelRatio );
-				renderer.setSize( window.innerWidth, window.innerHeight );
-				container.appendChild( renderer.domElement );
+  window.addEventListener("resize", onWindowResize);
+}
 
-				// EVENTS
+function onWindowResize() {
+  windowHalfX = window.innerWidth / 2;
 
-				container.style.touchAction = 'none';
-				container.addEventListener( 'pointerdown', onPointerDown );
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-				document.addEventListener( 'keypress', onDocumentKeyPress );
-				document.addEventListener( 'keydown', onDocumentKeyDown );
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-				window.addEventListener( 'resize', onWindowResize );
+function onDocumentKeyDown(event) {
+  if (firstLetter) {
+    firstLetter = false;
+    text = "";
+  }
 
-			}
+  const keyCode = event.keyCode;
 
-			function onWindowResize() {
+  // backspace
 
-				windowHalfX = window.innerWidth / 2;
+  if (keyCode === 8) {
+    event.preventDefault();
 
-				camera.aspect = window.innerWidth / window.innerHeight;
-				camera.updateProjectionMatrix();
+    text = text.substring(0, text.length - 1);
+    refreshText();
 
-				renderer.setSize( window.innerWidth, window.innerHeight );
+    return false;
+  }
+}
 
-			}
+function onDocumentKeyPress(event) {
+  const keyCode = event.which;
 
-			function onDocumentKeyDown( event ) {
+  // backspace
 
-				if ( firstLetter ) {
+  if (keyCode === 8) {
+    event.preventDefault();
+  } else {
+    const ch = String.fromCharCode(keyCode);
+    text += ch;
 
-					firstLetter = false;
-					text = '';
+    refreshText();
+  }
+}
 
-				}
+function createText() {
+  textGeo = new THREE.TextGeometry(text, {
+    font: font,
 
-				const keyCode = event.keyCode;
+    size: size,
+    height: height,
+    curveSegments: curveSegments,
 
-				// backspace
+    bevelThickness: bevelThickness,
+    bevelSize: bevelSize,
+    bevelEnabled: true,
+  });
 
-				if ( keyCode === 8 ) {
+  textGeo.computeBoundingBox();
+  textGeo.computeVertexNormals();
 
-					event.preventDefault();
+  const centerOffset =
+    -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
 
-					text = text.substring( 0, text.length - 1 );
-					refreshText();
+  textMesh1 = new THREE.Mesh(textGeo, material);
 
-					return false;
+  textMesh1.position.x = centerOffset;
+  textMesh1.position.y = hover;
+  textMesh1.position.z = 0;
 
-				}
+  textMesh1.rotation.x = 0;
+  textMesh1.rotation.y = Math.PI * 2;
 
-			}
+  group.add(textMesh1);
 
-			function onDocumentKeyPress( event ) {
+  if (mirror) {
+    textMesh2 = new THREE.Mesh(textGeo, material);
 
-				const keyCode = event.which;
+    textMesh2.position.x = centerOffset;
+    textMesh2.position.y = -hover;
+    textMesh2.position.z = height;
 
-				// backspace
+    textMesh2.rotation.x = Math.PI;
+    textMesh2.rotation.y = Math.PI * 2;
 
-				if ( keyCode === 8 ) {
+    group.add(textMesh2);
+  }
+}
 
-					event.preventDefault();
+function refreshText() {
+  group.remove(textMesh1);
+  if (mirror) group.remove(textMesh2);
 
-				} else {
+  if (!text) return;
 
-					const ch = String.fromCharCode( keyCode );
-					text += ch;
+  createText();
+}
 
-					refreshText();
+function onPointerDown(event) {
+  if (event.isPrimary === false) return;
 
-				}
+  pointerXOnPointerDown = event.clientX - windowHalfX;
+  targetRotationOnPointerDown = targetRotation;
 
-			}
+  document.addEventListener("pointermove", onPointerMove);
+  document.addEventListener("pointerup", onPointerUp);
+}
 
-			function createText() {
+function onPointerMove(event) {
+  if (event.isPrimary === false) return;
 
-				textGeo = new THREE.TextGeometry( text, {
+  pointerX = event.clientX - windowHalfX;
 
-					font: font,
+  targetRotation =
+    targetRotationOnPointerDown + (pointerX - pointerXOnPointerDown) * 0.02;
+}
 
-					size: size,
-					height: height,
-					curveSegments: curveSegments,
+function onPointerUp() {
+  if (event.isPrimary === false) return;
 
-					bevelThickness: bevelThickness,
-					bevelSize: bevelSize,
-					bevelEnabled: true
+  document.removeEventListener("pointermove", onPointerMove);
+  document.removeEventListener("pointerup", onPointerUp);
+}
 
-				} );
+//
 
-				textGeo.computeBoundingBox();
-				textGeo.computeVertexNormals();
+function animate() {
+  requestAnimationFrame(animate);
 
-				const centerOffset = - 0.5 * ( textGeo.boundingBox.max.x - textGeo.boundingBox.min.x );
+  group.rotation.y += (targetRotation - group.rotation.y) * 0.05;
 
-				textMesh1 = new THREE.Mesh( textGeo, material );
+  camera.lookAt(cameraTarget);
 
-				textMesh1.position.x = centerOffset;
-				textMesh1.position.y = hover;
-				textMesh1.position.z = 0;
-
-				textMesh1.rotation.x = 0;
-				textMesh1.rotation.y = Math.PI * 2;
-
-				group.add( textMesh1 );
-
-				if ( mirror ) {
-
-					textMesh2 = new THREE.Mesh( textGeo, material );
-
-					textMesh2.position.x = centerOffset;
-					textMesh2.position.y = - hover;
-					textMesh2.position.z = height;
-
-					textMesh2.rotation.x = Math.PI;
-					textMesh2.rotation.y = Math.PI * 2;
-
-					group.add( textMesh2 );
-
-				}
-
-			}
-
-			function refreshText() {
-
-				group.remove( textMesh1 );
-				if ( mirror ) group.remove( textMesh2 );
-
-				if ( ! text ) return;
-
-				createText();
-
-			}
-
-			function onPointerDown( event ) {
-
-				if ( event.isPrimary === false ) return;
-
-				pointerXOnPointerDown = event.clientX - windowHalfX;
-				targetRotationOnPointerDown = targetRotation;
-
-				document.addEventListener( 'pointermove', onPointerMove );
-				document.addEventListener( 'pointerup', onPointerUp );
-
-			}
-
-			function onPointerMove( event ) {
-
-				if ( event.isPrimary === false ) return;
-
-				pointerX = event.clientX - windowHalfX;
-
-				targetRotation = targetRotationOnPointerDown + ( pointerX - pointerXOnPointerDown ) * 0.02;
-
-			}
-
-			function onPointerUp() {
-
-				if ( event.isPrimary === false ) return;
-
-				document.removeEventListener( 'pointermove', onPointerMove );
-				document.removeEventListener( 'pointerup', onPointerUp );
-
-			}
-
-			//
-
-			function animate() {
-
-				requestAnimationFrame( animate );
-
-				group.rotation.y += ( targetRotation - group.rotation.y ) * 0.05;
-
-				camera.lookAt( cameraTarget );
-
-				renderer.render( scene, camera );
-
-			}
-
-		
+  renderer.render(scene, camera);
+}
