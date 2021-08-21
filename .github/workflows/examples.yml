@@ -29,7 +29,7 @@ jobs:
         run: |
           npm i prettier -g
           git pull -a
-          prettier --write .
+          prettier --write . --ignore-path .github
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
