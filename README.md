@@ -24,16 +24,12 @@ npx create-three-app {dir_name}
 ```
 
 ## Using an example from threejs.org/examples
-We don't recommend this for beginners, as there can be some bugs that you may have to resolve manually (converting examples to webpack (node) compatible packages is an [automated task](https://github.com/GmBodhi/create-three-app/actions/workflows/examples.yml)) to work everything correctly or even starting the server. You may check `assets.json` for information about unresolved URLs, which may or may not stop the web server from initiating, or the unexpected behaviour of the website.
- 
 
+We don't recommend this for beginners, as there can be some bugs that you may have to resolve manually (converting examples to webpack (node) compatible packages is an [automated task](https://github.com/GmBodhi/create-three-app/actions/workflows/examples.yml)) to work everything correctly or even starting the server. You may check `assets.json` for information about unresolved URLs, which may or may not stop the web server from initiating, or the unexpected behaviour of the website.
 
 ## Example
 
-
 [Watch this video](https://user-images.githubusercontent.com/71921036/130307047-2ac63f4d-58fd-412b-afca-0c2deeda11d6.mp4)
-
-
 
 ## Contributing
 
