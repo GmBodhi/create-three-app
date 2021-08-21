@@ -7,7 +7,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -19,7 +20,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -31,7 +33,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -43,7 +46,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -55,7 +59,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -67,7 +72,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -79,7 +85,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -91,7 +98,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -103,7 +111,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -115,7 +124,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -127,7 +137,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -139,7 +150,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -151,7 +163,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -163,7 +176,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -175,7 +189,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -187,7 +202,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -199,7 +215,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -211,7 +228,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -223,7 +241,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -235,7 +254,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -247,7 +267,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -259,7 +280,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -271,7 +293,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -283,7 +306,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -295,7 +319,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -307,7 +332,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -319,7 +345,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -331,7 +358,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -343,7 +371,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -355,7 +384,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -367,7 +397,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -379,7 +410,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -391,7 +423,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -403,7 +436,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -415,7 +449,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -427,7 +462,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -439,7 +475,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -451,7 +488,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -463,7 +501,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -475,7 +514,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -487,7 +527,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -499,7 +540,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -511,7 +553,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -523,7 +566,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -535,7 +579,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -547,7 +592,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -559,7 +605,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -571,7 +618,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -583,7 +631,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -595,7 +644,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -607,7 +657,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -619,7 +670,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -631,7 +683,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -643,7 +696,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -655,7 +709,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -667,7 +722,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -679,7 +735,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -691,7 +748,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -703,7 +761,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -715,7 +774,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -727,7 +787,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -739,7 +800,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -751,7 +813,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -763,7 +826,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -775,7 +839,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -787,7 +852,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -799,7 +865,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -811,7 +878,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -823,7 +891,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -835,7 +904,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -847,7 +917,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -859,7 +930,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -871,7 +943,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -883,7 +956,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -895,7 +969,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -907,7 +982,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -919,7 +995,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -931,7 +1008,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -943,7 +1021,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -955,7 +1034,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -967,7 +1047,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -979,7 +1060,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -991,7 +1073,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1003,7 +1086,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1015,7 +1099,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1027,7 +1112,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1039,7 +1125,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1051,7 +1138,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1063,7 +1151,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1075,7 +1164,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1087,7 +1177,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1099,7 +1190,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1111,7 +1203,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1123,7 +1216,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1135,7 +1229,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1147,7 +1242,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1159,7 +1255,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1171,7 +1268,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1183,7 +1281,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1195,7 +1294,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1207,7 +1307,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
@@ -1219,7 +1320,8 @@
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
-      "example.json": "static"
+      "example.json": "static",
+      "favicon.ico": "static"
     },
     "dirs": ["/static", "/src", "/bundler"]
   }
