@@ -28,6 +28,7 @@ jobs:
       - name: Format Code
         run: |
           npm i prettier -g
+          git pull -a
           prettier --write .
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
