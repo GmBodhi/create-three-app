@@ -1,9 +1,7 @@
 {
   "Basic": {
     "files": {
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
+      "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
       "main.js": "src",
@@ -14,9 +12,7 @@
   },
   "Basic (with orbitcontrols)": {
     "files": {
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
+      "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
       "main.js": "src",
@@ -27,9 +23,7 @@
   },
   "Basic gound setup": {
     "files": {
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
+      "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
       "main.js": "src",
