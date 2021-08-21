@@ -41,14 +41,14 @@ async function getExamplesConfig(domain) {
 
 module.exports.getExamplesConfig = getExamplesConfig;
 
-module.exports.checkYarn = function checkYarn(domain) {
-  return new Promise((resolve, reject) => {
+module.exports.checkYarn = function checkYarn() {
+  return new Promise((resolve) => {
     spawn("yarn", ["--version"], { stdio: "ignore" })
       .on("close", (code) => {
         if (code !== 0) resolve("npm");
         resolve("yarn");
       })
-      .on("error", (err) => {
+      .on("error", () => {
         resolve("npm");
       });
   });

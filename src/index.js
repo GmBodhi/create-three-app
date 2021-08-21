@@ -12,7 +12,7 @@ const {
   checkYarn,
 } = require("./scripts/utils");
 // @ts-ignore
-const { Select, AutoComplete } = require("enquirer");
+const { AutoComplete } = require("enquirer");
 const init = require("./scripts/initenv");
 const manageDir = require("./scripts/movedir");
 const downloadfiles = require("./scripts/downloadfiles");
