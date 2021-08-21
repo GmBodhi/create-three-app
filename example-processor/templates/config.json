@@ -2,1327 +2,1225 @@
   "misc_controls_deviceorientation": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "misc_controls_drag": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "misc_controls_map": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "misc_controls_orbit": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "misc_controls_trackball": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "misc_controls_transform": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "physics_ammo_cloth": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl2_multiple_rendertargets": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl2_multisampled_renderbuffers": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_animation_cloth": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_clipping": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_clipping_advanced": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_clipping_intersection": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_clipping_stencil": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_decals": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_depth_texture": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_framebuffer_texture": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_geometry_colors_lookuptable": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_geometry_nurbs": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_geometry_spline_editor": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_geometry_terrain": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_geometry_text": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_geometry_text_shapes": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_geometry_text_stroke": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_helpers": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_instancing_performance": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_interactive_buffergeometry": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_interactive_cubes": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_interactive_cubes_gpu": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_interactive_cubes_ortho": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_interactive_lines": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_interactive_points": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_interactive_raycasting_points": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_interactive_voxelpainter": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_layers": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_lights_hemisphere": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_lights_pointlights": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_lines_fat": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_loader_ldraw": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_loader_nodes": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_loader_pdb": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_loader_ttf": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_lod": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_blending": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_blending_custom": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_channels": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_cubemap_mipmaps": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_envmaps_hdr": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_envmaps_parallax": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_lightmap": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_modified": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_physical_clearcoat": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_physical_transmission": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_standard": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_subsurface_scattering": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_texture_canvas": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_texture_filters": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_texture_manualmipmap": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_materials_wireframe": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_math_obb": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_math_orientation_transform": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_mirror": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_morphtargets_horse": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_multiple_elements": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_multiple_elements_text": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_panorama_cube": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_panorama_equirectangular": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_points_billboards": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_points_dynamic": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_points_sprites": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_points_waves": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_portal": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_3dlut": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_afterimage": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_dof": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_dof2": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_fxaa": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_godrays": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_sao": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_smaa": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_sobel": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_ssaa": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_ssaa_unbiased": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_ssao": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_unreal_bloom": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_postprocessing_unreal_bloom_selective": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_read_float_buffer": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_refraction": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_rtt": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shaders_ocean": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shaders_sky": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shaders_tonemapping": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shading_physical": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shadowmap_csm": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shadowmap_pcss": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shadowmap_progressive": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shadowmap_viewer": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shadow_contact": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_simple_gi": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_skinning_simple": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_tiled_forward": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_tonemapping": {
     "files": {
       "assets.json": "",
-      "webpack.common.js": "bundler",
-      "webpack.dev.js": "bundler",
-      "webpack.prod.js": "bundler",
-      "index.html": "",
+      "webpack.js": "bundler",
       "package.json": "",
-      "script.js": "",
-      "style.css": ""
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static"
     },
-    "dirs": ["/bundler"]
+    "dirs": ["/static", "/src", "/bundler"]
   }
 }
