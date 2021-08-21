@@ -23,11 +23,17 @@ or
 npx create-three-app {dir_name}
 ```
 
+## Using an example from threejs.org/examples
+We don't recommend this for beginners, as there can be some bugs that you may have to resolve manually (converting examples to webpack (node) compatible packages is an [automated task](https://github.com/GmBodhi/create-three-app/actions/workflows/examples.yml))) to work everything correctly or even starting the server. You may check `assets.json` for information about unresolved URLs, which may or may not stop the web server from initiating, or the unexpected behaviour of the website.
+ 
+
+
 ## Example
 
-https://user-images.githubusercontent.com/71921036/129839313-d551e88a-ab34-4287-aef0-0e7ce90f1d73.mp4
 
-<h3 color="red">🔴 <a href="http://cdn.statically.io/">cdn.statically.io</a> is blocking html content, please use other CDNs</h3>
+[Watch this video](https://user-images.githubusercontent.com/71921036/130307047-2ac63f4d-58fd-412b-afca-0c2deeda11d6.mp4)
+
+
 
 ## Contributing
 
