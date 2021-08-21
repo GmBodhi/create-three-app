@@ -20,6 +20,7 @@ const init = () => {
         await new Promise((resolve) => setTimeout(resolve, 3000));
         await fetch1.fetch(`https://threejs.org/examples/${key}.html`, key);
       }
+      writeFileSync("./templates/asstes.json", JSON.stringify(json));
       writeAssets(json);
       await fetch1.close();
     });
