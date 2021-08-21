@@ -1,9 +1,9 @@
 name: Example
 
-on: 
+on:
   push:
   schedule:
-  - cron: "0 0 * * 1"
+    - cron: "0 0 * * 1"
 
 jobs:
   Example:
