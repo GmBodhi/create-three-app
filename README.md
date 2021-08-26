@@ -8,7 +8,7 @@
     <a href="https://www.npmjs.com/package/create-three-app"><img src="https://nodei.co/npm/create-three-app.png?compact=true" alt="NPM Banner"></a>
   </p>
 </div>
-
+## Note: you don't have to update this package everytime when three.js releases a new version
 ## Usage
 
 ```sh
