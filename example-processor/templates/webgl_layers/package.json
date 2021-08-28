@@ -8,7 +8,7 @@
     "dev": "webpack serve --config ./bundler/webpack.js --mode development"
   },
   "dependencies": {
-    "three": "^0.131.0"
+    "three": "^0.132.0"
   },
   "main": "src/index.js",
   "devDependencies": {

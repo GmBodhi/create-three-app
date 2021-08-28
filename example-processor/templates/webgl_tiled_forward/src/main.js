@@ -45,7 +45,7 @@ THREE.ShaderChunk["lights_fragment_end"] += [
   "  		pointlight.distance = lightData.w;",
   "  		pointlight.color = lightColor.rgb;",
   "  		pointlight.decay = lightColor.a;",
-  "  		getPointDirectLightIrradiance( pointlight, geometry, directLight );",
+  "  		getPointLightInfo( pointlight, geometry, directLight );",
   "		RE_Direct( directLight, geometry, material, reflectedLight );",
   "	}",
   "}",

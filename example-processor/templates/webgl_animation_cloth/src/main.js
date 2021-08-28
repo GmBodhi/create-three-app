@@ -373,7 +373,7 @@ function init() {
   clothTexture.anisotropy = 16;
 
   const clothMaterial = new THREE.MeshLambertMaterial({
-    map: clothTexture,
+    alphaMap: clothTexture,
     side: THREE.DoubleSide,
     alphaTest: 0.5,
   });
@@ -392,12 +392,6 @@ function init() {
   object.position.set(0, 0, 0);
   object.castShadow = true;
   scene.add(object);
-
-  object.customDepthMaterial = new THREE.MeshDepthMaterial({
-    depthPacking: THREE.RGBADepthPacking,
-    map: clothTexture,
-    alphaTest: 0.5,
-  });
 
   // sphere
 

@@ -12,7 +12,7 @@ const params = {
   opacity: 1,
   metalness: 0,
   roughness: 0,
-  reflectivity: 0.5,
+  ior: 1.5,
   thickness: 0.01,
   specularIntensity: 1,
   specularTint: 0xffffff,
@@ -74,7 +74,7 @@ function init() {
     color: params.color,
     metalness: params.metalness,
     roughness: params.roughness,
-    reflectivity: params.reflectivity,
+    ior: params.ior,
     alphaMap: texture,
     envMap: hdrEquirect,
     envMapIntensity: params.envMapIntensity,
@@ -127,8 +127,8 @@ function init() {
     render();
   });
 
-  gui.add(params, "reflectivity", 0, 1, 0.01).onChange(function () {
-    material.reflectivity = params.reflectivity;
+  gui.add(params, "ior", 1, 2, 0.01).onChange(function () {
+    material.ior = params.ior;
     render();
   });
 

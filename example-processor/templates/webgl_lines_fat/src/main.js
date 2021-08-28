@@ -10,7 +10,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Line2 } from "three/examples/jsm/lines/Line2.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
 import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
-import { GeometryUtils } from "three/examples/jsm/utils/GeometryUtils.js";
+import * as GeometryUtils from "three/examples/jsm/utils/GeometryUtils.js";
 
 let line, renderer, scene, camera, camera2, controls;
 let line1;
@@ -91,8 +91,9 @@ function init() {
 
   matLine = new LineMaterial({
     color: 0xffffff,
-    linewidth: 5, // in pixels
+    linewidth: 5, // in world units with size attenuation, pixels otherwise
     vertexColors: true,
+
     //resolution:  // to be set by renderer, eventually
     dashed: false,
     alphaToCoverage: true,
@@ -198,7 +199,8 @@ function initGui() {
 
   const param = {
     "line type": 0,
-    "width (px)": 5,
+    "world units": false,
+    width: 5,
     alphaToCoverage: true,
     dashed: false,
     "dash scale": 1,
@@ -225,7 +227,12 @@ function initGui() {
       }
     });
 
-  gui.add(param, "width (px)", 1, 10).onChange(function (val) {
+  gui.add(param, "world units").onChange(function (val) {
+    matLine.worldUnits = val;
+    matLine.needsUpdate = true;
+  });
+
+  gui.add(param, "width", 1, 10).onChange(function (val) {
     matLine.linewidth = val;
   });
 

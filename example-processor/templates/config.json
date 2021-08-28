@@ -623,19 +623,6 @@
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
-  "webgl_materials_envmaps_parallax": {
-    "files": {
-      "assets.json": "",
-      "webpack.js": "bundler",
-      "package.json": "",
-      "index.html": "src",
-      "main.js": "src",
-      "style.css": "src",
-      "example.json": "static",
-      "favicon.ico": "static"
-    },
-    "dirs": ["/static", "/src", "/bundler"]
-  },
   "webgl_materials_lightmap": {
     "files": {
       "assets.json": "",

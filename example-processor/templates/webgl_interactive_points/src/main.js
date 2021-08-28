@@ -4,7 +4,7 @@ import * as THREE from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
-import { BufferGeometryUtils } from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 let renderer, scene, camera, stats;
 
@@ -74,11 +74,10 @@ function init() {
       pointTexture: {
         value: new THREE.TextureLoader().load("textures/sprites/disc.png"),
       },
+      alphaTest: { value: 0.9 },
     },
     vertexShader: document.getElementById("vertexshader").textContent,
     fragmentShader: document.getElementById("fragmentshader").textContent,
-
-    alphaTest: 0.9,
   });
 
   //

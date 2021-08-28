@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GeometryUtils } from "three/examples/jsm/utils/GeometryUtils.js";
+import * as GeometryUtils from "three/examples/jsm/utils/GeometryUtils.js";
 
 let camera, scene, renderer;
 let line, sprite, texture;

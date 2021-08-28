@@ -126,6 +126,7 @@ function init() {
       THREE.ShaderChunk["common"],
       THREE.ShaderChunk["bsdfs"],
       THREE.ShaderChunk["lights_pars_begin"],
+      THREE.ShaderChunk["normal_pars_fragment"],
       THREE.ShaderChunk["lights_phong_pars_fragment"],
 
       "void main() {",
