@@ -9,6 +9,10 @@
   </p>
 </div>
 
+## Star the repo?
+
+If you think this repo is worth a star✨ just don't hesitate :)
+
 ### Note: you don't have to update this package everytime when three.js releases a new version
 
 ## Usage
@@ -42,6 +46,4 @@ We're interested in adding more examples and maintaining those that are already 
 
 Open an [issue](https://github.com/GmBodhi/create-three-app/issues/new) in the [github repo](https://github.com/GmBodhi/create-three-app)
 
-## Start the repo?
 
-If you think this repo is worth a star✨ just don't hesitate :)
