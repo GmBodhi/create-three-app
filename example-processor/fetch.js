@@ -14,6 +14,7 @@ module.exports.launch = async ({ urls, json }) => {
   page = await browser.newPage();
   page.on("request", (request) => {
     let url = request.frame()?.url() ?? "unknown";
+    let resUrls = request.url()?.split("/");
     if (
       [
         "https://threejs.org/build/three.module.js",
@@ -21,7 +22,7 @@ module.exports.launch = async ({ urls, json }) => {
         "https://threejs.org/examples/jsm/libs/dat.gui.module.js",
       ].includes(request.url()) ||
       request.url()?.endsWith(".js") ||
-      json.includes(request.url()?.split("/").pop()?.split(".")[0])
+      json.includes(resUrl?.pop()?.split(".")[0])
     )
       return;
     if (!urls[url]) urls[url] = [];
