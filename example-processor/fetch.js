@@ -14,7 +14,7 @@ module.exports.launch = async ({ urls, json }) => {
   page = await browser.newPage();
   page.on("request", (request) => {
     let url = request.frame()?.url() ?? "unknown";
-    let resUrls = request.url()?.split("/");
+    let resUrls = request.url()?.slice().split("/");
     if (
       [
         "https://threejs.org/build/three.module.js",
