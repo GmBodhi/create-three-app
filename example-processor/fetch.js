@@ -23,8 +23,8 @@ module.exports.launch = async ({ urls, json }) => {
       ].includes(request.url())
     )
       return;
+    console.log(resUrl?.pop().split(".")[0])
     if (!urls[url]) urls[url] = [];
-    console.log(request.url());
     urls[url].push(request.url());
   });
   return;
