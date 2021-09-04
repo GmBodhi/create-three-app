@@ -24,7 +24,7 @@ module.exports.launch = async ({ urls, json }) => {
       request.url()?.endsWith(".js") ||
       json.includes(resUrl?.pop()?.split(".")[0])
     )
-      return;
+      return console.log("Not inc: ", request.url());
     if (!urls[url]) urls[url] = [];
     console.log(request.url());
     urls[url].push(request.url());
