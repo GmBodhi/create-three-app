@@ -15,14 +15,11 @@ module.exports.launch = async ({ urls, json }) => {
   page.on("request", (request) => {
     let url = request.frame()?.url() ?? "unknown";
     let resUrls = request.url()?.split("/");
-    if (
-      [
+    if ([
         "https://threejs.org/build/three.module.js",
         "https://threejs.org/examples/jsm/libs/stats.module.js",
         "https://threejs.org/examples/jsm/libs/dat.gui.module.js",
-      ].includes(request.url())
-    )
-      return;
+      ].includes(request.url())) return;
     console.log(resUrl?.pop().split(".")[0]);
     if (!urls[url]) urls[url] = [];
     urls[url].push(request.url());
