@@ -14,17 +14,16 @@ module.exports.launch = async ({ urls, json }) => {
   page = await browser.newPage();
   page.on("request", (request) => {
     let url = request.frame()?.url() ?? "unknown";
-    let resUrls = request.url()?.slice().split("/");
+    let resUrls = request.url()?.split("/");
     if (
       [
         "https://threejs.org/build/three.module.js",
         "https://threejs.org/examples/jsm/libs/stats.module.js",
         "https://threejs.org/examples/jsm/libs/dat.gui.module.js",
       ].includes(request.url()) ||
-      request.url()?.endsWith(".js") ||
-      json.includes(resUrl?.pop()?.split(".")[0])
+      json.includes(resUrl?.pop().split(".")[0])
     )
-      return console.log("Not inc: ", request.url());
+      return;
     if (!urls[url]) urls[url] = [];
     console.log(request.url());
     urls[url].push(request.url());
