@@ -20,8 +20,7 @@ module.exports.launch = async ({ urls, json }) => {
         "https://threejs.org/build/three.module.js",
         "https://threejs.org/examples/jsm/libs/stats.module.js",
         "https://threejs.org/examples/jsm/libs/dat.gui.module.js",
-      ].includes(request.url()) ||
-      json.includes(resUrl?.pop().split(".")[0])
+      ].includes(request.url())
     )
       return;
     if (!urls[url]) urls[url] = [];
