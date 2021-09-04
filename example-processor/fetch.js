@@ -26,6 +26,7 @@ module.exports.launch = async ({ urls, json }) => {
     )
       return;
     if (!urls[url]) urls[url] = [];
+    console.log(request.url())
     urls[url].push(request.url());
   });
   return;
