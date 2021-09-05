@@ -1,6 +1,8 @@
 import {
+  ACESFilmicToneMapping,
   BoxBufferGeometry,
-  DirectionalLight,
+  Color,
+  HemisphereLight,
   Mesh,
   MeshLambertMaterial,
   PerspectiveCamera,
@@ -15,28 +17,28 @@ let camera, scene, renderer, mesh;
 init();
 
 function init() {
-  // camera
+  // Camera
   camera = new PerspectiveCamera(
-    70,
+    50,
     window.innerWidth / window.innerHeight,
     1,
     1000
   );
-  camera.position.z = 400;
+  camera.position.set(0, 400, 0);
 
-  // Create scene
+  // Scene
   scene = new Scene();
+  scene.background = new Color(0x96B9D0);
 
   // Cube
   const geometry = new BoxBufferGeometry(200, 200, 200);
-  const material = new MeshLambertMaterial({ color: 0xff0000 });
+  const material = new MeshLambertMaterial({ color: 0xFF99F4 });
   mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   // Lights
-  const directionalLight = new DirectionalLight(0xffffff, 0.5);
-  directionalLight.position.set(0, 1, 1);
-  scene.add(directionalLight);
+  const light = new HemisphereLight(0xFFFFCC, 0x000033, 1.0);
+  scene.add(light);
 
   // Renderer
   renderer = new WebGLRenderer({
@@ -45,6 +47,7 @@ function init() {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.toneMapping = ACESFilmicToneMapping;
 
   window.addEventListener("resize", onWindowResize, false);
 
