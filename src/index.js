@@ -3,7 +3,7 @@
 // DO NOT EDIT OR DELETE THIS FILE.
 
 "use strict";
-const { mkdirSync } = require("fs");
+const { mkdirSync, existsSync } = require("fs");
 const chalk = require("chalk");
 const {
   domain,
@@ -13,9 +13,9 @@ const {
 } = require("./scripts/utils");
 // @ts-ignore
 const { AutoComplete } = require("enquirer");
-const init = require("./scripts/initenv");
-const manageDir = require("./scripts/movedir");
-const downloadfiles = require("./scripts/downloadfiles");
+const init = require("./scripts/initEnv");
+const manageDir = require("./scripts/moveDir");
+const downloadFiles = require("./scripts/downloadFiles");
 
 const dir = process.argv[2] || "my-three-app";
 
@@ -32,9 +32,11 @@ getConfig(domain)
       .run()
       .then((example) => {
         if (threeExamples.includes(example)) {
-          mkdirSync(dir);
+          if (!existsSync(dir)) {
+            mkdirSync(dir);
+          }
           checkYarn().then(init);
-          downloadfiles(example, config[example], domain).then(manageDir);
+          downloadFiles(example, config[example], domain).then(manageDir);
         } else {
           getExamplesConfig(domain).then((config) => {
             new AutoComplete({
@@ -48,10 +50,11 @@ getConfig(domain)
                   chalk.yellowBright("Note: "),
                   "Using an example from three.js may cause unresolved resource urls, which you may have to resolve..."
                 );
-                mkdirSync(dir);
+                if (!existsSync(dir)) {
+                  mkdirSync(dir);
+                }
                 checkYarn().then((answer) => init(answer, true));
-
-                downloadfiles(res, config[res], domain, true).then(manageDir);
+                downloadFiles(res, config[res], domain, true).then(manageDir);
               })
               .catch((e) => console.error(chalk.red("Process aborted"), e));
           });
