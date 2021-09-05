@@ -17,7 +17,6 @@ If you think this repo is worth a star✨ just don't hesitate :)
 
 ## Usage
 
-
 ```sh
 npx create-three-app {dir_name}
 ```
