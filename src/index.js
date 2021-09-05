@@ -3,7 +3,7 @@
 // DO NOT EDIT OR DELETE THIS FILE.
 
 "use strict";
-const { mkdirSync, existsSync } = require("fs");
+const { mkdirSync } = require("fs");
 const chalk = require("chalk");
 const {
   domain,
@@ -19,21 +19,11 @@ const downloadfiles = require("./scripts/downloadfiles");
 
 const dir = process.argv[2] || "my-three-app";
 
-if (existsSync(dir)) {
-  console.error(
-    `${chalk.red(
-      `This directroy already exists, please provide a non-existing directory name.`
-    )} ${chalk.yellowBright(`create-three-app`)} ${chalk.green("{")}${chalk.dim(
-      `directroy`
-    )}${chalk.green("}")}`
-  );
-  process.exit(1);
-}
-
 getConfig(domain)
   .then((config) => {
-    let examples = Object.keys(config);
-    examples.push("I'll select from threejs examples");
+    const threeExamples = Object.keys(config);
+    const examples = [ ...threeExamples, "Select from threejs examples" ];
+
     new AutoComplete({
       name: "Example",
       message: "Which example do you want to use?",
@@ -41,11 +31,15 @@ getConfig(domain)
     })
       .run()
       .then((example) => {
-        if (example === "I'll select from threejs examples") {
+        if (threeExamples.includes(example)) {
+          mkdirSync(dir);
+          checkYarn().then(init);
+          downloadfiles(example, config[example], domain).then(manageDir);
+        } else {
           getExamplesConfig(domain).then((config) => {
             new AutoComplete({
               name: "Example",
-              message: "Which example do you want to use?",
+              message: "Select example",
               choices: Object.keys(config),
             })
               .run()
@@ -55,29 +49,14 @@ getConfig(domain)
                   "Using an example from three.js may cause unresolved resource urls, which you may have to resolve..."
                 );
                 mkdirSync(dir);
-                checkYarn().then((r) => init(r, true));
+                checkYarn().then((answer) => init(answer, true));
 
-                downloadfiles(res, config[res], domain, true).then(
-                  (directory) => {
-                    manageDir(directory);
-                  }
-                );
+                downloadfiles(res, config[res], domain, true).then(manageDir);
               })
               .catch((e) => console.error(chalk.red("Process aborted"), e));
-          });
-        } else {
-          mkdirSync(dir);
-          checkYarn().then((r) => init(r));
-          downloadfiles(example, config[example], domain).then((directory) => {
-            manageDir(directory);
           });
         }
       })
       .catch((e) => console.log(chalk.red("Process aborted"), e));
   })
-  .catch((e) =>
-    console.log(
-      chalk.red("An error occurred while fetching the config file"),
-      e
-    )
-  );
+  .catch((e) => console.log(chalk.red("An error occurred while fetching the config file"), e));
