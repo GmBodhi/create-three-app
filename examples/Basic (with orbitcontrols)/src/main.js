@@ -30,16 +30,16 @@ function init() {
 
   // Scene
   scene = new Scene();
-  scene.background = new Color(0x96B9D0);
+  scene.background = new Color(0x96b9d0);
 
   // Cube
   const geometry = new BoxBufferGeometry(200, 200, 200);
-  const material = new MeshLambertMaterial({ color: 0xFF99F4 });
+  const material = new MeshLambertMaterial({ color: 0xff99f4 });
   mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   // Lights
-  const light = new HemisphereLight(0xFFFFCC, 0x000033, 1.0);
+  const light = new HemisphereLight(0xffffcc, 0x000033, 1.0);
   scene.add(light);
 
   // Renderer
@@ -53,7 +53,7 @@ function init() {
 
   // Controls
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.autoRotate = true; 
+  controls.autoRotate = true;
   controls.enableDamping = true;
 
   window.addEventListener("resize", onWindowResize, false);
