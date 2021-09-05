@@ -22,7 +22,7 @@ const dir = process.argv[2] || "my-three-app";
 getConfig(domain)
   .then((config) => {
     const threeExamples = Object.keys(config);
-    const examples = [ ...threeExamples, "Select from threejs examples" ];
+    const examples = [...threeExamples, "Select from threejs examples"];
 
     new AutoComplete({
       name: "Example",
@@ -62,4 +62,9 @@ getConfig(domain)
       })
       .catch((e) => console.log(chalk.red("Process aborted"), e));
   })
-  .catch((e) => console.log(chalk.red("An error occurred while fetching the config file"), e));
+  .catch((e) =>
+    console.log(
+      chalk.red("An error occurred while fetching the config file"),
+      e
+    )
+  );
