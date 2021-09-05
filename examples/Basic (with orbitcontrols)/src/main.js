@@ -1,7 +1,8 @@
 import {
-  AmbientLight,
+  ACESFilmicToneMapping,
   BoxBufferGeometry,
-  DirectionalLight,
+  Color,
+  HemisphereLight,
   Mesh,
   MeshLambertMaterial,
   PerspectiveCamera,
@@ -18,32 +19,27 @@ let camera, scene, renderer, mesh, controls;
 init();
 
 function init() {
-  // camera
+  // Camera
   camera = new PerspectiveCamera(
-    75,
+    50,
     window.innerWidth / window.innerHeight,
     1,
     1000
   );
-
   camera.position.set(100, 400, 0);
 
-  // Create scene
+  // Scene
   scene = new Scene();
+  scene.background = new Color(0x96B9D0);
 
   // Cube
   const geometry = new BoxBufferGeometry(200, 200, 200);
-  const material = new MeshLambertMaterial({ color: 0xffffff });
+  const material = new MeshLambertMaterial({ color: 0xFF99F4 });
   mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   // Lights
-  const directionalLight = new DirectionalLight(0xffffff, 0.5);
-  directionalLight.position.set(0, 1, 0);
-  scene.add(directionalLight);
-
-  //ambient light
-  const light = new AmbientLight(0x404040, 1); // soft white light
+  const light = new HemisphereLight(0xFFFFCC, 0x000033, 1.0);
   scene.add(light);
 
   // Renderer
@@ -53,11 +49,12 @@ function init() {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.toneMapping = ACESFilmicToneMapping;
 
   // Controls
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.autoRotate = true; // Auto rotate the camera around the target
-  controls.enableDamping = true; // Damping of the rotation so it stops the camera from going too fast
+  controls.autoRotate = true; 
+  controls.enableDamping = true;
 
   window.addEventListener("resize", onWindowResize, false);
 
@@ -76,8 +73,4 @@ function animate() {
   renderer.render(scene, camera);
 
   controls.update();
-
-  // Auto rotate cube
-  // mesh.rotation.x += 0.005;
-  // mesh.rotation.y += 0.01;
 }
