@@ -13,7 +13,7 @@
 
 If you think this repo is worth a star✨ just don't hesitate :)
 
-### Note: you don't have to update this package everytime when three.js releases a new version
+### Note: We don't recommend installing this package globally.
 
 ## Usage
 
