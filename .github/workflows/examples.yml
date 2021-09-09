@@ -11,25 +11,34 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+
       - name: Install Node v14
         uses: actions/setup-node@v2
         with:
           node-version: 14
+
       - name: Install Dependencies
         run: yarn install
+
+      - name: Run Config
+        run: yarn run config
+
       - name: Generate examples
         run: |
           cd example-processor
           node index.js
+
       - name: Generate Config
         run: |
           cd example-processor
           node generateConfig.js
+
       - name: Format Code
         run: |
           npm i prettier -g
           git pull -a
           prettier --write .
+
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
