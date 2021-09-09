@@ -20,6 +20,10 @@ If you think this repo is worth a star✨ just don't hesitate :)
 ```sh
 npx create-three-app {dir_name}
 ```
+or 
+```sh
+yarn create three-app {dir_name}
+```
 
 ## Using an example from threejs.org/examples
 
