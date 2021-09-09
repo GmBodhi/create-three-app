@@ -36,7 +36,7 @@ Examples of unacceptable behavior include:
   address, without their explicit permission
 - Other conduct which could reasonably be considered inappropriate in a
   professional setting
-- Promoting dogs
+- ~~Promoting dogs~~
 
 ## Enforcement Responsibilities
 
