@@ -20,7 +20,9 @@ If you think this repo is worth a star✨ just don't hesitate :)
 ```sh
 npx create-three-app {dir_name}
 ```
-or 
+
+or
+
 ```sh
 yarn create three-app {dir_name}
 ```
