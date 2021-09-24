@@ -1,5 +1,5 @@
-const fs = require("fs");
-const path = require("path");
+import fs from "fs";
+import path from "path";
 
 // DON'T EDIT OR DELETE THIS FILE. //
 let config = {};
@@ -11,6 +11,7 @@ function manageDir(directory, json, target = "") {
         json,
         target + "/" + file.name
       );
+
       if (!json["dirs"].includes(target + "/" + file.name))
         json["dirs"].unshift(target + "/" + file.name);
     } else {
@@ -18,7 +19,8 @@ function manageDir(directory, json, target = "") {
         path.join(__dirname, "examples"),
         path.join(directory)
       );
-      json["files"][file.name] = dir.split("\\").slice(1).join("/");
+      
+      json["files"][file.name] = dir.split("\\").slice(1).join("/"); // why split by backslash?
     }
   });
 }
