@@ -1,14 +1,15 @@
-const chalk = require("chalk");
-const spawn = require("cross-spawn");
-const path = require("path");
-const { error } = require("./utils");
+import chalk from "chalk";
+import spawn from "cross-spawn";
+import path from "path";
+import { error } from "./utils";
 
 let dir = process.argv[2] || "my-three-app";
 
-async function installDeps(manager, isExample) {
+async function installDeps(manager: string, isExample: boolean) {
   console.log(
     chalk.dim(chalk.green(`Installing dependencies using ${manager}..!`))
   );
+  
   spawn(manager === "npm" ? "npm" : "yarn", ["install"], {
     stdio: "inherit",
     cwd: path.join(process.cwd(), dir),
@@ -44,7 +45,7 @@ async function installDeps(manager, isExample) {
     });
 }
 
-const init = (answer, isExample = false) => {
+const init = (answer: string, isExample = false) => {
   spawn("npm", ["init", "-y"], {
     cwd: path.join(process.cwd(), dir),
   })
@@ -56,4 +57,4 @@ const init = (answer, isExample = false) => {
     });
 };
 
-module.exports = init;
+export default init;
