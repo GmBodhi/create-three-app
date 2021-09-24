@@ -2,11 +2,11 @@
   "name": "create-three-app",
   "version": "2.0.2",
   "description": "Create basic three.js project from three.js/examples or some predefined basic setup",
-  "main": "src/index.js",
+  "main": "dist/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint src",
-    "config": "node generateConfig",
+    "config": "ts-node generateConfig",
     "format": "prettier --write ."
   },
   "author": "",
@@ -19,7 +19,7 @@
     "rimraf": "^3.0.2"
   },
   "bin": {
-    "create-three-app": "./src/index.js"
+    "create-three-app": "./dist/index.js"
   },
   "publishConfig": {
     "access": "public"
@@ -28,6 +28,7 @@
     "three",
     "three.js",
     "three-app",
+    "create-three-app",
     "webpack"
   ],
   "homepage": "https://github.com/GmBodhi/create-three-app",
@@ -38,6 +39,8 @@
   "devDependencies": {
     "@types/node": "^16.6.1",
     "@types/node-fetch": "^2.5.12",
+    "@types/cross-spawn": "^6.0.2",
+    "@types/rimraf": "^3.0.2",
     "eslint": "^7.32.0",
     "jsdom": "^17.0.0",
     "puppeteer": "^10.2.0",
