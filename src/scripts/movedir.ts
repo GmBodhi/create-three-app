@@ -1,11 +1,11 @@
-const { readdirSync, mkdirSync, copyFileSync } = require("fs");
-const { error } = require("./utils");
-const path = require("path");
-const rimraf = require("rimraf");
+import { readdirSync, mkdirSync, copyFileSync } from "fs";
+import { error } from "./utils";
+import path from "path";
+import rimraf from "rimraf";
 
-const dir = process.argv[2] || "my-three-app";
+const dir = process.argv[2] ?? "my-three-app";
 
-function manageDir(directory, target = "") {
+function manageDir(directory: string, target = "") {
   readdirSync(directory, { withFileTypes: true }).forEach((file) => {
     if (file.isDirectory()) {
       mkdirSync(path.join(process.cwd(), dir, target + "/" + file.name));
@@ -24,4 +24,4 @@ function manageDir(directory, target = "") {
   });
 }
 
-module.exports = manageDir;
+export default manageDir;
