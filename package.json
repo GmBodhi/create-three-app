@@ -16,7 +16,8 @@
     "cross-spawn": "^7.0.3",
     "enquirer": "^2.3.6",
     "node-fetch": "^2.6.1",
-    "rimraf": "^3.0.2"
+    "rimraf": "^3.0.2",
+    "yargs": "^17.2.0"
   },
   "bin": {
     "create-three-app": "./src/index.js"
