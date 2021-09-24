@@ -47,7 +47,7 @@ fs.readdirSync(path.join(__dirname, "examples"), {
 
 saveFile(config);
 
-function saveFile(json) {
+function saveFile(json: typeof config) {
   const file = Object.fromEntries(
     Object.entries(json).map((val) => {
       val[1].dirs = val[1].dirs.sort(
