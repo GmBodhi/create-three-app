@@ -1,17 +1,16 @@
-const chalk = require("chalk");
-const fetch = require("node-fetch");
-const fs = require("fs");
-const spawn = require("cross-spawn");
+import chalk from "chalk";
+import fetch from "node-fetch";
+import fs from "fs";
+import spawn from "cross-spawn";
 
 // Error utils
-function error(message) {
+export function error(message: string) {
   console.error(chalk.red(message));
   process.exit(1);
 }
-module.exports.error = error;
 
 // Download utils
-async function download(url, dest) {
+export async function download(url: string, dest: string) {
   const res = await fetch(url);
   if (!res.ok)
     return error(`Srver responded with ${res.status}: ${res.statusText}`);
@@ -22,26 +21,21 @@ async function download(url, dest) {
     fileStream.on("finish", resolve);
   });
 }
-module.exports.download = download;
 
-module.exports.domain =
-  "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/";
+export const domain = "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/";
 
 // Get Config
-async function getConfig(domain) {
+export async function getConfig(domain: string) {
   return await fetch(domain + "examples/config.json").then((res) => res.json());
 }
-module.exports.getConfig = getConfig;
 
-async function getExamplesConfig(domain) {
+export async function getExamplesConfig(domain: string) {
   return await fetch(domain + "example-processor/templates/config.json").then(
     (res) => res.json()
   );
 }
 
-module.exports.getExamplesConfig = getExamplesConfig;
-
-module.exports.checkYarn = function checkYarn() {
+export function checkYarn() {
   return new Promise((resolve) => {
     spawn("yarn", ["--version"], { stdio: "ignore" })
       .on("close", (code) => {
