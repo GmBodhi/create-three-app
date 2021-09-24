@@ -2,22 +2,15 @@
 
 // DO NOT EDIT OR DELETE THIS FILE.
 
-"use strict";
-const { mkdirSync, existsSync } = require("fs");
-const chalk = require("chalk");
-const {
-  domain,
-  getConfig,
-  getExamplesConfig,
-  checkYarn,
-} = require("./scripts/utils");
-// @ts-ignore
-const { AutoComplete } = require("enquirer");
-const init = require("./scripts/initEnv");
-const manageDir = require("./scripts/moveDir");
-const downloadFiles = require("./scripts/downloadFiles");
+import { mkdirSync, existsSync } from "fs";
+import chalk from "chalk";
+import { domain, getConfig, getExamplesConfig, checkYarn } from "./scripts/utils";
+import { AutoComplete } from "enquirer";
+import init from "./scripts/initEnv";
+import manageDir from "./scripts/moveDir";
+import downloadFiles from "./scripts/downloadFiles";
 
-const dir = process.argv[2] || "my-three-app";
+const dir = process.argv[2] ?? "my-three-app";
 
 getConfig(domain)
   .then((config) => {
