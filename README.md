@@ -38,7 +38,8 @@ We don't recommend this for beginners, as there can be some bugs that you may ha
 ## Contributing
 
 Thank you for your interest in contributing to this project!
-We're interested in adding more examples and maintaining those that are already in use. All contributions must abide by the [Contributor Covenant Code of Conduct](https://github.com/GmBodhi/create-three-app/blob/master/CODE_OF_CONDUCT.md).
+We're interested in adding more examples and maintaining those that are already in use. We're also loking forward for a better webpack configuration system.
+All contributions must abide by the [Contributor Covenant Code of Conduct](https://github.com/GmBodhi/create-three-app/blob/master/CODE_OF_CONDUCT.md).
 
 ## Want support?
 
