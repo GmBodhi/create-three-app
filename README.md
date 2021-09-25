@@ -33,11 +33,7 @@ We don't recommend this for beginners, as there can be some bugs that you may ha
 
 ## Example
 
-
-
 [Watch this video](https://user-images.githubusercontent.com/71921036/134766178-5768bf31-012d-406f-a180-3c2098056611.mp4)
-
-
 
 ## Contributing
 
