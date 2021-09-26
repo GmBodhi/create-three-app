@@ -26,7 +26,7 @@ module.exports = function parseScript(html) {
       js += s.innerHTML
         .replace(/\.(\.\/build\/three\.module\.js|\/)/gi, resolveUrl)
         .replace(/THREE\.(\w+)/g, treeShaking)
-        .replace(/import\s+\*\s+as\s+THREE\s+from\s+\"three\"/);
+        .replace(/import\s+\*\s+as\s+THREE\s+from\s+\"three\"/, subimports);
     });
   return js;
 };
