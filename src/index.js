@@ -13,9 +13,9 @@ const {
 } = require("./scripts/utils");
 // @ts-ignore
 const { AutoComplete } = require("enquirer");
-const init = require("./scripts/initEnv");
-const manageDir = require("./scripts/moveDir");
-const downloadFiles = require("./scripts/downloadFiles");
+const init = require("./scripts/initenv");
+const manageDir = require("./scripts/movedir");
+const downloadFiles = require("./scripts/downloadfiles");
 
 const dir = process.argv[2] || "my-three-app";
 
