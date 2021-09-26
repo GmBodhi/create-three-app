@@ -27,7 +27,7 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
     1,
@@ -35,16 +35,16 @@ function init() {
   );
   camera.position.set(0, 150, 750);
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
-  scene.add(new THREE.AmbientLight(0x808080));
+  scene.add(new AmbientLight(0x808080));
 
-  const light = new THREE.DirectionalLight(0xffffff, 1);
+  const light = new DirectionalLight(0xffffff, 1);
   light.position.set(1, 1, 1);
   scene.add(light);
 
-  group = new THREE.Group();
+  group = new Group();
   group.position.y = 50;
   scene.add(group);
 
@@ -60,7 +60,7 @@ function init() {
 
   for (let i = 0, j = 20; i < j; i++) {
     nurbsControlPoints.push(
-      new THREE.Vector4(
+      new Vector4(
         Math.random() * 400 - 200,
         Math.random() * 400,
         Math.random() * 400 - 200,
@@ -69,7 +69,7 @@ function init() {
     );
 
     const knot = (i + 1) / (j - nurbsDegree);
-    nurbsKnots.push(THREE.MathUtils.clamp(knot, 0, 1));
+    nurbsKnots.push(MathUtils.clamp(knot, 0, 1));
   }
 
   const nurbsCurve = new NURBSCurve(
@@ -78,25 +78,25 @@ function init() {
     nurbsControlPoints
   );
 
-  const nurbsGeometry = new THREE.BufferGeometry();
+  const nurbsGeometry = new BufferGeometry();
   nurbsGeometry.setFromPoints(nurbsCurve.getPoints(200));
 
-  const nurbsMaterial = new THREE.LineBasicMaterial({ color: 0x333333 });
+  const nurbsMaterial = new LineBasicMaterial({ color: 0x333333 });
 
-  const nurbsLine = new THREE.Line(nurbsGeometry, nurbsMaterial);
+  const nurbsLine = new Line(nurbsGeometry, nurbsMaterial);
   nurbsLine.position.set(200, -100, 0);
   group.add(nurbsLine);
 
-  const nurbsControlPointsGeometry = new THREE.BufferGeometry();
+  const nurbsControlPointsGeometry = new BufferGeometry();
   nurbsControlPointsGeometry.setFromPoints(nurbsCurve.controlPoints);
 
-  const nurbsControlPointsMaterial = new THREE.LineBasicMaterial({
+  const nurbsControlPointsMaterial = new LineBasicMaterial({
     color: 0x333333,
     opacity: 0.25,
     transparent: true,
   });
 
-  const nurbsControlPointsLine = new THREE.Line(
+  const nurbsControlPointsLine = new Line(
     nurbsControlPointsGeometry,
     nurbsControlPointsMaterial
   );
@@ -107,22 +107,22 @@ function init() {
 
   const nsControlPoints = [
     [
-      new THREE.Vector4(-200, -200, 100, 1),
-      new THREE.Vector4(-200, -100, -200, 1),
-      new THREE.Vector4(-200, 100, 250, 1),
-      new THREE.Vector4(-200, 200, -100, 1),
+      new Vector4(-200, -200, 100, 1),
+      new Vector4(-200, -100, -200, 1),
+      new Vector4(-200, 100, 250, 1),
+      new Vector4(-200, 200, -100, 1),
     ],
     [
-      new THREE.Vector4(0, -200, 0, 1),
-      new THREE.Vector4(0, -100, -100, 5),
-      new THREE.Vector4(0, 100, 150, 5),
-      new THREE.Vector4(0, 200, 0, 1),
+      new Vector4(0, -200, 0, 1),
+      new Vector4(0, -100, -100, 5),
+      new Vector4(0, 100, 150, 5),
+      new Vector4(0, 200, 0, 1),
     ],
     [
-      new THREE.Vector4(200, -200, -100, 1),
-      new THREE.Vector4(200, -100, 200, 1),
-      new THREE.Vector4(200, 100, -250, 1),
-      new THREE.Vector4(200, 200, 100, 1),
+      new Vector4(200, -200, -100, 1),
+      new Vector4(200, -100, 200, 1),
+      new Vector4(200, 100, -250, 1),
+      new Vector4(200, 200, 100, 1),
     ],
   ];
   const degree1 = 2;
@@ -137,27 +137,24 @@ function init() {
     nsControlPoints
   );
 
-  const map = new THREE.TextureLoader().load("textures/uv_grid_opengl.jpg");
-  map.wrapS = map.wrapT = THREE.RepeatWrapping;
+  const map = new TextureLoader().load("textures/uv_grid_opengl.jpg");
+  map.wrapS = map.wrapT = RepeatWrapping;
   map.anisotropy = 16;
 
   function getSurfacePoint(u, v, target) {
     return nurbsSurface.getPoint(u, v, target);
   }
 
-  const geometry = new THREE.ParametricBufferGeometry(getSurfacePoint, 20, 20);
-  const material = new THREE.MeshLambertMaterial({
-    map: map,
-    side: THREE.DoubleSide,
-  });
-  const object = new THREE.Mesh(geometry, material);
+  const geometry = new ParametricBufferGeometry(getSurfacePoint, 20, 20);
+  const material = new MeshLambertMaterial({ map: map, side: DoubleSide });
+  const object = new Mesh(geometry, material);
   object.position.set(-200, 100, 0);
   object.scale.multiplyScalar(1);
   group.add(object);
 
   //
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

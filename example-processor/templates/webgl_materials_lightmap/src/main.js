@@ -21,21 +21,16 @@ async function init() {
 
   // CAMERA
 
-  camera = new THREE.PerspectiveCamera(
-    40,
-    SCREEN_WIDTH / SCREEN_HEIGHT,
-    1,
-    10000
-  );
+  camera = new PerspectiveCamera(40, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
   camera.position.set(700, 200, -500);
 
   // SCENE
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   // LIGHTS
 
-  const light = new THREE.DirectionalLight(0xaabbff, 0.3);
+  const light = new DirectionalLight(0xaabbff, 0.3);
   light.position.x = 300;
   light.position.y = 250;
   light.position.z = -500;
@@ -46,31 +41,31 @@ async function init() {
   const vertexShader = document.getElementById("vertexShader").textContent;
   const fragmentShader = document.getElementById("fragmentShader").textContent;
   const uniforms = {
-    topColor: { value: new THREE.Color(0x0077ff) },
-    bottomColor: { value: new THREE.Color(0xffffff) },
+    topColor: { value: new Color(0x0077ff) },
+    bottomColor: { value: new Color(0xffffff) },
     offset: { value: 400 },
     exponent: { value: 0.6 },
   };
   uniforms.topColor.value.copy(light.color);
 
-  const skyGeo = new THREE.SphereGeometry(4000, 32, 15);
-  const skyMat = new THREE.ShaderMaterial({
+  const skyGeo = new SphereGeometry(4000, 32, 15);
+  const skyMat = new ShaderMaterial({
     uniforms: uniforms,
     vertexShader: vertexShader,
     fragmentShader: fragmentShader,
-    side: THREE.BackSide,
+    side: BackSide,
   });
 
-  const sky = new THREE.Mesh(skyGeo, skyMat);
+  const sky = new Mesh(skyGeo, skyMat);
   scene.add(sky);
 
   // RENDERER
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   container.appendChild(renderer.domElement);
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputEncoding = sRGBEncoding;
 
   // CONTROLS
 
@@ -85,7 +80,7 @@ async function init() {
 
   // MODEL
 
-  const loader = new THREE.ObjectLoader();
+  const loader = new ObjectLoader();
   const object = await loader.loadAsync("models/json/lightmap/lightmap.json");
   scene.add(object);
 

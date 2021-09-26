@@ -12,7 +12,7 @@ import { NodeMaterial } from "three/examples/jsm/nodes/materials/NodeMaterial.js
 const container = document.getElementById("container");
 
 let renderer, scene, camera;
-const clock = new THREE.Clock(),
+const clock = new Clock(),
   fov = 50;
 const frame = new NodeFrame();
 let teapot, mesh, cloud;
@@ -24,14 +24,14 @@ const param = { load: "caustic" };
 window.addEventListener("load", init);
 
 function init() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     fov,
     window.innerWidth / window.innerHeight,
     1,
@@ -41,26 +41,26 @@ function init() {
   camera.position.z = -50;
   camera.position.y = 30;
 
-  cloud = new THREE.TextureLoader().load("textures/lava/cloud.png");
-  cloud.wrapS = cloud.wrapT = THREE.RepeatWrapping;
+  cloud = new TextureLoader().load("textures/lava/cloud.png");
+  cloud.wrapS = cloud.wrapT = RepeatWrapping;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 50;
   controls.maxDistance = 200;
 
-  scene.add(new THREE.AmbientLight(0x464646));
+  scene.add(new AmbientLight(0x464646));
 
-  const light1 = new THREE.DirectionalLight(0xffddcc, 1);
+  const light1 = new DirectionalLight(0xffddcc, 1);
   light1.position.set(1, 0.75, 0.5);
   scene.add(light1);
 
-  const light2 = new THREE.DirectionalLight(0xccccff, 1);
+  const light2 = new DirectionalLight(0xccccff, 1);
   light2.position.set(-1, 0.75, -0.5);
   scene.add(light2);
 
   teapot = new TeapotGeometry(15, 18);
 
-  mesh = new THREE.Mesh(teapot);
+  mesh = new Mesh(teapot);
   scene.add(mesh);
 
   window.addEventListener("resize", onWindowResize);

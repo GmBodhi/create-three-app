@@ -35,7 +35,7 @@ const MOLECULES = {
 };
 
 const loader = new PDBLoader();
-const offset = new THREE.Vector3();
+const offset = new Vector3();
 
 const menu = document.getElementById("menu");
 
@@ -43,10 +43,10 @@ init();
 animate();
 
 function init() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x050505);
+  scene = new Scene();
+  scene.background = new Color(0x050505);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -55,20 +55,20 @@ function init() {
   camera.position.z = 1000;
   scene.add(camera);
 
-  const light1 = new THREE.DirectionalLight(0xffffff, 0.8);
+  const light1 = new DirectionalLight(0xffffff, 0.8);
   light1.position.set(1, 1, 1);
   scene.add(light1);
 
-  const light2 = new THREE.DirectionalLight(0xffffff, 0.5);
+  const light2 = new DirectionalLight(0xffffff, 0.5);
   light2.position.set(-1, -1, 1);
   scene.add(light2);
 
-  root = new THREE.Group();
+  root = new Group();
   scene.add(root);
 
   //
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.getElementById("container").appendChild(renderer.domElement);
@@ -129,8 +129,8 @@ function loadMolecule(url) {
     const geometryBonds = pdb.geometryBonds;
     const json = pdb.json;
 
-    const boxGeometry = new THREE.BoxGeometry(1, 1, 1);
-    const sphereGeometry = new THREE.IcosahedronGeometry(1, 3);
+    const boxGeometry = new BoxGeometry(1, 1, 1);
+    const sphereGeometry = new IcosahedronGeometry(1, 3);
 
     geometryAtoms.computeBoundingBox();
     geometryAtoms.boundingBox.getCenter(offset).negate();
@@ -141,8 +141,8 @@ function loadMolecule(url) {
     let positions = geometryAtoms.getAttribute("position");
     const colors = geometryAtoms.getAttribute("color");
 
-    const position = new THREE.Vector3();
-    const color = new THREE.Color();
+    const position = new Vector3();
+    const color = new Color();
 
     for (let i = 0; i < positions.count; i++) {
       position.x = positions.getX(i);
@@ -153,9 +153,9 @@ function loadMolecule(url) {
       color.g = colors.getY(i);
       color.b = colors.getZ(i);
 
-      const material = new THREE.MeshPhongMaterial({ color: color });
+      const material = new MeshPhongMaterial({ color: color });
 
-      const object = new THREE.Mesh(sphereGeometry, material);
+      const object = new Mesh(sphereGeometry, material);
       object.position.copy(position);
       object.position.multiplyScalar(75);
       object.scale.multiplyScalar(25);
@@ -176,8 +176,8 @@ function loadMolecule(url) {
 
     positions = geometryBonds.getAttribute("position");
 
-    const start = new THREE.Vector3();
-    const end = new THREE.Vector3();
+    const start = new Vector3();
+    const end = new Vector3();
 
     for (let i = 0; i < positions.count; i += 2) {
       start.x = positions.getX(i);
@@ -191,10 +191,7 @@ function loadMolecule(url) {
       start.multiplyScalar(75);
       end.multiplyScalar(75);
 
-      const object = new THREE.Mesh(
-        boxGeometry,
-        new THREE.MeshPhongMaterial(0xffffff)
-      );
+      const object = new Mesh(boxGeometry, new MeshPhongMaterial(0xffffff));
       object.position.copy(start);
       object.position.lerp(end, 0.5);
       object.scale.set(5, 5, start.distanceTo(end));

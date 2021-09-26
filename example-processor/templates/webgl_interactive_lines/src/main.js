@@ -7,7 +7,7 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 let container, stats;
 let camera, scene, raycaster, renderer, parentTransform, sphereInter;
 
-const pointer = new THREE.Vector2();
+const pointer = new Vector2();
 const radius = 100;
 let theta = 0;
 
@@ -27,28 +27,28 @@ function init() {
     '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - interactive lines';
   container.appendChild(info);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
     10000
   );
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
-  const geometry = new THREE.SphereGeometry(5);
-  const material = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  const geometry = new SphereGeometry(5);
+  const material = new MeshBasicMaterial({ color: 0xff0000 });
 
-  sphereInter = new THREE.Mesh(geometry, material);
+  sphereInter = new Mesh(geometry, material);
   sphereInter.visible = false;
   scene.add(sphereInter);
 
-  const lineGeometry = new THREE.BufferGeometry();
+  const lineGeometry = new BufferGeometry();
   const points = [];
 
-  const point = new THREE.Vector3();
-  const direction = new THREE.Vector3();
+  const point = new Vector3();
+  const direction = new Vector3();
 
   for (let i = 0; i < 50; i++) {
     direction.x += Math.random() - 0.5;
@@ -60,12 +60,9 @@ function init() {
     points.push(point.x, point.y, point.z);
   }
 
-  lineGeometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(points, 3)
-  );
+  lineGeometry.setAttribute("position", new Float32BufferAttribute(points, 3));
 
-  parentTransform = new THREE.Object3D();
+  parentTransform = new Object3D();
   parentTransform.position.x = Math.random() * 40 - 20;
   parentTransform.position.y = Math.random() * 40 - 20;
   parentTransform.position.z = Math.random() * 40 - 20;
@@ -81,14 +78,14 @@ function init() {
   for (let i = 0; i < 50; i++) {
     let object;
 
-    const lineMaterial = new THREE.LineBasicMaterial({
+    const lineMaterial = new LineBasicMaterial({
       color: Math.random() * 0xffffff,
     });
 
     if (Math.random() > 0.5) {
-      object = new THREE.Line(lineGeometry, lineMaterial);
+      object = new Line(lineGeometry, lineMaterial);
     } else {
-      object = new THREE.LineSegments(lineGeometry, lineMaterial);
+      object = new LineSegments(lineGeometry, lineMaterial);
     }
 
     object.position.x = Math.random() * 400 - 200;
@@ -108,10 +105,10 @@ function init() {
 
   scene.add(parentTransform);
 
-  raycaster = new THREE.Raycaster();
+  raycaster = new Raycaster();
   raycaster.params.Line.threshold = 3;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -150,9 +147,9 @@ function animate() {
 function render() {
   theta += 0.1;
 
-  camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.y = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
+  camera.position.x = radius * Math.sin(MathUtils.degToRad(theta));
+  camera.position.y = radius * Math.sin(MathUtils.degToRad(theta));
+  camera.position.z = radius * Math.cos(MathUtils.degToRad(theta));
   camera.lookAt(scene.position);
 
   camera.updateMatrixWorld();

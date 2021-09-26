@@ -8,13 +8,13 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
 let camera, scene, renderer, light1, light2, light3, light4, object, stats;
 
-const clock = new THREE.Clock();
+const clock = new Clock();
 
 init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
     1,
@@ -22,7 +22,7 @@ function init() {
   );
   camera.position.z = 100;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   //model
 
@@ -34,37 +34,29 @@ function init() {
     scene.add(object);
   });
 
-  const sphere = new THREE.SphereGeometry(0.5, 16, 8);
+  const sphere = new SphereGeometry(0.5, 16, 8);
 
   //lights
 
-  light1 = new THREE.PointLight(0xff0040, 2, 50);
-  light1.add(
-    new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xff0040 }))
-  );
+  light1 = new PointLight(0xff0040, 2, 50);
+  light1.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0xff0040 })));
   scene.add(light1);
 
-  light2 = new THREE.PointLight(0x0040ff, 2, 50);
-  light2.add(
-    new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x0040ff }))
-  );
+  light2 = new PointLight(0x0040ff, 2, 50);
+  light2.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0x0040ff })));
   scene.add(light2);
 
-  light3 = new THREE.PointLight(0x80ff80, 2, 50);
-  light3.add(
-    new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0x80ff80 }))
-  );
+  light3 = new PointLight(0x80ff80, 2, 50);
+  light3.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0x80ff80 })));
   scene.add(light3);
 
-  light4 = new THREE.PointLight(0xffaa00, 2, 50);
-  light4.add(
-    new THREE.Mesh(sphere, new THREE.MeshBasicMaterial({ color: 0xffaa00 }))
-  );
+  light4 = new PointLight(0xffaa00, 2, 50);
+  light4.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0xffaa00 })));
   scene.add(light4);
 
   //renderer
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

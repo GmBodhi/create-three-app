@@ -21,9 +21,9 @@ animate();
 function init() {
   const container = document.getElementById("container");
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -33,7 +33,7 @@ function init() {
 
   //
 
-  let boxGeometry = new THREE.BoxGeometry(200, 200, 200, 16, 16, 16);
+  let boxGeometry = new BoxGeometry(200, 200, 200, 16, 16, 16);
 
   // if normal and uv attributes are not removed, mergeVertices() can't consolidate indentical vertices with different normal/uv data
 
@@ -49,7 +49,7 @@ function init() {
   const colors = [];
   const sizes = [];
 
-  const color = new THREE.Color();
+  const color = new Color();
 
   for (let i = 0, l = positionAttribute.count; i < l; i++) {
     color.setHSL(0.01 + 0.1 * (i / l), 1.0, 0.5);
@@ -58,21 +58,18 @@ function init() {
     sizes[i] = PARTICLE_SIZE * 0.5;
   }
 
-  const geometry = new THREE.BufferGeometry();
+  const geometry = new BufferGeometry();
   geometry.setAttribute("position", positionAttribute);
-  geometry.setAttribute(
-    "customColor",
-    new THREE.Float32BufferAttribute(colors, 3)
-  );
-  geometry.setAttribute("size", new THREE.Float32BufferAttribute(sizes, 1));
+  geometry.setAttribute("customColor", new Float32BufferAttribute(colors, 3));
+  geometry.setAttribute("size", new Float32BufferAttribute(sizes, 1));
 
   //
 
-  const material = new THREE.ShaderMaterial({
+  const material = new ShaderMaterial({
     uniforms: {
-      color: { value: new THREE.Color(0xffffff) },
+      color: { value: new Color(0xffffff) },
       pointTexture: {
-        value: new THREE.TextureLoader().load("textures/sprites/disc.png"),
+        value: new TextureLoader().load("textures/sprites/disc.png"),
       },
       alphaTest: { value: 0.9 },
     },
@@ -82,20 +79,20 @@ function init() {
 
   //
 
-  particles = new THREE.Points(geometry, material);
+  particles = new Points(geometry, material);
   scene.add(particles);
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
   //
 
-  raycaster = new THREE.Raycaster();
-  pointer = new THREE.Vector2();
+  raycaster = new Raycaster();
+  pointer = new Vector2();
 
   //
 

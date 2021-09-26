@@ -39,7 +39,7 @@ function init() {
   const container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     0.25,
@@ -47,12 +47,12 @@ function init() {
   );
   camera.position.set(-1.8, 0.6, 2.7);
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   new RGBELoader()
     .setPath("textures/equirectangular/")
     .load("royal_esplanade_1k.hdr", function (texture) {
-      texture.mapping = THREE.EquirectangularReflectionMapping;
+      texture.mapping = EquirectangularReflectionMapping;
 
       scene.background = texture;
       scene.environment = texture;
@@ -73,18 +73,18 @@ function init() {
     });
   });
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
   container.appendChild(renderer.domElement);
 
-  const target = new THREE.WebGLRenderTarget({
-    minFilter: THREE.LinearFilter,
-    magFilter: THREE.LinearFilter,
-    format: THREE.RGBAFormat,
-    encoding: THREE.sRGBEncoding,
+  const target = new WebGLRenderTarget({
+    minFilter: LinearFilter,
+    magFilter: LinearFilter,
+    format: RGBAFormat,
+    encoding: sRGBEncoding,
   });
 
   composer = new EffectComposer(renderer, target);

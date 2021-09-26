@@ -17,12 +17,12 @@ const params = {
 };
 
 const toneMappingOptions = {
-  None: THREE.NoToneMapping,
-  Linear: THREE.LinearToneMapping,
-  Reinhard: THREE.ReinhardToneMapping,
-  Cineon: THREE.CineonToneMapping,
-  ACESFilmic: THREE.ACESFilmicToneMapping,
-  Custom: THREE.CustomToneMapping,
+  None: NoToneMapping,
+  Linear: LinearToneMapping,
+  Reinhard: ReinhardToneMapping,
+  Cineon: CineonToneMapping,
+  ACESFilmic: ACESFilmicToneMapping,
+  Custom: CustomToneMapping,
 };
 
 init().catch(function (err) {
@@ -30,7 +30,7 @@ init().catch(function (err) {
 });
 
 async function init() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -38,13 +38,13 @@ async function init() {
   renderer.toneMapping = toneMappingOptions[params.toneMapping];
   renderer.toneMappingExposure = params.exposure;
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputEncoding = sRGBEncoding;
 
   // Set CustomToneMapping to Uncharted2
   // source: http://filmicworlds.com/blog/filmic-tonemapping-operators/
 
-  THREE.ShaderChunk.tonemapping_pars_fragment =
-    THREE.ShaderChunk.tonemapping_pars_fragment.replace(
+  ShaderChunk.tonemapping_pars_fragment =
+    ShaderChunk.tonemapping_pars_fragment.replace(
       "vec3 CustomToneMapping( vec3 color ) { return color; }",
       `#define Uncharted2Helper( x ) max( ( ( x * ( 0.15 * x + 0.10 * 0.50 ) + 0.20 * 0.02 ) / ( x * ( 0.15 * x + 0.50 ) + 0.20 * 0.30 ) ) - 0.02 / 0.30, vec3( 0.0 ) )
 					float toneMappingWhitePoint = 1.0;
@@ -54,9 +54,9 @@ async function init() {
 					}`
     );
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     0.25,
@@ -84,7 +84,7 @@ async function init() {
 
   // environment
 
-  texture.mapping = THREE.EquirectangularReflectionMapping;
+  texture.mapping = EquirectangularReflectionMapping;
 
   scene.background = texture;
   scene.environment = texture;

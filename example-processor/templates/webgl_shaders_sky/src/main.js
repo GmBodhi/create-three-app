@@ -19,7 +19,7 @@ function initSky() {
   sky.scale.setScalar(450000);
   scene.add(sky);
 
-  sun = new THREE.Vector3();
+  sun = new Vector3();
 
   /// GUI
 
@@ -40,8 +40,8 @@ function initSky() {
     uniforms["mieCoefficient"].value = effectController.mieCoefficient;
     uniforms["mieDirectionalG"].value = effectController.mieDirectionalG;
 
-    const phi = THREE.MathUtils.degToRad(90 - effectController.elevation);
-    const theta = THREE.MathUtils.degToRad(effectController.azimuth);
+    const phi = MathUtils.degToRad(90 - effectController.elevation);
+    const theta = MathUtils.degToRad(effectController.azimuth);
 
     sun.setFromSphericalCoords(1, phi, theta);
 
@@ -69,7 +69,7 @@ function initSky() {
 }
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,
     100,
@@ -77,16 +77,16 @@ function init() {
   );
   camera.position.set(0, 100, 2000);
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  const helper = new THREE.GridHelper(10000, 2, 0xffffff, 0xffffff);
+  const helper = new GridHelper(10000, 2, 0xffffff, 0xffffff);
   scene.add(helper);
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   document.body.appendChild(renderer.domElement);
 

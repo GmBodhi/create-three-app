@@ -40,12 +40,12 @@ function init() {
   const container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(70, width / height, 1, 3000);
+  camera = new PerspectiveCamera(70, width / height, 1, 3000);
   camera.position.z = 200;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
   container.appendChild(renderer.domElement);
@@ -61,16 +61,16 @@ function init() {
     path + "nz" + format,
   ];
 
-  const textureCube = new THREE.CubeTextureLoader().load(urls);
+  const textureCube = new CubeTextureLoader().load(urls);
 
   parameters = { color: 0xff1100, envMap: textureCube };
-  cubeMaterial = new THREE.MeshBasicMaterial(parameters);
+  cubeMaterial = new MeshBasicMaterial(parameters);
 
   singleMaterial = false;
 
   if (singleMaterial) zmaterial = [cubeMaterial];
 
-  const geo = new THREE.SphereGeometry(1, 20, 10);
+  const geo = new SphereGeometry(1, 20, 10);
 
   const xgrid = 14,
     ygrid = 9,
@@ -87,9 +87,9 @@ function init() {
         let mesh;
 
         if (singleMaterial) {
-          mesh = new THREE.Mesh(geo, zmaterial);
+          mesh = new Mesh(geo, zmaterial);
         } else {
-          mesh = new THREE.Mesh(geo, new THREE.MeshBasicMaterial(parameters));
+          mesh = new Mesh(geo, new MeshBasicMaterial(parameters));
           materials[count] = mesh.material;
         }
 

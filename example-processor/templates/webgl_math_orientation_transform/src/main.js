@@ -4,17 +4,17 @@ import * as THREE from "three";
 
 let camera, scene, renderer, mesh, target;
 
-const spherical = new THREE.Spherical();
-const rotationMatrix = new THREE.Matrix4();
-const targetQuaternion = new THREE.Quaternion();
-const clock = new THREE.Clock();
+const spherical = new Spherical();
+const rotationMatrix = new Matrix4();
+const targetQuaternion = new Quaternion();
+const clock = new Clock();
 const speed = 2;
 
 init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     0.01,
@@ -22,37 +22,37 @@ function init() {
   );
   camera.position.z = 5;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  const geometry = new THREE.ConeGeometry(0.1, 0.5, 8);
+  const geometry = new ConeGeometry(0.1, 0.5, 8);
   geometry.rotateX(Math.PI * 0.5);
-  const material = new THREE.MeshNormalMaterial();
+  const material = new MeshNormalMaterial();
 
-  mesh = new THREE.Mesh(geometry, material);
+  mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   //
 
-  const targetGeometry = new THREE.SphereGeometry(0.05);
-  const targetMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-  target = new THREE.Mesh(targetGeometry, targetMaterial);
+  const targetGeometry = new SphereGeometry(0.05);
+  const targetMaterial = new MeshBasicMaterial({ color: 0xff0000 });
+  target = new Mesh(targetGeometry, targetMaterial);
   scene.add(target);
 
   //
 
-  const sphereGeometry = new THREE.SphereGeometry(2, 32, 32);
-  const sphereMaterial = new THREE.MeshBasicMaterial({
+  const sphereGeometry = new SphereGeometry(2, 32, 32);
+  const sphereMaterial = new MeshBasicMaterial({
     color: 0xcccccc,
     wireframe: true,
     transparent: true,
     opacity: 0.3,
   });
-  const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+  const sphere = new Mesh(sphereGeometry, sphereMaterial);
   scene.add(sphere);
 
   //
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

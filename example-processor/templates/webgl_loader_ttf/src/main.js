@@ -37,7 +37,7 @@ function init() {
 
   // CAMERA
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     30,
     window.innerWidth / window.innerHeight,
     1,
@@ -45,31 +45,28 @@ function init() {
   );
   camera.position.set(0, 400, 700);
 
-  cameraTarget = new THREE.Vector3(0, 150, 0);
+  cameraTarget = new Vector3(0, 150, 0);
 
   // SCENE
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000);
-  scene.fog = new THREE.Fog(0x000000, 250, 1400);
+  scene = new Scene();
+  scene.background = new Color(0x000000);
+  scene.fog = new Fog(0x000000, 250, 1400);
 
   // LIGHTS
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.125);
+  const dirLight = new DirectionalLight(0xffffff, 0.125);
   dirLight.position.set(0, 0, 1).normalize();
   scene.add(dirLight);
 
-  const pointLight = new THREE.PointLight(0xffffff, 1.5);
+  const pointLight = new PointLight(0xffffff, 1.5);
   pointLight.position.set(0, 100, 90);
   pointLight.color.setHSL(Math.random(), 1, 0.5);
   scene.add(pointLight);
 
-  material = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
-    flatShading: true,
-  });
+  material = new MeshPhongMaterial({ color: 0xffffff, flatShading: true });
 
-  group = new THREE.Group();
+  group = new Group();
   group.position.y = 100;
 
   scene.add(group);
@@ -77,17 +74,13 @@ function init() {
   const loader = new TTFLoader();
 
   loader.load("fonts/ttf/kenpixel.ttf", function (json) {
-    font = new THREE.Font(json);
+    font = new Font(json);
     createText();
   });
 
-  const plane = new THREE.Mesh(
-    new THREE.PlaneGeometry(10000, 10000),
-    new THREE.MeshBasicMaterial({
-      color: 0xffffff,
-      opacity: 0.5,
-      transparent: true,
-    })
+  const plane = new Mesh(
+    new PlaneGeometry(10000, 10000),
+    new MeshBasicMaterial({ color: 0xffffff, opacity: 0.5, transparent: true })
   );
   plane.position.y = 100;
   plane.rotation.x = -Math.PI / 2;
@@ -95,7 +88,7 @@ function init() {
 
   // RENDERER
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -156,7 +149,7 @@ function onDocumentKeyPress(event) {
 }
 
 function createText() {
-  textGeo = new THREE.TextGeometry(text, {
+  textGeo = new TextGeometry(text, {
     font: font,
 
     size: size,
@@ -174,7 +167,7 @@ function createText() {
   const centerOffset =
     -0.5 * (textGeo.boundingBox.max.x - textGeo.boundingBox.min.x);
 
-  textMesh1 = new THREE.Mesh(textGeo, material);
+  textMesh1 = new Mesh(textGeo, material);
 
   textMesh1.position.x = centerOffset;
   textMesh1.position.y = hover;
@@ -186,7 +179,7 @@ function createText() {
   group.add(textMesh1);
 
   if (mirror) {
-    textMesh2 = new THREE.Mesh(textGeo, material);
+    textMesh2 = new Mesh(textGeo, material);
 
     textMesh2.position.x = centerOffset;
     textMesh2.position.y = -hover;

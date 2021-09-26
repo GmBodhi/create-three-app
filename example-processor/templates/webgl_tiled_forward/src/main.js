@@ -14,7 +14,7 @@ import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPa
 
 const RADIUS = 75;
 
-THREE.ShaderChunk["lights_pars_begin"] += [
+ShaderChunk["lights_pars_begin"] += [
   "",
   "#if defined TILED_FORWARD",
   "uniform vec4 tileData;",
@@ -23,7 +23,7 @@ THREE.ShaderChunk["lights_pars_begin"] += [
   "#endif",
 ].join("\n");
 
-THREE.ShaderChunk["lights_fragment_end"] += [
+ShaderChunk["lights_fragment_end"] += [
   "",
   "#if defined TILED_FORWARD",
   "vec2 tUv = floor(gl_FragCoord.xy / tileData.xy * 32.) / 32. + tileData.zw;",
@@ -62,12 +62,12 @@ const State = {
   tileData: { value: null },
   tileTexture: { value: null },
   lightTexture: {
-    value: new THREE.DataTexture(
+    value: new DataTexture(
       new Float32Array(32 * 2 * 4),
       32,
       2,
-      THREE.RGBAFormat,
-      THREE.FloatType
+      RGBAFormat,
+      FloatType
     ),
   },
 };
@@ -86,7 +86,7 @@ function resizeTiles() {
     0.5 / Math.ceil(width / 32),
     0.5 / Math.ceil(height / 32),
   ];
-  State.tileTexture.value = new THREE.DataTexture(
+  State.tileTexture.value = new DataTexture(
     new Uint8Array(State.cols * State.rows * 4),
     State.cols,
     State.rows
@@ -104,7 +104,7 @@ function tileLights(renderer, scene, camera) {
 
   d.fill(0);
 
-  const vector = new THREE.Vector3();
+  const vector = new Vector3();
 
   lights.forEach(function (light, index) {
     vector.setFromMatrixPosition(light.matrixWorld);
@@ -140,7 +140,7 @@ function tileLights(renderer, scene, camera) {
 
 // Screen rectangle bounds from light sphere's world AABB
 const lightBounds = (function () {
-  const v = new THREE.Vector3();
+  const v = new Vector3();
   return function (camera, pos, r) {
     let minX = State.width,
       maxX = 0,
@@ -171,28 +171,28 @@ const lightBounds = (function () {
 
 const container = document.createElement("div");
 document.body.appendChild(container);
-const camera = new THREE.PerspectiveCamera(
+const camera = new PerspectiveCamera(
   40,
   window.innerWidth / window.innerHeight,
   1,
   2000
 );
 camera.position.set(0.0, 0.0, 240.0);
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x111111);
+const scene = new Scene();
+scene.background = new Color(0x111111);
 
-const renderer = new THREE.WebGLRenderer();
-renderer.toneMapping = THREE.NoToneMapping;
+const renderer = new WebGLRenderer();
+renderer.toneMapping = NoToneMapping;
 container.appendChild(renderer.domElement);
 
-const renderTarget = new THREE.WebGLRenderTarget();
+const renderTarget = new WebGLRenderTarget();
 
-scene.add(new THREE.AmbientLight(0xffffff, 0.33));
+scene.add(new AmbientLight(0xffffff, 0.33));
 // At least one regular Pointlight is needed to activate light support
-scene.add(new THREE.PointLight(0xff0000, 0.1, 0.1));
+scene.add(new PointLight(0xff0000, 0.1, 0.1));
 
 const bloom = new UnrealBloomPass(
-  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  new Vector2(window.innerWidth, window.innerHeight),
   0.8,
   0.6,
   0.8
@@ -232,18 +232,18 @@ const Heads = [
 ];
 
 function init(geom) {
-  const sphereGeom = new THREE.SphereGeometry(0.5, 32, 32);
+  const sphereGeom = new SphereGeometry(0.5, 32, 32);
   const tIndex = Math.round(Math.random() * 3);
 
   Object.keys(Heads).forEach(function (t, index) {
-    let g = new THREE.Group();
+    let g = new Group();
     const conf = Heads[t];
-    const ml = THREE.ShaderLib[conf.type];
-    const mtl = new THREE.ShaderMaterial({
+    const ml = ShaderLib[conf.type];
+    const mtl = new ShaderMaterial({
       lights: true,
       fragmentShader: ml.fragmentShader,
       vertexShader: ml.vertexShader,
-      uniforms: THREE.UniformsUtils.clone(ml.uniforms),
+      uniforms: UniformsUtils.clone(ml.uniforms),
       defines: conf.defines,
       transparent: tIndex === index ? true : false,
     });
@@ -268,9 +268,9 @@ function init(geom) {
     mtl.defines["TILED_FORWARD"] = 1;
     materials.push(mtl);
 
-    const obj = new THREE.Mesh(geom, mtl);
+    const obj = new Mesh(geom, mtl);
     obj.position.y = -37;
-    mtl.side = tIndex === index ? THREE.FrontSide : THREE.DoubleSide;
+    mtl.side = tIndex === index ? FrontSide : DoubleSide;
 
     g.rotation.y = (index * Math.PI) / 2;
     g.position.x = Math.sin((index * Math.PI) / 2) * RADIUS;
@@ -278,22 +278,22 @@ function init(geom) {
     g.add(obj);
 
     for (let i = 0; i < 8; i++) {
-      const color = new THREE.Color().setHSL(Math.random(), 1.0, 0.5);
-      const l = new THREE.Group();
+      const color = new Color().setHSL(Math.random(), 1.0, 0.5);
+      const l = new Group();
 
       l.add(
-        new THREE.Mesh(
+        new Mesh(
           sphereGeom,
-          new THREE.MeshBasicMaterial({
+          new MeshBasicMaterial({
             color: color,
           })
         )
       );
 
       l.add(
-        new THREE.Mesh(
+        new Mesh(
           sphereGeom,
-          new THREE.MeshBasicMaterial({
+          new MeshBasicMaterial({
             color: color,
             transparent: true,
             opacity: 0.033,

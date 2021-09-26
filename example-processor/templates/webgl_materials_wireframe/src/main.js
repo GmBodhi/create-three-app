@@ -15,14 +15,14 @@ let renderer, scene, camera, mesh2;
 init();
 
 function init() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     40,
     window.innerWidth / window.innerHeight,
     1,
@@ -34,7 +34,7 @@ function init() {
   controls.enablePan = false;
   controls.enableZoom = false;
 
-  new THREE.BufferGeometryLoader().load(
+  new BufferGeometryLoader().load(
     "models/json/WaltHeadLo_buffergeometry.json",
     function (geometry) {
       geometry.deleteAttribute("normal");
@@ -44,28 +44,28 @@ function init() {
 
       // left
 
-      const material1 = new THREE.MeshBasicMaterial({
+      const material1 = new MeshBasicMaterial({
         color: 0xe0e0ff,
         wireframe: true,
       });
 
-      const mesh1 = new THREE.Mesh(geometry, material1);
+      const mesh1 = new Mesh(geometry, material1);
       mesh1.position.set(-40, 0, 0);
 
       scene.add(mesh1);
 
       // right
 
-      const material2 = new THREE.ShaderMaterial({
+      const material2 = new ShaderMaterial({
         uniforms: { thickness: { value: API.thickness } },
         vertexShader: document.getElementById("vertexShader").textContent,
         fragmentShader: document.getElementById("fragmentShader").textContent,
-        side: THREE.DoubleSide,
+        side: DoubleSide,
         alphaToCoverage: true, // only works when WebGLRenderer's "antialias" is set to "true"
       });
       material2.extensions.derivatives = true;
 
-      mesh2 = new THREE.Mesh(geometry, material2);
+      mesh2 = new Mesh(geometry, material2);
       mesh2.position.set(40, 0, 0);
 
       scene.add(mesh2);
@@ -93,9 +93,9 @@ function init() {
 
 function setupAttributes(geometry) {
   const vectors = [
-    new THREE.Vector3(1, 0, 0),
-    new THREE.Vector3(0, 1, 0),
-    new THREE.Vector3(0, 0, 1),
+    new Vector3(1, 0, 0),
+    new Vector3(0, 1, 0),
+    new Vector3(0, 0, 1),
   ];
 
   const position = geometry.attributes.position;
@@ -105,7 +105,7 @@ function setupAttributes(geometry) {
     vectors[i % 3].toArray(centers, i * 3);
   }
 
-  geometry.setAttribute("center", new THREE.BufferAttribute(centers, 3));
+  geometry.setAttribute("center", new BufferAttribute(centers, 3));
 }
 
 function onWindowResize() {

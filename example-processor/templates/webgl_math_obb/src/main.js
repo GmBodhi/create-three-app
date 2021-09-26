@@ -10,13 +10,13 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 let camera, scene, renderer, clock, controls, stats, raycaster, hitbox;
 
 const objects = [],
-  mouse = new THREE.Vector2();
+  mouse = new Vector2();
 
 init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -24,19 +24,19 @@ function init() {
   );
   camera.position.set(0, 0, 75);
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
+  scene = new Scene();
+  scene.background = new Color(0xffffff);
 
-  clock = new THREE.Clock();
+  clock = new Clock();
 
-  raycaster = new THREE.Raycaster();
+  raycaster = new Raycaster();
 
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x222222, 1.5);
+  const hemiLight = new HemisphereLight(0xffffff, 0x222222, 1.5);
   hemiLight.position.set(1, 1, 1);
   scene.add(hemiLight);
 
-  const size = new THREE.Vector3(10, 5, 6);
-  const geometry = new THREE.BoxGeometry(size.x, size.y, size.z);
+  const size = new Vector3(10, 5, 6);
+  const geometry = new BoxGeometry(size.x, size.y, size.z);
 
   // setup OBB on geometry level (doing this manually for now)
 
@@ -44,9 +44,9 @@ function init() {
   geometry.userData.obb.halfSize.copy(size).multiplyScalar(0.5);
 
   for (let i = 0; i < 100; i++) {
-    const object = new THREE.Mesh(
+    const object = new Mesh(
       geometry,
-      new THREE.MeshLambertMaterial({ color: 0x00ff00 })
+      new MeshLambertMaterial({ color: 0x00ff00 })
     );
     object.matrixAutoUpdate = false;
 
@@ -73,14 +73,14 @@ function init() {
 
   //
 
-  hitbox = new THREE.Mesh(
+  hitbox = new Mesh(
     geometry,
-    new THREE.MeshBasicMaterial({ color: 0x000000, wireframe: true })
+    new MeshBasicMaterial({ color: 0x000000, wireframe: true })
   );
 
   //
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -110,7 +110,7 @@ function onClick(event) {
 
   raycaster.setFromCamera(mouse, camera);
 
-  const intersectionPoint = new THREE.Vector3();
+  const intersectionPoint = new Vector3();
   const intersections = [];
 
   for (let i = 0, il = objects.length; i < il; i++) {

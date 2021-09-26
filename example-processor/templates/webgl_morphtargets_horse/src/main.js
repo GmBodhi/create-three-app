@@ -23,7 +23,7 @@ function init() {
 
   //
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
     1,
@@ -31,16 +31,16 @@ function init() {
   );
   camera.position.y = 300;
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
   //
 
-  const light1 = new THREE.DirectionalLight(0xefefff, 1.5);
+  const light1 = new DirectionalLight(0xefefff, 1.5);
   light1.position.set(1, 1, 1).normalize();
   scene.add(light1);
 
-  const light2 = new THREE.DirectionalLight(0xffefef, 1.5);
+  const light2 = new DirectionalLight(0xffefef, 1.5);
   light2.position.set(-1, -1, -1).normalize();
   scene.add(light2);
 
@@ -50,18 +50,18 @@ function init() {
     mesh.scale.set(1.5, 1.5, 1.5);
     scene.add(mesh);
 
-    mixer = new THREE.AnimationMixer(mesh);
+    mixer = new AnimationMixer(mesh);
 
     mixer.clipAction(gltf.animations[0]).setDuration(1).play();
   });
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputEncoding = sRGBEncoding;
 
   container.appendChild(renderer.domElement);
 
@@ -94,8 +94,8 @@ function animate() {
 function render() {
   theta += 0.1;
 
-  camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
+  camera.position.x = radius * Math.sin(MathUtils.degToRad(theta));
+  camera.position.z = radius * Math.cos(MathUtils.degToRad(theta));
 
   camera.lookAt(0, 150, 0);
 

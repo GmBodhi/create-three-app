@@ -20,12 +20,12 @@ function init() {
 
   // scene
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0xcce0ff, 5, 100);
+  scene = new Scene();
+  scene.fog = new Fog(0xcce0ff, 5, 100);
 
   // camera
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     30,
     window.innerWidth / window.innerHeight,
     1,
@@ -44,9 +44,9 @@ function init() {
 
   // lights
 
-  scene.add(new THREE.AmbientLight(0x666666));
+  scene.add(new AmbientLight(0x666666));
 
-  const light = new THREE.DirectionalLight(0xdfebff, 1.75);
+  const light = new DirectionalLight(0xdfebff, 1.75);
   light.position.set(2, 8, 4);
 
   light.castShadow = true;
@@ -57,21 +57,19 @@ function init() {
   scene.add(light);
 
   // scene.add( new DirectionalLightHelper( light ) );
-  scene.add(new THREE.CameraHelper(light.shadow.camera));
+  scene.add(new CameraHelper(light.shadow.camera));
 
   // group
 
-  group = new THREE.Group();
+  group = new Group();
   scene.add(group);
 
-  const geometry = new THREE.SphereGeometry(0.3, 20, 20);
+  const geometry = new SphereGeometry(0.3, 20, 20);
 
   for (let i = 0; i < 20; i++) {
-    const material = new THREE.MeshPhongMaterial({
-      color: Math.random() * 0xffffff,
-    });
+    const material = new MeshPhongMaterial({ color: Math.random() * 0xffffff });
 
-    const sphere = new THREE.Mesh(geometry, material);
+    const sphere = new Mesh(geometry, material);
     sphere.position.x = Math.random() - 0.5;
     sphere.position.z = Math.random() - 0.5;
     sphere.position.normalize();
@@ -84,13 +82,13 @@ function init() {
 
   // ground
 
-  const groundMaterial = new THREE.MeshPhongMaterial({
+  const groundMaterial = new MeshPhongMaterial({
     color: 0x404040,
     specular: 0x111111,
   });
 
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(20000, 20000, 8, 8),
+  const ground = new Mesh(
+    new PlaneGeometry(20000, 20000, 8, 8),
     groundMaterial
   );
   ground.rotation.x = -Math.PI / 2;
@@ -99,7 +97,7 @@ function init() {
 
   // column
 
-  const column = new THREE.Mesh(new THREE.BoxGeometry(1, 4, 1), groundMaterial);
+  const column = new Mesh(new BoxGeometry(1, 4, 1), groundMaterial);
   column.position.y = 2;
   column.castShadow = true;
   column.receiveShadow = true;
@@ -107,7 +105,7 @@ function init() {
 
   // overwrite shadowmap code
 
-  let shader = THREE.ShaderChunk.shadowmap_pars_fragment;
+  let shader = ShaderChunk.shadowmap_pars_fragment;
 
   shader = shader.replace(
     "#ifdef USE_SHADOWMAP",
@@ -120,18 +118,18 @@ function init() {
       "#if defined( SHADOWMAP_TYPE_PCF )"
   );
 
-  THREE.ShaderChunk.shadowmap_pars_fragment = shader;
+  ShaderChunk.shadowmap_pars_fragment = shader;
 
   // renderer
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(scene.fog.color);
 
   container.appendChild(renderer.domElement);
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
 
   // controls

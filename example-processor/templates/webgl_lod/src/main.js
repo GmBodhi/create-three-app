@@ -8,7 +8,7 @@ let container;
 
 let camera, scene, renderer, controls;
 
-const clock = new THREE.Clock();
+const clock = new Clock();
 
 init();
 animate();
@@ -17,7 +17,7 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -25,35 +25,35 @@ function init() {
   );
   camera.position.z = 1000;
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x000000, 1, 15000);
+  scene = new Scene();
+  scene.fog = new Fog(0x000000, 1, 15000);
 
-  const pointLight = new THREE.PointLight(0xff2200);
+  const pointLight = new PointLight(0xff2200);
   pointLight.position.set(0, 0, 0);
   scene.add(pointLight);
 
-  const dirLight = new THREE.DirectionalLight(0xffffff);
+  const dirLight = new DirectionalLight(0xffffff);
   dirLight.position.set(0, 0, 1).normalize();
   scene.add(dirLight);
 
   const geometry = [
-    [new THREE.IcosahedronGeometry(100, 16), 50],
-    [new THREE.IcosahedronGeometry(100, 8), 300],
-    [new THREE.IcosahedronGeometry(100, 4), 1000],
-    [new THREE.IcosahedronGeometry(100, 2), 2000],
-    [new THREE.IcosahedronGeometry(100, 1), 8000],
+    [new IcosahedronGeometry(100, 16), 50],
+    [new IcosahedronGeometry(100, 8), 300],
+    [new IcosahedronGeometry(100, 4), 1000],
+    [new IcosahedronGeometry(100, 2), 2000],
+    [new IcosahedronGeometry(100, 1), 8000],
   ];
 
-  const material = new THREE.MeshLambertMaterial({
+  const material = new MeshLambertMaterial({
     color: 0xffffff,
     wireframe: true,
   });
 
   for (let j = 0; j < 1000; j++) {
-    const lod = new THREE.LOD();
+    const lod = new LOD();
 
     for (let i = 0; i < geometry.length; i++) {
-      const mesh = new THREE.Mesh(geometry[i][0], material);
+      const mesh = new Mesh(geometry[i][0], material);
       mesh.scale.set(1.5, 1.5, 1.5);
       mesh.updateMatrix();
       mesh.matrixAutoUpdate = false;
@@ -68,7 +68,7 @@ function init() {
     scene.add(lod);
   }
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

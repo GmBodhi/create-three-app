@@ -22,7 +22,7 @@ let sunLight, pointLight, ambientLight;
 
 let mixer;
 
-const clock = new THREE.Clock();
+const clock = new Clock();
 
 let gui, shadowCameraHelper;
 
@@ -42,7 +42,7 @@ function init() {
 
   // CAMERA
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     2,
@@ -52,52 +52,52 @@ function init() {
 
   // SCENE
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0, 1000, 10000);
+  scene = new Scene();
+  scene.fog = new Fog(0, 1000, 10000);
 
   // CUBE CAMERA
 
-  const cubeRenderTarget = new THREE.WebGLCubeRenderTarget(128, {
-    format: THREE.RGBFormat,
+  const cubeRenderTarget = new WebGLCubeRenderTarget(128, {
+    format: RGBFormat,
     generateMipmaps: true,
-    minFilter: THREE.LinearMipmapLinearFilter,
-    encoding: THREE.sRGBEncoding,
+    minFilter: LinearMipmapLinearFilter,
+    encoding: sRGBEncoding,
   });
-  cubeCamera = new THREE.CubeCamera(1, 10000, cubeRenderTarget);
+  cubeCamera = new CubeCamera(1, 10000, cubeRenderTarget);
 
   // TEXTURES
-  const textureLoader = new THREE.TextureLoader();
+  const textureLoader = new TextureLoader();
 
   const textureSquares = textureLoader.load(
     "textures/patterns/bright_squares256.png"
   );
   textureSquares.repeat.set(50, 50);
-  textureSquares.wrapS = textureSquares.wrapT = THREE.RepeatWrapping;
-  textureSquares.magFilter = THREE.NearestFilter;
-  textureSquares.encoding = THREE.sRGBEncoding;
+  textureSquares.wrapS = textureSquares.wrapT = RepeatWrapping;
+  textureSquares.magFilter = NearestFilter;
+  textureSquares.encoding = sRGBEncoding;
 
   const textureNoiseColor = textureLoader.load("textures/disturb.jpg");
   textureNoiseColor.repeat.set(1, 1);
-  textureNoiseColor.wrapS = textureNoiseColor.wrapT = THREE.RepeatWrapping;
-  textureNoiseColor.encoding = THREE.sRGBEncoding;
+  textureNoiseColor.wrapS = textureNoiseColor.wrapT = RepeatWrapping;
+  textureNoiseColor.encoding = sRGBEncoding;
 
   const textureLava = textureLoader.load("textures/lava/lavatile.jpg");
   textureLava.repeat.set(6, 2);
-  textureLava.wrapS = textureLava.wrapT = THREE.RepeatWrapping;
-  textureLava.encoding = THREE.sRGBEncoding;
+  textureLava.wrapS = textureLava.wrapT = RepeatWrapping;
+  textureLava.encoding = sRGBEncoding;
 
   // GROUND
 
-  const groundMaterial = new THREE.MeshPhongMaterial({
+  const groundMaterial = new MeshPhongMaterial({
     shininess: 80,
     color: 0xffffff,
     specular: 0xffffff,
     map: textureSquares,
   });
 
-  const planeGeometry = new THREE.PlaneGeometry(100, 100);
+  const planeGeometry = new PlaneGeometry(100, 100);
 
-  const ground = new THREE.Mesh(planeGeometry, groundMaterial);
+  const ground = new Mesh(planeGeometry, groundMaterial);
   ground.position.set(0, 0, 0);
   ground.rotation.x = -Math.PI / 2;
   ground.scale.set(1000, 1000, 1000);
@@ -106,18 +106,18 @@ function init() {
 
   // MATERIALS
 
-  const materialLambert = new THREE.MeshPhongMaterial({
+  const materialLambert = new MeshPhongMaterial({
     shininess: 50,
     color: 0xffffff,
     map: textureNoiseColor,
   });
-  const materialPhong = new THREE.MeshPhongMaterial({
+  const materialPhong = new MeshPhongMaterial({
     shininess: 50,
     color: 0xffffff,
     specular: 0x999999,
     map: textureLava,
   });
-  const materialPhongCube = new THREE.MeshPhongMaterial({
+  const materialPhongCube = new MeshPhongMaterial({
     shininess: 50,
     color: 0xffffff,
     specular: 0x999999,
@@ -126,9 +126,9 @@ function init() {
 
   // OBJECTS
 
-  const sphereGeometry = new THREE.SphereGeometry(100, 64, 32);
-  const torusGeometry = new THREE.TorusGeometry(240, 60, 32, 64);
-  const cubeGeometry = new THREE.BoxGeometry(150, 150, 150);
+  const sphereGeometry = new SphereGeometry(100, 64, 32);
+  const torusGeometry = new TorusGeometry(240, 60, 32, 64);
+  const cubeGeometry = new BoxGeometry(150, 150, 150);
 
   addObject(torusGeometry, materialPhong, 0, 100, 0, 0);
   addObject(cubeGeometry, materialLambert, 350, 75, 300, 0);
@@ -137,13 +137,13 @@ function init() {
   mesh.add(cubeCamera);
 
   function addObjectColor(geometry, color, x, y, z, ry) {
-    const material = new THREE.MeshPhongMaterial({ color: 0xffffff });
+    const material = new MeshPhongMaterial({ color: 0xffffff });
 
     return addObject(geometry, material, x, y, z, ry);
   }
 
   function addObject(geometry, material, x, y, z, ry) {
-    const tmpMesh = new THREE.Mesh(geometry, material);
+    const tmpMesh = new Mesh(geometry, material);
 
     tmpMesh.material.color.offsetHSL(0.1, -0.1, 0);
 
@@ -159,9 +159,9 @@ function init() {
     return tmpMesh;
   }
 
-  const bigCube = new THREE.BoxGeometry(50, 500, 50);
-  const midCube = new THREE.BoxGeometry(50, 200, 50);
-  const smallCube = new THREE.BoxGeometry(100, 100, 100);
+  const bigCube = new BoxGeometry(50, 500, 50);
+  const midCube = new BoxGeometry(50, 200, 50);
+  const smallCube = new BoxGeometry(100, 100, 100);
 
   addObjectColor(bigCube, 0xff0000, -500, 250, 0, 0);
   addObjectColor(smallCube, 0xff0000, -500, 50, -150, 0);
@@ -176,23 +176,16 @@ function init() {
   addObjectColor(smallCube, 0xff00ff, -150, 50, 500, 0);
 
   addObjectColor(
-    new THREE.BoxGeometry(500, 10, 10),
+    new BoxGeometry(500, 10, 10),
     0xffff00,
     0,
     600,
     0,
     Math.PI / 4
   );
-  addObjectColor(new THREE.BoxGeometry(250, 10, 10), 0xffff00, 0, 600, 0, 0);
+  addObjectColor(new BoxGeometry(250, 10, 10), 0xffff00, 0, 600, 0, 0);
 
-  addObjectColor(
-    new THREE.SphereGeometry(100, 32, 26),
-    0xffffff,
-    -300,
-    100,
-    300,
-    0
-  );
+  addObjectColor(new SphereGeometry(100, 32, 26), 0xffffff, -300, 100, 300, 0);
 
   // MORPHS
 
@@ -201,7 +194,7 @@ function init() {
   loader.load("models/gltf/SittingBox.glb", function (gltf) {
     const mesh = gltf.scene.children[0];
 
-    mixer = new THREE.AnimationMixer(mesh);
+    mixer = new AnimationMixer(mesh);
 
     mixer.clipAction(gltf.animations[0]).setDuration(10).play();
 
@@ -216,13 +209,13 @@ function init() {
 
   // LIGHTS
 
-  ambientLight = new THREE.AmbientLight(0x3f2806);
+  ambientLight = new AmbientLight(0x3f2806);
   scene.add(ambientLight);
 
-  pointLight = new THREE.PointLight(0xffaa00, 1, 5000);
+  pointLight = new PointLight(0xffaa00, 1, 5000);
   scene.add(pointLight);
 
-  sunLight = new THREE.DirectionalLight(0xffffff, 0.3);
+  sunLight = new DirectionalLight(0xffffff, 0.3);
   sunLight.position.set(1000, 2000, 1000);
   sunLight.castShadow = true;
   sunLight.shadow.camera.top = 750;
@@ -238,13 +231,13 @@ function init() {
 
   // SHADOW CAMERA HELPER
 
-  shadowCameraHelper = new THREE.CameraHelper(sunLight.shadow.camera);
+  shadowCameraHelper = new CameraHelper(sunLight.shadow.camera);
   shadowCameraHelper.visible = shadowConfig.shadowCameraVisible;
   scene.add(shadowCameraHelper);
 
   // RENDERER
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -252,8 +245,8 @@ function init() {
   //
 
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.outputEncoding = sRGBEncoding;
 
   //
 

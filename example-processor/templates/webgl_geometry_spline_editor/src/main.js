@@ -13,14 +13,14 @@ let camera, scene, renderer;
 const splineHelperObjects = [];
 let splinePointsLength = 4;
 const positions = [];
-const point = new THREE.Vector3();
+const point = new Vector3();
 
-const raycaster = new THREE.Raycaster();
-const pointer = new THREE.Vector2();
-const onUpPosition = new THREE.Vector2();
-const onDownPosition = new THREE.Vector2();
+const raycaster = new Raycaster();
+const pointer = new Vector2();
+const onUpPosition = new Vector2();
+const onDownPosition = new Vector2();
 
-const geometry = new THREE.BoxGeometry(20, 20, 20);
+const geometry = new BoxGeometry(20, 20, 20);
 let transformControl;
 
 const ARC_SEGMENTS = 200;
@@ -43,10 +43,10 @@ animate();
 function init() {
   container = document.getElementById("container");
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -55,8 +55,8 @@ function init() {
   camera.position.set(0, 250, 1000);
   scene.add(camera);
 
-  scene.add(new THREE.AmbientLight(0xf0f0f0));
-  const light = new THREE.SpotLight(0xffffff, 1.5);
+  scene.add(new AmbientLight(0xf0f0f0));
+  const light = new SpotLight(0xffffff, 1.5);
   light.position.set(0, 1500, 200);
   light.angle = Math.PI * 0.2;
   light.castShadow = true;
@@ -67,22 +67,22 @@ function init() {
   light.shadow.mapSize.height = 1024;
   scene.add(light);
 
-  const planeGeometry = new THREE.PlaneGeometry(2000, 2000);
+  const planeGeometry = new PlaneGeometry(2000, 2000);
   planeGeometry.rotateX(-Math.PI / 2);
-  const planeMaterial = new THREE.ShadowMaterial({ opacity: 0.2 });
+  const planeMaterial = new ShadowMaterial({ opacity: 0.2 });
 
-  const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  const plane = new Mesh(planeGeometry, planeMaterial);
   plane.position.y = -200;
   plane.receiveShadow = true;
   scene.add(plane);
 
-  const helper = new THREE.GridHelper(2000, 100);
+  const helper = new GridHelper(2000, 100);
   helper.position.y = -199;
   helper.material.opacity = 0.25;
   helper.material.transparent = true;
   scene.add(helper);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
@@ -142,17 +142,17 @@ function init() {
     positions.push(splineHelperObjects[i].position);
   }
 
-  const geometry = new THREE.BufferGeometry();
+  const geometry = new BufferGeometry();
   geometry.setAttribute(
     "position",
-    new THREE.BufferAttribute(new Float32Array(ARC_SEGMENTS * 3), 3)
+    new BufferAttribute(new Float32Array(ARC_SEGMENTS * 3), 3)
   );
 
-  let curve = new THREE.CatmullRomCurve3(positions);
+  let curve = new CatmullRomCurve3(positions);
   curve.curveType = "catmullrom";
-  curve.mesh = new THREE.Line(
+  curve.mesh = new Line(
     geometry.clone(),
-    new THREE.LineBasicMaterial({
+    new LineBasicMaterial({
       color: 0xff0000,
       opacity: 0.35,
     })
@@ -160,11 +160,11 @@ function init() {
   curve.mesh.castShadow = true;
   splines.uniform = curve;
 
-  curve = new THREE.CatmullRomCurve3(positions);
+  curve = new CatmullRomCurve3(positions);
   curve.curveType = "centripetal";
-  curve.mesh = new THREE.Line(
+  curve.mesh = new Line(
     geometry.clone(),
-    new THREE.LineBasicMaterial({
+    new LineBasicMaterial({
       color: 0x00ff00,
       opacity: 0.35,
     })
@@ -172,11 +172,11 @@ function init() {
   curve.mesh.castShadow = true;
   splines.centripetal = curve;
 
-  curve = new THREE.CatmullRomCurve3(positions);
+  curve = new CatmullRomCurve3(positions);
   curve.curveType = "chordal";
-  curve.mesh = new THREE.Line(
+  curve.mesh = new Line(
     geometry.clone(),
-    new THREE.LineBasicMaterial({
+    new LineBasicMaterial({
       color: 0x0000ff,
       opacity: 0.35,
     })
@@ -190,30 +190,16 @@ function init() {
   }
 
   load([
-    new THREE.Vector3(
-      289.76843686945404,
-      452.51481137238443,
-      56.10018915737797
-    ),
-    new THREE.Vector3(
-      -53.56300074753207,
-      171.49711742836848,
-      -14.495472686253045
-    ),
-    new THREE.Vector3(
-      -91.40118730204415,
-      176.4306956436485,
-      -6.958271935582161
-    ),
-    new THREE.Vector3(-383.785318791128, 491.1365363371675, 47.869296953772746),
+    new Vector3(289.76843686945404, 452.51481137238443, 56.10018915737797),
+    new Vector3(-53.56300074753207, 171.49711742836848, -14.495472686253045),
+    new Vector3(-91.40118730204415, 176.4306956436485, -6.958271935582161),
+    new Vector3(-383.785318791128, 491.1365363371675, 47.869296953772746),
   ]);
 }
 
 function addSplineObject(position) {
-  const material = new THREE.MeshLambertMaterial({
-    color: Math.random() * 0xffffff,
-  });
-  const object = new THREE.Mesh(geometry, material);
+  const material = new MeshLambertMaterial({ color: Math.random() * 0xffffff });
+  const object = new Mesh(geometry, material);
 
   if (position) {
     object.position.copy(position);
@@ -275,7 +261,7 @@ function exportSpline() {
 
   for (let i = 0; i < splinePointsLength; i++) {
     const p = splineHelperObjects[i].position;
-    strplace.push(`new THREE.Vector3(${p.x}, ${p.y}, ${p.z})`);
+    strplace.push(`new Vector3(${p.x}, ${p.y}, ${p.z})`);
   }
 
   console.log(strplace.join(",\n"));

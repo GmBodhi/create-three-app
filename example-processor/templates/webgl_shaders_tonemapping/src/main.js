@@ -54,7 +54,7 @@ function init() {
 
   // CAMERAS
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     windowThirdX / window.innerHeight,
     0.1,
@@ -63,14 +63,14 @@ function init() {
   camera.position.x = 700;
   camera.position.y = 400;
   camera.position.z = 800;
-  cameraCube = new THREE.PerspectiveCamera(
+  cameraCube = new PerspectiveCamera(
     70,
     windowThirdX / window.innerHeight,
     1,
     100000
   );
 
-  cameraBG = new THREE.OrthographicCamera(
+  cameraBG = new OrthographicCamera(
     -windowHalfX,
     windowHalfX,
     windowHalfY,
@@ -86,34 +86,34 @@ function init() {
 
   // SCENE
 
-  scene = new THREE.Scene();
-  sceneCube = new THREE.Scene();
-  debugScene = new THREE.Scene();
+  scene = new Scene();
+  sceneCube = new Scene();
+  debugScene = new Scene();
 
   // LIGHTS
 
-  const ambient = new THREE.AmbientLight(0x050505);
+  const ambient = new AmbientLight(0x050505);
   scene.add(ambient);
 
-  directionalLight = new THREE.DirectionalLight(0xffffff, params.sunLight);
+  directionalLight = new DirectionalLight(0xffffff, params.sunLight);
   directionalLight.position.set(2, 0, 10).normalize();
   scene.add(directionalLight);
 
   const atmoShader = {
-    side: THREE.BackSide,
-    // blending: THREE.AdditiveBlending,
+    side: BackSide,
+    // blending: AdditiveBlending,
     transparent: true,
     lights: true,
-    uniforms: THREE.UniformsUtils.merge([
-      THREE.UniformsLib["common"],
-      THREE.UniformsLib["lights"],
+    uniforms: UniformsUtils.merge([
+      UniformsLib["common"],
+      UniformsLib["lights"],
     ]),
     vertexShader: [
       "varying vec3 vViewPosition;",
       "varying vec3 vNormal;",
       "void main() {",
-      THREE.ShaderChunk["beginnormal_vertex"],
-      THREE.ShaderChunk["defaultnormal_vertex"],
+      ShaderChunk["beginnormal_vertex"],
+      ShaderChunk["defaultnormal_vertex"],
 
       "	vNormal = normalize( transformedNormal );",
       "vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );",
@@ -123,11 +123,11 @@ function init() {
     ].join("\n"),
 
     fragmentShader: [
-      THREE.ShaderChunk["common"],
-      THREE.ShaderChunk["bsdfs"],
-      THREE.ShaderChunk["lights_pars_begin"],
-      THREE.ShaderChunk["normal_pars_fragment"],
-      THREE.ShaderChunk["lights_phong_pars_fragment"],
+      ShaderChunk["common"],
+      ShaderChunk["bsdfs"],
+      ShaderChunk["lights_pars_begin"],
+      ShaderChunk["normal_pars_fragment"],
+      ShaderChunk["lights_phong_pars_fragment"],
 
       "void main() {",
       "vec3 normal = normalize( -vNormal );",
@@ -158,25 +158,25 @@ function init() {
     ].join("\n"),
   };
 
-  const earthAtmoMat = new THREE.ShaderMaterial(atmoShader);
+  const earthAtmoMat = new ShaderMaterial(atmoShader);
 
-  const earthMat = new THREE.MeshPhongMaterial({
+  const earthMat = new MeshPhongMaterial({
     color: 0xffffff,
     shininess: 200,
   });
 
-  const textureLoader = new THREE.TextureLoader();
+  const textureLoader = new TextureLoader();
 
   textureLoader.load("textures/planets/earth_atmos_4096.jpg", function (tex) {
     earthMat.map = tex;
-    earthMat.map.encoding = THREE.sRGBEncoding;
+    earthMat.map.encoding = sRGBEncoding;
     earthMat.needsUpdate = true;
   });
   textureLoader.load(
     "textures/planets/earth_specular_2048.jpg",
     function (tex) {
       earthMat.specularMap = tex;
-      earthMat.specularMap.encoding = THREE.sRGBEncoding;
+      earthMat.specularMap.encoding = sRGBEncoding;
       earthMat.needsUpdate = true;
     }
   );
@@ -189,38 +189,38 @@ function init() {
   const earthLights = textureLoader.load(
     "textures/planets/earth_lights_2048.png"
   );
-  earthLights.encoding = THREE.sRGBEncoding;
+  earthLights.encoding = sRGBEncoding;
 
-  const earthLightsMat = new THREE.MeshBasicMaterial({
+  const earthLightsMat = new MeshBasicMaterial({
     color: 0xffffff,
-    blending: THREE.AdditiveBlending,
+    blending: AdditiveBlending,
     transparent: true,
     depthTest: false,
     map: earthLights,
   });
 
   const clouds = textureLoader.load("textures/planets/earth_clouds_2048.png");
-  clouds.encoding = THREE.sRGBEncoding;
+  clouds.encoding = sRGBEncoding;
 
-  const earthCloudsMat = new THREE.MeshLambertMaterial({
+  const earthCloudsMat = new MeshLambertMaterial({
     color: 0xffffff,
-    blending: THREE.NormalBlending,
+    blending: NormalBlending,
     transparent: true,
     depthTest: false,
     map: clouds,
   });
 
-  const earthGeo = new THREE.SphereGeometry(600, 24, 24);
-  const sphereMesh = new THREE.Mesh(earthGeo, earthMat);
+  const earthGeo = new SphereGeometry(600, 24, 24);
+  const sphereMesh = new Mesh(earthGeo, earthMat);
   scene.add(sphereMesh);
 
-  const sphereLightsMesh = new THREE.Mesh(earthGeo, earthLightsMat);
+  const sphereLightsMesh = new Mesh(earthGeo, earthLightsMat);
   scene.add(sphereLightsMesh);
 
-  const sphereCloudsMesh = new THREE.Mesh(earthGeo, earthCloudsMat);
+  const sphereCloudsMesh = new Mesh(earthGeo, earthCloudsMat);
   scene.add(sphereCloudsMesh);
 
-  const sphereAtmoMesh = new THREE.Mesh(earthGeo, earthAtmoMat);
+  const sphereAtmoMesh = new Mesh(earthGeo, earthAtmoMat);
   sphereAtmoMesh.scale.set(1.05, 1.05, 1.05);
   scene.add(sphereAtmoMesh);
 
@@ -248,7 +248,7 @@ function init() {
   ].join("\n");
 
   // Skybox
-  adaptiveLuminanceMat = new THREE.ShaderMaterial({
+  adaptiveLuminanceMat = new ShaderMaterial({
     uniforms: {
       map: { value: null },
     },
@@ -256,10 +256,10 @@ function init() {
     fragmentShader: pBGShader,
     depthTest: false,
     // color: 0xffffff
-    blending: THREE.NoBlending,
+    blending: NoBlending,
   });
 
-  currentLuminanceMat = new THREE.ShaderMaterial({
+  currentLuminanceMat = new ShaderMaterial({
     uniforms: {
       map: { value: null },
     },
@@ -267,22 +267,16 @@ function init() {
     fragmentShader: pBGShader,
     depthTest: false,
     // color: 0xffffff
-    // blending: THREE.NoBlending
+    // blending: NoBlending
   });
 
-  let quadBG = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.1, 0.1),
-    currentLuminanceMat
-  );
+  let quadBG = new Mesh(new PlaneGeometry(0.1, 0.1), currentLuminanceMat);
   quadBG.position.z = -500;
   quadBG.position.x = -window.innerWidth * 0.5 + window.innerWidth * 0.05;
   quadBG.scale.set(window.innerWidth, window.innerHeight, 1);
   debugScene.add(quadBG);
 
-  quadBG = new THREE.Mesh(
-    new THREE.PlaneGeometry(0.1, 0.1),
-    adaptiveLuminanceMat
-  );
+  quadBG = new Mesh(new PlaneGeometry(0.1, 0.1), adaptiveLuminanceMat);
   quadBG.position.z = -500;
   quadBG.position.x = -window.innerWidth * 0.5 + window.innerWidth * 0.15;
   quadBG.scale.set(window.innerWidth, window.innerHeight, 1);
@@ -298,12 +292,12 @@ function init() {
     r + "dark-s_nz.jpg",
   ];
 
-  const textureCube = new THREE.CubeTextureLoader().load(urls);
-  textureCube.encoding = THREE.sRGBEncoding;
+  const textureCube = new CubeTextureLoader().load(urls);
+  textureCube.encoding = sRGBEncoding;
 
   sceneCube.background = textureCube;
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.autoClear = false;
@@ -314,18 +308,18 @@ function init() {
   const height = window.innerHeight || 1;
 
   const parameters = {
-    minFilter: THREE.LinearFilter,
-    magFilter: THREE.LinearFilter,
-    format: THREE.RGBAFormat,
+    minFilter: LinearFilter,
+    magFilter: LinearFilter,
+    format: RGBAFormat,
   };
-  const regularRenderTarget = new THREE.WebGLRenderTarget(
+  const regularRenderTarget = new WebGLRenderTarget(
     windowThirdX,
     height,
     parameters
   );
   ldrEffectComposer = new EffectComposer(renderer, regularRenderTarget);
 
-  parameters.type = THREE.FloatType;
+  parameters.type = FloatType;
 
   if (
     renderer.capabilities.isWebGL2 === false &&
@@ -334,7 +328,7 @@ function init() {
     parameters.type = undefined; // avoid usage of floating point textures
   }
 
-  const hdrRenderTarget = new THREE.WebGLRenderTarget(
+  const hdrRenderTarget = new WebGLRenderTarget(
     windowThirdX,
     height,
     parameters

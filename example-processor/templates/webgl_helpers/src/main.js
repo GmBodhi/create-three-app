@@ -16,14 +16,14 @@ init();
 animate();
 
 function init() {
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
   //
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -31,20 +31,20 @@ function init() {
   );
   camera.position.z = 400;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  light = new THREE.PointLight();
+  light = new PointLight();
   light.position.set(200, 100, 150);
   scene.add(light);
 
-  scene.add(new THREE.PointLightHelper(light, 15));
+  scene.add(new PointLightHelper(light, 15));
 
-  const gridHelper = new THREE.GridHelper(400, 40, 0x0000ff, 0x808080);
+  const gridHelper = new GridHelper(400, 40, 0x0000ff, 0x808080);
   gridHelper.position.y = -150;
   gridHelper.position.x = -150;
   scene.add(gridHelper);
 
-  const polarGridHelper = new THREE.PolarGridHelper(
+  const polarGridHelper = new PolarGridHelper(
     200,
     16,
     8,
@@ -62,7 +62,7 @@ function init() {
 
     mesh.geometry.computeTangents(); // generates bad data due to degenerate UVs
 
-    const group = new THREE.Group();
+    const group = new Group();
     group.scale.multiplyScalar(50);
     scene.add(group);
 
@@ -77,28 +77,28 @@ function init() {
     vth = new VertexTangentsHelper(mesh, 5);
     scene.add(vth);
 
-    scene.add(new THREE.BoxHelper(mesh));
+    scene.add(new BoxHelper(mesh));
 
-    const wireframe = new THREE.WireframeGeometry(mesh.geometry);
-    let line = new THREE.LineSegments(wireframe);
+    const wireframe = new WireframeGeometry(mesh.geometry);
+    let line = new LineSegments(wireframe);
     line.material.depthTest = false;
     line.material.opacity = 0.25;
     line.material.transparent = true;
     line.position.x = 4;
     group.add(line);
-    scene.add(new THREE.BoxHelper(line));
+    scene.add(new BoxHelper(line));
 
-    const edges = new THREE.EdgesGeometry(mesh.geometry);
-    line = new THREE.LineSegments(edges);
+    const edges = new EdgesGeometry(mesh.geometry);
+    line = new LineSegments(edges);
     line.material.depthTest = false;
     line.material.opacity = 0.25;
     line.material.transparent = true;
     line.position.x = -4;
     group.add(line);
-    scene.add(new THREE.BoxHelper(line));
+    scene.add(new BoxHelper(line));
 
-    scene.add(new THREE.BoxHelper(group));
-    scene.add(new THREE.BoxHelper(scene));
+    scene.add(new BoxHelper(group));
+    scene.add(new BoxHelper(scene));
   });
 
   //

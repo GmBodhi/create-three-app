@@ -27,9 +27,9 @@ animate();
 function init() {
   //
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -40,24 +40,24 @@ function init() {
 
   //
 
-  const geometry = new THREE.TorusKnotGeometry(8, 3, 256, 32, 2, 3);
-  const material = new THREE.MeshPhongMaterial({ color: 0xffff00 });
+  const geometry = new TorusKnotGeometry(8, 3, 256, 32, 2, 3);
+  const material = new MeshPhongMaterial({ color: 0xffff00 });
 
-  const mesh = new THREE.Mesh(geometry, material);
+  const mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   //
 
-  const ambientLight = new THREE.AmbientLight(0xcccccc, 0.4);
+  const ambientLight = new AmbientLight(0xcccccc, 0.4);
   scene.add(ambientLight);
 
-  const pointLight = new THREE.PointLight(0xffffff, 0.8);
+  const pointLight = new PointLight(0xffffff, 0.8);
   camera.add(pointLight);
   scene.add(camera);
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

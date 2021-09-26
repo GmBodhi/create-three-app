@@ -21,35 +21,35 @@ init();
 function init() {
   container = document.getElementById("container");
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
+  scene = new Scene();
+  scene.background = new Color(0xffffff);
 
-  uiScene = new THREE.Scene();
+  uiScene = new Scene();
 
   lut = new Lut();
 
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  perpCamera = new THREE.PerspectiveCamera(60, width / height, 1, 100);
+  perpCamera = new PerspectiveCamera(60, width / height, 1, 100);
   perpCamera.position.set(0, 0, 10);
   scene.add(perpCamera);
 
-  orthoCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 1, 2);
+  orthoCamera = new OrthographicCamera(-1, 1, 1, -1, 1, 2);
   orthoCamera.position.set(0.5, 0, 1);
 
-  sprite = new THREE.Sprite(
-    new THREE.SpriteMaterial({
-      map: new THREE.CanvasTexture(lut.createCanvas()),
+  sprite = new Sprite(
+    new SpriteMaterial({
+      map: new CanvasTexture(lut.createCanvas()),
     })
   );
   sprite.scale.x = 0.125;
   uiScene.add(sprite);
 
-  mesh = new THREE.Mesh(
+  mesh = new Mesh(
     undefined,
-    new THREE.MeshLambertMaterial({
-      side: THREE.DoubleSide,
+    new MeshLambertMaterial({
+      side: DoubleSide,
       color: 0xf5f5f5,
       vertexColors: true,
     })
@@ -61,10 +61,10 @@ function init() {
   };
   loadModel();
 
-  const pointLight = new THREE.PointLight(0xffffff, 1);
+  const pointLight = new PointLight(0xffffff, 1);
   perpCamera.add(pointLight);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
@@ -108,7 +108,7 @@ function render() {
 }
 
 function loadModel() {
-  const loader = new THREE.BufferGeometryLoader();
+  const loader = new BufferGeometryLoader();
   loader.load("models/json/pressure.json", function (geometry) {
     geometry.center();
     geometry.computeVertexNormals();
@@ -120,7 +120,7 @@ function loadModel() {
       colors.push(1, 1, 1);
     }
 
-    geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+    geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
 
     mesh.geometry = geometry;
     updateColors();

@@ -1103,6 +1103,18 @@
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
+  "webgl_shadow_contact": {
+    "files": {
+      "webpack.js": "bundler",
+      "package.json": "",
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static",
+      "favicon.ico": "static"
+    },
+    "dirs": ["/static", "/src", "/bundler"]
+  },
   "webgl_shadowmap_csm": {
     "files": {
       "webpack.js": "bundler",
@@ -1140,18 +1152,6 @@
     "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shadowmap_viewer": {
-    "files": {
-      "webpack.js": "bundler",
-      "package.json": "",
-      "index.html": "src",
-      "main.js": "src",
-      "style.css": "src",
-      "example.json": "static",
-      "favicon.ico": "static"
-    },
-    "dirs": ["/static", "/src", "/bundler"]
-  },
-  "webgl_shadow_contact": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",

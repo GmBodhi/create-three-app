@@ -43,7 +43,7 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -53,18 +53,18 @@ function init() {
 
   //
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
   // scene
 
-  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  const pmremGenerator = new PMREMGenerator(renderer);
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xdeebed);
+  scene = new Scene();
+  scene.background = new Color(0xdeebed);
   scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -146,12 +146,12 @@ function reloadObject(resetCamera) {
 
       // Adjust camera and light
 
-      const bbox = new THREE.Box3().setFromObject(model);
-      const size = bbox.getSize(new THREE.Vector3());
+      const bbox = new Box3().setFromObject(model);
+      const size = bbox.getSize(new Vector3());
       const radius = Math.max(size.x, Math.max(size.y, size.z)) * 0.5;
 
       if (resetCamera) {
-        controls.target0.copy(bbox.getCenter(new THREE.Vector3()));
+        controls.target0.copy(bbox.getCenter(new Vector3()));
         controls.position0
           .set(-2.3, 1, 2)
           .multiplyScalar(radius)

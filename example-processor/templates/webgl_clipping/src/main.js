@@ -13,7 +13,7 @@ init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     36,
     window.innerWidth / window.innerHeight,
     0.25,
@@ -22,13 +22,13 @@ function init() {
 
   camera.position.set(0, 1.3, 3);
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   // Lights
 
-  scene.add(new THREE.AmbientLight(0x505050));
+  scene.add(new AmbientLight(0x505050));
 
-  const spotLight = new THREE.SpotLight(0xffffff);
+  const spotLight = new SpotLight(0xffffff);
   spotLight.angle = Math.PI / 5;
   spotLight.penumbra = 0.2;
   spotLight.position.set(2, 3, 3);
@@ -39,7 +39,7 @@ function init() {
   spotLight.shadow.mapSize.height = 1024;
   scene.add(spotLight);
 
-  const dirLight = new THREE.DirectionalLight(0x55505a, 1);
+  const dirLight = new DirectionalLight(0x55505a, 1);
   dirLight.position.set(0, 3, 0);
   dirLight.castShadow = true;
   dirLight.shadow.camera.near = 1;
@@ -56,30 +56,30 @@ function init() {
 
   // ***** Clipping planes: *****
 
-  const localPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0.8);
-  const globalPlane = new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0.1);
+  const localPlane = new Plane(new Vector3(0, -1, 0), 0.8);
+  const globalPlane = new Plane(new Vector3(-1, 0, 0), 0.1);
 
   // Geometry
 
-  const material = new THREE.MeshPhongMaterial({
+  const material = new MeshPhongMaterial({
     color: 0x80ee10,
     shininess: 100,
-    side: THREE.DoubleSide,
+    side: DoubleSide,
 
     // ***** Clipping setup (material): *****
     clippingPlanes: [localPlane],
     clipShadows: true,
   });
 
-  const geometry = new THREE.TorusKnotGeometry(0.4, 0.08, 95, 20);
+  const geometry = new TorusKnotGeometry(0.4, 0.08, 95, 20);
 
-  object = new THREE.Mesh(geometry, material);
+  object = new Mesh(geometry, material);
   object.castShadow = true;
   scene.add(object);
 
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(9, 9, 1, 1),
-    new THREE.MeshPhongMaterial({ color: 0xa0adaf, shininess: 150 })
+  const ground = new Mesh(
+    new PlaneGeometry(9, 9, 1, 1),
+    new MeshPhongMaterial({ color: 0xa0adaf, shininess: 150 })
   );
 
   ground.rotation.x = -Math.PI / 2; // rotates X/Y to X/Z
@@ -93,7 +93,7 @@ function init() {
 
   // Renderer
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

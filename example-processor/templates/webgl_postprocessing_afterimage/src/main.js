@@ -22,12 +22,12 @@ createGUI();
 animate();
 
 function init() {
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -35,12 +35,12 @@ function init() {
   );
   camera.position.z = 400;
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.Fog(0x000000, 1, 1000);
+  scene = new Scene();
+  scene.fog = new Fog(0x000000, 1, 1000);
 
-  const geometry = new THREE.BoxGeometry(150, 150, 150, 2, 2, 2);
-  const material = new THREE.MeshNormalMaterial();
-  mesh = new THREE.Mesh(geometry, material);
+  const geometry = new BoxGeometry(150, 150, 150, 2, 2, 2);
+  const material = new MeshNormalMaterial();
+  mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   // postprocessing

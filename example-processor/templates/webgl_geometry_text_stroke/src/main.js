@@ -11,7 +11,7 @@ init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -19,30 +19,30 @@ function init() {
   );
   camera.position.set(0, -400, 600);
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
-  const loader = new THREE.FontLoader();
+  const loader = new FontLoader();
   loader.load("fonts/helvetiker_regular.typeface.json", function (font) {
-    const color = new THREE.Color(0x006699);
+    const color = new Color(0x006699);
 
-    const matDark = new THREE.MeshBasicMaterial({
+    const matDark = new MeshBasicMaterial({
       color: color,
-      side: THREE.DoubleSide,
+      side: DoubleSide,
     });
 
-    const matLite = new THREE.MeshBasicMaterial({
+    const matLite = new MeshBasicMaterial({
       color: color,
       transparent: true,
       opacity: 0.4,
-      side: THREE.DoubleSide,
+      side: DoubleSide,
     });
 
     const message = "   Three.js\nStroke text.";
 
     const shapes = font.generateShapes(message, 100);
 
-    const geometry = new THREE.ShapeGeometry(shapes);
+    const geometry = new ShapeGeometry(shapes);
 
     geometry.computeBoundingBox();
 
@@ -53,7 +53,7 @@ function init() {
 
     // make shape ( N.B. edge view not visible )
 
-    const text = new THREE.Mesh(geometry, matLite);
+    const text = new Mesh(geometry, matLite);
     text.position.z = -150;
     scene.add(text);
 
@@ -76,7 +76,7 @@ function init() {
 
     const style = SVGLoader.getStrokeStyle(5, color.getStyle());
 
-    const strokeText = new THREE.Group();
+    const strokeText = new Group();
 
     for (let i = 0; i < shapes.length; i++) {
       const shape = shapes[i];
@@ -87,14 +87,14 @@ function init() {
 
       geometry.translate(xMid, 0, 0);
 
-      const strokeMesh = new THREE.Mesh(geometry, matDark);
+      const strokeMesh = new Mesh(geometry, matDark);
       strokeText.add(strokeMesh);
     }
 
     scene.add(strokeText);
   }); //end load function
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

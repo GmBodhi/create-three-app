@@ -20,16 +20,16 @@ function init() {
   const container = document.getElementById("container");
 
   // renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
   // scene
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   // camera
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -45,13 +45,13 @@ function init() {
 
   //
 
-  const planeGeo = new THREE.PlaneGeometry(100.1, 100.1);
+  const planeGeo = new PlaneGeometry(100.1, 100.1);
 
   // reflectors/mirrors
 
   let geometry, material;
 
-  geometry = new THREE.CircleGeometry(40, 64);
+  geometry = new CircleGeometry(40, 64);
   groundMirror = new Reflector(geometry, {
     clipBias: 0.003,
     textureWidth: window.innerWidth * window.devicePixelRatio,
@@ -62,7 +62,7 @@ function init() {
   groundMirror.rotateX(-Math.PI / 2);
   scene.add(groundMirror);
 
-  geometry = new THREE.PlaneGeometry(100, 100);
+  geometry = new PlaneGeometry(100, 100);
   verticalMirror = new Reflector(geometry, {
     clipBias: 0.003,
     textureWidth: window.innerWidth * window.devicePixelRatio,
@@ -73,25 +73,22 @@ function init() {
   verticalMirror.position.z = -50;
   scene.add(verticalMirror);
 
-  sphereGroup = new THREE.Object3D();
+  sphereGroup = new Object3D();
   scene.add(sphereGroup);
 
-  geometry = new THREE.CylinderGeometry(
+  geometry = new CylinderGeometry(
     0.1,
     15 * Math.cos((Math.PI / 180) * 30),
     0.1,
     24,
     1
   );
-  material = new THREE.MeshPhongMaterial({
-    color: 0xffffff,
-    emissive: 0x444444,
-  });
-  const sphereCap = new THREE.Mesh(geometry, material);
+  material = new MeshPhongMaterial({ color: 0xffffff, emissive: 0x444444 });
+  const sphereCap = new Mesh(geometry, material);
   sphereCap.position.y = -15 * Math.sin((Math.PI / 180) * 30) - 0.05;
   sphereCap.rotateX(-Math.PI);
 
-  geometry = new THREE.SphereGeometry(
+  geometry = new SphereGeometry(
     15,
     24,
     24,
@@ -100,7 +97,7 @@ function init() {
     0,
     (Math.PI / 180) * 120
   );
-  const halfSphere = new THREE.Mesh(geometry, material);
+  const halfSphere = new Mesh(geometry, material);
   halfSphere.add(sphereCap);
   halfSphere.rotateX((-Math.PI / 180) * 135);
   halfSphere.rotateZ((-Math.PI / 180) * 20);
@@ -108,52 +105,52 @@ function init() {
 
   sphereGroup.add(halfSphere);
 
-  geometry = new THREE.IcosahedronGeometry(5, 0);
-  material = new THREE.MeshPhongMaterial({
+  geometry = new IcosahedronGeometry(5, 0);
+  material = new MeshPhongMaterial({
     color: 0xffffff,
     emissive: 0x333333,
     flatShading: true,
   });
-  smallSphere = new THREE.Mesh(geometry, material);
+  smallSphere = new Mesh(geometry, material);
   scene.add(smallSphere);
 
   // walls
-  const planeTop = new THREE.Mesh(
+  const planeTop = new Mesh(
     planeGeo,
-    new THREE.MeshPhongMaterial({ color: 0xffffff })
+    new MeshPhongMaterial({ color: 0xffffff })
   );
   planeTop.position.y = 100;
   planeTop.rotateX(Math.PI / 2);
   scene.add(planeTop);
 
-  const planeBottom = new THREE.Mesh(
+  const planeBottom = new Mesh(
     planeGeo,
-    new THREE.MeshPhongMaterial({ color: 0xffffff })
+    new MeshPhongMaterial({ color: 0xffffff })
   );
   planeBottom.rotateX(-Math.PI / 2);
   scene.add(planeBottom);
 
-  const planeFront = new THREE.Mesh(
+  const planeFront = new Mesh(
     planeGeo,
-    new THREE.MeshPhongMaterial({ color: 0x7f7fff })
+    new MeshPhongMaterial({ color: 0x7f7fff })
   );
   planeFront.position.z = 50;
   planeFront.position.y = 50;
   planeFront.rotateY(Math.PI);
   scene.add(planeFront);
 
-  const planeRight = new THREE.Mesh(
+  const planeRight = new Mesh(
     planeGeo,
-    new THREE.MeshPhongMaterial({ color: 0x00ff00 })
+    new MeshPhongMaterial({ color: 0x00ff00 })
   );
   planeRight.position.x = 50;
   planeRight.position.y = 50;
   planeRight.rotateY(-Math.PI / 2);
   scene.add(planeRight);
 
-  const planeLeft = new THREE.Mesh(
+  const planeLeft = new Mesh(
     planeGeo,
-    new THREE.MeshPhongMaterial({ color: 0xff0000 })
+    new MeshPhongMaterial({ color: 0xff0000 })
   );
   planeLeft.position.x = -50;
   planeLeft.position.y = 50;
@@ -161,19 +158,19 @@ function init() {
   scene.add(planeLeft);
 
   // lights
-  const mainLight = new THREE.PointLight(0xcccccc, 1.5, 250);
+  const mainLight = new PointLight(0xcccccc, 1.5, 250);
   mainLight.position.y = 60;
   scene.add(mainLight);
 
-  const greenLight = new THREE.PointLight(0x00ff00, 0.25, 1000);
+  const greenLight = new PointLight(0x00ff00, 0.25, 1000);
   greenLight.position.set(550, 50, 0);
   scene.add(greenLight);
 
-  const redLight = new THREE.PointLight(0xff0000, 0.25, 1000);
+  const redLight = new PointLight(0xff0000, 0.25, 1000);
   redLight.position.set(-550, 50, 0);
   scene.add(redLight);
 
-  const blueLight = new THREE.PointLight(0x7f7fff, 0.25, 1000);
+  const blueLight = new PointLight(0x7f7fff, 0.25, 1000);
   blueLight.position.set(0, 50, 550);
   scene.add(blueLight);
 

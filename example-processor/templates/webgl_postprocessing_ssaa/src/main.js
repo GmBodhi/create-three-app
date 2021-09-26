@@ -63,7 +63,7 @@ function init() {
   const aspect = width / height;
   const devicePixelRatio = window.devicePixelRatio || 1;
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(devicePixelRatio);
   renderer.setSize(width, height);
   document.body.appendChild(renderer.domElement);
@@ -71,11 +71,11 @@ function init() {
   stats = new Stats();
   container.appendChild(stats.dom);
 
-  cameraP = new THREE.PerspectiveCamera(65, aspect, 3, 10);
+  cameraP = new PerspectiveCamera(65, aspect, 3, 10);
   cameraP.position.z = 7;
   cameraP.setViewOffset(width, height, params.viewOffsetX, 0, width, height);
 
-  cameraO = new THREE.OrthographicCamera(
+  cameraO = new OrthographicCamera(
     width / -2,
     width / 2,
     height / 2,
@@ -85,46 +85,46 @@ function init() {
   );
   cameraO.position.z = 7;
 
-  const fov = THREE.MathUtils.degToRad(cameraP.fov);
+  const fov = MathUtils.degToRad(cameraP.fov);
   const hyperfocus = (cameraP.near + cameraP.far) / 2;
   const _height = 2 * Math.tan(fov / 2) * hyperfocus;
   cameraO.zoom = height / _height;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  const group = new THREE.Group();
+  const group = new Group();
   scene.add(group);
 
-  const light = new THREE.PointLight(0xddffdd, 1.0);
+  const light = new PointLight(0xddffdd, 1.0);
   light.position.z = 70;
   light.position.y = -70;
   light.position.x = -70;
   scene.add(light);
 
-  const light2 = new THREE.PointLight(0xffdddd, 1.0);
+  const light2 = new PointLight(0xffdddd, 1.0);
   light2.position.z = 70;
   light2.position.x = -70;
   light2.position.y = 70;
   scene.add(light2);
 
-  const light3 = new THREE.PointLight(0xddddff, 1.0);
+  const light3 = new PointLight(0xddddff, 1.0);
   light3.position.z = 70;
   light3.position.x = 70;
   light3.position.y = -70;
   scene.add(light3);
 
-  const light4 = new THREE.AmbientLight(0xffffff, 0.05);
+  const light4 = new AmbientLight(0xffffff, 0.05);
   scene.add(light4);
 
-  const geometry = new THREE.SphereGeometry(3, 48, 24);
+  const geometry = new SphereGeometry(3, 48, 24);
 
   for (let i = 0; i < 120; i++) {
-    const material = new THREE.MeshStandardMaterial();
+    const material = new MeshStandardMaterial();
     material.roughness = 0.5 * Math.random() + 0.25;
     material.metalness = 0;
     material.color.setHSL(Math.random(), 1.0, 0.3);
 
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
     mesh.position.x = Math.random() * 4 - 2;
     mesh.position.y = Math.random() * 4 - 2;
     mesh.position.z = Math.random() * 4 - 2;

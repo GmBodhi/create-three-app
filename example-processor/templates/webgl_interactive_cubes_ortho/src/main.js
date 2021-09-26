@@ -10,7 +10,7 @@ let camera, scene, raycaster, renderer;
 let theta = 0;
 let INTERSECTED;
 
-const pointer = new THREE.Vector2();
+const pointer = new Vector2();
 const radius = 500;
 const frustumSize = 1000;
 
@@ -22,7 +22,7 @@ function init() {
   document.body.appendChild(container);
 
   const aspect = window.innerWidth / window.innerHeight;
-  camera = new THREE.OrthographicCamera(
+  camera = new OrthographicCamera(
     (frustumSize * aspect) / -2,
     (frustumSize * aspect) / 2,
     frustumSize / 2,
@@ -31,19 +31,19 @@ function init() {
     1000
   );
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
-  const light = new THREE.DirectionalLight(0xffffff, 1);
+  const light = new DirectionalLight(0xffffff, 1);
   light.position.set(1, 1, 1).normalize();
   scene.add(light);
 
-  const geometry = new THREE.BoxGeometry(20, 20, 20);
+  const geometry = new BoxGeometry(20, 20, 20);
 
   for (let i = 0; i < 2000; i++) {
-    const object = new THREE.Mesh(
+    const object = new Mesh(
       geometry,
-      new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff })
+      new MeshLambertMaterial({ color: Math.random() * 0xffffff })
     );
 
     object.position.x = Math.random() * 800 - 400;
@@ -61,9 +61,9 @@ function init() {
     scene.add(object);
   }
 
-  raycaster = new THREE.Raycaster();
+  raycaster = new Raycaster();
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -108,9 +108,9 @@ function animate() {
 function render() {
   theta += 0.1;
 
-  camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.y = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
+  camera.position.x = radius * Math.sin(MathUtils.degToRad(theta));
+  camera.position.y = radius * Math.sin(MathUtils.degToRad(theta));
+  camera.position.z = radius * Math.cos(MathUtils.degToRad(theta));
   camera.lookAt(scene.position);
 
   camera.updateMatrixWorld();

@@ -10,7 +10,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 let container, stats;
 let camera, controls, scene, renderer;
 let textureLoader;
-const clock = new THREE.Clock();
+const clock = new Clock();
 
 // Physics variables
 const gravityConstant = -9.8;
@@ -43,19 +43,19 @@ function init() {
 function initGraphics() {
   container = document.getElementById("container");
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,
     0.2,
     2000
   );
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xbfd1e5);
+  scene = new Scene();
+  scene.background = new Color(0xbfd1e5);
 
   camera.position.set(-12, 7, 4);
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
@@ -65,12 +65,12 @@ function initGraphics() {
   controls.target.set(0, 2, 0);
   controls.update();
 
-  textureLoader = new THREE.TextureLoader();
+  textureLoader = new TextureLoader();
 
-  const ambientLight = new THREE.AmbientLight(0x404040);
+  const ambientLight = new AmbientLight(0x404040);
   scene.add(ambientLight);
 
-  const light = new THREE.DirectionalLight(0xffffff, 1);
+  const light = new DirectionalLight(0xffffff, 1);
   light.position.set(-7, 10, 15);
   light.castShadow = true;
   const d = 10;
@@ -121,8 +121,8 @@ function initPhysics() {
 }
 
 function createObjects() {
-  const pos = new THREE.Vector3();
-  const quat = new THREE.Quaternion();
+  const pos = new Vector3();
+  const quat = new Quaternion();
 
   // Ground
   pos.set(0, -0.5, 0);
@@ -134,13 +134,13 @@ function createObjects() {
     0,
     pos,
     quat,
-    new THREE.MeshPhongMaterial({ color: 0xffffff })
+    new MeshPhongMaterial({ color: 0xffffff })
   );
   ground.castShadow = true;
   ground.receiveShadow = true;
   textureLoader.load("textures/grid.png", function (texture) {
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
     texture.repeat.set(40, 40);
     ground.material.map = texture;
     ground.material.needsUpdate = true;
@@ -203,9 +203,9 @@ function createObjects() {
   const clothHeight = 3;
   const clothNumSegmentsZ = clothWidth * 5;
   const clothNumSegmentsY = clothHeight * 5;
-  const clothPos = new THREE.Vector3(-3, 3, 2);
+  const clothPos = new Vector3(-3, 3, 2);
 
-  const clothGeometry = new THREE.PlaneGeometry(
+  const clothGeometry = new PlaneGeometry(
     clothWidth,
     clothHeight,
     clothNumSegmentsZ,
@@ -218,17 +218,17 @@ function createObjects() {
     clothPos.z - clothWidth * 0.5
   );
 
-  const clothMaterial = new THREE.MeshLambertMaterial({
+  const clothMaterial = new MeshLambertMaterial({
     color: 0xffffff,
-    side: THREE.DoubleSide,
+    side: DoubleSide,
   });
-  cloth = new THREE.Mesh(clothGeometry, clothMaterial);
+  cloth = new Mesh(clothGeometry, clothMaterial);
   cloth.castShadow = true;
   cloth.receiveShadow = true;
   scene.add(cloth);
   textureLoader.load("textures/grid.png", function (texture) {
-    texture.wrapS = THREE.RepeatWrapping;
-    texture.wrapT = THREE.RepeatWrapping;
+    texture.wrapS = RepeatWrapping;
+    texture.wrapT = RepeatWrapping;
     texture.repeat.set(clothNumSegmentsZ, clothNumSegmentsY);
     cloth.material.map = texture;
     cloth.material.needsUpdate = true;
@@ -280,7 +280,7 @@ function createObjects() {
   const armMass = 2;
   const armLength = 3 + clothWidth;
   const pylonHeight = clothPos.y + clothHeight;
-  const baseMaterial = new THREE.MeshPhongMaterial({ color: 0x606060 });
+  const baseMaterial = new MeshPhongMaterial({ color: 0x606060 });
   pos.set(clothPos.x, 0.1, clothPos.z - armLength);
   quat.set(0, 0, 0, 1);
   const base = createParalellepiped(1, 0.2, 1, 0, pos, quat, baseMaterial);
@@ -338,10 +338,7 @@ function createObjects() {
 }
 
 function createParalellepiped(sx, sy, sz, mass, pos, quat, material) {
-  const threeObject = new THREE.Mesh(
-    new THREE.BoxGeometry(sx, sy, sz, 1, 1, 1),
-    material
-  );
+  const threeObject = new Mesh(new BoxGeometry(sx, sy, sz, 1, 1, 1), material);
   const shape = new Ammo.btBoxShape(
     new Ammo.btVector3(sx * 0.5, sy * 0.5, sz * 0.5)
   );
@@ -392,7 +389,7 @@ function createRandomColor() {
 }
 
 function createMaterial() {
-  return new THREE.MeshPhongMaterial({ color: createRandomColor() });
+  return new MeshPhongMaterial({ color: createRandomColor() });
 }
 
 function initInput() {

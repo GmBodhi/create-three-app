@@ -21,7 +21,7 @@ const meshes = [],
 
 let composer, effectFocus;
 
-const clock = new THREE.Clock();
+const clock = new Clock();
 
 let stats;
 
@@ -31,7 +31,7 @@ animate();
 function init() {
   const container = document.querySelector("#container");
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     20,
     window.innerWidth / window.innerHeight,
     1,
@@ -39,9 +39,9 @@ function init() {
   );
   camera.position.set(0, 700, 7000);
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000104);
-  scene.fog = new THREE.FogExp2(0x000104, 0.0000675);
+  scene = new Scene();
+  scene.background = new Color(0x000104);
+  scene.fog = new FogExp2(0x000104, 0.0000675);
 
   camera.lookAt(scene.position);
 
@@ -66,18 +66,18 @@ function init() {
     createMesh(positions, scene, 4.05, 250, -350, 2500, 0xff77dd);
   });
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.autoClear = false;
   container.appendChild(renderer.domElement);
 
-  parent = new THREE.Object3D();
+  parent = new Object3D();
   scene.add(parent);
 
-  const grid = new THREE.Points(
-    new THREE.PlaneGeometry(15000, 15000, 64, 64),
-    new THREE.PointsMaterial({ color: 0xff0000, size: 10 })
+  const grid = new Points(
+    new PlaneGeometry(15000, 15000, 64, 64),
+    new PointsMaterial({ color: 0xff0000, size: 10 })
   );
   grid.position.y = -400;
   grid.rotation.x = -Math.PI / 2;
@@ -149,15 +149,15 @@ function combineBuffer(model, bufferName) {
     }
   });
 
-  return new THREE.BufferAttribute(combined, 3);
+  return new BufferAttribute(combined, 3);
 }
 
 function createMesh(positions, scene, scale, x, y, z, color) {
-  const geometry = new THREE.BufferGeometry();
+  const geometry = new BufferGeometry();
   geometry.setAttribute("position", positions.clone());
   geometry.setAttribute("initialPosition", positions.clone());
 
-  geometry.attributes.position.setUsage(THREE.DynamicDrawUsage);
+  geometry.attributes.position.setUsage(DynamicDrawUsage);
 
   const clones = [
     [6000, 0, -4000],
@@ -174,10 +174,7 @@ function createMesh(positions, scene, scale, x, y, z, color) {
   for (let i = 0; i < clones.length; i++) {
     const c = i < clones.length - 1 ? 0x252525 : color;
 
-    mesh = new THREE.Points(
-      geometry,
-      new THREE.PointsMaterial({ size: 30, color: c })
-    );
+    mesh = new Points(geometry, new PointsMaterial({ size: 30, color: c }));
     mesh.scale.x = mesh.scale.y = mesh.scale.z = scale;
 
     mesh.position.x = x + clones[i][0];

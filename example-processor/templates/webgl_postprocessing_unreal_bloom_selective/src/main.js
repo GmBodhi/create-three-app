@@ -13,7 +13,7 @@ import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPa
 const ENTIRE_SCENE = 0,
   BLOOM_SCENE = 1;
 
-const bloomLayer = new THREE.Layers();
+const bloomLayer = new Layers();
 bloomLayer.set(BLOOM_SCENE);
 
 const params = {
@@ -24,18 +24,18 @@ const params = {
   scene: "Scene with Glow",
 };
 
-const darkMaterial = new THREE.MeshBasicMaterial({ color: "black" });
+const darkMaterial = new MeshBasicMaterial({ color: "black" });
 const materials = {};
 
-const renderer = new THREE.WebGLRenderer({ antialias: true });
+const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.toneMapping = THREE.ReinhardToneMapping;
+renderer.toneMapping = ReinhardToneMapping;
 document.body.appendChild(renderer.domElement);
 
-const scene = new THREE.Scene();
+const scene = new Scene();
 
-const camera = new THREE.PerspectiveCamera(
+const camera = new PerspectiveCamera(
   40,
   window.innerWidth / window.innerHeight,
   1,
@@ -50,12 +50,12 @@ controls.minDistance = 1;
 controls.maxDistance = 100;
 controls.addEventListener("change", render);
 
-scene.add(new THREE.AmbientLight(0x404040));
+scene.add(new AmbientLight(0x404040));
 
 const renderScene = new RenderPass(scene, camera);
 
 const bloomPass = new UnrealBloomPass(
-  new THREE.Vector2(window.innerWidth, window.innerHeight),
+  new Vector2(window.innerWidth, window.innerHeight),
   1.5,
   0.4,
   0.85
@@ -70,7 +70,7 @@ bloomComposer.addPass(renderScene);
 bloomComposer.addPass(bloomPass);
 
 const finalPass = new ShaderPass(
-  new THREE.ShaderMaterial({
+  new ShaderMaterial({
     uniforms: {
       baseTexture: { value: null },
       bloomTexture: { value: bloomComposer.renderTarget2.texture },
@@ -87,9 +87,9 @@ const finalComposer = new EffectComposer(renderer);
 finalComposer.addPass(renderScene);
 finalComposer.addPass(finalPass);
 
-const raycaster = new THREE.Raycaster();
+const raycaster = new Raycaster();
 
-const mouse = new THREE.Vector2();
+const mouse = new Vector2();
 
 window.addEventListener("pointerdown", onPointerDown);
 
@@ -172,14 +172,14 @@ function setupScene() {
   scene.traverse(disposeMaterial);
   scene.children.length = 0;
 
-  const geometry = new THREE.IcosahedronGeometry(1, 15);
+  const geometry = new IcosahedronGeometry(1, 15);
 
   for (let i = 0; i < 50; i++) {
-    const color = new THREE.Color();
+    const color = new Color();
     color.setHSL(Math.random(), 0.7, Math.random() * 0.2 + 0.05);
 
-    const material = new THREE.MeshBasicMaterial({ color: color });
-    const sphere = new THREE.Mesh(geometry, material);
+    const material = new MeshBasicMaterial({ color: color });
+    const sphere = new Mesh(geometry, material);
     sphere.position.x = Math.random() * 10 - 5;
     sphere.position.y = Math.random() * 10 - 5;
     sphere.position.z = Math.random() * 10 - 5;

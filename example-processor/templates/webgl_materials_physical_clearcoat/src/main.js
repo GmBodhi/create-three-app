@@ -23,7 +23,7 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     27,
     window.innerWidth / window.innerHeight,
     1,
@@ -31,9 +31,9 @@ function init() {
   );
   camera.position.z = 1000;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  group = new THREE.Group();
+  group = new Group();
   scene.add(group);
 
   new HDRCubeTextureLoader()
@@ -41,30 +41,30 @@ function init() {
     .load(
       ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"],
       function (texture) {
-        const geometry = new THREE.SphereGeometry(80, 64, 32);
+        const geometry = new SphereGeometry(80, 64, 32);
 
-        const textureLoader = new THREE.TextureLoader();
+        const textureLoader = new TextureLoader();
 
         const diffuse = textureLoader.load("textures/carbon/Carbon.png");
-        diffuse.encoding = THREE.sRGBEncoding;
-        diffuse.wrapS = THREE.RepeatWrapping;
-        diffuse.wrapT = THREE.RepeatWrapping;
+        diffuse.encoding = sRGBEncoding;
+        diffuse.wrapS = RepeatWrapping;
+        diffuse.wrapT = RepeatWrapping;
         diffuse.repeat.x = 10;
         diffuse.repeat.y = 10;
 
         const normalMap = textureLoader.load(
           "textures/carbon/Carbon_Normal.png"
         );
-        normalMap.wrapS = THREE.RepeatWrapping;
-        normalMap.wrapT = THREE.RepeatWrapping;
+        normalMap.wrapS = RepeatWrapping;
+        normalMap.wrapT = RepeatWrapping;
 
         const normalMap2 = textureLoader.load(
           "textures/water/Water_1_M_Normal.jpg"
         );
 
-        const normalMap3 = new THREE.CanvasTexture(new FlakesTexture());
-        normalMap3.wrapS = THREE.RepeatWrapping;
-        normalMap3.wrapT = THREE.RepeatWrapping;
+        const normalMap3 = new CanvasTexture(new FlakesTexture());
+        normalMap3.wrapS = RepeatWrapping;
+        normalMap3.wrapT = RepeatWrapping;
         normalMap3.repeat.x = 10;
         normalMap3.repeat.y = 6;
         normalMap3.anisotropy = 16;
@@ -77,38 +77,38 @@ function init() {
 
         // car paint
 
-        let material = new THREE.MeshPhysicalMaterial({
+        let material = new MeshPhysicalMaterial({
           clearcoat: 1.0,
           clearcoatRoughness: 0.1,
           metalness: 0.9,
           roughness: 0.5,
           color: 0x0000ff,
           normalMap: normalMap3,
-          normalScale: new THREE.Vector2(0.15, 0.15),
+          normalScale: new Vector2(0.15, 0.15),
         });
 
-        let mesh = new THREE.Mesh(geometry, material);
+        let mesh = new Mesh(geometry, material);
         mesh.position.x = -100;
         mesh.position.y = 100;
         group.add(mesh);
 
         // fibers
 
-        material = new THREE.MeshPhysicalMaterial({
+        material = new MeshPhysicalMaterial({
           roughness: 0.5,
           clearcoat: 1.0,
           clearcoatRoughness: 0.1,
           map: diffuse,
           normalMap: normalMap,
         });
-        mesh = new THREE.Mesh(geometry, material);
+        mesh = new Mesh(geometry, material);
         mesh.position.x = 100;
         mesh.position.y = 100;
         group.add(mesh);
 
         // golf
 
-        material = new THREE.MeshPhysicalMaterial({
+        material = new MeshPhysicalMaterial({
           metalness: 0.0,
           roughness: 0.1,
           clearcoat: 1.0,
@@ -116,27 +116,27 @@ function init() {
           clearcoatNormalMap: clearcoatNormaMap,
 
           // y scale is negated to compensate for normal map handedness.
-          clearcoatNormalScale: new THREE.Vector2(2.0, -2.0),
+          clearcoatNormalScale: new Vector2(2.0, -2.0),
         });
-        mesh = new THREE.Mesh(geometry, material);
+        mesh = new Mesh(geometry, material);
         mesh.position.x = -100;
         mesh.position.y = -100;
         group.add(mesh);
 
         // clearcoat + normalmap
 
-        material = new THREE.MeshPhysicalMaterial({
+        material = new MeshPhysicalMaterial({
           clearcoat: 1.0,
           metalness: 1.0,
           color: 0xff0000,
           normalMap: normalMap2,
-          normalScale: new THREE.Vector2(0.15, 0.15),
+          normalScale: new Vector2(0.15, 0.15),
           clearcoatNormalMap: clearcoatNormaMap,
 
           // y scale is negated to compensate for normal map handedness.
-          clearcoatNormalScale: new THREE.Vector2(2.0, -2.0),
+          clearcoatNormalScale: new Vector2(2.0, -2.0),
         });
-        mesh = new THREE.Mesh(geometry, material);
+        mesh = new Mesh(geometry, material);
         mesh.position.x = 100;
         mesh.position.y = -100;
         group.add(mesh);
@@ -150,27 +150,27 @@ function init() {
 
   // LIGHTS
 
-  particleLight = new THREE.Mesh(
-    new THREE.SphereGeometry(4, 8, 8),
-    new THREE.MeshBasicMaterial({ color: 0xffffff })
+  particleLight = new Mesh(
+    new SphereGeometry(4, 8, 8),
+    new MeshBasicMaterial({ color: 0xffffff })
   );
   scene.add(particleLight);
 
-  particleLight.add(new THREE.PointLight(0xffffff, 1));
+  particleLight.add(new PointLight(0xffffff, 1));
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
   //
 
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.25;
 
   //
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputEncoding = sRGBEncoding;
 
   //
 

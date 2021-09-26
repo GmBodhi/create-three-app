@@ -43,7 +43,7 @@ init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -51,8 +51,8 @@ function init() {
   );
   camera.position.set(0.5, 1, 2);
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
+  scene = new Scene();
+  scene.background = new Color(0xffffff);
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
@@ -62,18 +62,18 @@ function init() {
   // add the example meshes
 
   const geometries = [
-    new THREE.BoxGeometry(0.4, 0.4, 0.4),
-    new THREE.IcosahedronGeometry(0.3),
-    new THREE.TorusKnotGeometry(0.4, 0.05, 256, 24, 1, 3),
+    new BoxGeometry(0.4, 0.4, 0.4),
+    new IcosahedronGeometry(0.3),
+    new TorusKnotGeometry(0.4, 0.05, 256, 24, 1, 3),
   ];
 
-  const material = new THREE.MeshNormalMaterial();
+  const material = new MeshNormalMaterial();
 
   for (let i = 0, l = geometries.length; i < l; i++) {
     const angle = (i / l) * Math.PI * 2;
 
     const geometry = geometries[i];
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
     mesh.position.y = 0.1;
     mesh.position.x = Math.cos(angle) / 2.0;
     mesh.position.z = Math.sin(angle) / 2.0;
@@ -82,30 +82,29 @@ function init() {
   }
 
   // the container, if you need to move the plane just move this
-  shadowGroup = new THREE.Group();
+  shadowGroup = new Group();
   shadowGroup.position.y = -0.3;
   scene.add(shadowGroup);
 
   // the render target that will show the shadows in the plane texture
-  renderTarget = new THREE.WebGLRenderTarget(512, 512);
+  renderTarget = new WebGLRenderTarget(512, 512);
   renderTarget.texture.generateMipmaps = false;
 
   // the render target that we will use to blur the first render target
-  renderTargetBlur = new THREE.WebGLRenderTarget(512, 512);
+  renderTargetBlur = new WebGLRenderTarget(512, 512);
   renderTargetBlur.texture.generateMipmaps = false;
 
   // make a plane and make it face up
-  const planeGeometry = new THREE.PlaneGeometry(
-    PLANE_WIDTH,
-    PLANE_HEIGHT
-  ).rotateX(Math.PI / 2);
-  const planeMaterial = new THREE.MeshBasicMaterial({
+  const planeGeometry = new PlaneGeometry(PLANE_WIDTH, PLANE_HEIGHT).rotateX(
+    Math.PI / 2
+  );
+  const planeMaterial = new MeshBasicMaterial({
     map: renderTarget.texture,
     opacity: state.shadow.opacity,
     transparent: true,
     depthWrite: false,
   });
-  plane = new THREE.Mesh(planeGeometry, planeMaterial);
+  plane = new Mesh(planeGeometry, planeMaterial);
   // make sure it's rendered after the fillPlane
   plane.renderOrder = 1;
   shadowGroup.add(plane);
@@ -114,23 +113,23 @@ function init() {
   plane.scale.y = -1;
 
   // the plane onto which to blur the texture
-  blurPlane = new THREE.Mesh(planeGeometry);
+  blurPlane = new Mesh(planeGeometry);
   blurPlane.visible = false;
   shadowGroup.add(blurPlane);
 
   // the plane with the color of the ground
-  const fillPlaneMaterial = new THREE.MeshBasicMaterial({
+  const fillPlaneMaterial = new MeshBasicMaterial({
     color: state.plane.color,
     opacity: state.plane.opacity,
     transparent: true,
     depthWrite: false,
   });
-  fillPlane = new THREE.Mesh(planeGeometry, fillPlaneMaterial);
+  fillPlane = new Mesh(planeGeometry, fillPlaneMaterial);
   fillPlane.rotateX(Math.PI);
   shadowGroup.add(fillPlane);
 
   // the camera to render the depth material from
-  shadowCamera = new THREE.OrthographicCamera(
+  shadowCamera = new OrthographicCamera(
     -PLANE_WIDTH / 2,
     PLANE_WIDTH / 2,
     PLANE_HEIGHT / 2,
@@ -141,10 +140,10 @@ function init() {
   shadowCamera.rotation.x = Math.PI / 2; // get the camera to look up
   shadowGroup.add(shadowCamera);
 
-  cameraHelper = new THREE.CameraHelper(shadowCamera);
+  cameraHelper = new CameraHelper(shadowCamera);
 
   // like MeshDepthMaterial, but goes from black to transparent
-  depthMaterial = new THREE.MeshDepthMaterial();
+  depthMaterial = new MeshDepthMaterial();
   depthMaterial.userData.darkness = { value: state.shadow.darkness };
   depthMaterial.onBeforeCompile = function (shader) {
     shader.uniforms.darkness = depthMaterial.userData.darkness;
@@ -160,10 +159,10 @@ function init() {
   depthMaterial.depthTest = false;
   depthMaterial.depthWrite = false;
 
-  horizontalBlurMaterial = new THREE.ShaderMaterial(HorizontalBlurShader);
+  horizontalBlurMaterial = new ShaderMaterial(HorizontalBlurShader);
   horizontalBlurMaterial.depthTest = false;
 
-  verticalBlurMaterial = new THREE.ShaderMaterial(VerticalBlurShader);
+  verticalBlurMaterial = new ShaderMaterial(VerticalBlurShader);
   verticalBlurMaterial.depthTest = false;
 
   //
@@ -182,7 +181,7 @@ function init() {
     plane.material.opacity = state.shadow.opacity;
   });
   planeFolder.addColor(state.plane, "color").onChange(function () {
-    fillPlane.material.color = new THREE.Color(state.plane.color);
+    fillPlane.material.color = new Color(state.plane.color);
   });
   planeFolder.add(state.plane, "opacity", 0, 1, 0.01).onChange(function () {
     fillPlane.material.opacity = state.plane.opacity;
@@ -198,7 +197,7 @@ function init() {
 
   //
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

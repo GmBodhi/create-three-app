@@ -20,7 +20,7 @@ async function loadCubeTextureWithMipmaps() {
 
   async function loadCubeTexture(urls) {
     return new Promise(function (resolve) {
-      new THREE.CubeTextureLoader().load(urls, function (cubeTexture) {
+      new CubeTextureLoader().load(urls, function (cubeTexture) {
         resolve(cubeTexture);
       });
     });
@@ -49,8 +49,8 @@ async function loadCubeTextureWithMipmaps() {
 
   const customizedCubeTexture = mipmaps.shift();
   customizedCubeTexture.mipmaps = mipmaps;
-  customizedCubeTexture.minFilter = THREE.LinearMipMapLinearFilter;
-  customizedCubeTexture.magFilter = THREE.LinearFilter;
+  customizedCubeTexture.minFilter = LinearMipMapLinearFilter;
+  customizedCubeTexture.magFilter = LinearFilter;
   customizedCubeTexture.generateMipmaps = false;
   customizedCubeTexture.needsUpdate = true;
 
@@ -61,7 +61,7 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
     1,
@@ -69,20 +69,20 @@ function init() {
   );
   camera.position.z = 500;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   loadCubeTextureWithMipmaps().then(function (cubeTexture) {
     //model
-    const sphere = new THREE.SphereGeometry(100, 128, 128);
+    const sphere = new SphereGeometry(100, 128, 128);
 
     //manual mipmaps
-    let material = new THREE.MeshBasicMaterial({
+    let material = new MeshBasicMaterial({
       color: 0xffffff,
       envMap: cubeTexture,
     });
     material.name = "manual mipmaps";
 
-    let mesh = new THREE.Mesh(sphere, material);
+    let mesh = new Mesh(sphere, material);
     mesh.position.set(100, 0, 0);
     scene.add(mesh);
 
@@ -97,13 +97,13 @@ function init() {
 
     material.envMap = autoCubeTexture;
 
-    mesh = new THREE.Mesh(sphere, material);
+    mesh = new Mesh(sphere, material);
     mesh.position.set(-100, 0, 0);
     scene.add(mesh);
   });
 
   //renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

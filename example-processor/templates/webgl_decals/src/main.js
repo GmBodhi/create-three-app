@@ -18,21 +18,21 @@ let line;
 
 const intersection = {
   intersects: false,
-  point: new THREE.Vector3(),
-  normal: new THREE.Vector3(),
+  point: new Vector3(),
+  normal: new Vector3(),
 };
-const mouse = new THREE.Vector2();
+const mouse = new Vector2();
 const intersects = [];
 
-const textureLoader = new THREE.TextureLoader();
+const textureLoader = new TextureLoader();
 const decalDiffuse = textureLoader.load("textures/decal/decal-diffuse.png");
 const decalNormal = textureLoader.load("textures/decal/decal-normal.jpg");
 
-const decalMaterial = new THREE.MeshPhongMaterial({
+const decalMaterial = new MeshPhongMaterial({
   specular: 0x444444,
   map: decalDiffuse,
   normalMap: decalNormal,
-  normalScale: new THREE.Vector2(1, 1),
+  normalScale: new Vector2(1, 1),
   shininess: 30,
   transparent: true,
   depthTest: true,
@@ -44,9 +44,9 @@ const decalMaterial = new THREE.MeshPhongMaterial({
 
 const decals = [];
 let mouseHelper;
-const position = new THREE.Vector3();
-const orientation = new THREE.Euler();
-const size = new THREE.Vector3(10, 10, 10);
+const position = new Vector3();
+const orientation = new Euler();
+const size = new Vector3(10, 10, 10);
 
 const params = {
   minScale: 10,
@@ -60,7 +60,7 @@ const params = {
 window.addEventListener("load", init);
 
 function init() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -68,9 +68,9 @@ function init() {
   stats = new Stats();
   container.appendChild(stats.dom);
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -82,30 +82,27 @@ function init() {
   controls.minDistance = 50;
   controls.maxDistance = 200;
 
-  scene.add(new THREE.AmbientLight(0x443333));
+  scene.add(new AmbientLight(0x443333));
 
-  const dirLight1 = new THREE.DirectionalLight(0xffddcc, 1);
+  const dirLight1 = new DirectionalLight(0xffddcc, 1);
   dirLight1.position.set(1, 0.75, 0.5);
   scene.add(dirLight1);
 
-  const dirLight2 = new THREE.DirectionalLight(0xccccff, 1);
+  const dirLight2 = new DirectionalLight(0xccccff, 1);
   dirLight2.position.set(-1, 0.75, -0.5);
   scene.add(dirLight2);
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setFromPoints([new THREE.Vector3(), new THREE.Vector3()]);
+  const geometry = new BufferGeometry();
+  geometry.setFromPoints([new Vector3(), new Vector3()]);
 
-  line = new THREE.Line(geometry, new THREE.LineBasicMaterial());
+  line = new Line(geometry, new LineBasicMaterial());
   scene.add(line);
 
   loadLeePerrySmith();
 
-  raycaster = new THREE.Raycaster();
+  raycaster = new Raycaster();
 
-  mouseHelper = new THREE.Mesh(
-    new THREE.BoxGeometry(1, 1, 10),
-    new THREE.MeshNormalMaterial()
-  );
+  mouseHelper = new Mesh(new BoxGeometry(1, 1, 10), new MeshNormalMaterial());
   mouseHelper.visible = false;
   scene.add(mouseHelper);
 
@@ -189,7 +186,7 @@ function loadLeePerrySmith() {
 
   loader.load("models/gltf/LeePerrySmith/LeePerrySmith.glb", function (gltf) {
     mesh = gltf.scene.children[0];
-    mesh.material = new THREE.MeshPhongMaterial({
+    mesh.material = new MeshPhongMaterial({
       specular: 0x111111,
       map: textureLoader.load("models/gltf/LeePerrySmith/Map-COL.jpg"),
       specularMap: textureLoader.load("models/gltf/LeePerrySmith/Map-SPEC.jpg"),
@@ -217,7 +214,7 @@ function shoot() {
   const material = decalMaterial.clone();
   material.color.setHex(Math.random() * 0xffffff);
 
-  const m = new THREE.Mesh(
+  const m = new Mesh(
     new DecalGeometry(mesh, position, orientation, size),
     material
   );

@@ -19,7 +19,7 @@ animate();
 function init() {
   // CAMERA
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     80,
     window.innerWidth / window.innerHeight,
     1,
@@ -29,11 +29,11 @@ function init() {
 
   // SCENE
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   // TEXTURE LOADER
 
-  const textureLoader = new THREE.TextureLoader();
+  const textureLoader = new TextureLoader();
 
   // BACKGROUND IMAGES
 
@@ -69,42 +69,39 @@ function init() {
 
   document.getElementById("bg_2").appendChild(canvas2);
 
-  const mapBg0 = new THREE.CanvasTexture(canvas1);
-  mapBg0.wrapS = mapBg0.wrapT = THREE.RepeatWrapping;
+  const mapBg0 = new CanvasTexture(canvas1);
+  mapBg0.wrapS = mapBg0.wrapT = RepeatWrapping;
   mapBg0.repeat.set(128, 64);
 
-  const mapBg1 = new THREE.CanvasTexture(canvas2);
-  mapBg1.wrapS = mapBg1.wrapT = THREE.RepeatWrapping;
+  const mapBg1 = new CanvasTexture(canvas2);
+  mapBg1.wrapS = mapBg1.wrapT = RepeatWrapping;
   mapBg1.repeat.set(128, 64);
 
   const mapBg2 = textureLoader.load("textures/disturb.jpg");
-  mapBg2.wrapS = mapBg2.wrapT = THREE.RepeatWrapping;
+  mapBg2.wrapS = mapBg2.wrapT = RepeatWrapping;
   mapBg2.repeat.set(8, 4);
 
   const mapBg3 = textureLoader.load("textures/crate.gif");
-  mapBg3.wrapS = mapBg3.wrapT = THREE.RepeatWrapping;
+  mapBg3.wrapS = mapBg3.wrapT = RepeatWrapping;
   mapBg3.repeat.set(32, 16);
 
   const mapBg4 = textureLoader.load("textures/lava/lavatile.jpg");
-  mapBg4.wrapS = mapBg4.wrapT = THREE.RepeatWrapping;
+  mapBg4.wrapS = mapBg4.wrapT = RepeatWrapping;
   mapBg4.repeat.set(8, 4);
 
   const mapBg5 = textureLoader.load("textures/water.jpg");
-  mapBg5.wrapS = mapBg5.wrapT = THREE.RepeatWrapping;
+  mapBg5.wrapS = mapBg5.wrapT = RepeatWrapping;
   mapBg5.repeat.set(8, 4);
 
   const mapBg6 = textureLoader.load("textures/lava/cloud.png");
-  mapBg6.wrapS = mapBg6.wrapT = THREE.RepeatWrapping;
+  mapBg6.wrapS = mapBg6.wrapT = RepeatWrapping;
   mapBg6.repeat.set(2, 1);
 
   // BACKGROUND
 
-  materialBg = new THREE.MeshBasicMaterial({ map: mapBg1 });
+  materialBg = new MeshBasicMaterial({ map: mapBg1 });
 
-  const meshBg = new THREE.Mesh(
-    new THREE.PlaneGeometry(4000, 2000),
-    materialBg
-  );
+  const meshBg = new Mesh(new PlaneGeometry(4000, 2000), materialBg);
   meshBg.position.set(0, 0, -1);
   scene.add(meshBg);
 
@@ -132,34 +129,34 @@ function init() {
 
   // FOREGROUND OBJECTS
   const src = [
-    { name: "Zero", constant: THREE.ZeroFactor },
-    { name: "One", constant: THREE.OneFactor },
-    { name: "SrcColor", constant: THREE.SrcColorFactor },
-    { name: "OneMinusSrcColor", constant: THREE.OneMinusSrcColorFactor },
-    { name: "SrcAlpha", constant: THREE.SrcAlphaFactor },
-    { name: "OneMinusSrcAlpha", constant: THREE.OneMinusSrcAlphaFactor },
-    { name: "DstAlpha", constant: THREE.DstAlphaFactor },
-    { name: "OneMinusDstAlpha", constant: THREE.OneMinusDstAlphaFactor },
-    { name: "DstColor", constant: THREE.DstColorFactor },
-    { name: "OneMinusDstColor", constant: THREE.OneMinusDstColorFactor },
-    { name: "SrcAlphaSaturate", constant: THREE.SrcAlphaSaturateFactor },
+    { name: "Zero", constant: ZeroFactor },
+    { name: "One", constant: OneFactor },
+    { name: "SrcColor", constant: SrcColorFactor },
+    { name: "OneMinusSrcColor", constant: OneMinusSrcColorFactor },
+    { name: "SrcAlpha", constant: SrcAlphaFactor },
+    { name: "OneMinusSrcAlpha", constant: OneMinusSrcAlphaFactor },
+    { name: "DstAlpha", constant: DstAlphaFactor },
+    { name: "OneMinusDstAlpha", constant: OneMinusDstAlphaFactor },
+    { name: "DstColor", constant: DstColorFactor },
+    { name: "OneMinusDstColor", constant: OneMinusDstColorFactor },
+    { name: "SrcAlphaSaturate", constant: SrcAlphaSaturateFactor },
   ];
 
   const dst = [
-    { name: "Zero", constant: THREE.ZeroFactor },
-    { name: "One", constant: THREE.OneFactor },
-    { name: "SrcColor", constant: THREE.SrcColorFactor },
-    { name: "OneMinusSrcColor", constant: THREE.OneMinusSrcColorFactor },
-    { name: "SrcAlpha", constant: THREE.SrcAlphaFactor },
-    { name: "OneMinusSrcAlpha", constant: THREE.OneMinusSrcAlphaFactor },
-    { name: "DstAlpha", constant: THREE.DstAlphaFactor },
-    { name: "OneMinusDstAlpha", constant: THREE.OneMinusDstAlphaFactor },
-    { name: "DstColor", constant: THREE.DstColorFactor },
-    { name: "OneMinusDstColor", constant: THREE.OneMinusDstColorFactor },
+    { name: "Zero", constant: ZeroFactor },
+    { name: "One", constant: OneFactor },
+    { name: "SrcColor", constant: SrcColorFactor },
+    { name: "OneMinusSrcColor", constant: OneMinusSrcColorFactor },
+    { name: "SrcAlpha", constant: SrcAlphaFactor },
+    { name: "OneMinusSrcAlpha", constant: OneMinusSrcAlphaFactor },
+    { name: "DstAlpha", constant: DstAlphaFactor },
+    { name: "OneMinusDstAlpha", constant: OneMinusDstAlphaFactor },
+    { name: "DstColor", constant: DstColorFactor },
+    { name: "OneMinusDstColor", constant: OneMinusDstColorFactor },
   ];
 
-  const geo1 = new THREE.PlaneGeometry(100, 100);
-  const geo2 = new THREE.PlaneGeometry(100, 25);
+  const geo1 = new PlaneGeometry(100, 100);
+  const geo2 = new PlaneGeometry(100, 25);
 
   for (let i = 0; i < dst.length; i++) {
     const blendDst = dst[i];
@@ -167,21 +164,21 @@ function init() {
     for (let j = 0; j < src.length; j++) {
       const blendSrc = src[j];
 
-      const material = new THREE.MeshBasicMaterial({
+      const material = new MeshBasicMaterial({
         map: currentMaps[currentIndex],
       });
       material.transparent = true;
 
-      material.blending = THREE.CustomBlending;
+      material.blending = CustomBlending;
       material.blendSrc = blendSrc.constant;
       material.blendDst = blendDst.constant;
-      material.blendEquation = THREE.AddEquation;
+      material.blendEquation = AddEquation;
 
       const x = (j - src.length / 2) * 110;
       const z = 0;
       const y = (i - dst.length / 2) * 110 + 50;
 
-      const mesh = new THREE.Mesh(geo1, material);
+      const mesh = new Mesh(geo1, material);
       mesh.position.set(x, -y, z);
       mesh.matrixAutoUpdate = false;
       mesh.updateMatrix();
@@ -198,7 +195,7 @@ function init() {
     const z = 0;
     const y = (0 - dst.length / 2) * 110 + 50;
 
-    const mesh = new THREE.Mesh(
+    const mesh = new Mesh(
       geo2,
       generateLabelMaterial(blendSrc.name, "rgba( 0, 150, 0, 1 )")
     );
@@ -215,7 +212,7 @@ function init() {
     const z = 0;
     const y = (i - dst.length / 2) * 110 + 165;
 
-    const mesh = new THREE.Mesh(
+    const mesh = new Mesh(
       geo2,
       generateLabelMaterial(blendDst.name, "rgba( 150, 0, 0, 1 )")
     );
@@ -227,7 +224,7 @@ function init() {
 
   // RENDERER
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -256,11 +253,11 @@ function init() {
   addBgHandler("bg_5", mapBg5);
   addBgHandler("bg_6", mapBg6);
 
-  addEqHandler("btn_add", THREE.AddEquation);
-  addEqHandler("btn_sub", THREE.SubtractEquation);
-  addEqHandler("btn_rsub", THREE.ReverseSubtractEquation);
-  addEqHandler("btn_min", THREE.MinEquation);
-  addEqHandler("btn_max", THREE.MaxEquation);
+  addEqHandler("btn_add", AddEquation);
+  addEqHandler("btn_sub", SubtractEquation);
+  addEqHandler("btn_rsub", ReverseSubtractEquation);
+  addEqHandler("btn_min", MinEquation);
+  addEqHandler("btn_max", MaxEquation);
 
   addPreHandler("btn_pre", mapsPre);
   addPreHandler("btn_nopre", mapsNoPre);
@@ -345,9 +342,9 @@ function generateLabelMaterial(text, bg) {
   ctx.font = "12pt arial bold";
   ctx.fillText(text, 8, 22);
 
-  const map = new THREE.CanvasTexture(canvas);
+  const map = new CanvasTexture(canvas);
 
-  const material = new THREE.MeshBasicMaterial({ map: map, transparent: true });
+  const material = new MeshBasicMaterial({ map: map, transparent: true });
   return material;
 }
 

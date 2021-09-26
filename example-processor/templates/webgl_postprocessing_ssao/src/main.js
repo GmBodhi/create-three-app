@@ -20,11 +20,11 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     65,
     window.innerWidth / window.innerHeight,
     100,
@@ -32,23 +32,23 @@ function init() {
   );
   camera.position.z = 500;
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xaaaaaa);
+  scene = new Scene();
+  scene.background = new Color(0xaaaaaa);
 
-  scene.add(new THREE.DirectionalLight());
-  scene.add(new THREE.HemisphereLight());
+  scene.add(new DirectionalLight());
+  scene.add(new HemisphereLight());
 
-  group = new THREE.Group();
+  group = new Group();
   scene.add(group);
 
-  const geometry = new THREE.BoxGeometry(10, 10, 10);
+  const geometry = new BoxGeometry(10, 10, 10);
 
   for (let i = 0; i < 100; i++) {
-    const material = new THREE.MeshLambertMaterial({
+    const material = new MeshLambertMaterial({
       color: Math.random() * 0xffffff,
     });
 
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
     mesh.position.x = Math.random() * 400 - 200;
     mesh.position.y = Math.random() * 400 - 200;
     mesh.position.z = Math.random() * 400 - 200;

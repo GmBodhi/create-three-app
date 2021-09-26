@@ -14,8 +14,8 @@ let highlightBox;
 
 const pickingData = [];
 
-const pointer = new THREE.Vector2();
-const offset = new THREE.Vector3(10, 10, 10);
+const pointer = new Vector2();
+const offset = new Vector3(10, 10, 10);
 
 init();
 animate();
@@ -23,7 +23,7 @@ animate();
 function init() {
   container = document.getElementById("container");
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -31,20 +31,20 @@ function init() {
   );
   camera.position.z = 1000;
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
+  scene = new Scene();
+  scene.background = new Color(0xffffff);
 
-  pickingScene = new THREE.Scene();
-  pickingTexture = new THREE.WebGLRenderTarget(1, 1);
+  pickingScene = new Scene();
+  pickingTexture = new WebGLRenderTarget(1, 1);
 
-  scene.add(new THREE.AmbientLight(0x555555));
+  scene.add(new AmbientLight(0x555555));
 
-  const light = new THREE.SpotLight(0xffffff, 1.5);
+  const light = new SpotLight(0xffffff, 1.5);
   light.position.set(0, 500, 2000);
   scene.add(light);
 
-  const pickingMaterial = new THREE.MeshBasicMaterial({ vertexColors: true });
-  const defaultMaterial = new THREE.MeshPhongMaterial({
+  const pickingMaterial = new MeshBasicMaterial({ vertexColors: true });
+  const defaultMaterial = new MeshPhongMaterial({
     color: 0xffffff,
     flatShading: true,
     vertexColors: true,
@@ -59,30 +59,30 @@ function init() {
       colors.push(color.r, color.g, color.b);
     }
 
-    geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3));
+    geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
   }
 
   const geometriesDrawn = [];
   const geometriesPicking = [];
 
-  const matrix = new THREE.Matrix4();
-  const quaternion = new THREE.Quaternion();
-  const color = new THREE.Color();
+  const matrix = new Matrix4();
+  const quaternion = new Quaternion();
+  const color = new Color();
 
   for (let i = 0; i < 5000; i++) {
-    let geometry = new THREE.BoxGeometry();
+    let geometry = new BoxGeometry();
 
-    const position = new THREE.Vector3();
+    const position = new Vector3();
     position.x = Math.random() * 10000 - 5000;
     position.y = Math.random() * 6000 - 3000;
     position.z = Math.random() * 8000 - 4000;
 
-    const rotation = new THREE.Euler();
+    const rotation = new Euler();
     rotation.x = Math.random() * 2 * Math.PI;
     rotation.y = Math.random() * 2 * Math.PI;
     rotation.z = Math.random() * 2 * Math.PI;
 
-    const scale = new THREE.Vector3();
+    const scale = new Vector3();
     scale.x = Math.random() * 200 + 100;
     scale.y = Math.random() * 200 + 100;
     scale.z = Math.random() * 200 + 100;
@@ -113,26 +113,26 @@ function init() {
     };
   }
 
-  const objects = new THREE.Mesh(
+  const objects = new Mesh(
     BufferGeometryUtils.mergeBufferGeometries(geometriesDrawn),
     defaultMaterial
   );
   scene.add(objects);
 
   pickingScene.add(
-    new THREE.Mesh(
+    new Mesh(
       BufferGeometryUtils.mergeBufferGeometries(geometriesPicking),
       pickingMaterial
     )
   );
 
-  highlightBox = new THREE.Mesh(
-    new THREE.BoxGeometry(),
-    new THREE.MeshLambertMaterial({ color: 0xffff00 })
+  highlightBox = new Mesh(
+    new BoxGeometry(),
+    new MeshLambertMaterial({ color: 0xffff00 })
   );
   scene.add(highlightBox);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

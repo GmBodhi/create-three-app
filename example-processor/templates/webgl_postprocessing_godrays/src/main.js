@@ -18,9 +18,9 @@ let camera, scene, renderer, materialDepth;
 
 let sphereMesh;
 
-const sunPosition = new THREE.Vector3(0, 1000, -1000);
-const clipPosition = new THREE.Vector4();
-const screenSpacePosition = new THREE.Vector3();
+const sunPosition = new Vector3(0, 1000, -1000);
+const clipPosition = new Vector4();
+const screenSpacePosition = new Vector3();
 
 const postprocessing = { enabled: true };
 
@@ -41,7 +41,7 @@ function init() {
 
   //
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -49,13 +49,13 @@ function init() {
   );
   camera.position.z = 200;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   //
 
-  materialDepth = new THREE.MeshDepthMaterial();
+  materialDepth = new MeshDepthMaterial();
 
-  const materialScene = new THREE.MeshBasicMaterial({ color: 0x000000 });
+  const materialScene = new MeshBasicMaterial({ color: 0x000000 });
 
   // tree
 
@@ -69,14 +69,14 @@ function init() {
 
   // sphere
 
-  const geo = new THREE.SphereGeometry(1, 20, 10);
-  sphereMesh = new THREE.Mesh(geo, materialScene);
+  const geo = new SphereGeometry(1, 20, 10);
+  sphereMesh = new Mesh(geo, materialScene);
   sphereMesh.scale.multiplyScalar(20);
   scene.add(sphereMesh);
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setClearColor(0xffffff);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -128,9 +128,9 @@ function onWindowResize() {
 }
 
 function initPostprocessing(renderTargetWidth, renderTargetHeight) {
-  postprocessing.scene = new THREE.Scene();
+  postprocessing.scene = new Scene();
 
-  postprocessing.camera = new THREE.OrthographicCamera(
+  postprocessing.camera = new OrthographicCamera(
     -0.5,
     0.5,
     0.5,
@@ -143,11 +143,11 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
   postprocessing.scene.add(postprocessing.camera);
 
   const pars = {
-    minFilter: THREE.LinearFilter,
-    magFilter: THREE.LinearFilter,
-    format: THREE.RGBFormat,
+    minFilter: LinearFilter,
+    magFilter: LinearFilter,
+    format: RGBFormat,
   };
-  postprocessing.rtTextureColors = new THREE.WebGLRenderTarget(
+  postprocessing.rtTextureColors = new WebGLRenderTarget(
     renderTargetWidth,
     renderTargetHeight,
     pars
@@ -160,12 +160,12 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
   // I would have this quarter size and use it as one of the ping-pong render
   // targets but the aliasing causes some temporal flickering
 
-  postprocessing.rtTextureDepth = new THREE.WebGLRenderTarget(
+  postprocessing.rtTextureDepth = new WebGLRenderTarget(
     renderTargetWidth,
     renderTargetHeight,
     pars
   );
-  postprocessing.rtTextureDepthMask = new THREE.WebGLRenderTarget(
+  postprocessing.rtTextureDepthMask = new WebGLRenderTarget(
     renderTargetWidth,
     renderTargetHeight,
     pars
@@ -177,12 +177,12 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
     renderTargetWidth * godrayRenderTargetResolutionMultiplier;
   const adjustedHeight =
     renderTargetHeight * godrayRenderTargetResolutionMultiplier;
-  postprocessing.rtTextureGodRays1 = new THREE.WebGLRenderTarget(
+  postprocessing.rtTextureGodRays1 = new WebGLRenderTarget(
     adjustedWidth,
     adjustedHeight,
     pars
   );
-  postprocessing.rtTextureGodRays2 = new THREE.WebGLRenderTarget(
+  postprocessing.rtTextureGodRays2 = new WebGLRenderTarget(
     adjustedWidth,
     adjustedHeight,
     pars
@@ -191,40 +191,40 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
   // god-ray shaders
 
   const godraysMaskShader = GodRaysDepthMaskShader;
-  postprocessing.godrayMaskUniforms = THREE.UniformsUtils.clone(
+  postprocessing.godrayMaskUniforms = UniformsUtils.clone(
     godraysMaskShader.uniforms
   );
-  postprocessing.materialGodraysDepthMask = new THREE.ShaderMaterial({
+  postprocessing.materialGodraysDepthMask = new ShaderMaterial({
     uniforms: postprocessing.godrayMaskUniforms,
     vertexShader: godraysMaskShader.vertexShader,
     fragmentShader: godraysMaskShader.fragmentShader,
   });
 
   const godraysGenShader = GodRaysGenerateShader;
-  postprocessing.godrayGenUniforms = THREE.UniformsUtils.clone(
+  postprocessing.godrayGenUniforms = UniformsUtils.clone(
     godraysGenShader.uniforms
   );
-  postprocessing.materialGodraysGenerate = new THREE.ShaderMaterial({
+  postprocessing.materialGodraysGenerate = new ShaderMaterial({
     uniforms: postprocessing.godrayGenUniforms,
     vertexShader: godraysGenShader.vertexShader,
     fragmentShader: godraysGenShader.fragmentShader,
   });
 
   const godraysCombineShader = GodRaysCombineShader;
-  postprocessing.godrayCombineUniforms = THREE.UniformsUtils.clone(
+  postprocessing.godrayCombineUniforms = UniformsUtils.clone(
     godraysCombineShader.uniforms
   );
-  postprocessing.materialGodraysCombine = new THREE.ShaderMaterial({
+  postprocessing.materialGodraysCombine = new ShaderMaterial({
     uniforms: postprocessing.godrayCombineUniforms,
     vertexShader: godraysCombineShader.vertexShader,
     fragmentShader: godraysCombineShader.fragmentShader,
   });
 
   const godraysFakeSunShader = GodRaysFakeSunShader;
-  postprocessing.godraysFakeSunUniforms = THREE.UniformsUtils.clone(
+  postprocessing.godraysFakeSunUniforms = UniformsUtils.clone(
     godraysFakeSunShader.uniforms
   );
-  postprocessing.materialGodraysFakeSun = new THREE.ShaderMaterial({
+  postprocessing.materialGodraysFakeSun = new ShaderMaterial({
     uniforms: postprocessing.godraysFakeSunUniforms,
     vertexShader: godraysFakeSunShader.vertexShader,
     fragmentShader: godraysFakeSunShader.fragmentShader,
@@ -235,8 +235,8 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
 
   postprocessing.godrayCombineUniforms.fGodRayIntensity.value = 0.75;
 
-  postprocessing.quad = new THREE.Mesh(
-    new THREE.PlaneGeometry(1.0, 1.0),
+  postprocessing.quad = new Mesh(
+    new PlaneGeometry(1.0, 1.0),
     postprocessing.materialGodraysGenerate
   );
   postprocessing.quad.position.z = -9900;

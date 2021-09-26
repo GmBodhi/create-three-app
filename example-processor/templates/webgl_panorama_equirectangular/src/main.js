@@ -20,29 +20,29 @@ animate();
 function init() {
   const container = document.getElementById("container");
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     1,
     1100
   );
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  const geometry = new THREE.SphereGeometry(500, 60, 40);
+  const geometry = new SphereGeometry(500, 60, 40);
   // invert the geometry on the x-axis so that all of the faces point inward
   geometry.scale(-1, 1, 1);
 
-  const texture = new THREE.TextureLoader().load(
+  const texture = new TextureLoader().load(
     "textures/2294472375_24a3b8ef46_o.jpg"
   );
-  const material = new THREE.MeshBasicMaterial({ map: texture });
+  const material = new MeshBasicMaterial({ map: texture });
 
-  const mesh = new THREE.Mesh(geometry, material);
+  const mesh = new Mesh(geometry, material);
 
   scene.add(mesh);
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -126,7 +126,7 @@ function onPointerUp() {
 function onDocumentMouseWheel(event) {
   const fov = camera.fov + event.deltaY * 0.05;
 
-  camera.fov = THREE.MathUtils.clamp(fov, 10, 75);
+  camera.fov = MathUtils.clamp(fov, 10, 75);
 
   camera.updateProjectionMatrix();
 }
@@ -142,8 +142,8 @@ function update() {
   }
 
   lat = Math.max(-85, Math.min(85, lat));
-  phi = THREE.MathUtils.degToRad(90 - lat);
-  theta = THREE.MathUtils.degToRad(lon);
+  phi = MathUtils.degToRad(90 - lat);
+  theta = MathUtils.degToRad(lon);
 
   const x = 500 * Math.sin(phi) * Math.cos(theta);
   const y = 500 * Math.cos(phi);

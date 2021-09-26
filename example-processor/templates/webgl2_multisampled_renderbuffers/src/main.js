@@ -22,7 +22,7 @@ function init() {
 
   container = document.getElementById("container");
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     container.offsetWidth / container.offsetHeight,
     1,
@@ -30,31 +30,28 @@ function init() {
   );
   camera.position.z = 500;
 
-  const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
-  scene.fog = new THREE.Fog(0xcccccc, 100, 1500);
+  const scene = new Scene();
+  scene.background = new Color(0xffffff);
+  scene.fog = new Fog(0xcccccc, 100, 1500);
 
-  clock = new THREE.Clock();
+  clock = new Clock();
 
   //
 
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x222222, 1.5);
+  const hemiLight = new HemisphereLight(0xffffff, 0x222222, 1.5);
   hemiLight.position.set(1, 1, 1);
   scene.add(hemiLight);
 
   //
 
-  group = new THREE.Group();
+  group = new Group();
 
-  const geometry = new THREE.SphereGeometry(10, 64, 40);
-  const material = new THREE.MeshLambertMaterial({ color: 0xee0808 });
-  const material2 = new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    wireframe: true,
-  });
+  const geometry = new SphereGeometry(10, 64, 40);
+  const material = new MeshLambertMaterial({ color: 0xee0808 });
+  const material2 = new MeshBasicMaterial({ color: 0xffffff, wireframe: true });
 
   for (let i = 0; i < 10; i++) {
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
     mesh.position.x = Math.random() * 600 - 300;
     mesh.position.y = Math.random() * 600 - 300;
     mesh.position.z = Math.random() * 600 - 300;
@@ -63,7 +60,7 @@ function init() {
     mesh.scale.setScalar(Math.random() * 5 + 5);
     group.add(mesh);
 
-    const mesh2 = new THREE.Mesh(geometry, material2);
+    const mesh2 = new Mesh(geometry, material2);
     mesh2.position.copy(mesh.position);
     mesh2.rotation.copy(mesh.rotation);
     mesh2.scale.copy(mesh.scale);
@@ -74,7 +71,7 @@ function init() {
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(container.offsetWidth, container.offsetHeight);
@@ -83,11 +80,11 @@ function init() {
   //
 
   const parameters = {
-    format: THREE.RGBFormat,
+    format: RGBFormat,
   };
 
-  const size = renderer.getDrawingBufferSize(new THREE.Vector2());
-  const renderTarget = new THREE.WebGLMultisampleRenderTarget(
+  const size = renderer.getDrawingBufferSize(new Vector2());
+  const renderTarget = new WebGLMultisampleRenderTarget(
     size.width,
     size.height,
     parameters

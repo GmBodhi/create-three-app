@@ -5,7 +5,7 @@ import * as THREE from "three";
 let camera, scene, renderer;
 let mapBg;
 
-const textureLoader = new THREE.TextureLoader();
+const textureLoader = new TextureLoader();
 
 init();
 animate();
@@ -13,7 +13,7 @@ animate();
 function init() {
   // CAMERA
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -23,7 +23,7 @@ function init() {
 
   // SCENE
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   // BACKGROUND
 
@@ -41,33 +41,30 @@ function init() {
   ctx.fillStyle = "#777";
   ctx.fillRect(96, 96, 32, 32);
 
-  mapBg = new THREE.CanvasTexture(canvas);
-  mapBg.wrapS = mapBg.wrapT = THREE.RepeatWrapping;
+  mapBg = new CanvasTexture(canvas);
+  mapBg.wrapS = mapBg.wrapT = RepeatWrapping;
   mapBg.repeat.set(128, 64);
 
   /*
 				let mapBg = textureLoader.load( 'textures/disturb.jpg' );
-				mapBg.wrapS = mapBg.wrapT = THREE.RepeatWrapping;
+				mapBg.wrapS = mapBg.wrapT = RepeatWrapping;
 				mapBg.repeat.set( 8, 4 );
 				*/
 
-  const materialBg = new THREE.MeshBasicMaterial({ map: mapBg });
+  const materialBg = new MeshBasicMaterial({ map: mapBg });
 
-  const meshBg = new THREE.Mesh(
-    new THREE.PlaneGeometry(4000, 2000),
-    materialBg
-  );
+  const meshBg = new Mesh(new PlaneGeometry(4000, 2000), materialBg);
   meshBg.position.set(0, 0, -1);
   scene.add(meshBg);
 
   // OBJECTS
 
   const blendings = [
-    { name: "No", constant: THREE.NoBlending },
-    { name: "Normal", constant: THREE.NormalBlending },
-    { name: "Additive", constant: THREE.AdditiveBlending },
-    { name: "Subtractive", constant: THREE.SubtractiveBlending },
-    { name: "Multiply", constant: THREE.MultiplyBlending },
+    { name: "No", constant: NoBlending },
+    { name: "Normal", constant: NormalBlending },
+    { name: "Additive", constant: AdditiveBlending },
+    { name: "Subtractive", constant: SubtractiveBlending },
+    { name: "Multiply", constant: MultiplyBlending },
   ];
 
   const map0 = textureLoader.load("textures/uv_grid_opengl.jpg");
@@ -76,8 +73,8 @@ function init() {
   const map3 = textureLoader.load("textures/lensflare/lensflare0.png");
   const map4 = textureLoader.load("textures/lensflare/lensflare0_alpha.png");
 
-  const geo1 = new THREE.PlaneGeometry(100, 100);
-  const geo2 = new THREE.PlaneGeometry(100, 25);
+  const geo1 = new PlaneGeometry(100, 100);
+  const geo2 = new PlaneGeometry(100, 25);
 
   addImageRow(map0, 300);
   addImageRow(map1, 150);
@@ -89,18 +86,18 @@ function init() {
     for (let i = 0; i < blendings.length; i++) {
       const blending = blendings[i];
 
-      const material = new THREE.MeshBasicMaterial({ map: map });
+      const material = new MeshBasicMaterial({ map: map });
       material.transparent = true;
       material.blending = blending.constant;
 
       const x = (i - blendings.length / 2) * 110;
       const z = 0;
 
-      let mesh = new THREE.Mesh(geo1, material);
+      let mesh = new Mesh(geo1, material);
       mesh.position.set(x, y, z);
       scene.add(mesh);
 
-      mesh = new THREE.Mesh(geo2, generateLabelMaterial(blending.name));
+      mesh = new Mesh(geo2, generateLabelMaterial(blending.name));
       mesh.position.set(x, y - 75, z);
       scene.add(mesh);
     }
@@ -108,7 +105,7 @@ function init() {
 
   // RENDERER
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -143,9 +140,9 @@ function generateLabelMaterial(text) {
   ctx.font = "12pt arial bold";
   ctx.fillText(text, 10, 22);
 
-  const map = new THREE.CanvasTexture(canvas);
+  const map = new CanvasTexture(canvas);
 
-  const material = new THREE.MeshBasicMaterial({ map: map, transparent: true });
+  const material = new MeshBasicMaterial({ map: map, transparent: true });
 
   return material;
 }

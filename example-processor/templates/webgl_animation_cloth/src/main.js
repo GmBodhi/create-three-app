@@ -36,31 +36,31 @@ const ySegs = 10;
 const clothFunction = plane(restDistance * xSegs, restDistance * ySegs);
 
 const GRAVITY = 981 * 1.4;
-const gravity = new THREE.Vector3(0, -GRAVITY, 0).multiplyScalar(MASS);
+const gravity = new Vector3(0, -GRAVITY, 0).multiplyScalar(MASS);
 
 const TIMESTEP = 18 / 1000;
 const TIMESTEP_SQ = TIMESTEP * TIMESTEP;
 
 let pins = [];
 
-const windForce = new THREE.Vector3(0, 0, 0);
+const windForce = new Vector3(0, 0, 0);
 
-const ballPosition = new THREE.Vector3(0, -45, 0);
+const ballPosition = new Vector3(0, -45, 0);
 const ballSize = 60; //40
 
-const tmpForce = new THREE.Vector3();
-const diff = new THREE.Vector3();
+const tmpForce = new Vector3();
+const diff = new Vector3();
 
 class Particle {
   constructor(x, y, z, mass) {
-    this.position = new THREE.Vector3();
-    this.previous = new THREE.Vector3();
-    this.original = new THREE.Vector3();
-    this.a = new THREE.Vector3(0, 0, 0); // acceleration
+    this.position = new Vector3();
+    this.previous = new Vector3();
+    this.original = new Vector3();
+    this.a = new Vector3(0, 0, 0); // acceleration
     this.mass = mass;
     this.invMass = 1 / mass;
-    this.tmp = new THREE.Vector3();
-    this.tmp2 = new THREE.Vector3();
+    this.tmp = new Vector3();
+    this.tmp2 = new Vector3();
 
     // init
 
@@ -212,7 +212,7 @@ function simulate(now) {
 
   if (params.enableWind) {
     let indx;
-    const normal = new THREE.Vector3();
+    const normal = new Vector3();
     const indices = clothGeometry.index;
     const normals = clothGeometry.attributes.normal;
 
@@ -328,13 +328,13 @@ function init() {
 
   // scene
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xcce0ff);
-  scene.fog = new THREE.Fog(0xcce0ff, 500, 10000);
+  scene = new Scene();
+  scene.background = new Color(0xcce0ff);
+  scene.fog = new Fog(0xcce0ff, 500, 10000);
 
   // camera
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     30,
     window.innerWidth / window.innerHeight,
     1,
@@ -344,9 +344,9 @@ function init() {
 
   // lights
 
-  scene.add(new THREE.AmbientLight(0x666666));
+  scene.add(new AmbientLight(0x666666));
 
-  const light = new THREE.DirectionalLight(0xdfebff, 1);
+  const light = new DirectionalLight(0xdfebff, 1);
   light.position.set(50, 200, 100);
   light.position.multiplyScalar(1.3);
 
@@ -368,37 +368,33 @@ function init() {
 
   // cloth material
 
-  const loader = new THREE.TextureLoader();
+  const loader = new TextureLoader();
   const clothTexture = loader.load("textures/patterns/circuit_pattern.png");
   clothTexture.anisotropy = 16;
 
-  const clothMaterial = new THREE.MeshLambertMaterial({
+  const clothMaterial = new MeshLambertMaterial({
     alphaMap: clothTexture,
-    side: THREE.DoubleSide,
+    side: DoubleSide,
     alphaTest: 0.5,
   });
 
   // cloth geometry
 
-  clothGeometry = new THREE.ParametricBufferGeometry(
-    clothFunction,
-    cloth.w,
-    cloth.h
-  );
+  clothGeometry = new ParametricBufferGeometry(clothFunction, cloth.w, cloth.h);
 
   // cloth mesh
 
-  object = new THREE.Mesh(clothGeometry, clothMaterial);
+  object = new Mesh(clothGeometry, clothMaterial);
   object.position.set(0, 0, 0);
   object.castShadow = true;
   scene.add(object);
 
   // sphere
 
-  const ballGeo = new THREE.SphereGeometry(ballSize, 32, 16);
-  const ballMaterial = new THREE.MeshLambertMaterial();
+  const ballGeo = new SphereGeometry(ballSize, 32, 16);
+  const ballMaterial = new MeshLambertMaterial();
 
-  sphere = new THREE.Mesh(ballGeo, ballMaterial);
+  sphere = new Mesh(ballGeo, ballMaterial);
   sphere.castShadow = true;
   sphere.receiveShadow = true;
   sphere.visible = false;
@@ -407,17 +403,14 @@ function init() {
   // ground
 
   const groundTexture = loader.load("textures/terrain/grasslight-big.jpg");
-  groundTexture.wrapS = groundTexture.wrapT = THREE.RepeatWrapping;
+  groundTexture.wrapS = groundTexture.wrapT = RepeatWrapping;
   groundTexture.repeat.set(25, 25);
   groundTexture.anisotropy = 16;
-  groundTexture.encoding = THREE.sRGBEncoding;
+  groundTexture.encoding = sRGBEncoding;
 
-  const groundMaterial = new THREE.MeshLambertMaterial({ map: groundTexture });
+  const groundMaterial = new MeshLambertMaterial({ map: groundTexture });
 
-  let mesh = new THREE.Mesh(
-    new THREE.PlaneGeometry(20000, 20000),
-    groundMaterial
-  );
+  let mesh = new Mesh(new PlaneGeometry(20000, 20000), groundMaterial);
   mesh.position.y = -250;
   mesh.rotation.x = -Math.PI / 2;
   mesh.receiveShadow = true;
@@ -425,39 +418,39 @@ function init() {
 
   // poles
 
-  const poleGeo = new THREE.BoxGeometry(5, 375, 5);
-  const poleMat = new THREE.MeshLambertMaterial();
+  const poleGeo = new BoxGeometry(5, 375, 5);
+  const poleMat = new MeshLambertMaterial();
 
-  mesh = new THREE.Mesh(poleGeo, poleMat);
+  mesh = new Mesh(poleGeo, poleMat);
   mesh.position.x = -125;
   mesh.position.y = -62;
   mesh.receiveShadow = true;
   mesh.castShadow = true;
   scene.add(mesh);
 
-  mesh = new THREE.Mesh(poleGeo, poleMat);
+  mesh = new Mesh(poleGeo, poleMat);
   mesh.position.x = 125;
   mesh.position.y = -62;
   mesh.receiveShadow = true;
   mesh.castShadow = true;
   scene.add(mesh);
 
-  mesh = new THREE.Mesh(new THREE.BoxGeometry(255, 5, 5), poleMat);
+  mesh = new Mesh(new BoxGeometry(255, 5, 5), poleMat);
   mesh.position.y = -250 + 750 / 2;
   mesh.position.x = 0;
   mesh.receiveShadow = true;
   mesh.castShadow = true;
   scene.add(mesh);
 
-  const gg = new THREE.BoxGeometry(10, 10, 10);
-  mesh = new THREE.Mesh(gg, poleMat);
+  const gg = new BoxGeometry(10, 10, 10);
+  mesh = new Mesh(gg, poleMat);
   mesh.position.y = -250;
   mesh.position.x = 125;
   mesh.receiveShadow = true;
   mesh.castShadow = true;
   scene.add(mesh);
 
-  mesh = new THREE.Mesh(gg, poleMat);
+  mesh = new Mesh(gg, poleMat);
   mesh.position.y = -250;
   mesh.position.x = -125;
   mesh.receiveShadow = true;
@@ -466,13 +459,13 @@ function init() {
 
   // renderer
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   container.appendChild(renderer.domElement);
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputEncoding = sRGBEncoding;
 
   renderer.shadowMap.enabled = true;
 

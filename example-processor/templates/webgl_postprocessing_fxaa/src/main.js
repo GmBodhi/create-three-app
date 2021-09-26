@@ -18,7 +18,7 @@ animate();
 function init() {
   container = document.getElementById("container");
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     container.offsetWidth / container.offsetHeight,
     1,
@@ -26,34 +26,34 @@ function init() {
   );
   camera.position.z = 500;
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
-  scene.fog = new THREE.Fog(0xcccccc, 100, 1500);
+  scene = new Scene();
+  scene.background = new Color(0xffffff);
+  scene.fog = new Fog(0xcccccc, 100, 1500);
 
-  clock = new THREE.Clock();
+  clock = new Clock();
 
   //
 
-  const hemiLight = new THREE.HemisphereLight(0xffffff, 0x444444);
+  const hemiLight = new HemisphereLight(0xffffff, 0x444444);
   hemiLight.position.set(0, 1000, 0);
   scene.add(hemiLight);
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
+  const dirLight = new DirectionalLight(0xffffff, 0.8);
   dirLight.position.set(-3000, 1000, -1000);
   scene.add(dirLight);
 
   //
 
-  group = new THREE.Group();
+  group = new Group();
 
-  const geometry = new THREE.TetrahedronGeometry(10);
-  const material = new THREE.MeshStandardMaterial({
+  const geometry = new TetrahedronGeometry(10);
+  const material = new MeshStandardMaterial({
     color: 0xee0808,
     flatShading: true,
   });
 
   for (let i = 0; i < 100; i++) {
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
 
     mesh.position.x = Math.random() * 500 - 250;
     mesh.position.y = Math.random() * 500 - 250;
@@ -72,7 +72,7 @@ function init() {
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(container.offsetWidth, container.offsetHeight);

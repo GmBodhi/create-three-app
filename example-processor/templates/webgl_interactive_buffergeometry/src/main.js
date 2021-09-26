@@ -20,7 +20,7 @@ function init() {
 
   //
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     27,
     window.innerWidth / window.innerHeight,
     1,
@@ -28,19 +28,19 @@ function init() {
   );
   camera.position.z = 2750;
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x050505);
-  scene.fog = new THREE.Fog(0x050505, 2000, 3500);
+  scene = new Scene();
+  scene.background = new Color(0x050505);
+  scene.fog = new Fog(0x050505, 2000, 3500);
 
   //
 
-  scene.add(new THREE.AmbientLight(0x444444));
+  scene.add(new AmbientLight(0x444444));
 
-  const light1 = new THREE.DirectionalLight(0xffffff, 0.5);
+  const light1 = new DirectionalLight(0xffffff, 0.5);
   light1.position.set(1, 1, 1);
   scene.add(light1);
 
-  const light2 = new THREE.DirectionalLight(0xffffff, 1.5);
+  const light2 = new DirectionalLight(0xffffff, 1.5);
   light2.position.set(0, -1, 0);
   scene.add(light2);
 
@@ -48,25 +48,25 @@ function init() {
 
   const triangles = 5000;
 
-  let geometry = new THREE.BufferGeometry();
+  let geometry = new BufferGeometry();
 
   const positions = new Float32Array(triangles * 3 * 3);
   const normals = new Float32Array(triangles * 3 * 3);
   const colors = new Float32Array(triangles * 3 * 3);
 
-  const color = new THREE.Color();
+  const color = new Color();
 
   const n = 800,
     n2 = n / 2; // triangles spread in the cube
   const d = 120,
     d2 = d / 2; // individual triangle size
 
-  const pA = new THREE.Vector3();
-  const pB = new THREE.Vector3();
-  const pC = new THREE.Vector3();
+  const pA = new Vector3();
+  const pB = new Vector3();
+  const pC = new Vector3();
 
-  const cb = new THREE.Vector3();
-  const ab = new THREE.Vector3();
+  const cb = new Vector3();
+  const ab = new Vector3();
 
   for (let i = 0; i < positions.length; i += 9) {
     // positions
@@ -148,46 +148,43 @@ function init() {
     colors[i + 8] = color.b;
   }
 
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("normal", new THREE.BufferAttribute(normals, 3));
-  geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute("position", new BufferAttribute(positions, 3));
+  geometry.setAttribute("normal", new BufferAttribute(normals, 3));
+  geometry.setAttribute("color", new BufferAttribute(colors, 3));
 
   geometry.computeBoundingSphere();
 
-  let material = new THREE.MeshPhongMaterial({
+  let material = new MeshPhongMaterial({
     color: 0xaaaaaa,
     specular: 0xffffff,
     shininess: 250,
-    side: THREE.DoubleSide,
+    side: DoubleSide,
     vertexColors: true,
   });
 
-  mesh = new THREE.Mesh(geometry, material);
+  mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   //
 
-  raycaster = new THREE.Raycaster();
+  raycaster = new Raycaster();
 
-  pointer = new THREE.Vector2();
+  pointer = new Vector2();
 
-  geometry = new THREE.BufferGeometry();
+  geometry = new BufferGeometry();
   geometry.setAttribute(
     "position",
-    new THREE.BufferAttribute(new Float32Array(4 * 3), 3)
+    new BufferAttribute(new Float32Array(4 * 3), 3)
   );
 
-  material = new THREE.LineBasicMaterial({
-    color: 0xffffff,
-    transparent: true,
-  });
+  material = new LineBasicMaterial({ color: 0xffffff, transparent: true });
 
-  line = new THREE.Line(geometry, material);
+  line = new Line(geometry, material);
   scene.add(line);
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

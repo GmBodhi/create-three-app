@@ -13,7 +13,7 @@ let mesh, texture;
 
 const worldWidth = 256,
   worldDepth = 256;
-const clock = new THREE.Clock();
+const clock = new Clock();
 
 init();
 animate();
@@ -21,23 +21,23 @@ animate();
 function init() {
   container = document.getElementById("container");
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,
     1,
     10000
   );
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xefd1b5);
-  scene.fog = new THREE.FogExp2(0xefd1b5, 0.0025);
+  scene = new Scene();
+  scene.background = new Color(0xefd1b5);
+  scene.fog = new FogExp2(0xefd1b5, 0.0025);
 
   const data = generateHeight(worldWidth, worldDepth);
 
   camera.position.set(100, 800, -800);
   camera.lookAt(-100, 810, -800);
 
-  const geometry = new THREE.PlaneGeometry(
+  const geometry = new PlaneGeometry(
     7500,
     7500,
     worldWidth - 1,
@@ -51,19 +51,14 @@ function init() {
     vertices[j + 1] = data[i] * 10;
   }
 
-  texture = new THREE.CanvasTexture(
-    generateTexture(data, worldWidth, worldDepth)
-  );
-  texture.wrapS = THREE.ClampToEdgeWrapping;
-  texture.wrapT = THREE.ClampToEdgeWrapping;
+  texture = new CanvasTexture(generateTexture(data, worldWidth, worldDepth));
+  texture.wrapS = ClampToEdgeWrapping;
+  texture.wrapT = ClampToEdgeWrapping;
 
-  mesh = new THREE.Mesh(
-    geometry,
-    new THREE.MeshBasicMaterial({ map: texture })
-  );
+  mesh = new Mesh(geometry, new MeshBasicMaterial({ map: texture }));
   scene.add(mesh);
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -121,9 +116,9 @@ function generateHeight(width, height) {
 function generateTexture(data, width, height) {
   let context, image, imageData, shade;
 
-  const vector3 = new THREE.Vector3(0, 0, 0);
+  const vector3 = new Vector3(0, 0, 0);
 
-  const sun = new THREE.Vector3(1, 1, 1);
+  const sun = new Vector3(1, 1, 1);
   sun.normalize();
 
   const canvas = document.createElement("canvas");

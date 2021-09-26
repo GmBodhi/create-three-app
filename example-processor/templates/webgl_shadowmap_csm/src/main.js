@@ -44,29 +44,29 @@ function updateOrthoCamera() {
 }
 
 function init() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color("#454e61");
-  camera = new THREE.PerspectiveCamera(
+  scene = new Scene();
+  scene.background = new Color("#454e61");
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     0.1,
     5000
   );
-  orthoCamera = new THREE.OrthographicCamera();
+  orthoCamera = new OrthographicCamera();
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFSoftShadowMap;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.maxPolarAngle = Math.PI / 2;
   camera.position.set(60, 60, 0);
-  controls.target = new THREE.Vector3(-100, 10, 0);
+  controls.target = new Vector3(-100, 10, 0);
   controls.update();
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+  const ambientLight = new AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
 
   csm = new CSM({
@@ -75,7 +75,7 @@ function init() {
     mode: params.mode,
     parent: scene,
     shadowMapSize: 1024,
-    lightDirection: new THREE.Vector3(
+    lightDirection: new Vector3(
       params.lightX,
       params.lightY,
       params.lightZ
@@ -87,35 +87,32 @@ function init() {
   csmHelper.visible = false;
   scene.add(csmHelper);
 
-  const floorMaterial = new THREE.MeshPhongMaterial({ color: "#252a34" });
+  const floorMaterial = new MeshPhongMaterial({ color: "#252a34" });
   csm.setupMaterial(floorMaterial);
 
-  const floor = new THREE.Mesh(
-    new THREE.PlaneGeometry(10000, 10000, 8, 8),
-    floorMaterial
-  );
+  const floor = new Mesh(new PlaneGeometry(10000, 10000, 8, 8), floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.castShadow = true;
   floor.receiveShadow = true;
   scene.add(floor);
 
-  const material1 = new THREE.MeshPhongMaterial({ color: "#08d9d6" });
+  const material1 = new MeshPhongMaterial({ color: "#08d9d6" });
   csm.setupMaterial(material1);
 
-  const material2 = new THREE.MeshPhongMaterial({ color: "#ff2e63" });
+  const material2 = new MeshPhongMaterial({ color: "#ff2e63" });
   csm.setupMaterial(material2);
 
-  const geometry = new THREE.BoxGeometry(10, 10, 10);
+  const geometry = new BoxGeometry(10, 10, 10);
 
   for (let i = 0; i < 40; i++) {
-    const cube1 = new THREE.Mesh(geometry, i % 2 === 0 ? material1 : material2);
+    const cube1 = new Mesh(geometry, i % 2 === 0 ? material1 : material2);
     cube1.castShadow = true;
     cube1.receiveShadow = true;
     scene.add(cube1);
     cube1.position.set(-i * 25, 20, 30);
     cube1.scale.y = Math.random() * 2 + 6;
 
-    const cube2 = new THREE.Mesh(geometry, i % 2 === 0 ? material2 : material1);
+    const cube2 = new Mesh(geometry, i % 2 === 0 ? material2 : material1);
     cube2.castShadow = true;
     cube2.receiveShadow = true;
     scene.add(cube2);

@@ -13,25 +13,25 @@ let postScene, postCamera, postMaterial;
 let supportsExtension = true;
 
 const params = {
-  format: THREE.DepthFormat,
-  type: THREE.UnsignedShortType,
+  format: DepthFormat,
+  type: UnsignedShortType,
 };
 
 const formats = {
-  DepthFormat: THREE.DepthFormat,
-  DepthStencilFormat: THREE.DepthStencilFormat,
+  DepthFormat: DepthFormat,
+  DepthStencilFormat: DepthStencilFormat,
 };
 const types = {
-  UnsignedShortType: THREE.UnsignedShortType,
-  UnsignedIntType: THREE.UnsignedIntType,
-  UnsignedInt248Type: THREE.UnsignedInt248Type,
+  UnsignedShortType: UnsignedShortType,
+  UnsignedIntType: UnsignedIntType,
+  UnsignedInt248Type: UnsignedInt248Type,
 };
 
 init();
 animate();
 
 function init() {
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
 
   if (
     renderer.capabilities.isWebGL2 === false &&
@@ -51,7 +51,7 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     0.01,
@@ -88,22 +88,22 @@ function setupRenderTarget() {
   const format = parseFloat(params.format);
   const type = parseFloat(params.type);
 
-  target = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
-  target.texture.format = THREE.RGBFormat;
-  target.texture.minFilter = THREE.NearestFilter;
-  target.texture.magFilter = THREE.NearestFilter;
+  target = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
+  target.texture.format = RGBFormat;
+  target.texture.minFilter = NearestFilter;
+  target.texture.magFilter = NearestFilter;
   target.texture.generateMipmaps = false;
-  target.stencilBuffer = format === THREE.DepthStencilFormat ? true : false;
+  target.stencilBuffer = format === DepthStencilFormat ? true : false;
   target.depthBuffer = true;
-  target.depthTexture = new THREE.DepthTexture();
+  target.depthTexture = new DepthTexture();
   target.depthTexture.format = format;
   target.depthTexture.type = type;
 }
 
 function setupPost() {
   // Setup post processing stage
-  postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
-  postMaterial = new THREE.ShaderMaterial({
+  postCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  postMaterial = new ShaderMaterial({
     vertexShader: document.querySelector("#post-vert").textContent.trim(),
     fragmentShader: document.querySelector("#post-frag").textContent.trim(),
     uniforms: {
@@ -113,17 +113,17 @@ function setupPost() {
       tDepth: { value: null },
     },
   });
-  const postPlane = new THREE.PlaneGeometry(2, 2);
-  const postQuad = new THREE.Mesh(postPlane, postMaterial);
-  postScene = new THREE.Scene();
+  const postPlane = new PlaneGeometry(2, 2);
+  const postQuad = new Mesh(postPlane, postMaterial);
+  postScene = new Scene();
   postScene.add(postQuad);
 }
 
 function setupScene() {
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  const geometry = new THREE.TorusKnotGeometry(1, 0.3, 128, 64);
-  const material = new THREE.MeshBasicMaterial({ color: "blue" });
+  const geometry = new TorusKnotGeometry(1, 0.3, 128, 64);
+  const material = new MeshBasicMaterial({ color: "blue" });
 
   const count = 50;
   const scale = 5;
@@ -133,7 +133,7 @@ function setupScene() {
     const z = Math.random() * 2.0 - 1.0;
     const zScale = Math.sqrt(1.0 - z * z) * scale;
 
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
     mesh.position.set(Math.cos(r) * zScale, Math.sin(r) * zScale, z * scale);
     mesh.rotation.set(Math.random(), Math.random(), Math.random());
     scene.add(mesh);

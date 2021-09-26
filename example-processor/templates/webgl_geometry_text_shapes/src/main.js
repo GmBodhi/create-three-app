@@ -10,7 +10,7 @@ init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -18,30 +18,30 @@ function init() {
   );
   camera.position.set(0, -400, 600);
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
-  const loader = new THREE.FontLoader();
+  const loader = new FontLoader();
   loader.load("fonts/helvetiker_regular.typeface.json", function (font) {
     const color = 0x006699;
 
-    const matDark = new THREE.LineBasicMaterial({
+    const matDark = new LineBasicMaterial({
       color: color,
-      side: THREE.DoubleSide,
+      side: DoubleSide,
     });
 
-    const matLite = new THREE.MeshBasicMaterial({
+    const matLite = new MeshBasicMaterial({
       color: color,
       transparent: true,
       opacity: 0.4,
-      side: THREE.DoubleSide,
+      side: DoubleSide,
     });
 
     const message = "   Three.js\nSimple text.";
 
     const shapes = font.generateShapes(message, 100);
 
-    const geometry = new THREE.ShapeGeometry(shapes);
+    const geometry = new ShapeGeometry(shapes);
 
     geometry.computeBoundingBox();
 
@@ -52,7 +52,7 @@ function init() {
 
     // make shape ( N.B. edge view not visible )
 
-    const text = new THREE.Mesh(geometry, matLite);
+    const text = new Mesh(geometry, matLite);
     text.position.z = -150;
     scene.add(text);
 
@@ -73,24 +73,24 @@ function init() {
 
     shapes.push.apply(shapes, holeShapes);
 
-    const lineText = new THREE.Object3D();
+    const lineText = new Object3D();
 
     for (let i = 0; i < shapes.length; i++) {
       const shape = shapes[i];
 
       const points = shape.getPoints();
-      const geometry = new THREE.BufferGeometry().setFromPoints(points);
+      const geometry = new BufferGeometry().setFromPoints(points);
 
       geometry.translate(xMid, 0, 0);
 
-      const lineMesh = new THREE.Line(geometry, matDark);
+      const lineMesh = new Line(geometry, matDark);
       lineText.add(lineMesh);
     }
 
     scene.add(lineText);
   }); //end load function
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

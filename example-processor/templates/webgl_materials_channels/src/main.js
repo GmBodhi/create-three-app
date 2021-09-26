@@ -19,9 +19,9 @@ const params = {
 };
 
 const sides = {
-  front: THREE.FrontSide,
-  back: THREE.BackSide,
-  double: THREE.DoubleSide,
+  front: FrontSide,
+  back: BackSide,
+  double: DoubleSide,
 };
 
 let cameraOrtho, cameraPerspective;
@@ -57,22 +57,22 @@ function init() {
   const container = document.createElement("div");
   document.body.appendChild(container);
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
   //
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   const aspect = window.innerWidth / window.innerHeight;
-  cameraPerspective = new THREE.PerspectiveCamera(45, aspect, 500, 3000);
+  cameraPerspective = new PerspectiveCamera(45, aspect, 500, 3000);
   cameraPerspective.position.z = 1500;
   scene.add(cameraPerspective);
 
   const height = 500;
-  cameraOrtho = new THREE.OrthographicCamera(
+  cameraOrtho = new OrthographicCamera(
     -height * aspect,
     height * aspect,
     height,
@@ -102,24 +102,24 @@ function init() {
 
   // lights
 
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.1);
+  const ambientLight = new AmbientLight(0xffffff, 0.1);
   scene.add(ambientLight);
 
-  const pointLight = new THREE.PointLight(0xff0000, 0.5);
+  const pointLight = new PointLight(0xff0000, 0.5);
   pointLight.position.z = 2500;
   scene.add(pointLight);
 
-  const pointLight2 = new THREE.PointLight(0xff6666, 1);
+  const pointLight2 = new PointLight(0xff6666, 1);
   camera.add(pointLight2);
 
-  const pointLight3 = new THREE.PointLight(0x0000ff, 0.5);
+  const pointLight3 = new PointLight(0x0000ff, 0.5);
   pointLight3.position.x = -1000;
   pointLight3.position.z = 1000;
   scene.add(pointLight3);
 
   // textures
 
-  const textureLoader = new THREE.TextureLoader();
+  const textureLoader = new TextureLoader();
   const normalMap = textureLoader.load("models/obj/ninja/normal.png");
   const aoMap = textureLoader.load("models/obj/ninja/ao.jpg");
   const displacementMap = textureLoader.load(
@@ -128,7 +128,7 @@ function init() {
 
   // material
 
-  materialStandard = new THREE.MeshStandardMaterial({
+  materialStandard = new MeshStandardMaterial({
     color: 0xffffff,
 
     metalness: 0.5,
@@ -141,44 +141,44 @@ function init() {
     aoMap: aoMap,
 
     normalMap: normalMap,
-    normalScale: new THREE.Vector2(1, -1),
+    normalScale: new Vector2(1, -1),
 
     //flatShading: true,
 
-    side: THREE.DoubleSide,
+    side: DoubleSide,
   });
 
-  materialDepthBasic = new THREE.MeshDepthMaterial({
-    depthPacking: THREE.BasicDepthPacking,
+  materialDepthBasic = new MeshDepthMaterial({
+    depthPacking: BasicDepthPacking,
 
     displacementMap: displacementMap,
     displacementScale: SCALE,
     displacementBias: BIAS,
 
-    side: THREE.DoubleSide,
+    side: DoubleSide,
   });
 
-  materialDepthRGBA = new THREE.MeshDepthMaterial({
-    depthPacking: THREE.RGBADepthPacking,
+  materialDepthRGBA = new MeshDepthMaterial({
+    depthPacking: RGBADepthPacking,
 
     displacementMap: displacementMap,
     displacementScale: SCALE,
     displacementBias: BIAS,
 
-    side: THREE.DoubleSide,
+    side: DoubleSide,
   });
 
-  materialNormal = new THREE.MeshNormalMaterial({
+  materialNormal = new MeshNormalMaterial({
     displacementMap: displacementMap,
     displacementScale: SCALE,
     displacementBias: BIAS,
 
     normalMap: normalMap,
-    normalScale: new THREE.Vector2(1, -1),
+    normalScale: new Vector2(1, -1),
 
     //flatShading: true,
 
-    side: THREE.DoubleSide,
+    side: DoubleSide,
   });
 
   //
@@ -189,7 +189,7 @@ function init() {
     geometry.attributes.uv2 = geometry.attributes.uv;
     geometry.center();
 
-    mesh = new THREE.Mesh(geometry, materialNormal);
+    mesh = new Mesh(geometry, materialNormal);
     mesh.scale.multiplyScalar(25);
     scene.add(mesh);
   });
@@ -253,13 +253,13 @@ function render() {
     if (sides[params.side] !== material.side) {
       switch (params.side) {
         case "front":
-          material.side = THREE.FrontSide;
+          material.side = FrontSide;
           break;
         case "back":
-          material.side = THREE.BackSide;
+          material.side = BackSide;
           break;
         case "double":
-          material.side = THREE.DoubleSide;
+          material.side = DoubleSide;
           break;
       }
 

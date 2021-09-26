@@ -29,17 +29,17 @@ function init() {
   stats = new Stats();
   container.appendChild(stats.dom);
 
-  clock = new THREE.Clock();
+  clock = new Clock();
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = THREE.ReinhardToneMapping;
+  renderer.toneMapping = ReinhardToneMapping;
   container.appendChild(renderer.domElement);
 
-  const scene = new THREE.Scene();
+  const scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     40,
     window.innerWidth / window.innerHeight,
     1,
@@ -53,15 +53,15 @@ function init() {
   controls.minDistance = 1;
   controls.maxDistance = 10;
 
-  scene.add(new THREE.AmbientLight(0x404040));
+  scene.add(new AmbientLight(0x404040));
 
-  const pointLight = new THREE.PointLight(0xffffff, 1);
+  const pointLight = new PointLight(0xffffff, 1);
   camera.add(pointLight);
 
   const renderScene = new RenderPass(scene, camera);
 
   const bloomPass = new UnrealBloomPass(
-    new THREE.Vector2(window.innerWidth, window.innerHeight),
+    new Vector2(window.innerWidth, window.innerHeight),
     1.5,
     0.4,
     0.85
@@ -79,7 +79,7 @@ function init() {
 
     scene.add(model);
 
-    mixer = new THREE.AnimationMixer(model);
+    mixer = new AnimationMixer(model);
     const clip = gltf.animations[0];
     mixer.clipAction(clip.optimize()).play();
 

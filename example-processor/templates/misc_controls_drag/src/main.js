@@ -11,8 +11,8 @@ let enableSelection = false;
 
 const objects = [];
 
-const mouse = new THREE.Vector2(),
-  raycaster = new THREE.Raycaster();
+const mouse = new Vector2(),
+  raycaster = new Raycaster();
 
 init();
 
@@ -20,7 +20,7 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -28,12 +28,12 @@ function init() {
   );
   camera.position.z = 1000;
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
-  scene.add(new THREE.AmbientLight(0x505050));
+  scene.add(new AmbientLight(0x505050));
 
-  const light = new THREE.SpotLight(0xffffff, 1.5);
+  const light = new SpotLight(0xffffff, 1.5);
   light.position.set(0, 500, 2000);
   light.angle = Math.PI / 9;
 
@@ -45,15 +45,15 @@ function init() {
 
   scene.add(light);
 
-  group = new THREE.Group();
+  group = new Group();
   scene.add(group);
 
-  const geometry = new THREE.BoxGeometry(40, 40, 40);
+  const geometry = new BoxGeometry(40, 40, 40);
 
   for (let i = 0; i < 200; i++) {
-    const object = new THREE.Mesh(
+    const object = new Mesh(
       geometry,
-      new THREE.MeshLambertMaterial({ color: Math.random() * 0xffffff })
+      new MeshLambertMaterial({ color: Math.random() * 0xffffff })
     );
 
     object.position.x = Math.random() * 1000 - 500;
@@ -76,12 +76,12 @@ function init() {
     objects.push(object);
   }
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = THREE.PCFShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
 
   container.appendChild(renderer.domElement);
 

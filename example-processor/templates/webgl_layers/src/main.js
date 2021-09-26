@@ -18,7 +18,7 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -28,10 +28,10 @@ function init() {
   camera.layers.enable(1);
   camera.layers.enable(2);
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
-  const light = new THREE.PointLight(0xffffff, 1);
+  const light = new PointLight(0xffffff, 1);
   light.layers.enable(0);
   light.layers.enable(1);
   light.layers.enable(2);
@@ -40,14 +40,14 @@ function init() {
   camera.add(light);
 
   const colors = [0xff0000, 0x00ff00, 0x0000ff];
-  const geometry = new THREE.BoxGeometry(20, 20, 20);
+  const geometry = new BoxGeometry(20, 20, 20);
 
   for (let i = 0; i < 300; i++) {
     const layer = i % 3;
 
-    const object = new THREE.Mesh(
+    const object = new Mesh(
       geometry,
-      new THREE.MeshLambertMaterial({ color: colors[layer] })
+      new MeshLambertMaterial({ color: colors[layer] })
     );
 
     object.position.x = Math.random() * 800 - 400;
@@ -67,7 +67,7 @@ function init() {
     scene.add(object);
   }
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -128,9 +128,9 @@ function animate() {
 function render() {
   theta += 0.1;
 
-  camera.position.x = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.y = radius * Math.sin(THREE.MathUtils.degToRad(theta));
-  camera.position.z = radius * Math.cos(THREE.MathUtils.degToRad(theta));
+  camera.position.x = radius * Math.sin(MathUtils.degToRad(theta));
+  camera.position.y = radius * Math.sin(MathUtils.degToRad(theta));
+  camera.position.z = radius * Math.cos(MathUtils.degToRad(theta));
   camera.lookAt(scene.position);
 
   renderer.render(scene, camera);

@@ -4,7 +4,7 @@ import * as THREE from "three";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-class GIMesh extends THREE.Mesh {
+class GIMesh extends Mesh {
   copy(source) {
     super.copy(source);
 
@@ -20,19 +20,19 @@ const SimpleGI = function (renderer, scene) {
   const SIZE = 32,
     SIZE2 = SIZE * SIZE;
 
-  const camera = new THREE.PerspectiveCamera(90, 1, 0.01, 100);
+  const camera = new PerspectiveCamera(90, 1, 0.01, 100);
 
   scene.updateMatrixWorld(true);
 
   let clone = scene.clone();
   clone.autoUpdate = false;
 
-  const rt = new THREE.WebGLRenderTarget(SIZE, SIZE);
+  const rt = new WebGLRenderTarget(SIZE, SIZE);
 
-  const normalMatrix = new THREE.Matrix3();
+  const normalMatrix = new Matrix3();
 
-  const position = new THREE.Vector3();
-  const normal = new THREE.Vector3();
+  const position = new Vector3();
+  const normal = new Vector3();
 
   let bounces = 0;
   let currentVertex = 0;
@@ -54,7 +54,7 @@ const SimpleGI = function (renderer, scene) {
       const colors = new Float32Array(positions.length);
       geometry.setAttribute(
         "color",
-        new THREE.BufferAttribute(colors, 3).setUsage(THREE.DynamicDrawUsage)
+        new BufferAttribute(colors, 3).setUsage(DynamicDrawUsage)
       );
     }
 
@@ -125,7 +125,7 @@ init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -133,12 +133,12 @@ function init() {
   );
   camera.position.z = 4;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   // torus knot
 
-  const torusGeometry = new THREE.TorusKnotGeometry(0.75, 0.3, 128, 32, 1);
-  const material = new THREE.MeshBasicMaterial({ vertexColors: true });
+  const torusGeometry = new TorusKnotGeometry(0.75, 0.3, 128, 32, 1);
+  const material = new MeshBasicMaterial({ vertexColors: true });
 
   const torusKnot = new GIMesh(torusGeometry, material);
   scene.add(torusKnot);
@@ -149,21 +149,18 @@ function init() {
 
   for (let i = 0; i < 8; i++) {
     materials.push(
-      new THREE.MeshBasicMaterial({
-        color: Math.random() * 0xffffff,
-        side: THREE.BackSide,
-      })
+      new MeshBasicMaterial({ color: Math.random() * 0xffffff, side: BackSide })
     );
   }
 
-  const boxGeometry = new THREE.BoxGeometry(3, 3, 3);
+  const boxGeometry = new BoxGeometry(3, 3, 3);
 
-  const box = new THREE.Mesh(boxGeometry, materials);
+  const box = new Mesh(boxGeometry, materials);
   scene.add(box);
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

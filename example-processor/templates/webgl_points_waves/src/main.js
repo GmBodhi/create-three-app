@@ -27,7 +27,7 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     1,
@@ -35,7 +35,7 @@ function init() {
   );
   camera.position.z = 1000;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   //
 
@@ -60,13 +60,13 @@ function init() {
     }
   }
 
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("scale", new THREE.BufferAttribute(scales, 1));
+  const geometry = new BufferGeometry();
+  geometry.setAttribute("position", new BufferAttribute(positions, 3));
+  geometry.setAttribute("scale", new BufferAttribute(scales, 1));
 
-  const material = new THREE.ShaderMaterial({
+  const material = new ShaderMaterial({
     uniforms: {
-      color: { value: new THREE.Color(0xffffff) },
+      color: { value: new Color(0xffffff) },
     },
     vertexShader: document.getElementById("vertexshader").textContent,
     fragmentShader: document.getElementById("fragmentshader").textContent,
@@ -74,12 +74,12 @@ function init() {
 
   //
 
-  particles = new THREE.Points(geometry, material);
+  particles = new Points(geometry, material);
   scene.add(particles);
 
   //
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

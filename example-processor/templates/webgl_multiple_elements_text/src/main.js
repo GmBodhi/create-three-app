@@ -27,17 +27,17 @@ function init() {
 
   canvas = document.getElementById("c");
 
-  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer = new WebGLRenderer({ canvas: canvas, antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
 
   views = document.querySelectorAll(".view");
 
   for (let n = 0; n < views.length; n++) {
-    const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0xffffff);
+    const scene = new Scene();
+    scene.background = new Color(0xffffff);
 
-    const geometry0 = new THREE.BufferGeometry();
-    const geometry1 = new THREE.BufferGeometry();
+    const geometry0 = new BufferGeometry();
+    const geometry1 = new BufferGeometry();
 
     const vertices = [];
 
@@ -60,13 +60,10 @@ function init() {
       }
     }
 
-    geometry0.setAttribute(
-      "position",
-      new THREE.Float32BufferAttribute(vertices, 3)
-    );
+    geometry0.setAttribute("position", new Float32BufferAttribute(vertices, 3));
     geometry1.setAttribute(
       "position",
-      new THREE.Float32BufferAttribute(vertices.slice(), 3)
+      new Float32BufferAttribute(vertices.slice(), 3)
     );
 
     const index = Math.floor(colors.length * Math.random());
@@ -78,21 +75,21 @@ function init() {
     context.arc(64, 64, 64, 0, 2 * Math.PI);
     context.fillStyle = colors[index];
     context.fill();
-    const texture = new THREE.CanvasTexture(canvas2);
+    const texture = new CanvasTexture(canvas2);
 
-    const material = new THREE.PointsMaterial({
+    const material = new PointsMaterial({
       size: size,
       map: texture,
       transparent: true,
       alphaTest: 0.1,
     });
 
-    scene.add(new THREE.Points(geometry0, material));
+    scene.add(new Points(geometry0, material));
 
     scene.userData.view = views[n];
     scene.userData.geometry1 = geometry1;
 
-    const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 100);
+    const camera = new PerspectiveCamera(75, 1, 0.1, 100);
     camera.position.set(0, 0, 1.2 * balls);
     scene.userData.camera = camera;
 
@@ -159,8 +156,8 @@ function render() {
     const points = scene.children[0];
     const position = points.geometry.attributes.position;
 
-    const point = new THREE.Vector3();
-    const offset = new THREE.Vector3();
+    const point = new Vector3();
+    const offset = new Vector3();
 
     for (let i = 0; i < position.count; i++) {
       point.fromBufferAttribute(

@@ -21,10 +21,10 @@ animate();
 function init() {
   const aspect = window.innerWidth / window.innerHeight;
 
-  perspectiveCamera = new THREE.PerspectiveCamera(60, aspect, 1, 1000);
+  perspectiveCamera = new PerspectiveCamera(60, aspect, 1, 1000);
   perspectiveCamera.position.z = 500;
 
-  orthographicCamera = new THREE.OrthographicCamera(
+  orthographicCamera = new OrthographicCamera(
     (frustumSize * aspect) / -2,
     (frustumSize * aspect) / 2,
     frustumSize / 2,
@@ -36,18 +36,18 @@ function init() {
 
   // world
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xcccccc);
-  scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+  scene = new Scene();
+  scene.background = new Color(0xcccccc);
+  scene.fog = new FogExp2(0xcccccc, 0.002);
 
-  const geometry = new THREE.CylinderGeometry(0, 10, 30, 4, 1);
-  const material = new THREE.MeshPhongMaterial({
+  const geometry = new CylinderGeometry(0, 10, 30, 4, 1);
+  const material = new MeshPhongMaterial({
     color: 0xffffff,
     flatShading: true,
   });
 
   for (let i = 0; i < 500; i++) {
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
     mesh.position.x = (Math.random() - 0.5) * 1000;
     mesh.position.y = (Math.random() - 0.5) * 1000;
     mesh.position.z = (Math.random() - 0.5) * 1000;
@@ -58,20 +58,20 @@ function init() {
 
   // lights
 
-  const dirLight1 = new THREE.DirectionalLight(0xffffff);
+  const dirLight1 = new DirectionalLight(0xffffff);
   dirLight1.position.set(1, 1, 1);
   scene.add(dirLight1);
 
-  const dirLight2 = new THREE.DirectionalLight(0x002288);
+  const dirLight2 = new DirectionalLight(0x002288);
   dirLight2.position.set(-1, -1, -1);
   scene.add(dirLight2);
 
-  const ambientLight = new THREE.AmbientLight(0x222222);
+  const ambientLight = new AmbientLight(0x222222);
   scene.add(ambientLight);
 
   // renderer
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

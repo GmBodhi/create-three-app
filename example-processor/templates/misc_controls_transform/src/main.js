@@ -12,15 +12,15 @@ init();
 render();
 
 function init() {
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
   const aspect = window.innerWidth / window.innerHeight;
 
-  cameraPersp = new THREE.PerspectiveCamera(50, aspect, 0.01, 30000);
-  cameraOrtho = new THREE.OrthographicCamera(
+  cameraPersp = new PerspectiveCamera(50, aspect, 0.01, 30000);
+  cameraOrtho = new OrthographicCamera(
     -600 * aspect,
     600 * aspect,
     600,
@@ -33,21 +33,18 @@ function init() {
   currentCamera.position.set(1000, 500, 1000);
   currentCamera.lookAt(0, 200, 0);
 
-  scene = new THREE.Scene();
-  scene.add(new THREE.GridHelper(1000, 10, 0x888888, 0x444444));
+  scene = new Scene();
+  scene.add(new GridHelper(1000, 10, 0x888888, 0x444444));
 
-  const light = new THREE.DirectionalLight(0xffffff, 2);
+  const light = new DirectionalLight(0xffffff, 2);
   light.position.set(1, 1, 1);
   scene.add(light);
 
-  const texture = new THREE.TextureLoader().load("textures/crate.gif", render);
+  const texture = new TextureLoader().load("textures/crate.gif", render);
   texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
-  const geometry = new THREE.BoxGeometry(200, 200, 200);
-  const material = new THREE.MeshLambertMaterial({
-    map: texture,
-    transparent: true,
-  });
+  const geometry = new BoxGeometry(200, 200, 200);
+  const material = new MeshLambertMaterial({ map: texture, transparent: true });
 
   orbit = new OrbitControls(currentCamera, renderer.domElement);
   orbit.update();
@@ -60,7 +57,7 @@ function init() {
     orbit.enabled = !event.value;
   });
 
-  const mesh = new THREE.Mesh(geometry, material);
+  const mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   control.attach(mesh);
@@ -76,7 +73,7 @@ function init() {
 
       case 16: // Shift
         control.setTranslationSnap(100);
-        control.setRotationSnap(THREE.MathUtils.degToRad(15));
+        control.setRotationSnap(MathUtils.degToRad(15));
         control.setScaleSnap(0.25);
         break;
 

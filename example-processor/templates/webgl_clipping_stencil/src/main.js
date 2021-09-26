@@ -32,35 +32,35 @@ init();
 animate();
 
 function createPlaneStencilGroup(geometry, plane, renderOrder) {
-  const group = new THREE.Group();
-  const baseMat = new THREE.MeshBasicMaterial();
+  const group = new Group();
+  const baseMat = new MeshBasicMaterial();
   baseMat.depthWrite = false;
   baseMat.depthTest = false;
   baseMat.colorWrite = false;
   baseMat.stencilWrite = true;
-  baseMat.stencilFunc = THREE.AlwaysStencilFunc;
+  baseMat.stencilFunc = AlwaysStencilFunc;
 
   // back faces
   const mat0 = baseMat.clone();
-  mat0.side = THREE.BackSide;
+  mat0.side = BackSide;
   mat0.clippingPlanes = [plane];
-  mat0.stencilFail = THREE.IncrementWrapStencilOp;
-  mat0.stencilZFail = THREE.IncrementWrapStencilOp;
-  mat0.stencilZPass = THREE.IncrementWrapStencilOp;
+  mat0.stencilFail = IncrementWrapStencilOp;
+  mat0.stencilZFail = IncrementWrapStencilOp;
+  mat0.stencilZPass = IncrementWrapStencilOp;
 
-  const mesh0 = new THREE.Mesh(geometry, mat0);
+  const mesh0 = new Mesh(geometry, mat0);
   mesh0.renderOrder = renderOrder;
   group.add(mesh0);
 
   // front faces
   const mat1 = baseMat.clone();
-  mat1.side = THREE.FrontSide;
+  mat1.side = FrontSide;
   mat1.clippingPlanes = [plane];
-  mat1.stencilFail = THREE.DecrementWrapStencilOp;
-  mat1.stencilZFail = THREE.DecrementWrapStencilOp;
-  mat1.stencilZPass = THREE.DecrementWrapStencilOp;
+  mat1.stencilFail = DecrementWrapStencilOp;
+  mat1.stencilZFail = DecrementWrapStencilOp;
+  mat1.stencilZPass = DecrementWrapStencilOp;
 
-  const mesh1 = new THREE.Mesh(geometry, mat1);
+  const mesh1 = new Mesh(geometry, mat1);
   mesh1.renderOrder = renderOrder;
 
   group.add(mesh1);
@@ -69,11 +69,11 @@ function createPlaneStencilGroup(geometry, plane, renderOrder) {
 }
 
 function init() {
-  clock = new THREE.Clock();
+  clock = new Clock();
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     36,
     window.innerWidth / window.innerHeight,
     1,
@@ -81,9 +81,9 @@ function init() {
   );
   camera.position.set(2, 2, 2);
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+  scene.add(new AmbientLight(0xffffff, 0.5));
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+  const dirLight = new DirectionalLight(0xffffff, 1);
   dirLight.position.set(5, 10, 7.5);
   dirLight.castShadow = true;
   dirLight.shadow.camera.right = 2;
@@ -96,32 +96,32 @@ function init() {
   scene.add(dirLight);
 
   planes = [
-    new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0),
-    new THREE.Plane(new THREE.Vector3(0, -1, 0), 0),
-    new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
+    new Plane(new Vector3(-1, 0, 0), 0),
+    new Plane(new Vector3(0, -1, 0), 0),
+    new Plane(new Vector3(0, 0, -1), 0),
   ];
 
-  planeHelpers = planes.map((p) => new THREE.PlaneHelper(p, 2, 0xffffff));
+  planeHelpers = planes.map((p) => new PlaneHelper(p, 2, 0xffffff));
   planeHelpers.forEach((ph) => {
     ph.visible = false;
     scene.add(ph);
   });
 
-  const geometry = new THREE.TorusKnotGeometry(0.4, 0.15, 220, 60);
-  object = new THREE.Group();
+  const geometry = new TorusKnotGeometry(0.4, 0.15, 220, 60);
+  object = new Group();
   scene.add(object);
 
   // Set up clip plane rendering
   planeObjects = [];
-  const planeGeom = new THREE.PlaneGeometry(4, 4);
+  const planeGeom = new PlaneGeometry(4, 4);
 
   for (let i = 0; i < 3; i++) {
-    const poGroup = new THREE.Group();
+    const poGroup = new Group();
     const plane = planes[i];
     const stencilGroup = createPlaneStencilGroup(geometry, plane, i + 1);
 
     // plane is clipped by the other clipping planes
-    const planeMat = new THREE.MeshStandardMaterial({
+    const planeMat = new MeshStandardMaterial({
       color: 0xe91e63,
       metalness: 0.1,
       roughness: 0.75,
@@ -129,12 +129,12 @@ function init() {
 
       stencilWrite: true,
       stencilRef: 0,
-      stencilFunc: THREE.NotEqualStencilFunc,
-      stencilFail: THREE.ReplaceStencilOp,
-      stencilZFail: THREE.ReplaceStencilOp,
-      stencilZPass: THREE.ReplaceStencilOp,
+      stencilFunc: NotEqualStencilFunc,
+      stencilFail: ReplaceStencilOp,
+      stencilZFail: ReplaceStencilOp,
+      stencilZPass: ReplaceStencilOp,
     });
-    const po = new THREE.Mesh(planeGeom, planeMat);
+    const po = new Mesh(planeGeom, planeMat);
     po.onAfterRender = function (renderer) {
       renderer.clearStencil();
     };
@@ -147,28 +147,24 @@ function init() {
     scene.add(poGroup);
   }
 
-  const material = new THREE.MeshStandardMaterial({
+  const material = new MeshStandardMaterial({
     color: 0xffc107,
     metalness: 0.1,
     roughness: 0.75,
     clippingPlanes: planes,
     clipShadows: true,
-    shadowSide: THREE.DoubleSide,
+    shadowSide: DoubleSide,
   });
 
   // add the color
-  const clippedColorFront = new THREE.Mesh(geometry, material);
+  const clippedColorFront = new Mesh(geometry, material);
   clippedColorFront.castShadow = true;
   clippedColorFront.renderOrder = 6;
   object.add(clippedColorFront);
 
-  const ground = new THREE.Mesh(
-    new THREE.PlaneGeometry(9, 9, 1, 1),
-    new THREE.ShadowMaterial({
-      color: 0,
-      opacity: 0.25,
-      side: THREE.DoubleSide,
-    })
+  const ground = new Mesh(
+    new PlaneGeometry(9, 9, 1, 1),
+    new ShadowMaterial({ color: 0, opacity: 0.25, side: DoubleSide })
   );
 
   ground.rotation.x = -Math.PI / 2; // rotates X/Y to X/Z
@@ -181,7 +177,7 @@ function init() {
   document.body.appendChild(stats.dom);
 
   // Renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

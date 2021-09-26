@@ -17,7 +17,7 @@ let camera,
   controls,
   control,
   control2,
-  object = new THREE.Mesh(),
+  object = new Mesh(),
   lightOrigin = null,
   progressiveSurfacemap;
 const dirLights = [],
@@ -36,14 +36,14 @@ animate();
 
 function init() {
   // renderer
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
   // camera
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -53,15 +53,15 @@ function init() {
   camera.name = "Camera";
 
   // scene
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x949494);
-  scene.fog = new THREE.Fog(0x949494, 1000, 3000);
+  scene = new Scene();
+  scene.background = new Color(0x949494);
+  scene.fog = new Fog(0x949494, 1000, 3000);
 
   // progressive lightmap
   progressiveSurfacemap = new ProgressiveLightMap(renderer, lightMapRes);
 
   // directional lighting "origin"
-  lightOrigin = new THREE.Group();
+  lightOrigin = new Group();
   lightOrigin.position.set(60, 150, 100);
   scene.add(lightOrigin);
 
@@ -75,7 +75,7 @@ function init() {
 
   // create 8 directional lights to speed up the convergence
   for (let l = 0; l < lightCount; l++) {
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.0 / lightCount);
+    const dirLight = new DirectionalLight(0xffffff, 1.0 / lightCount);
     dirLight.name = "Dir. Light " + l;
     dirLight.position.set(200, 200, 200);
     dirLight.castShadow = true;
@@ -92,9 +92,9 @@ function init() {
   }
 
   // ground
-  const groundMesh = new THREE.Mesh(
-    new THREE.PlaneBufferGeometry(600, 600),
-    new THREE.MeshPhongMaterial({ color: 0xffffff, depthWrite: true })
+  const groundMesh = new Mesh(
+    new PlaneBufferGeometry(600, 600),
+    new MeshPhongMaterial({ color: 0xffffff, depthWrite: true })
   );
   groundMesh.position.y = -0.1;
   groundMesh.rotation.x = -Math.PI / 2;
@@ -109,7 +109,7 @@ function init() {
         child.name = "Loaded Mesh";
         child.castShadow = true;
         child.receiveShadow = true;
-        child.material = new THREE.MeshPhongMaterial();
+        child.material = new MeshPhongMaterial();
 
         // This adds the model to the lightmap
         lightmapObjects.push(child);
@@ -127,7 +127,7 @@ function init() {
     });
     control2.attach(object);
     scene.add(control2);
-    const lightTarget = new THREE.Group();
+    const lightTarget = new Group();
     lightTarget.position.set(0, 20, 0);
     for (let l = 0; l < dirLights.length; l++) {
       dirLights[l].target = lightTarget;
@@ -142,7 +142,7 @@ function init() {
     }
   }
 
-  const manager = new THREE.LoadingManager(loadModel);
+  const manager = new LoadingManager(loadModel);
   const loader = new GLTFLoader(manager);
   loader.load("models/gltf/ShadowmappableMesh.glb", function (obj) {
     object = obj.scene.children[0];

@@ -49,10 +49,10 @@ function clean() {
 }
 
 const randomizeMatrix = (function () {
-  const position = new THREE.Vector3();
-  const rotation = new THREE.Euler();
-  const quaternion = new THREE.Quaternion();
-  const scale = new THREE.Vector3();
+  const position = new Vector3();
+  const rotation = new Euler();
+  const quaternion = new Quaternion();
+  const scale = new Vector3();
 
   return function (matrix) {
     position.x = Math.random() * 40 - 20;
@@ -75,10 +75,10 @@ function initMesh() {
   clean();
 
   // make instances
-  new THREE.BufferGeometryLoader()
+  new BufferGeometryLoader()
     .setPath("models/json/")
     .load("suzanne_buffergeometry.json", function (geometry) {
-      material = new THREE.MeshNormalMaterial();
+      material = new MeshNormalMaterial();
 
       geometry.computeVertexNormals();
 
@@ -103,8 +103,8 @@ function initMesh() {
 }
 
 function makeInstanced(geometry) {
-  const matrix = new THREE.Matrix4();
-  const mesh = new THREE.InstancedMesh(geometry, material, api.count);
+  const matrix = new Matrix4();
+  const mesh = new InstancedMesh(geometry, material, api.count);
 
   for (let i = 0; i < api.count; i++) {
     randomizeMatrix(matrix);
@@ -125,7 +125,7 @@ function makeInstanced(geometry) {
 
 function makeMerged(geometry) {
   const geometries = [];
-  const matrix = new THREE.Matrix4();
+  const matrix = new Matrix4();
 
   for (let i = 0; i < api.count; i++) {
     randomizeMatrix(matrix);
@@ -138,7 +138,7 @@ function makeMerged(geometry) {
 
   const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometries);
 
-  scene.add(new THREE.Mesh(mergedGeometry, material));
+  scene.add(new Mesh(mergedGeometry, material));
 
   //
 
@@ -150,12 +150,12 @@ function makeMerged(geometry) {
 }
 
 function makeNaive(geometry) {
-  const matrix = new THREE.Matrix4();
+  const matrix = new Matrix4();
 
   for (let i = 0; i < api.count; i++) {
     randomizeMatrix(matrix);
 
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
     mesh.applyMatrix4(matrix);
 
     scene.add(mesh);
@@ -177,23 +177,23 @@ function init() {
 
   // camera
 
-  camera = new THREE.PerspectiveCamera(70, width / height, 1, 100);
+  camera = new PerspectiveCamera(70, width / height, 1, 100);
   camera.position.z = 30;
 
   // renderer
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputEncoding = sRGBEncoding;
 
   container = document.getElementById("container");
   container.appendChild(renderer.domElement);
 
   // scene
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xffffff);
+  scene = new Scene();
+  scene.background = new Color(0xffffff);
 
   // controls
 

@@ -17,7 +17,7 @@ init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     55,
     window.innerWidth / window.innerHeight,
     2,
@@ -25,13 +25,13 @@ function init() {
   );
   camera.position.z = 1000;
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x000000, 0.001);
+  scene = new Scene();
+  scene.fog = new FogExp2(0x000000, 0.001);
 
-  const geometry = new THREE.BufferGeometry();
+  const geometry = new BufferGeometry();
   const vertices = [];
 
-  const sprite = new THREE.TextureLoader().load("textures/sprites/disc.png");
+  const sprite = new TextureLoader().load("textures/sprites/disc.png");
 
   for (let i = 0; i < 10000; i++) {
     const x = 2000 * Math.random() - 1000;
@@ -41,12 +41,9 @@ function init() {
     vertices.push(x, y, z);
   }
 
-  geometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(vertices, 3)
-  );
+  geometry.setAttribute("position", new Float32BufferAttribute(vertices, 3));
 
-  material = new THREE.PointsMaterial({
+  material = new PointsMaterial({
     size: 35,
     sizeAttenuation: true,
     map: sprite,
@@ -55,12 +52,12 @@ function init() {
   });
   material.color.setHSL(1.0, 0.3, 0.7);
 
-  const particles = new THREE.Points(geometry, material);
+  const particles = new Points(geometry, material);
   scene.add(particles);
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

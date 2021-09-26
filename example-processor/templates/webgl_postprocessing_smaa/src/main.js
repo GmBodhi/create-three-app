@@ -16,7 +16,7 @@ animate();
 function init() {
   const container = document.getElementById("container");
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -26,7 +26,7 @@ function init() {
 
   //
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -34,24 +34,21 @@ function init() {
   );
   camera.position.z = 300;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  const geometry = new THREE.BoxGeometry(120, 120, 120);
-  const material1 = new THREE.MeshBasicMaterial({
-    color: 0xffffff,
-    wireframe: true,
-  });
+  const geometry = new BoxGeometry(120, 120, 120);
+  const material1 = new MeshBasicMaterial({ color: 0xffffff, wireframe: true });
 
-  const mesh1 = new THREE.Mesh(geometry, material1);
+  const mesh1 = new Mesh(geometry, material1);
   mesh1.position.x = -100;
   scene.add(mesh1);
 
-  const texture = new THREE.TextureLoader().load("textures/brick_diffuse.jpg");
+  const texture = new TextureLoader().load("textures/brick_diffuse.jpg");
   texture.anisotropy = 4;
 
-  const material2 = new THREE.MeshBasicMaterial({ map: texture });
+  const material2 = new MeshBasicMaterial({ map: texture });
 
-  const mesh2 = new THREE.Mesh(geometry, material2);
+  const mesh2 = new Mesh(geometry, material2);
   mesh2.position.x = 100;
   scene.add(mesh2);
 

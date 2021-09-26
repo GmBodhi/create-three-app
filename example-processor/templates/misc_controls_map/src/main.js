@@ -13,16 +13,16 @@ init();
 animate();
 
 function init() {
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xcccccc);
-  scene.fog = new THREE.FogExp2(0xcccccc, 0.002);
+  scene = new Scene();
+  scene.background = new Color(0xcccccc);
+  scene.fog = new FogExp2(0xcccccc, 0.002);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,
     1,
@@ -48,15 +48,15 @@ function init() {
 
   // world
 
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
+  const geometry = new BoxGeometry(1, 1, 1);
   geometry.translate(0, 0.5, 0);
-  const material = new THREE.MeshPhongMaterial({
+  const material = new MeshPhongMaterial({
     color: 0xffffff,
     flatShading: true,
   });
 
   for (let i = 0; i < 500; i++) {
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
     mesh.position.x = Math.random() * 1600 - 800;
     mesh.position.y = 0;
     mesh.position.z = Math.random() * 1600 - 800;
@@ -70,15 +70,15 @@ function init() {
 
   // lights
 
-  const dirLight1 = new THREE.DirectionalLight(0xffffff);
+  const dirLight1 = new DirectionalLight(0xffffff);
   dirLight1.position.set(1, 1, 1);
   scene.add(dirLight1);
 
-  const dirLight2 = new THREE.DirectionalLight(0x002288);
+  const dirLight2 = new DirectionalLight(0x002288);
   dirLight2.position.set(-1, -1, -1);
   scene.add(dirLight2);
 
-  const ambientLight = new THREE.AmbientLight(0x222222);
+  const ambientLight = new AmbientLight(0x222222);
   scene.add(ambientLight);
 
   //

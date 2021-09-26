@@ -19,7 +19,7 @@ init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     1,
@@ -27,13 +27,13 @@ function init() {
   );
   camera.position.z = 1000;
 
-  scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x000000, 0.0008);
+  scene = new Scene();
+  scene.fog = new FogExp2(0x000000, 0.0008);
 
-  const geometry = new THREE.BufferGeometry();
+  const geometry = new BufferGeometry();
   const vertices = [];
 
-  const textureLoader = new THREE.TextureLoader();
+  const textureLoader = new TextureLoader();
 
   const sprite1 = textureLoader.load("textures/sprites/snowflake1.png");
   const sprite2 = textureLoader.load("textures/sprites/snowflake2.png");
@@ -49,10 +49,7 @@ function init() {
     vertices.push(x, y, z);
   }
 
-  geometry.setAttribute(
-    "position",
-    new THREE.Float32BufferAttribute(vertices, 3)
-  );
+  geometry.setAttribute("position", new Float32BufferAttribute(vertices, 3));
 
   parameters = [
     [[1.0, 0.2, 0.5], sprite2, 20],
@@ -67,16 +64,16 @@ function init() {
     const sprite = parameters[i][1];
     const size = parameters[i][2];
 
-    materials[i] = new THREE.PointsMaterial({
+    materials[i] = new PointsMaterial({
       size: size,
       map: sprite,
-      blending: THREE.AdditiveBlending,
+      blending: AdditiveBlending,
       depthTest: false,
       transparent: true,
     });
     materials[i].color.setHSL(color[0], color[1], color[2]);
 
-    const particles = new THREE.Points(geometry, materials[i]);
+    const particles = new Points(geometry, materials[i]);
 
     particles.rotation.x = Math.random() * 6;
     particles.rotation.y = Math.random() * 6;
@@ -87,7 +84,7 @@ function init() {
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -159,7 +156,7 @@ function render() {
   for (let i = 0; i < scene.children.length; i++) {
     const object = scene.children[i];
 
-    if (object instanceof THREE.Points) {
+    if (object instanceof Points) {
       object.rotation.y = time * (i < 4 ? i + 1 : -(i + 1));
     }
   }

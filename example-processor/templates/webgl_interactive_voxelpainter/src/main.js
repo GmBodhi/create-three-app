@@ -17,7 +17,7 @@ init();
 render();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -26,59 +26,56 @@ function init() {
   camera.position.set(500, 800, 1300);
   camera.lookAt(0, 0, 0);
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xf0f0f0);
+  scene = new Scene();
+  scene.background = new Color(0xf0f0f0);
 
   // roll-over helpers
 
-  const rollOverGeo = new THREE.BoxGeometry(50, 50, 50);
-  rollOverMaterial = new THREE.MeshBasicMaterial({
+  const rollOverGeo = new BoxGeometry(50, 50, 50);
+  rollOverMaterial = new MeshBasicMaterial({
     color: 0xff0000,
     opacity: 0.5,
     transparent: true,
   });
-  rollOverMesh = new THREE.Mesh(rollOverGeo, rollOverMaterial);
+  rollOverMesh = new Mesh(rollOverGeo, rollOverMaterial);
   scene.add(rollOverMesh);
 
   // cubes
 
-  cubeGeo = new THREE.BoxGeometry(50, 50, 50);
-  cubeMaterial = new THREE.MeshLambertMaterial({
+  cubeGeo = new BoxGeometry(50, 50, 50);
+  cubeMaterial = new MeshLambertMaterial({
     color: 0xfeb74c,
-    map: new THREE.TextureLoader().load("textures/square-outline-textured.png"),
+    map: new TextureLoader().load("textures/square-outline-textured.png"),
   });
 
   // grid
 
-  const gridHelper = new THREE.GridHelper(1000, 20);
+  const gridHelper = new GridHelper(1000, 20);
   scene.add(gridHelper);
 
   //
 
-  raycaster = new THREE.Raycaster();
-  pointer = new THREE.Vector2();
+  raycaster = new Raycaster();
+  pointer = new Vector2();
 
-  const geometry = new THREE.PlaneGeometry(1000, 1000);
+  const geometry = new PlaneGeometry(1000, 1000);
   geometry.rotateX(-Math.PI / 2);
 
-  plane = new THREE.Mesh(
-    geometry,
-    new THREE.MeshBasicMaterial({ visible: false })
-  );
+  plane = new Mesh(geometry, new MeshBasicMaterial({ visible: false }));
   scene.add(plane);
 
   objects.push(plane);
 
   // lights
 
-  const ambientLight = new THREE.AmbientLight(0x606060);
+  const ambientLight = new AmbientLight(0x606060);
   scene.add(ambientLight);
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff);
+  const directionalLight = new DirectionalLight(0xffffff);
   directionalLight.position.set(1, 0.75, 0.5).normalize();
   scene.add(directionalLight);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -148,7 +145,7 @@ function onPointerDown(event) {
 
       // create cube
     } else {
-      const voxel = new THREE.Mesh(cubeGeo, cubeMaterial);
+      const voxel = new Mesh(cubeGeo, cubeMaterial);
       voxel.position.copy(intersect.point).add(intersect.face.normal);
       voxel.position.divideScalar(50).floor().multiplyScalar(50).addScalar(25);
       scene.add(voxel);

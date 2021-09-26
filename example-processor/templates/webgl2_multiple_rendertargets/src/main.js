@@ -17,23 +17,23 @@ function init() {
     return;
   }
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
   // Create a multi render target with Float buffers
 
-  renderTarget = new THREE.WebGLMultipleRenderTargets(
+  renderTarget = new WebGLMultipleRenderTargets(
     window.innerWidth * window.devicePixelRatio,
     window.innerHeight * window.devicePixelRatio,
     2
   );
 
   for (let i = 0, il = renderTarget.texture.length; i < il; i++) {
-    renderTarget.texture[i].minFilter = THREE.NearestFilter;
-    renderTarget.texture[i].magFilter = THREE.NearestFilter;
-    renderTarget.texture[i].type = THREE.FloatType;
+    renderTarget.texture[i].minFilter = NearestFilter;
+    renderTarget.texture[i].magFilter = NearestFilter;
+    renderTarget.texture[i].type = FloatType;
   }
 
   // Name our G-Buffer attachments for debugging
@@ -43,9 +43,9 @@ function init() {
 
   // Scene setup
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -53,7 +53,7 @@ function init() {
   );
   camera.position.z = 4;
 
-  const diffuse = new THREE.TextureLoader().load(
+  const diffuse = new TextureLoader().load(
     "textures/brick_diffuse.jpg",
 
     function () {
@@ -62,12 +62,12 @@ function init() {
     }
   );
 
-  diffuse.wrapS = diffuse.wrapT = THREE.RepeatWrapping;
+  diffuse.wrapS = diffuse.wrapT = RepeatWrapping;
 
   scene.add(
-    new THREE.Mesh(
-      new THREE.TorusKnotGeometry(1, 0.3, 128, 64),
-      new THREE.RawShaderMaterial({
+    new Mesh(
+      new TorusKnotGeometry(1, 0.3, 128, 64),
+      new RawShaderMaterial({
         vertexShader: document
           .querySelector("#gbuffer-vert")
           .textContent.trim(),
@@ -76,22 +76,22 @@ function init() {
           .textContent.trim(),
         uniforms: {
           tDiffuse: { value: diffuse },
-          repeat: { value: new THREE.Vector2(5, 0.5) },
+          repeat: { value: new Vector2(5, 0.5) },
         },
-        glslVersion: THREE.GLSL3,
+        glslVersion: GLSL3,
       })
     )
   );
 
   // PostProcessing setup
 
-  postScene = new THREE.Scene();
-  postCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+  postScene = new Scene();
+  postCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
   postScene.add(
-    new THREE.Mesh(
-      new THREE.PlaneGeometry(2, 2),
-      new THREE.RawShaderMaterial({
+    new Mesh(
+      new PlaneGeometry(2, 2),
+      new RawShaderMaterial({
         vertexShader: document.querySelector("#render-vert").textContent.trim(),
         fragmentShader: document
           .querySelector("#render-frag")
@@ -100,7 +100,7 @@ function init() {
           tDiffuse: { value: renderTarget.texture[0] },
           tNormal: { value: renderTarget.texture[1] },
         },
-        glslVersion: THREE.GLSL3,
+        glslVersion: GLSL3,
       })
     )
   );

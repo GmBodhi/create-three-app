@@ -3,14 +3,14 @@ import "./style.css"; // For webpack support
 import * as THREE from "three";
 
 let camera, scene, renderer, mesh, material;
-const drawStartPos = new THREE.Vector2();
+const drawStartPos = new Vector2();
 
 init();
 setupCanvasDrawing();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
     1,
@@ -18,14 +18,14 @@ function init() {
   );
   camera.position.z = 500;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  material = new THREE.MeshBasicMaterial();
+  material = new MeshBasicMaterial();
 
-  mesh = new THREE.Mesh(new THREE.BoxGeometry(200, 200, 200), material);
+  mesh = new Mesh(new BoxGeometry(200, 200, 200), material);
   scene.add(mesh);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -48,7 +48,7 @@ function setupCanvasDrawing() {
 
   // set canvas as material.map (this could be done to any map, bump, displacement etc.)
 
-  material.map = new THREE.CanvasTexture(drawingCanvas);
+  material.map = new CanvasTexture(drawingCanvas);
 
   // set the variable to keep track of when to draw
 

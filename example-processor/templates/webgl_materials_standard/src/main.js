@@ -22,20 +22,20 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
-  renderer.toneMapping = THREE.ReinhardToneMapping;
+  renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMapping = ReinhardToneMapping;
   renderer.toneMappingExposure = 3;
 
   //
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
     0.01,
@@ -47,32 +47,32 @@ function init() {
 
   //
 
-  scene.add(new THREE.HemisphereLight(0x443333, 0x222233, 4));
+  scene.add(new HemisphereLight(0x443333, 0x222233, 4));
 
   //
 
-  const material = new THREE.MeshStandardMaterial();
+  const material = new MeshStandardMaterial();
 
   new OBJLoader()
     .setPath("models/obj/cerberus/")
     .load("Cerberus.obj", function (group) {
-      const loader = new THREE.TextureLoader().setPath("models/obj/cerberus/");
+      const loader = new TextureLoader().setPath("models/obj/cerberus/");
 
       material.roughness = 1; // attenuates roughnessMap
       material.metalness = 1; // attenuates metalnessMap
 
       const diffuseMap = loader.load("Cerberus_A.jpg");
-      diffuseMap.encoding = THREE.sRGBEncoding;
+      diffuseMap.encoding = sRGBEncoding;
       material.map = diffuseMap;
       // roughness is in G channel, metalness is in B channel
       material.metalnessMap = material.roughnessMap =
         loader.load("Cerberus_RM.jpg");
       material.normalMap = loader.load("Cerberus_N.jpg");
 
-      material.map.wrapS = THREE.RepeatWrapping;
-      material.roughnessMap.wrapS = THREE.RepeatWrapping;
-      material.metalnessMap.wrapS = THREE.RepeatWrapping;
-      material.normalMap.wrapS = THREE.RepeatWrapping;
+      material.map.wrapS = RepeatWrapping;
+      material.roughnessMap.wrapS = RepeatWrapping;
+      material.metalnessMap.wrapS = RepeatWrapping;
+      material.normalMap.wrapS = RepeatWrapping;
 
       group.traverse(function (child) {
         if (child.isMesh) {
@@ -101,7 +101,7 @@ function init() {
     new RGBELoader()
       .setPath("textures/equirectangular/")
       .load(filename, function (hdrEquirect) {
-        hdrEquirect.mapping = THREE.EquirectangularReflectionMapping;
+        hdrEquirect.mapping = EquirectangularReflectionMapping;
 
         scene.background = hdrEquirect;
         scene.environment = hdrEquirect;

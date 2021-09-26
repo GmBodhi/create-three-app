@@ -15,24 +15,24 @@ const params = {
 };
 
 const clipPlanes = [
-  new THREE.Plane(new THREE.Vector3(1, 0, 0), 0),
-  new THREE.Plane(new THREE.Vector3(0, -1, 0), 0),
-  new THREE.Plane(new THREE.Vector3(0, 0, -1), 0),
+  new Plane(new Vector3(1, 0, 0), 0),
+  new Plane(new Vector3(0, -1, 0), 0),
+  new Plane(new Vector3(0, 0, -1), 0),
 ];
 
 init();
 render();
 
 function init() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.localClippingEnabled = true;
   document.body.appendChild(renderer.domElement);
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     40,
     window.innerWidth / window.innerHeight,
     1,
@@ -47,38 +47,38 @@ function init() {
   controls.maxDistance = 10;
   controls.enablePan = false;
 
-  const light = new THREE.HemisphereLight(0xffffff, 0x080808, 1.5);
+  const light = new HemisphereLight(0xffffff, 0x080808, 1.5);
   light.position.set(-1.25, 1, 1.25);
   scene.add(light);
 
-  // const helper = new THREE.CameraHelper( light.shadow.camera );
+  // const helper = new CameraHelper( light.shadow.camera );
   // scene.add( helper );
 
   //
 
-  const group = new THREE.Group();
+  const group = new Group();
 
   for (let i = 1; i <= 30; i += 2) {
-    const geometry = new THREE.SphereGeometry(i / 30, 48, 24);
+    const geometry = new SphereGeometry(i / 30, 48, 24);
 
-    const material = new THREE.MeshLambertMaterial({
-      color: new THREE.Color().setHSL(Math.random(), 0.5, 0.5),
-      side: THREE.DoubleSide,
+    const material = new MeshLambertMaterial({
+      color: new Color().setHSL(Math.random(), 0.5, 0.5),
+      side: DoubleSide,
       clippingPlanes: clipPlanes,
       clipIntersection: params.clipIntersection,
     });
 
-    group.add(new THREE.Mesh(geometry, material));
+    group.add(new Mesh(geometry, material));
   }
 
   scene.add(group);
 
   // helpers
 
-  const helpers = new THREE.Group();
-  helpers.add(new THREE.PlaneHelper(clipPlanes[0], 2, 0xff0000));
-  helpers.add(new THREE.PlaneHelper(clipPlanes[1], 2, 0x00ff00));
-  helpers.add(new THREE.PlaneHelper(clipPlanes[2], 2, 0x0000ff));
+  const helpers = new Group();
+  helpers.add(new PlaneHelper(clipPlanes[0], 2, 0xff0000));
+  helpers.add(new PlaneHelper(clipPlanes[1], 2, 0x00ff00));
+  helpers.add(new PlaneHelper(clipPlanes[2], 2, 0x0000ff));
   helpers.visible = false;
   scene.add(helpers);
 

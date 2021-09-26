@@ -12,20 +12,20 @@ let spheresIndex = 0;
 let clock;
 let toggle = 0;
 
-const pointer = new THREE.Vector2();
+const pointer = new Vector2();
 const spheres = [];
 
 const threshold = 0.1;
 const pointSize = 0.05;
 const width = 80;
 const length = 160;
-const rotateY = new THREE.Matrix4().makeRotationY(0.005);
+const rotateY = new Matrix4().makeRotationY(0.005);
 
 init();
 animate();
 
 function generatePointCloudGeometry(color, width, length) {
-  const geometry = new THREE.BufferGeometry();
+  const geometry = new BufferGeometry();
   const numPoints = width * length;
 
   const positions = new Float32Array(numPoints * 3);
@@ -54,8 +54,8 @@ function generatePointCloudGeometry(color, width, length) {
     }
   }
 
-  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
-  geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  geometry.setAttribute("position", new BufferAttribute(positions, 3));
+  geometry.setAttribute("color", new BufferAttribute(colors, 3));
   geometry.computeBoundingBox();
 
   return geometry;
@@ -63,12 +63,9 @@ function generatePointCloudGeometry(color, width, length) {
 
 function generatePointcloud(color, width, length) {
   const geometry = generatePointCloudGeometry(color, width, length);
-  const material = new THREE.PointsMaterial({
-    size: pointSize,
-    vertexColors: true,
-  });
+  const material = new PointsMaterial({ size: pointSize, vertexColors: true });
 
-  return new THREE.Points(geometry, material);
+  return new Points(geometry, material);
 }
 
 function generateIndexedPointcloud(color, width, length) {
@@ -85,14 +82,11 @@ function generateIndexedPointcloud(color, width, length) {
     }
   }
 
-  geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+  geometry.setIndex(new BufferAttribute(indices, 1));
 
-  const material = new THREE.PointsMaterial({
-    size: pointSize,
-    vertexColors: true,
-  });
+  const material = new PointsMaterial({ size: pointSize, vertexColors: true });
 
-  return new THREE.Points(geometry, material);
+  return new Points(geometry, material);
 }
 
 function generateIndexedWithOffsetPointcloud(color, width, length) {
@@ -109,25 +103,22 @@ function generateIndexedWithOffsetPointcloud(color, width, length) {
     }
   }
 
-  geometry.setIndex(new THREE.BufferAttribute(indices, 1));
+  geometry.setIndex(new BufferAttribute(indices, 1));
   geometry.addGroup(0, indices.length);
 
-  const material = new THREE.PointsMaterial({
-    size: pointSize,
-    vertexColors: true,
-  });
+  const material = new PointsMaterial({ size: pointSize, vertexColors: true });
 
-  return new THREE.Points(geometry, material);
+  return new Points(geometry, material);
 }
 
 function init() {
   const container = document.getElementById("container");
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  clock = new THREE.Clock();
+  clock = new Clock();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -139,13 +130,13 @@ function init() {
 
   //
 
-  const pcBuffer = generatePointcloud(new THREE.Color(1, 0, 0), width, length);
+  const pcBuffer = generatePointcloud(new Color(1, 0, 0), width, length);
   pcBuffer.scale.set(5, 10, 10);
   pcBuffer.position.set(-5, 0, 0);
   scene.add(pcBuffer);
 
   const pcIndexed = generateIndexedPointcloud(
-    new THREE.Color(0, 1, 0),
+    new Color(0, 1, 0),
     width,
     length
   );
@@ -154,7 +145,7 @@ function init() {
   scene.add(pcIndexed);
 
   const pcIndexedOffset = generateIndexedWithOffsetPointcloud(
-    new THREE.Color(0, 1, 1),
+    new Color(0, 1, 1),
     width,
     length
   );
@@ -166,25 +157,25 @@ function init() {
 
   //
 
-  const sphereGeometry = new THREE.SphereGeometry(0.1, 32, 32);
-  const sphereMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+  const sphereGeometry = new SphereGeometry(0.1, 32, 32);
+  const sphereMaterial = new MeshBasicMaterial({ color: 0xff0000 });
 
   for (let i = 0; i < 40; i++) {
-    const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial);
+    const sphere = new Mesh(sphereGeometry, sphereMaterial);
     scene.add(sphere);
     spheres.push(sphere);
   }
 
   //
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
   //
 
-  raycaster = new THREE.Raycaster();
+  raycaster = new Raycaster();
   raycaster.params.Points.threshold = threshold;
 
   //

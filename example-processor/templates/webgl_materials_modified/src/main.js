@@ -13,7 +13,7 @@ init();
 animate();
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     27,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -21,24 +21,24 @@ function init() {
   );
   camera.position.z = 20;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   const loader = new GLTFLoader();
   loader.load("models/gltf/LeePerrySmith/LeePerrySmith.glb", function (gltf) {
     const geometry = gltf.scene.children[0].geometry;
 
-    let mesh = new THREE.Mesh(geometry, buildTwistMaterial(2.0));
+    let mesh = new Mesh(geometry, buildTwistMaterial(2.0));
     mesh.position.x = -3.5;
     mesh.position.y = -0.5;
     scene.add(mesh);
 
-    mesh = new THREE.Mesh(geometry, buildTwistMaterial(-2.0));
+    mesh = new Mesh(geometry, buildTwistMaterial(-2.0));
     mesh.position.x = 3.5;
     mesh.position.y = -0.5;
     scene.add(mesh);
   });
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -58,7 +58,7 @@ function init() {
 }
 
 function buildTwistMaterial(amount) {
-  const material = new THREE.MeshNormalMaterial();
+  const material = new MeshNormalMaterial();
   material.onBeforeCompile = function (shader) {
     shader.uniforms.time = { value: 0 };
 

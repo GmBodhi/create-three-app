@@ -14,14 +14,14 @@ animate();
 function init() {
   const container = document.getElementById("container");
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     90,
     window.innerWidth / window.innerHeight,
     0.1,
@@ -43,10 +43,10 @@ function init() {
   const materials = [];
 
   for (let i = 0; i < 6; i++) {
-    materials.push(new THREE.MeshBasicMaterial({ map: textures[i] }));
+    materials.push(new MeshBasicMaterial({ map: textures[i] }));
   }
 
-  const skyBox = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), materials);
+  const skyBox = new Mesh(new BoxGeometry(1, 1, 1), materials);
   skyBox.geometry.scale(1, 1, -1);
   scene.add(skyBox);
 
@@ -57,10 +57,10 @@ function getTexturesFromAtlasFile(atlasImgUrl, tilesNum) {
   const textures = [];
 
   for (let i = 0; i < tilesNum; i++) {
-    textures[i] = new THREE.Texture();
+    textures[i] = new Texture();
   }
 
-  new THREE.ImageLoader().load(atlasImgUrl, (image) => {
+  new ImageLoader().load(atlasImgUrl, (image) => {
     let canvas, context;
     const tileWidth = image.height;
 

@@ -21,17 +21,17 @@ function init() {
 
   //
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
   //
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     55,
     window.innerWidth / window.innerHeight,
     1,
@@ -41,22 +41,22 @@ function init() {
 
   //
 
-  sun = new THREE.Vector3();
+  sun = new Vector3();
 
   // Water
 
-  const waterGeometry = new THREE.PlaneGeometry(10000, 10000);
+  const waterGeometry = new PlaneGeometry(10000, 10000);
 
   water = new Water(waterGeometry, {
     textureWidth: 512,
     textureHeight: 512,
-    waterNormals: new THREE.TextureLoader().load(
+    waterNormals: new TextureLoader().load(
       "textures/waternormals.jpg",
       function (texture) {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
+        texture.wrapS = texture.wrapT = RepeatWrapping;
       }
     ),
-    sunDirection: new THREE.Vector3(),
+    sunDirection: new Vector3(),
     sunColor: 0xffffff,
     waterColor: 0x001e0f,
     distortionScale: 3.7,
@@ -85,11 +85,11 @@ function init() {
     azimuth: 180,
   };
 
-  const pmremGenerator = new THREE.PMREMGenerator(renderer);
+  const pmremGenerator = new PMREMGenerator(renderer);
 
   function updateSun() {
-    const phi = THREE.MathUtils.degToRad(90 - parameters.elevation);
-    const theta = THREE.MathUtils.degToRad(parameters.azimuth);
+    const phi = MathUtils.degToRad(90 - parameters.elevation);
+    const theta = MathUtils.degToRad(parameters.azimuth);
 
     sun.setFromSphericalCoords(1, phi, theta);
 
@@ -103,10 +103,10 @@ function init() {
 
   //
 
-  const geometry = new THREE.BoxGeometry(30, 30, 30);
-  const material = new THREE.MeshStandardMaterial({ roughness: 0 });
+  const geometry = new BoxGeometry(30, 30, 30);
+  const material = new MeshStandardMaterial({ roughness: 0 });
 
-  mesh = new THREE.Mesh(geometry, material);
+  mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   //

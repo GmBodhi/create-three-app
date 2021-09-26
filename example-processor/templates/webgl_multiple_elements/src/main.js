@@ -15,16 +15,16 @@ function init() {
   canvas = document.getElementById("c");
 
   const geometries = [
-    new THREE.BoxGeometry(1, 1, 1),
-    new THREE.SphereGeometry(0.5, 12, 8),
-    new THREE.DodecahedronGeometry(0.5),
-    new THREE.CylinderGeometry(0.5, 0.5, 1, 12),
+    new BoxGeometry(1, 1, 1),
+    new SphereGeometry(0.5, 12, 8),
+    new DodecahedronGeometry(0.5),
+    new CylinderGeometry(0.5, 0.5, 1, 12),
   ];
 
   const content = document.getElementById("content");
 
   for (let i = 0; i < 40; i++) {
-    const scene = new THREE.Scene();
+    const scene = new Scene();
 
     // make a list item
     const element = document.createElement("div");
@@ -41,7 +41,7 @@ function init() {
     scene.userData.element = sceneElement;
     content.appendChild(element);
 
-    const camera = new THREE.PerspectiveCamera(50, 1, 1, 10);
+    const camera = new PerspectiveCamera(50, 1, 1, 10);
     camera.position.z = 2;
     scene.userData.camera = camera;
 
@@ -58,25 +58,25 @@ function init() {
     // add one random mesh to each scene
     const geometry = geometries[(geometries.length * Math.random()) | 0];
 
-    const material = new THREE.MeshStandardMaterial({
-      color: new THREE.Color().setHSL(Math.random(), 1, 0.75),
+    const material = new MeshStandardMaterial({
+      color: new Color().setHSL(Math.random(), 1, 0.75),
       roughness: 0.5,
       metalness: 0,
       flatShading: true,
     });
 
-    scene.add(new THREE.Mesh(geometry, material));
+    scene.add(new Mesh(geometry, material));
 
-    scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
+    scene.add(new HemisphereLight(0xaaaaaa, 0x444444));
 
-    const light = new THREE.DirectionalLight(0xffffff, 0.5);
+    const light = new DirectionalLight(0xffffff, 0.5);
     light.position.set(1, 1, 1);
     scene.add(light);
 
     scenes.push(scene);
   }
 
-  renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer = new WebGLRenderer({ canvas: canvas, antialias: true });
   renderer.setClearColor(0xffffff, 1);
   renderer.setPixelRatio(window.devicePixelRatio);
 }

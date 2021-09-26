@@ -15,8 +15,8 @@ let offset = 0;
 const dpr = window.devicePixelRatio;
 
 const textureSize = 128 * dpr;
-const vector = new THREE.Vector2();
-const color = new THREE.Color();
+const vector = new Vector2();
+const color = new Color();
 
 init();
 animate();
@@ -27,10 +27,10 @@ function init() {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  camera = new THREE.PerspectiveCamera(70, width / height, 1, 1000);
+  camera = new PerspectiveCamera(70, width / height, 1, 1000);
   camera.position.z = 20;
 
-  cameraOrtho = new THREE.OrthographicCamera(
+  cameraOrtho = new OrthographicCamera(
     -width / 2,
     width / 2,
     height / 2,
@@ -40,28 +40,28 @@ function init() {
   );
   cameraOrtho.position.z = 10;
 
-  scene = new THREE.Scene();
-  sceneOrtho = new THREE.Scene();
+  scene = new Scene();
+  sceneOrtho = new Scene();
 
   //
 
   const points = GeometryUtils.gosper(8);
 
-  const geometry = new THREE.BufferGeometry();
-  const positionAttribute = new THREE.Float32BufferAttribute(points, 3);
+  const geometry = new BufferGeometry();
+  const positionAttribute = new Float32BufferAttribute(points, 3);
   geometry.setAttribute("position", positionAttribute);
   geometry.center();
 
-  const colorAttribute = new THREE.BufferAttribute(
+  const colorAttribute = new BufferAttribute(
     new Float32Array(positionAttribute.array.length),
     3
   );
-  colorAttribute.setUsage(THREE.DynamicDrawUsage);
+  colorAttribute.setUsage(DynamicDrawUsage);
   geometry.setAttribute("color", colorAttribute);
 
-  const material = new THREE.LineBasicMaterial({ vertexColors: true });
+  const material = new LineBasicMaterial({ vertexColors: true });
 
-  line = new THREE.Line(geometry, material);
+  line = new Line(geometry, material);
   line.scale.setScalar(0.05);
   scene.add(line);
 
@@ -69,19 +69,14 @@ function init() {
 
   const data = new Uint8Array(textureSize * textureSize * 3);
 
-  texture = new THREE.DataTexture(
-    data,
-    textureSize,
-    textureSize,
-    THREE.RGBFormat
-  );
-  texture.minFilter = THREE.NearestFilter;
-  texture.magFilter = THREE.NearestFilter;
+  texture = new DataTexture(data, textureSize, textureSize, RGBFormat);
+  texture.minFilter = NearestFilter;
+  texture.magFilter = NearestFilter;
 
   //
 
-  const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-  sprite = new THREE.Sprite(spriteMaterial);
+  const spriteMaterial = new SpriteMaterial({ map: texture });
+  sprite = new Sprite(spriteMaterial);
   sprite.scale.set(textureSize, textureSize, 1);
   sceneOrtho.add(sprite);
 
@@ -89,7 +84,7 @@ function init() {
 
   //
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.autoClear = false;

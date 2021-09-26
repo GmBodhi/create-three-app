@@ -25,50 +25,50 @@ function init() {
   const height = window.innerHeight || 1;
   const devicePixelRatio = window.devicePixelRatio || 1;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setClearColor(0x000000);
   renderer.setPixelRatio(devicePixelRatio);
   renderer.setSize(width, height);
   document.body.appendChild(renderer.domElement);
 
-  camera = new THREE.PerspectiveCamera(65, width / height, 3, 10);
+  camera = new PerspectiveCamera(65, width / height, 3, 10);
   camera.position.z = 7;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  group = new THREE.Object3D();
+  group = new Object3D();
   scene.add(group);
 
-  const light = new THREE.PointLight(0xddffdd, 0.8);
+  const light = new PointLight(0xddffdd, 0.8);
   light.position.z = 70;
   light.position.y = -70;
   light.position.x = -70;
   scene.add(light);
 
-  const light2 = new THREE.PointLight(0xffdddd, 0.8);
+  const light2 = new PointLight(0xffdddd, 0.8);
   light2.position.z = 70;
   light2.position.x = -70;
   light2.position.y = 70;
   scene.add(light2);
 
-  const light3 = new THREE.PointLight(0xddddff, 0.8);
+  const light3 = new PointLight(0xddddff, 0.8);
   light3.position.z = 70;
   light3.position.x = 70;
   light3.position.y = -70;
   scene.add(light3);
 
-  const light4 = new THREE.AmbientLight(0xffffff, 0.05);
+  const light4 = new AmbientLight(0xffffff, 0.05);
   scene.add(light4);
 
-  const geometry = new THREE.SphereGeometry(3, 48, 24);
+  const geometry = new SphereGeometry(3, 48, 24);
 
   for (let i = 0; i < 120; i++) {
-    const material = new THREE.MeshStandardMaterial();
+    const material = new MeshStandardMaterial();
     material.roughness = 0.5 * Math.random() + 0.25;
     material.metalness = 0;
     material.color.setHSL(Math.random(), 1.0, 0.3);
 
-    const mesh = new THREE.Mesh(geometry, material);
+    const mesh = new Mesh(geometry, material);
     mesh.position.x = Math.random() * 4 - 2;
     mesh.position.y = Math.random() * 4 - 2;
     mesh.position.z = Math.random() * 4 - 2;

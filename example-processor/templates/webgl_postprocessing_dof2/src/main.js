@@ -26,9 +26,9 @@ const shaderSettings = {
   samples: 4,
 };
 
-const mouse = new THREE.Vector2();
-const raycaster = new THREE.Raycaster();
-const target = new THREE.Vector3(0, 20, -50);
+const mouse = new Vector2();
+const raycaster = new Raycaster();
+const target = new Vector3(0, 20, -50);
 const planes = [];
 const leaves = 100;
 
@@ -39,7 +39,7 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
     1,
@@ -49,10 +49,10 @@ function init() {
   camera.position.y = 150;
   camera.position.z = 450;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
   scene.add(camera);
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.autoClear = false;
@@ -60,7 +60,7 @@ function init() {
 
   const depthShader = BokehDepthShader;
 
-  materialDepth = new THREE.ShaderMaterial({
+  materialDepth = new ShaderMaterial({
     uniforms: depthShader.uniforms,
     vertexShader: depthShader.vertexShader,
     fragmentShader: depthShader.fragmentShader,
@@ -81,26 +81,26 @@ function init() {
     r + "negz.jpg",
   ];
 
-  const textureCube = new THREE.CubeTextureLoader().load(urls);
+  const textureCube = new CubeTextureLoader().load(urls);
 
   scene.background = textureCube;
 
   // plane particles
 
-  const planePiece = new THREE.PlaneGeometry(10, 10, 1, 1);
+  const planePiece = new PlaneGeometry(10, 10, 1, 1);
 
-  const planeMat = new THREE.MeshPhongMaterial({
+  const planeMat = new MeshPhongMaterial({
     color: 0xffffff * 0.4,
     shininess: 0.5,
     specular: 0xffffff,
     envMap: textureCube,
-    side: THREE.DoubleSide,
+    side: DoubleSide,
   });
 
   const rand = Math.random;
 
   for (let i = 0; i < leaves; i++) {
-    const plane = new THREE.Mesh(planePiece, planeMat);
+    const plane = new Mesh(planePiece, planeMat);
     plane.rotation.set(rand(), rand(), rand());
     plane.rotation.dx = rand() * 0.1;
     plane.rotation.dy = rand() * 0.1;
@@ -115,11 +115,11 @@ function init() {
 
   // adding Monkeys
 
-  const loader2 = new THREE.BufferGeometryLoader();
+  const loader2 = new BufferGeometryLoader();
   loader2.load("models/json/suzanne_buffergeometry.json", function (geometry) {
     geometry.computeVertexNormals();
 
-    const material = new THREE.MeshPhongMaterial({
+    const material = new MeshPhongMaterial({
       specular: 0xffffff,
       envMap: textureCube,
       shininess: 50,
@@ -130,7 +130,7 @@ function init() {
     const monkeys = 20;
 
     for (let i = 0; i < monkeys; i++) {
-      const mesh = new THREE.Mesh(geometry, material);
+      const mesh = new Mesh(geometry, material);
 
       mesh.position.z = Math.cos((i / monkeys) * Math.PI * 2) * 200;
       mesh.position.y = Math.sin((i / monkeys) * Math.PI * 3) * 20;
@@ -146,17 +146,17 @@ function init() {
 
   // add balls
 
-  const geometry = new THREE.SphereGeometry(1, 20, 20);
+  const geometry = new SphereGeometry(1, 20, 20);
 
   for (let i = 0; i < 20; i++) {
-    const ballmaterial = new THREE.MeshPhongMaterial({
+    const ballmaterial = new MeshPhongMaterial({
       color: 0xffffff * Math.random(),
       shininess: 0.5,
       specular: 0xffffff,
       envMap: textureCube,
     });
 
-    const mesh = new THREE.Mesh(geometry, ballmaterial);
+    const mesh = new Mesh(geometry, ballmaterial);
 
     mesh.position.x = (Math.random() - 0.5) * 200;
     mesh.position.y = Math.random() * 50;
@@ -167,13 +167,13 @@ function init() {
 
   // lights
 
-  scene.add(new THREE.AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x222222));
 
-  const directionalLight1 = new THREE.DirectionalLight(0xffffff, 2);
+  const directionalLight1 = new DirectionalLight(0xffffff, 2);
   directionalLight1.position.set(2, 1.2, 10).normalize();
   scene.add(directionalLight1);
 
-  const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
+  const directionalLight2 = new DirectionalLight(0xffffff, 1);
   directionalLight2.position.set(-2, 1.2, -10).normalize();
   scene.add(directionalLight2);
 
@@ -293,9 +293,9 @@ function onPointerMove(event) {
 }
 
 function initPostprocessing() {
-  postprocessing.scene = new THREE.Scene();
+  postprocessing.scene = new Scene();
 
-  postprocessing.camera = new THREE.OrthographicCamera(
+  postprocessing.camera = new OrthographicCamera(
     window.innerWidth / -2,
     window.innerWidth / 2,
     window.innerHeight / 2,
@@ -308,16 +308,16 @@ function initPostprocessing() {
   postprocessing.scene.add(postprocessing.camera);
 
   const pars = {
-    minFilter: THREE.LinearFilter,
-    magFilter: THREE.LinearFilter,
-    format: THREE.RGBFormat,
+    minFilter: LinearFilter,
+    magFilter: LinearFilter,
+    format: RGBFormat,
   };
-  postprocessing.rtTextureDepth = new THREE.WebGLRenderTarget(
+  postprocessing.rtTextureDepth = new WebGLRenderTarget(
     window.innerWidth,
     window.innerHeight,
     pars
   );
-  postprocessing.rtTextureColor = new THREE.WebGLRenderTarget(
+  postprocessing.rtTextureColor = new WebGLRenderTarget(
     window.innerWidth,
     window.innerHeight,
     pars
@@ -325,9 +325,7 @@ function initPostprocessing() {
 
   const bokeh_shader = BokehShader;
 
-  postprocessing.bokeh_uniforms = THREE.UniformsUtils.clone(
-    bokeh_shader.uniforms
-  );
+  postprocessing.bokeh_uniforms = UniformsUtils.clone(bokeh_shader.uniforms);
 
   postprocessing.bokeh_uniforms["tColor"].value =
     postprocessing.rtTextureColor.texture;
@@ -336,7 +334,7 @@ function initPostprocessing() {
   postprocessing.bokeh_uniforms["textureWidth"].value = window.innerWidth;
   postprocessing.bokeh_uniforms["textureHeight"].value = window.innerHeight;
 
-  postprocessing.materialBokeh = new THREE.ShaderMaterial({
+  postprocessing.materialBokeh = new ShaderMaterial({
     uniforms: postprocessing.bokeh_uniforms,
     vertexShader: bokeh_shader.vertexShader,
     fragmentShader: bokeh_shader.fragmentShader,
@@ -346,8 +344,8 @@ function initPostprocessing() {
     },
   });
 
-  postprocessing.quad = new THREE.Mesh(
-    new THREE.PlaneGeometry(window.innerWidth, window.innerHeight),
+  postprocessing.quad = new Mesh(
+    new PlaneGeometry(window.innerWidth, window.innerHeight),
     postprocessing.materialBokeh
   );
   postprocessing.quad.position.z = -500;

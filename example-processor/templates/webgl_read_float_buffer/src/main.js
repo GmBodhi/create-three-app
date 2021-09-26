@@ -25,7 +25,7 @@ animate();
 function init() {
   container = document.getElementById("container");
 
-  cameraRTT = new THREE.OrthographicCamera(
+  cameraRTT = new OrthographicCamera(
     window.innerWidth / -2,
     window.innerWidth / 2,
     window.innerHeight / 2,
@@ -37,36 +37,32 @@ function init() {
 
   //
 
-  sceneRTT = new THREE.Scene();
-  sceneScreen = new THREE.Scene();
+  sceneRTT = new Scene();
+  sceneScreen = new Scene();
 
-  let light = new THREE.DirectionalLight(0xffffff);
+  let light = new DirectionalLight(0xffffff);
   light.position.set(0, 0, 1).normalize();
   sceneRTT.add(light);
 
-  light = new THREE.DirectionalLight(0xffaaaa, 1.5);
+  light = new DirectionalLight(0xffaaaa, 1.5);
   light.position.set(0, 0, -1).normalize();
   sceneRTT.add(light);
 
-  rtTexture = new THREE.WebGLRenderTarget(
-    window.innerWidth,
-    window.innerHeight,
-    {
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.NearestFilter,
-      format: THREE.RGBAFormat,
-      type: THREE.FloatType,
-    }
-  );
+  rtTexture = new WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+    minFilter: LinearFilter,
+    magFilter: NearestFilter,
+    format: RGBAFormat,
+    type: FloatType,
+  });
 
-  material = new THREE.ShaderMaterial({
+  material = new ShaderMaterial({
     uniforms: { time: { value: 0.0 } },
     vertexShader: document.getElementById("vertexShader").textContent,
     fragmentShader: document.getElementById("fragment_shader_pass_1")
       .textContent,
   });
 
-  const materialScreen = new THREE.ShaderMaterial({
+  const materialScreen = new ShaderMaterial({
     uniforms: { tDiffuse: { value: rtTexture.texture } },
     vertexShader: document.getElementById("vertexShader").textContent,
     fragmentShader: document.getElementById("fragment_shader_screen")
@@ -75,40 +71,40 @@ function init() {
     depthWrite: false,
   });
 
-  const plane = new THREE.PlaneGeometry(window.innerWidth, window.innerHeight);
+  const plane = new PlaneGeometry(window.innerWidth, window.innerHeight);
 
-  quad = new THREE.Mesh(plane, material);
+  quad = new Mesh(plane, material);
   quad.position.z = -100;
   sceneRTT.add(quad);
 
-  const geometry = new THREE.TorusGeometry(100, 25, 15, 30);
+  const geometry = new TorusGeometry(100, 25, 15, 30);
 
-  const mat1 = new THREE.MeshPhongMaterial({
+  const mat1 = new MeshPhongMaterial({
     color: 0x555555,
     specular: 0xffaa00,
     shininess: 5,
   });
-  const mat2 = new THREE.MeshPhongMaterial({
+  const mat2 = new MeshPhongMaterial({
     color: 0x550000,
     specular: 0xff2200,
     shininess: 5,
   });
 
-  zmesh1 = new THREE.Mesh(geometry, mat1);
+  zmesh1 = new Mesh(geometry, mat1);
   zmesh1.position.set(0, 0, 100);
   zmesh1.scale.set(1.5, 1.5, 1.5);
   sceneRTT.add(zmesh1);
 
-  zmesh2 = new THREE.Mesh(geometry, mat2);
+  zmesh2 = new Mesh(geometry, mat2);
   zmesh2.position.set(0, 150, 100);
   zmesh2.scale.set(0.75, 0.75, 0.75);
   sceneRTT.add(zmesh2);
 
-  quad = new THREE.Mesh(plane, materialScreen);
+  quad = new Mesh(plane, materialScreen);
   quad.position.z = -100;
   sceneScreen.add(quad);
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.autoClear = false;

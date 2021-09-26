@@ -22,21 +22,16 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new THREE.PerspectiveCamera(
-    35,
-    SCREEN_WIDTH / SCREEN_HEIGHT,
-    1,
-    5000
-  );
+  camera = new PerspectiveCamera(35, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 5000);
   camera.position.z = 1500;
 
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000);
-  scene.fog = new THREE.Fog(0x000000, 1500, 4000);
+  scene = new Scene();
+  scene.background = new Color(0x000000);
+  scene.fog = new Fog(0x000000, 1500, 4000);
 
-  scene2 = new THREE.Scene();
-  scene2.background = new THREE.Color(0x000000);
-  scene2.fog = new THREE.Fog(0x000000, 1500, 4000);
+  scene2 = new Scene();
+  scene2.background = new Color(0x000000);
+  scene2.fog = new Fog(0x000000, 1500, 4000);
 
   // GROUND
 
@@ -52,28 +47,28 @@ function init() {
   context.fillRect(0, 0, 64, 64);
   context.fillRect(64, 64, 64, 64);
 
-  const textureCanvas = new THREE.CanvasTexture(imageCanvas);
+  const textureCanvas = new CanvasTexture(imageCanvas);
   textureCanvas.repeat.set(1000, 1000);
-  textureCanvas.wrapS = THREE.RepeatWrapping;
-  textureCanvas.wrapT = THREE.RepeatWrapping;
+  textureCanvas.wrapS = RepeatWrapping;
+  textureCanvas.wrapT = RepeatWrapping;
 
   const textureCanvas2 = textureCanvas.clone();
-  textureCanvas2.magFilter = THREE.NearestFilter;
-  textureCanvas2.minFilter = THREE.NearestFilter;
+  textureCanvas2.magFilter = NearestFilter;
+  textureCanvas2.minFilter = NearestFilter;
 
-  const materialCanvas = new THREE.MeshBasicMaterial({ map: textureCanvas });
-  const materialCanvas2 = new THREE.MeshBasicMaterial({
+  const materialCanvas = new MeshBasicMaterial({ map: textureCanvas });
+  const materialCanvas2 = new MeshBasicMaterial({
     color: 0xffccaa,
     map: textureCanvas2,
   });
 
-  const geometry = new THREE.PlaneGeometry(100, 100);
+  const geometry = new PlaneGeometry(100, 100);
 
-  const meshCanvas = new THREE.Mesh(geometry, materialCanvas);
+  const meshCanvas = new Mesh(geometry, materialCanvas);
   meshCanvas.rotation.x = -Math.PI / 2;
   meshCanvas.scale.set(1000, 1000, 1000);
 
-  const meshCanvas2 = new THREE.Mesh(geometry, materialCanvas2);
+  const meshCanvas2 = new Mesh(geometry, materialCanvas2);
   meshCanvas2.rotation.x = -Math.PI / 2;
   meshCanvas2.scale.set(1000, 1000, 1000);
 
@@ -88,9 +83,9 @@ function init() {
     scene.add(meshCanvas);
     scene2.add(meshCanvas2);
 
-    const geometry = new THREE.PlaneGeometry(100, 100);
-    const mesh = new THREE.Mesh(geometry, materialPainting);
-    const mesh2 = new THREE.Mesh(geometry, materialPainting2);
+    const geometry = new PlaneGeometry(100, 100);
+    const mesh = new Mesh(geometry, materialPainting);
+    const mesh2 = new Mesh(geometry, materialPainting2);
 
     addPainting(scene, mesh);
     addPainting(scene2, mesh2);
@@ -101,18 +96,18 @@ function init() {
 
       zscene.add(zmesh);
 
-      const meshFrame = new THREE.Mesh(
+      const meshFrame = new Mesh(
         geometry,
-        new THREE.MeshBasicMaterial({ color: 0x000000 })
+        new MeshBasicMaterial({ color: 0x000000 })
       );
       meshFrame.position.z = -10.0;
       meshFrame.scale.x = (1.1 * image.width) / 100;
       meshFrame.scale.y = (1.1 * image.height) / 100;
       zscene.add(meshFrame);
 
-      const meshShadow = new THREE.Mesh(
+      const meshShadow = new Mesh(
         geometry,
-        new THREE.MeshBasicMaterial({
+        new MeshBasicMaterial({
           color: 0x000000,
           opacity: 0.75,
           transparent: true,
@@ -130,25 +125,25 @@ function init() {
     }
   };
 
-  const texturePainting = new THREE.TextureLoader().load(
+  const texturePainting = new TextureLoader().load(
     "textures/758px-Canestra_di_frutta_(Caravaggio).jpg",
     callbackPainting
   );
-  const texturePainting2 = new THREE.Texture();
-  const materialPainting = new THREE.MeshBasicMaterial({
+  const texturePainting2 = new Texture();
+  const materialPainting = new MeshBasicMaterial({
     color: 0xffffff,
     map: texturePainting,
   });
-  const materialPainting2 = new THREE.MeshBasicMaterial({
+  const materialPainting2 = new MeshBasicMaterial({
     color: 0xffccaa,
     map: texturePainting2,
   });
 
-  texturePainting2.minFilter = texturePainting2.magFilter = THREE.NearestFilter;
-  texturePainting.minFilter = texturePainting.magFilter = THREE.LinearFilter;
-  texturePainting.mapping = THREE.UVMapping;
+  texturePainting2.minFilter = texturePainting2.magFilter = NearestFilter;
+  texturePainting.minFilter = texturePainting.magFilter = LinearFilter;
+  texturePainting.mapping = UVMapping;
 
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.autoClear = false;

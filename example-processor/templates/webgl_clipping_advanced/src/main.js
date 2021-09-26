@@ -19,7 +19,7 @@ function planesFromMesh(vertices, indices) {
       b = vertices[indices[j + 1]],
       c = vertices[indices[j + 2]];
 
-    result[i] = new THREE.Plane().setFromCoplanarPoints(a, b, c);
+    result[i] = new Plane().setFromCoplanarPoints(a, b, c);
   }
 
   return result;
@@ -30,7 +30,7 @@ function createPlanes(n) {
 
   const result = new Array(n);
 
-  for (let i = 0; i !== n; ++i) result[i] = new THREE.Plane();
+  for (let i = 0; i !== n; ++i) result[i] = new Plane();
 
   return result;
 }
@@ -61,13 +61,13 @@ const planeToMatrix = (function () {
   // creates a matrix that aligns X/Y to a given plane
 
   // temporaries:
-  const xAxis = new THREE.Vector3(),
-    yAxis = new THREE.Vector3(),
-    trans = new THREE.Vector3();
+  const xAxis = new Vector3(),
+    yAxis = new Vector3(),
+    trans = new Vector3();
 
   return function planeToMatrix(plane) {
     const zAxis = plane.normal,
-      matrix = new THREE.Matrix4();
+      matrix = new Matrix4();
 
     // Hughes & Moeller '99
     // "Building an Orthonormal Basis from a Unit Vector."
@@ -105,10 +105,10 @@ const planeToMatrix = (function () {
 // A regular tetrahedron for the clipping volume:
 
 const Vertices = [
-    new THREE.Vector3(+1, 0, +Math.SQRT1_2),
-    new THREE.Vector3(-1, 0, +Math.SQRT1_2),
-    new THREE.Vector3(0, +1, -Math.SQRT1_2),
-    new THREE.Vector3(0, -1, -Math.SQRT1_2),
+    new Vector3(+1, 0, +Math.SQRT1_2),
+    new Vector3(-1, 0, +Math.SQRT1_2),
+    new Vector3(0, +1, -Math.SQRT1_2),
+    new Vector3(0, -1, -Math.SQRT1_2),
   ],
   Indices = [0, 1, 2, 0, 2, 3, 0, 3, 1, 1, 3, 2],
   Planes = planesFromMesh(Vertices, Indices),
@@ -127,7 +127,7 @@ let camera,
   globalClippingPlanes;
 
 function init() {
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     36,
     window.innerWidth / window.innerHeight,
     0.25,
@@ -136,13 +136,13 @@ function init() {
 
   camera.position.set(0, 1.5, 3);
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
   // Lights
 
-  scene.add(new THREE.AmbientLight(0xffffff, 0.3));
+  scene.add(new AmbientLight(0xffffff, 0.3));
 
-  const spotLight = new THREE.SpotLight(0xffffff, 0.5);
+  const spotLight = new SpotLight(0xffffff, 0.5);
   spotLight.angle = Math.PI / 5;
   spotLight.penumbra = 0.2;
   spotLight.position.set(2, 3, 3);
@@ -153,7 +153,7 @@ function init() {
   spotLight.shadow.mapSize.height = 1024;
   scene.add(spotLight);
 
-  const dirLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  const dirLight = new DirectionalLight(0xffffff, 0.5);
   dirLight.position.set(0, 2, 0);
   dirLight.castShadow = true;
   dirLight.shadow.camera.near = 1;
@@ -170,23 +170,23 @@ function init() {
 
   // Geometry
 
-  clipMaterial = new THREE.MeshPhongMaterial({
+  clipMaterial = new MeshPhongMaterial({
     color: 0xee0a10,
     shininess: 100,
-    side: THREE.DoubleSide,
+    side: DoubleSide,
     // Clipping setup:
     clippingPlanes: createPlanes(Planes.length),
     clipShadows: true,
   });
 
-  object = new THREE.Group();
+  object = new Group();
 
-  const geometry = new THREE.BoxGeometry(0.18, 0.18, 0.18);
+  const geometry = new BoxGeometry(0.18, 0.18, 0.18);
 
   for (let z = -2; z <= 2; ++z)
     for (let y = -2; y <= 2; ++y)
       for (let x = -2; x <= 2; ++x) {
-        const mesh = new THREE.Mesh(geometry, clipMaterial);
+        const mesh = new Mesh(geometry, clipMaterial);
         mesh.position.set(x / 5, y / 5, z / 5);
         mesh.castShadow = true;
         object.add(mesh);
@@ -194,16 +194,16 @@ function init() {
 
   scene.add(object);
 
-  const planeGeometry = new THREE.PlaneGeometry(3, 3, 1, 1),
-    color = new THREE.Color();
+  const planeGeometry = new PlaneGeometry(3, 3, 1, 1),
+    color = new Color();
 
-  volumeVisualization = new THREE.Group();
+  volumeVisualization = new Group();
   volumeVisualization.visible = false;
 
   for (let i = 0, n = Planes.length; i !== n; ++i) {
-    const material = new THREE.MeshBasicMaterial({
+    const material = new MeshBasicMaterial({
       color: color.setHSL(i / n, 0.5, 0.5).getHex(),
-      side: THREE.DoubleSide,
+      side: DoubleSide,
 
       opacity: 0.2,
       transparent: true,
@@ -218,7 +218,7 @@ function init() {
       // visualization does not cast shadows
     });
 
-    const mesh = new THREE.Mesh(planeGeometry, material);
+    const mesh = new Mesh(planeGeometry, material);
     mesh.matrixAutoUpdate = false;
 
     volumeVisualization.add(mesh);
@@ -226,9 +226,9 @@ function init() {
 
   scene.add(volumeVisualization);
 
-  const ground = new THREE.Mesh(
+  const ground = new Mesh(
     planeGeometry,
-    new THREE.MeshPhongMaterial({
+    new MeshPhongMaterial({
       color: 0xa0adaf,
       shininess: 10,
     })
@@ -242,7 +242,7 @@ function init() {
 
   const container = document.body;
 
-  renderer = new THREE.WebGLRenderer();
+  renderer = new WebGLRenderer();
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -331,8 +331,8 @@ function setObjectWorldMatrix(object, matrix) {
   object.applyMatrix4(matrix);
 }
 
-const transform = new THREE.Matrix4(),
-  tmpMatrix = new THREE.Matrix4();
+const transform = new Matrix4(),
+  tmpMatrix = new Matrix4();
 
 function animate() {
   const currentTime = Date.now(),

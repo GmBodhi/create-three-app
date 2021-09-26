@@ -28,27 +28,27 @@ let mesh;
 const hdrEquirect = new RGBELoader()
   .setPath("textures/equirectangular/")
   .load("royal_esplanade_1k.hdr", function () {
-    hdrEquirect.mapping = THREE.EquirectangularReflectionMapping;
+    hdrEquirect.mapping = EquirectangularReflectionMapping;
 
     init();
     render();
   });
 
 function init() {
-  renderer = new THREE.WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
-  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = params.exposure;
 
-  renderer.outputEncoding = THREE.sRGBEncoding;
+  renderer.outputEncoding = sRGBEncoding;
 
-  scene = new THREE.Scene();
+  scene = new Scene();
 
-  camera = new THREE.PerspectiveCamera(
+  camera = new PerspectiveCamera(
     40,
     window.innerWidth / window.innerHeight,
     1,
@@ -62,15 +62,15 @@ function init() {
 
   //
 
-  const geometry = new THREE.SphereGeometry(20, 64, 32);
+  const geometry = new SphereGeometry(20, 64, 32);
 
-  const texture = new THREE.CanvasTexture(generateTexture());
-  texture.magFilter = THREE.NearestFilter;
-  texture.wrapT = THREE.RepeatWrapping;
-  texture.wrapS = THREE.RepeatWrapping;
+  const texture = new CanvasTexture(generateTexture());
+  texture.magFilter = NearestFilter;
+  texture.wrapT = RepeatWrapping;
+  texture.wrapS = RepeatWrapping;
   texture.repeat.set(1, 3.5);
 
-  const material = new THREE.MeshPhysicalMaterial({
+  const material = new MeshPhysicalMaterial({
     color: params.color,
     metalness: params.metalness,
     roughness: params.roughness,
@@ -82,11 +82,11 @@ function init() {
     specularIntensity: params.specularIntensity,
     specularTint: params.specularTint,
     opacity: params.opacity,
-    side: THREE.DoubleSide,
+    side: DoubleSide,
     transparent: true,
   });
 
-  mesh = new THREE.Mesh(geometry, material);
+  mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
   //
