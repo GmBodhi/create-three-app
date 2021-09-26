@@ -1,28 +1,19 @@
 import "./style.css"; // For webpack support
 
 import {
-  Vector3,
-  Scene,
-  Color,
-  Fog,
   PerspectiveCamera,
+  Scene,
   AmbientLight,
-  DirectionalLight,
-  TextureLoader,
-  MeshLambertMaterial,
-  DoubleSide,
-  ParametricBufferGeometry,
-  Mesh,
-  SphereGeometry,
-  RepeatWrapping,
-  sRGBEncoding,
-  PlaneGeometry,
-  BoxGeometry,
-  WebGLRenderer,
   SpotLight,
+  DirectionalLight,
   Plane,
+  Vector3,
   MeshPhongMaterial,
+  DoubleSide,
   TorusKnotGeometry,
+  Mesh,
+  PlaneGeometry,
+  WebGLRenderer,
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
