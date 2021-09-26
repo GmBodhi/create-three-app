@@ -17,6 +17,7 @@ function subimports() {
 }
 
 module.exports = function parseScript(html) {
+  imports = [];
   let js = 'import "./style.css"; // For webpack support\n';
   let { window } = new JSDOM(html);
   let { document } = window;
