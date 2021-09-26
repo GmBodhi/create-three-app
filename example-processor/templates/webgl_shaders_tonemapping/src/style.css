@@ -1,0 +1,14 @@
+#labels {
+  position: absolute;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: end;
+  height: 100%;
+  width: 100%;
+}
+#labels > div {
+  background-color: black;
+  padding: 6px;
+  margin-bottom: 20%;
+}

@@ -1,0 +1,15 @@
+body {
+  background-color: #fff;
+  color: #222;
+}
+
+a {
+  color: #08f;
+}
+
+#container {
+  position: absolute;
+  top: 70px;
+  width: 100%;
+  bottom: 0px;
+}

@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>three.js webgl - materials - custom blending</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body style="overflow: hidden">
+    <div id="images" class="menu">
+      Foreground
+      <a id="img_0" href="#"><img src="textures/disturb.jpg" /></a>
+      <a id="img_1" href="#"><img src="textures/sprite0.jpg" /></a>
+      <a id="img_2" href="#"><img src="textures/sprite0.png" /></a>
+      <a id="img_3" href="#"><img src="textures/lensflare/lensflare0.png" /></a>
+      <a id="img_4" href="#"
+        ><img src="textures/lensflare/lensflare0_alpha.png"
+      /></a>
+      <a id="img_5" href="#"><img src="textures/sprites/ball.png" /></a>
+      <a id="img_6" href="#"
+        ><img src="textures/sprites/snowflake7_alpha.png"
+      /></a>
+    </div>
+
+    <div id="backgrounds" class="menu">
+      Background
+      <a id="bg_0" href="#"><img src="textures/disturb.jpg" /></a>
+      <a id="bg_1" href="#"></a>
+      <a id="bg_2" href="#"></a>
+      <a id="bg_3" href="#"><img src="textures/crate.gif" /></a>
+      <a id="bg_4" href="#"><img src="textures/lava/lavatile.jpg" /></a>
+      <a id="bg_5" href="#"><img src="textures/water.jpg" /></a>
+      <a id="bg_6" href="#"><img src="textures/lava/cloud.png" /></a>
+    </div>
+
+    <div id="labels" class="menu">
+      Equation<br /><br />
+      <div class="lbl btn" id="btn_add">Add</div>
+      <div class="lbl btn" id="btn_sub">Subtract</div>
+      <div class="lbl btn" id="btn_rsub">ReverseSubtract</div>
+      <div class="lbl btn" id="btn_min">Min</div>
+      <div class="lbl btn" id="btn_max">Max</div>
+
+      Premultiply alpha<br /><br />
+      <div class="lbl btn" id="btn_pre">On</div>
+      <div class="lbl btn" id="btn_nopre">Off</div>
+
+      Labels<br /><br />
+      <div class="lbl" id="lbl_src">Source</div>
+      <div class="lbl" id="lbl_dst">Destination</div>
+    </div>
+  </body>
+</html>
