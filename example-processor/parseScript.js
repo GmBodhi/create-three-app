@@ -12,8 +12,8 @@ function treeShaking(match, p1) {
   return p1;
 }
 
-function subimports(){
-  return `import { ${imports.toString()} } from "three"`
+function subimports() {
+  return `import { ${imports.toString()} } from "three"`;
 }
 
 module.exports = function parseScript(html) {
@@ -26,7 +26,7 @@ module.exports = function parseScript(html) {
       js += s.innerHTML
         .replace(/\.(\.\/build\/three\.module\.js|\/)/gi, resolveUrl)
         .replace(/THREE\.(\w+)/g, treeShaking)
-        .replace(/import\s+\*\s+as\s+THREE\s+from\s+\"three\"/, );
+        .replace(/import\s+\*\s+as\s+THREE\s+from\s+\"three\"/);
     });
   return js;
 };
