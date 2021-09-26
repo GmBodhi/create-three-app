@@ -12,6 +12,10 @@ function treeShaking(match, p1) {
   return p1;
 }
 
+function subimports(){
+  return `import { ${imports.toString()} } from "three"`
+}
+
 module.exports = function parseScript(html) {
   let js = 'import "./style.css"; // For webpack support\n';
   let { window } = new JSDOM(html);
@@ -22,7 +26,7 @@ module.exports = function parseScript(html) {
       js += s.innerHTML
         .replace(/\.(\.\/build\/three\.module\.js|\/)/gi, resolveUrl)
         .replace(/THREE\.(\w+)/g, treeShaking)
-        .replace();
+        .replace(/import\s+\*\s+as\s+THREE\s+from\s+\"three\"/, );
     });
   return js;
 };
