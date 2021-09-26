@@ -11,7 +11,7 @@
 
 ## Star the repo?
 
-If you think this repo is worth a star✨ just don't hesitate :)
+If you think [this repo](https://github.com/GmBodhi/create-three-app/stargazers) is worth a star✨ just don't hesitate :)
 
 ### Note: We don't recommend installing this package globally.
 
