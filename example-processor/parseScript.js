@@ -8,7 +8,7 @@ function resolveUrl(match, url) {
 let imports = [];
 
 function treeShaking(match, p1) {
-  imports.push(p1);
+  if (!imports.includes(p1)) imports.push(p1);
   return p1;
 }
 
