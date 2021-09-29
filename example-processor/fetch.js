@@ -19,10 +19,6 @@ module.exports.launch = async ({ urls, json }) => {
   page.on("request", (request) => {
     let url = request.frame()?.url() ?? "unknown";
 
-    let resUrls = request.url()?.split("/");
-
-    console.log(resUrls?.pop().split(".")[0]);
-
     if (
       [
         "https://threejs.org/build/three.module.js",
@@ -31,8 +27,6 @@ module.exports.launch = async ({ urls, json }) => {
       ].includes(request.url())
     )
       return;
-
-    console.log(resUrls?.pop().split(".")[0]);
     if (!urls[url]) urls[url] = [];
     urls[url].push(request.url());
   });
