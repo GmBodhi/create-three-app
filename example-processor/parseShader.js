@@ -8,11 +8,11 @@ module.exports = function parseShader(window, name) {
 
   if (!shaders.length) return;
 
-  fs.mkdirSync(path.resolve(__dirname, `./templates/${name}/shaders`));
+  fs.mkdirSync(path.resolve(__dirname, `./templates/${name}/src/shaders`));
 
   shaders.forEach((shader) => {
     fs.writeFileSync(
-      path.resolve(__dirname, `./templates/${name}/shaders/${shader.id}.glsl`),
+      path.resolve(__dirname, `./templates/${name}/src/shaders/${shader.id}.glsl`),
       JSON.stringify(shader.textContent)
     );
   });
