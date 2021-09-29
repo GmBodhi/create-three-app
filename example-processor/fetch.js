@@ -81,12 +81,14 @@ module.exports.fetch = async function (url, name) {
 
   let { window } = new JSDOM(await p.text());
 
+  mkdirSync("./templates/" + name + "/src");
+  
   let script = parseScript(window);
   parseShader(window, name);
   let style = parseStyle(window);
   let html = parseHtml(window);
 
-  mkdirSync("./templates/" + name + "/src");
+
   writeFileSync(`./templates/${name}/src/index.html`, html);
   writeFileSync(`./templates/${name}/src/main.js`, script);
   writeFileSync(`./templates/${name}/src/style.css`, style);
