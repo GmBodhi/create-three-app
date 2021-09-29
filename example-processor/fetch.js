@@ -17,7 +17,9 @@ module.exports.launch = async ({ urls, json }) => {
   page = await browser.newPage();
 
   page.on("request", (request) => {
-    let url = request.frame()?.url()?.split(".")[0] ?? "unknown";
+    let url = request.frame()?.url()?.split("/")[request.frame()?.url()?.split("/").length]?.split(".")[0] ?? "unknown";
+
+    if (!json.includes(url)) return console.log("Skipped: "+url)
 
     if (
       [

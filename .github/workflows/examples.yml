@@ -26,12 +26,12 @@ jobs:
       - name: Generate examples
         run: |
           cd example-processor
-          node index.js
+          node index.js --unhandled-rejections=strict
 
       - name: Generate Config
         run: |
           cd example-processor
-          node generateConfig.js
+          node generateConfig.js --unhandled-rejections=strict
 
       - name: Format Code
         run: |
