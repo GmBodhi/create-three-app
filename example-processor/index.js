@@ -11,12 +11,14 @@ function writeAssets(json) {
 
 const init = () => {
   mkdirSync("./templates");
-  fetch("https://threejs.org/examples/tags.json")
+  fetch("https://threejs.org/examples/files.json")
     .then((r) => r.json())
     .then(async (json) => {
+      let targets = [];
+      Object.values(json).forEach((r) => targets.push(...r));
       let urls = {};
-      await fetch1.launch({ urls, json: Object.keys(json) });
-      for (let key of Object.keys(json)) {
+      await fetch1.launch({ urls, json: targets });
+      for (let key of targets) {
         await new Promise((resolve) => setTimeout(resolve, 1000));
         await fetch1.fetch(`https://threejs.org/examples/${key}.html`, key);
       }
