@@ -1,0 +1,54 @@
+<html>
+  <head>
+    <title>three.js webgl - custom attributes [particles][billboards]</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      - custom attributes example - particles - billboards
+    </div>
+    <div id="container"></div>
+
+    <script type="x-shader/x-vertex" id="vertexshader">
+
+      attribute float size;
+      attribute vec3 ca;
+
+      varying vec3 vColor;
+
+      void main() {
+
+      	vColor = ca;
+
+      	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+
+      	gl_PointSize = size * ( 300.0 / -mvPosition.z );
+
+      	gl_Position = projectionMatrix * mvPosition;
+
+      }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentshader">
+
+      uniform vec3 color;
+      uniform sampler2D pointTexture;
+
+      varying vec3 vColor;
+
+      void main() {
+
+      	vec4 color = vec4( color * vColor, 1.0 ) * texture2D( pointTexture, gl_PointCoord );
+
+      	gl_FragColor = color;
+
+      }
+    </script>
+  </body>
+</html>

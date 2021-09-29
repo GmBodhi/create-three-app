@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>three.js webgl - modifier - tessellation</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      - modifier tessellation
+    </div>
+    <div id="container"></div>
+
+    <script type="x-shader/x-vertex" id="vertexshader">
+
+      uniform float amplitude;
+
+      attribute vec3 customColor;
+      attribute vec3 displacement;
+
+      varying vec3 vNormal;
+      varying vec3 vColor;
+
+      void main() {
+
+      	vNormal = normal;
+      	vColor = customColor;
+
+      	vec3 newPosition = position + normal * amplitude * displacement;
+      	gl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );
+
+      }
+    </script>
+
+    <script type="x-shader/x-fragment" id="fragmentshader">
+
+      varying vec3 vNormal;
+      varying vec3 vColor;
+
+      void main() {
+
+      	const float ambient = 0.4;
+
+      	vec3 light = vec3( 1.0 );
+      	light = normalize( light );
+
+      	float directional = max( dot( vNormal, light ), 0.0 );
+
+      	gl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );
+
+      }
+    </script>
+  </body>
+</html>

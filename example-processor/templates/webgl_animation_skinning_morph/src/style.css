@@ -1,0 +1,14 @@
+body {
+  color: #222;
+}
+
+a {
+  color: #2fa1d6;
+}
+
+p {
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 2em;
+}

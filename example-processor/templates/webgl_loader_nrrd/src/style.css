@@ -1,0 +1,12 @@
+#inset {
+  width: 150px;
+  height: 150px;
+  background-color: transparent; /* or transparent; will show through only if renderer alpha: true */
+  border: none; /* or none; */
+  margin: 0;
+  padding: 0px;
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  z-index: 100;
+}

@@ -1,0 +1,52 @@
+body {
+  background-color: #050505;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(43, 45, 48, 1) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
+
+#topmenu {
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+#menu {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+button {
+  color: rgb(255, 255, 255);
+  background: rgb(255, 255, 255, 0.1);
+  border: 0px;
+  padding: 5px 10px;
+  margin: 2px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: rgba(0, 255, 255, 0.5);
+}
+
+button:active {
+  color: #000000;
+  background-color: rgba(0, 255, 255, 1);
+}
+
+.bond {
+  width: 5px;
+  height: 10px;
+  background: #eee;
+  display: block;
+}

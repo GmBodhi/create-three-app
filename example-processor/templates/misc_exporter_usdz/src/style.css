@@ -1,0 +1,14 @@
+body {
+  background-color: #eee;
+}
+#info {
+  color: #222;
+}
+a {
+  color: #00f;
+}
+#button {
+  position: absolute;
+  bottom: 15px;
+  left: calc(50% - 40px);
+}
