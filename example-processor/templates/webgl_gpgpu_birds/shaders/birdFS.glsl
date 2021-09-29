@@ -1,0 +1,1 @@
+"\n\n\t\t\tvarying vec4 vColor;\n\t\t\tvarying float z;\n\n\t\t\tuniform vec3 color;\n\n\t\t\tvoid main() {\n\t\t\t\t// Fake colors for now\n\t\t\t\tfloat z2 = 0.2 + ( 1000. - z ) / 1000. * vColor.x;\n\t\t\t\tgl_FragColor = vec4( z2, z2, z2, 1. );\n\n\t\t\t}\n\n\t\t"

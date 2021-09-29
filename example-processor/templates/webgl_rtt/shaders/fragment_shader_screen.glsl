@@ -1,0 +1,1 @@
+"\n\n\t\t\tvarying vec2 vUv;\n\t\t\tuniform sampler2D tDiffuse;\n\n\t\t\tvoid main() {\n\n\t\t\t\tgl_FragColor = texture2D( tDiffuse, vUv );\n\n\t\t\t}\n\n\t\t"

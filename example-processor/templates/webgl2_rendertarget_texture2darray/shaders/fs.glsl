@@ -1,0 +1,1 @@
+"\n\tprecision highp float;\n\tprecision highp int;\n\tprecision highp sampler2DArray;\n\n\tuniform sampler2DArray diffuse;\n\tin vec2 vUv;\n\tuniform int depth;\n\n\tvoid main() {\n\n\t\tvec4 color = texture( diffuse, vec3( vUv, depth ) );\n\n\t\t// lighten a bit\n\t\tgl_FragColor = vec4( color.rrr * 1.5, 1.0 );\n\t}\n\t"

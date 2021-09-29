@@ -64,6 +64,13 @@ module.exports = {
         test: /\.(ttf|eot|woff|woff2)$/,
         use: "file-loader",
       },
+
+      // Shaders
+      {
+        test: /\.(glsl|vs|fs|vert|frag)$/,
+        exclude: /node_modules/,
+        use: ["raw-loader", "glslify-loader"],
+      },
     ],
   },
 };

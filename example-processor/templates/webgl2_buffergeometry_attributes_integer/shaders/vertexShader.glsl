@@ -1,0 +1,1 @@
+"\n\t\t\tin int textureIndex;\n\n\t\t\tflat out int vIndex; // \"flat\" indicates that the value will not be interpolated (required for integer attributes)\n\t\t\tout vec2 vUv;\n\n\t\t\tvoid main()\t{\n\n\t\t\t\tvIndex = textureIndex;\n\t\t\t\tvUv = uv;\n\n\t\t\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n\t\t\t}\n\t\t"

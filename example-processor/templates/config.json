@@ -483,37 +483,43 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl2_buffergeometry_attributes_integer": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl2_materials_texture2darray": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fs.glsl": "shaders",
+      "vs.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl2_materials_texture3d": {
     "files": {
@@ -543,13 +549,17 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "gbuffer-frag.glsl": "shaders",
+      "gbuffer-vert.glsl": "shaders",
+      "render-frag.glsl": "shaders",
+      "render-vert.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl2_multisampled_renderbuffers": {
     "files": {
@@ -567,13 +577,17 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragment-postprocess.glsl": "shaders",
+      "fs.glsl": "shaders",
+      "vertex-postprocess.glsl": "shaders",
+      "vs.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl2_volume_cloud": {
     "files": {
@@ -711,13 +725,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_buffergeometry_drawrange": {
     "files": {
@@ -759,25 +775,29 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_buffergeometry_instancing_billboards": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fshader.glsl": "shaders",
+      "vshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_buffergeometry_instancing_interleaved": {
     "files": {
@@ -843,25 +863,29 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_buffergeometry_selective_draw": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_buffergeometry_uint": {
     "files": {
@@ -975,61 +999,71 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_custom_attributes_lines": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_custom_attributes_points": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_custom_attributes_points2": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_custom_attributes_points3": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_decals": {
     "files": {
@@ -1047,13 +1081,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "post-frag.glsl": "shaders",
+      "post-vert.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_effects_anaglyph": {
     "files": {
@@ -1383,49 +1419,63 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "birdFS.glsl": "shaders",
+      "birdVS.glsl": "shaders",
+      "fragmentShaderPosition.glsl": "shaders",
+      "fragmentShaderVelocity.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_gpgpu_birds_gltf": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShaderPosition.glsl": "shaders",
+      "fragmentShaderVelocity.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_gpgpu_protoplanet": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "computeShaderPosition.glsl": "shaders",
+      "computeShaderVelocity.glsl": "shaders",
+      "particleFragmentShader.glsl": "shaders",
+      "particleVertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_gpgpu_water": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "heightmapFragmentShader.glsl": "shaders",
+      "readWaterLevelFragmentShader.glsl": "shaders",
+      "smoothFragmentShader.glsl": "shaders",
+      "waterVertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_helpers": {
     "files": {
@@ -1563,13 +1613,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_interactive_raycasting_points": {
     "files": {
@@ -1659,13 +1711,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_lights_physical": {
     "files": {
@@ -2607,13 +2661,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShaderRaw.glsl": "shaders",
+      "vertexShaderRaw.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_materials_displacementmap": {
     "files": {
@@ -2691,13 +2747,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_materials_matcap": {
     "files": {
@@ -3015,13 +3073,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_math_obb": {
     "files": {
@@ -3123,13 +3183,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_morphtargets": {
     "files": {
@@ -3375,13 +3437,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_portal": {
     "files": {
@@ -3591,13 +3655,17 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "noiseRandom1D-frag.glsl": "shaders",
+      "noiseRandom2D-frag.glsl": "shaders",
+      "noiseRandom3D-frag.glsl": "shaders",
+      "procedural-vert.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_postprocessing_rgb_halftone": {
     "files": {
@@ -3723,13 +3791,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentshader.glsl": "shaders",
+      "vertexshader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_raycast_sprite": {
     "files": {
@@ -3759,25 +3829,30 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragment_shader.glsl": "shaders",
+      "vertex_shader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_read_float_buffer": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragment_shader_pass_1.glsl": "shaders",
+      "fragment_shader_screen.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_refraction": {
     "files": {
@@ -3795,49 +3870,61 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragment_shader_pass_1.glsl": "shaders",
+      "fragment_shader_screen.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_shader": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_shader2": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragment_shader1.glsl": "shaders",
+      "fragment_shader2.glsl": "shaders",
+      "fragment_shader3.glsl": "shaders",
+      "fragment_shader4.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_shader_lava": {
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_shaders_ocean": {
     "files": {
@@ -3927,13 +4014,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "PCSS.glsl": "shaders",
+      "PCSSGetShadow.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_shadowmap_performance": {
     "files": {
@@ -4071,13 +4160,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fragmentShader.glsl": "shaders",
+      "vertexShader.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_tiled_forward": {
     "files": {
@@ -4119,13 +4210,15 @@
     "files": {
       "webpack.js": "bundler",
       "package.json": "",
+      "fs.glsl": "shaders",
+      "vs.glsl": "shaders",
       "index.html": "src",
       "main.js": "src",
       "style.css": "src",
       "example.json": "static",
       "favicon.ico": "static"
     },
-    "dirs": ["/static", "/src", "/bundler"]
+    "dirs": ["/static", "/src", "/shaders", "/bundler"]
   },
   "webgl_video_panorama_equirectangular": {
     "files": {

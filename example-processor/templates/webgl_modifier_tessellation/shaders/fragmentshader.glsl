@@ -1,0 +1,1 @@
+"\n\n\t\t\tvarying vec3 vNormal;\n\t\t\tvarying vec3 vColor;\n\n\t\t\tvoid main() {\n\n\t\t\t\tconst float ambient = 0.4;\n\n\t\t\t\tvec3 light = vec3( 1.0 );\n\t\t\t\tlight = normalize( light );\n\n\t\t\t\tfloat directional = max( dot( vNormal, light ), 0.0 );\n\n\t\t\t\tgl_FragColor = vec4( ( directional + ambient ) * vColor, 1.0 );\n\n\t\t\t}\n\n\t\t"

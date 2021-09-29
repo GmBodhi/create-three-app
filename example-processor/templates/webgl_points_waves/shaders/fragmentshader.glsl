@@ -1,0 +1,1 @@
+"\n\n\t\t\tuniform vec3 color;\n\n\t\t\tvoid main() {\n\n\t\t\t\tif ( length( gl_PointCoord - vec2( 0.5, 0.5 ) ) > 0.475 ) discard;\n\n\t\t\t\tgl_FragColor = vec4( color, 1.0 );\n\n\t\t\t}\n\n\t\t"

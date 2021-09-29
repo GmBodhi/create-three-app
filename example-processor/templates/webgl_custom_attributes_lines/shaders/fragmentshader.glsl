@@ -1,0 +1,1 @@
+"\n\n\t\t\tuniform vec3 color;\n\t\t\tuniform float opacity;\n\n\t\t\tvarying vec3 vColor;\n\n\t\t\tvoid main() {\n\n\t\t\t\tgl_FragColor = vec4( vColor * color, opacity );\n\n\t\t\t}\n\n\t\t"

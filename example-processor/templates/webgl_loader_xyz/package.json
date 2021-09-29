@@ -24,6 +24,8 @@
     "web-dev-server": "^3.0.22",
     "webpack": "^5.24.2",
     "webpack-cli": "^4.5.0",
+    "raw-loader": "^4.0.2",
+    "glslify-loader": "^2.0.0",
     "webpack-dev-server": "^4.0.0",
     "@babel/core": "^7.13.1",
     "@babel/preset-env": "^7.13.5",

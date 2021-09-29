@@ -1,0 +1,1 @@
+"\n\n\tprecision highp sampler2DArray;\n\tprecision mediump float;\n\n\tin vec2 vUv;\n\n\tuniform sampler2DArray uTexture;\n\tuniform int uDepth;\n\tuniform float uIntensity;\n\n\tvoid main()\n\t{\n\t\tfloat voxel = texture(uTexture, vec3( vUv, uDepth )).r;\n\t\tgl_FragColor.r = voxel * uIntensity;\n\t}\n\n\t"
