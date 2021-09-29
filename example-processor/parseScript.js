@@ -1,4 +1,3 @@
-const { JSDOM } = require("jsdom");
 
 function resolveUrl(match, url) {
   if (url === "./build/three.module.js") return "three";
@@ -16,10 +15,10 @@ function subimports() {
   return `import { ${imports.toString()} } from "three"`;
 }
 
-module.exports = function parseScript(html) {
+module.exports = function parseScript(window) {
   imports = [];
   let js = 'import "./style.css"; // For webpack support\n';
-  let { window } = new JSDOM(html);
+
   let { document } = window;
   Array.from(document.querySelectorAll("script"))
     .filter((s) => s.type == "module")

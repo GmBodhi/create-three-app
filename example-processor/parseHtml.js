@@ -1,7 +1,6 @@
 const { JSDOM } = require("jsdom");
 
-module.exports = function parseScript(html) {
-  let { window } = new JSDOM(html);
+module.exports = function parseScript(window) {
   let { document } = window;
   Array.from(document.querySelectorAll("style")).forEach((s) => s.remove());
   Array.from(document.querySelectorAll("script"))

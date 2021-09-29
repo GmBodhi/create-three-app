@@ -6,6 +6,7 @@ const parseHtml = require("./parseHtml");
 const moveDir = require("./moveDir");
 const path = require("path");
 const puppeteer = require("puppeteer");
+const { JSDOM } = require("jsdom");
 
 let browser, page;
 
@@ -60,10 +61,10 @@ module.exports.fetch = async function (url, name) {
   console.log(chalk.red("Resolved: ", name));
   let p = await page.goto(url, { timeout: 0 });
   mkdirSync("./templates/" + name);
-  let body = await p.text();
-  let script = parseScript(body);
-  let style = parseStyle(body);
-  let html = parseHtml(body);
+  let { window } = new JSDOM(await p.text());
+  let script = parseScript(window);
+  let style = parseStyle(window);
+  let html = parseHtml(window);
   mkdirSync("./templates/" + name + "/src");
   writeFileSync(`./templates/${name}/src/index.html`, html);
   writeFileSync(`./templates/${name}/src/main.js`, script);
