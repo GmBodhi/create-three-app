@@ -1,0 +1,8 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/TGALoader.js",
+  "https://threejs.org/examples/textures/crate_grey8.tga",
+  "https://threejs.org/examples/textures/crate_color8.tga",
+  "https://threejs.org/examples/webgl_loader_ttf.html"
+]

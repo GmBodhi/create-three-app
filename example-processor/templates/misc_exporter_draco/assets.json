@@ -1,0 +1,7 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/js/libs/draco/draco_encoder.js",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/exporters/DRACOExporter.js",
+  "https://threejs.org/examples/misc_exporter_gltf.html"
+]

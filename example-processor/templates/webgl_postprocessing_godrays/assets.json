@@ -1,0 +1,8 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/OBJLoader.js",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/shaders/GodRaysShader.js",
+  "https://threejs.org/examples/models/obj/tree.obj",
+  "https://threejs.org/examples/webgl_postprocessing_rgb_halftone.html"
+]

@@ -1,0 +1,12 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/utils/GPUStatsPanel.js",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/lines/Line2.js",
+  "https://threejs.org/examples/jsm/lines/LineMaterial.js",
+  "https://threejs.org/examples/jsm/lines/LineGeometry.js",
+  "https://threejs.org/examples/jsm/utils/GeometryUtils.js",
+  "https://threejs.org/examples/jsm/lines/LineSegmentsGeometry.js",
+  "https://threejs.org/examples/jsm/lines/LineSegments2.js",
+  "https://threejs.org/examples/webgl_lines_fat_wireframe.html"
+]

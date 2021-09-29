@@ -1,0 +1,20 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+  "https://threejs.org/examples/jsm/loaders/DRACOLoader.js",
+  "https://threejs.org/examples/textures/equirectangular/royal_esplanade_1k.hdr",
+  "https://threejs.org/examples/models/gltf/IridescentDishWithOlives.glb",
+  "https://threejs.org/examples/webgl_loader_gltf_variants.html",
+  "https://threejs.org/examples/js/libs/draco/gltf/draco_wasm_wrapper.js",
+  "https://threejs.org/examples/js/libs/draco/gltf/draco_decoder.wasm",
+  "blob:https://threejs.org/7b32c92f-7adc-4351-8b16-bdc959314d34",
+  "blob:https://threejs.org/41273ac5-00ca-4897-a81d-7a80666a4cff",
+  "blob:https://threejs.org/899cb339-2f0d-49bc-a070-d0d720051c20",
+  "blob:https://threejs.org/cd15ee13-be8e-4db7-9a5e-3969ef7cef40",
+  "blob:https://threejs.org/2a4c5671-002f-4b92-8918-52ddb8a7a8cd",
+  "blob:https://threejs.org/3b8c9150-973b-4f3b-abb7-68585f6263ca",
+  "blob:https://threejs.org/4bbedd3b-16f2-4d59-b753-6f1cbdfe8636",
+  "blob:https://threejs.org/7a28f840-f401-4f86-a27b-8b55d6a1d52d"
+]

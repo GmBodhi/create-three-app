@@ -1,0 +1,13 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+  "https://threejs.org/examples/textures/equirectangular/quarry_01_1k.hdr",
+  "https://threejs.org/examples/models/gltf/MaterialsVariantsShoe/glTF/MaterialsVariantsShoe.gltf",
+  "https://threejs.org/examples/models/gltf/MaterialsVariantsShoe/glTF/MaterialsVariantsShoe.bin",
+  "https://threejs.org/examples/models/gltf/MaterialsVariantsShoe/glTF/diffuseMidnight.jpg",
+  "https://threejs.org/examples/models/gltf/MaterialsVariantsShoe/glTF/occlusionRougnessMetalness.jpg",
+  "https://threejs.org/examples/models/gltf/MaterialsVariantsShoe/glTF/normal.jpg",
+  "https://threejs.org/examples/webgl_loader_ifc.html"
+]

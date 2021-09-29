@@ -1,0 +1,6 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+  "https://threejs.org/examples/textures/memorial.hdr",
+  "https://threejs.org/examples/webgl_loader_texture_ktx.html"
+]

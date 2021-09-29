@@ -1,0 +1,7 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/TrackballControls.js",
+  "https://threejs.org/examples/jsm/modifiers/TessellateModifier.js",
+  "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json",
+  "https://threejs.org/examples/webgl_morphtargets.html"
+]

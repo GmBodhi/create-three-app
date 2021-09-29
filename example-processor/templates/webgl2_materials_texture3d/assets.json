@@ -1,0 +1,14 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/NRRDLoader.js",
+  "https://threejs.org/examples/jsm/shaders/VolumeShader.js",
+  "https://threejs.org/examples/jsm/WebGL.js",
+  "https://threejs.org/examples/jsm/libs/fflate.module.js",
+  "https://threejs.org/examples/jsm/misc/Volume.js",
+  "https://threejs.org/examples/jsm/misc/VolumeSlice.js",
+  "https://threejs.org/examples/models/nrrd/stent.nrrd",
+  "https://threejs.org/examples/textures/cm_viridis.png",
+  "https://threejs.org/examples/textures/cm_gray.png",
+  "https://threejs.org/examples/webgl2_materials_texture3d_partialupdate.html"
+]

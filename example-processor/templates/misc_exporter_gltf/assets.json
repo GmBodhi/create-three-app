@@ -1,0 +1,9 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/OBJLoader.js",
+  "https://threejs.org/examples/jsm/exporters/GLTFExporter.js",
+  "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
+  "https://threejs.org/examples/models/obj/walt/WaltHead.obj",
+  "https://threejs.org/examples/textures/hardwood2_diffuse.jpg",
+  "https://threejs.org/examples/misc_exporter_obj.html"
+]

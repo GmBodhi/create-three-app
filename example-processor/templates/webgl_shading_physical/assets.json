@@ -1,0 +1,12 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/TrackballControls.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/textures/disturb.jpg",
+  "https://threejs.org/examples/models/gltf/SittingBox.glb",
+  "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
+  "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==",
+  "https://threejs.org/examples/textures/patterns/bright_squares256.png",
+  "https://threejs.org/examples/textures/lava/lavatile.jpg",
+  "https://threejs.org/examples/webgl_shadow_contact.html"
+]

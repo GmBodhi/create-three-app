@@ -1,0 +1,9 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/js/libs/lottie_canvas.js",
+  "https://threejs.org/examples/jsm/environments/RoomEnvironment.js",
+  "https://threejs.org/examples/jsm/geometries/RoundedBoxGeometry.js",
+  "https://threejs.org/examples/jsm/loaders/LottieLoader.js",
+  "https://threejs.org/examples/textures/lottie/24017-lottie-logo-animation.json",
+  "https://threejs.org/examples/webgl_loader_texture_pvrtc.html"
+]

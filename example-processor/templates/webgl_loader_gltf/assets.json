@@ -1,0 +1,16 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+  "https://threejs.org/examples/jsm/utils/RoughnessMipmapper.js",
+  "https://threejs.org/examples/textures/equirectangular/royal_esplanade_1k.hdr",
+  "https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf",
+  "https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/DamagedHelmet.bin",
+  "https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/Default_albedo.jpg",
+  "https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/Default_metalRoughness.jpg",
+  "https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/Default_normal.jpg",
+  "https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/Default_AO.jpg",
+  "https://threejs.org/examples/models/gltf/DamagedHelmet/glTF/Default_emissive.jpg",
+  "https://threejs.org/examples/webgl_loader_gltf_compressed.html"
+]

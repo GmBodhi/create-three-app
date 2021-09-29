@@ -1,0 +1,13 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/fonts/gentilis_regular.typeface.json",
+  "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/px.jpg",
+  "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/nx.jpg",
+  "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/py.jpg",
+  "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/ny.jpg",
+  "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/pz.jpg",
+  "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/nz.jpg",
+  "https://threejs.org/examples/textures/planets/moon_1024.jpg",
+  "https://threejs.org/examples/webgl_materials_variations_standard.html"
+]

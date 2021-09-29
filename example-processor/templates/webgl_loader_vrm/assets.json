@@ -1,0 +1,14 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/VRMLoader.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/models/vrm/Alicia/AliciaSolid.vrm",
+  "blob:https://threejs.org/f08a6b58-6e4a-4b1e-8384-1b208272846e",
+  "blob:https://threejs.org/737f8233-0235-4dfd-9219-98a081483db5",
+  "blob:https://threejs.org/a641bf54-ddeb-49fe-803e-b75c2d36e382",
+  "blob:https://threejs.org/033d2134-6223-4443-9f39-a8b5fc6e0c36",
+  "blob:https://threejs.org/33a26180-3419-4544-b014-552e561c05cc",
+  "blob:https://threejs.org/4ccc8b8c-38c7-485c-b6dd-b777bc0fe643",
+  "https://threejs.org/examples/webgl_loader_vrml.html"
+]

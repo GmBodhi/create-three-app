@@ -1,0 +1,6 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/libs/tween.module.min.js",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/webgl_lights_rectarealight.html"
+]

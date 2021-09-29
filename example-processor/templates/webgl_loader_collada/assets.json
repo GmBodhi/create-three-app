@@ -1,0 +1,11 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/ColladaLoader.js",
+  "https://threejs.org/examples/jsm/loaders/TGALoader.js",
+  "https://threejs.org/examples/models/collada/elf/elf.dae",
+  "https://threejs.org/examples/models/collada/elf/ce.jpg",
+  "https://threejs.org/examples/models/collada/elf/Body_tex_003.jpg",
+  "https://threejs.org/examples/models/collada/elf/Face_tex_002_toObj.jpg",
+  "https://threejs.org/examples/models/collada/elf/Hair_tex_001.jpg",
+  "https://threejs.org/examples/webgl_loader_collada_kinematics.html"
+]

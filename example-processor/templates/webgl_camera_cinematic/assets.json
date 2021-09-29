@@ -1,0 +1,6 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/cameras/CinematicCamera.js",
+  "https://threejs.org/examples/jsm/shaders/BokehShader2.js",
+  "https://threejs.org/examples/webgl_camera_logarithmicdepthbuffer.html"
+]

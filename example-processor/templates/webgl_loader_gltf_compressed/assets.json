@@ -1,0 +1,22 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/environments/RoomEnvironment.js",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/loaders/KTX2Loader.js",
+  "https://threejs.org/examples/jsm/libs/meshopt_decoder.module.js",
+  "https://threejs.org/examples/jsm/utils/WorkerPool.js",
+  "https://threejs.org/examples/models/gltf/coffeemat.glb",
+  "blob:https://threejs.org/81beba36-1cd9-4dff-91a4-784bc7df2cb5",
+  "blob:https://threejs.org/882479d7-0bcf-464f-9a16-63fd778f9736",
+  "blob:https://threejs.org/85d24b13-e165-4209-ac0d-a6126ccc07ac",
+  "blob:https://threejs.org/d516c345-139b-423f-b9fc-f9675a48faa5",
+  "blob:https://threejs.org/20d47641-d4ba-4108-9b0b-d4628d335550",
+  "https://threejs.org/examples/js/libs/basis/basis_transcoder.js",
+  "https://threejs.org/examples/js/libs/basis/basis_transcoder.wasm",
+  "blob:https://threejs.org/e1314d44-a445-4beb-8639-7c3f294770a3",
+  "blob:https://threejs.org/e1314d44-a445-4beb-8639-7c3f294770a3",
+  "blob:https://threejs.org/e1314d44-a445-4beb-8639-7c3f294770a3",
+  "blob:https://threejs.org/e1314d44-a445-4beb-8639-7c3f294770a3",
+  "https://threejs.org/examples/webgl_loader_gltf_transmission.html"
+]

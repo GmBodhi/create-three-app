@@ -1,0 +1,12 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/textures/hardwood2_diffuse.jpg",
+  "https://threejs.org/examples/textures/hardwood2_bump.jpg",
+  "https://threejs.org/examples/textures/hardwood2_roughness.jpg",
+  "https://threejs.org/examples/textures/brick_diffuse.jpg",
+  "https://threejs.org/examples/textures/brick_bump.jpg",
+  "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg",
+  "https://threejs.org/examples/textures/planets/earth_specular_2048.jpg",
+  "https://threejs.org/examples/webgl_lights_pointlights.html"
+]

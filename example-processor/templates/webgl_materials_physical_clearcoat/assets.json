@@ -1,0 +1,19 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/HDRCubeTextureLoader.js",
+  "https://threejs.org/examples/jsm/textures/FlakesTexture.js",
+  "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+  "https://threejs.org/examples/textures/cube/pisaHDR/px.hdr",
+  "https://threejs.org/examples/textures/cube/pisaHDR/nx.hdr",
+  "https://threejs.org/examples/textures/cube/pisaHDR/py.hdr",
+  "https://threejs.org/examples/textures/cube/pisaHDR/ny.hdr",
+  "https://threejs.org/examples/textures/cube/pisaHDR/pz.hdr",
+  "https://threejs.org/examples/textures/cube/pisaHDR/nz.hdr",
+  "https://threejs.org/examples/textures/carbon/Carbon.png",
+  "https://threejs.org/examples/textures/carbon/Carbon_Normal.png",
+  "https://threejs.org/examples/textures/water/Water_1_M_Normal.jpg",
+  "https://threejs.org/examples/textures/golfball.jpg",
+  "https://threejs.org/examples/textures/pbr/Scratched_gold/Scratched_gold_01_1K_Normal.png",
+  "https://threejs.org/examples/webgl_materials_physical_reflectivity.html"
+]

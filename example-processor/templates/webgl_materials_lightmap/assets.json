@@ -1,0 +1,9 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/models/json/lightmap/lightmap.json",
+  "https://threejs.org/examples/models/json/lightmap/lightmap-ao-shadow.png",
+  "https://threejs.org/examples/models/json/lightmap/rocks.jpg",
+  "https://threejs.org/examples/models/json/lightmap/stone.jpg",
+  "https://threejs.org/examples/webgl_materials_matcap.html"
+]

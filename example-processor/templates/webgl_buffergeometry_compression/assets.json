@@ -1,0 +1,12 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/utils/GeometryCompressionUtils.js",
+  "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
+  "https://threejs.org/examples/jsm/geometries/TeapotGeometry.js",
+  "https://threejs.org/examples/jsm/utils/PackedPhongMaterial.js",
+  "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
+  "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==",
+  "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
+  "https://threejs.org/examples/webgl_buffergeometry_custom_attributes_particles.html"
+]

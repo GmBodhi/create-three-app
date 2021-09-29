@@ -1,0 +1,12 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/TrackballControls.js",
+  "https://threejs.org/examples/jsm/loaders/NRRDLoader.js",
+  "https://threejs.org/examples/jsm/loaders/VTKLoader.js",
+  "https://threejs.org/examples/jsm/libs/fflate.module.js",
+  "https://threejs.org/examples/jsm/misc/Volume.js",
+  "https://threejs.org/examples/jsm/misc/VolumeSlice.js",
+  "https://threejs.org/examples/models/nrrd/I.nrrd",
+  "https://threejs.org/examples/models/vtk/liver.vtk",
+  "https://threejs.org/examples/webgl_loader_obj.html"
+]

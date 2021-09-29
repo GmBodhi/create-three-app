@@ -1,0 +1,12 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/shaders/BokehShader2.js",
+  "https://threejs.org/examples/models/json/suzanne_buffergeometry.json",
+  "https://threejs.org/examples/textures/cube/Bridge2/posx.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/negx.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/posy.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/negy.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/posz.jpg",
+  "https://threejs.org/examples/textures/cube/Bridge2/negz.jpg",
+  "https://threejs.org/examples/webgl_postprocessing_fxaa.html"
+]

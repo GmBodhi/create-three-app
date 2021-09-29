@@ -1,0 +1,7 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/utils/ShadowMapViewer.js",
+  "https://threejs.org/examples/jsm/shaders/UnpackDepthRGBAShader.js",
+  "https://threejs.org/examples/webgl_shadowmap_vsm.html"
+]

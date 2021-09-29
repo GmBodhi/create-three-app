@@ -1,0 +1,7 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/BVHLoader.js",
+  "https://threejs.org/examples/models/bvh/pirouette.bvh",
+  "https://threejs.org/examples/webgl_loader_collada.html"
+]

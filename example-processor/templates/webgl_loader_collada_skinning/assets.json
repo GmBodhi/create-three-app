@@ -1,0 +1,9 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/ColladaLoader.js",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/TGALoader.js",
+  "https://threejs.org/examples/models/collada/stormtrooper/stormtrooper.dae",
+  "https://threejs.org/examples/models/collada/stormtrooper/Stormtrooper_D.jpg",
+  "https://threejs.org/examples/webgl_loader_draco.html"
+]

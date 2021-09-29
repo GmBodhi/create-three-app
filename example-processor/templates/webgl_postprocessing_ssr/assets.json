@@ -1,0 +1,17 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/postprocessing/EffectComposer.js",
+  "https://threejs.org/examples/jsm/postprocessing/SSRPass.js",
+  "https://threejs.org/examples/jsm/objects/ReflectorForSSRPass.js",
+  "https://threejs.org/examples/jsm/loaders/DRACOLoader.js",
+  "https://threejs.org/examples/jsm/shaders/CopyShader.js",
+  "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/Pass.js",
+  "https://threejs.org/examples/jsm/shaders/SSRShader.js",
+  "https://threejs.org/examples/models/draco/bunny.drc",
+  "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
+  "https://threejs.org/examples/js/libs/draco/draco_decoder.js",
+  "https://threejs.org/examples/webgl_postprocessing_ssrr.html"
+]

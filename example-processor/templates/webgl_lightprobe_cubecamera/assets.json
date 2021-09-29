@@ -1,0 +1,13 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/helpers/LightProbeHelper.js",
+  "https://threejs.org/examples/jsm/lights/LightProbeGenerator.js",
+  "https://threejs.org/examples/textures/cube/pisa/px.png",
+  "https://threejs.org/examples/textures/cube/pisa/nx.png",
+  "https://threejs.org/examples/textures/cube/pisa/py.png",
+  "https://threejs.org/examples/textures/cube/pisa/ny.png",
+  "https://threejs.org/examples/textures/cube/pisa/pz.png",
+  "https://threejs.org/examples/textures/cube/pisa/nz.png",
+  "https://threejs.org/examples/webgl_lights_hemisphere.html"
+]

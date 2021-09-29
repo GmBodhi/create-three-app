@@ -1,0 +1,16 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/environments/RoomEnvironment.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/loaders/DRACOLoader.js",
+  "https://threejs.org/examples/models/gltf/ferrari.glb",
+  "https://threejs.org/examples/models/gltf/ferrari_ao.png",
+  "https://threejs.org/examples/js/libs/draco/gltf/draco_wasm_wrapper.js",
+  "https://threejs.org/examples/js/libs/draco/gltf/draco_decoder.wasm",
+  "blob:https://threejs.org/3bb0420f-363f-41f0-8d81-8eaf1ab9480e",
+  "blob:https://threejs.org/3bb0420f-363f-41f0-8d81-8eaf1ab9480e",
+  "blob:https://threejs.org/3bb0420f-363f-41f0-8d81-8eaf1ab9480e",
+  "blob:https://threejs.org/3bb0420f-363f-41f0-8d81-8eaf1ab9480e",
+  "https://threejs.org/examples/webgl_materials_channels.html"
+]

@@ -1,0 +1,6 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/math/OBB.js",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/webgl_math_orientation_transform.html"
+]

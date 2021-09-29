@@ -1,0 +1,11 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/loaders/EXRLoader.js",
+  "https://threejs.org/examples/jsm/libs/fflate.module.js",
+  "https://threejs.org/examples/textures/matcaps/040full.exr",
+  "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb",
+  "https://threejs.org/examples/models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg",
+  "https://threejs.org/examples/webgl_materials_normalmap.html"
+]

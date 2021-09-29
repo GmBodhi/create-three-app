@@ -1,0 +1,11 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/effects/AnaglyphEffect.js",
+  "https://threejs.org/examples/textures/cube/pisa/px.png",
+  "https://threejs.org/examples/textures/cube/pisa/nx.png",
+  "https://threejs.org/examples/textures/cube/pisa/py.png",
+  "https://threejs.org/examples/textures/cube/pisa/ny.png",
+  "https://threejs.org/examples/textures/cube/pisa/pz.png",
+  "https://threejs.org/examples/textures/cube/pisa/nz.png",
+  "https://threejs.org/examples/webgl_effects_ascii.html"
+]

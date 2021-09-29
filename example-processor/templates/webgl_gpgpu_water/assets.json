@@ -1,0 +1,6 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/misc/GPUComputationRenderer.js",
+  "https://threejs.org/examples/jsm/math/SimplexNoise.js",
+  "https://threejs.org/examples/webgl_gpgpu_protoplanet.html"
+]

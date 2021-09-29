@@ -1,0 +1,18 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/FlyControls.js",
+  "https://threejs.org/examples/jsm/postprocessing/EffectComposer.js",
+  "https://threejs.org/examples/jsm/postprocessing/RenderPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/FilmPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/Pass.js",
+  "https://threejs.org/examples/jsm/shaders/FilmShader.js",
+  "https://threejs.org/examples/jsm/shaders/CopyShader.js",
+  "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
+  "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg",
+  "https://threejs.org/examples/textures/planets/earth_specular_2048.jpg",
+  "https://threejs.org/examples/textures/planets/earth_normal_2048.jpg",
+  "https://threejs.org/examples/textures/planets/earth_clouds_1024.png",
+  "https://threejs.org/examples/textures/planets/moon_1024.jpg",
+  "https://threejs.org/examples/misc_controls_map.html"
+]

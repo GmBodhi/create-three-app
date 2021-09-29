@@ -1,0 +1,7 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/EXRLoader.js",
+  "https://threejs.org/examples/jsm/libs/fflate.module.js",
+  "https://threejs.org/examples/textures/memorial.exr",
+  "https://threejs.org/examples/webgl_loader_texture_hdr.html"
+]

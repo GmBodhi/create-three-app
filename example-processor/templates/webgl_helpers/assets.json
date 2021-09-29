@@ -1,0 +1,8 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/helpers/VertexNormalsHelper.js",
+  "https://threejs.org/examples/jsm/helpers/VertexTangentsHelper.js",
+  "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb",
+  "https://threejs.org/examples/webgl_instancing_dynamic.html"
+]

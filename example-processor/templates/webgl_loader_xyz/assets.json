@@ -1,0 +1,6 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/XYZLoader.js",
+  "https://threejs.org/examples/models/xyz/helix_201.xyz",
+  "https://threejs.org/examples/webgl_lod.html"
+]

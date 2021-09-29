@@ -1,0 +1,8 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/VRMLLoader.js",
+  "https://threejs.org/examples/jsm/libs/chevrotain.module.min.js",
+  "https://threejs.org/examples/models/vrml/house.wrl",
+  "https://threejs.org/examples/webgl_loader_vtk.html"
+]

@@ -1,0 +1,8 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/FirstPersonControls.js",
+  "https://threejs.org/examples/jsm/math/ImprovedNoise.js",
+  "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
+  "https://threejs.org/examples/textures/minecraft/atlas.png",
+  "https://threejs.org/examples/webgl_geometry_nurbs.html"
+]

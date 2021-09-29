@@ -1,0 +1,9 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/STLLoader.js",
+  "https://threejs.org/examples/models/stl/ascii/slotted_disk.stl",
+  "https://threejs.org/examples/models/stl/binary/pr2_head_pan.stl",
+  "https://threejs.org/examples/models/stl/binary/pr2_head_tilt.stl",
+  "https://threejs.org/examples/models/stl/binary/colored.stl",
+  "https://threejs.org/examples/webgl_loader_svg.html"
+]

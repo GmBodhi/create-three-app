@@ -1,0 +1,13 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/PVRLoader.js",
+  "https://threejs.org/examples/textures/compressed/disturb_4bpp_rgb.pvr",
+  "https://threejs.org/examples/textures/compressed/disturb_4bpp_rgb_v3.pvr",
+  "https://threejs.org/examples/textures/compressed/disturb_4bpp_rgb_mips.pvr",
+  "https://threejs.org/examples/textures/compressed/disturb_2bpp_rgb.pvr",
+  "https://threejs.org/examples/textures/compressed/flare_4bpp_rgba.pvr",
+  "https://threejs.org/examples/textures/compressed/flare_2bpp_rgba.pvr",
+  "https://threejs.org/examples/textures/compressed/park3_cube_nomip_4bpp_rgb.pvr",
+  "https://threejs.org/examples/textures/compressed/park3_cube_mip_2bpp_rgb_v3.pvr",
+  "https://threejs.org/examples/webgl_loader_texture_rgbm.html"
+]

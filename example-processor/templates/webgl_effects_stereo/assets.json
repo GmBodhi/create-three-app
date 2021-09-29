@@ -1,0 +1,11 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/effects/StereoEffect.js",
+  "https://threejs.org/examples/textures/cube/Park3Med/px.jpg",
+  "https://threejs.org/examples/textures/cube/Park3Med/nx.jpg",
+  "https://threejs.org/examples/textures/cube/Park3Med/py.jpg",
+  "https://threejs.org/examples/textures/cube/Park3Med/ny.jpg",
+  "https://threejs.org/examples/textures/cube/Park3Med/pz.jpg",
+  "https://threejs.org/examples/textures/cube/Park3Med/nz.jpg",
+  "https://threejs.org/examples/webgl_framebuffer_texture.html"
+]

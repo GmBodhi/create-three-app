@@ -1,0 +1,17 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/objects/Water2.js",
+  "https://threejs.org/examples/jsm/objects/Reflector.js",
+  "https://threejs.org/examples/jsm/objects/Refractor.js",
+  "https://threejs.org/examples/textures/hardwood2_diffuse.jpg",
+  "https://threejs.org/examples/textures/water/Water_1_M_Normal.jpg",
+  "https://threejs.org/examples/textures/water/Water_2_M_Normal.jpg",
+  "https://threejs.org/examples/textures/cube/Park2/posx.jpg",
+  "https://threejs.org/examples/textures/cube/Park2/negx.jpg",
+  "https://threejs.org/examples/textures/cube/Park2/posy.jpg",
+  "https://threejs.org/examples/textures/cube/Park2/negy.jpg",
+  "https://threejs.org/examples/textures/cube/Park2/posz.jpg",
+  "https://threejs.org/examples/textures/cube/Park2/negz.jpg",
+  "https://threejs.org/examples/webgl_water_flowmap.html"
+]

@@ -1,0 +1,11 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/libs/tween.module.min.js",
+  "https://threejs.org/examples/textures/transition/transition1.png",
+  "https://threejs.org/examples/textures/transition/transition2.png",
+  "https://threejs.org/examples/textures/transition/transition3.png",
+  "https://threejs.org/examples/textures/transition/transition4.png",
+  "https://threejs.org/examples/textures/transition/transition5.png",
+  "https://threejs.org/examples/textures/transition/transition6.png",
+  "https://threejs.org/examples/webgl_postprocessing_dof.html"
+]

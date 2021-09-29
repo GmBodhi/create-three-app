@@ -1,0 +1,7 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/controls/TransformControls.js",
+  "https://threejs.org/examples/textures/crate.gif",
+  "https://threejs.org/examples/misc_exporter_collada.html"
+]

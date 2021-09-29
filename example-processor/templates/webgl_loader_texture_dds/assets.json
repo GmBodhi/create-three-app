@@ -1,0 +1,14 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/DDSLoader.js",
+  "https://threejs.org/examples/textures/compressed/disturb_dxt1_nomip.dds",
+  "https://threejs.org/examples/textures/compressed/disturb_dxt1_mip.dds",
+  "https://threejs.org/examples/textures/compressed/hepatica_dxt3_mip.dds",
+  "https://threejs.org/examples/textures/compressed/explosion_dxt5_mip.dds",
+  "https://threejs.org/examples/textures/compressed/disturb_argb_nomip.dds",
+  "https://threejs.org/examples/textures/compressed/disturb_argb_mip.dds",
+  "https://threejs.org/examples/textures/compressed/Mountains.dds",
+  "https://threejs.org/examples/textures/compressed/Mountains_argb_mip.dds",
+  "https://threejs.org/examples/textures/compressed/Mountains_argb_nomip.dds",
+  "https://threejs.org/examples/webgl_loader_texture_exr.html"
+]

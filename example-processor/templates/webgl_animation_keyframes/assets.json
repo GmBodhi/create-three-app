@@ -1,0 +1,19 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/environments/RoomEnvironment.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/loaders/DRACOLoader.js",
+  "https://threejs.org/examples/models/gltf/LittlestTokyo.glb",
+  "https://threejs.org/examples/js/libs/draco/gltf/draco_wasm_wrapper.js",
+  "https://threejs.org/examples/js/libs/draco/gltf/draco_decoder.wasm",
+  "blob:https://threejs.org/e674cd44-dd15-4fc6-b9f5-f3aac82ffa1b",
+  "blob:https://threejs.org/9d853990-6387-4d45-9b5a-f7c2fd0d4508",
+  "blob:https://threejs.org/541792bb-5892-4c76-a276-26593fe91501",
+  "blob:https://threejs.org/de9c0842-b0f4-463a-8412-b02179372c6c",
+  "blob:https://threejs.org/48848547-3ba8-451c-b1a1-c320cc81b1c0",
+  "blob:https://threejs.org/48848547-3ba8-451c-b1a1-c320cc81b1c0",
+  "blob:https://threejs.org/48848547-3ba8-451c-b1a1-c320cc81b1c0",
+  "blob:https://threejs.org/48848547-3ba8-451c-b1a1-c320cc81b1c0",
+  "https://threejs.org/examples/webgl_animation_skinning_blending.html"
+]

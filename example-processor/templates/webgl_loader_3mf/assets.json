@@ -1,0 +1,8 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/3MFLoader.js",
+  "https://threejs.org/examples/jsm/libs/fflate.module.js",
+  "https://threejs.org/examples/models/3mf/cube_gears.3mf",
+  "https://threejs.org/examples/webgl_loader_3mf_materials.html"
+]

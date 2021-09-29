@@ -1,0 +1,17 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/exporters/ColladaExporter.js",
+  "https://threejs.org/examples/jsm/geometries/TeapotGeometry.js",
+  "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
+  "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
+  "https://threejs.org/examples/textures/floors/FloorsCheckerboard_S_Diffuse.jpg",
+  "https://threejs.org/examples/textures/floors/FloorsCheckerboard_S_Normal.jpg",
+  "https://threejs.org/examples/textures/cube/pisa/px.png",
+  "https://threejs.org/examples/textures/cube/pisa/nx.png",
+  "https://threejs.org/examples/textures/cube/pisa/py.png",
+  "https://threejs.org/examples/textures/cube/pisa/ny.png",
+  "https://threejs.org/examples/textures/cube/pisa/pz.png",
+  "https://threejs.org/examples/textures/cube/pisa/nz.png",
+  "https://threejs.org/examples/misc_exporter_draco.html"
+]

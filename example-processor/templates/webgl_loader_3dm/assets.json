@@ -1,0 +1,10 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/3DMLoader.js",
+  "https://threejs.org/examples/models/3dm/Rhino_Logo.3dm",
+  "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.js",
+  "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.wasm",
+  "blob:https://threejs.org/fbba3c80-4b7c-4b70-a121-797768e84fda",
+  "https://threejs.org/examples/webgl_loader_3ds.html"
+]

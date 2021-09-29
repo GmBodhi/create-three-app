@@ -1,0 +1,13 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/postprocessing/EffectComposer.js",
+  "https://threejs.org/examples/jsm/postprocessing/RenderPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
+  "https://threejs.org/examples/jsm/shaders/LuminosityShader.js",
+  "https://threejs.org/examples/jsm/shaders/SobelOperatorShader.js",
+  "https://threejs.org/examples/jsm/shaders/CopyShader.js",
+  "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/Pass.js",
+  "https://threejs.org/examples/webgl_postprocessing_ssao.html"
+]

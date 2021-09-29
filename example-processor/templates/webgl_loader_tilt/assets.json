@@ -1,0 +1,9 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+  "https://threejs.org/examples/jsm/loaders/TiltLoader.js",
+  "https://threejs.org/examples/jsm/libs/fflate.module.js",
+  "https://threejs.org/examples/models/tilt/BRUSH_DOME.tilt",
+  "https://threejs.org/examples/textures/tiltbrush/Light.webp",
+  "https://threejs.org/examples/webgl_loader_texture_basis.html"
+]

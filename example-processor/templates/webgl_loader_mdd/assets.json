@@ -1,0 +1,6 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/MDDLoader.js",
+  "https://threejs.org/examples/models/mdd/cube.mdd",
+  "https://threejs.org/examples/webgl_loader_mmd.html"
+]

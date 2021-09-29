@@ -1,0 +1,13 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/webxr/VRButton.js",
+  "https://threejs.org/examples/jsm/webxr/XRControllerModelFactory.js",
+  "https://threejs.org/examples/jsm/webxr/OculusHandModel.js",
+  "https://threejs.org/examples/jsm/webxr/OculusHandPointerModel.js",
+  "https://threejs.org/examples/jsm/webxr/Text2D.js",
+  "https://threejs.org/examples/jsm/libs/ecsy.module.js",
+  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/libs/motion-controllers.module.js",
+  "https://threejs.org/examples/jsm/webxr/XRHandMeshModel.js",
+  "https://threejs.org/examples/webxr_vr_handinput_pressbutton.html"
+]
