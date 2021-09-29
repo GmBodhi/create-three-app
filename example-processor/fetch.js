@@ -69,8 +69,6 @@ module.exports.fetch = async function (url, name) {
   console.log(chalk.red("Resolved: ", name));
   let p = await page.goto(url, { timeout: 0 });
 
-  console.log(await getUrls(page));
-
   mkdirSync("./templates/" + name);
 
   let { window } = new JSDOM(await p.text());
