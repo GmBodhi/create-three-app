@@ -17,7 +17,7 @@ module.exports.launch = async ({ urls, json }) => {
   page = await browser.newPage();
 
   page.on("request", (request) => {
-    let url = request.frame()?.url() ?? "unknown";
+    let url = request.frame()?.url()?.split(".")[0] ?? "unknown";
 
     if (
       [
