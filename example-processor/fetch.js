@@ -24,7 +24,9 @@ module.exports.launch = async ({ urls, json }) => {
         "https://threejs.org/build/three.module.js",
         "https://threejs.org/examples/jsm/libs/stats.module.js",
         "https://threejs.org/examples/jsm/libs/dat.gui.module.js",
-      ].includes(request.url())
+        "about:blank",
+      ].includes(request.url()) ||
+      url === "about:blank"
     )
       return;
     if (!urls[url]) urls[url] = [];
@@ -66,6 +68,8 @@ module.exports.close = async () => {
 module.exports.fetch = async function (url, name) {
   console.log(chalk.red("Resolved: ", name));
   let p = await page.goto(url, { timeout: 0 });
+
+  console.log(await getUrls(p));
 
   mkdirSync("./templates/" + name);
 
