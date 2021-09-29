@@ -22,7 +22,7 @@ module.exports.launch = async ({ urls, json }) => {
         .frame()
         ?.url()
         ?.split("/")
-        [request.frame()?.url()?.split("/").length]?.split(".")[0] ?? "unknown";
+        [request.frame()?.url()?.split("/").length - 1]?.split(".")[0] ?? "unknown";
 
     if (!json.includes(url)) return console.log("Skipped: " + url);
 
