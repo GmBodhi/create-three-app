@@ -1,0 +1,42 @@
+body {
+  background-color: #fff;
+  color: #444;
+}
+
+a {
+  color: #08f;
+}
+
+canvas {
+  display: inline-block;
+}
+
+#message {
+  color: #ff0000;
+  display: none;
+}
+
+#message > a {
+  color: #ff0000;
+}
+
+#container {
+  position: absolute;
+  top: 50px;
+  bottom: 70px;
+  width: 100%;
+}
+
+#ui {
+  position: absolute;
+  bottom: 20px;
+  width: 100%;
+  text-align: center;
+}
+
+#button {
+  border: 0;
+  padding: 4px 6px;
+  background: #dddddd;
+  outline: none;
+}

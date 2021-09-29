@@ -1,0 +1,11 @@
+body {
+  color: #444;
+  background: #eee;
+}
+a {
+  color: #08f;
+}
+.colorPicker {
+  display: inline-block;
+  margin: 0 10px;
+}

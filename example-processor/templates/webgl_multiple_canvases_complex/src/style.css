@@ -1,0 +1,33 @@
+body {
+  background-color: #fff;
+  color: #444;
+}
+
+a {
+  color: #08f;
+}
+
+#canvas1,
+#canvas2,
+#canvas3 {
+  position: relative;
+  display: block;
+  outline: 1px solid red;
+}
+
+#canvas1 {
+  width: 300px;
+  height: 200px;
+}
+
+#canvas2 {
+  width: 400px;
+  height: 100px;
+  left: 150px;
+}
+
+#canvas3 {
+  width: 200px;
+  height: 300px;
+  left: 75px;
+}

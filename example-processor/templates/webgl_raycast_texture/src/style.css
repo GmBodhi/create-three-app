@@ -1,0 +1,24 @@
+body {
+  background-color: #fff;
+  color: #444;
+}
+
+a {
+  color: #08f;
+}
+
+#controls {
+  position: absolute;
+  text-align: left;
+  top: 60px;
+  left: 5px;
+  padding: 5px;
+}
+
+.control {
+  margin-bottom: 3px;
+}
+
+input {
+  width: 50px;
+}

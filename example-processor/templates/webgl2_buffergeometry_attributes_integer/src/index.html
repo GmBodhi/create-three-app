@@ -1,0 +1,50 @@
+<html>
+  <head>
+    <title>three.js WebGL 2 - buffergeometry - integer attributes</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body style="overflow: hidden">
+    <div id="container"></div>
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      WebGL 2 - buffergeometry - integer attributes
+    </div>
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+      in int textureIndex;
+
+      flat out int vIndex; // "flat" indicates that the value will not be interpolated (required for integer attributes)
+      out vec2 vUv;
+
+      void main()	{
+
+      	vIndex = textureIndex;
+      	vUv = uv;
+
+      	gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+      }
+    </script>
+
+    <script id="fragmentShader" type="x-shader/x-fragment">
+      flat in int vIndex;
+      in vec2 vUv;
+
+      uniform sampler2D uTextures[ 3 ];
+
+      out vec4 outColor;
+
+      void main()	{
+
+      	if ( vIndex == 0 ) outColor = texture( uTextures[ 0 ], vUv );
+      	else if ( vIndex == 1 ) outColor = texture( uTextures[ 1 ], vUv );
+      	else if ( vIndex == 2 ) outColor = texture( uTextures[ 2 ], vUv );
+
+      }
+    </script>
+  </body>
+</html>
