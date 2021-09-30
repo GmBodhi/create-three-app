@@ -125,7 +125,7 @@ function onPointerMove(event) {
 
   raycaster.setFromCamera(pointer, camera);
 
-  const intersects = raycaster.intersectObjects(objects);
+  const intersects = raycaster.intersectObjects(objects, false);
 
   if (intersects.length > 0) {
     const intersect = intersects[0];
@@ -149,7 +149,7 @@ function onPointerDown(event) {
 
   raycaster.setFromCamera(pointer, camera);
 
-  const intersects = raycaster.intersectObjects(objects);
+  const intersects = raycaster.intersectObjects(objects, false);
 
   if (intersects.length > 0) {
     const intersect = intersects[0];

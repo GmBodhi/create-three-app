@@ -291,7 +291,7 @@ function getIntersects(point, objects) {
 
   raycaster.setFromCamera(mouse, camera);
 
-  return raycaster.intersectObjects(objects);
+  return raycaster.intersectObjects(objects, false);
 }
 
 function render() {

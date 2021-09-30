@@ -6,11 +6,9 @@ import fragmentshader from "./shaders/fragmentshader.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  FontLoader,
   PerspectiveCamera,
   Scene,
   Color,
-  TextGeometry,
   JS,
   BufferAttribute,
   ShaderMaterial,
@@ -22,6 +20,8 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 import { TessellateModifier } from "three/examples/jsm/modifiers/TessellateModifier.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 let renderer, scene, camera, stats;
 

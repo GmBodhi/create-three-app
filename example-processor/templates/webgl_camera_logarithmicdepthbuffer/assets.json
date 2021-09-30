@@ -1,4 +1,6 @@
 [
   "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+  "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
   "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"
 ]

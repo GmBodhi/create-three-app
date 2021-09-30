@@ -4,5 +4,6 @@
   "https://threejs.org/examples/jsm/loaders/IFCLoader.js",
   "https://threejs.org/examples/jsm/loaders/ifc/web-ifc-api.js",
   "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
-  "https://threejs.org/examples/models/ifc/rac_advanced_sample_project.ifc"
+  "https://threejs.org/examples/models/ifc/rac_advanced_sample_project.ifc",
+  "https://threejs.org/examples/jsm/loaders/ifc/web-ifc.wasm"
 ]

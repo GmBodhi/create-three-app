@@ -17,8 +17,6 @@ import {
   LineBasicMaterial,
   DirectionalLight,
   AmbientLight,
-  FontLoader,
-  TextGeometry,
   MeshStandardMaterial,
   WebGLRenderer,
   Raycaster,
@@ -26,6 +24,8 @@ import {
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { Flow } from "three/examples/jsm/modifiers/CurveModifier.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 const ACTION_SELECT = 1,
   ACTION_NONE = 0;
@@ -171,7 +171,7 @@ function animate() {
   if (action === ACTION_SELECT) {
     rayCaster.setFromCamera(mouse, camera);
     action = ACTION_NONE;
-    const intersects = rayCaster.intersectObjects(curveHandles);
+    const intersects = rayCaster.intersectObjects(curveHandles, false);
     if (intersects.length) {
       const target = intersects[0].object;
       control.attach(target);

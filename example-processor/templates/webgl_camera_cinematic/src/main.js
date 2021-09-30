@@ -175,7 +175,7 @@ function render() {
 
   raycaster.setFromCamera(mouse, camera);
 
-  const intersects = raycaster.intersectObjects(scene.children);
+  const intersects = raycaster.intersectObjects(scene.children, false);
 
   if (intersects.length > 0) {
     const targetDistance = intersects[0].distance;

@@ -14,15 +14,15 @@ import {
   PointLight,
   MeshPhongMaterial,
   Group,
-  Font,
   Mesh,
   PlaneGeometry,
   MeshBasicMaterial,
   WebGLRenderer,
-  TextGeometry,
 } from "three";
 
 import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
+import { Font } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 let container;
 let camera, cameraTarget, scene, renderer;

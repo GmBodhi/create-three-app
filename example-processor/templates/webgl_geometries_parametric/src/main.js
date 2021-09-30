@@ -13,7 +13,6 @@ import {
   RepeatWrapping,
   MeshPhongMaterial,
   DoubleSide,
-  ParametricBufferGeometry,
   Mesh,
   WebGLRenderer,
 } from "three";
@@ -21,6 +20,7 @@ import {
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { Curves } from "three/examples/jsm/curves/CurveExtras.js";
+import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
 import { ParametricGeometries } from "three/examples/jsm/geometries/ParametricGeometries.js";
 
 let camera, scene, renderer, stats;
@@ -62,7 +62,7 @@ function init() {
 
   let geometry, object;
 
-  geometry = new ParametricBufferGeometry(
+  geometry = new ParametricGeometry(
     ParametricGeometries.plane(100, 100),
     10,
     10
@@ -72,13 +72,13 @@ function init() {
   object.position.set(-200, 0, 200);
   scene.add(object);
 
-  geometry = new ParametricBufferGeometry(ParametricGeometries.klein, 20, 20);
+  geometry = new ParametricGeometry(ParametricGeometries.klein, 20, 20);
   object = new Mesh(geometry, material);
   object.position.set(0, 0, 200);
   object.scale.multiplyScalar(5);
   scene.add(object);
 
-  geometry = new ParametricBufferGeometry(ParametricGeometries.mobius, 20, 20);
+  geometry = new ParametricGeometry(ParametricGeometries.mobius, 20, 20);
   object = new Mesh(geometry, material);
   object.position.set(200, 0, 200);
   object.scale.multiplyScalar(30);

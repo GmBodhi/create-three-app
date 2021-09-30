@@ -1,0 +1,12 @@
+[
+  "https://threejs.org/examples/main.css",
+  "https://threejs.org/examples/jsm/controls/ArcballControls.js",
+  "https://threejs.org/examples/jsm/loaders/OBJLoader.js",
+  "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+  "https://threejs.org/examples/models/obj/cerberus/Cerberus.obj",
+  "https://threejs.org/examples/textures/equirectangular/venice_sunset_1k.hdr",
+  "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
+  "https://threejs.org/examples/models/obj/cerberus/Cerberus_A.jpg",
+  "https://threejs.org/examples/models/obj/cerberus/Cerberus_RM.jpg",
+  "https://threejs.org/examples/models/obj/cerberus/Cerberus_N.jpg"
+]

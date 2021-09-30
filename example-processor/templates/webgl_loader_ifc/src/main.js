@@ -87,7 +87,7 @@ function init() {
     const raycaster = new Raycaster();
     raycaster.setFromCamera(mouse, camera);
 
-    const intersected = raycaster.intersectObjects(scene.children);
+    const intersected = raycaster.intersectObjects(scene.children, false);
     if (intersected.length) {
       const found = intersected[0];
       const faceIndex = found.faceIndex;

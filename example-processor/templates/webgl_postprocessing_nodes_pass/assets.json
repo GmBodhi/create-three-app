@@ -4,6 +4,10 @@
   "https://threejs.org/examples/jsm/postprocessing/RenderPass.js",
   "https://threejs.org/examples/jsm/nodes/postprocessing/NodePass.js",
   "https://threejs.org/examples/jsm/nodes/Nodes.js",
+  "https://threejs.org/examples/jsm/shaders/CopyShader.js",
+  "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/Pass.js",
   "https://threejs.org/examples/jsm/nodes/core/Node.js",
   "https://threejs.org/examples/jsm/nodes/core/TempNode.js",
   "https://threejs.org/examples/jsm/nodes/core/InputNode.js",
@@ -81,10 +85,6 @@
   "https://threejs.org/examples/jsm/nodes/materials/StandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/materials/MeshStandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
-  "https://threejs.org/examples/jsm/shaders/CopyShader.js",
-  "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
-  "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
-  "https://threejs.org/examples/jsm/postprocessing/Pass.js",
   "https://threejs.org/examples/textures/lensflare/lensflare0.png",
   "https://threejs.org/examples/textures/decal/decal-normal.jpg"
 ]

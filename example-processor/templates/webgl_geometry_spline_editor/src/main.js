@@ -341,7 +341,7 @@ function onPointerMove(event) {
 
   raycaster.setFromCamera(pointer, camera);
 
-  const intersects = raycaster.intersectObjects(splineHelperObjects);
+  const intersects = raycaster.intersectObjects(splineHelperObjects, false);
 
   if (intersects.length > 0) {
     const object = intersects[0].object;

@@ -8,7 +8,6 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
-  FontLoader,
   LineBasicMaterial,
   DoubleSide,
   MeshBasicMaterial,
@@ -21,6 +20,7 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 
 let camera, scene, renderer;
 

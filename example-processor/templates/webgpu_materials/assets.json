@@ -96,12 +96,12 @@
   "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeSampledTexture.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUBufferUtils.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/nodes/ShaderLib.js",
-  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniformsGroup.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniform.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampler.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampledTexture.js",
-  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniformBuffer.js",
+  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniformsGroup.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUBinding.js",
+  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniformBuffer.js",
   "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
   "https://threejs.org/examples/textures/alphaMap.jpg"
 ]
