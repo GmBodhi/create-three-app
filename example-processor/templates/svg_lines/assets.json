@@ -1,6 +1,5 @@
 [
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/renderers/SVGRenderer.js",
-  "https://threejs.org/examples/jsm/renderers/Projector.js",
-  "https://threejs.org/examples/svg_sandbox.html"
+  "https://threejs.org/examples/jsm/renderers/Projector.js"
 ]

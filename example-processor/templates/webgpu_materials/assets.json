@@ -64,8 +64,6 @@
   "https://threejs.org/examples/jsm/renderers/nodes/core/FunctionCallNode.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniformsGroup.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniform.js",
-  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampler.js",
-  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampledTexture.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/NodeUniform.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/NodeAttribute.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/NodeVary.js",
@@ -73,9 +71,11 @@
   "https://threejs.org/examples/jsm/renderers/nodes/core/NodeCode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/NodeKeywords.js",
   "https://threejs.org/examples/jsm/renderers/nodes/accessors/MaterialReferenceNode.js",
+  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampler.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/ContextNode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/StructNode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/functions/BSDFs.js",
+  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampledTexture.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUBinding.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/PropertyNode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/accessors/ReferenceNode.js",
@@ -84,6 +84,5 @@
   "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector4Node.js",
   "https://threejs.org/examples/jsm/renderers/nodes/inputs/ColorNode.js",
   "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
-  "https://threejs.org/examples/textures/alphaMap.jpg",
-  "https://threejs.org/examples/webgpu_rtt.html"
+  "https://threejs.org/examples/textures/alphaMap.jpg"
 ]

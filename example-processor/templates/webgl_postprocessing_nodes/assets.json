@@ -79,6 +79,5 @@
   "https://threejs.org/examples/jsm/nodes/materials/MeshStandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
   "https://threejs.org/examples/textures/decal/decal-normal.jpg",
-  "https://threejs.org/examples/textures/lensflare/lensflare0.png",
-  "https://threejs.org/examples/webgl_postprocessing_nodes_pass.html"
+  "https://threejs.org/examples/textures/lensflare/lensflare0.png"
 ]

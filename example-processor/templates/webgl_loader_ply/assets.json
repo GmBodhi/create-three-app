@@ -2,6 +2,5 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/loaders/PLYLoader.js",
   "https://threejs.org/examples/models/ply/ascii/dolphins.ply",
-  "https://threejs.org/examples/models/ply/binary/Lucy100k.ply",
-  "https://threejs.org/examples/webgl_loader_prwm.html"
+  "https://threejs.org/examples/models/ply/binary/Lucy100k.ply"
 ]

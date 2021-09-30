@@ -2,6 +2,5 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/helpers/RectAreaLightHelper.js",
-  "https://threejs.org/examples/jsm/lights/RectAreaLightUniformsLib.js",
-  "https://threejs.org/examples/webgl_lines_colors.html"
+  "https://threejs.org/examples/jsm/lights/RectAreaLightUniformsLib.js"
 ]

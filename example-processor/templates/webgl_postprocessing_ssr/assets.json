@@ -12,6 +12,5 @@
   "https://threejs.org/examples/jsm/shaders/SSRShader.js",
   "https://threejs.org/examples/models/draco/bunny.drc",
   "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
-  "https://threejs.org/examples/js/libs/draco/draco_decoder.js",
-  "https://threejs.org/examples/webgl_postprocessing_ssrr.html"
+  "https://threejs.org/examples/js/libs/draco/draco_decoder.js"
 ]

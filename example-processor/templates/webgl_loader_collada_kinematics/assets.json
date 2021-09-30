@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/libs/tween.module.min.js",
   "https://threejs.org/examples/jsm/loaders/ColladaLoader.js",
   "https://threejs.org/examples/jsm/loaders/TGALoader.js",
-  "https://threejs.org/examples/models/collada/abb_irb52_7_120.dae",
-  "https://threejs.org/examples/webgl_loader_collada_skinning.html"
+  "https://threejs.org/examples/models/collada/abb_irb52_7_120.dae"
 ]

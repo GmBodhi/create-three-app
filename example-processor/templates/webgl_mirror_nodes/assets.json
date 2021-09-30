@@ -82,6 +82,5 @@
   "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
   "https://threejs.org/examples/jsm/objects/Reflector.js",
   "https://threejs.org/examples/textures/decal/decal-normal.jpg",
-  "https://threejs.org/examples/textures/decal/decal-diffuse.png",
-  "https://threejs.org/examples/webgl_performance_nodes.html"
+  "https://threejs.org/examples/textures/decal/decal-diffuse.png"
 ]

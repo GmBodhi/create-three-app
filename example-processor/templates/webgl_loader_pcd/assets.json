@@ -2,6 +2,5 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/loaders/PCDLoader.js",
-  "https://threejs.org/examples/models/pcd/binary/Zaghetto.pcd",
-  "https://threejs.org/examples/webgl_loader_pdb.html"
+  "https://threejs.org/examples/models/pcd/binary/Zaghetto.pcd"
 ]

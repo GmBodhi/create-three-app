@@ -1,3 +1,7 @@
+//Shaders
+
+undefined;
+
 import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, Scene, WebGLRenderer } from "three";

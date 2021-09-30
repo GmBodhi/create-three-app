@@ -2,6 +2,5 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/effects/OutlineEffect.js",
-  "https://threejs.org/examples/fonts/gentilis_regular.typeface.json",
-  "https://threejs.org/examples/webgl_materials_video.html"
+  "https://threejs.org/examples/fonts/gentilis_regular.typeface.json"
 ]

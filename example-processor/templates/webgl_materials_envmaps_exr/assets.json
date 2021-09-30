@@ -4,6 +4,5 @@
   "https://threejs.org/examples/jsm/loaders/EXRLoader.js",
   "https://threejs.org/examples/jsm/libs/fflate.module.js",
   "https://threejs.org/examples/textures/piz_compressed.exr",
-  "https://threejs.org/examples/textures/equirectangular.png",
-  "https://threejs.org/examples/webgl_materials_envmaps_hdr.html"
+  "https://threejs.org/examples/textures/equirectangular.png"
 ]

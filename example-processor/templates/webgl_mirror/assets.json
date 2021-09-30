@@ -1,6 +1,5 @@
 [
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/jsm/objects/Reflector.js",
-  "https://threejs.org/examples/webgl_modifier_curve.html"
+  "https://threejs.org/examples/jsm/objects/Reflector.js"
 ]

@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/loaders/KTXLoader.js",
   "https://threejs.org/examples/textures/compressed/disturb_BC1.ktx",
   "https://threejs.org/examples/textures/compressed/lensflare_BC3.ktx",
-  "https://threejs.org/examples/textures/compressed/disturb_ETC1.ktx",
-  "https://threejs.org/examples/webgl_loader_texture_ktx2.html"
+  "https://threejs.org/examples/textures/compressed/disturb_ETC1.ktx"
 ]

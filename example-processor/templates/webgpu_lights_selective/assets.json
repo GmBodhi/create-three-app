@@ -88,6 +88,5 @@
   "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector2Node.js",
   "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector4Node.js",
   "https://threejs.org/examples/textures/water/Water_1_M_Normal.jpg",
-  "https://threejs.org/examples/textures/roughness_map.jpg",
-  "https://threejs.org/examples/webgpu_materials.html"
+  "https://threejs.org/examples/textures/roughness_map.jpg"
 ]

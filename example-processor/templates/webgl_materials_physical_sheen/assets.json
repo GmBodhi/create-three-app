@@ -83,6 +83,5 @@
   "https://threejs.org/examples/jsm/nodes/materials/StandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/materials/MeshStandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
-  "https://threejs.org/examples/models/fbx/cloth.fbx",
-  "https://threejs.org/examples/webgl_materials_physical_transmission.html"
+  "https://threejs.org/examples/models/fbx/cloth.fbx"
 ]

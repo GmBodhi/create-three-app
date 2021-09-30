@@ -1,3 +1,7 @@
+//Shaders
+
+undefined;
+
 import "./style.css"; // For webpack support
 
 import initJank from "three/examples/jsm/offscreen/jank.js";

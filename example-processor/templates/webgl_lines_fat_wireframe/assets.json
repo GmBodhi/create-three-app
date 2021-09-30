@@ -4,6 +4,5 @@
   "https://threejs.org/examples/jsm/lines/LineMaterial.js",
   "https://threejs.org/examples/jsm/lines/Wireframe.js",
   "https://threejs.org/examples/jsm/lines/WireframeGeometry2.js",
-  "https://threejs.org/examples/jsm/lines/LineSegmentsGeometry.js",
-  "https://threejs.org/examples/webgl_lines_sphere.html"
+  "https://threejs.org/examples/jsm/lines/LineSegmentsGeometry.js"
 ]

@@ -4,6 +4,5 @@
   "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
   "https://threejs.org/examples/models/gltf/AnimatedMorphSphere/glTF/AnimatedMorphSphere.gltf",
   "https://threejs.org/examples/models/gltf/AnimatedMorphSphere/glTF/AnimatedMorphSphere.bin",
-  "https://threejs.org/examples/textures/sprites/disc.png",
-  "https://threejs.org/examples/webgl_multiple_canvases_circle.html"
+  "https://threejs.org/examples/textures/sprites/disc.png"
 ]

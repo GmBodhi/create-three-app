@@ -5,6 +5,5 @@
   "https://threejs.org/examples/jsm/loaders/ColladaLoader.js",
   "https://threejs.org/examples/jsm/libs/fflate.module.js",
   "https://threejs.org/examples/jsm/loaders/TGALoader.js",
-  "https://threejs.org/examples/models/kmz/Box.kmz",
-  "https://threejs.org/examples/webgl_loader_ldraw.html"
+  "https://threejs.org/examples/models/kmz/Box.kmz"
 ]

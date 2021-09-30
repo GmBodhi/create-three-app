@@ -8,6 +8,5 @@
   "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
   "https://threejs.org/examples/jsm/postprocessing/SSAARenderPass.js",
-  "https://threejs.org/examples/textures/brick_diffuse.jpg",
-  "https://threejs.org/examples/webgl_postprocessing_unreal_bloom.html"
+  "https://threejs.org/examples/textures/brick_diffuse.jpg"
 ]

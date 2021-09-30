@@ -1,3 +1,8 @@
+//Shaders
+
+import vertexshader from "./shaders/vertexshader.glsl";
+import fragmentshader from "./shaders/fragmentshader.glsl";
+
 import "./style.css"; // For webpack support
 
 import {

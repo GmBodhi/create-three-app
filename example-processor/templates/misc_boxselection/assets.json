@@ -1,6 +1,5 @@
 [
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/interactive/SelectionBox.js",
-  "https://threejs.org/examples/jsm/interactive/SelectionHelper.js",
-  "https://threejs.org/examples/misc_controls_deviceorientation.html"
+  "https://threejs.org/examples/jsm/interactive/SelectionHelper.js"
 ]

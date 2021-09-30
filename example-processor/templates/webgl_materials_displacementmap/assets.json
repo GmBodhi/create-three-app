@@ -2,6 +2,7 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/loaders/OBJLoader.js",
+  "https://threejs.org/examples/models/obj/ninja/ninjaHead_Low.obj",
   "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/px.jpg",
   "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/nx.jpg",
   "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/py.jpg",
@@ -10,7 +11,5 @@
   "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/nz.jpg",
   "https://threejs.org/examples/models/obj/ninja/normal.png",
   "https://threejs.org/examples/models/obj/ninja/ao.jpg",
-  "https://threejs.org/examples/models/obj/ninja/displacement.jpg",
-  "https://threejs.org/examples/models/obj/ninja/ninjaHead_Low.obj",
-  "https://threejs.org/examples/webgl_materials_envmaps.html"
+  "https://threejs.org/examples/models/obj/ninja/displacement.jpg"
 ]

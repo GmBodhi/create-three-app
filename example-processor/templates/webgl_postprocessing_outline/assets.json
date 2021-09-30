@@ -11,6 +11,5 @@
   "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
   "https://threejs.org/examples/models/obj/tree.obj",
-  "https://threejs.org/examples/textures/tri_pattern.jpg",
-  "https://threejs.org/examples/webgl_postprocessing_pixel.html"
+  "https://threejs.org/examples/textures/tri_pattern.jpg"
 ]

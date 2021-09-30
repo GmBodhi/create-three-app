@@ -1,3 +1,8 @@
+//Shaders
+
+import PCSS from "./shaders/PCSS.glsl";
+import PCSSGetShadow from "./shaders/PCSSGetShadow.glsl";
+
 import "./style.css"; // For webpack support
 
 import {

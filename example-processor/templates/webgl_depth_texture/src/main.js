@@ -1,3 +1,8 @@
+//Shaders
+
+import postVert from "./shaders/postVert.glsl";
+import postFrag from "./shaders/postFrag.glsl";
+
 import "./style.css"; // For webpack support
 
 import {

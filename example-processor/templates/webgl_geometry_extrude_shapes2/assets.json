@@ -1,5 +1,4 @@
 [
   "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/webgl_geometry_extrude_splines.html"
+  "https://threejs.org/examples/jsm/controls/OrbitControls.js"
 ]

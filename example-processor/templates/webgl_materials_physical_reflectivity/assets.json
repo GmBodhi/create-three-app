@@ -4,6 +4,5 @@
   "https://threejs.org/examples/jsm/loaders/OBJLoader.js",
   "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
   "https://threejs.org/examples/models/obj/emerald.obj",
-  "https://threejs.org/examples/textures/equirectangular/royal_esplanade_1k.hdr",
-  "https://threejs.org/examples/webgl_materials_physical_sheen.html"
+  "https://threejs.org/examples/textures/equirectangular/royal_esplanade_1k.hdr"
 ]

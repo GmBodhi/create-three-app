@@ -4,10 +4,9 @@
   "https://threejs.org/examples/jsm/effects/OutlineEffect.js",
   "https://threejs.org/examples/jsm/loaders/MMDLoader.js",
   "https://threejs.org/examples/jsm/animation/MMDAnimationHelper.js",
-  "https://threejs.org/examples/jsm/shaders/MMDToonShader.js",
-  "https://threejs.org/examples/jsm/loaders/TGALoader.js",
-  "https://threejs.org/examples/jsm/libs/mmdparser.module.js",
   "https://threejs.org/examples/jsm/animation/CCDIKSolver.js",
   "https://threejs.org/examples/jsm/animation/MMDPhysics.js",
-  "https://threejs.org/examples/webgl_loader_nrrd.html"
+  "https://threejs.org/examples/jsm/shaders/MMDToonShader.js",
+  "https://threejs.org/examples/jsm/loaders/TGALoader.js",
+  "https://threejs.org/examples/jsm/libs/mmdparser.module.js"
 ]

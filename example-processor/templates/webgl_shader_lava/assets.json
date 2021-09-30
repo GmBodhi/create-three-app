@@ -11,6 +11,5 @@
   "https://threejs.org/examples/jsm/shaders/FilmShader.js",
   "https://threejs.org/examples/jsm/shaders/ConvolutionShader.js",
   "https://threejs.org/examples/textures/lava/cloud.png",
-  "https://threejs.org/examples/textures/lava/lavatile.jpg",
-  "https://threejs.org/examples/webgl_shader2.html"
+  "https://threejs.org/examples/textures/lava/lavatile.jpg"
 ]

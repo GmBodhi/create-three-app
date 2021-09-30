@@ -1,3 +1,9 @@
+//Shaders
+
+import fragment_shader_screen from "./shaders/fragment_shader_screen.glsl";
+import fragment_shader_pass_1 from "./shaders/fragment_shader_pass_1.glsl";
+import vertexShader from "./shaders/vertexShader.glsl";
+
 import "./style.css"; // For webpack support
 
 import {

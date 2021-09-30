@@ -2,6 +2,5 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
   "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb",
-  "https://threejs.org/examples/models/gltf/LeePerrySmith/Infinite-Level_02_Disp_NoSmoothUV-4096.jpg",
-  "https://threejs.org/examples/webgl_materials_car.html"
+  "https://threejs.org/examples/models/gltf/LeePerrySmith/Infinite-Level_02_Disp_NoSmoothUV-4096.jpg"
 ]

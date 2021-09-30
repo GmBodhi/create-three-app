@@ -10,6 +10,5 @@
   "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
   "https://threejs.org/examples/jsm/shaders/LuminosityHighPassShader.js",
-  "https://threejs.org/examples/models/gltf/PrimaryIonDrive.glb",
-  "https://threejs.org/examples/webgl_postprocessing_unreal_bloom_selective.html"
+  "https://threejs.org/examples/models/gltf/PrimaryIonDrive.glb"
 ]

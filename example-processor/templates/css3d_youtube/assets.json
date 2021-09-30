@@ -1,6 +1,5 @@
 [
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/TrackballControls.js",
-  "https://threejs.org/examples/jsm/renderers/CSS3DRenderer.js",
-  "https://threejs.org/examples/svg_lines.html"
+  "https://threejs.org/examples/jsm/renderers/CSS3DRenderer.js"
 ]

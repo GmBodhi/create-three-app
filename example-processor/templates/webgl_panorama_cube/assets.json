@@ -1,6 +1,5 @@
 [
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/textures/cube/sun_temple_stripe.jpg",
-  "https://threejs.org/examples/webgl_panorama_equirectangular.html"
+  "https://threejs.org/examples/textures/cube/sun_temple_stripe.jpg"
 ]

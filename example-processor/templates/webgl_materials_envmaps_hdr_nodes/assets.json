@@ -5,7 +5,6 @@
   "https://threejs.org/examples/jsm/loaders/RGBMLoader.js",
   "https://threejs.org/examples/jsm/environments/DebugEnvironment.js",
   "https://threejs.org/examples/jsm/nodes/Nodes.js",
-  "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
   "https://threejs.org/examples/jsm/nodes/core/Node.js",
   "https://threejs.org/examples/jsm/nodes/core/TempNode.js",
   "https://threejs.org/examples/jsm/nodes/core/InputNode.js",
@@ -83,6 +82,7 @@
   "https://threejs.org/examples/jsm/nodes/materials/StandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/materials/MeshStandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
+  "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
   "https://threejs.org/examples/textures/cube/pisaHDR/px.hdr",
   "https://threejs.org/examples/textures/cube/pisaHDR/nx.hdr",
   "https://threejs.org/examples/textures/cube/pisaHDR/py.hdr",
@@ -100,6 +100,5 @@
   "https://threejs.org/examples/textures/cube/pisa/py.png",
   "https://threejs.org/examples/textures/cube/pisa/ny.png",
   "https://threejs.org/examples/textures/cube/pisa/pz.png",
-  "https://threejs.org/examples/textures/cube/pisa/nz.png",
-  "https://threejs.org/examples/webgl_materials_envmaps_pmrem_nodes.html"
+  "https://threejs.org/examples/textures/cube/pisa/nz.png"
 ]

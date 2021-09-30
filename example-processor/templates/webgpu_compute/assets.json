@@ -42,11 +42,11 @@
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUBackground.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodes.js",
   "https://threejs.org/examples/jsm/libs/glslang.js",
+  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUTextureUtils.js",
+  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPURenderPipeline.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUProgrammableStage.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeBuilder.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/NodeFrame.js",
-  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUTextureUtils.js",
-  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPURenderPipeline.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeUniformsGroup.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeUniform.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeSampler.js",
@@ -67,8 +67,8 @@
   "https://threejs.org/examples/jsm/renderers/nodes/core/NodeKeywords.js",
   "https://threejs.org/examples/jsm/renderers/nodes/accessors/CameraNode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/PropertyNode.js",
-  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampler.js",
   "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampledTexture.js",
+  "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampler.js",
   "https://threejs.org/examples/jsm/renderers/nodes/accessors/MaterialReferenceNode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/ContextNode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/core/StructNode.js",
@@ -82,6 +82,5 @@
   "https://threejs.org/examples/jsm/renderers/nodes/core/ExpressionNode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/accessors/UVNode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/display/ColorSpaceNode.js",
-  "https://threejs.org/examples/jsm/renderers/nodes/functions/EncodingFunctions.js",
-  "https://threejs.org/examples/webgpu_instance_uniform.html"
+  "https://threejs.org/examples/jsm/renderers/nodes/functions/EncodingFunctions.js"
 ]

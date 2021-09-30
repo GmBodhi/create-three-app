@@ -1,6 +1,5 @@
 [
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/webxr/VRButton.js",
-  "https://threejs.org/examples/textures/cube/sun_temple_stripe_stereo.jpg",
-  "https://threejs.org/examples/webxr_vr_panorama_depth.html"
+  "https://threejs.org/examples/textures/cube/sun_temple_stripe_stereo.jpg"
 ]

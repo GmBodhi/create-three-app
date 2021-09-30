@@ -1,5 +1,4 @@
 [
   "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/effects/PeppersGhostEffect.js",
-  "https://threejs.org/examples/webgl_effects_stereo.html"
+  "https://threejs.org/examples/jsm/effects/PeppersGhostEffect.js"
 ]

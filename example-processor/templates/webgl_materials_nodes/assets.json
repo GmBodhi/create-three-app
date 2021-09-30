@@ -88,6 +88,5 @@
   "https://threejs.org/examples/textures/cube/Park2/posz.jpg",
   "https://threejs.org/examples/textures/cube/Park2/negz.jpg",
   "https://threejs.org/examples/textures/brick_diffuse.jpg",
-  "https://threejs.org/examples/textures/decal/decal-normal.jpg",
-  "https://threejs.org/examples/webgl_materials_standard_nodes.html"
+  "https://threejs.org/examples/textures/decal/decal-normal.jpg"
 ]

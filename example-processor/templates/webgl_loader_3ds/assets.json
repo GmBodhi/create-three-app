@@ -4,6 +4,5 @@
   "https://threejs.org/examples/jsm/loaders/TDSLoader.js",
   "https://threejs.org/examples/models/3ds/portalgun/portalgun.3ds",
   "https://threejs.org/examples/models/3ds/portalgun/textures/normal.jpg",
-  "https://threejs.org/examples/models/3ds/portalgun/textures/color.jpg",
-  "https://threejs.org/examples/webgl_loader_3mf.html"
+  "https://threejs.org/examples/models/3ds/portalgun/textures/color.jpg"
 ]
