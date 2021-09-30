@@ -20,14 +20,19 @@ module.exports = function parseShader(window, name) {
     fs.writeFileSync(
       path.resolve(
         __dirname,
-        `./templates/${name}/src/shaders/${shader.id}.glsl`
+        `./templates/${name}/src/shaders/${shader.id.replace(
+          /\-(\w)/g,
+          (_, p) => p.toUpperCase()
+        )}.glsl`
       ),
       JSON.stringify(shader.textContent)
     );
   });
 
   return {
-    additions: getAdditions(shaders.map(({ id }) => id)),
+    additions: getAdditions(
+      shaders.map(({ id }) => id.replace(/\-(\w)/g, (_, p) => p.toUpperCase()))
+    ),
     replace: {
       regex: new RegExp(
         `\s*document\.getElementById\(\s*["'](${shaders
