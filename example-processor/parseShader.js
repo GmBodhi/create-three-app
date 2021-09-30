@@ -33,7 +33,7 @@ module.exports = function parseShader(window, name) {
         `\s*document\.getElementById\(\s*["'](${shaders
           .map((s) => `${s.id}|`)
           .toString()
-          .replace(/,/, "")
+          .replace(/,/g, "")
           .slice(0, -1)})["']\s*\)\.textContent\s*`,
         "ig"
       ),
