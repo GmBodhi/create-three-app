@@ -84,7 +84,7 @@ container.appendChild(stats.domElement);
 
 const GRAVITY = 30;
 
-const NUM_SPHERES = 20;
+const NUM_SPHERES = 100;
 const SPHERE_RADIUS = 0.2;
 
 const STEPS_PER_FRAME = 5;
@@ -125,8 +125,13 @@ const playerVelocity = new Vector3();
 const playerDirection = new Vector3();
 
 let playerOnFloor = false;
+let mouseTime = 0;
 
 const keyStates = {};
+
+const vector1 = new Vector3();
+const vector2 = new Vector3();
+const vector3 = new Vector3();
 
 document.addEventListener("keydown", (event) => {
   keyStates[event.code] = true;
@@ -138,6 +143,12 @@ document.addEventListener("keyup", (event) => {
 
 document.addEventListener("mousedown", () => {
   document.body.requestPointerLock();
+
+  mouseTime = performance.now();
+});
+
+document.addEventListener("mouseup", () => {
+  throwBall();
 });
 
 document.body.addEventListener("mousemove", (event) => {
@@ -156,18 +167,27 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-document.addEventListener("click", () => {
+function throwBall() {
   const sphere = spheres[sphereIdx];
 
   camera.getWorldDirection(playerDirection);
 
-  sphere.collider.center.copy(playerCollider.end);
-  sphere.velocity.copy(playerDirection).multiplyScalar(30);
+  sphere.collider.center
+    .copy(playerCollider.end)
+    .addScaledVector(playerDirection, playerCollider.radius * 1.5);
+
+  // throw the ball with more force if we hold the button longer, and if we move forward
+
+  const impulse =
+    15 + 30 * (1 - Math.exp((mouseTime - performance.now()) * 0.001));
+
+  sphere.velocity.copy(playerDirection).multiplyScalar(impulse);
+  sphere.velocity.addScaledVector(playerVelocity, 2);
 
   sphereIdx = (sphereIdx + 1) % spheres.length;
-});
+}
 
-function playerCollitions() {
+function playerCollisions() {
   const result = worldOctree.capsuleIntersect(playerCollider);
 
   playerOnFloor = false;
@@ -187,26 +207,63 @@ function playerCollitions() {
 }
 
 function updatePlayer(deltaTime) {
-  if (playerOnFloor) {
-    const damping = Math.exp(-3 * deltaTime) - 1;
-    playerVelocity.addScaledVector(playerVelocity, damping);
-  } else {
+  let damping = Math.exp(-4 * deltaTime) - 1;
+
+  if (!playerOnFloor) {
     playerVelocity.y -= GRAVITY * deltaTime;
+
+    // small air resistance
+    damping *= 0.1;
   }
+
+  playerVelocity.addScaledVector(playerVelocity, damping);
 
   const deltaPosition = playerVelocity.clone().multiplyScalar(deltaTime);
   playerCollider.translate(deltaPosition);
 
-  playerCollitions();
+  playerCollisions();
 
   camera.position.copy(playerCollider.end);
 }
 
+function playerSphereCollision(sphere) {
+  const center = vector1
+    .addVectors(playerCollider.start, playerCollider.end)
+    .multiplyScalar(0.5);
+
+  const sphere_center = sphere.collider.center;
+
+  const r = playerCollider.radius + sphere.collider.radius;
+  const r2 = r * r;
+
+  // approximation: player = 3 spheres
+
+  for (const point of [playerCollider.start, playerCollider.end, center]) {
+    const d2 = point.distanceToSquared(sphere_center);
+
+    if (d2 < r2) {
+      const normal = vector1.subVectors(point, sphere_center).normalize();
+      const v1 = vector2
+        .copy(normal)
+        .multiplyScalar(normal.dot(playerVelocity));
+      const v2 = vector3
+        .copy(normal)
+        .multiplyScalar(normal.dot(sphere.velocity));
+
+      playerVelocity.add(v2).sub(v1);
+      sphere.velocity.add(v1).sub(v2);
+
+      const d = (r - Math.sqrt(d2)) / 2;
+      sphere_center.addScaledVector(normal, -d);
+    }
+  }
+}
+
 function spheresCollisions() {
-  for (let i = 0; i < spheres.length; i++) {
+  for (let i = 0, length = spheres.length; i < length; i++) {
     const s1 = spheres[i];
 
-    for (let j = i + 1; j < spheres.length; j++) {
+    for (let j = i + 1; j < length; j++) {
       const s2 = spheres[j];
 
       const d2 = s1.collider.center.distanceToSquared(s2.collider.center);
@@ -214,12 +271,12 @@ function spheresCollisions() {
       const r2 = r * r;
 
       if (d2 < r2) {
-        const normal = s1.collider
-          .clone()
-          .center.sub(s2.collider.center)
+        const normal = vector1
+          .subVectors(s1.collider.center, s2.collider.center)
           .normalize();
-        const v1 = normal.clone().multiplyScalar(normal.dot(s1.velocity));
-        const v2 = normal.clone().multiplyScalar(normal.dot(s2.velocity));
+        const v1 = vector2.copy(normal).multiplyScalar(normal.dot(s1.velocity));
+        const v2 = vector3.copy(normal).multiplyScalar(normal.dot(s2.velocity));
+
         s1.velocity.add(v2).sub(v1);
         s2.velocity.add(v1).sub(v2);
 
@@ -251,10 +308,14 @@ function updateSpheres(deltaTime) {
     const damping = Math.exp(-1.5 * deltaTime) - 1;
     sphere.velocity.addScaledVector(sphere.velocity, damping);
 
-    spheresCollisions();
-
-    sphere.mesh.position.copy(sphere.collider.center);
+    playerSphereCollision(sphere);
   });
+
+  spheresCollisions();
+
+  for (const sphere of spheres) {
+    sphere.mesh.position.copy(sphere.collider.center);
+  }
 }
 
 function getForwardVector() {
@@ -275,25 +336,26 @@ function getSideVector() {
 }
 
 function controls(deltaTime) {
-  const speed = 25;
+  // gives a bit of air control
+  const speedDelta = deltaTime * (playerOnFloor ? 25 : 8);
+
+  if (keyStates["KeyW"]) {
+    playerVelocity.add(getForwardVector().multiplyScalar(speedDelta));
+  }
+
+  if (keyStates["KeyS"]) {
+    playerVelocity.add(getForwardVector().multiplyScalar(-speedDelta));
+  }
+
+  if (keyStates["KeyA"]) {
+    playerVelocity.add(getSideVector().multiplyScalar(-speedDelta));
+  }
+
+  if (keyStates["KeyD"]) {
+    playerVelocity.add(getSideVector().multiplyScalar(speedDelta));
+  }
 
   if (playerOnFloor) {
-    if (keyStates["KeyW"]) {
-      playerVelocity.add(getForwardVector().multiplyScalar(speed * deltaTime));
-    }
-
-    if (keyStates["KeyS"]) {
-      playerVelocity.add(getForwardVector().multiplyScalar(-speed * deltaTime));
-    }
-
-    if (keyStates["KeyA"]) {
-      playerVelocity.add(getSideVector().multiplyScalar(-speed * deltaTime));
-    }
-
-    if (keyStates["KeyD"]) {
-      playerVelocity.add(getSideVector().multiplyScalar(speed * deltaTime));
-    }
-
     if (keyStates["Space"]) {
       playerVelocity.y = 15;
     }

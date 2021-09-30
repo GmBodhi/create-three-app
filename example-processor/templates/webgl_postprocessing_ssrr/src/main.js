@@ -23,7 +23,6 @@ import {
   IcosahedronBufferGeometry,
   ConeBufferGeometry,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
@@ -33,6 +32,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { SSRrPass } from "three/examples/jsm/postprocessing/SSRrPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
 
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 
@@ -160,7 +161,6 @@ function init() {
   // renderer
   renderer = new WebGLRenderer({ antialias: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.autoClear = false;
   container.appendChild(renderer.domElement);
 
@@ -190,11 +190,11 @@ function init() {
     camera,
     width: innerWidth,
     height: innerHeight,
-    encoding: sRGBEncoding,
     selects: selects,
   });
 
   composer.addPass(ssrrPass);
+  composer.addPass(new ShaderPass(GammaCorrectionShader));
 
   // GUI
 
@@ -249,7 +249,7 @@ function onPointerUp(event) {
   if (mouseDown.sub(mouse).length() > 0) return;
 
   raycaster.setFromCamera(mouse, camera);
-  const intersect = raycaster.intersectObjects(objects)[0];
+  const intersect = raycaster.intersectObjects(objects, false)[0];
 
   if (intersect) {
     const index = selects.indexOf(intersect.object);

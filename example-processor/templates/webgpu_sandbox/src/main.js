@@ -11,16 +11,13 @@ import {
   TextureLoader,
   RepeatWrapping,
   BoxGeometry,
-  MeshBasicMaterial,
   Vector2,
   Mesh,
   SphereGeometry,
   PlaneGeometry,
   Vector3,
   BufferGeometry,
-  PointsMaterial,
   Points,
-  LineBasicMaterial,
   Line,
   DataTexture,
   RGBAFormat,
@@ -31,17 +28,7 @@ import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
-import AttributeNode from "three/examples/jsm/renderers/nodes/core/AttributeNode.js";
-import FloatNode from "three/examples/jsm/renderers/nodes/inputs/FloatNode.js";
-import Vector2Node from "three/examples/jsm/renderers/nodes/inputs/Vector2Node.js";
-import ColorNode from "three/examples/jsm/renderers/nodes/inputs/ColorNode.js";
-import TextureNode from "three/examples/jsm/renderers/nodes/inputs/TextureNode.js";
-import UVNode from "three/examples/jsm/renderers/nodes/accessors/UVNode.js";
-import PositionNode from "three/examples/jsm/renderers/nodes/accessors/PositionNode.js";
-import NormalNode from "three/examples/jsm/renderers/nodes/accessors/NormalNode.js";
-import OperatorNode from "three/examples/jsm/renderers/nodes/math/OperatorNode.js";
-import SwitchNode from "three/examples/jsm/renderers/nodes/utils/SwitchNode.js";
-import TimerNode from "three/examples/jsm/renderers/nodes/utils/TimerNode.js";
+import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let camera, scene, renderer;
 
@@ -93,19 +80,30 @@ async function init() {
   // box mesh
 
   const geometryBox = new BoxGeometry();
-  const materialBox = new MeshBasicMaterial();
+  const materialBox = new Nodes.MeshBasicNodeMaterial();
 
-  const timerNode = new TimerNode();
+  const timerNode = new Nodes.TimerNode();
 
   // birection speed
-  const timerScaleNode = new OperatorNode(
+  const timerScaleNode = new Nodes.OperatorNode(
     "*",
     timerNode,
-    new Vector2Node(new Vector2(-0.5, 0.1)).setConst(true)
+    new Nodes.Vector2Node(new Vector2(-0.5, 0.1)).setConst(true)
   );
-  const animateUV = new OperatorNode("+", new UVNode(), timerScaleNode);
+  const animateUV = new Nodes.OperatorNode(
+    "+",
+    new Nodes.UVNode(),
+    timerScaleNode
+  );
 
-  materialBox.colorNode = new TextureNode(texture, animateUV);
+  const textureNode = new Nodes.TextureNode(texture, animateUV);
+
+  materialBox.colorNode = new Nodes.MathNode(
+    "mix",
+    textureNode,
+    new Nodes.CheckerNode(animateUV),
+    new Nodes.FloatNode(0.5)
+  );
 
   // test uv 2
   //geometryBox.setAttribute( 'uv2', geometryBox.getAttribute( 'uv' ) );
@@ -118,28 +116,28 @@ async function init() {
   // displace example
 
   const geometrySphere = new SphereGeometry(0.5, 64, 64);
-  const materialSphere = new MeshBasicMaterial();
+  const materialSphere = new Nodes.MeshBasicNodeMaterial();
 
-  const displaceAnimated = new SwitchNode(
-    new TextureNode(textureDisplace),
+  const displaceAnimated = new Nodes.SplitNode(
+    new Nodes.TextureNode(textureDisplace),
     "x"
   );
-  const displaceY = new OperatorNode(
+  const displaceY = new Nodes.OperatorNode(
     "*",
     displaceAnimated,
-    new FloatNode(0.25).setConst(true)
+    new Nodes.FloatNode(0.25).setConst(true)
   );
 
-  const displace = new OperatorNode(
+  const displace = new Nodes.OperatorNode(
     "*",
-    new NormalNode(NormalNode.LOCAL),
+    new Nodes.NormalNode(Nodes.NormalNode.LOCAL),
     displaceY
   );
 
   materialSphere.colorNode = displaceY;
-  materialSphere.positionNode = new OperatorNode(
+  materialSphere.positionNode = new Nodes.OperatorNode(
     "+",
-    new PositionNode(PositionNode.LOCAL),
+    new Nodes.PositionNode(Nodes.PositionNode.LOCAL),
     displace
   );
 
@@ -150,13 +148,16 @@ async function init() {
   // data texture
 
   const geometryPlane = new PlaneGeometry();
-  const materialPlane = new MeshBasicMaterial();
-  materialPlane.colorNode = new OperatorNode(
+  const materialPlane = new Nodes.MeshBasicNodeMaterial();
+  materialPlane.colorNode = new Nodes.OperatorNode(
     "+",
-    new TextureNode(createDataTexture()),
-    new ColorNode(new Color(0x0000ff))
+    new Nodes.TextureNode(createDataTexture()),
+    new Nodes.ColorNode(new Color(0x0000ff))
   );
-  materialPlane.opacityNode = new SwitchNode(new TextureNode(dxt5Texture), "a");
+  materialPlane.opacityNode = new Nodes.SplitNode(
+    new Nodes.TextureNode(dxt5Texture),
+    "a"
+  );
   materialPlane.transparent = true;
 
   const plane = new Mesh(geometryPlane, materialPlane);
@@ -165,8 +166,8 @@ async function init() {
 
   // compressed texture
 
-  const materialCompressed = new MeshBasicMaterial();
-  materialCompressed.colorNode = new TextureNode(dxt5Texture);
+  const materialCompressed = new Nodes.MeshBasicNodeMaterial();
+  materialCompressed.colorNode = new Nodes.TextureNode(dxt5Texture);
   materialCompressed.transparent = true;
 
   const boxCompressed = new Mesh(geometryBox, materialCompressed);
@@ -183,12 +184,12 @@ async function init() {
   }
 
   const geometryPoints = new BufferGeometry().setFromPoints(points);
-  const materialPoints = new PointsMaterial();
+  const materialPoints = new Nodes.PointsNodeMaterial();
 
-  materialPoints.colorNode = new OperatorNode(
+  materialPoints.colorNode = new Nodes.OperatorNode(
     "*",
-    new PositionNode(),
-    new FloatNode(3).setConst(true)
+    new Nodes.PositionNode(),
+    new Nodes.FloatNode(3).setConst(true)
   );
 
   const pointCloud = new Points(geometryPoints, materialPoints);
@@ -206,8 +207,8 @@ async function init() {
 
   geometryLine.setAttribute("color", geometryLine.getAttribute("position"));
 
-  const materialLine = new LineBasicMaterial();
-  materialLine.colorNode = new AttributeNode("color", "vec3");
+  const materialLine = new Nodes.LineBasicNodeMaterial();
+  materialLine.colorNode = new Nodes.AttributeNode("color", "vec3");
 
   const line = new Line(geometryLine, materialLine);
   line.position.set(2, 1, 0);

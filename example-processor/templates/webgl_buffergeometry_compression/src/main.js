@@ -21,8 +21,6 @@ import {
   CylinderGeometry,
   TorusKnotGeometry,
   Vector3,
-  BufferGeometry,
-  GeometryCompression,
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
@@ -268,12 +266,6 @@ function animate() {
 //
 
 function updateGroupGeometry(mesh, lineSegments, geometry, data) {
-  if (geometry.isGeometry) {
-    geometry = new BufferGeometry().fromGeometry(geometry);
-
-    console.log("GeometryCompression: Converted Geometry to BufferGeometry.");
-  }
-
   // dispose first
   lineSegments.geometry.dispose();
   mesh.geometry.dispose();

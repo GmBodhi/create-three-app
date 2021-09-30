@@ -20,7 +20,6 @@ import {
   ConeBufferGeometry,
   PlaneBufferGeometry,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
@@ -30,6 +29,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { SSRPass } from "three/examples/jsm/postprocessing/SSRPass.js";
+import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
 import { ReflectorForSSRPass } from "three/examples/jsm/objects/ReflectorForSSRPass.js";
 
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
@@ -153,7 +154,6 @@ function init() {
   // renderer
   renderer = new WebGLRenderer({ antialias: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
 
   //
@@ -180,12 +180,12 @@ function init() {
     camera,
     width: innerWidth,
     height: innerHeight,
-    encoding: sRGBEncoding,
     groundReflector: params.groundReflector ? groundReflector : null,
     selects: params.groundReflector ? selects : null,
   });
 
   composer.addPass(ssrPass);
+  composer.addPass(new ShaderPass(GammaCorrectionShader));
 
   // GUI
 

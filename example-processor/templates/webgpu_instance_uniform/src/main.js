@@ -4,34 +4,24 @@ undefined;
 
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  GridHelper,
-  MeshBasicMaterial,
-  Mesh,
-  Color,
-} from "three";
+import { PerspectiveCamera, Scene, GridHelper, Mesh, Color } from "three";
 
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
 
-import Node from "three/examples/jsm/renderers/nodes/core/Node.js";
-import AttributeNode from "three/examples/jsm/renderers/nodes/core/AttributeNode.js";
-import { NodeUpdateType } from "three/examples/jsm/renderers/nodes/core/constants.js";
-import ColorNode from "three/examples/jsm/renderers/nodes/inputs/ColorNode.js";
+import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
-class InstanceUniformNode extends Node {
+class InstanceUniformNode extends Nodes.Node {
   constructor() {
     super("vec3");
 
-    this.updateType = NodeUpdateType.Object;
+    this.updateType = Nodes.NodeUpdateType.Object;
 
-    this.inputNode = new ColorNode();
+    this.inputNode = new Nodes.ColorNode();
   }
 
   update(frame) {
@@ -76,7 +66,7 @@ async function init() {
   // Grid
 
   const helper = new GridHelper(1000, 40, 0x303030, 0x303030);
-  helper.material.colorNode = new AttributeNode("color", "vec3");
+  helper.material.colorNode = new Nodes.AttributeNode("color", "vec3");
   helper.position.y = -75;
   scene.add(helper);
 
@@ -84,7 +74,7 @@ async function init() {
 
   const instanceUniform = new InstanceUniformNode();
 
-  const material = new MeshBasicMaterial();
+  const material = new Nodes.MeshBasicNodeMaterial();
   material.colorNode = instanceUniform;
 
   // Geometry

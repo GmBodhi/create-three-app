@@ -225,7 +225,7 @@ function getIntersections(controller) {
   raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
   raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
 
-  return raycaster.intersectObjects(group.children);
+  return raycaster.intersectObjects(group.children, false);
 }
 
 function intersectObjects(controller) {

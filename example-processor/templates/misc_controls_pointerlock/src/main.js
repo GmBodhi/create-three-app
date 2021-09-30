@@ -242,7 +242,7 @@ function animate() {
     raycaster.ray.origin.copy(controls.getObject().position);
     raycaster.ray.origin.y -= 10;
 
-    const intersections = raycaster.intersectObjects(objects);
+    const intersections = raycaster.intersectObjects(objects, false);
 
     const onObject = intersections.length > 0;
 

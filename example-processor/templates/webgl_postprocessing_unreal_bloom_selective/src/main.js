@@ -164,7 +164,7 @@ function onPointerDown(event) {
   mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
   raycaster.setFromCamera(mouse, camera);
-  const intersects = raycaster.intersectObjects(scene.children);
+  const intersects = raycaster.intersectObjects(scene.children, false);
   if (intersects.length > 0) {
     const object = intersects[0].object;
     object.layers.toggle(BLOOM_SCENE);

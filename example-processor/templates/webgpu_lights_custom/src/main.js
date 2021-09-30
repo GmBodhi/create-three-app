@@ -14,7 +14,6 @@ import {
   MeshBasicMaterial,
   Vector3,
   BufferGeometry,
-  PointsMaterial,
   Points,
 } from "three";
 
@@ -23,10 +22,7 @@ import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-import ContextNode from "three/examples/jsm/renderers/nodes/core/ContextNode.js";
-import FunctionNode from "three/examples/jsm/renderers/nodes/core/FunctionNode.js";
-
-import LightsNode from "three/examples/jsm/renderers/nodes/lights/LightsNode.js";
+import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let camera, scene, renderer;
 
@@ -70,7 +66,7 @@ async function init() {
 
   //light nodes ( selective lights )
 
-  const allLightsNode = LightsNode.fromLights([light1, light2, light3]);
+  const allLightsNode = Nodes.LightsNode.fromLights([light1, light2, light3]);
 
   // points
 
@@ -82,11 +78,11 @@ async function init() {
   }
 
   const geometryPoints = new BufferGeometry().setFromPoints(points);
-  const materialPoints = new PointsMaterial();
+  const materialPoints = new Nodes.PointsNodeMaterial();
 
   // custom lighting model
 
-  const customLightingModel = new FunctionNode(`
+  const customLightingModel = new Nodes.FunctionNode(`
 					void ( inout ReflectedLight reflectedLight, vec3 lightColor ) {
 
 						// lightColor returns the light color with the intensity calculated
@@ -95,7 +91,7 @@ async function init() {
 
 					}`);
 
-  const lightingModelContext = new ContextNode(allLightsNode);
+  const lightingModelContext = new Nodes.ContextNode(allLightsNode);
   lightingModelContext.setContextValue("lightingModel", customLightingModel);
 
   materialPoints.lightNode = lightingModelContext;

@@ -3,9 +3,10 @@
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/postprocessing/EffectComposer.js",
   "https://threejs.org/examples/jsm/postprocessing/SSRrPass.js",
+  "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
+  "https://threejs.org/examples/jsm/shaders/GammaCorrectionShader.js",
   "https://threejs.org/examples/jsm/loaders/DRACOLoader.js",
   "https://threejs.org/examples/jsm/shaders/CopyShader.js",
-  "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
   "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
   "https://threejs.org/examples/jsm/shaders/SSRrShader.js",
@@ -13,5 +14,5 @@
   "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
   "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
   "https://threejs.org/examples/js/libs/draco/draco_decoder.js",
-  "blob:https://threejs.org/16d295d1-eb2d-4672-8704-c50b03c32d43"
+  "blob:https://threejs.org/589bba1d-f7fc-4481-ade7-656842d1b3f0"
 ]
