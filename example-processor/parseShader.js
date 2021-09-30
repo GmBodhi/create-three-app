@@ -26,7 +26,7 @@ module.exports = function parseShader(window, name) {
           (_, p) => p.toUpperCase()
         )}.glsl`
       ),
-      JSON.stringify(shader.innerHTML)
+      JSON.stringify(shader.innerHTML), { encoding: "utf-8"}
     );
   });
 
