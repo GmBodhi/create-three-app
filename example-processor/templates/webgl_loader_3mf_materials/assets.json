@@ -1,8 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/jsm/loaders/3MFLoader.js",
-  "https://threejs.org/examples/jsm/libs/fflate.module.js",
-  "https://threejs.org/examples/models/3mf/truck.3mf",
-  "blob:https://threejs.org/a1cf4cec-b1d0-4937-9648-efef305160f9"
-]

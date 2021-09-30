@@ -1,1 +1,0 @@
-"\n\n\t\t\tvarying vec2 vUv;\n\n\t\t\tvoid main()\t{\n\n\t\t\t\tvUv = uv;\n\n\t\t\t\tgl_Position = vec4( position, 1.0 );\n\n\t\t\t}\n\n\t\t"

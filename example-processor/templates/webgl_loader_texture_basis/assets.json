@@ -1,9 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/loaders/BasisTextureLoader.js",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/textures/compressed/canestra_di_frutta_caravaggio.basis",
-  "https://threejs.org/examples/js/libs/basis/basis_transcoder.js",
-  "https://threejs.org/examples/js/libs/basis/basis_transcoder.wasm",
-  "blob:https://threejs.org/622dd124-04ae-4a42-bed0-81c0ed4bfdef"
-]

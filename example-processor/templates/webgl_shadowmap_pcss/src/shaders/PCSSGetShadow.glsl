@@ -1,1 +1,0 @@
-"\n\n\t\t\treturn PCSS( shadowMap, shadowCoord );\n\n\t\t"

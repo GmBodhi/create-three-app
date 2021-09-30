@@ -1,1 +1,0 @@
-"\n\n\t\tprecision highp float;\n\n\t\tuniform float time;\n\n\t\tvarying vec3 vPosition;\n\t\tvarying vec4 vColor;\n\n\t\tvoid main() {\n\n\t\t\tvec4 color = vec4( vColor );\n\t\t\tcolor.r += sin( vPosition.x * 10.0 + time ) * 0.5;\n\n\t\t\tgl_FragColor = color;\n\n\t\t}\n\n\t"

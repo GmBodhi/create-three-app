@@ -1,6 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/jsm/loaders/GCodeLoader.js",
-  "https://threejs.org/examples/models/gcode/benchy.gcode"
-]

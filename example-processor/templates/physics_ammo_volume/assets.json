@@ -1,9 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/js/libs/ammo.wasm.js",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
-  "https://threejs.org/examples/js/libs/ammo.wasm.wasm",
-  "https://threejs.org/examples/textures/grid.png",
-  "https://threejs.org/examples/textures/colors.png"
-]

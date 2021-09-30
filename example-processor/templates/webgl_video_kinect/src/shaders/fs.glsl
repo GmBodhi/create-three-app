@@ -1,1 +1,0 @@
-"\n\n\t\t\tuniform sampler2D map;\n\n\t\t\tvarying vec2 vUv;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvec4 color = texture2D( map, vUv );\n\t\t\t\tgl_FragColor = vec4( color.r, color.g, color.b, 0.2 );\n\n\t\t\t}\n\n\t\t"

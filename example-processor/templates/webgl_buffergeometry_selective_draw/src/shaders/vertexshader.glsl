@@ -1,1 +1,0 @@
-"\n\t\tattribute float visible;\n\t\tvarying float vVisible;\n\t\tattribute vec3 vertColor;\n\t\tvarying vec3 vColor;\n\n\t\tvoid main() {\n\n\t\t\tvColor = vertColor;\n\t\t\tvVisible = visible;\n\t\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n\t\t}\n\t"

@@ -1,1 +1,0 @@
-"\n\n\t\t\tvarying vec4 vColor;\n\n\t\t\tvoid main() {\n\n\t\t\t\tif ( vColor.y == 0.0 ) discard;\n\n\t\t\t\tfloat f = length( gl_PointCoord - vec2( 0.5, 0.5 ) );\n\t\t\t\tif ( f > 0.5 ) {\n\t\t\t\t\tdiscard;\n\t\t\t\t}\n\t\t\t\tgl_FragColor = vColor;\n\n\t\t\t}\n\n\t\t"

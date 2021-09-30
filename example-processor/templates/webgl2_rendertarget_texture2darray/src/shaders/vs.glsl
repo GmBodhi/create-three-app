@@ -1,1 +1,0 @@
-"\n\tuniform vec2 size;\n\tout vec2 vUv;\n\n\tvoid main() {\n\n\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n\t\t// Convert position.xy to 1.0-0.0\n\n\t\tvUv.xy = position.xy / size + 0.5;\n\t\tvUv.y = 1.0 - vUv.y; // original data is upside down\n\n\t}\n\t"

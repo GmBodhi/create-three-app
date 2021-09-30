@@ -1,1 +1,0 @@
-"\n\n\t\t\tuniform vec3 color;\n\t\t\tuniform sampler2D pointTexture;\n\t\t\tuniform float alphaTest;\n\n\t\t\tvarying vec3 vColor;\n\n\t\t\tvoid main() {\n\n\t\t\t\tgl_FragColor = vec4( color * vColor, 1.0 );\n\n\t\t\t\tgl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );\n\n\t\t\t\tif ( gl_FragColor.a < alphaTest ) discard;\n\n\t\t\t}\n\n\t\t"

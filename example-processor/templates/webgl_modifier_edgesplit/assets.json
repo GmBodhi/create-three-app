@@ -1,9 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/jsm/loaders/OBJLoader.js",
-  "https://threejs.org/examples/jsm/modifiers/EdgeSplitModifier.js",
-  "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
-  "https://threejs.org/examples/models/obj/cerberus/Cerberus.obj",
-  "https://threejs.org/examples/models/obj/cerberus/Cerberus_A.jpg"
-]
