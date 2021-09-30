@@ -3,7 +3,7 @@ const fs = require("fs");
 
 function getAdditions(imports) {
   return imports
-    .map((shader) => `import ${shader} './shaders/${shader}.glsl'\n`)
+    .map((shader) => `import ${shader} from './shaders/${shader}.glsl'\n`)
     .toString();
 }
 
@@ -33,6 +33,7 @@ module.exports = function parseShader(window, name) {
         `\s*document\.getElementById\(\s*["'](${shaders
           .map((s) => `${s.id}|`)
           .toString()
+          .replace(/,/, "")
           .slice(0, -1)})["']\s*\)\.textContent\s*`,
         "ig"
       ),
