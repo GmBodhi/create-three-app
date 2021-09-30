@@ -1,3 +1,7 @@
+//Shaders
+
+undefined;
+
 import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, Scene, Object3D, Vector3 } from "three";

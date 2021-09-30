@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/loaders/AMFLoader.js",
   "https://threejs.org/examples/jsm/libs/fflate.module.js",
-  "https://threejs.org/examples/models/amf/rook.amf",
-  "https://threejs.org/examples/webgl_loader_bvh.html"
+  "https://threejs.org/examples/models/amf/rook.amf"
 ]

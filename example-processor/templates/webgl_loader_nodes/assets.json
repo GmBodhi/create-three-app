@@ -9,9 +9,8 @@
   "https://threejs.org/examples/jsm/nodes/inputs/ColorNode.js",
   "https://threejs.org/examples/jsm/nodes/accessors/PositionNode.js",
   "https://threejs.org/examples/jsm/nodes/materials/nodes/RawNode.js",
-  "https://threejs.org/examples/jsm/nodes/core/InputNode.js",
-  "https://threejs.org/examples/jsm/nodes/core/NodeUtils.js",
   "https://threejs.org/examples/jsm/nodes/core/NodeUniform.js",
+  "https://threejs.org/examples/jsm/nodes/core/NodeUtils.js",
   "https://threejs.org/examples/jsm/nodes/core/NodeLib.js",
   "https://threejs.org/examples/jsm/nodes/core/FunctionNode.js",
   "https://threejs.org/examples/jsm/nodes/core/ConstNode.js",
@@ -22,6 +21,7 @@
   "https://threejs.org/examples/jsm/nodes/inputs/TextureNode.js",
   "https://threejs.org/examples/jsm/nodes/inputs/CubeTextureNode.js",
   "https://threejs.org/examples/jsm/nodes/misc/TextureCubeNode.js",
+  "https://threejs.org/examples/jsm/nodes/core/InputNode.js",
   "https://threejs.org/examples/jsm/nodes/core/TempNode.js",
   "https://threejs.org/examples/jsm/nodes/core/Node.js",
   "https://threejs.org/examples/jsm/nodes/accessors/UVNode.js",
@@ -82,6 +82,5 @@
   "https://threejs.org/examples/jsm/nodes/materials/MeshStandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
   "https://threejs.org/examples/nodes/caustic.json",
-  "https://threejs.org/examples/textures/lava/cloud.png",
-  "https://threejs.org/examples/webgl_materials_compile.html"
+  "https://threejs.org/examples/textures/lava/cloud.png"
 ]

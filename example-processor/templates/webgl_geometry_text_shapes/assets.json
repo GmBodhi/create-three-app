@@ -1,6 +1,5 @@
 [
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json",
-  "https://threejs.org/examples/webgl_geometry_text_stroke.html"
+  "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"
 ]

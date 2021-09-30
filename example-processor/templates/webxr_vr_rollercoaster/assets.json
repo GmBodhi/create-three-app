@@ -1,6 +1,5 @@
 [
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/misc/RollerCoaster.js",
-  "https://threejs.org/examples/jsm/webxr/VRButton.js",
-  "https://threejs.org/examples/webxr_vr_sandbox.html"
+  "https://threejs.org/examples/jsm/webxr/VRButton.js"
 ]

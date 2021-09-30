@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/physics/OimoPhysics.js",
   "https://threejs.org/examples/jsm/libs/OimoPhysics/index.js",
-  "https://threejs.org/examples/jsm/libs/OimoPhysics/OimoPhysics.js",
-  "https://threejs.org/examples/misc_animation_groups.html"
+  "https://threejs.org/examples/jsm/libs/OimoPhysics/OimoPhysics.js"
 ]

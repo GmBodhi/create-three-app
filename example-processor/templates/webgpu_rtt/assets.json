@@ -83,6 +83,5 @@
   "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector4Node.js",
   "https://threejs.org/examples/jsm/renderers/nodes/inputs/ColorNode.js",
   "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix3Node.js",
-  "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
-  "https://threejs.org/examples/webgpu_sandbox.html"
+  "https://threejs.org/examples/textures/uv_grid_opengl.jpg"
 ]

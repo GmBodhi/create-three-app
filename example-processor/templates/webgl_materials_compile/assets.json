@@ -79,6 +79,5 @@
   "https://threejs.org/examples/jsm/nodes/materials/PhongNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/materials/StandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/materials/MeshStandardNodeMaterial.js",
-  "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
-  "https://threejs.org/examples/webgl_materials_envmaps_hdr_nodes.html"
+  "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js"
 ]

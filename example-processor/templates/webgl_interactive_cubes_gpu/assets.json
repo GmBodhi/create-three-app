@@ -1,6 +1,5 @@
 [
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/TrackballControls.js",
-  "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
-  "https://threejs.org/examples/webgl_interactive_cubes_ortho.html"
+  "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js"
 ]

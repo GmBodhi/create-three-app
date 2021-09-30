@@ -8,6 +8,5 @@
   "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
   "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
-  "https://threejs.org/examples/jsm/shaders/HalftoneShader.js",
-  "https://threejs.org/examples/webgl_postprocessing_masking.html"
+  "https://threejs.org/examples/jsm/shaders/HalftoneShader.js"
 ]

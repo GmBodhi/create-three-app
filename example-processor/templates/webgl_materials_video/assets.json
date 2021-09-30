@@ -10,6 +10,5 @@
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
   "https://threejs.org/examples/jsm/shaders/ConvolutionShader.js",
   "https://threejs.org/examples/textures/sintel.ogv",
-  "https://threejs.org/examples/textures/sintel.ogv",
-  "https://threejs.org/examples/webgl_materials_video_webcam.html"
+  "https://threejs.org/examples/textures/sintel.ogv"
 ]

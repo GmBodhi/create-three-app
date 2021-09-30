@@ -5,6 +5,5 @@
   "https://threejs.org/examples/jsm/libs/fflate.module.js",
   "https://threejs.org/examples/jsm/curves/NURBSCurve.js",
   "https://threejs.org/examples/jsm/curves/NURBSUtils.js",
-  "https://threejs.org/examples/models/fbx/nurbs.fbx",
-  "https://threejs.org/examples/webgl_loader_gcode.html"
+  "https://threejs.org/examples/models/fbx/nurbs.fbx"
 ]

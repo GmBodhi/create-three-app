@@ -1,3 +1,10 @@
+//Shaders
+
+import gbufferVert from "./shaders/gbufferVert.glsl";
+import gbufferFrag from "./shaders/gbufferFrag.glsl";
+import renderVert from "./shaders/renderVert.glsl";
+import renderFrag from "./shaders/renderFrag.glsl";
+
 import "./style.css"; // For webpack support
 
 import {

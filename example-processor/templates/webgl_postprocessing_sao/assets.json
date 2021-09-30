@@ -9,6 +9,5 @@
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
   "https://threejs.org/examples/jsm/shaders/SAOShader.js",
   "https://threejs.org/examples/jsm/shaders/DepthLimitedBlurShader.js",
-  "https://threejs.org/examples/jsm/shaders/UnpackDepthRGBAShader.js",
-  "https://threejs.org/examples/webgl_postprocessing_smaa.html"
+  "https://threejs.org/examples/jsm/shaders/UnpackDepthRGBAShader.js"
 ]

@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/WebGL.js",
   "https://threejs.org/examples/textures/crate.gif",
   "https://threejs.org/examples/textures/floors/FloorsCheckerboard_S_Diffuse.jpg",
-  "https://threejs.org/examples/textures/terrain/grasslight-big.jpg",
-  "https://threejs.org/examples/webgl2_materials_texture2darray.html"
+  "https://threejs.org/examples/textures/terrain/grasslight-big.jpg"
 ]

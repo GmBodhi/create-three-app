@@ -3,7 +3,6 @@
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
   "https://threejs.org/examples/fonts/gentilis_regular.typeface.json",
-  "https://threejs.org/examples/textures/planets/moon_1024.jpg",
   "https://threejs.org/examples/textures/equirectangular/pedestrian_overpass_1k.hdr",
-  "https://threejs.org/examples/webgl_materials_variations_physical.html"
+  "https://threejs.org/examples/textures/planets/moon_1024.jpg"
 ]

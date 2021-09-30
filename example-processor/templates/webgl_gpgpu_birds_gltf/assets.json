@@ -2,6 +2,5 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
   "https://threejs.org/examples/jsm/misc/GPUComputationRenderer.js",
-  "https://threejs.org/examples/models/gltf/Flamingo.glb",
-  "https://threejs.org/examples/webgl_gpgpu_water.html"
+  "https://threejs.org/examples/models/gltf/Flamingo.glb"
 ]

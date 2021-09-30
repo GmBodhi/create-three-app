@@ -9,6 +9,5 @@
   "https://threejs.org/examples/textures/compressed/disturb_argb_mip.dds",
   "https://threejs.org/examples/textures/compressed/Mountains.dds",
   "https://threejs.org/examples/textures/compressed/Mountains_argb_mip.dds",
-  "https://threejs.org/examples/textures/compressed/Mountains_argb_nomip.dds",
-  "https://threejs.org/examples/webgl_loader_texture_exr.html"
+  "https://threejs.org/examples/textures/compressed/Mountains_argb_nomip.dds"
 ]

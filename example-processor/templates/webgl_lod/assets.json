@@ -1,5 +1,4 @@
 [
   "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/controls/FlyControls.js",
-  "https://threejs.org/examples/webgl_marchingcubes.html"
+  "https://threejs.org/examples/jsm/controls/FlyControls.js"
 ]

@@ -4,7 +4,8 @@ const fs = require("fs");
 function getAdditions(imports) {
   return imports
     .map((shader) => `import ${shader} from './shaders/${shader}.glsl'\n`)
-    .toString().replace(/,/g, "");
+    .toString()
+    .replace(/,/g, "");
 }
 
 module.exports = function parseShader(window, name) {

@@ -4,6 +4,5 @@
   "https://threejs.org/examples/jsm/webxr/VRButton.js",
   "https://threejs.org/examples/jsm/webxr/XRControllerModelFactory.js",
   "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
-  "https://threejs.org/examples/jsm/libs/motion-controllers.module.js",
-  "https://threejs.org/examples/webxr_vr_handinput.html"
+  "https://threejs.org/examples/jsm/libs/motion-controllers.module.js"
 ]

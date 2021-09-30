@@ -78,6 +78,5 @@
   "https://threejs.org/examples/jsm/nodes/materials/StandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/materials/MeshStandardNodeMaterial.js",
   "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
-  "https://threejs.org/examples/models/json/suzanne_buffergeometry.json",
-  "https://threejs.org/examples/webgl_postprocessing_nodes.html"
+  "https://threejs.org/examples/models/json/suzanne_buffergeometry.json"
 ]

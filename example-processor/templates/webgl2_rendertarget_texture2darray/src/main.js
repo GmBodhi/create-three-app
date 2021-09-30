@@ -1,3 +1,10 @@
+//Shaders
+
+import vertexPostprocess from "./shaders/vertexPostprocess.glsl";
+import fragmentPostprocess from "./shaders/fragmentPostprocess.glsl";
+import vs from "./shaders/vs.glsl";
+import fs from "./shaders/fs.glsl";
+
 import "./style.css"; // For webpack support
 
 import {

@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/loaders/VOXLoader.js",
   "https://threejs.org/examples/jsm/WebGL.js",
-  "https://threejs.org/examples/models/vox/menger.vox",
-  "https://threejs.org/examples/webgl2_volume_perlin.html"
+  "https://threejs.org/examples/models/vox/menger.vox"
 ]

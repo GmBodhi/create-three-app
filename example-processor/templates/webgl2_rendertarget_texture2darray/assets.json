@@ -2,6 +2,5 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/libs/fflate.module.js",
   "https://threejs.org/examples/jsm/WebGL.js",
-  "https://threejs.org/examples/textures/3d/head256x256x109.zip",
-  "https://threejs.org/examples/webgl2_volume_cloud.html"
+  "https://threejs.org/examples/textures/3d/head256x256x109.zip"
 ]

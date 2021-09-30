@@ -2,6 +2,5 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/curves/CurveExtras.js",
   "https://threejs.org/examples/jsm/geometries/ParametricGeometries.js",
-  "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
-  "https://threejs.org/examples/webgl_geometry_colors.html"
+  "https://threejs.org/examples/textures/uv_grid_opengl.jpg"
 ]

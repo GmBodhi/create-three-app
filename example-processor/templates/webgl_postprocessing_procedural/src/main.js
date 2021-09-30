@@ -1,3 +1,10 @@
+//Shaders
+
+import proceduralVert from "./shaders/proceduralVert.glsl";
+import noiseRandom1DFrag from "./shaders/noiseRandom1DFrag.glsl";
+import noiseRandom2DFrag from "./shaders/noiseRandom2DFrag.glsl";
+import noiseRandom3DFrag from "./shaders/noiseRandom3DFrag.glsl";
+
 import "./style.css"; // For webpack support
 
 import {

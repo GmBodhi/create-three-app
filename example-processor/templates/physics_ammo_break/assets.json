@@ -6,6 +6,5 @@
   "https://threejs.org/examples/jsm/geometries/ConvexGeometry.js",
   "https://threejs.org/examples/jsm/math/ConvexHull.js",
   "https://threejs.org/examples/js/libs/ammo.wasm.wasm",
-  "https://threejs.org/examples/textures/grid.png",
-  "https://threejs.org/examples/physics_ammo_cloth.html"
+  "https://threejs.org/examples/textures/grid.png"
 ]

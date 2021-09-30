@@ -1,3 +1,8 @@
+//Shaders
+
+import vshader from "./shaders/vshader.glsl";
+import fshader from "./shaders/fshader.glsl";
+
 import "./style.css"; // For webpack support
 
 import {

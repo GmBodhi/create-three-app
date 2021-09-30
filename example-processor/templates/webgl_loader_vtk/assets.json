@@ -6,6 +6,5 @@
   "https://threejs.org/examples/models/vtk/bunny.vtk",
   "https://threejs.org/examples/models/vtk/cube_ascii.vtp",
   "https://threejs.org/examples/models/vtk/cube_binary.vtp",
-  "https://threejs.org/examples/models/vtk/cube_no_compression.vtp",
-  "https://threejs.org/examples/webgl_loader_xyz.html"
+  "https://threejs.org/examples/models/vtk/cube_no_compression.vtp"
 ]

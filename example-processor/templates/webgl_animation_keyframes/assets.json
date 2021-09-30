@@ -7,13 +7,12 @@
   "https://threejs.org/examples/models/gltf/LittlestTokyo.glb",
   "https://threejs.org/examples/js/libs/draco/gltf/draco_wasm_wrapper.js",
   "https://threejs.org/examples/js/libs/draco/gltf/draco_decoder.wasm",
-  "blob:https://threejs.org/e674cd44-dd15-4fc6-b9f5-f3aac82ffa1b",
-  "blob:https://threejs.org/9d853990-6387-4d45-9b5a-f7c2fd0d4508",
-  "blob:https://threejs.org/541792bb-5892-4c76-a276-26593fe91501",
-  "blob:https://threejs.org/de9c0842-b0f4-463a-8412-b02179372c6c",
-  "blob:https://threejs.org/48848547-3ba8-451c-b1a1-c320cc81b1c0",
-  "blob:https://threejs.org/48848547-3ba8-451c-b1a1-c320cc81b1c0",
-  "blob:https://threejs.org/48848547-3ba8-451c-b1a1-c320cc81b1c0",
-  "blob:https://threejs.org/48848547-3ba8-451c-b1a1-c320cc81b1c0",
-  "https://threejs.org/examples/webgl_animation_skinning_blending.html"
+  "blob:https://threejs.org/63c07bc5-f53b-4ebc-9272-f5b1415403ca",
+  "blob:https://threejs.org/8bd60fb3-f0dc-4667-bca2-ab74cf3f56f2",
+  "blob:https://threejs.org/51ec9f01-658a-474e-9e64-3088d33009ac",
+  "blob:https://threejs.org/54c1f0c3-e0b5-4110-8d1e-4e892330e560",
+  "blob:https://threejs.org/98105f2d-eee4-49f9-bb3b-716b66c1b1b3",
+  "blob:https://threejs.org/98105f2d-eee4-49f9-bb3b-716b66c1b1b3",
+  "blob:https://threejs.org/98105f2d-eee4-49f9-bb3b-716b66c1b1b3",
+  "blob:https://threejs.org/98105f2d-eee4-49f9-bb3b-716b66c1b1b3"
 ]

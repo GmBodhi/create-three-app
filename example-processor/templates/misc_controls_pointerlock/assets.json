@@ -1,5 +1,4 @@
 [
   "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/controls/PointerLockControls.js",
-  "https://threejs.org/examples/misc_controls_trackball.html"
+  "https://threejs.org/examples/jsm/controls/PointerLockControls.js"
 ]

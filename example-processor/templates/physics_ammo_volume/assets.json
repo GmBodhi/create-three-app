@@ -5,6 +5,5 @@
   "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
   "https://threejs.org/examples/js/libs/ammo.wasm.wasm",
   "https://threejs.org/examples/textures/grid.png",
-  "https://threejs.org/examples/textures/colors.png",
-  "https://threejs.org/examples/physics_oimo_instancing.html"
+  "https://threejs.org/examples/textures/colors.png"
 ]

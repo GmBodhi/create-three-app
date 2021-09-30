@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/curves/NURBSCurve.js",
   "https://threejs.org/examples/jsm/curves/NURBSSurface.js",
   "https://threejs.org/examples/jsm/curves/NURBSUtils.js",
-  "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
-  "https://threejs.org/examples/webgl_geometry_shapes.html"
+  "https://threejs.org/examples/textures/uv_grid_opengl.jpg"
 ]

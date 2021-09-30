@@ -7,6 +7,5 @@
   "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
   "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
-  "https://threejs.org/examples/jsm/shaders/AfterimageShader.js",
-  "https://threejs.org/examples/webgl_postprocessing_backgrounds.html"
+  "https://threejs.org/examples/jsm/shaders/AfterimageShader.js"
 ]

@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
   "https://threejs.org/examples/jsm/utils/SkeletonUtils.js",
   "https://threejs.org/examples/models/gltf/Soldier.glb",
-  "https://threejs.org/examples/models/gltf/Parrot.glb",
-  "https://threejs.org/examples/webgl_camera.html"
+  "https://threejs.org/examples/models/gltf/Parrot.glb"
 ]

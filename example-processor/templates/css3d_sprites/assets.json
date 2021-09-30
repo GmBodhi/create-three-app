@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/libs/tween.module.min.js",
   "https://threejs.org/examples/jsm/controls/TrackballControls.js",
   "https://threejs.org/examples/jsm/renderers/CSS3DRenderer.js",
-  "https://threejs.org/examples/textures/sprite.png",
-  "https://threejs.org/examples/css3d_youtube.html"
+  "https://threejs.org/examples/textures/sprite.png"
 ]

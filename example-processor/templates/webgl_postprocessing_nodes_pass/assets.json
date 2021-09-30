@@ -86,6 +86,5 @@
   "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
   "https://threejs.org/examples/textures/lensflare/lensflare0.png",
-  "https://threejs.org/examples/textures/decal/decal-normal.jpg",
-  "https://threejs.org/examples/webgl_sprites_nodes.html"
+  "https://threejs.org/examples/textures/decal/decal-normal.jpg"
 ]

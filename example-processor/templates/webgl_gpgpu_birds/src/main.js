@@ -1,3 +1,10 @@
+//Shaders
+
+import fragmentShaderPosition from "./shaders/fragmentShaderPosition.glsl";
+import fragmentShaderVelocity from "./shaders/fragmentShaderVelocity.glsl";
+import birdVS from "./shaders/birdVS.glsl";
+import birdFS from "./shaders/birdFS.glsl";
+
 import "./style.css"; // For webpack support
 
 import {

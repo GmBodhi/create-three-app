@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/objects/Refractor.js",
   "https://threejs.org/examples/jsm/shaders/WaterRefractionShader.js",
-  "https://threejs.org/examples/textures/waterdudv.jpg",
-  "https://threejs.org/examples/webgl_rtt.html"
+  "https://threejs.org/examples/textures/waterdudv.jpg"
 ]

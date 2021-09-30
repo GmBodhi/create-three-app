@@ -3,6 +3,5 @@
   "https://threejs.org/examples/jsm/controls/TrackballControls.js",
   "https://threejs.org/examples/jsm/loaders/PDBLoader.js",
   "https://threejs.org/examples/jsm/renderers/CSS2DRenderer.js",
-  "https://threejs.org/examples/models/pdb/caffeine.pdb",
-  "https://threejs.org/examples/webgl_loader_ply.html"
+  "https://threejs.org/examples/models/pdb/caffeine.pdb"
 ]

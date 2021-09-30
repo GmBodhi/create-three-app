@@ -4,6 +4,5 @@
   "https://threejs.org/examples/jsm/geometries/ConvexGeometry.js",
   "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
   "https://threejs.org/examples/jsm/math/ConvexHull.js",
-  "https://threejs.org/examples/textures/sprites/disc.png",
-  "https://threejs.org/examples/webgl_geometry_cube.html"
+  "https://threejs.org/examples/textures/sprites/disc.png"
 ]

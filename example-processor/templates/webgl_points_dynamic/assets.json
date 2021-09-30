@@ -13,6 +13,5 @@
   "https://threejs.org/examples/jsm/shaders/ConvolutionShader.js",
   "https://threejs.org/examples/jsm/shaders/FilmShader.js",
   "https://threejs.org/examples/models/obj/male02/male02.obj",
-  "https://threejs.org/examples/models/obj/female02/female02.obj",
-  "https://threejs.org/examples/webgl_points_sprites.html"
+  "https://threejs.org/examples/models/obj/female02/female02.obj"
 ]

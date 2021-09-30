@@ -4,6 +4,5 @@
   "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
   "https://threejs.org/examples/jsm/modifiers/SimplifyModifier.js",
   "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
-  "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb",
-  "https://threejs.org/examples/webgl_modifier_tessellation.html"
+  "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb"
 ]

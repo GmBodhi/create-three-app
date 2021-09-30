@@ -1,3 +1,10 @@
+//Shaders
+
+import computeShaderPosition from "./shaders/computeShaderPosition.glsl";
+import computeShaderVelocity from "./shaders/computeShaderVelocity.glsl";
+import particleVertexShader from "./shaders/particleVertexShader.glsl";
+import particleFragmentShader from "./shaders/particleFragmentShader.glsl";
+
 import "./style.css"; // For webpack support
 
 import {
