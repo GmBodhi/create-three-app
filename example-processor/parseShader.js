@@ -12,7 +12,7 @@ module.exports = function parseShader(window, name) {
     (s) => /(x\-)?shader\/(x\-*)?/i.test(s.type)
   );
 
-  if (!shaders.length) return;
+  if (!shaders.length) return {};
 
   fs.mkdirSync(path.resolve(__dirname, `./templates/${name}/src/shaders`));
 
