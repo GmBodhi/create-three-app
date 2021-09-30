@@ -7,10 +7,10 @@
   "https://threejs.org/examples/jsm/postprocessing/FilmPass.js",
   "https://threejs.org/examples/jsm/shaders/FocusShader.js",
   "https://threejs.org/examples/jsm/loaders/OBJLoader.js",
-  "https://threejs.org/examples/jsm/shaders/CopyShader.js",
-  "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
   "https://threejs.org/examples/jsm/postprocessing/Pass.js",
+  "https://threejs.org/examples/jsm/shaders/CopyShader.js",
   "https://threejs.org/examples/jsm/shaders/ConvolutionShader.js",
+  "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
   "https://threejs.org/examples/jsm/shaders/FilmShader.js",
   "https://threejs.org/examples/models/obj/male02/male02.obj",
   "https://threejs.org/examples/models/obj/female02/female02.obj"
