@@ -11,7 +11,6 @@ import {
   Scene,
   PerspectiveCamera,
   HemisphereLight,
-  MeshStandardMaterial,
   TextureLoader,
   RepeatWrapping,
   UnsignedByteType,
@@ -25,11 +24,9 @@ import { TrackballControls } from "three/examples/jsm/controls/TrackballControls
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
-import "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
 
-import TextureNode from "three/examples/jsm/renderers/nodes/inputs/TextureNode.js";
-import Vector3Node from "three/examples/jsm/renderers/nodes/inputs/Vector3Node.js";
-import OperatorNode from "three/examples/jsm/renderers/nodes/math/OperatorNode.js";
+import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let container, stats;
 
@@ -71,35 +68,38 @@ function init() {
 
   //
 
-  const material = new MeshStandardMaterial();
+  const material = new Nodes.MeshStandardNodeMaterial();
 
   new OBJLoader()
     .setPath("models/obj/cerberus/")
     .load("Cerberus.obj", function (group) {
       const loader = new TextureLoader().setPath("models/obj/cerberus/");
 
-      material.roughness = 1; // attenuates roughnessMap
-      material.metalness = 1; // attenuates metalnessMap
-
       const diffuseMap = loader.load("Cerberus_A.jpg");
       diffuseMap.wrapS = RepeatWrapping;
       diffuseMap.encoding = sRGBEncoding;
 
-      //material.map = diffuseMap;
-      material.colorNode = new OperatorNode(
+      const rmMap = loader.load("Cerberus_RM.jpg");
+      rmMap.wrapS = RepeatWrapping;
+
+      const normalMap = loader.load("Cerberus_N.jpg");
+      normalMap.wrapS = RepeatWrapping;
+
+      const mpMapNode = new Nodes.TextureNode(rmMap);
+
+      material.colorNode = new Nodes.OperatorNode(
         "*",
-        new TextureNode(diffuseMap),
-        new Vector3Node(material.color)
+        new Nodes.TextureNode(diffuseMap),
+        new Nodes.Vector3Node(material.color)
       );
 
       // roughness is in G channel, metalness is in B channel
-      material.metalnessMap = material.roughnessMap =
-        loader.load("Cerberus_RM.jpg");
-      material.normalMap = loader.load("Cerberus_N.jpg");
+      material.roughnessNode = new Nodes.SplitNode(mpMapNode, "g");
+      material.metalnessNode = new Nodes.SplitNode(mpMapNode, "b");
 
-      material.roughnessMap.wrapS = RepeatWrapping;
-      material.metalnessMap.wrapS = RepeatWrapping;
-      material.normalMap.wrapS = RepeatWrapping;
+      material.normalNode = new Nodes.NormalMapNode(
+        new Nodes.TextureNode(normalMap)
+      );
 
       group.traverse(function (child) {
         if (child.isMesh) {
@@ -176,6 +176,8 @@ function onWindowResize() {
 
 function animate() {
   requestAnimationFrame(animate);
+
+  nodeFrame.update();
 
   controls.update();
   renderer.render(scene, camera);

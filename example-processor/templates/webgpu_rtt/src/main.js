@@ -11,7 +11,6 @@ import {
   Color,
   TextureLoader,
   BoxGeometry,
-  MeshBasicMaterial,
   Mesh,
   OrthographicCamera,
   PlaneGeometry,
@@ -21,9 +20,7 @@ import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.j
 import WebGPUTextureRenderer from "three/examples/jsm/renderers/webgpu/WebGPUTextureRenderer.js";
 import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
-import TextureNode from "three/examples/jsm/renderers/nodes/inputs/TextureNode.js";
-import OperatorNode from "three/examples/jsm/renderers/nodes/math/OperatorNode.js";
-import Vector2Node from "three/examples/jsm/renderers/nodes/inputs/Vector2Node.js";
+import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let camera, scene, renderer;
 const mouse = new Vector2();
@@ -60,8 +57,8 @@ async function init() {
   const texture = loader.load("three/examples/textures/uv_grid_opengl.jpg");
 
   const geometryBox = new BoxGeometry();
-  const materialBox = new MeshBasicMaterial();
-  materialBox.colorNode = new TextureNode(texture);
+  const materialBox = new Nodes.MeshBasicNodeMaterial();
+  materialBox.colorNode = new Nodes.TextureNode(texture);
 
   //
 
@@ -90,16 +87,16 @@ async function init() {
 
   // modulate the final color based on the mouse position
 
-  const screenFXNode = new OperatorNode(
+  const screenFXNode = new Nodes.OperatorNode(
     "+",
-    new Vector2Node(mouse),
-    new Vector2Node(new Vector2(0.5, 0.5)).setConst(true)
+    new Nodes.Vector2Node(mouse),
+    new Nodes.Vector2Node(new Vector2(0.5, 0.5)).setConst(true)
   );
 
-  const materialFX = new MeshBasicMaterial();
-  materialFX.colorNode = new OperatorNode(
+  const materialFX = new Nodes.MeshBasicNodeMaterial();
+  materialFX.colorNode = new Nodes.OperatorNode(
     "*",
-    new TextureNode(textureRenderer.getTexture()),
+    new Nodes.TextureNode(textureRenderer.getTexture()),
     screenFXNode
   );
 

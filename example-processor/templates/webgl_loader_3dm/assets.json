@@ -4,5 +4,6 @@
   "https://threejs.org/examples/jsm/loaders/3DMLoader.js",
   "https://threejs.org/examples/models/3dm/Rhino_Logo.3dm",
   "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.js",
-  "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.wasm"
+  "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.wasm",
+  "blob:https://threejs.org/3dac99cf-900c-412e-a13a-3e93212a78d3"
 ]

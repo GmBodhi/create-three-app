@@ -213,7 +213,7 @@ function render() {
   raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
   raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
 
-  const intersects = raycaster.intersectObjects(room.children);
+  const intersects = raycaster.intersectObjects(room.children, false);
 
   if (intersects.length > 0) {
     if (INTERSECTED != intersects[0].object) {

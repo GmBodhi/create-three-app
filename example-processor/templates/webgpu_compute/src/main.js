@@ -5,29 +5,33 @@ undefined;
 import "./style.css"; // For webpack support
 
 import {
+  Vector3,
   OrthographicCamera,
   Scene,
   Color,
   BufferAttribute,
   Vector2,
   BufferGeometry,
-  PointsMaterial,
   Points,
 } from "three";
+
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import WebGPUStorageBuffer from "three/examples/jsm/renderers/webgpu/WebGPUStorageBuffer.js";
+import WebGPUUniformBuffer from "three/examples/jsm/renderers/webgpu/WebGPUUniformBuffer.js";
+import * as WebGPUBufferUtils from "three/examples/jsm/renderers/webgpu/WebGPUBufferUtils.js";
 import WebGPUUniformsGroup from "three/examples/jsm/renderers/webgpu/WebGPUUniformsGroup.js";
 import { Vector2Uniform } from "three/examples/jsm/renderers/webgpu/WebGPUUniform.js";
 
-import PositionNode from "three/examples/jsm/renderers/nodes/accessors/PositionNode.js";
-import ColorNode from "three/examples/jsm/renderers/nodes/inputs/ColorNode.js";
-import OperatorNode from "three/examples/jsm/renderers/nodes/math/OperatorNode.js";
+import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let camera, scene, renderer;
 let pointer;
+let scaleUniformBuffer;
+let scaleVector = new Vector3(1, 1, 1);
 
 const computeParams = [];
 
@@ -46,7 +50,7 @@ async function init() {
   scene = new Scene();
   scene.background = new Color(0x000000);
 
-  const particleNum = 50000; // 16-bit limit
+  const particleNum = 65000; // 16-bit limit
   const particleSize = 3;
 
   const particleArray = new Float32Array(particleNum * particleSize);
@@ -68,13 +72,27 @@ async function init() {
     new BufferAttribute(velocityArray, 3)
   );
 
+  const scaleUniformLength = WebGPUBufferUtils.getVectorLength(2, 3); // two vector3 for array
+
+  scaleUniformBuffer = new WebGPUUniformBuffer(
+    "scaleUniform",
+    new Float32Array(scaleUniformLength)
+  );
+
   pointer = new Vector2(-10.0, -10.0); // Out of bounds first
 
   const pointerGroup = new WebGPUUniformsGroup("mouseUniforms").addUniform(
     new Vector2Uniform("pointer", pointer)
   );
 
-  const computeBindings = [particleBuffer, velocityBuffer, pointerGroup];
+  // Object keys need follow the binding shader sequence
+
+  const computeBindings = [
+    particleBuffer,
+    velocityBuffer,
+    scaleUniformBuffer,
+    pointerGroup,
+  ];
 
   const computeShader = /* glsl */ `#version 450
 					#define PARTICLE_NUM ${particleNum}
@@ -92,7 +110,11 @@ async function init() {
 						float velocity[ PARTICLE_NUM * PARTICLE_SIZE ];
 					} velocity;
 
-					layout(set = 0, binding = 2) uniform MouseUniforms {
+					layout(set = 0, binding = 2) uniform Scale {
+						vec3 value[2];
+					} scaleUniform;
+
+					layout(set = 0, binding = 3) uniform MouseUniforms {
 						vec2 pointer;
 					} mouseUniforms;
 
@@ -136,9 +158,10 @@ async function init() {
 
 						}
 
-						particle.particle[ index * 3 + 0 ] = position.x;
-						particle.particle[ index * 3 + 1 ] = position.y;
-						particle.particle[ index * 3 + 2 ] = position.z;
+						particle.particle[ index * 3 + 0 ] = position.x * scaleUniform.value[0].x;
+						particle.particle[ index * 3 + 1 ] = position.y * scaleUniform.value[0].y;
+						particle.particle[ index * 3 + 2 ] = position.z * scaleUniform.value[0].z;
+
 					}
 				`;
 
@@ -155,11 +178,11 @@ async function init() {
     particleBuffer.attribute
   );
 
-  const pointsMaterial = new PointsMaterial();
-  pointsMaterial.colorNode = new OperatorNode(
+  const pointsMaterial = new Nodes.PointsNodeMaterial();
+  pointsMaterial.colorNode = new Nodes.OperatorNode(
     "+",
-    new PositionNode(),
-    new ColorNode(new Color(0x0000ff))
+    new Nodes.PositionNode(),
+    new Nodes.ColorNode(new Color(0x0000ff))
   );
 
   const mesh = new Points(pointsGeometry, pointsMaterial);
@@ -172,6 +195,14 @@ async function init() {
 
   window.addEventListener("resize", onWindowResize);
   window.addEventListener("mousemove", onMouseMove);
+
+  // gui
+
+  const gui = new GUI();
+
+  gui.add(scaleVector, "x", 0.9, 1.1, 0.01);
+  gui.add(scaleVector, "y", 0.9, 1.1, 0.01);
+  gui.add(scaleVector, "z", 0.9, 1.1, 0.01);
 
   return renderer.init();
 }
@@ -197,6 +228,8 @@ function animate() {
 
   renderer.compute(computeParams);
   renderer.render(scene, camera);
+
+  scaleVector.toArray(scaleUniformBuffer.buffer, 0);
 }
 
 function error(error) {

@@ -13,7 +13,6 @@ import {
   PointLight,
   Mesh,
   MeshBasicMaterial,
-  MeshStandardMaterial,
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
@@ -26,9 +25,7 @@ import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js"
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
-import LightsNode from "three/examples/jsm/renderers/nodes/lights/LightsNode.js";
-import TextureNode from "three/examples/jsm/renderers/nodes/inputs/TextureNode.js";
-import NormalMapNode from "three/examples/jsm/renderers/nodes/display/NormalMapNode.js";
+import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 
@@ -89,9 +86,14 @@ async function init() {
 
   //light nodes ( selective lights )
 
-  const allLightsNode = LightsNode.fromLights([light1, light2, light3, light4]);
-  const redLightNode = LightsNode.fromLights([light1]);
-  const blueLightNode = LightsNode.fromLights([light2]);
+  const allLightsNode = Nodes.LightsNode.fromLights([
+    light1,
+    light2,
+    light3,
+    light4,
+  ]);
+  const redLightNode = Nodes.LightsNode.fromLights([light1]);
+  const blueLightNode = Nodes.LightsNode.fromLights([light2]);
 
   //models
 
@@ -99,31 +101,31 @@ async function init() {
 
   const leftObject = new Mesh(
     geometryTeapot,
-    new MeshStandardMaterial({ color: 0x555555 })
+    new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
   );
   leftObject.material.lightNode = redLightNode;
-  leftObject.material.roughnessNode = new TextureNode(alphaTexture);
+  leftObject.material.roughnessNode = new Nodes.TextureNode(alphaTexture);
   leftObject.material.metalness = 0;
   leftObject.position.x = -30;
   scene.add(leftObject);
 
   const centerObject = new Mesh(
     geometryTeapot,
-    new MeshStandardMaterial({ color: 0x555555 })
+    new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
   );
   centerObject.material.lightNode = allLightsNode;
-  centerObject.material.normalNode = new NormalMapNode(
-    new TextureNode(normalMapTexture)
+  centerObject.material.normalNode = new Nodes.NormalMapNode(
+    new Nodes.TextureNode(normalMapTexture)
   );
   centerObject.material.roughness = 0.5;
   scene.add(centerObject);
 
   const rightObject = new Mesh(
     geometryTeapot,
-    new MeshStandardMaterial({ color: 0x555555 })
+    new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
   );
   rightObject.material.lightNode = blueLightNode;
-  rightObject.material.metalnessNode = new TextureNode(alphaTexture);
+  rightObject.material.metalnessNode = new Nodes.TextureNode(alphaTexture);
   rightObject.position.x = 30;
   scene.add(rightObject);
 
