@@ -25,7 +25,12 @@ module.exports.launch = async ({ urls, json }) => {
         [request.frame()?.url()?.split("/").length - 1]?.split(".")[0] ??
       "unknown";
 
-    if (!json.includes(url)) return console.log("Skipped: " + url);
+    let reqUrl =
+      request.url()?.split("/")[
+        request.frame()?.url()?.split("/").length - 1
+      ] ?? "unknown";
+
+    if (!json.includes(url)) return;
 
     if (
       [
@@ -34,7 +39,9 @@ module.exports.launch = async ({ urls, json }) => {
         "https://threejs.org/examples/jsm/libs/dat.gui.module.js",
         "about:blank",
       ].includes(request.url()) ||
-      url === "about:blank"
+      url === "about:blank" ||
+      reqUrl.endsWith(".js") ||
+      reqUrl.endsWith(".html")
     )
       return;
     if (!urls[url]) urls[url] = [];
@@ -82,12 +89,11 @@ module.exports.fetch = async function (url, name) {
   let { window } = new JSDOM(await p.text());
 
   mkdirSync("./templates/" + name + "/src");
-  
-  let script = parseScript(window);
-  parseShader(window, name);
+
+  let [addition, replace] = parseShader(window, name);
+  let script = parseScript(window, addition, replace);
   let style = parseStyle(window);
   let html = parseHtml(window);
-
 
   writeFileSync(`./templates/${name}/src/index.html`, html);
   writeFileSync(`./templates/${name}/src/main.js`, script);
