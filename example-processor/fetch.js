@@ -90,8 +90,8 @@ module.exports.fetch = async function (url, name) {
 
   mkdirSync("./templates/" + name + "/src");
 
-  let [addition, replace] = parseShader(window, name);
-  let script = parseScript(window, addition, replace);
+  let { additions, replace } = parseShader(window, name);
+  let script = parseScript(window, additions, replace);
   let style = parseStyle(window);
   let html = parseHtml(window);
 

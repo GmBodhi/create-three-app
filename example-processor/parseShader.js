@@ -26,9 +26,9 @@ module.exports = function parseShader(window, name) {
     );
   });
 
-  return [
-    getAdditions(shaders.map(({ id }) => id)),
-    {
+  return {
+    additions: getAdditions(shaders.map(({ id }) => id)),
+    replace: {
       regex: new RegExp(
         `\s*document\.getElementById\(\s*["'](${shaders
           .map((s) => `${s.id}|`)
@@ -38,5 +38,5 @@ module.exports = function parseShader(window, name) {
       ),
       func: "$1",
     },
-  ];
+  };
 };
