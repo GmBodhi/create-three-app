@@ -1,10 +1,4 @@
 {
-  "webgl_animation_cloth": [
-    "https://threejs.org/examples/main.css",
-    "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-    "https://threejs.org/examples/textures/patterns/circuit_pattern.png",
-    "https://threejs.org/examples/textures/terrain/grasslight-big.jpg"
-  ],
   "webgl_animation_keyframes": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
@@ -14,21 +8,21 @@
     "https://threejs.org/examples/models/gltf/LittlestTokyo.glb",
     "https://threejs.org/examples/js/libs/draco/gltf/draco_wasm_wrapper.js",
     "https://threejs.org/examples/js/libs/draco/gltf/draco_decoder.wasm",
-    "blob:https://threejs.org/e76bb78d-84d0-4b45-ba6f-025a30469921",
-    "blob:https://threejs.org/b3b3d247-6744-467e-846e-79af16986178",
-    "blob:https://threejs.org/61802488-ac46-4d45-8c80-37ca07fe2901",
-    "blob:https://threejs.org/ade896f4-077b-471e-8741-c682f4c7ccf6",
-    "blob:https://threejs.org/5d89d7dd-4183-4278-80f7-9b1789898eda",
-    "blob:https://threejs.org/5d89d7dd-4183-4278-80f7-9b1789898eda",
-    "blob:https://threejs.org/5d89d7dd-4183-4278-80f7-9b1789898eda",
-    "blob:https://threejs.org/5d89d7dd-4183-4278-80f7-9b1789898eda"
+    "blob:https://threejs.org/8e87f312-3fb3-4c37-942f-b39ac1b4c4c4",
+    "blob:https://threejs.org/f19c5c53-2898-4027-a96a-d69827756050",
+    "blob:https://threejs.org/538e84cd-964d-440c-820f-5719b5d9573f",
+    "blob:https://threejs.org/c685cb1a-7a14-40fa-a912-9f90df70d7f2",
+    "blob:https://threejs.org/07387a48-7838-44f3-8500-cc5bbd33e1e1",
+    "blob:https://threejs.org/07387a48-7838-44f3-8500-cc5bbd33e1e1",
+    "blob:https://threejs.org/07387a48-7838-44f3-8500-cc5bbd33e1e1",
+    "blob:https://threejs.org/07387a48-7838-44f3-8500-cc5bbd33e1e1"
   ],
   "webgl_animation_skinning_blending": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
     "https://threejs.org/examples/models/gltf/Soldier.glb",
-    "blob:https://threejs.org/69eae436-a0ec-48f7-8c48-adc413f2ea1b",
-    "blob:https://threejs.org/b42935ce-6317-45e2-8450-8806de76c46f",
+    "blob:https://threejs.org/e2e35d62-c62c-40b3-a0e0-a2973b5cc113",
+    "blob:https://threejs.org/cce6ecd9-21f1-4dc3-b1a0-ced731250925",
     "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
     "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw=="
   ],
@@ -63,6 +57,8 @@
   ],
   "webgl_camera_logarithmicdepthbuffer": [
     "https://threejs.org/examples/main.css",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"
   ],
   "webgl_clipping": [
@@ -152,6 +148,7 @@
   "webgl_geometries_parametric": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/curves/CurveExtras.js",
+    "https://threejs.org/examples/jsm/geometries/ParametricGeometry.js",
     "https://threejs.org/examples/jsm/geometries/ParametricGeometries.js",
     "https://threejs.org/examples/textures/uv_grid_opengl.jpg"
   ],
@@ -205,6 +202,7 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/curves/NURBSCurve.js",
     "https://threejs.org/examples/jsm/curves/NURBSSurface.js",
+    "https://threejs.org/examples/jsm/geometries/ParametricGeometry.js",
     "https://threejs.org/examples/jsm/curves/NURBSUtils.js",
     "https://threejs.org/examples/textures/uv_grid_opengl.jpg"
   ],
@@ -221,8 +219,8 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
     "https://threejs.org/examples/jsm/geometries/TeapotGeometry.js",
-    "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
     "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
+    "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
     "https://threejs.org/examples/textures/cube/pisa/px.png",
     "https://threejs.org/examples/textures/cube/pisa/nx.png",
     "https://threejs.org/examples/textures/cube/pisa/py.png",
@@ -242,17 +240,21 @@
   ],
   "webgl_geometry_text": [
     "https://threejs.org/examples/main.css",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/optimer_bold.typeface.json"
   ],
   "webgl_geometry_text_shapes": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
     "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"
   ],
   "webgl_geometry_text_stroke": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
     "https://threejs.org/examples/jsm/loaders/SVGLoader.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
     "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"
   ],
   "webgl_helpers": [
@@ -409,7 +411,7 @@
     "https://threejs.org/examples/models/3dm/Rhino_Logo.3dm",
     "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.js",
     "https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/rhino3dm.wasm",
-    "blob:https://threejs.org/3dac99cf-900c-412e-a13a-3e93212a78d3"
+    "blob:https://threejs.org/98a0235f-4e10-4ddc-ae70-e6b85abf9fea"
   ],
   "webgl_loader_3ds": [
     "https://threejs.org/examples/main.css",
@@ -432,7 +434,7 @@
     "https://threejs.org/examples/jsm/loaders/3MFLoader.js",
     "https://threejs.org/examples/jsm/libs/fflate.module.js",
     "https://threejs.org/examples/models/3mf/truck.3mf",
-    "blob:https://threejs.org/822dd2a3-6185-414a-aef2-35e829f7ec67"
+    "blob:https://threejs.org/a1cf4cec-b1d0-4937-9648-efef305160f9"
   ],
   "webgl_loader_amf": [
     "https://threejs.org/examples/main.css",
@@ -477,7 +479,7 @@
     "https://threejs.org/examples/jsm/loaders/DRACOLoader.js",
     "https://threejs.org/examples/models/draco/bunny.drc",
     "https://threejs.org/examples/js/libs/draco/draco_decoder.js",
-    "blob:https://threejs.org/811ef50e-6350-4415-808c-c1587df2f791"
+    "blob:https://threejs.org/67ac685a-4a67-4f1a-bec1-c3e79829a8b4"
   ],
   "webgl_loader_fbx": [
     "https://threejs.org/examples/main.css",
@@ -527,17 +529,17 @@
     "https://threejs.org/examples/jsm/libs/meshopt_decoder.module.js",
     "https://threejs.org/examples/jsm/utils/WorkerPool.js",
     "https://threejs.org/examples/models/gltf/coffeemat.glb",
-    "blob:https://threejs.org/73da2e09-bb5a-457a-ad74-cdcb1b0a22f5",
-    "blob:https://threejs.org/7fecd9fc-6e3b-4277-8ba0-d12bcde581d3",
-    "blob:https://threejs.org/5f85f0c0-6b58-498a-8699-16efed0737ae",
-    "blob:https://threejs.org/a7f09b97-68c0-432c-9b7e-a50bbf0b274c",
-    "blob:https://threejs.org/c83944e8-7465-4d21-98bc-4914495b73f5",
+    "blob:https://threejs.org/9d0177c1-d816-4fb7-8f8e-43c0efa26e82",
+    "blob:https://threejs.org/f7e1cb08-90f2-491b-986b-4859d8c57fd0",
+    "blob:https://threejs.org/ffc27555-949f-434d-ad18-870a8c334adf",
+    "blob:https://threejs.org/500417ca-1070-4bb7-9096-507abeb02808",
+    "blob:https://threejs.org/62232fc0-1cef-4876-b568-a96d37391247",
     "https://threejs.org/examples/js/libs/basis/basis_transcoder.js",
     "https://threejs.org/examples/js/libs/basis/basis_transcoder.wasm",
-    "blob:https://threejs.org/953308c5-6a2a-4c8a-bd09-0dc63abc5997",
-    "blob:https://threejs.org/953308c5-6a2a-4c8a-bd09-0dc63abc5997",
-    "blob:https://threejs.org/953308c5-6a2a-4c8a-bd09-0dc63abc5997",
-    "blob:https://threejs.org/953308c5-6a2a-4c8a-bd09-0dc63abc5997"
+    "blob:https://threejs.org/d0e91a0a-3288-49fd-b202-751313b0ab21",
+    "blob:https://threejs.org/d0e91a0a-3288-49fd-b202-751313b0ab21",
+    "blob:https://threejs.org/d0e91a0a-3288-49fd-b202-751313b0ab21",
+    "blob:https://threejs.org/d0e91a0a-3288-49fd-b202-751313b0ab21"
   ],
   "webgl_loader_gltf_transmission": [
     "https://threejs.org/examples/main.css",
@@ -546,7 +548,17 @@
     "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
     "https://threejs.org/examples/jsm/loaders/DRACOLoader.js",
     "https://threejs.org/examples/textures/equirectangular/royal_esplanade_1k.hdr",
-    "https://threejs.org/examples/models/gltf/IridescentDishWithOlives.glb"
+    "https://threejs.org/examples/models/gltf/IridescentDishWithOlives.glb",
+    "https://threejs.org/examples/js/libs/draco/gltf/draco_wasm_wrapper.js",
+    "https://threejs.org/examples/js/libs/draco/gltf/draco_decoder.wasm",
+    "blob:https://threejs.org/5d5341ff-2e2f-40b3-88b5-6b6318cb85db",
+    "blob:https://threejs.org/4bba6e55-d712-44e8-9efe-1a77fd8f4979",
+    "blob:https://threejs.org/2bf84b95-c3b3-45ce-88bd-5e55311ec2ae",
+    "blob:https://threejs.org/9a0e9cdb-9157-4527-a1e7-021a5be06243",
+    "blob:https://threejs.org/675b0ac4-b22d-4284-bb59-11d4eef1e10e",
+    "blob:https://threejs.org/878b7446-cd21-458f-8000-95b14325c5bb",
+    "blob:https://threejs.org/9b12dad7-5549-4634-ba36-ae4111cd2f77",
+    "blob:https://threejs.org/d094e50b-0eae-4da1-b987-5bfaedc81776"
   ],
   "webgl_loader_gltf_variants": [
     "https://threejs.org/examples/main.css",
@@ -566,13 +578,14 @@
     "https://threejs.org/examples/jsm/loaders/IFCLoader.js",
     "https://threejs.org/examples/jsm/loaders/ifc/web-ifc-api.js",
     "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
-    "https://threejs.org/examples/models/ifc/rac_advanced_sample_project.ifc"
+    "https://threejs.org/examples/models/ifc/rac_advanced_sample_project.ifc",
+    "https://threejs.org/examples/jsm/loaders/ifc/web-ifc.wasm"
   ],
   "webgl_loader_imagebitmap": [
     "https://threejs.org/examples/main.css",
-    "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg?471.5",
-    "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg?895.1000000000058",
-    "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg?1069.3999999999942"
+    "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg?453.69999999998254",
+    "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg?913.6999999999825",
+    "https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg?1053.7999999999884"
   ],
   "webgl_loader_kmz": [
     "https://threejs.org/examples/main.css",
@@ -725,11 +738,11 @@
     "https://threejs.org/examples/jsm/effects/OutlineEffect.js",
     "https://threejs.org/examples/jsm/loaders/MMDLoader.js",
     "https://threejs.org/examples/jsm/animation/MMDAnimationHelper.js",
-    "https://threejs.org/examples/jsm/animation/CCDIKSolver.js",
-    "https://threejs.org/examples/jsm/animation/MMDPhysics.js",
     "https://threejs.org/examples/jsm/shaders/MMDToonShader.js",
     "https://threejs.org/examples/jsm/loaders/TGALoader.js",
-    "https://threejs.org/examples/jsm/libs/mmdparser.module.js"
+    "https://threejs.org/examples/jsm/libs/mmdparser.module.js",
+    "https://threejs.org/examples/jsm/animation/CCDIKSolver.js",
+    "https://threejs.org/examples/jsm/animation/MMDPhysics.js"
   ],
   "webgl_loader_nrrd": [
     "https://threejs.org/examples/main.css",
@@ -812,7 +825,7 @@
     "https://threejs.org/examples/textures/compressed/canestra_di_frutta_caravaggio.basis",
     "https://threejs.org/examples/js/libs/basis/basis_transcoder.js",
     "https://threejs.org/examples/js/libs/basis/basis_transcoder.wasm",
-    "blob:https://threejs.org/95ea5ca8-0cf7-4f4b-8012-0c661ea8b9a8"
+    "blob:https://threejs.org/622dd124-04ae-4a42-bed0-81c0ed4bfdef"
   ],
   "webgl_loader_texture_dds": [
     "https://threejs.org/examples/main.css",
@@ -853,7 +866,7 @@
     "https://threejs.org/examples/textures/compressed/sample_uastc_zstd.ktx2",
     "https://threejs.org/examples/js/libs/basis/basis_transcoder.js",
     "https://threejs.org/examples/js/libs/basis/basis_transcoder.wasm",
-    "blob:https://threejs.org/643b21f2-421a-4cb8-8f64-bccc88f865af"
+    "blob:https://threejs.org/804ef563-c40c-479e-89bd-ad971dfae131"
   ],
   "webgl_loader_texture_lottie": [
     "https://threejs.org/examples/main.css",
@@ -890,6 +903,8 @@
   "webgl_loader_ttf": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/loaders/TTFLoader.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/jsm/libs/opentype.module.min.js",
     "https://threejs.org/examples/fonts/ttf/kenpixel.ttf"
   ],
@@ -905,12 +920,12 @@
     "https://threejs.org/examples/jsm/loaders/VRMLoader.js",
     "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
     "https://threejs.org/examples/models/vrm/Alicia/AliciaSolid.vrm",
-    "blob:https://threejs.org/1509c001-6dc2-4a77-bb85-99c79b3ca643",
-    "blob:https://threejs.org/eac6bf53-69f8-4005-bd60-fe7d390fcae7",
-    "blob:https://threejs.org/aafadbef-4376-4d58-8eae-a1502189008d",
-    "blob:https://threejs.org/00ac8cef-5675-4c8c-b300-b0deb4d8c847",
-    "blob:https://threejs.org/195c2a39-2a4c-4dfd-8702-bbd257d44843",
-    "blob:https://threejs.org/8fcfacda-a09d-4914-bbbe-d1e91a7de702"
+    "blob:https://threejs.org/ceb7591c-f067-45e3-b94a-c523a4ffeccd",
+    "blob:https://threejs.org/1094ca6f-d103-4d42-bcfc-1697e7176239",
+    "blob:https://threejs.org/2bff924e-1a60-4f57-95f7-ba558029eb0d",
+    "blob:https://threejs.org/7ad2aa41-cc43-4b1e-ad98-fcfaa2a1174e",
+    "blob:https://threejs.org/64a2462a-4330-4659-912b-4c0d1232ea93",
+    "blob:https://threejs.org/4c025c75-d310-4844-966c-5b641c2e19a6"
   ],
   "webgl_loader_vrml": [
     "https://threejs.org/examples/main.css",
@@ -1000,10 +1015,10 @@
     "https://threejs.org/examples/models/gltf/ferrari_ao.png",
     "https://threejs.org/examples/js/libs/draco/gltf/draco_wasm_wrapper.js",
     "https://threejs.org/examples/js/libs/draco/gltf/draco_decoder.wasm",
-    "blob:https://threejs.org/a6682d9f-4c4f-4026-aa96-acdaa810654e",
-    "blob:https://threejs.org/a6682d9f-4c4f-4026-aa96-acdaa810654e",
-    "blob:https://threejs.org/a6682d9f-4c4f-4026-aa96-acdaa810654e",
-    "blob:https://threejs.org/a6682d9f-4c4f-4026-aa96-acdaa810654e"
+    "blob:https://threejs.org/ff08cbd7-d70d-4d49-86ed-2011c683ad7a",
+    "blob:https://threejs.org/ff08cbd7-d70d-4d49-86ed-2011c683ad7a",
+    "blob:https://threejs.org/ff08cbd7-d70d-4d49-86ed-2011c683ad7a",
+    "blob:https://threejs.org/ff08cbd7-d70d-4d49-86ed-2011c683ad7a"
   ],
   "webgl_materials_channels": [
     "https://threejs.org/examples/main.css",
@@ -1195,9 +1210,9 @@
     "https://threejs.org/examples/jsm/shaders/ColorCorrectionShader.js",
     "https://threejs.org/examples/jsm/shaders/FXAAShader.js",
     "https://threejs.org/examples/jsm/shaders/GammaCorrectionShader.js",
+    "https://threejs.org/examples/jsm/postprocessing/Pass.js",
     "https://threejs.org/examples/jsm/shaders/CopyShader.js",
     "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
-    "https://threejs.org/examples/jsm/postprocessing/Pass.js",
     "https://threejs.org/examples/models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg",
     "https://threejs.org/examples/models/gltf/LeePerrySmith/LeePerrySmith.glb",
     "https://threejs.org/examples/models/gltf/LeePerrySmith/Map-COL.jpg",
@@ -1208,8 +1223,8 @@
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
     "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
     "https://threejs.org/examples/models/gltf/Nefertiti/Nefertiti.glb",
-    "blob:https://threejs.org/5f012022-d41e-4617-8697-42bd00623675",
-    "blob:https://threejs.org/7a052709-9519-4eb9-a828-bae952fb9e2a"
+    "blob:https://threejs.org/4a0b0b03-de62-4f67-b610-947673a4a07f",
+    "blob:https://threejs.org/2570b1e5-521f-4b38-be58-fd382902b528"
   ],
   "webgl_materials_physical_clearcoat": [
     "https://threejs.org/examples/main.css",
@@ -1336,10 +1351,7 @@
     "https://threejs.org/examples/jsm/loaders/OBJLoader.js",
     "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
     "https://threejs.org/examples/models/obj/cerberus/Cerberus.obj",
-    "https://threejs.org/examples/textures/equirectangular/venice_sunset_1k.hdr",
-    "https://threejs.org/examples/models/obj/cerberus/Cerberus_A.jpg",
-    "https://threejs.org/examples/models/obj/cerberus/Cerberus_RM.jpg",
-    "https://threejs.org/examples/models/obj/cerberus/Cerberus_N.jpg"
+    "https://threejs.org/examples/textures/equirectangular/venice_sunset_1k.hdr"
   ],
   "webgl_materials_subsurface_scattering": [
     "https://threejs.org/examples/main.css",
@@ -1380,6 +1392,8 @@
   "webgl_materials_variations_basic": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/gentilis_regular.typeface.json",
     "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/px.jpg",
     "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/nx.jpg",
@@ -1392,6 +1406,8 @@
   "webgl_materials_variations_lambert": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/gentilis_regular.typeface.json",
     "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/px.jpg",
     "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/nx.jpg",
@@ -1404,6 +1420,8 @@
   "webgl_materials_variations_phong": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/gentilis_regular.typeface.json",
     "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/px.jpg",
     "https://threejs.org/examples/textures/cube/SwedishRoyalCastle/nx.jpg",
@@ -1417,6 +1435,8 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
     "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/gentilis_regular.typeface.json",
     "https://threejs.org/examples/textures/equirectangular/pedestrian_overpass_1k.hdr",
     "https://threejs.org/examples/textures/planets/moon_1024.jpg"
@@ -1425,6 +1445,8 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
     "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/gentilis_regular.typeface.json",
     "https://threejs.org/examples/textures/equirectangular/pedestrian_overpass_1k.hdr"
   ],
@@ -1432,6 +1454,8 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
     "https://threejs.org/examples/jsm/effects/OutlineEffect.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/gentilis_regular.typeface.json"
   ],
   "webgl_materials_video": [
@@ -1472,12 +1496,16 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/TransformControls.js",
     "https://threejs.org/examples/jsm/modifiers/CurveModifier.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"
   ],
   "webgl_modifier_curve_instanced": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/TransformControls.js",
     "https://threejs.org/examples/jsm/modifiers/CurveModifier.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/helvetiker_regular.typeface.json"
   ],
   "webgl_modifier_edgesplit": [
@@ -1501,6 +1529,8 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/TrackballControls.js",
     "https://threejs.org/examples/jsm/modifiers/TessellateModifier.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json"
   ],
   "webgl_morphtargets": [
@@ -1508,6 +1538,20 @@
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
     "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
     "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw=="
+  ],
+  "webgl_morphtargets_face": [
+    "https://threejs.org/examples/main.css",
+    "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+    "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+    "https://threejs.org/examples/jsm/loaders/KTX2Loader.js",
+    "https://threejs.org/examples/jsm/libs/meshopt_decoder.module.js",
+    "https://threejs.org/examples/jsm/environments/RoomEnvironment.js",
+    "https://threejs.org/examples/jsm/utils/WorkerPool.js",
+    "https://threejs.org/examples/models/gltf/facecap.glb",
+    "blob:https://threejs.org/1412ba4d-a4a7-4d45-b1ae-1a022d1f112b",
+    "https://threejs.org/examples/js/libs/basis/basis_transcoder.js",
+    "https://threejs.org/examples/js/libs/basis/basis_transcoder.wasm",
+    "blob:https://threejs.org/7c2d2a74-d6a3-4378-8f9f-d6e7dd8898fd"
   ],
   "webgl_morphtargets_horse": [
     "https://threejs.org/examples/main.css",
@@ -1669,17 +1713,6 @@
     "https://threejs.org/examples/textures/cube/MilkyWay/dark-s_pz.jpg",
     "https://threejs.org/examples/textures/cube/MilkyWay/dark-s_nz.jpg"
   ],
-  "webgl_shading_physical": [
-    "https://threejs.org/examples/main.css",
-    "https://threejs.org/examples/jsm/controls/TrackballControls.js",
-    "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
-    "https://threejs.org/examples/models/gltf/SittingBox.glb",
-    "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
-    "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==",
-    "https://threejs.org/examples/textures/patterns/bright_squares256.png",
-    "https://threejs.org/examples/textures/disturb.jpg",
-    "https://threejs.org/examples/textures/lava/lavatile.jpg"
-  ],
   "webgl_shadow_contact": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
@@ -1692,6 +1725,8 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/FirstPersonControls.js",
     "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/jsm/utils/ShadowMapViewer.js",
     "https://threejs.org/examples/jsm/shaders/UnpackDepthRGBAShader.js",
     "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json",
@@ -1704,6 +1739,8 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/FirstPersonControls.js",
     "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+    "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+    "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
     "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json",
     "https://threejs.org/examples/models/gltf/Horse.glb"
   ],
@@ -2155,6 +2192,81 @@
     "https://threejs.org/examples/textures/cube/pisaHDR/pz.hdr",
     "https://threejs.org/examples/textures/cube/pisaHDR/nz.hdr"
   ],
+  "webgl_materials_instance_uniform_nodes": [
+    "https://threejs.org/examples/main.css",
+    "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLNodes.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/Nodes.js",
+    "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLNodeBuilder.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeFrame.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/ArrayInputNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/AttributeNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/CodeNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/ConstNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/ContextNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/ExpressionNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/FunctionCallNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/FunctionNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/InputNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeAttribute.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeBuilder.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeCode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeFunctionInput.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeKeywords.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeSlot.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeUniform.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeVar.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeVary.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/PropertyNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/StructNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/StructVarNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/TempNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/VarNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/VaryNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/CameraNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/MaterialNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/MaterialReferenceNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/ModelNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/ModelViewProjectionNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/NormalNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/Object3DNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/PointUVNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/PositionNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/ReferenceNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/UVNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/ColorNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/FloatNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix3Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/TextureNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector2Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector3Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector4Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/display/ColorSpaceNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/display/NormalMapNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/math/MathNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/math/OperatorNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/lights/LightContextNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/lights/LightNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/lights/LightsNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/utils/JoinNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/utils/SplitNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/utils/SpriteSheetUVNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/utils/TimerNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/procedural/CheckerNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/constants.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/functions/BSDFs.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/functions/EncodingFunctions.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/functions/MathFunctions.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/consts/MathConsts.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/Materials.js",
+    "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLPhysicalContextNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/ShaderNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/LineBasicNodeMaterial.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/MeshBasicNodeMaterial.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/MeshStandardNodeMaterial.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/PointsNodeMaterial.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix4Node.js"
+  ],
   "webgl_materials_nodes": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/controls/OrbitControls.js",
@@ -2254,6 +2366,8 @@
     "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
     "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLNodes.js",
     "https://threejs.org/examples/jsm/renderers/nodes/Nodes.js",
+    "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLNodeBuilder.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeFrame.js",
     "https://threejs.org/examples/jsm/renderers/nodes/core/ArrayInputNode.js",
     "https://threejs.org/examples/jsm/renderers/nodes/core/AttributeNode.js",
     "https://threejs.org/examples/jsm/renderers/nodes/core/CodeNode.js",
@@ -2267,7 +2381,6 @@
     "https://threejs.org/examples/jsm/renderers/nodes/core/NodeAttribute.js",
     "https://threejs.org/examples/jsm/renderers/nodes/core/NodeBuilder.js",
     "https://threejs.org/examples/jsm/renderers/nodes/core/NodeCode.js",
-    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeFrame.js",
     "https://threejs.org/examples/jsm/renderers/nodes/core/NodeFunctionInput.js",
     "https://threejs.org/examples/jsm/renderers/nodes/core/NodeKeywords.js",
     "https://threejs.org/examples/jsm/renderers/nodes/core/NodeSlot.js",
@@ -2316,9 +2429,8 @@
     "https://threejs.org/examples/jsm/renderers/nodes/functions/MathFunctions.js",
     "https://threejs.org/examples/jsm/renderers/nodes/consts/MathConsts.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/Materials.js",
-    "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLNodeBuilder.js",
-    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix4Node.js",
     "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLPhysicalContextNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix4Node.js",
     "https://threejs.org/examples/jsm/renderers/nodes/ShaderNode.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/LineBasicNodeMaterial.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/MeshBasicNodeMaterial.js",
@@ -2495,6 +2607,84 @@
     "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
     "https://threejs.org/examples/models/json/suzanne_buffergeometry.json"
   ],
+  "webgl_points_nodes": [
+    "https://threejs.org/examples/main.css",
+    "https://threejs.org/examples/jsm/geometries/TeapotGeometry.js",
+    "https://threejs.org/examples/jsm/controls/OrbitControls.js",
+    "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLNodes.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/Nodes.js",
+    "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLNodeBuilder.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeFrame.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/ArrayInputNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/AttributeNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/CodeNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/ConstNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/ContextNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/ExpressionNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/FunctionCallNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/FunctionNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/InputNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeAttribute.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeBuilder.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeCode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeFunctionInput.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeKeywords.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeSlot.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeUniform.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeVar.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/NodeVary.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/PropertyNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/StructNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/StructVarNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/TempNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/VarNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/VaryNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/CameraNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/MaterialNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/MaterialReferenceNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/ModelNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/ModelViewProjectionNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/NormalNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/Object3DNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/PointUVNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/PositionNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/ReferenceNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/accessors/UVNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/ColorNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/FloatNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix3Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/TextureNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector2Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector3Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Vector4Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/display/ColorSpaceNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/display/NormalMapNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/math/MathNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/math/OperatorNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/lights/LightContextNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/lights/LightNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/lights/LightsNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/utils/JoinNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/utils/SplitNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/utils/SpriteSheetUVNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/utils/TimerNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/procedural/CheckerNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/core/constants.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/functions/BSDFs.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/functions/EncodingFunctions.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/functions/MathFunctions.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/consts/MathConsts.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/Materials.js",
+    "https://threejs.org/examples/jsm/renderers/webgl/nodes/WebGLPhysicalContextNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix4Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/ShaderNode.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/LineBasicNodeMaterial.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/MeshBasicNodeMaterial.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/MeshStandardNodeMaterial.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/materials/PointsNodeMaterial.js",
+    "https://threejs.org/examples/textures/sprites/firetorch_1.jpg"
+  ],
   "webgl_postprocessing_nodes": [
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/nodes/Nodes.js",
@@ -2584,6 +2774,10 @@
     "https://threejs.org/examples/jsm/postprocessing/RenderPass.js",
     "https://threejs.org/examples/jsm/nodes/postprocessing/NodePass.js",
     "https://threejs.org/examples/jsm/nodes/Nodes.js",
+    "https://threejs.org/examples/jsm/shaders/CopyShader.js",
+    "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
+    "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
+    "https://threejs.org/examples/jsm/postprocessing/Pass.js",
     "https://threejs.org/examples/jsm/nodes/core/Node.js",
     "https://threejs.org/examples/jsm/nodes/core/TempNode.js",
     "https://threejs.org/examples/jsm/nodes/core/InputNode.js",
@@ -2661,10 +2855,6 @@
     "https://threejs.org/examples/jsm/nodes/materials/StandardNodeMaterial.js",
     "https://threejs.org/examples/jsm/nodes/materials/MeshStandardNodeMaterial.js",
     "https://threejs.org/examples/jsm/nodes/postprocessing/NodePostProcessing.js",
-    "https://threejs.org/examples/jsm/shaders/CopyShader.js",
-    "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
-    "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
-    "https://threejs.org/examples/jsm/postprocessing/Pass.js",
     "https://threejs.org/examples/textures/lensflare/lensflare0.png",
     "https://threejs.org/examples/textures/decal/decal-normal.jpg"
   ],
@@ -2958,9 +3148,9 @@
     "https://threejs.org/examples/jsm/postprocessing/ShaderPass.js",
     "https://threejs.org/examples/jsm/postprocessing/OutlinePass.js",
     "https://threejs.org/examples/jsm/shaders/FXAAShader.js",
-    "https://threejs.org/examples/jsm/postprocessing/Pass.js",
     "https://threejs.org/examples/jsm/shaders/CopyShader.js",
     "https://threejs.org/examples/jsm/postprocessing/MaskPass.js",
+    "https://threejs.org/examples/jsm/postprocessing/Pass.js",
     "https://threejs.org/examples/models/obj/tree.obj",
     "https://threejs.org/examples/textures/tri_pattern.jpg"
   ],
@@ -3059,7 +3249,7 @@
     "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
     "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
     "https://threejs.org/examples/js/libs/draco/draco_decoder.js",
-    "blob:https://threejs.org/589bba1d-f7fc-4481-ade7-656842d1b3f0"
+    "blob:https://threejs.org/e00c2adb-767e-4df1-8825-70599057a387"
   ],
   "webgl_postprocessing_taa": [
     "https://threejs.org/examples/main.css",
@@ -3411,8 +3601,6 @@
     "https://threejs.org/examples/jsm/renderers/nodes/functions/MathFunctions.js",
     "https://threejs.org/examples/jsm/renderers/nodes/consts/MathConsts.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/Materials.js",
-    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix4Node.js",
-    "https://threejs.org/examples/jsm/renderers/nodes/ShaderNode.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUBinding.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/constants.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUObjects.js",
@@ -3428,21 +3616,23 @@
     "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUBackground.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodes.js",
     "https://threejs.org/examples/jsm/libs/glslang.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix4Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/ShaderNode.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/LineBasicNodeMaterial.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/MeshBasicNodeMaterial.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/MeshStandardNodeMaterial.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/PointsNodeMaterial.js",
-    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUProgrammableStage.js",
-    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPURenderPipeline.js",
-    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUTextureUtils.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeBuilder.js",
+    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUProgrammableStage.js",
+    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUTextureUtils.js",
+    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPURenderPipeline.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeUniformsGroup.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeUniform.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeSampler.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeSampledTexture.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/ShaderLib.js",
-    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampler.js",
-    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampledTexture.js"
+    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampledTexture.js",
+    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampler.js"
   ],
   "webgpu_instance_uniform": [
     "https://threejs.org/examples/main.css",
@@ -3531,11 +3721,11 @@
     "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUTextureUtils.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeBuilder.js",
     "https://threejs.org/examples/jsm/renderers/nodes/inputs/Matrix4Node.js",
+    "https://threejs.org/examples/jsm/renderers/nodes/ShaderNode.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/LineBasicNodeMaterial.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/MeshBasicNodeMaterial.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/MeshStandardNodeMaterial.js",
     "https://threejs.org/examples/jsm/renderers/nodes/materials/PointsNodeMaterial.js",
-    "https://threejs.org/examples/jsm/renderers/nodes/ShaderNode.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeUniformsGroup.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeUniform.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeSampler.js",
@@ -3860,12 +4050,12 @@
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/WebGPUNodeSampledTexture.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUBufferUtils.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/nodes/ShaderLib.js",
-    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniformsGroup.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniform.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampler.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUSampledTexture.js",
-    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniformBuffer.js",
+    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniformsGroup.js",
     "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUBinding.js",
+    "https://threejs.org/examples/jsm/renderers/webgpu/WebGPUUniformBuffer.js",
     "https://threejs.org/examples/textures/uv_grid_opengl.jpg",
     "https://threejs.org/examples/textures/alphaMap.jpg"
   ],
@@ -4292,7 +4482,7 @@
     "https://threejs.org/examples/jsm/math/Octree.js",
     "https://threejs.org/examples/jsm/math/Capsule.js",
     "https://threejs.org/examples/models/gltf/collision-world.glb",
-    "blob:https://threejs.org/d2d2e751-7ea4-43ee-a5e7-9a07164036bd"
+    "blob:https://threejs.org/cf1e4d6f-160c-4d02-9c03-ab6496223283"
   ],
   "physics_ammo_break": [
     "https://threejs.org/examples/main.css",
@@ -4354,6 +4544,18 @@
     "https://threejs.org/examples/main.css",
     "https://threejs.org/examples/jsm/interactive/SelectionBox.js",
     "https://threejs.org/examples/jsm/interactive/SelectionHelper.js"
+  ],
+  "misc_controls_arcball": [
+    "https://threejs.org/examples/main.css",
+    "https://threejs.org/examples/jsm/controls/ArcballControls.js",
+    "https://threejs.org/examples/jsm/loaders/OBJLoader.js",
+    "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+    "https://threejs.org/examples/models/obj/cerberus/Cerberus.obj",
+    "https://threejs.org/examples/textures/equirectangular/venice_sunset_1k.hdr",
+    "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
+    "https://threejs.org/examples/models/obj/cerberus/Cerberus_A.jpg",
+    "https://threejs.org/examples/models/obj/cerberus/Cerberus_RM.jpg",
+    "https://threejs.org/examples/models/obj/cerberus/Cerberus_N.jpg"
   ],
   "misc_controls_deviceorientation": [
     "https://threejs.org/examples/main.css",

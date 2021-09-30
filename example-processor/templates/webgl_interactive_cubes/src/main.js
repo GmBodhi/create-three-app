@@ -125,7 +125,7 @@ function render() {
 
   raycaster.setFromCamera(pointer, camera);
 
-  const intersects = raycaster.intersectObjects(scene.children);
+  const intersects = raycaster.intersectObjects(scene.children, false);
 
   if (intersects.length > 0) {
     if (INTERSECTED != intersects[0].object) {

@@ -2,6 +2,7 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/curves/NURBSCurve.js",
   "https://threejs.org/examples/jsm/curves/NURBSSurface.js",
+  "https://threejs.org/examples/jsm/geometries/ParametricGeometry.js",
   "https://threejs.org/examples/jsm/curves/NURBSUtils.js",
   "https://threejs.org/examples/textures/uv_grid_opengl.jpg"
 ]

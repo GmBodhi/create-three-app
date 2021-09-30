@@ -18,8 +18,6 @@ import {
   PlaneGeometry,
   MeshPhongMaterial,
   Mesh,
-  FontLoader,
-  TextGeometry,
   JS,
   BoxGeometry,
   AnimationMixer,
@@ -30,6 +28,8 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { FirstPersonControls } from "three/examples/jsm/controls/FirstPersonControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
 
 const SHADOW_MAP_WIDTH = 2048,
   SHADOW_MAP_HEIGHT = 1024;

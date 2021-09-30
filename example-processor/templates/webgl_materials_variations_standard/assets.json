@@ -2,6 +2,8 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/OrbitControls.js",
   "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
+  "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+  "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
   "https://threejs.org/examples/fonts/gentilis_regular.typeface.json",
   "https://threejs.org/examples/textures/equirectangular/pedestrian_overpass_1k.hdr",
   "https://threejs.org/examples/textures/planets/moon_1024.jpg"

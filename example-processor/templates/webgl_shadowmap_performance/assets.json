@@ -2,6 +2,8 @@
   "https://threejs.org/examples/main.css",
   "https://threejs.org/examples/jsm/controls/FirstPersonControls.js",
   "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
+  "https://threejs.org/examples/jsm/loaders/FontLoader.js",
+  "https://threejs.org/examples/jsm/geometries/TextGeometry.js",
   "https://threejs.org/examples/fonts/helvetiker_bold.typeface.json",
   "https://threejs.org/examples/models/gltf/Horse.glb"
 ]

@@ -142,6 +142,19 @@
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
+  "misc_controls_arcball": {
+    "files": {
+      "assets.json": "",
+      "webpack.js": "bundler",
+      "package.json": "",
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static",
+      "favicon.ico": "static"
+    },
+    "dirs": ["/static", "/src", "/bundler"]
+  },
   "misc_controls_deviceorientation": {
     "files": {
       "assets.json": "",
@@ -664,19 +677,6 @@
     "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl2_volume_perlin": {
-    "files": {
-      "assets.json": "",
-      "webpack.js": "bundler",
-      "package.json": "",
-      "index.html": "src",
-      "main.js": "src",
-      "style.css": "src",
-      "example.json": "static",
-      "favicon.ico": "static"
-    },
-    "dirs": ["/static", "/src", "/bundler"]
-  },
-  "webgl_animation_cloth": {
     "files": {
       "assets.json": "",
       "webpack.js": "bundler",
@@ -2967,6 +2967,19 @@
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
+  "webgl_materials_instance_uniform_nodes": {
+    "files": {
+      "assets.json": "",
+      "webpack.js": "bundler",
+      "package.json": "",
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static",
+      "favicon.ico": "static"
+    },
+    "dirs": ["/static", "/src", "/bundler"]
+  },
   "webgl_materials_lightmap": {
     "files": {
       "assets.json": "",
@@ -3467,6 +3480,19 @@
     },
     "dirs": ["/static", "/src", "/bundler"]
   },
+  "webgl_morphtargets_face": {
+    "files": {
+      "assets.json": "",
+      "webpack.js": "bundler",
+      "package.json": "",
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static",
+      "favicon.ico": "static"
+    },
+    "dirs": ["/static", "/src", "/bundler"]
+  },
   "webgl_morphtargets_horse": {
     "files": {
       "assets.json": "",
@@ -3689,6 +3715,19 @@
     "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_points_dynamic": {
+    "files": {
+      "assets.json": "",
+      "webpack.js": "bundler",
+      "package.json": "",
+      "index.html": "src",
+      "main.js": "src",
+      "style.css": "src",
+      "example.json": "static",
+      "favicon.ico": "static"
+    },
+    "dirs": ["/static", "/src", "/bundler"]
+  },
+  "webgl_points_nodes": {
     "files": {
       "assets.json": "",
       "webpack.js": "bundler",
@@ -4273,19 +4312,6 @@
     "dirs": ["/static", "/src", "/bundler"]
   },
   "webgl_shaders_tonemapping": {
-    "files": {
-      "assets.json": "",
-      "webpack.js": "bundler",
-      "package.json": "",
-      "index.html": "src",
-      "main.js": "src",
-      "style.css": "src",
-      "example.json": "static",
-      "favicon.ico": "static"
-    },
-    "dirs": ["/static", "/src", "/bundler"]
-  },
-  "webgl_shading_physical": {
     "files": {
       "assets.json": "",
       "webpack.js": "bundler",

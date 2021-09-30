@@ -18,7 +18,6 @@ import {
   Line,
   TextureLoader,
   RepeatWrapping,
-  ParametricBufferGeometry,
   MeshLambertMaterial,
   DoubleSide,
   Mesh,
@@ -29,6 +28,7 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { NURBSCurve } from "three/examples/jsm/curves/NURBSCurve.js";
 import { NURBSSurface } from "three/examples/jsm/curves/NURBSSurface.js";
+import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
 
 let container, stats;
 
@@ -168,7 +168,7 @@ function init() {
     return nurbsSurface.getPoint(u, v, target);
   }
 
-  const geometry = new ParametricBufferGeometry(getSurfacePoint, 20, 20);
+  const geometry = new ParametricGeometry(getSurfacePoint, 20, 20);
   const material = new MeshLambertMaterial({ map: map, side: DoubleSide });
   const object = new Mesh(geometry, material);
   object.position.set(-200, 100, 0);
