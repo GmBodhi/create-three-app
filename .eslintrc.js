@@ -9,6 +9,6 @@ module.exports = {
     ecmaVersion: 12,
   },
   rules: {
-    "no-useless-escape": 0,
+
   },
 };

@@ -28,7 +28,7 @@ jobs:
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "automated: Examples generated (actions)"
+          commit_message: "automated: Config generated (actions)"
           file_pattern: "."
           skip_dirty_check: false
           skip_fetch: false

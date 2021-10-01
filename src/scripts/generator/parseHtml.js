@@ -8,7 +8,7 @@ module.exports = function parseScript(window) {
     });
   document.body.style.overflow = "hidden";
   return `<html>${document.documentElement.innerHTML}</html>`.replace(
-    /(\<\link\s+type\s*\=\"text\/css\"\s*rel\s*\=\s*\"stylesheet\"\s*href\s*=\s*\"main\.css\"\>)/gi,
+    /(<link\s+type\s*="text\/css"\s*rel\s*=\s*"stylesheet"\s*href\s*=\s*"main\.css">)/gi,
     ""
   );
 };
