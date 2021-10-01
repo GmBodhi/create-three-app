@@ -9,7 +9,7 @@ function writeAssets(json) {
   });
 }
 
-export const init = async (dir, example) => {
+module.exports.init = async (dir, example) => {
   console.log(
     chalk.greenBright(
       `Generating package from https://threejs.org/examples/${example}.html`
