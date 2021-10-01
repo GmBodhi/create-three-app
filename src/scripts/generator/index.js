@@ -1,5 +1,4 @@
-import chalk from "chalk";
-
+const chalk = require("chalk")
 const fetch1 = require("./fetch");
 const { writeFileSync } = require("fs");
 const path = require("path");
