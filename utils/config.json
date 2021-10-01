@@ -1,0 +1,11 @@
+{
+  "utils": {
+    "files": {
+      "webpack.js": "",
+      "package.json": "",
+      "example.json": "",
+      "favicon.ico": ""
+    },
+    "dirs": ["/static", "/bundler"]
+  }
+}

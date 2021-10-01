@@ -1,6 +1,7 @@
 {
-  "name": "",
-  "description": "",
+  "name": "Three-app",
+  "description": "Application built with create-three-app",
+  "private": true,
   "version": "1.0.0",
   "license": "UNLICENSED",
   "scripts": {
@@ -8,7 +9,7 @@
     "dev": "webpack serve --config ./bundler/webpack.js --mode development"
   },
   "dependencies": {
-    "three": "^0.132.0"
+    "three": "^0.133.0"
   },
   "main": "src/index.js",
   "devDependencies": {
@@ -24,6 +25,7 @@
     "web-dev-server": "^3.0.22",
     "webpack": "^5.24.2",
     "webpack-cli": "^4.5.0",
+    "glslify-loader": "^2.0.0",
     "webpack-dev-server": "^4.0.0",
     "@babel/core": "^7.13.1",
     "@babel/preset-env": "^7.13.5",

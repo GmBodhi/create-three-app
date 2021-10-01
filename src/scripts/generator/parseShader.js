@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const { format } = require("glslx");
 
 function getAdditions(imports) {
   return imports
@@ -15,19 +16,21 @@ module.exports = function parseShader(window, name) {
 
   if (!shaders.length) return {};
 
-  fs.mkdirSync(path.resolve(__dirname, `./templates/${name}/src/shaders`));
+  fs.mkdirSync(path.resolve(__dirname, path.resolve(name, `./src/shaders`)));
 
   shaders.forEach((shader) => {
     fs.writeFileSync(
       path.resolve(
         __dirname,
-        `./templates/${name}/src/shaders/${shader.id.replace(
-          /\-(\w)/g,
-          (_, p) => p.toUpperCase()
-        )}.glsl`
+        path.resolve(
+          name,
+          `./src/shaders/${shader.id.replace(/\-(\w)/g, (_, p) =>
+            p.toUpperCase()
+          )}.glsl`
+        )
       ),
-      JSON.stringify(shader.innerHTML),
-      { encoding: "ascii" }
+      format(shader.innerHTML),
+      { encoding: "utf-8" }
     );
   });
 

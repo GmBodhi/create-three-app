@@ -2,8 +2,7 @@ name: Example
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 0 * * 1"
+  push:
 
 jobs:
   Example:
@@ -23,21 +22,8 @@ jobs:
       - name: Run Config
         run: yarn run config
 
-      - name: Generate examples
-        run: |
-          cd example-processor
-          node index.js --unhandled-rejections=strict
-
-      - name: Generate Config
-        run: |
-          cd example-processor
-          node generateConfig.js --unhandled-rejections=strict
-
       - name: Format Code
-        run: |
-          npm i prettier -g
-          git pull -a
-          prettier --write .
+        run: yarn run format
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4

@@ -53,3 +53,9 @@ module.exports.checkYarn = function checkYarn() {
       });
   });
 };
+
+module.exports = function getUtilsConfig() {
+  return fetch(this.exports.domain + "utils/config.json").then((res) =>
+    res.json()
+  );
+};

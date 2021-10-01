@@ -36,7 +36,7 @@ getConfig(domain)
             mkdirSync(dir);
           }
           checkYarn().then(init);
-          downloadFiles(example, config[example], domain).then(manageDir);
+          downloadFiles(example, config[example]).then(manageDir);
         } else {
           getExamplesConfig(domain).then((config) => {
             new AutoComplete({
@@ -54,7 +54,7 @@ getConfig(domain)
                   mkdirSync(dir);
                 }
                 checkYarn().then((answer) => init(answer, true));
-                downloadFiles(res, config[res], domain, true).then(manageDir);
+                downloadFiles(res, config[res], true).then(manageDir);
               })
               .catch((e) => console.error(chalk.red("Process aborted"), e));
           });
