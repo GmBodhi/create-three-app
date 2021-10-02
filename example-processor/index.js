@@ -9,7 +9,7 @@ function writeAssets(json) {
     writeFileSync(`./templates/${key}/assets.json`, JSON.stringify(value));
   });
 }
-initServer().then(({ port, close }) => {
+initServer().then(({ port }) => {
   const init = () => {
     mkdirSync("./templates");
     fetch(`http://localhost:${port}/examples/files.json`)
@@ -29,7 +29,7 @@ initServer().then(({ port, close }) => {
         writeFileSync("./templates/assets.json", JSON.stringify(urls));
         writeAssets(urls);
         await fetch1.close();
-        close(() => console.log("Closing server"));
+        process.exit(0);
       });
   };
 

@@ -1,7 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/renderers/SVGRenderer.js",
-  "https://threejs.org/examples/jsm/renderers/Projector.js",
-  "https://threejs.org/examples/models/json/QRCode_buffergeometry.json",
-  "https://threejs.org/examples/models/svg/hexagon.svg"
-]

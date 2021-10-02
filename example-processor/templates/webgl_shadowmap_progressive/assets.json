@@ -1,9 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/loaders/GLTFLoader.js",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/jsm/controls/TransformControls.js",
-  "https://threejs.org/examples/jsm/misc/ProgressiveLightMap.js",
-  "https://threejs.org/examples/jsm/libs/potpack.module.js",
-  "https://threejs.org/examples/models/gltf/ShadowmappableMesh.glb"
-]

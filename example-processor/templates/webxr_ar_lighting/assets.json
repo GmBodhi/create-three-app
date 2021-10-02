@@ -1,7 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/loaders/RGBELoader.js",
-  "https://threejs.org/examples/jsm/webxr/ARButton.js",
-  "https://threejs.org/examples/jsm/webxr/XREstimatedLight.js",
-  "https://threejs.org/examples/textures/equirectangular/royal_esplanade_1k.hdr"
-]

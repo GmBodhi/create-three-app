@@ -1,7 +1,6 @@
 {
   "css2d_label": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -14,7 +13,6 @@
   },
   "css3d_molecules": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -27,7 +25,6 @@
   },
   "css3d_orthographic": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -40,7 +37,6 @@
   },
   "css3d_periodictable": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -53,7 +49,6 @@
   },
   "css3d_sandbox": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -66,7 +61,6 @@
   },
   "css3d_sprites": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -79,7 +73,6 @@
   },
   "css3d_youtube": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -92,7 +85,6 @@
   },
   "games_fps": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -105,7 +97,6 @@
   },
   "misc_animation_groups": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -118,7 +109,6 @@
   },
   "misc_animation_keys": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -131,7 +121,6 @@
   },
   "misc_boxselection": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -144,7 +133,6 @@
   },
   "misc_controls_arcball": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -157,7 +145,6 @@
   },
   "misc_controls_deviceorientation": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -170,7 +157,6 @@
   },
   "misc_controls_drag": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -183,7 +169,6 @@
   },
   "misc_controls_fly": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -196,7 +181,6 @@
   },
   "misc_controls_map": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -209,7 +193,6 @@
   },
   "misc_controls_orbit": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -222,7 +205,6 @@
   },
   "misc_controls_pointerlock": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -235,7 +217,6 @@
   },
   "misc_controls_trackball": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -248,7 +229,6 @@
   },
   "misc_controls_transform": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -261,7 +241,6 @@
   },
   "misc_exporter_collada": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -274,7 +253,6 @@
   },
   "misc_exporter_draco": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -287,7 +265,6 @@
   },
   "misc_exporter_gltf": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -300,7 +277,6 @@
   },
   "misc_exporter_obj": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -313,7 +289,6 @@
   },
   "misc_exporter_ply": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -326,7 +301,6 @@
   },
   "misc_exporter_stl": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -339,7 +313,6 @@
   },
   "misc_exporter_usdz": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -352,7 +325,6 @@
   },
   "misc_lookat": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -365,7 +337,6 @@
   },
   "misc_uv_tests": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -378,7 +349,6 @@
   },
   "physics_ammo_break": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -391,7 +361,6 @@
   },
   "physics_ammo_cloth": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -404,7 +373,6 @@
   },
   "physics_ammo_instancing": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -417,7 +385,6 @@
   },
   "physics_ammo_rope": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -430,7 +397,6 @@
   },
   "physics_ammo_terrain": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -443,7 +409,6 @@
   },
   "physics_ammo_volume": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -456,7 +421,6 @@
   },
   "physics_oimo_instancing": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -469,7 +433,6 @@
   },
   "svg_lines": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -482,7 +445,6 @@
   },
   "svg_sandbox": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -495,7 +457,6 @@
   },
   "webaudio_orientation": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -508,7 +469,6 @@
   },
   "webaudio_sandbox": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -521,7 +481,6 @@
   },
   "webaudio_timing": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -534,7 +493,6 @@
   },
   "webaudio_visualizer": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -549,7 +507,6 @@
   },
   "webgl2_buffergeometry_attributes_integer": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -564,7 +521,6 @@
   },
   "webgl2_materials_texture2darray": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -579,7 +535,6 @@
   },
   "webgl2_materials_texture3d": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -592,7 +547,6 @@
   },
   "webgl2_materials_texture3d_partialupdate": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -605,7 +559,6 @@
   },
   "webgl2_multiple_rendertargets": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -622,7 +575,6 @@
   },
   "webgl2_multisampled_renderbuffers": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -635,7 +587,6 @@
   },
   "webgl2_rendertarget_texture2darray": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -652,7 +603,6 @@
   },
   "webgl2_volume_cloud": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -665,7 +615,6 @@
   },
   "webgl2_volume_instancing": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -678,7 +627,6 @@
   },
   "webgl2_volume_perlin": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -691,7 +639,6 @@
   },
   "webgl_animation_keyframes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -704,7 +651,6 @@
   },
   "webgl_animation_multiple": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -717,7 +663,6 @@
   },
   "webgl_animation_skinning_additive_blending": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -730,7 +675,6 @@
   },
   "webgl_animation_skinning_blending": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -743,7 +687,6 @@
   },
   "webgl_animation_skinning_morph": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -756,7 +699,6 @@
   },
   "webgl_buffergeometry": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -769,7 +711,6 @@
   },
   "webgl_buffergeometry_compression": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -782,7 +723,6 @@
   },
   "webgl_buffergeometry_custom_attributes_particles": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -797,7 +737,6 @@
   },
   "webgl_buffergeometry_drawrange": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -810,7 +749,6 @@
   },
   "webgl_buffergeometry_glbufferattribute": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -823,7 +761,6 @@
   },
   "webgl_buffergeometry_indexed": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -836,7 +773,6 @@
   },
   "webgl_buffergeometry_instancing": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -851,7 +787,6 @@
   },
   "webgl_buffergeometry_instancing_billboards": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -866,7 +801,6 @@
   },
   "webgl_buffergeometry_instancing_interleaved": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -879,7 +813,6 @@
   },
   "webgl_buffergeometry_lines": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -892,7 +825,6 @@
   },
   "webgl_buffergeometry_lines_indexed": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -905,7 +837,6 @@
   },
   "webgl_buffergeometry_points": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -918,7 +849,6 @@
   },
   "webgl_buffergeometry_points_interleaved": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -931,7 +861,6 @@
   },
   "webgl_buffergeometry_rawshader": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -946,7 +875,6 @@
   },
   "webgl_buffergeometry_selective_draw": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -961,7 +889,6 @@
   },
   "webgl_buffergeometry_uint": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -974,7 +901,6 @@
   },
   "webgl_camera": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -987,7 +913,6 @@
   },
   "webgl_camera_array": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1000,7 +925,6 @@
   },
   "webgl_camera_cinematic": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1013,7 +937,6 @@
   },
   "webgl_camera_logarithmicdepthbuffer": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1026,7 +949,6 @@
   },
   "webgl_clipping": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1039,7 +961,6 @@
   },
   "webgl_clipping_advanced": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1052,7 +973,6 @@
   },
   "webgl_clipping_intersection": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1065,7 +985,6 @@
   },
   "webgl_clipping_stencil": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1078,7 +997,6 @@
   },
   "webgl_custom_attributes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1093,7 +1011,6 @@
   },
   "webgl_custom_attributes_lines": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1108,7 +1025,6 @@
   },
   "webgl_custom_attributes_points": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1123,7 +1039,6 @@
   },
   "webgl_custom_attributes_points2": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1138,7 +1053,6 @@
   },
   "webgl_custom_attributes_points3": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1153,7 +1067,6 @@
   },
   "webgl_decals": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1166,7 +1079,6 @@
   },
   "webgl_depth_texture": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1181,7 +1093,6 @@
   },
   "webgl_effects_anaglyph": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1194,7 +1105,6 @@
   },
   "webgl_effects_ascii": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1207,7 +1117,6 @@
   },
   "webgl_effects_parallaxbarrier": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1220,7 +1129,6 @@
   },
   "webgl_effects_peppersghost": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1233,7 +1141,6 @@
   },
   "webgl_effects_stereo": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1246,7 +1153,6 @@
   },
   "webgl_framebuffer_texture": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1259,7 +1165,6 @@
   },
   "webgl_furnace_test": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1272,7 +1177,6 @@
   },
   "webgl_geometries": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1285,7 +1189,6 @@
   },
   "webgl_geometries_parametric": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1298,7 +1201,6 @@
   },
   "webgl_geometry_colors": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1311,7 +1213,6 @@
   },
   "webgl_geometry_colors_lookuptable": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1324,7 +1225,6 @@
   },
   "webgl_geometry_convex": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1337,7 +1237,6 @@
   },
   "webgl_geometry_cube": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1350,7 +1249,6 @@
   },
   "webgl_geometry_dynamic": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1363,7 +1261,6 @@
   },
   "webgl_geometry_extrude_shapes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1376,7 +1273,6 @@
   },
   "webgl_geometry_extrude_shapes2": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1389,7 +1285,6 @@
   },
   "webgl_geometry_extrude_splines": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1402,7 +1297,6 @@
   },
   "webgl_geometry_minecraft": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1415,7 +1309,6 @@
   },
   "webgl_geometry_nurbs": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1428,7 +1321,6 @@
   },
   "webgl_geometry_shapes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1441,7 +1333,6 @@
   },
   "webgl_geometry_spline_editor": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1454,7 +1345,6 @@
   },
   "webgl_geometry_teapot": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1467,7 +1357,6 @@
   },
   "webgl_geometry_terrain": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1480,7 +1369,6 @@
   },
   "webgl_geometry_terrain_raycast": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1493,7 +1381,6 @@
   },
   "webgl_geometry_text": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1506,7 +1393,6 @@
   },
   "webgl_geometry_text_shapes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1519,7 +1405,6 @@
   },
   "webgl_geometry_text_stroke": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1532,7 +1417,6 @@
   },
   "webgl_gpgpu_birds": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1549,7 +1433,6 @@
   },
   "webgl_gpgpu_birds_gltf": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1564,7 +1447,6 @@
   },
   "webgl_gpgpu_protoplanet": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1581,7 +1463,6 @@
   },
   "webgl_gpgpu_water": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1598,7 +1479,6 @@
   },
   "webgl_helpers": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1611,7 +1491,6 @@
   },
   "webgl_instancing_dynamic": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1624,7 +1503,6 @@
   },
   "webgl_instancing_modified": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1637,7 +1515,6 @@
   },
   "webgl_instancing_performance": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1650,7 +1527,6 @@
   },
   "webgl_instancing_raycast": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1663,7 +1539,6 @@
   },
   "webgl_instancing_scatter": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1676,7 +1551,6 @@
   },
   "webgl_interactive_buffergeometry": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1689,7 +1563,6 @@
   },
   "webgl_interactive_cubes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1702,7 +1575,6 @@
   },
   "webgl_interactive_cubes_gpu": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1715,7 +1587,6 @@
   },
   "webgl_interactive_cubes_ortho": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1728,7 +1599,6 @@
   },
   "webgl_interactive_lines": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1741,7 +1611,6 @@
   },
   "webgl_interactive_points": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1756,7 +1625,6 @@
   },
   "webgl_interactive_raycasting_points": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1769,7 +1637,6 @@
   },
   "webgl_interactive_voxelpainter": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1782,7 +1649,6 @@
   },
   "webgl_layers": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1795,7 +1661,6 @@
   },
   "webgl_lensflares": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1808,7 +1673,6 @@
   },
   "webgl_lightningstrike": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1821,7 +1685,6 @@
   },
   "webgl_lightprobe": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1834,7 +1697,6 @@
   },
   "webgl_lightprobe_cubecamera": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1847,7 +1709,6 @@
   },
   "webgl_lights_hemisphere": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1862,7 +1723,6 @@
   },
   "webgl_lights_physical": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1875,7 +1735,6 @@
   },
   "webgl_lights_pointlights": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1888,7 +1747,6 @@
   },
   "webgl_lights_rectarealight": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1901,7 +1759,6 @@
   },
   "webgl_lights_spotlight": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1914,7 +1771,6 @@
   },
   "webgl_lights_spotlights": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1927,7 +1783,6 @@
   },
   "webgl_lines_colors": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1940,7 +1795,6 @@
   },
   "webgl_lines_dashed": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1953,7 +1807,6 @@
   },
   "webgl_lines_fat": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1966,7 +1819,6 @@
   },
   "webgl_lines_fat_wireframe": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1979,7 +1831,6 @@
   },
   "webgl_lines_sphere": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -1992,7 +1843,6 @@
   },
   "webgl_loader_3dm": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2005,7 +1855,6 @@
   },
   "webgl_loader_3ds": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2018,7 +1867,6 @@
   },
   "webgl_loader_3mf": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2031,7 +1879,6 @@
   },
   "webgl_loader_3mf_materials": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2044,7 +1891,6 @@
   },
   "webgl_loader_amf": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2057,7 +1903,6 @@
   },
   "webgl_loader_bvh": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2070,7 +1915,6 @@
   },
   "webgl_loader_collada": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2083,7 +1927,6 @@
   },
   "webgl_loader_collada_kinematics": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2096,7 +1939,6 @@
   },
   "webgl_loader_collada_skinning": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2109,7 +1951,6 @@
   },
   "webgl_loader_draco": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2122,7 +1963,6 @@
   },
   "webgl_loader_fbx": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2135,7 +1975,6 @@
   },
   "webgl_loader_fbx_nurbs": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2148,7 +1987,6 @@
   },
   "webgl_loader_gcode": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2161,7 +1999,6 @@
   },
   "webgl_loader_gltf": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2174,7 +2011,6 @@
   },
   "webgl_loader_gltf_compressed": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2187,7 +2023,6 @@
   },
   "webgl_loader_gltf_transmission": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2200,7 +2035,6 @@
   },
   "webgl_loader_gltf_variants": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2213,7 +2047,6 @@
   },
   "webgl_loader_ifc": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2226,7 +2059,6 @@
   },
   "webgl_loader_imagebitmap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2239,7 +2071,6 @@
   },
   "webgl_loader_kmz": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2252,7 +2083,6 @@
   },
   "webgl_loader_ldraw": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2265,7 +2095,6 @@
   },
   "webgl_loader_lwo": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2278,7 +2107,6 @@
   },
   "webgl_loader_md2": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2291,7 +2119,6 @@
   },
   "webgl_loader_md2_control": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2304,7 +2131,6 @@
   },
   "webgl_loader_mdd": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2317,7 +2143,6 @@
   },
   "webgl_loader_mmd": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2330,7 +2155,6 @@
   },
   "webgl_loader_mmd_audio": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2343,7 +2167,6 @@
   },
   "webgl_loader_mmd_pose": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2356,7 +2179,6 @@
   },
   "webgl_loader_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2369,7 +2191,6 @@
   },
   "webgl_loader_nrrd": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2382,7 +2203,6 @@
   },
   "webgl_loader_obj": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2395,7 +2215,6 @@
   },
   "webgl_loader_obj_mtl": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2408,7 +2227,6 @@
   },
   "webgl_loader_pcd": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2421,7 +2239,6 @@
   },
   "webgl_loader_pdb": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2434,7 +2251,6 @@
   },
   "webgl_loader_ply": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2447,7 +2263,6 @@
   },
   "webgl_loader_prwm": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2460,7 +2275,6 @@
   },
   "webgl_loader_stl": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2473,7 +2287,6 @@
   },
   "webgl_loader_svg": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2486,7 +2299,6 @@
   },
   "webgl_loader_texture_basis": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2499,7 +2311,6 @@
   },
   "webgl_loader_texture_dds": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2512,7 +2323,6 @@
   },
   "webgl_loader_texture_exr": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2525,7 +2335,6 @@
   },
   "webgl_loader_texture_hdr": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2538,7 +2347,6 @@
   },
   "webgl_loader_texture_ktx": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2551,7 +2359,6 @@
   },
   "webgl_loader_texture_ktx2": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2564,7 +2371,6 @@
   },
   "webgl_loader_texture_lottie": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2577,7 +2383,6 @@
   },
   "webgl_loader_texture_pvrtc": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2590,7 +2395,6 @@
   },
   "webgl_loader_texture_rgbm": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2603,7 +2407,6 @@
   },
   "webgl_loader_texture_tga": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2616,7 +2419,6 @@
   },
   "webgl_loader_tilt": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2629,7 +2431,6 @@
   },
   "webgl_loader_ttf": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2642,7 +2443,6 @@
   },
   "webgl_loader_vox": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2655,7 +2455,6 @@
   },
   "webgl_loader_vrm": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2668,7 +2467,6 @@
   },
   "webgl_loader_vrml": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2681,7 +2479,6 @@
   },
   "webgl_loader_vtk": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2694,7 +2491,6 @@
   },
   "webgl_loader_xyz": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2707,7 +2503,6 @@
   },
   "webgl_lod": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2720,7 +2515,6 @@
   },
   "webgl_marchingcubes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2733,7 +2527,6 @@
   },
   "webgl_materials": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2746,7 +2539,6 @@
   },
   "webgl_materials_blending": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2759,7 +2551,6 @@
   },
   "webgl_materials_blending_custom": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2772,7 +2563,6 @@
   },
   "webgl_materials_bumpmap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2785,7 +2575,6 @@
   },
   "webgl_materials_car": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2798,7 +2587,6 @@
   },
   "webgl_materials_channels": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2811,7 +2599,6 @@
   },
   "webgl_materials_compile": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2824,7 +2611,6 @@
   },
   "webgl_materials_cubemap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2837,7 +2623,6 @@
   },
   "webgl_materials_cubemap_dynamic": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2850,7 +2635,6 @@
   },
   "webgl_materials_cubemap_mipmaps": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2863,7 +2647,6 @@
   },
   "webgl_materials_cubemap_refraction": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2876,7 +2659,6 @@
   },
   "webgl_materials_curvature": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2891,7 +2673,6 @@
   },
   "webgl_materials_displacementmap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2904,7 +2685,6 @@
   },
   "webgl_materials_envmaps": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2917,7 +2697,6 @@
   },
   "webgl_materials_envmaps_exr": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2930,7 +2709,6 @@
   },
   "webgl_materials_envmaps_hdr": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2943,7 +2721,6 @@
   },
   "webgl_materials_envmaps_hdr_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2956,7 +2733,6 @@
   },
   "webgl_materials_envmaps_pmrem_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2969,7 +2745,6 @@
   },
   "webgl_materials_instance_uniform_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2982,7 +2757,6 @@
   },
   "webgl_materials_lightmap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -2997,7 +2771,6 @@
   },
   "webgl_materials_matcap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3010,7 +2783,6 @@
   },
   "webgl_materials_modified": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3023,7 +2795,6 @@
   },
   "webgl_materials_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3036,7 +2807,6 @@
   },
   "webgl_materials_normalmap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3049,7 +2819,6 @@
   },
   "webgl_materials_normalmap_object_space": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3062,7 +2831,6 @@
   },
   "webgl_materials_physical_clearcoat": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3075,7 +2843,6 @@
   },
   "webgl_materials_physical_reflectivity": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3088,7 +2855,6 @@
   },
   "webgl_materials_physical_sheen": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3101,7 +2867,6 @@
   },
   "webgl_materials_physical_transmission": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3114,7 +2879,6 @@
   },
   "webgl_materials_standard": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3127,7 +2891,6 @@
   },
   "webgl_materials_standard_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3140,7 +2903,6 @@
   },
   "webgl_materials_subsurface_scattering": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3153,7 +2915,6 @@
   },
   "webgl_materials_texture_anisotropy": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3166,7 +2927,6 @@
   },
   "webgl_materials_texture_canvas": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3179,7 +2939,6 @@
   },
   "webgl_materials_texture_filters": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3192,7 +2951,6 @@
   },
   "webgl_materials_texture_manualmipmap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3205,7 +2963,6 @@
   },
   "webgl_materials_texture_partialupdate": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3218,7 +2975,6 @@
   },
   "webgl_materials_texture_rotation": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3231,7 +2987,6 @@
   },
   "webgl_materials_variations_basic": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3244,7 +2999,6 @@
   },
   "webgl_materials_variations_lambert": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3257,7 +3011,6 @@
   },
   "webgl_materials_variations_phong": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3270,7 +3023,6 @@
   },
   "webgl_materials_variations_physical": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3283,7 +3035,6 @@
   },
   "webgl_materials_variations_standard": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3296,7 +3047,6 @@
   },
   "webgl_materials_variations_toon": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3309,7 +3059,6 @@
   },
   "webgl_materials_video": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3322,7 +3071,6 @@
   },
   "webgl_materials_video_webcam": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3335,7 +3083,6 @@
   },
   "webgl_materials_wireframe": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3350,7 +3097,6 @@
   },
   "webgl_math_obb": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3363,7 +3109,6 @@
   },
   "webgl_math_orientation_transform": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3376,7 +3121,6 @@
   },
   "webgl_mirror": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3389,7 +3133,6 @@
   },
   "webgl_mirror_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3402,7 +3145,6 @@
   },
   "webgl_modifier_curve": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3415,7 +3157,6 @@
   },
   "webgl_modifier_curve_instanced": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3428,7 +3169,6 @@
   },
   "webgl_modifier_edgesplit": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3441,7 +3181,6 @@
   },
   "webgl_modifier_simplifier": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3454,7 +3193,6 @@
   },
   "webgl_modifier_tessellation": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3469,7 +3207,6 @@
   },
   "webgl_morphtargets": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3482,7 +3219,6 @@
   },
   "webgl_morphtargets_face": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3495,7 +3231,6 @@
   },
   "webgl_morphtargets_horse": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3508,7 +3243,6 @@
   },
   "webgl_morphtargets_sphere": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3521,7 +3255,6 @@
   },
   "webgl_multiple_canvases_circle": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3534,7 +3267,6 @@
   },
   "webgl_multiple_canvases_complex": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3547,7 +3279,6 @@
   },
   "webgl_multiple_canvases_grid": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3560,7 +3291,6 @@
   },
   "webgl_multiple_elements": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3573,7 +3303,6 @@
   },
   "webgl_multiple_elements_text": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3586,7 +3315,6 @@
   },
   "webgl_multiple_renderers": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3599,7 +3327,6 @@
   },
   "webgl_multiple_scenes_comparison": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3612,7 +3339,6 @@
   },
   "webgl_multiple_views": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3625,7 +3351,6 @@
   },
   "webgl_panorama_cube": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3638,7 +3363,6 @@
   },
   "webgl_panorama_equirectangular": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3651,7 +3375,6 @@
   },
   "webgl_performance": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3664,7 +3387,6 @@
   },
   "webgl_performance_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3677,7 +3399,6 @@
   },
   "webgl_performance_static": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3690,7 +3411,6 @@
   },
   "webgl_pmrem_test": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3703,7 +3423,6 @@
   },
   "webgl_points_billboards": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3716,7 +3435,6 @@
   },
   "webgl_points_dynamic": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3729,7 +3447,6 @@
   },
   "webgl_points_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3742,7 +3459,6 @@
   },
   "webgl_points_sprites": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3755,7 +3471,6 @@
   },
   "webgl_points_waves": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3770,7 +3485,6 @@
   },
   "webgl_portal": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3783,7 +3497,6 @@
   },
   "webgl_postprocessing": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3796,7 +3509,6 @@
   },
   "webgl_postprocessing_3dlut": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3809,7 +3521,6 @@
   },
   "webgl_postprocessing_advanced": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3822,7 +3533,6 @@
   },
   "webgl_postprocessing_afterimage": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3835,7 +3545,6 @@
   },
   "webgl_postprocessing_backgrounds": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3848,7 +3557,6 @@
   },
   "webgl_postprocessing_crossfade": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3861,7 +3569,6 @@
   },
   "webgl_postprocessing_dof": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3874,7 +3581,6 @@
   },
   "webgl_postprocessing_dof2": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3887,7 +3593,6 @@
   },
   "webgl_postprocessing_fxaa": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3900,7 +3605,6 @@
   },
   "webgl_postprocessing_glitch": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3913,7 +3617,6 @@
   },
   "webgl_postprocessing_godrays": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3926,7 +3629,6 @@
   },
   "webgl_postprocessing_masking": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3939,7 +3641,6 @@
   },
   "webgl_postprocessing_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3952,7 +3653,6 @@
   },
   "webgl_postprocessing_nodes_pass": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3965,7 +3665,6 @@
   },
   "webgl_postprocessing_outline": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3978,7 +3677,6 @@
   },
   "webgl_postprocessing_pixel": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -3991,7 +3689,6 @@
   },
   "webgl_postprocessing_procedural": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4008,7 +3705,6 @@
   },
   "webgl_postprocessing_rgb_halftone": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4021,7 +3717,6 @@
   },
   "webgl_postprocessing_sao": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4034,7 +3729,6 @@
   },
   "webgl_postprocessing_smaa": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4047,7 +3741,6 @@
   },
   "webgl_postprocessing_sobel": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4060,7 +3753,6 @@
   },
   "webgl_postprocessing_ssaa": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4073,7 +3765,6 @@
   },
   "webgl_postprocessing_ssao": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4086,7 +3777,6 @@
   },
   "webgl_postprocessing_ssr": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4099,7 +3789,6 @@
   },
   "webgl_postprocessing_ssrr": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4112,7 +3801,6 @@
   },
   "webgl_postprocessing_taa": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4125,7 +3813,6 @@
   },
   "webgl_postprocessing_unreal_bloom": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4138,7 +3825,6 @@
   },
   "webgl_postprocessing_unreal_bloom_selective": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4153,7 +3839,6 @@
   },
   "webgl_raycast_sprite": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4166,7 +3851,6 @@
   },
   "webgl_raycast_texture": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4179,7 +3863,6 @@
   },
   "webgl_raymarching_reflect": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4194,7 +3877,6 @@
   },
   "webgl_read_float_buffer": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4210,7 +3892,6 @@
   },
   "webgl_refraction": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4223,7 +3904,6 @@
   },
   "webgl_rtt": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4239,7 +3919,6 @@
   },
   "webgl_shader": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4254,7 +3933,6 @@
   },
   "webgl_shader2": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4272,7 +3950,6 @@
   },
   "webgl_shader_lava": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4287,7 +3964,6 @@
   },
   "webgl_shaders_ocean": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4300,7 +3976,6 @@
   },
   "webgl_shaders_sky": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4313,7 +3988,6 @@
   },
   "webgl_shaders_tonemapping": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4326,7 +4000,6 @@
   },
   "webgl_shadow_contact": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4339,7 +4012,6 @@
   },
   "webgl_shadowmap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4352,7 +4024,6 @@
   },
   "webgl_shadowmap_csm": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4365,7 +4036,6 @@
   },
   "webgl_shadowmap_pcss": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4380,7 +4050,6 @@
   },
   "webgl_shadowmap_performance": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4393,7 +4062,6 @@
   },
   "webgl_shadowmap_pointlight": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4406,7 +4074,6 @@
   },
   "webgl_shadowmap_progressive": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4419,7 +4086,6 @@
   },
   "webgl_shadowmap_viewer": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4432,7 +4098,6 @@
   },
   "webgl_shadowmap_vsm": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4445,7 +4110,6 @@
   },
   "webgl_shadowmesh": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4458,7 +4122,6 @@
   },
   "webgl_simple_gi": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4471,7 +4134,6 @@
   },
   "webgl_skinning_simple": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4484,7 +4146,6 @@
   },
   "webgl_sprites": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4497,7 +4158,6 @@
   },
   "webgl_sprites_nodes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4510,7 +4170,6 @@
   },
   "webgl_test_memory": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4523,7 +4182,6 @@
   },
   "webgl_test_memory2": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4538,7 +4196,6 @@
   },
   "webgl_tiled_forward": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4551,7 +4208,6 @@
   },
   "webgl_tonemapping": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4564,7 +4220,6 @@
   },
   "webgl_trails": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4577,7 +4232,6 @@
   },
   "webgl_video_kinect": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4592,7 +4246,6 @@
   },
   "webgl_video_panorama_equirectangular": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4605,7 +4258,6 @@
   },
   "webgl_water": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4618,7 +4270,6 @@
   },
   "webgl_water_flowmap": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4631,7 +4282,6 @@
   },
   "webgl_worker_offscreencanvas": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4644,7 +4294,6 @@
   },
   "webgpu_compute": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4657,7 +4306,6 @@
   },
   "webgpu_instance_uniform": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4670,7 +4318,6 @@
   },
   "webgpu_lights_custom": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4683,7 +4330,6 @@
   },
   "webgpu_lights_selective": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4696,7 +4342,6 @@
   },
   "webgpu_materials": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4709,7 +4354,6 @@
   },
   "webgpu_rtt": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4722,7 +4366,6 @@
   },
   "webgpu_sandbox": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4735,7 +4378,6 @@
   },
   "webxr_ar_cones": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4748,7 +4390,6 @@
   },
   "webxr_ar_hittest": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4761,7 +4402,6 @@
   },
   "webxr_ar_lighting": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4774,7 +4414,6 @@
   },
   "webxr_ar_paint": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4787,7 +4426,6 @@
   },
   "webxr_vr_ballshooter": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4800,7 +4438,6 @@
   },
   "webxr_vr_cubes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4813,7 +4450,6 @@
   },
   "webxr_vr_dragging": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4826,7 +4462,6 @@
   },
   "webxr_vr_handinput": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4839,7 +4474,6 @@
   },
   "webxr_vr_handinput_cubes": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4852,7 +4486,6 @@
   },
   "webxr_vr_handinput_pointerclick": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4865,7 +4498,6 @@
   },
   "webxr_vr_handinput_pointerdrag": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4878,7 +4510,6 @@
   },
   "webxr_vr_handinput_pressbutton": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4891,7 +4522,6 @@
   },
   "webxr_vr_handinput_profiles": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4904,7 +4534,6 @@
   },
   "webxr_vr_haptics": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4917,7 +4546,6 @@
   },
   "webxr_vr_layers": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4930,7 +4558,6 @@
   },
   "webxr_vr_paint": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4943,7 +4570,6 @@
   },
   "webxr_vr_panorama": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4956,7 +4582,6 @@
   },
   "webxr_vr_panorama_depth": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4969,7 +4594,6 @@
   },
   "webxr_vr_rollercoaster": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4982,7 +4606,6 @@
   },
   "webxr_vr_sandbox": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -4995,7 +4618,6 @@
   },
   "webxr_vr_sculpt": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",
@@ -5008,7 +4630,6 @@
   },
   "webxr_vr_video": {
     "files": {
-      "assets.json": "",
       "webpack.js": "bundler",
       "package.json": "",
       "index.html": "src",

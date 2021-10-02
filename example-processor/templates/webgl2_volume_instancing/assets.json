@@ -1,7 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/jsm/loaders/VOXLoader.js",
-  "https://threejs.org/examples/jsm/WebGL.js",
-  "https://threejs.org/examples/models/vox/menger.vox"
-]
