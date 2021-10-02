@@ -1,5 +1,6 @@
 const path = require("path");
 const fs = require("fs");
+const { format } = require("glslx");
 
 function getAdditions(imports) {
   return imports
@@ -25,8 +26,7 @@ module.exports = function parseShader(window, name) {
           p.toUpperCase()
         )}.glsl`
       ),
-      JSON.stringify(shader.innerHTML),
-      { encoding: "ascii" }
+      format(shader.innerHTML)
     );
   });
 
