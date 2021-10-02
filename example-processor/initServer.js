@@ -15,7 +15,7 @@ module.exports.init = function init() {
       handler(req, res, { cleanUrls: false, public: require("path").resolve(process.cwd(),"/res") })
       );
       server.listen(port);
-      fetch("http://localhost:2000/exaples/files.json").then(res => res.json()).then(console.log)
+      fetch("http://localhost:2000/exaples/files.json").then(res => res.text()).then(console.log)
       resolve(port)
     })
   });
