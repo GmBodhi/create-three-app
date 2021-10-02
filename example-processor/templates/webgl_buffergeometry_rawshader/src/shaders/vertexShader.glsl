@@ -1,1 +1,18 @@
-"\n\n\t\t\tprecision mediump float;\n\t\t\tprecision mediump int;\n\n\t\t\tuniform mat4 modelViewMatrix; // optional\n\t\t\tuniform mat4 projectionMatrix; // optional\n\n\t\t\tattribute vec3 position;\n\t\t\tattribute vec4 color;\n\n\t\t\tvarying vec3 vPosition;\n\t\t\tvarying vec4 vColor;\n\n\t\t\tvoid main()\t{\n\n\t\t\t\tvPosition = position;\n\t\t\t\tvColor = color;\n\n\t\t\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n\t\t\t}\n\n\t\t"
+precision mediump float;
+precision mediump int;
+
+uniform mat4 modelViewMatrix; // optional
+uniform mat4 projectionMatrix; // optional
+
+attribute vec3 position;
+attribute vec4 color;
+
+varying vec3 vPosition;
+varying vec4 vColor;
+
+void main() {
+  vPosition = position;
+  vColor = color;
+
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}

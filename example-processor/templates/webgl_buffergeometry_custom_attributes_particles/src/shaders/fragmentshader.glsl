@@ -1,1 +1,9 @@
-"\n\n\t\t\tuniform sampler2D pointTexture;\n\n\t\t\tvarying vec3 vColor;\n\n\t\t\tvoid main() {\n\n\t\t\t\tgl_FragColor = vec4( vColor, 1.0 );\n\n\t\t\t\tgl_FragColor = gl_FragColor * texture2D( pointTexture, gl_PointCoord );\n\n\t\t\t}\n\n\t\t"
+uniform sampler2D pointTexture;
+
+varying vec3 vColor;
+
+void main() {
+  gl_FragColor = vec4(vColor, 1.0);
+
+  gl_FragColor = gl_FragColor * texture2D(pointTexture, gl_PointCoord);
+}

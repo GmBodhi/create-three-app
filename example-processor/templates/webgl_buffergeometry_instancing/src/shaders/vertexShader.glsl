@@ -1,1 +1,26 @@
-"\n\t\tprecision highp float;\n\n\t\tuniform float sineTime;\n\n\t\tuniform mat4 modelViewMatrix;\n\t\tuniform mat4 projectionMatrix;\n\n\t\tattribute vec3 position;\n\t\tattribute vec3 offset;\n\t\tattribute vec4 color;\n\t\tattribute vec4 orientationStart;\n\t\tattribute vec4 orientationEnd;\n\n\t\tvarying vec3 vPosition;\n\t\tvarying vec4 vColor;\n\n\t\tvoid main(){\n\n\t\t\tvPosition = offset * max( abs( sineTime * 2.0 + 1.0 ), 0.5 ) + position;\n\t\t\tvec4 orientation = normalize( mix( orientationStart, orientationEnd, sineTime ) );\n\t\t\tvec3 vcV = cross( orientation.xyz, vPosition );\n\t\t\tvPosition = vcV * ( 2.0 * orientation.w ) + ( cross( orientation.xyz, vcV ) * 2.0 + vPosition );\n\n\t\t\tvColor = color;\n\n\t\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( vPosition, 1.0 );\n\n\t\t}\n\n\t"
+precision highp float;
+
+uniform float sineTime;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+attribute vec3 position;
+attribute vec3 offset;
+attribute vec4 color;
+attribute vec4 orientationStart;
+attribute vec4 orientationEnd;
+
+varying vec3 vPosition;
+varying vec4 vColor;
+
+void main() {
+  vPosition = offset * max(abs(sineTime * 2.0 + 1.0), 0.5) + position;
+  vec4 orientation = normalize(mix(orientationStart, orientationEnd, sineTime));
+  vec3 vcV = cross(orientation.xyz, vPosition);
+  vPosition = vcV * (2.0 * orientation.w) + (cross(orientation.xyz, vcV) * 2.0 + vPosition);
+
+  vColor = color;
+
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(vPosition, 1.0);
+}

@@ -1,1 +1,17 @@
-"\n\t\t\tprecision highp float;\n\t\t\tprecision highp int;\n\n\t\t\tlayout(location = 0) out vec4 pc_FragColor;\n\n\t\t\tin vec2 vUv;\n\n\t\t\tuniform sampler2D tDiffuse;\n\t\t\tuniform sampler2D tNormal;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvec3 diffuse = texture( tDiffuse, vUv ).rgb;\n\t\t\t\tvec3 normal = texture( tNormal, vUv ).rgb;\n\n\t\t\t\tpc_FragColor.rgb = mix( diffuse, normal, step( 0.5, vUv.x ) );\n\t\t\t\tpc_FragColor.a = 1.0;\n\n\t\t\t}\n\t\t"
+precision highp float;
+precision highp int;
+
+layout(location = 0) out vec4 pc_FragColor;
+
+in vec2 vUv;
+
+uniform sampler2D tDiffuse;
+uniform sampler2D tNormal;
+
+void main() {
+  vec3 diffuse = texture(tDiffuse, vUv).rgb;
+  vec3 normal = texture(tNormal, vUv).rgb;
+
+  pc_FragColor.rgb = mix(diffuse, normal, step(0.5, vUv.x));
+  pc_FragColor.a = 1.0;
+}

@@ -1,1 +1,9 @@
-"\n\t\t\t#include <common>\n\n\t\t\tvarying vec2 vUv;\n\n\t\t\tvoid main() {\n\t\t\t\tvec3 rand3 = vec3( rand( vUv ), rand( vUv + vec2( 0.4, 0.6 ) ), rand( vUv + vec2( 0.6, 0.4 ) ) );\n\t\t\t\tgl_FragColor.xyz = rand3;\n\t\t\t\tgl_FragColor.w = 1.0;\n\t\t\t}\n\t\t"
+#include < common >
+
+varying vec2 vUv;
+
+void main() {
+  vec3 rand3 = vec3(rand(vUv), rand(vUv + vec2(0.4, 0.6)), rand(vUv + vec2(0.6, 0.4)));
+  gl_FragColor.xyz = rand3;
+  gl_FragColor.w = 1.0;
+}

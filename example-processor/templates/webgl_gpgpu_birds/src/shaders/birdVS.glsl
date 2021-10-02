@@ -1,1 +1,59 @@
-"\n\n\t\t\tattribute vec2 reference;\n\t\t\tattribute float birdVertex;\n\n\t\t\tattribute vec3 birdColor;\n\n\t\t\tuniform sampler2D texturePosition;\n\t\t\tuniform sampler2D textureVelocity;\n\n\t\t\tvarying vec4 vColor;\n\t\t\tvarying float z;\n\n\t\t\tuniform float time;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvec4 tmpPos = texture2D( texturePosition, reference );\n\t\t\t\tvec3 pos = tmpPos.xyz;\n\t\t\t\tvec3 velocity = normalize(texture2D( textureVelocity, reference ).xyz);\n\n\t\t\t\tvec3 newPosition = position;\n\n\t\t\t\tif ( birdVertex == 4.0 || birdVertex == 7.0 ) {\n\t\t\t\t\t// flap wings\n\t\t\t\t\tnewPosition.y = sin( tmpPos.w ) * 5.;\n\t\t\t\t}\n\n\t\t\t\tnewPosition = mat3( modelMatrix ) * newPosition;\n\n\n\t\t\t\tvelocity.z *= -1.;\n\t\t\t\tfloat xz = length( velocity.xz );\n\t\t\t\tfloat xyz = 1.;\n\t\t\t\tfloat x = sqrt( 1. - velocity.y * velocity.y );\n\n\t\t\t\tfloat cosry = velocity.x / xz;\n\t\t\t\tfloat sinry = velocity.z / xz;\n\n\t\t\t\tfloat cosrz = x / xyz;\n\t\t\t\tfloat sinrz = velocity.y / xyz;\n\n\t\t\t\tmat3 maty =  mat3(\n\t\t\t\t\tcosry, 0, -sinry,\n\t\t\t\t\t0    , 1, 0     ,\n\t\t\t\t\tsinry, 0, cosry\n\n\t\t\t\t);\n\n\t\t\t\tmat3 matz =  mat3(\n\t\t\t\t\tcosrz , sinrz, 0,\n\t\t\t\t\t-sinrz, cosrz, 0,\n\t\t\t\t\t0     , 0    , 1\n\t\t\t\t);\n\n\t\t\t\tnewPosition =  maty * matz * newPosition;\n\t\t\t\tnewPosition += pos;\n\n\t\t\t\tz = newPosition.z;\n\n\t\t\t\tvColor = vec4( birdColor, 1.0 );\n\t\t\t\tgl_Position = projectionMatrix *  viewMatrix  * vec4( newPosition, 1.0 );\n\t\t\t}\n\n\t\t"
+attribute vec2 reference;
+attribute float birdVertex;
+
+attribute vec3 birdColor;
+
+uniform sampler2D texturePosition;
+uniform sampler2D textureVelocity;
+
+varying vec4 vColor;
+varying float z;
+
+uniform float time;
+
+void main() {
+  vec4 tmpPos = texture2D(texturePosition, reference);
+  vec3 pos = tmpPos.xyz;
+  vec3 velocity = normalize(texture2D(textureVelocity, reference).xyz);
+
+  vec3 newPosition = position;
+
+  if (birdVertex == 4.0 || birdVertex == 7.0) {
+    // flap wings
+    newPosition.y = sin(tmpPos.w) * 5.;
+  }
+
+  newPosition = mat3(modelMatrix) * newPosition;
+
+  velocity.z *= -1.;
+  float xz = length(velocity.xz);
+  float xyz = 1.;
+  float x = sqrt(1. - velocity.y * velocity.y);
+
+  float cosry = velocity.x / xz;
+  float sinry = velocity.z / xz;
+
+  float cosrz = x / xyz;
+  float sinrz = velocity.y / xyz;
+
+  mat3 maty = mat3(
+    cosry, 0, -sinry,
+    0, 1, 0,
+    sinry, 0, cosry
+
+  );
+
+  mat3 matz = mat3(
+    cosrz, sinrz, 0,
+    -sinrz, cosrz, 0,
+    0, 0, 1
+  );
+
+  newPosition = maty * matz * newPosition;
+  newPosition += pos;
+
+  z = newPosition.z;
+
+  vColor = vec4(birdColor, 1.0);
+  gl_Position = projectionMatrix * viewMatrix * vec4(newPosition, 1.0);
+}

@@ -1,1 +1,9 @@
-"\n\n\t\t\tuniform vec2 uvScale;\n\t\t\tvarying vec2 vUv;\n\n\t\t\tvoid main()\n\t\t\t{\n\n\t\t\t\tvUv = uvScale * uv;\n\t\t\t\tvec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );\n\t\t\t\tgl_Position = projectionMatrix * mvPosition;\n\n\t\t\t}\n\n\t\t"
+uniform vec2 uvScale;
+varying vec2 vUv;
+
+void main()
+{
+  vUv = uvScale * uv;
+  vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
+  gl_Position = projectionMatrix * mvPosition;
+}

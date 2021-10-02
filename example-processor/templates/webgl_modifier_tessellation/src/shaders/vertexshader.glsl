@@ -1,1 +1,15 @@
-"\n\n\t\t\tuniform float amplitude;\n\n\t\t\tattribute vec3 customColor;\n\t\t\tattribute vec3 displacement;\n\n\t\t\tvarying vec3 vNormal;\n\t\t\tvarying vec3 vColor;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvNormal = normal;\n\t\t\t\tvColor = customColor;\n\n\t\t\t\tvec3 newPosition = position + normal * amplitude * displacement;\n\t\t\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );\n\n\t\t\t}\n\n\t\t"
+uniform float amplitude;
+
+attribute vec3 customColor;
+attribute vec3 displacement;
+
+varying vec3 vNormal;
+varying vec3 vColor;
+
+void main() {
+  vNormal = normal;
+  vColor = customColor;
+
+  vec3 newPosition = position + normal * amplitude * displacement;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+}

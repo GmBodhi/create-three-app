@@ -1,1 +1,22 @@
-"\n\n\t\t\tuniform float time;\n\n\t\t\tuniform sampler2D colorTexture;\n\n\t\t\tvarying vec2 vUv;\n\n\t\t\tvoid main( void ) {\n\n\t\t\t\tvec2 position = - 1.0 + 2.0 * vUv;\n\n\t\t\t\tfloat a = atan( position.y, position.x );\n\t\t\t\tfloat r = sqrt( dot( position, position ) );\n\n\t\t\t\tvec2 uv;\n\t\t\t\tuv.x = cos( a ) / r;\n\t\t\t\tuv.y = sin( a ) / r;\n\t\t\t\tuv /= 10.0;\n\t\t\t\tuv += time * 0.05;\n\n\t\t\t\tvec3 color = texture2D( colorTexture, uv ).rgb;\n\n\t\t\t\tgl_FragColor = vec4( color * r * 1.5, 1.0 );\n\n\t\t\t}\n\t\t"
+uniform float time;
+
+uniform sampler2D colorTexture;
+
+varying vec2 vUv;
+
+void main(void) {
+  vec2 position = -1.0 + 2.0 * vUv;
+
+  float a = atan(position.y, position.x);
+  float r = sqrt(dot(position, position));
+
+  vec2 uv;
+  uv.x = cos(a) / r;
+  uv.y = sin(a) / r;
+  uv /= 10.0;
+  uv += time * 0.05;
+
+  vec3 color = texture2D(colorTexture, uv).rgb;
+
+  gl_FragColor = vec4(color * r * 1.5, 1.0);
+}

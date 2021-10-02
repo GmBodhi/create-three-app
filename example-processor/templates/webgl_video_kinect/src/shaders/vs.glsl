@@ -1,1 +1,33 @@
-"\n\n\t\t\tuniform sampler2D map;\n\n\t\t\tuniform float width;\n\t\t\tuniform float height;\n\t\t\tuniform float nearClipping, farClipping;\n\n\t\t\tuniform float pointSize;\n\t\t\tuniform float zOffset;\n\n\t\t\tvarying vec2 vUv;\n\n\t\t\tconst float XtoZ = 1.11146; // tan( 1.0144686 / 2.0 ) * 2.0;\n\t\t\tconst float YtoZ = 0.83359; // tan( 0.7898090 / 2.0 ) * 2.0;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvUv = vec2( position.x / width, position.y / height );\n\n\t\t\t\tvec4 color = texture2D( map, vUv );\n\t\t\t\tfloat depth = ( color.r + color.g + color.b ) / 3.0;\n\n\t\t\t\t// Projection code by @kcmic\n\n\t\t\t\tfloat z = ( 1.0 - depth ) * (farClipping - nearClipping) + nearClipping;\n\n\t\t\t\tvec4 pos = vec4(\n\t\t\t\t\t( position.x / width - 0.5 ) * z * XtoZ,\n\t\t\t\t\t( position.y / height - 0.5 ) * z * YtoZ,\n\t\t\t\t\t- z + zOffset,\n\t\t\t\t\t1.0);\n\n\t\t\t\tgl_PointSize = pointSize;\n\t\t\t\tgl_Position = projectionMatrix * modelViewMatrix * pos;\n\n\t\t\t}\n\n\t\t"
+uniform sampler2D map;
+
+uniform float width;
+uniform float height;
+uniform float nearClipping, farClipping;
+
+uniform float pointSize;
+uniform float zOffset;
+
+varying vec2 vUv;
+
+const float XtoZ = 1.11146; // tan( 1.0144686 / 2.0 ) * 2.0;
+const float YtoZ = 0.83359; // tan( 0.7898090 / 2.0 ) * 2.0;
+
+void main() {
+  vUv = vec2(position.x / width, position.y / height);
+
+  vec4 color = texture2D(map, vUv);
+  float depth = (color.r + color.g + color.b) / 3.0;
+
+  // Projection code by @kcmic
+
+  float z = (1.0 - depth) * (farClipping - nearClipping) + nearClipping;
+
+  vec4 pos = vec4(
+    (position.x / width - 0.5) * z * XtoZ,
+    (position.y / height - 0.5) * z * YtoZ,
+    -z + zOffset,
+    1.0);
+
+  gl_PointSize = pointSize;
+  gl_Position = projectionMatrix * modelViewMatrix * pos;
+}

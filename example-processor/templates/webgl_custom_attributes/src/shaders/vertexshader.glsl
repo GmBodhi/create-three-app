@@ -1,1 +1,14 @@
-"\n\n\t\t\tuniform float amplitude;\n\n\t\t\tattribute float displacement;\n\n\t\t\tvarying vec3 vNormal;\n\t\t\tvarying vec2 vUv;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvNormal = normal;\n\t\t\t\tvUv = ( 0.5 + amplitude ) * uv + vec2( amplitude );\n\n\t\t\t\tvec3 newPosition = position + amplitude * normal * vec3( displacement );\n\t\t\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( newPosition, 1.0 );\n\n\t\t\t}\n\n\t\t"
+uniform float amplitude;
+
+attribute float displacement;
+
+varying vec3 vNormal;
+varying vec2 vUv;
+
+void main() {
+  vNormal = normal;
+  vUv = (0.5 + amplitude) * uv + vec2(amplitude);
+
+  vec3 newPosition = position + amplitude * normal * vec3(displacement);
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+}

@@ -1,1 +1,68 @@
-"\n\n\t\t\tuniform sampler2D heightmap;\n\n\t\t\t#define PHONG\n\n\t\t\tvarying vec3 vViewPosition;\n\n\t\t\t#ifndef FLAT_SHADED\n\n\t\t\t\tvarying vec3 vNormal;\n\n\t\t\t#endif\n\n\t\t\t#include <common>\n\t\t\t#include <uv_pars_vertex>\n\t\t\t#include <uv2_pars_vertex>\n\t\t\t#include <displacementmap_pars_vertex>\n\t\t\t#include <envmap_pars_vertex>\n\t\t\t#include <color_pars_vertex>\n\t\t\t#include <morphtarget_pars_vertex>\n\t\t\t#include <skinning_pars_vertex>\n\t\t\t#include <shadowmap_pars_vertex>\n\t\t\t#include <logdepthbuf_pars_vertex>\n\t\t\t#include <clipping_planes_pars_vertex>\n\n\t\t\tvoid main() {\n\n\t\t\t\tvec2 cellSize = vec2( 1.0 / WIDTH, 1.0 / WIDTH );\n\n\t\t\t\t#include <uv_vertex>\n\t\t\t\t#include <uv2_vertex>\n\t\t\t\t#include <color_vertex>\n\n\t\t\t\t// # include <beginnormal_vertex>\n\t\t\t\t// Compute normal from heightmap\n\t\t\t\tvec3 objectNormal = vec3(\n\t\t\t\t\t( texture2D( heightmap, uv + vec2( - cellSize.x, 0 ) ).x - texture2D( heightmap, uv + vec2( cellSize.x, 0 ) ).x ) * WIDTH / BOUNDS,\n\t\t\t\t\t( texture2D( heightmap, uv + vec2( 0, - cellSize.y ) ).x - texture2D( heightmap, uv + vec2( 0, cellSize.y ) ).x ) * WIDTH / BOUNDS,\n\t\t\t\t\t1.0 );\n\t\t\t\t//<beginnormal_vertex>\n\n\t\t\t\t#include <morphnormal_vertex>\n\t\t\t\t#include <skinbase_vertex>\n\t\t\t\t#include <skinnormal_vertex>\n\t\t\t\t#include <defaultnormal_vertex>\n\n\t\t\t#ifndef FLAT_SHADED // Normal computed with derivatives when FLAT_SHADED\n\n\t\t\t\tvNormal = normalize( transformedNormal );\n\n\t\t\t#endif\n\n\t\t\t\t//# include <begin_vertex>\n\t\t\t\tfloat heightValue = texture2D( heightmap, uv ).x;\n\t\t\t\tvec3 transformed = vec3( position.x, position.y, heightValue );\n\t\t\t\t//<begin_vertex>\n\n\t\t\t\t#include <morphtarget_vertex>\n\t\t\t\t#include <skinning_vertex>\n\t\t\t\t#include <displacementmap_vertex>\n\t\t\t\t#include <project_vertex>\n\t\t\t\t#include <logdepthbuf_vertex>\n\t\t\t\t#include <clipping_planes_vertex>\n\n\t\t\t\tvViewPosition = - mvPosition.xyz;\n\n\t\t\t\t#include <worldpos_vertex>\n\t\t\t\t#include <envmap_vertex>\n\t\t\t\t#include <shadowmap_vertex>\n\n\t\t\t}\n\n\t\t"
+uniform sampler2D heightmap;
+
+#define PHONG
+
+varying vec3 vViewPosition;
+
+#ifndef FLAT_SHADED
+
+varying vec3 vNormal;
+
+#endif
+
+#include < common >
+#include < uv_pars_vertex >
+#include < uv2_pars_vertex >
+#include < displacementmap_pars_vertex >
+#include < envmap_pars_vertex >
+#include < color_pars_vertex >
+#include < morphtarget_pars_vertex >
+#include < skinning_pars_vertex >
+#include < shadowmap_pars_vertex >
+#include < logdepthbuf_pars_vertex >
+#include < clipping_planes_pars_vertex >
+
+void main() {
+  vec2 cellSize = vec2(1.0 / WIDTH, 1.0 / WIDTH);
+
+  #include < uv_vertex >
+  #include < uv2_vertex >
+  #include < color_vertex >
+
+  // # include <beginnormal_vertex>
+  // Compute normal from heightmap
+  vec3 objectNormal = vec3(
+    (texture2D(heightmap, uv + vec2(-cellSize.x, 0)).x - texture2D(heightmap, uv + vec2(cellSize.x, 0)).x) * WIDTH / BOUNDS,
+    (texture2D(heightmap, uv + vec2(0, -cellSize.y)).x - texture2D(heightmap, uv + vec2(0, cellSize.y)).x) * WIDTH / BOUNDS,
+    1.0);
+  //<beginnormal_vertex>
+
+  #include < morphnormal_vertex >
+  #include < skinbase_vertex >
+  #include < skinnormal_vertex >
+  #include < defaultnormal_vertex >
+
+  #ifndef FLAT_SHADED // Normal computed with derivatives when FLAT_SHADED
+
+  vNormal = normalize(transformedNormal);
+
+  #endif
+
+  //# include <begin_vertex>
+  float heightValue = texture2D(heightmap, uv).x;
+  vec3 transformed = vec3(position.x, position.y, heightValue);
+  //<begin_vertex>
+
+  #include < morphtarget_vertex >
+  #include < skinning_vertex >
+  #include < displacementmap_vertex >
+  #include < project_vertex >
+  #include < logdepthbuf_vertex >
+  #include < clipping_planes_vertex >
+
+  vViewPosition = -mvPosition.xyz;
+
+  #include < worldpos_vertex >
+  #include < envmap_vertex >
+  #include < shadowmap_vertex >
+}

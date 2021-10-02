@@ -1,1 +1,22 @@
-"\n\t\tprecision highp float;\n\t\tuniform mat4 modelViewMatrix;\n\t\tuniform mat4 projectionMatrix;\n\t\tuniform float time;\n\n\t\tattribute vec3 position;\n\t\tattribute vec2 uv;\n\t\tattribute vec3 translate;\n\n\t\tvarying vec2 vUv;\n\t\tvarying float vScale;\n\n\t\tvoid main() {\n\n\t\t\tvec4 mvPosition = modelViewMatrix * vec4( translate, 1.0 );\n\t\t\tvec3 trTime = vec3(translate.x + time,translate.y + time,translate.z + time);\n\t\t\tfloat scale =  sin( trTime.x * 2.1 ) + sin( trTime.y * 3.2 ) + sin( trTime.z * 4.3 );\n\t\t\tvScale = scale;\n\t\t\tscale = scale * 10.0 + 10.0;\n\t\t\tmvPosition.xyz += position * scale;\n\t\t\tvUv = uv;\n\t\t\tgl_Position = projectionMatrix * mvPosition;\n\n\t\t}\n\t"
+precision highp float;
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+uniform float time;
+
+attribute vec3 position;
+attribute vec2 uv;
+attribute vec3 translate;
+
+varying vec2 vUv;
+varying float vScale;
+
+void main() {
+  vec4 mvPosition = modelViewMatrix * vec4(translate, 1.0);
+  vec3 trTime = vec3(translate.x + time, translate.y + time, translate.z + time);
+  float scale = sin(trTime.x * 2.1) + sin(trTime.y * 3.2) + sin(trTime.z * 4.3);
+  vScale = scale;
+  scale = scale * 10.0 + 10.0;
+  mvPosition.xyz += position * scale;
+  vUv = uv;
+  gl_Position = projectionMatrix * mvPosition;
+}

@@ -1,1 +1,17 @@
-"\n\n\t\t\tvarying vec3 vNormal;\n\t\t\tvarying vec2 vUv;\n\n\t\t\tuniform vec3 color;\n\t\t\tuniform sampler2D colorTexture;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvec3 light = vec3( 0.5, 0.2, 1.0 );\n\t\t\t\tlight = normalize( light );\n\n\t\t\t\tfloat dProd = dot( vNormal, light ) * 0.5 + 0.5;\n\n\t\t\t\tvec4 tcolor = texture2D( colorTexture, vUv );\n\t\t\t\tvec4 gray = vec4( vec3( tcolor.r * 0.3 + tcolor.g * 0.59 + tcolor.b * 0.11 ), 1.0 );\n\n\t\t\t\tgl_FragColor = gray * vec4( vec3( dProd ) * vec3( color ), 1.0 );\n\n\t\t\t}\n\n\t\t"
+varying vec3 vNormal;
+varying vec2 vUv;
+
+uniform vec3 color;
+uniform sampler2D colorTexture;
+
+void main() {
+  vec3 light = vec3(0.5, 0.2, 1.0);
+  light = normalize(light);
+
+  float dProd = dot(vNormal, light) * 0.5 + 0.5;
+
+  vec4 tcolor = texture2D(colorTexture, vUv);
+  vec4 gray = vec4(vec3(tcolor.r * 0.3 + tcolor.g * 0.59 + tcolor.b * 0.11), 1.0);
+
+  gl_FragColor = gray * vec4(vec3(dProd) * vec3(color), 1.0);
+}

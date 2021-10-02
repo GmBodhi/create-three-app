@@ -1,1 +1,7 @@
-"\n\n\tout vec2 vUv;\n\n\tvoid main()\n\t{\n\t\tvUv = uv;\n\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\t}\n\n\t"
+out vec2 vUv;
+
+void main()
+{
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}

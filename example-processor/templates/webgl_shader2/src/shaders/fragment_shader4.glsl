@@ -1,1 +1,12 @@
-"\n\n\t\t\tuniform float time;\n\n\t\t\tvarying vec2 vUv;\n\n\t\t\tvoid main( void ) {\n\n\t\t\t\tvec2 position = - 1.0 + 2.0 * vUv;\n\n\t\t\t\tfloat red = abs( sin( position.x * position.y + time / 5.0 ) );\n\t\t\t\tfloat green = abs( sin( position.x * position.y + time / 4.0 ) );\n\t\t\t\tfloat blue = abs( sin( position.x * position.y + time / 3.0 ) );\n\t\t\t\tgl_FragColor = vec4( red, green, blue, 1.0 );\n\n\t\t\t}\n\n\t\t"
+uniform float time;
+
+varying vec2 vUv;
+
+void main(void) {
+  vec2 position = -1.0 + 2.0 * vUv;
+
+  float red = abs(sin(position.x * position.y + time / 5.0));
+  float green = abs(sin(position.x * position.y + time / 4.0));
+  float blue = abs(sin(position.x * position.y + time / 3.0));
+  gl_FragColor = vec4(red, green, blue, 1.0);
+}

@@ -1,1 +1,153 @@
-"\n\n\t\t\tprecision highp float;\n\n\t\t\tuniform vec2 resolution;\n\n\t\t\tuniform mat4 viewMatrix;\n\t\t\tuniform vec3 cameraPosition;\n\n\t\t\tuniform mat4 cameraWorldMatrix;\n\t\t\tuniform mat4 cameraProjectionMatrixInverse;\n\n\t\t\tconst float EPS = 0.01;\n\t\t\tconst float OFFSET = EPS * 100.0;\n\t\t\tconst vec3 lightDir = vec3( -0.48666426339228763, 0.8111071056538127, -0.3244428422615251 );\n\n\t\t\t// distance functions\n\t\t\tvec3 opRep( vec3 p, float interval ) {\n\n\t\t\t\tvec2 q = mod( p.xz, interval ) - interval * 0.5;\n\t\t\t\treturn vec3( q.x, p.y, q.y );\n\n\t\t\t}\n\n\t\t\tfloat sphereDist( vec3 p, float r ) {\n\n\t\t\t\treturn length( opRep( p, 3.0 ) ) - r;\n\n\t\t\t}\n\n\t\t\tfloat floorDist( vec3 p ){\n\n\t\t\t\treturn dot(p, vec3( 0.0, 1.0, 0.0 ) ) + 1.0;\n\n\t\t\t}\n\n\t\t\tvec4 minVec4( vec4 a, vec4 b ) {\n\n\t\t\t\treturn ( a.a < b.a ) ? a : b;\n\n\t\t\t}\n\n\t\t\tfloat checkeredPattern( vec3 p ) {\n\n\t\t\t\tfloat u = 1.0 - floor( mod( p.x, 2.0 ) );\n\t\t\t\tfloat v = 1.0 - floor( mod( p.z, 2.0 ) );\n\n\t\t\t\tif ( ( u == 1.0 && v < 1.0 ) || ( u < 1.0 && v == 1.0 ) ) {\n\n\t\t\t\t\treturn 0.2;\n\n\t\t\t\t} else {\n\n\t\t\t\t\treturn 1.0;\n\n\t\t\t\t}\n\n\t\t\t}\n\n\t\t\tvec3 hsv2rgb( vec3 c ) {\n\n\t\t\t\tvec4 K = vec4( 1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0 );\n\t\t\t\tvec3 p = abs( fract( c.xxx + K.xyz ) * 6.0 - K.www );\n\t\t\t\treturn c.z * mix( K.xxx, clamp( p - K.xxx, 0.0, 1.0 ), c.y );\n\n\t\t\t}\n\n\t\t\tfloat sceneDist( vec3 p ) {\n\n\t\t\t\treturn min(\n\t\t\t\t\tsphereDist( p, 1.0 ),\n\t\t\t\t\tfloorDist( p )\n\t\t\t\t);\n\n\t\t\t}\n\n\t\t\tvec4 sceneColor( vec3 p ) {\n\n\t\t\t\treturn minVec4(\n\t\t\t\t\t// 3 * 6 / 2 = 9\n\t\t\t\t\tvec4( hsv2rgb(vec3( ( p.z + p.x ) / 9.0, 1.0, 1.0 ) ), sphereDist( p, 1.0 ) ),\n\t\t\t\t\tvec4( vec3( 0.5 ) * checkeredPattern( p ), floorDist( p ) )\n\t\t\t\t);\n\n\t\t\t}\n\n\t\t\tvec3 getNormal( vec3 p ) {\n\n\t\t\t\treturn normalize(vec3(\n\t\t\t\t\tsceneDist(p + vec3( EPS, 0.0, 0.0 ) ) - sceneDist(p + vec3( -EPS, 0.0, 0.0 ) ),\n\t\t\t\t\tsceneDist(p + vec3( 0.0, EPS, 0.0 ) ) - sceneDist(p + vec3( 0.0, -EPS, 0.0 ) ),\n\t\t\t\t\tsceneDist(p + vec3( 0.0, 0.0, EPS ) ) - sceneDist(p + vec3( 0.0, 0.0, -EPS ) )\n\t\t\t\t));\n\n\t\t\t}\n\n\t\t\tfloat getShadow( vec3 ro, vec3 rd ) {\n\n\t\t\t\tfloat h = 0.0;\n\t\t\t\tfloat c = 0.0;\n\t\t\t\tfloat r = 1.0;\n\t\t\t\tfloat shadowCoef = 0.5;\n\n\t\t\t\tfor ( float t = 0.0; t < 50.0; t++ ) {\n\n\t\t\t\t\th = sceneDist( ro + rd * c );\n\n\t\t\t\t\tif ( h < EPS ) return shadowCoef;\n\n\t\t\t\t\tr = min( r, h * 16.0 / c );\n\t\t\t\t\tc += h;\n\n\t\t\t\t}\n\n\t\t\t\treturn 1.0 - shadowCoef + r * shadowCoef;\n\n\t\t\t}\n\n\t\t\tvec3 getRayColor( vec3 origin, vec3 ray, out vec3 pos, out vec3 normal, out bool hit ) {\n\n\t\t\t\t// marching loop\n\t\t\t\tfloat dist;\n\t\t\t\tfloat depth = 0.0;\n\t\t\t\tpos = origin;\n\n\t\t\t\tfor ( int i = 0; i < 64; i++ ){\n\n\t\t\t\t\tdist = sceneDist( pos );\n\t\t\t\t\tdepth += dist;\n\t\t\t\t\tpos = origin + depth * ray;\n\n\t\t\t\t\tif ( abs(dist) < EPS ) break;\n\n\t\t\t\t}\n\n\t\t\t\t// hit check and calc color\n\t\t\t\tvec3 color;\n\n\t\t\t\tif ( abs(dist) < EPS ) {\n\n\t\t\t\t\tnormal = getNormal( pos );\n\t\t\t\t\tfloat diffuse = clamp( dot( lightDir, normal ), 0.1, 1.0 );\n\t\t\t\t\tfloat specular = pow( clamp( dot( reflect( lightDir, normal ), ray ), 0.0, 1.0 ), 10.0 );\n\t\t\t\t\tfloat shadow = getShadow( pos + normal * OFFSET, lightDir );\n\t\t\t\t\tcolor = ( sceneColor( pos ).rgb * diffuse + vec3( 0.8 ) * specular ) * max( 0.5, shadow );\n\n\t\t\t\t\thit = true;\n\n\t\t\t\t} else {\n\n\t\t\t\t\tcolor = vec3( 0.0 );\n\n\t\t\t\t}\n\n\t\t\t\treturn color - pow( clamp( 0.05 * depth, 0.0, 0.6 ), 2.0 );\n\n\t\t\t}\n\n\t\t\tvoid main(void) {\n\n\t\t\t\t// screen position\n\t\t\t\tvec2 screenPos = ( gl_FragCoord.xy * 2.0 - resolution ) / resolution;\n\n\t\t\t\t// ray direction in normalized device coordinate\n\t\t\t\tvec4 ndcRay = vec4( screenPos.xy, 1.0, 1.0 );\n\n\t\t\t\t// convert ray direction from normalized device coordinate to world coordinate\n\t\t\t\tvec3 ray = ( cameraWorldMatrix * cameraProjectionMatrixInverse * ndcRay ).xyz;\n\t\t\t\tray = normalize( ray );\n\n\t\t\t\t// camera position\n\t\t\t\tvec3 cPos = cameraPosition;\n\n\t\t\t\t// cast ray\n\t\t\t\tvec3 color = vec3( 0.0 );\n\t\t\t\tvec3 pos, normal;\n\t\t\t\tbool hit;\n\t\t\t\tfloat alpha = 1.0;\n\n\t\t\t\tfor ( int i = 0; i < 3; i++ ) {\n\n\t\t\t\t\tcolor += alpha * getRayColor( cPos, ray, pos, normal, hit );\n\t\t\t\t\talpha *= 0.3;\n\t\t\t\t\tray = normalize( reflect( ray, normal ) );\n\t\t\t\t\tcPos = pos + normal * OFFSET;\n\n\t\t\t\t\tif ( !hit ) break;\n\n\t\t\t\t}\n\n\t\t\t\tgl_FragColor = vec4( color, 1.0 );\n\n\t\t\t}\n\n\t\t"
+precision highp float;
+
+uniform vec2 resolution;
+
+uniform mat4 viewMatrix;
+uniform vec3 cameraPosition;
+
+uniform mat4 cameraWorldMatrix;
+uniform mat4 cameraProjectionMatrixInverse;
+
+const float EPS = 0.01;
+const float OFFSET = EPS * 100.0;
+const vec3 lightDir = vec3(-0.48666426339228763, 0.8111071056538127, -0.3244428422615251);
+
+// distance functions
+vec3 opRep(vec3 p, float interval) {
+  vec2 q = mod(p.xz, interval) - interval * 0.5;
+  return vec3(q.x, p.y, q.y);
+}
+
+float sphereDist(vec3 p, float r) {
+  return length(opRep(p, 3.0)) - r;
+}
+
+float floorDist(vec3 p) {
+  return dot(p, vec3(0.0, 1.0, 0.0)) + 1.0;
+}
+
+vec4 minVec4(vec4 a, vec4 b) {
+  return (a.a < b.a) ? a : b;
+}
+
+float checkeredPattern(vec3 p) {
+  float u = 1.0 - floor(mod(p.x, 2.0));
+  float v = 1.0 - floor(mod(p.z, 2.0));
+
+  if ((u == 1.0 && v < 1.0) || (u < 1.0 && v == 1.0)) {
+    return 0.2;
+  } else {
+    return 1.0;
+  }
+}
+
+vec3 hsv2rgb(vec3 c) {
+  vec4 K = vec4(1.0, 2.0 / 3.0, 1.0 / 3.0, 3.0);
+  vec3 p = abs(fract(c.xxx + K.xyz) * 6.0 - K.www);
+  return c.z * mix(K.xxx, clamp(p - K.xxx, 0.0, 1.0), c.y);
+}
+
+float sceneDist(vec3 p) {
+  return min(
+    sphereDist(p, 1.0),
+    floorDist(p)
+  );
+}
+
+vec4 sceneColor(vec3 p) {
+  return minVec4(
+    // 3 * 6 / 2 = 9
+    vec4(hsv2rgb(vec3((p.z + p.x) / 9.0, 1.0, 1.0)), sphereDist(p, 1.0)),
+    vec4(vec3(0.5) * checkeredPattern(p), floorDist(p))
+  );
+}
+
+vec3 getNormal(vec3 p) {
+  return normalize(vec3(
+      sceneDist(p + vec3(EPS, 0.0, 0.0)) - sceneDist(p + vec3(-EPS, 0.0, 0.0)),
+      sceneDist(p + vec3(0.0, EPS, 0.0)) - sceneDist(p + vec3(0.0, -EPS, 0.0)),
+      sceneDist(p + vec3(0.0, 0.0, EPS)) - sceneDist(p + vec3(0.0, 0.0, -EPS))
+    ));
+}
+
+float getShadow(vec3 ro, vec3 rd) {
+  float h = 0.0;
+  float c = 0.0;
+  float r = 1.0;
+  float shadowCoef = 0.5;
+
+  for (float t = 0.0; t < 50.0; t++) {
+    h = sceneDist(ro + rd * c);
+
+    if (h < EPS) return shadowCoef;
+
+    r = min(r, h * 16.0 / c);
+    c += h;
+  }
+
+  return 1.0 - shadowCoef + r * shadowCoef;
+}
+
+vec3 getRayColor(vec3 origin, vec3 ray, out vec3 pos, out vec3 normal, out bool hit) {
+  // marching loop
+  float dist;
+  float depth = 0.0;
+  pos = origin;
+
+  for (int i = 0; i < 64; i++) {
+    dist = sceneDist(pos);
+    depth += dist;
+    pos = origin + depth * ray;
+
+    if (abs(dist) < EPS) break;
+  }
+
+  // hit check and calc color
+  vec3 color;
+
+  if (abs(dist) < EPS) {
+    normal = getNormal(pos);
+    float diffuse = clamp(dot(lightDir, normal), 0.1, 1.0);
+    float specular = pow(clamp(dot(reflect(lightDir, normal), ray), 0.0, 1.0), 10.0);
+    float shadow = getShadow(pos + normal * OFFSET, lightDir);
+    color = (sceneColor(pos).rgb * diffuse + vec3(0.8) * specular) * max(0.5, shadow);
+
+    hit = true;
+  } else {
+    color = vec3(0.0);
+  }
+
+  return color - pow(clamp(0.05 * depth, 0.0, 0.6), 2.0);
+}
+
+void main(void) {
+  // screen position
+  vec2 screenPos = (gl_FragCoord.xy * 2.0 - resolution) / resolution;
+
+  // ray direction in normalized device coordinate
+  vec4 ndcRay = vec4(screenPos.xy, 1.0, 1.0);
+
+  // convert ray direction from normalized device coordinate to world coordinate
+  vec3 ray = (cameraWorldMatrix * cameraProjectionMatrixInverse * ndcRay).xyz;
+  ray = normalize(ray);
+
+  // camera position
+  vec3 cPos = cameraPosition;
+
+  // cast ray
+  vec3 color = vec3(0.0);
+  vec3 pos, normal;
+  bool hit;
+  float alpha = 1.0;
+
+  for (int i = 0; i < 3; i++) {
+    color += alpha * getRayColor(cPos, ray, pos, normal, hit);
+    alpha *= 0.3;
+    ray = normalize(reflect(ray, normal));
+    cPos = pos + normal * OFFSET;
+
+    if (!hit) break;
+  }
+
+  gl_FragColor = vec4(color, 1.0);
+}

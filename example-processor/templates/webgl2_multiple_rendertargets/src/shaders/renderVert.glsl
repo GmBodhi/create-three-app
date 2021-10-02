@@ -1,1 +1,12 @@
-"\n\t\t\tin vec3 position;\n\t\t\tin vec2 uv;\n\n\t\t\tout vec2 vUv;\n\n\t\t\tuniform mat4 modelViewMatrix;\n\t\t\tuniform mat4 projectionMatrix;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvUv = uv;\n\t\t\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n\t\t\t}\n\t\t"
+in vec3 position;
+in vec2 uv;
+
+out vec2 vUv;
+
+uniform mat4 modelViewMatrix;
+uniform mat4 projectionMatrix;
+
+void main() {
+  vUv = uv;
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}

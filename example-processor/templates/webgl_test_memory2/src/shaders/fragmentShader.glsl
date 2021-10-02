@@ -1,1 +1,9 @@
-"\n\n\t\t\tvoid main() {\n\n\t\t\t\tif ( mod ( gl_FragCoord.x, 4.0001 ) < 1.0 || mod ( gl_FragCoord.y, 4.0001 ) < 1.0 )\n\n\t\t\t\t\tgl_FragColor = vec4( XXX, 1.0 );\n\n\t\t\t\telse\n\n\t\t\t\t\tgl_FragColor = vec4( 1.0 );\n\n\t\t\t}\n\n\t\t"
+void main() {
+  if (mod(gl_FragCoord.x, 4.0001) < 1.0 || mod(gl_FragCoord.y, 4.0001) < 1.0)
+
+    gl_FragColor = vec4(XXX, 1.0);
+
+  else
+
+    gl_FragColor = vec4(1.0);
+}

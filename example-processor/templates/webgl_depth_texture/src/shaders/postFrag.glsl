@@ -1,1 +1,21 @@
-"\n\t\t\t#include <packing>\n\n\t\t\tvarying vec2 vUv;\n\t\t\tuniform sampler2D tDiffuse;\n\t\t\tuniform sampler2D tDepth;\n\t\t\tuniform float cameraNear;\n\t\t\tuniform float cameraFar;\n\n\n\t\t\tfloat readDepth( sampler2D depthSampler, vec2 coord ) {\n\t\t\t\tfloat fragCoordZ = texture2D( depthSampler, coord ).x;\n\t\t\t\tfloat viewZ = perspectiveDepthToViewZ( fragCoordZ, cameraNear, cameraFar );\n\t\t\t\treturn viewZToOrthographicDepth( viewZ, cameraNear, cameraFar );\n\t\t\t}\n\n\t\t\tvoid main() {\n\t\t\t\t//vec3 diffuse = texture2D( tDiffuse, vUv ).rgb;\n\t\t\t\tfloat depth = readDepth( tDepth, vUv );\n\n\t\t\t\tgl_FragColor.rgb = 1.0 - vec3( depth );\n\t\t\t\tgl_FragColor.a = 1.0;\n\t\t\t}\n\t\t"
+#include < packing >
+
+varying vec2 vUv;
+uniform sampler2D tDiffuse;
+uniform sampler2D tDepth;
+uniform float cameraNear;
+uniform float cameraFar;
+
+float readDepth(sampler2D depthSampler, vec2 coord) {
+  float fragCoordZ = texture2D(depthSampler, coord).x;
+  float viewZ = perspectiveDepthToViewZ(fragCoordZ, cameraNear, cameraFar);
+  return viewZToOrthographicDepth(viewZ, cameraNear, cameraFar);
+}
+
+void main() {
+  //vec3 diffuse = texture2D( tDiffuse, vUv ).rgb;
+  float depth = readDepth(tDepth, vUv);
+
+  gl_FragColor.rgb = 1.0 - vec3(depth);
+  gl_FragColor.a = 1.0;
+}

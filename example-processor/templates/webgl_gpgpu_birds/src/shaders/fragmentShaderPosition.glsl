@@ -1,1 +1,17 @@
-"\n\n\t\t\tuniform float time;\n\t\t\tuniform float delta;\n\n\t\t\tvoid main()\t{\n\n\t\t\t\tvec2 uv = gl_FragCoord.xy / resolution.xy;\n\t\t\t\tvec4 tmpPos = texture2D( texturePosition, uv );\n\t\t\t\tvec3 position = tmpPos.xyz;\n\t\t\t\tvec3 velocity = texture2D( textureVelocity, uv ).xyz;\n\n\t\t\t\tfloat phase = tmpPos.w;\n\n\t\t\t\tphase = mod( ( phase + delta +\n\t\t\t\t\tlength( velocity.xz ) * delta * 3. +\n\t\t\t\t\tmax( velocity.y, 0.0 ) * delta * 6. ), 62.83 );\n\n\t\t\t\tgl_FragColor = vec4( position + velocity * delta * 15. , phase );\n\n\t\t\t}\n\n\t\t"
+uniform float time;
+uniform float delta;
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / resolution.xy;
+  vec4 tmpPos = texture2D(texturePosition, uv);
+  vec3 position = tmpPos.xyz;
+  vec3 velocity = texture2D(textureVelocity, uv).xyz;
+
+  float phase = tmpPos.w;
+
+  phase = mod((phase + delta +
+      length(velocity.xz) * delta * 3. +
+      max(velocity.y, 0.0) * delta * 6.), 62.83);
+
+  gl_FragColor = vec4(position + velocity * delta * 15., phase);
+}

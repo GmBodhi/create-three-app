@@ -1,1 +1,28 @@
-"\n\t\tprecision highp float;\n\n\t\tuniform sampler2D map;\n\n\t\tvarying vec2 vUv;\n\t\tvarying float vScale;\n\n\t\t// HSL to RGB Convertion helpers\n\t\tvec3 HUEtoRGB(float H){\n\t\t\tH = mod(H,1.0);\n\t\t\tfloat R = abs(H * 6.0 - 3.0) - 1.0;\n\t\t\tfloat G = 2.0 - abs(H * 6.0 - 2.0);\n\t\t\tfloat B = 2.0 - abs(H * 6.0 - 4.0);\n\t\t\treturn clamp(vec3(R,G,B),0.0,1.0);\n\t\t}\n\n\t\tvec3 HSLtoRGB(vec3 HSL){\n\t\t\tvec3 RGB = HUEtoRGB(HSL.x);\n\t\t\tfloat C = (1.0 - abs(2.0 * HSL.z - 1.0)) * HSL.y;\n\t\t\treturn (RGB - 0.5) * C + HSL.z;\n\t\t}\n\n\t\tvoid main() {\n\t\t\tvec4 diffuseColor = texture2D( map, vUv );\n\t\t\tgl_FragColor = vec4( diffuseColor.xyz * HSLtoRGB(vec3(vScale/5.0, 1.0, 0.5)), diffuseColor.w );\n\n\t\t\tif ( diffuseColor.w < 0.5 ) discard;\n\t\t}\n\t"
+precision highp float;
+
+uniform sampler2D map;
+
+varying vec2 vUv;
+varying float vScale;
+
+// HSL to RGB Convertion helpers
+vec3 HUEtoRGB(float H) {
+  H = mod(H, 1.0);
+  float R = abs(H * 6.0 - 3.0) - 1.0;
+  float G = 2.0 - abs(H * 6.0 - 2.0);
+  float B = 2.0 - abs(H * 6.0 - 4.0);
+  return clamp(vec3(R, G, B), 0.0, 1.0);
+}
+
+vec3 HSLtoRGB(vec3 HSL) {
+  vec3 RGB = HUEtoRGB(HSL.x);
+  float C = (1.0 - abs(2.0 * HSL.z - 1.0)) * HSL.y;
+  return (RGB - 0.5) * C + HSL.z;
+}
+
+void main() {
+  vec4 diffuseColor = texture2D(map, vUv);
+  gl_FragColor = vec4(diffuseColor.xyz * HSLtoRGB(vec3(vScale / 5.0, 1.0, 0.5)), diffuseColor.w);
+
+  if (diffuseColor.w < 0.5) discard;
+}

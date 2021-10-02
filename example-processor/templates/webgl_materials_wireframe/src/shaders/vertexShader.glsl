@@ -1,1 +1,8 @@
-"\n\n\t\t\tattribute vec3 center;\n\t\t\tvarying vec3 vCenter;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvCenter = center;\n\n\t\t\t\tgl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );\n\n\t\t\t}\n\n\t\t"
+attribute vec3 center;
+varying vec3 vCenter;
+
+void main() {
+  vCenter = center;
+
+  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+}

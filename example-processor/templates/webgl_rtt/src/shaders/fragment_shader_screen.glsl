@@ -1,1 +1,6 @@
-"\n\n\t\t\tvarying vec2 vUv;\n\t\t\tuniform sampler2D tDiffuse;\n\n\t\t\tvoid main() {\n\n\t\t\t\tgl_FragColor = texture2D( tDiffuse, vUv );\n\n\t\t\t}\n\n\t\t"
+varying vec2 vUv;
+uniform sampler2D tDiffuse;
+
+void main() {
+  gl_FragColor = texture2D(tDiffuse, vUv);
+}

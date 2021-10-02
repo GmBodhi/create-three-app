@@ -1,1 +1,7 @@
-"\n\n\t\t\tvarying vec2 vUv;\n\n\t\t\tvoid main() {\n\n\t\t\t\tvUv = uv;\n\n\t\t\t\tgl_Position = vec4( position, 1.0 );\n\n\t\t\t}\n\n\t\t"
+varying vec2 vUv;
+
+void main() {
+  vUv = uv;
+
+  gl_Position = vec4(position, 1.0);
+}

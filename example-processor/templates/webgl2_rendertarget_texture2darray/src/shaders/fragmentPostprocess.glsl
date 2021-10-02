@@ -1,1 +1,14 @@
-"\n\n\tprecision highp sampler2DArray;\n\tprecision mediump float;\n\n\tin vec2 vUv;\n\n\tuniform sampler2DArray uTexture;\n\tuniform int uDepth;\n\tuniform float uIntensity;\n\n\tvoid main()\n\t{\n\t\tfloat voxel = texture(uTexture, vec3( vUv, uDepth )).r;\n\t\tgl_FragColor.r = voxel * uIntensity;\n\t}\n\n\t"
+precision highp sampler2DArray;
+precision mediump float;
+
+in vec2 vUv;
+
+uniform sampler2DArray uTexture;
+uniform int uDepth;
+uniform float uIntensity;
+
+void main()
+{
+  float voxel = texture(uTexture, vec3(vUv, uDepth)).r;
+  gl_FragColor.r = voxel * uIntensity;
+}

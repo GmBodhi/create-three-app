@@ -1,1 +1,97 @@
-"\n\n\t\t\t// For PI declaration:\n\t\t\t#include <common>\n\n\t\t\t#define delta ( 1.0 / 60.0 )\n\n\t\t\tuniform float gravityConstant;\n\t\t\tuniform float density;\n\n\t\t\tconst float width = resolution.x;\n\t\t\tconst float height = resolution.y;\n\n\t\t\tfloat radiusFromMass( float mass ) {\n\t\t\t\t// Calculate radius of a sphere from mass and density\n\t\t\t\treturn pow( ( 3.0 / ( 4.0 * PI ) ) * mass / density, 1.0 / 3.0 );\n\t\t\t}\n\n\t\t\tvoid main()\t{\n\n\t\t\t\tvec2 uv = gl_FragCoord.xy / resolution.xy;\n\t\t\t\tfloat idParticle = uv.y * resolution.x + uv.x;\n\n\t\t\t\tvec4 tmpPos = texture2D( texturePosition, uv );\n\t\t\t\tvec3 pos = tmpPos.xyz;\n\n\t\t\t\tvec4 tmpVel = texture2D( textureVelocity, uv );\n\t\t\t\tvec3 vel = tmpVel.xyz;\n\t\t\t\tfloat mass = tmpVel.w;\n\n\t\t\t\tif ( mass > 0.0 ) {\n\n\t\t\t\t\tfloat radius = radiusFromMass( mass );\n\n\t\t\t\t\tvec3 acceleration = vec3( 0.0 );\n\n\t\t\t\t\t// Gravity interaction\n\t\t\t\t\tfor ( float y = 0.0; y < height; y++ ) {\n\n\t\t\t\t\t\tfor ( float x = 0.0; x < width; x++ ) {\n\n\t\t\t\t\t\t\tvec2 secondParticleCoords = vec2( x + 0.5, y + 0.5 ) / resolution.xy;\n\t\t\t\t\t\t\tvec3 pos2 = texture2D( texturePosition, secondParticleCoords ).xyz;\n\t\t\t\t\t\t\tvec4 velTemp2 = texture2D( textureVelocity, secondParticleCoords );\n\t\t\t\t\t\t\tvec3 vel2 = velTemp2.xyz;\n\t\t\t\t\t\t\tfloat mass2 = velTemp2.w;\n\n\t\t\t\t\t\t\tfloat idParticle2 = secondParticleCoords.y * resolution.x + secondParticleCoords.x;\n\n\t\t\t\t\t\t\tif ( idParticle == idParticle2 ) {\n\t\t\t\t\t\t\t\tcontinue;\n\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\tif ( mass2 == 0.0 ) {\n\t\t\t\t\t\t\t\tcontinue;\n\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\tvec3 dPos = pos2 - pos;\n\t\t\t\t\t\t\tfloat distance = length( dPos );\n\t\t\t\t\t\t\tfloat radius2 = radiusFromMass( mass2 );\n\n\t\t\t\t\t\t\tif ( distance == 0.0 ) {\n\t\t\t\t\t\t\t\tcontinue;\n\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t// Checks collision\n\n\t\t\t\t\t\t\tif ( distance < radius + radius2 ) {\n\n\t\t\t\t\t\t\t\tif ( idParticle < idParticle2 ) {\n\n\t\t\t\t\t\t\t\t\t// This particle is aggregated by the other\n\t\t\t\t\t\t\t\t\tvel = ( vel * mass + vel2 * mass2 ) / ( mass + mass2 );\n\t\t\t\t\t\t\t\t\tmass += mass2;\n\t\t\t\t\t\t\t\t\tradius = radiusFromMass( mass );\n\n\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\telse {\n\n\t\t\t\t\t\t\t\t\t// This particle dies\n\t\t\t\t\t\t\t\t\tmass = 0.0;\n\t\t\t\t\t\t\t\t\tradius = 0.0;\n\t\t\t\t\t\t\t\t\tvel = vec3( 0.0 );\n\t\t\t\t\t\t\t\t\tbreak;\n\n\t\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\t}\n\n\t\t\t\t\t\t\tfloat distanceSq = distance * distance;\n\n\t\t\t\t\t\t\tfloat gravityField = gravityConstant * mass2 / distanceSq;\n\n\t\t\t\t\t\t\tgravityField = min( gravityField, 1000.0 );\n\n\t\t\t\t\t\t\tacceleration += gravityField * normalize( dPos );\n\n\t\t\t\t\t\t}\n\n\t\t\t\t\t\tif ( mass == 0.0 ) {\n\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\t}\n\t\t\t\t\t}\n\n\t\t\t\t\t// Dynamics\n\t\t\t\t\tvel += delta * acceleration;\n\n\t\t\t\t}\n\n\t\t\t\tgl_FragColor = vec4( vel, mass );\n\n\t\t\t}\n\n\t\t"
+// For PI declaration:
+#include < common >
+
+#define delta(1.0 / 60.0)
+
+uniform float gravityConstant;
+uniform float density;
+
+const float width = resolution.x;
+const float height = resolution.y;
+
+float radiusFromMass(float mass) {
+  // Calculate radius of a sphere from mass and density
+  return pow((3.0 / (4.0 * PI)) * mass / density, 1.0 / 3.0);
+}
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / resolution.xy;
+  float idParticle = uv.y * resolution.x + uv.x;
+
+  vec4 tmpPos = texture2D(texturePosition, uv);
+  vec3 pos = tmpPos.xyz;
+
+  vec4 tmpVel = texture2D(textureVelocity, uv);
+  vec3 vel = tmpVel.xyz;
+  float mass = tmpVel.w;
+
+  if (mass > 0.0) {
+    float radius = radiusFromMass(mass);
+
+    vec3 acceleration = vec3(0.0);
+
+    // Gravity interaction
+    for (float y = 0.0; y < height; y++) {
+      for (float x = 0.0; x < width; x++) {
+        vec2 secondParticleCoords = vec2(x + 0.5, y + 0.5) / resolution.xy;
+        vec3 pos2 = texture2D(texturePosition, secondParticleCoords).xyz;
+        vec4 velTemp2 = texture2D(textureVelocity, secondParticleCoords);
+        vec3 vel2 = velTemp2.xyz;
+        float mass2 = velTemp2.w;
+
+        float idParticle2 = secondParticleCoords.y * resolution.x + secondParticleCoords.x;
+
+        if (idParticle == idParticle2) {
+          continue;
+        }
+
+        if (mass2 == 0.0) {
+          continue;
+        }
+
+        vec3 dPos = pos2 - pos;
+        float distance = length(dPos);
+        float radius2 = radiusFromMass(mass2);
+
+        if (distance == 0.0) {
+          continue;
+        }
+
+        // Checks collision
+
+        if (distance < radius + radius2) {
+          if (idParticle < idParticle2) {
+            // This particle is aggregated by the other
+            vel = (vel * mass + vel2 * mass2) / (mass + mass2);
+            mass += mass2;
+            radius = radiusFromMass(mass);
+          }
+          else {
+            // This particle dies
+            mass = 0.0;
+            radius = 0.0;
+            vel = vec3(0.0);
+            break;
+          }
+        }
+
+        float distanceSq = distance * distance;
+
+        float gravityField = gravityConstant * mass2 / distanceSq;
+
+        gravityField = min(gravityField, 1000.0);
+
+        acceleration += gravityField * normalize(dPos);
+      }
+
+      if (mass == 0.0) {
+        break;
+      }
+    }
+
+    // Dynamics
+    vel += delta * acceleration;
+  }
+
+  gl_FragColor = vec4(vel, mass);
+}

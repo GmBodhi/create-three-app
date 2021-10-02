@@ -1,1 +1,5 @@
-"\n\n\t\t\tattribute vec3 position;\n\n\t\t\tvoid main(void) {\n\n\t\t\t\tgl_Position = vec4(position, 1.0);\n\n\t\t\t}\n\n\t\t"
+attribute vec3 position;
+
+void main(void) {
+  gl_Position = vec4(position, 1.0);
+}

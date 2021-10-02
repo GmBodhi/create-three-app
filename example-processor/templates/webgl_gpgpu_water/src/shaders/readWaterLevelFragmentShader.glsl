@@ -1,1 +1,60 @@
-"\n\n\t\t\tuniform vec2 point1;\n\n\t\t\tuniform sampler2D levelTexture;\n\n\t\t\t// Integer to float conversion from https://stackoverflow.com/questions/17981163/webgl-read-pixels-from-floating-point-render-target\n\n\t\t\tfloat shift_right( float v, float amt ) {\n\n\t\t\t\tv = floor( v ) + 0.5;\n\t\t\t\treturn floor( v / exp2( amt ) );\n\n\t\t\t}\n\n\t\t\tfloat shift_left( float v, float amt ) {\n\n\t\t\t\treturn floor( v * exp2( amt ) + 0.5 );\n\n\t\t\t}\n\n\t\t\tfloat mask_last( float v, float bits ) {\n\n\t\t\t\treturn mod( v, shift_left( 1.0, bits ) );\n\n\t\t\t}\n\n\t\t\tfloat extract_bits( float num, float from, float to ) {\n\n\t\t\t\tfrom = floor( from + 0.5 ); to = floor( to + 0.5 );\n\t\t\t\treturn mask_last( shift_right( num, from ), to - from );\n\n\t\t\t}\n\n\t\t\tvec4 encode_float( float val ) {\n\t\t\t\tif ( val == 0.0 ) return vec4( 0, 0, 0, 0 );\n\t\t\t\tfloat sign = val > 0.0 ? 0.0 : 1.0;\n\t\t\t\tval = abs( val );\n\t\t\t\tfloat exponent = floor( log2( val ) );\n\t\t\t\tfloat biased_exponent = exponent + 127.0;\n\t\t\t\tfloat fraction = ( ( val / exp2( exponent ) ) - 1.0 ) * 8388608.0;\n\t\t\t\tfloat t = biased_exponent / 2.0;\n\t\t\t\tfloat last_bit_of_biased_exponent = fract( t ) * 2.0;\n\t\t\t\tfloat remaining_bits_of_biased_exponent = floor( t );\n\t\t\t\tfloat byte4 = extract_bits( fraction, 0.0, 8.0 ) / 255.0;\n\t\t\t\tfloat byte3 = extract_bits( fraction, 8.0, 16.0 ) / 255.0;\n\t\t\t\tfloat byte2 = ( last_bit_of_biased_exponent * 128.0 + extract_bits( fraction, 16.0, 23.0 ) ) / 255.0;\n\t\t\t\tfloat byte1 = ( sign * 128.0 + remaining_bits_of_biased_exponent ) / 255.0;\n\t\t\t\treturn vec4( byte4, byte3, byte2, byte1 );\n\t\t\t}\n\n\t\t\tvoid main()\t{\n\n\t\t\t\tvec2 cellSize = 1.0 / resolution.xy;\n\n\t\t\t\tfloat waterLevel = texture2D( levelTexture, point1 ).x;\n\n\t\t\t\tvec2 normal = vec2(\n\t\t\t\t\t( texture2D( levelTexture, point1 + vec2( - cellSize.x, 0 ) ).x - texture2D( levelTexture, point1 + vec2( cellSize.x, 0 ) ).x ) * WIDTH / BOUNDS,\n\t\t\t\t\t( texture2D( levelTexture, point1 + vec2( 0, - cellSize.y ) ).x - texture2D( levelTexture, point1 + vec2( 0, cellSize.y ) ).x ) * WIDTH / BOUNDS );\n\n\t\t\t\tif ( gl_FragCoord.x < 1.5 ) {\n\n\t\t\t\t\tgl_FragColor = encode_float( waterLevel );\n\n\t\t\t\t} else if ( gl_FragCoord.x < 2.5 ) {\n\n\t\t\t\t\tgl_FragColor = encode_float( normal.x );\n\n\t\t\t\t} else if ( gl_FragCoord.x < 3.5 ) {\n\n\t\t\t\t\tgl_FragColor = encode_float( normal.y );\n\n\t\t\t\t} else {\n\n\t\t\t\t\tgl_FragColor = encode_float( 0.0 );\n\n\t\t\t\t}\n\n\t\t\t}\n\n\t\t"
+uniform vec2 point1;
+
+uniform sampler2D levelTexture;
+
+// Integer to float conversion from https://stackoverflow.com/questions/17981163/webgl-read-pixels-from-floating-point-render-target
+
+float shift_right(float v, float amt) {
+  v = floor(v) + 0.5;
+  return floor(v / exp2(amt));
+}
+
+float shift_left(float v, float amt) {
+  return floor(v * exp2(amt) + 0.5);
+}
+
+float mask_last(float v, float bits) {
+  return mod(v, shift_left(1.0, bits));
+}
+
+float extract_bits(float num, float from, float to) {
+  from = floor(from + 0.5); to = floor(to + 0.5);
+  return mask_last(shift_right(num, from), to - from);
+}
+
+vec4 encode_float(float val) {
+  if (val == 0.0) return vec4(0, 0, 0, 0);
+  float sign = val > 0.0 ? 0.0 : 1.0;
+  val = abs(val);
+  float exponent = floor(log2(val));
+  float biased_exponent = exponent + 127.0;
+  float fraction = ((val / exp2(exponent)) - 1.0) * 8388608.0;
+  float t = biased_exponent / 2.0;
+  float last_bit_of_biased_exponent = fract(t) * 2.0;
+  float remaining_bits_of_biased_exponent = floor(t);
+  float byte4 = extract_bits(fraction, 0.0, 8.0) / 255.0;
+  float byte3 = extract_bits(fraction, 8.0, 16.0) / 255.0;
+  float byte2 = (last_bit_of_biased_exponent * 128.0 + extract_bits(fraction, 16.0, 23.0)) / 255.0;
+  float byte1 = (sign * 128.0 + remaining_bits_of_biased_exponent) / 255.0;
+  return vec4(byte4, byte3, byte2, byte1);
+}
+
+void main() {
+  vec2 cellSize = 1.0 / resolution.xy;
+
+  float waterLevel = texture2D(levelTexture, point1).x;
+
+  vec2 normal = vec2(
+    (texture2D(levelTexture, point1 + vec2(-cellSize.x, 0)).x - texture2D(levelTexture, point1 + vec2(cellSize.x, 0)).x) * WIDTH / BOUNDS,
+    (texture2D(levelTexture, point1 + vec2(0, -cellSize.y)).x - texture2D(levelTexture, point1 + vec2(0, cellSize.y)).x) * WIDTH / BOUNDS);
+
+  if (gl_FragCoord.x < 1.5) {
+    gl_FragColor = encode_float(waterLevel);
+  } else if (gl_FragCoord.x < 2.5) {
+    gl_FragColor = encode_float(normal.x);
+  } else if (gl_FragCoord.x < 3.5) {
+    gl_FragColor = encode_float(normal.y);
+  } else {
+    gl_FragColor = encode_float(0.0);
+  }
+}
