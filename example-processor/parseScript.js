@@ -28,7 +28,7 @@ module.exports = function parseScript(window, addition, replace) {
         .replace(/\.(\.\/build\/three\.module\.js|\/)/gi, resolveUrl)
         .replace(/THREE\.(\w+)/g, treeShaking)
         .replace(
-          /import\s*\*\s*as\s+THREE\s+from\s*(\"|\')three(\"|\')/g,
+          /import\s*\*\s*as\s+THREE\s+from\s*("|')three("|')/g,
           subimports
         );
       if (addition && replace) js.replace(replace.regex, replace.func);

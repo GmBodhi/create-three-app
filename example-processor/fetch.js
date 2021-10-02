@@ -1,4 +1,4 @@
-const { writeFileSync, mkdirSync, existsSync } = require("fs");
+const { writeFileSync, mkdirSync } = require("fs");
 const chalk = require("chalk");
 const parseScript = require("./parseScript");
 const parseShader = require("./parseShader");
@@ -11,19 +11,14 @@ const { JSDOM } = require("jsdom");
 
 let browser, page;
 
-module.exports.launch = async ({ urls, json }) => {
+module.exports.launch = async ({ urls, json, port }) => {
   browser = await puppeteer.launch({ args: ["--no-sandbox"] });
 
   page = await browser.newPage();
 
   page.on("request", (request) => {
     let url =
-      request
-        .frame()
-        ?.url()
-        ?.split("/")
-        [request.frame()?.url()?.split("/").length - 1]?.split(".")[0] ??
-      "unknown";
+      request.frame()?.url()?.split("/").at(-1)?.split(".")[0] ?? "unknown";
 
     let reqUrl =
       request.url()?.split("/")[
@@ -34,9 +29,9 @@ module.exports.launch = async ({ urls, json }) => {
 
     if (
       [
-        "https://threejs.org/build/three.module.js",
-        "https://threejs.org/examples/jsm/libs/stats.module.js",
-        "https://threejs.org/examples/jsm/libs/dat.gui.module.js",
+        `http://localhost:${port}/build/three.module.js`,
+        `http://localhost:${port}/examples/jsm/libs/stats.module.js`,
+        `http://localhost:${port}/examples/jsm/libs/dat.gui.module.js`,
         "about:blank",
       ].includes(request.url()) ||
       url === "about:blank" ||
@@ -49,30 +44,6 @@ module.exports.launch = async ({ urls, json }) => {
   });
   return;
 };
-
-function getUrls(page) {
-  return new Promise((resolve, reject) => {
-    let urls = [];
-
-    function onCollect(request) {
-      console.log("Collecting");
-      let url = request.frame()?.url();
-      if (!url) return;
-      urls.push(url);
-    }
-
-    let handleDispose = () => {
-      console.log("Dispossing");
-      page.removeListener("request", onCollect);
-      page.removeListener("requestfinished", handleDispose);
-      resolve(urls);
-    };
-
-    page.on("request", onCollect);
-    page.on("requestfinished", handleDispose);
-    page.on("requestfailed", reject);
-  });
-}
 
 module.exports.close = async () => {
   console.log(chalk.cyan("Closing browser"));
