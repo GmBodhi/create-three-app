@@ -55,7 +55,5 @@ module.exports.checkYarn = function checkYarn() {
 };
 
 module.exports.getUtilsConfig = function getUtilsConfig() {
-  return fetch(this.domain + "utils/config.json").then((res) =>
-    res.json()
-  );
+  return fetch(this.domain + "utils/config.json").then((res) => res.json());
 };
