@@ -29,7 +29,7 @@ initServer().then(({ port, close }) => {
         writeFileSync("./templates/assets.json", JSON.stringify(urls));
         writeAssets(urls);
         await fetch1.close();
-        close();
+        close(() => console.log("Closing server"));
       });
   };
 
