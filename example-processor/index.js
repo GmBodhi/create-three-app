@@ -20,7 +20,6 @@ initServer().then(({ port }) => {
         let urls = {};
         await fetch1.launch({ urls, json: targets, port });
         for (let key of targets) {
-          await new Promise((resolve) => setTimeout(resolve, 1000));
           await fetch1.fetch(
             `http://localhost:${port}/examples/${key}.html`,
             key
