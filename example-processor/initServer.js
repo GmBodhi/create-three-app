@@ -11,7 +11,7 @@ module.exports.init = function init() {
 
       
       const server = http.createServer((req, res) =>
-      handler(req, res, { cleanUrls: false, public: "/res" })
+      handler(req, res, { cleanUrls: false, public: require("path").resolve(__dirname,"/res") })
       );
       server.listen(port);
       
