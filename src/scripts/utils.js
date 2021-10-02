@@ -25,7 +25,7 @@ async function download(url, dest) {
 module.exports.download = download;
 
 module.exports.domain =
-  "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/";
+  "https://raw.githubusercontent.com/GmBodhi/create-three-app/feat/local/";
 
 // Get Config
 async function getConfig(domain) {
@@ -54,8 +54,8 @@ module.exports.checkYarn = function checkYarn() {
   });
 };
 
-module.exports = function getUtilsConfig() {
-  return fetch(this.exports.domain + "utils/config.json").then((res) =>
+module.exports.getUtilsConfig = function getUtilsConfig() {
+  return fetch(this.domain + "utils/config.json").then((res) =>
     res.json()
   );
 };
