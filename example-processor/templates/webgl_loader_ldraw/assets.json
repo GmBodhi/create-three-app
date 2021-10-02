@@ -1,8 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/models/ldraw/ldraw_org_logo/Stamp145.png",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/jsm/environments/RoomEnvironment.js",
-  "https://threejs.org/examples/jsm/loaders/LDrawLoader.js",
-  "https://threejs.org/examples/models/ldraw/officialLibrary/models/car.ldr_Packed.mpd"
-]

@@ -1,8 +1,0 @@
-[
-  "https://threejs.org/examples/main.css",
-  "https://threejs.org/examples/jsm/controls/OrbitControls.js",
-  "https://threejs.org/examples/jsm/utils/BufferGeometryUtils.js",
-  "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlGIWqMCbWAEAOw==",
-  "data:image/gif;base64,R0lGODlhBQAFAJEAAP////Pz8////////yH5BAEAAAIALAAAAAAFAAUAAAIIlI+hKgFxoCgAOw==",
-  "https://threejs.org/examples/models/json/suzanne_buffergeometry.json"
-]
