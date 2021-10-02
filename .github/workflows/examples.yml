@@ -36,12 +36,6 @@ jobs:
           cd example-processor
           node generateConfig.js --unhandled-rejections=strict
 
-      - name: Format Code
-        run: |
-          npm i prettier -g
-          git pull -a
-          prettier --write .
-
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:

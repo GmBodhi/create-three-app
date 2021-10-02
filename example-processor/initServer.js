@@ -13,6 +13,6 @@ module.exports.init = function init() {
       })
     );
     server.listen(port);
-    resolve({ port, close: server.close });
+    resolve({ port });
   });
 };

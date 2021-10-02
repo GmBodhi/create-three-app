@@ -8,6 +8,7 @@ const moveDir = require("./moveDir");
 const path = require("path");
 const puppeteer = require("puppeteer");
 const { JSDOM } = require("jsdom");
+const { format } = require("prettier");
 
 let browser, page;
 
@@ -66,9 +67,18 @@ module.exports.fetch = async function (url, name) {
   let style = parseStyle(window);
   let html = parseHtml(window);
 
-  writeFileSync(`./templates/${name}/src/index.html`, html);
-  writeFileSync(`./templates/${name}/src/main.js`, script);
-  writeFileSync(`./templates/${name}/src/style.css`, style);
+  writeFileSync(
+    `./templates/${name}/src/index.html`,
+    format(html, { parser: "html" })
+  );
+  writeFileSync(
+    `./templates/${name}/src/main.js`,
+    format(script, { parser: "babel" })
+  );
+  writeFileSync(
+    `./templates/${name}/src/style.css`,
+    format(style, { parser: "css" })
+  );
 
   moveDir(path.resolve(__dirname, "utils"), `./templates/${name}`);
 
