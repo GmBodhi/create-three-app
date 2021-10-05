@@ -27,13 +27,12 @@ import {
   MeshLambertMaterial,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
 
-let container, stats;
+let container;
 let camera, scene, renderer;
 const splineHelperObjects = [];
 let splinePointsLength = 4;
@@ -63,7 +62,6 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -113,21 +111,19 @@ function init() {
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
   const gui = new GUI();
 
-  gui.add(params, "uniform");
+  gui.add(params, "uniform").onChange(render);
   gui
     .add(params, "tension", 0, 1)
     .step(0.01)
     .onChange(function (value) {
       splines.uniform.tension = value;
       updateSplineOutline();
+      render();
     });
-  gui.add(params, "centripetal");
-  gui.add(params, "chordal");
+  gui.add(params, "centripetal").onChange(render);
+  gui.add(params, "chordal").onChange(render);
   gui.add(params, "addPoint");
   gui.add(params, "removePoint");
   gui.add(params, "exportSpline");
@@ -152,6 +148,7 @@ function init() {
   document.addEventListener("pointerdown", onPointerDown);
   document.addEventListener("pointerup", onPointerUp);
   document.addEventListener("pointermove", onPointerMove);
+  window.addEventListener("resize", onWindowResize);
 
   /*******
    * Curves
@@ -220,6 +217,8 @@ function init() {
     new Vector3(-91.40118730204415, 176.4306956436485, -6.958271935582161),
     new Vector3(-383.785318791128, 491.1365363371675, 47.869296953772746),
   ]);
+
+  render();
 }
 
 function addSplineObject(position) {
@@ -247,6 +246,8 @@ function addPoint() {
   positions.push(addSplineObject().position);
 
   updateSplineOutline();
+
+  render();
 }
 
 function removePoint() {
@@ -262,6 +263,8 @@ function removePoint() {
   scene.remove(point);
 
   updateSplineOutline();
+
+  render();
 }
 
 function updateSplineOutline() {
@@ -310,12 +313,6 @@ function load(new_positions) {
   updateSplineOutline();
 }
 
-function animate() {
-  requestAnimationFrame(animate);
-  render();
-  stats.update();
-}
-
 function render() {
   splines.uniform.mesh.visible = params.uniform;
   splines.centripetal.mesh.visible = params.centripetal;
@@ -350,4 +347,13 @@ function onPointerMove(event) {
       transformControl.attach(object);
     }
   }
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  render();
 }

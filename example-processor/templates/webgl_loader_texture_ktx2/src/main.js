@@ -71,24 +71,28 @@ const formatStrings = {
 };
 
 // Samples: sample_etc1s.ktx2, sample_uastc.ktx2, sample_uastc_zstd.ktx2
-new KTX2Loader()
+const loader = new KTX2Loader()
   .setTranscoderPath("js/libs/basis/")
-  .detectSupport(renderer)
-  .load(
-    "three/examples/textures/compressed/sample_uastc_zstd.ktx2",
-    (texture) => {
-      console.info(`transcoded to ${formatStrings[texture.format]}`);
-
-      material.map = texture;
-      material.transparent = true;
-
-      material.needsUpdate = true;
-    },
-    (p) => console.log(`...${p}`),
-    (e) => console.error(e)
-  );
+  .detectSupport(renderer);
 
 animate();
+
+try {
+  const texture = await loader.loadAsync(
+    "three/examples/textures/compressed/sample_uastc_zstd.ktx2"
+  );
+
+  console.info(`transcoded to ${formatStrings[texture.format]}`);
+
+  material.map = texture;
+  material.transparent = true;
+
+  material.needsUpdate = true;
+} catch (e) {
+  console.error(e);
+} finally {
+  loader.dispose();
+}
 
 function animate() {
   requestAnimationFrame(animate);
