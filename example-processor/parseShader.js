@@ -37,10 +37,8 @@ module.exports = function parseShader(window, name) {
     replace: {
       regex: new RegExp(
         `\\s*document\\.getElementById\\(\\s*["'](${shaders
-          .map((s) => `${s.id}|`)
-          .toString()
-          .replace(/,/g, "")
-          .slice(0, -1)})["']\\s*\\)\\.textContent\\s*`,
+          .map((s) => `${s.id}`)
+          .join("|")})["']\\s*\\)\\.textContent\\s*`,
         "ig"
       ),
       func: "$1",

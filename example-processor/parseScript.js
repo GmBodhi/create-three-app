@@ -18,7 +18,9 @@ function subimports() {
 module.exports = function parseScript(window, addition, replace) {
   imports = [];
 
-  let js = `//Shaders\n\n${addition}\n\nimport "./style.css"; // For webpack support\n`;
+  let js = `${
+    addition ? `//Shaders\n\n${addition}` : ""
+  }\n\nimport "./style.css"; // For webpack support\n`;
 
   let { document } = window;
 
@@ -32,7 +34,7 @@ module.exports = function parseScript(window, addition, replace) {
           /import\s*\*\s*as\s+THREE\s+from\s*("|')three("|')/g,
           subimports
         );
-      if (addition && replace) js.replace(replace.regex, replace.func);
+      if (addition) js.replace(replace.regex, replace.func);
     });
 
   return js;
