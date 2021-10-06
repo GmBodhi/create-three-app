@@ -1,7 +1,3 @@
-//Shaders
-
-undefined;
-
 import "./style.css"; // For webpack support
 
 import { Scene, PerspectiveCamera, GridHelper, WebGL1Renderer } from "three";
