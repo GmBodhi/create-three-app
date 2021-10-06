@@ -161,7 +161,7 @@ function initBlob() {
     transparent: true,
   });
 
-  blob = new MarchingCubes(64, material);
+  blob = new MarchingCubes(64, material, false, false, 500000);
   blob.position.y = 1;
   scene.add(blob);
 
