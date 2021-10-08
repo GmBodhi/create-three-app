@@ -47,12 +47,12 @@ async function init() {
   scene.background = new Color(0x000000);
 
   const particleNum = 65000; // 16-bit limit
-  const particleSize = 3;
+  const particleSize = 4; // 16-byte stride align
 
   const particleArray = new Float32Array(particleNum * particleSize);
   const velocityArray = new Float32Array(particleNum * particleSize);
 
-  for (let i = 0; i < particleArray.length; i += 3) {
+  for (let i = 0; i < particleArray.length; i += particleSize) {
     const r = Math.random() * 0.01 + 0.0005;
     const degree = Math.random() * 360;
     velocityArray[i + 0] = r * Math.sin((degree * Math.PI) / 180);
@@ -61,11 +61,11 @@ async function init() {
 
   const particleBuffer = new WebGPUStorageBuffer(
     "particle",
-    new BufferAttribute(particleArray, 3)
+    new BufferAttribute(particleArray, particleSize)
   );
   const velocityBuffer = new WebGPUStorageBuffer(
     "velocity",
-    new BufferAttribute(velocityArray, 3)
+    new BufferAttribute(velocityArray, particleSize)
   );
 
   const scaleUniformLength = WebGPUBufferUtils.getVectorLength(2, 3); // two vector3 for array
@@ -90,61 +90,98 @@ async function init() {
     pointerGroup,
   ];
 
-  const computeShader = /* glsl */ `#version 450
-					#define PARTICLE_NUM ${particleNum}
-					#define PARTICLE_SIZE ${particleSize}
-					#define ROOM_SIZE 1.0
-					#define POINTER_SIZE 0.1
+  const computeShader = `
 
-					// Limitation for now: the order should be the same as bindings order
+					//
+					// Buffer
+					//
 
-					layout(set = 0, binding = 0) buffer Particle {
-						float particle[ PARTICLE_NUM * PARTICLE_SIZE ];
-					} particle;
+					[[ block ]]
+					struct Particle {
+						value : array< vec4<f32> >;
+					};
+					[[ binding( 0 ), group( 0 ) ]]
+					var<storage,read_write> particle : Particle;
 
-					layout(set = 0, binding = 1) buffer Velocity {
-						float velocity[ PARTICLE_NUM * PARTICLE_SIZE ];
-					} velocity;
+					[[ block ]]
+					struct Velocity {
+						value : array< vec4<f32> >;
+					};
+					[[ binding( 1 ), group( 0 ) ]]
+					var<storage,read_write> velocity : Velocity;
 
-					layout(set = 0, binding = 2) uniform Scale {
-						vec3 value[2];
-					} scaleUniform;
+					//
+					// Uniforms
+					//
 
-					layout(set = 0, binding = 3) uniform MouseUniforms {
-						vec2 pointer;
-					} mouseUniforms;
+					[[ block ]]
+					struct Scale {
+						value : array< vec3<f32>, 2 >;
+					};
+					[[ binding( 2 ), group( 0 ) ]]
+					var<uniform> scaleUniform : Scale;
 
-					void main() {
-						uint index = gl_GlobalInvocationID.x;
-						if ( index >= PARTICLE_NUM ) { return; }
+					[[block]]
+					struct MouseUniforms {
+						pointer : vec2<f32>;
+					};
+					[[ binding( 3 ), group( 0 ) ]]
+					var<uniform> mouseUniforms : MouseUniforms;
 
-						vec3 position = vec3(
-							particle.particle[ index * 3 + 0 ] + velocity.velocity[ index * 3 + 0 ],
-							particle.particle[ index * 3 + 1 ] + velocity.velocity[ index * 3 + 1 ],
-							particle.particle[ index * 3 + 2 ] + velocity.velocity[ index * 3 + 2 ]
-						);
+					[[ stage( compute ), workgroup_size( 64 ) ]]
+					fn main( [[builtin(global_invocation_id)]] id : vec3<u32> ) {
 
-						if ( abs( position.x ) >= ROOM_SIZE ) {
+						// get particle index
 
-							velocity.velocity[ index * 3 + 0 ] = - velocity.velocity[ index * 3 + 0 ];
+						let index : u32 = id.x * 3u;
+
+						// update speed
+
+						var position : vec4<f32> = particle.value[ index ] + velocity.value[ index ];
+
+						// update limit
+
+						let limit : vec2<f32> = scaleUniform.value[ 0 ].xy;
+
+						if ( abs( position.x ) >= limit.x ) {
+
+							if ( position.x > 0.0 ) {
+
+								position.x = limit.x;
+
+							} else {
+
+								position.x = -limit.x;
+
+							}
+
+							velocity.value[ index ].x = - velocity.value[ index ].x;
 
 						}
 
-						if ( abs( position.y ) >= ROOM_SIZE ) {
+						if ( abs( position.y ) >= limit.y ) {
 
-							velocity.velocity[ index * 3 + 1 ] = - velocity.velocity[ index * 3 + 1 ];
+							if ( position.y > 0.0 ) {
+
+								position.y = limit.y;
+
+							} else {
+
+								position.y = -limit.y;
+
+							}
+
+							velocity.value[ index ].y = - velocity.value[ index ].y;
 
 						}
 
-						if ( abs( position.z ) >= ROOM_SIZE ) {
+						// update mouse
 
-							velocity.velocity[ index * 3 + 2 ] = - velocity.velocity[ index * 3 + 2 ];
+						let POINTER_SIZE : f32 = .1;
 
-						}
-
-						float dx = mouseUniforms.pointer.x - position.x;
-						float dy = mouseUniforms.pointer.y - position.y;
-						float distanceFromPointer = sqrt( dx * dx + dy * dy );
+						let dx : f32 = mouseUniforms.pointer.x - position.x;
+						let dy : f32 = mouseUniforms.pointer.y - position.y;
+						let distanceFromPointer : f32 = sqrt( dx * dx + dy * dy );
 
 						if ( distanceFromPointer <= POINTER_SIZE ) {
 
@@ -154,11 +191,12 @@ async function init() {
 
 						}
 
-						particle.particle[ index * 3 + 0 ] = position.x * scaleUniform.value[0].x;
-						particle.particle[ index * 3 + 1 ] = position.y * scaleUniform.value[0].y;
-						particle.particle[ index * 3 + 2 ] = position.z * scaleUniform.value[0].z;
+						// update buffer
+
+						particle.value[ index ] = position;
 
 					}
+
 				`;
 
   computeParams.push({
@@ -178,7 +216,7 @@ async function init() {
   pointsMaterial.colorNode = new Nodes.OperatorNode(
     "+",
     new Nodes.PositionNode(),
-    new Nodes.ColorNode(new Color(0x0000ff))
+    new Nodes.ColorNode(new Color(0xffffff))
   );
 
   const mesh = new Points(pointsGeometry, pointsMaterial);
@@ -196,9 +234,8 @@ async function init() {
 
   const gui = new GUI();
 
-  gui.add(scaleVector, "x", 0.9, 1.1, 0.01);
-  gui.add(scaleVector, "y", 0.9, 1.1, 0.01);
-  gui.add(scaleVector, "z", 0.9, 1.1, 0.01);
+  gui.add(scaleVector, "x", 0, 1, 0.01);
+  gui.add(scaleVector, "y", 0, 1, 0.01);
 
   return renderer.init();
 }
