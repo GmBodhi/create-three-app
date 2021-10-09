@@ -195,7 +195,7 @@ function generateHeight(width, height) {
 }
 
 function getY(x, z) {
-  return (data[x + z * worldWidth] * 0.2) | 0;
+  return (data[x + z * worldWidth] * 0.15) | 0;
 }
 
 //

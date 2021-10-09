@@ -50,7 +50,7 @@ function init() {
     1,
     1000
   );
-  camera.position.set(0, 0, 128);
+  camera.position.set(-64, -64, 128);
   camera.up.set(0, 0, 1); // In our data, z is up
 
   // Create controls
@@ -59,6 +59,7 @@ function init() {
   controls.target.set(64, 64, 128);
   controls.minZoom = 0.5;
   controls.maxZoom = 4;
+  controls.enablePan = false;
   controls.update();
 
   // scene.add( new AxesHelper( 128 ) );
