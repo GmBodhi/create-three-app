@@ -19,6 +19,7 @@ import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
+import { add } from "three/examples/jsm/renderers/nodes/ShaderNode.js";
 
 let camera, scene, renderer;
 
@@ -78,14 +79,11 @@ async function init() {
 
   // custom lighting model
 
-  const customLightingModel = new Nodes.FunctionNode(`
-					void ( inout ReflectedLight reflectedLight, vec3 lightColor ) {
+  const customLightingModel = new Nodes.ShaderNode((inputs) => {
+    const { lightColor, directDiffuse } = inputs;
 
-						// lightColor returns the light color with the intensity calculated
-
-						reflectedLight.directDiffuse += lightColor;
-
-					}`);
+    directDiffuse.value = add(directDiffuse.value, lightColor);
+  });
 
   const lightingModelContext = new Nodes.ContextNode(allLightsNode);
   lightingModelContext.setContextValue("lightingModel", customLightingModel);
