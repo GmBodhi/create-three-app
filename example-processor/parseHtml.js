@@ -2,7 +2,7 @@ module.exports = function parseScript(window) {
   let { document } = window;
   Array.from(document.querySelectorAll("style")).forEach((s) => s.remove());
   Array.from(document.querySelectorAll("script"))
-    .filter((s) => s.type == "module")
+    .filter((s) => s.type == "module" || /\\/.test(s.type))
     .forEach((s) => {
       s.remove();
     });

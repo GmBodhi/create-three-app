@@ -4,7 +4,7 @@ const { format } = require("glslx");
 
 function getAdditions(imports) {
   return imports
-    .map((shader) => `import ${shader} from './shaders/${shader}.glsl'\n`)
+    .map((shader) => `import ${shader}_ from './shaders/${shader}.glsl'\n`)
     .toString()
     .replace(/,/g, "");
 }
@@ -35,13 +35,21 @@ module.exports = function parseShader(window, name) {
       shaders.map(({ id }) => id.replace(/-(\w)/g, (_, p) => p.toUpperCase()))
     ),
     replace: {
-      regex: new RegExp(
-        `\\s*document\\.getElementById\\(\\s*["'](${shaders
+      regex1: new RegExp(
+        `\\s*document\\s*\\.getElementById\\(\\s*["'](${shaders
           .map((s) => `${s.id}`)
-          .join("|")})["']\\s*\\)\\.textContent\\s*`,
+          .join("|")})["']\\s*\\)\\s*\\.textContent\\s*`,
         "ig"
       ),
-      func: "$1",
+      regex2: new RegExp(
+        `\\s*document\\.querySelector\\(\\s*["']\\#(${shaders
+          .map((s) => `${s.id}`)
+          .join("|")})["']\\s*\\)\\s*\\.textContent\\s*(\\.trim\\(\\))?`,
+        "ig"
+      ),
+      resolveVar: (_, p1) => {
+        return `${p1.replace(/-(\w)/g, (_, p) => p.toUpperCase())}_`;
+      },
     },
   };
 };

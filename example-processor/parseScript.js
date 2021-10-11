@@ -1,4 +1,3 @@
-
 function resolveUrl(_match, url) {
   if (url === "./build/three.module.js") return "three";
   return `three/examples${url}`;
@@ -34,7 +33,11 @@ module.exports = function parseScript(window, addition, replace) {
           /import\s*\*\s*as\s+THREE\s+from\s*("|')three("|')/g,
           subimports
         );
-      if (addition) js.replace(replace.regex, replace.func);
+      if (addition)
+        js.replace(replace.regex1, replace.resolveVar).replace(
+          replace.regex2,
+          replace.resolveVar
+        );
     });
 
   return js;

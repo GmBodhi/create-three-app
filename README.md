@@ -43,4 +43,4 @@ All contributions must abide by the [Contributor Covenant Code of Conduct](https
 
 ## Want support?
 
-Open an [issue](https://github.com/GmBodhi/create-three-app/issues/new) in the [github repo](https://github.com/GmBodhi/create-three-app)
+Open an [issue](https://github.com/GmBodhi/create-three-app/issues/new) in the [github repo](https://github.com/GmBodhi/create-three-app) or ask in the [Secret Discord Server](https://discord.gg/qdCknXec83)
