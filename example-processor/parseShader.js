@@ -38,11 +38,6 @@ module.exports = function parseShader(window, name) {
       regex:
         /document\n*\.(querySelector|getElementById)\(\s*['"]#?([^'"]+)['"]\s*\)\n*\.textContent[^,;}]*/gi,
       resolveVar: (_, _p, p2) => {
-        console.log(
-          _,
-          " -> ",
-          `${p2.replace(/-(\w)/g, (_, p) => p.toUpperCase())}_`
-        );
         return `${p2.replace(/-(\w)/g, (_, p) => p.toUpperCase())}_`;
       },
     },

@@ -67,8 +67,6 @@ module.exports.fetch = async function (url, name) {
   let style = parseStyle(window);
   let html = parseHtml(window);
 
-  if (additions) console.log("\n", script, "\n");
-
   writeFileSync(
     `./templates/${name}/src/index.html`,
     format(html, { parser: "html" })
