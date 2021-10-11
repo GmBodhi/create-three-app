@@ -24,7 +24,7 @@ module.exports = function parseScript(window, addition, replace) {
   let { document } = window;
 
   Array.from(document.querySelectorAll("script"))
-    .filter((s) => s.type == "module")
+    .filter((s) => s.type === "module")
     .forEach((s) => {
       js += s.innerHTML
         .replace(/\.(\.\/build\/three\.module\.js|\/)/gi, resolveUrl)

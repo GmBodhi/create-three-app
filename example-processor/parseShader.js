@@ -36,7 +36,7 @@ module.exports = function parseShader(window, name) {
     ),
     replace: {
       regex:
-        /document\n*\.(querySelector|getElementById)\(\s*['"]#?([^'"]+)['"]\s*\)\n*\.textContent[^,;}]*/gi,
+        /document\n*\.(querySelector|getElementById)\(\s*['"]#?([^'"]+)['"]\s*\)\n*\.textContent(\.trim\(\))?/gi,
       resolveVar: (_, _p, p2) => {
         return `${p2.replace(/-(\w)/g, (_, p) => p.toUpperCase())}_`;
       },
