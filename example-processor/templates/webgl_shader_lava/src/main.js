@@ -66,8 +66,8 @@ function init() {
 
   const material = new ShaderMaterial({
     uniforms: uniforms,
-    vertexShader: document.getElementById("vertexShader").textContent,
-    fragmentShader: document.getElementById("fragmentShader").textContent,
+    vertexShader: vertexShader_,
+    fragmentShader: fragmentShader_,
   });
 
   mesh = new Mesh(new TorusGeometry(size, 0.3, 30, 30), material);

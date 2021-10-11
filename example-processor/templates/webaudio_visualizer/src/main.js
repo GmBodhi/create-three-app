@@ -82,8 +82,8 @@ function init() {
 
   const material = new ShaderMaterial({
     uniforms: uniforms,
-    vertexShader: document.getElementById("vertexShader").textContent,
-    fragmentShader: document.getElementById("fragmentShader").textContent,
+    vertexShader: vertexShader_,
+    fragmentShader: fragmentShader_,
   });
 
   const geometry = new PlaneGeometry(1, 1);

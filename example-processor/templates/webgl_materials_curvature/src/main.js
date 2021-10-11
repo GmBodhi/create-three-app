@@ -237,9 +237,8 @@ function init() {
         filterBoth(curvatureFiltered);
 
         const materialRaw = new ShaderMaterial({
-          vertexShader: document.getElementById("vertexShaderRaw").textContent,
-          fragmentShader:
-            document.getElementById("fragmentShaderRaw").textContent,
+          vertexShader: vertexShaderRaw_,
+          fragmentShader: fragmentShaderRaw_,
         });
 
         ninjaMeshRaw = new Mesh(bufferGeo, materialRaw);

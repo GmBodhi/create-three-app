@@ -57,22 +57,16 @@ function init() {
   // Setup post processing stage
   postCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
   noiseRandom1DMaterial = new ShaderMaterial({
-    vertexShader: document.querySelector("#procedural-vert").textContent.trim(),
-    fragmentShader: document
-      .querySelector("#noiseRandom1D-frag")
-      .textContent.trim(),
+    vertexShader: proceduralVert_,
+    fragmentShader: noiseRandom1DFrag_,
   });
   noiseRandom2DMaterial = new ShaderMaterial({
-    vertexShader: document.querySelector("#procedural-vert").textContent.trim(),
-    fragmentShader: document
-      .querySelector("#noiseRandom2D-frag")
-      .textContent.trim(),
+    vertexShader: proceduralVert_,
+    fragmentShader: noiseRandom2DFrag_,
   });
   noiseRandom3DMaterial = new ShaderMaterial({
-    vertexShader: document.querySelector("#procedural-vert").textContent.trim(),
-    fragmentShader: document
-      .querySelector("#noiseRandom3D-frag")
-      .textContent.trim(),
+    vertexShader: proceduralVert_,
+    fragmentShader: noiseRandom3DFrag_,
   });
   postMaterial = noiseRandom3DMaterial;
   const postPlane = new PlaneGeometry(2, 2);

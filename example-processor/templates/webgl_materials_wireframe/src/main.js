@@ -74,8 +74,8 @@ function init() {
 
       const material2 = new ShaderMaterial({
         uniforms: { thickness: { value: API.thickness } },
-        vertexShader: document.getElementById("vertexShader").textContent,
-        fragmentShader: document.getElementById("fragmentShader").textContent,
+        vertexShader: vertexShader_,
+        fragmentShader: fragmentShader_,
         side: DoubleSide,
         alphaToCoverage: true, // only works when WebGLRenderer's "antialias" is set to "true"
       });

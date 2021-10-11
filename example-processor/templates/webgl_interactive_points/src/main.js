@@ -91,8 +91,8 @@ function init() {
       },
       alphaTest: { value: 0.9 },
     },
-    vertexShader: document.getElementById("vertexshader").textContent,
-    fragmentShader: document.getElementById("fragmentshader").textContent,
+    vertexShader: vertexshader_,
+    fragmentShader: fragmentshader_,
   });
 
   //

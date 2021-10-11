@@ -105,8 +105,8 @@ function init() {
 
   // SKYDOME
 
-  const vertexShader = document.getElementById("vertexShader").textContent;
-  const fragmentShader = document.getElementById("fragmentShader").textContent;
+  const vertexShader = vertexShader_;
+  const fragmentShader = fragmentShader_;
   const uniforms = {
     topColor: { value: new Color(0x0077ff) },
     bottomColor: { value: new Color(0xffffff) },

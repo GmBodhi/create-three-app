@@ -202,12 +202,12 @@ function initComputeRenderer() {
 
   velocityVariable = gpuCompute.addVariable(
     "textureVelocity",
-    document.getElementById("fragmentShaderVelocity").textContent,
+    fragmentShaderVelocity_,
     dtVelocity
   );
   positionVariable = gpuCompute.addVariable(
     "texturePosition",
-    document.getElementById("fragmentShaderPosition").textContent,
+    fragmentShaderPosition_,
     dtPosition
   );
 
@@ -269,8 +269,8 @@ function initBirds() {
   // ShaderMaterial
   const material = new ShaderMaterial({
     uniforms: birdUniforms,
-    vertexShader: document.getElementById("birdVS").textContent,
-    fragmentShader: document.getElementById("birdFS").textContent,
+    vertexShader: birdVS_,
+    fragmentShader: birdFS_,
     side: DoubleSide,
   });
 

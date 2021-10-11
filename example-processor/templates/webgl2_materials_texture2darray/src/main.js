@@ -71,8 +71,8 @@ function init() {
           depth: { value: 55 },
           size: { value: new Vector2(planeWidth, planeHeight) },
         },
-        vertexShader: document.getElementById("vs").textContent.trim(),
-        fragmentShader: document.getElementById("fs").textContent.trim(),
+        vertexShader: vs_,
+        fragmentShader: fs_,
         glslVersion: GLSL3,
       });
 

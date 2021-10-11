@@ -78,8 +78,8 @@ function init() {
         value: new TextureLoader().load("textures/sprites/spark1.png"),
       },
     },
-    vertexShader: document.getElementById("vertexshader").textContent,
-    fragmentShader: document.getElementById("fragmentshader").textContent,
+    vertexShader: vertexshader_,
+    fragmentShader: fragmentshader_,
 
     blending: AdditiveBlending,
     depthTest: false,

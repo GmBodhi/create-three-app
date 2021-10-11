@@ -67,8 +67,8 @@ function init() {
         value: camera.projectionMatrixInverse.clone(),
       },
     },
-    vertexShader: document.getElementById("vertex_shader").textContent,
-    fragmentShader: document.getElementById("fragment_shader").textContent,
+    vertexShader: vertex_shader_,
+    fragmentShader: fragment_shader_,
   });
   mesh = new Mesh(geometry, material);
   mesh.frustumCulled = false;

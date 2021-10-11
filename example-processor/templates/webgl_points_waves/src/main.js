@@ -82,8 +82,8 @@ function init() {
     uniforms: {
       color: { value: new Color(0xffffff) },
     },
-    vertexShader: document.getElementById("vertexshader").textContent,
-    fragmentShader: document.getElementById("fragmentshader").textContent,
+    vertexShader: vertexshader_,
+    fragmentShader: fragmentshader_,
   });
 
   //

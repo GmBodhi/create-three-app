@@ -284,12 +284,12 @@ function initComputeRenderer() {
 
   velocityVariable = gpuCompute.addVariable(
     "textureVelocity",
-    document.getElementById("fragmentShaderVelocity").textContent,
+    fragmentShaderVelocity_,
     dtVelocity
   );
   positionVariable = gpuCompute.addVariable(
     "texturePosition",
-    document.getElementById("fragmentShaderPosition").textContent,
+    fragmentShaderPosition_,
     dtPosition
   );
 

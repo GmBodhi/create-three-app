@@ -91,12 +91,8 @@ function init() {
     new Mesh(
       new TorusKnotGeometry(1, 0.3, 128, 64),
       new RawShaderMaterial({
-        vertexShader: document
-          .querySelector("#gbuffer-vert")
-          .textContent.trim(),
-        fragmentShader: document
-          .querySelector("#gbuffer-frag")
-          .textContent.trim(),
+        vertexShader: gbufferVert_,
+        fragmentShader: gbufferFrag_,
         uniforms: {
           tDiffuse: { value: diffuse },
           repeat: { value: new Vector2(5, 0.5) },
@@ -115,10 +111,8 @@ function init() {
     new Mesh(
       new PlaneGeometry(2, 2),
       new RawShaderMaterial({
-        vertexShader: document.querySelector("#render-vert").textContent.trim(),
-        fragmentShader: document
-          .querySelector("#render-frag")
-          .textContent.trim(),
+        vertexShader: renderVert_,
+        fragmentShader: renderFrag_,
         uniforms: {
           tDiffuse: { value: renderTarget.texture[0] },
           tNormal: { value: renderTarget.texture[1] },

@@ -34,8 +34,8 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  vertexShader = document.getElementById("vertexShader").textContent;
-  fragmentShader = document.getElementById("fragmentShader").textContent;
+  vertexShader = vertexShader_;
+  fragmentShader = fragmentShader_;
 
   camera = new PerspectiveCamera(
     40,

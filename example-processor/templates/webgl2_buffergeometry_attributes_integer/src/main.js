@@ -118,8 +118,8 @@ function init() {
         value: [map1, map2, map3],
       },
     },
-    vertexShader: document.getElementById("vertexShader").textContent,
-    fragmentShader: document.getElementById("fragmentShader").textContent,
+    vertexShader: vertexShader_,
+    fragmentShader: fragmentShader_,
     side: DoubleSide,
     glslVersion: GLSL3,
   });

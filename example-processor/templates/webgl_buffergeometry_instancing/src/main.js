@@ -122,8 +122,8 @@ function init() {
       time: { value: 1.0 },
       sineTime: { value: 1.0 },
     },
-    vertexShader: document.getElementById("vertexShader").textContent,
-    fragmentShader: document.getElementById("fragmentShader").textContent,
+    vertexShader: vertexShader_,
+    fragmentShader: fragmentShader_,
     side: DoubleSide,
     transparent: true,
   });

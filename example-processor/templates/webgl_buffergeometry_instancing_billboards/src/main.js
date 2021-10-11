@@ -74,8 +74,8 @@ function init() {
       map: { value: new TextureLoader().load("textures/sprites/circle.png") },
       time: { value: 0.0 },
     },
-    vertexShader: document.getElementById("vshader").textContent,
-    fragmentShader: document.getElementById("fshader").textContent,
+    vertexShader: vshader_,
+    fragmentShader: fshader_,
     depthTest: true,
     depthWrite: true,
   });

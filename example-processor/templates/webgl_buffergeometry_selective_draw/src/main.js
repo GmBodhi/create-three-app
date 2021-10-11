@@ -105,8 +105,8 @@ function addLines(radius) {
   geometry.computeBoundingSphere();
 
   const shaderMaterial = new ShaderMaterial({
-    vertexShader: document.getElementById("vertexshader").textContent,
-    fragmentShader: document.getElementById("fragmentshader").textContent,
+    vertexShader: vertexshader_,
+    fragmentShader: fragmentshader_,
   });
 
   mesh = new LineSegments(geometry, shaderMaterial);

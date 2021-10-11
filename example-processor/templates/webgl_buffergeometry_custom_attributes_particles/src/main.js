@@ -49,8 +49,8 @@ function init() {
 
   const shaderMaterial = new ShaderMaterial({
     uniforms: uniforms,
-    vertexShader: document.getElementById("vertexshader").textContent,
-    fragmentShader: document.getElementById("fragmentshader").textContent,
+    vertexShader: vertexshader_,
+    fragmentShader: fragmentshader_,
 
     blending: AdditiveBlending,
     depthTest: false,

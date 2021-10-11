@@ -130,13 +130,12 @@ function init() {
 
   shader = shader.replace(
     "#ifdef USE_SHADOWMAP",
-    "#ifdef USE_SHADOWMAP" + document.getElementById("PCSS").textContent
+    "#ifdef USE_SHADOWMAP" + PCSS_
   );
 
   shader = shader.replace(
     "#if defined( SHADOWMAP_TYPE_PCF )",
-    document.getElementById("PCSSGetShadow").textContent +
-      "#if defined( SHADOWMAP_TYPE_PCF )"
+    PCSSGetShadow_ + "#if defined( SHADOWMAP_TYPE_PCF )"
   );
 
   ShaderChunk.shadowmap_pars_fragment = shader;

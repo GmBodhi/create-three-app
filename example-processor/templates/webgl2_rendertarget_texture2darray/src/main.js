@@ -62,12 +62,8 @@ const postProcessMaterial = new ShaderMaterial({
     uDepth: { value: 55 },
     uIntensity: { value: 1.0 },
   },
-  vertexShader: document
-    .getElementById("vertex-postprocess")
-    .textContent.trim(),
-  fragmentShader: document
-    .getElementById("fragment-postprocess")
-    .textContent.trim(),
+  vertexShader: vertexPostprocess_,
+  fragmentShader: fragmentPostprocess_,
 });
 
 var depthStep = 0.4;
@@ -144,8 +140,8 @@ function init() {
           depth: { value: 55 },
           size: { value: new Vector2(planeWidth, planeHeight) },
         },
-        vertexShader: document.getElementById("vs").textContent.trim(),
-        fragmentShader: document.getElementById("fs").textContent.trim(),
+        vertexShader: vs_,
+        fragmentShader: fs_,
       });
 
       var geometry = new PlaneBufferGeometry(planeWidth, planeHeight);

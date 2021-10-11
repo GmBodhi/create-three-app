@@ -179,8 +179,8 @@ function init() {
       color: { value: new Color(0xffffff) },
       pointTexture: { value: texture },
     },
-    vertexShader: document.getElementById("vertexshader").textContent,
-    fragmentShader: document.getElementById("fragmentshader").textContent,
+    vertexShader: vertexshader_,
+    fragmentShader: fragmentshader_,
   });
 
   //

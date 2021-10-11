@@ -171,7 +171,7 @@ function initWater() {
         heightmap: { value: null },
       },
     ]),
-    vertexShader: document.getElementById("waterVertexShader").textContent,
+    vertexShader: waterVertexShader_,
     fragmentShader: ShaderChunk["meshphong_frag"],
   });
 
@@ -226,7 +226,7 @@ function initWater() {
 
   heightmapVariable = gpuCompute.addVariable(
     "heightmap",
-    document.getElementById("heightmapFragmentShader").textContent,
+    heightmapFragmentShader_,
     heightmap0
   );
 
@@ -246,14 +246,13 @@ function initWater() {
   }
 
   // Create compute shader to smooth the water surface and velocity
-  smoothShader = gpuCompute.createShaderMaterial(
-    document.getElementById("smoothFragmentShader").textContent,
-    { smoothTexture: { value: null } }
-  );
+  smoothShader = gpuCompute.createShaderMaterial(smoothFragmentShader_, {
+    smoothTexture: { value: null },
+  });
 
   // Create compute shader to read water level
   readWaterLevelShader = gpuCompute.createShaderMaterial(
-    document.getElementById("readWaterLevelFragmentShader").textContent,
+    readWaterLevelFragmentShader_,
     {
       point1: { value: new Vector2() },
       levelTexture: { value: null },

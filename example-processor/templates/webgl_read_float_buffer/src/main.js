@@ -78,16 +78,14 @@ function init() {
 
   material = new ShaderMaterial({
     uniforms: { time: { value: 0.0 } },
-    vertexShader: document.getElementById("vertexShader").textContent,
-    fragmentShader: document.getElementById("fragment_shader_pass_1")
-      .textContent,
+    vertexShader: vertexShader_,
+    fragmentShader: fragment_shader_pass_1_,
   });
 
   const materialScreen = new ShaderMaterial({
     uniforms: { tDiffuse: { value: rtTexture.texture } },
-    vertexShader: document.getElementById("vertexShader").textContent,
-    fragmentShader: document.getElementById("fragment_shader_screen")
-      .textContent,
+    vertexShader: vertexShader_,
+    fragmentShader: fragment_shader_screen_,
 
     depthWrite: false,
   });

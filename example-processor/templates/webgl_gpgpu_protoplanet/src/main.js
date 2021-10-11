@@ -113,12 +113,12 @@ function initComputeRenderer() {
 
   velocityVariable = gpuCompute.addVariable(
     "textureVelocity",
-    document.getElementById("computeShaderVelocity").textContent,
+    computeShaderVelocity_,
     dtVelocity
   );
   positionVariable = gpuCompute.addVariable(
     "texturePosition",
-    document.getElementById("computeShaderPosition").textContent,
+    computeShaderPosition_,
     dtPosition
   );
 
@@ -197,9 +197,8 @@ function initProtoplanets() {
   // ShaderMaterial
   const material = new ShaderMaterial({
     uniforms: particleUniforms,
-    vertexShader: document.getElementById("particleVertexShader").textContent,
-    fragmentShader: document.getElementById("particleFragmentShader")
-      .textContent,
+    vertexShader: particleVertexShader_,
+    fragmentShader: particleFragmentShader_,
   });
 
   material.extensions.drawBuffers = true;

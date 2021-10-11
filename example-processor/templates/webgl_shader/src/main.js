@@ -36,8 +36,8 @@ function init() {
 
   const material = new ShaderMaterial({
     uniforms: uniforms,
-    vertexShader: document.getElementById("vertexShader").textContent,
-    fragmentShader: document.getElementById("fragmentShader").textContent,
+    vertexShader: vertexShader_,
+    fragmentShader: fragmentShader_,
   });
 
   const mesh = new Mesh(geometry, material);

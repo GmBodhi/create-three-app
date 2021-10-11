@@ -71,7 +71,7 @@ function init() {
   for (let i = 0; i < params.length; i++) {
     const material = new ShaderMaterial({
       uniforms: params[i][1],
-      vertexShader: document.getElementById("vertexShader").textContent,
+      vertexShader: vertexShader_,
       fragmentShader: document.getElementById(params[i][0]).textContent,
     });
 

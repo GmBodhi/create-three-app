@@ -128,8 +128,8 @@ function setupPost() {
   // Setup post processing stage
   postCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
   postMaterial = new ShaderMaterial({
-    vertexShader: document.querySelector("#post-vert").textContent.trim(),
-    fragmentShader: document.querySelector("#post-frag").textContent.trim(),
+    vertexShader: postVert_,
+    fragmentShader: postFrag_,
     uniforms: {
       cameraNear: { value: camera.near },
       cameraFar: { value: camera.far },
