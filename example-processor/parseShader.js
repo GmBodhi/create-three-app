@@ -35,20 +35,10 @@ module.exports = function parseShader(window, name) {
       shaders.map(({ id }) => id.replace(/-(\w)/g, (_, p) => p.toUpperCase()))
     ),
     replace: {
-      regex1: new RegExp(
-        `\\s*document\\s*\\.getElementById\\(\\s*["'](${shaders
-          .map((s) => `${s.id}`)
-          .join("|")})["']\\s*\\)\\s*\\.textContent\\s*`,
-        "ig"
-      ),
-      regex2: new RegExp(
-        `\\s*document\\.querySelector\\(\\s*["']\\#(${shaders
-          .map((s) => `${s.id}`)
-          .join("|")})["']\\s*\\)\\s*\\.textContent\\s*(\\.trim\\(\\))?`,
-        "ig"
-      ),
-      resolveVar: (_, p1) => {
-        return `${p1.replace(/-(\w)/g, (_, p) => p.toUpperCase())}_`;
+      regex:
+        /document\n*\.(querySelector|getElementById)\(\s*['"]#?([^'"]+)['"]\s*\)\n*\.textContent[^,;}]*/gi,
+      resolveVar: (_, _p, p2) => {
+        return `${p2.replace(/-(\w)/g, (_, p) => p.toUpperCase())}_`;
       },
     },
   };

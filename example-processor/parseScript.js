@@ -33,11 +33,7 @@ module.exports = function parseScript(window, addition, replace) {
           /import\s*\*\s*as\s+THREE\s+from\s*("|')three("|')/g,
           subimports
         );
-      if (addition)
-        js.replace(replace.regex1, replace.resolveVar).replace(
-          replace.regex2,
-          replace.resolveVar
-        );
+      if (addition) js.replace(replace.regex, replace.resolveVar);
     });
 
   return js;
