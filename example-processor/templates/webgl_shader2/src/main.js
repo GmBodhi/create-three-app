@@ -1,10 +1,10 @@
 //Shaders
 
-import fragment_shader4 from "./shaders/fragment_shader4.glsl";
-import fragment_shader3 from "./shaders/fragment_shader3.glsl";
-import fragment_shader2 from "./shaders/fragment_shader2.glsl";
-import fragment_shader1 from "./shaders/fragment_shader1.glsl";
-import vertexShader from "./shaders/vertexShader.glsl";
+import fragment_shader4_ from "./shaders/fragment_shader4.glsl";
+import fragment_shader3_ from "./shaders/fragment_shader3.glsl";
+import fragment_shader2_ from "./shaders/fragment_shader2.glsl";
+import fragment_shader1_ from "./shaders/fragment_shader1.glsl";
+import vertexShader_ from "./shaders/vertexShader.glsl";
 
 import "./style.css"; // For webpack support
 

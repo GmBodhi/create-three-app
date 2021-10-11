@@ -1,7 +1,7 @@
 //Shaders
 
-import vertexShaderRaw from "./shaders/vertexShaderRaw.glsl";
-import fragmentShaderRaw from "./shaders/fragmentShaderRaw.glsl";
+import vertexShaderRaw_ from "./shaders/vertexShaderRaw.glsl";
+import fragmentShaderRaw_ from "./shaders/fragmentShaderRaw.glsl";
 
 import "./style.css"; // For webpack support
 

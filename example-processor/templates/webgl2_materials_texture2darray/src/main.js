@@ -1,7 +1,7 @@
 //Shaders
 
-import vs from "./shaders/vs.glsl";
-import fs from "./shaders/fs.glsl";
+import vs_ from "./shaders/vs.glsl";
+import fs_ from "./shaders/fs.glsl";
 
 import "./style.css"; // For webpack support
 

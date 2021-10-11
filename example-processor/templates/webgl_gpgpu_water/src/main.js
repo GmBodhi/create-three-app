@@ -1,9 +1,9 @@
 //Shaders
 
-import heightmapFragmentShader from "./shaders/heightmapFragmentShader.glsl";
-import smoothFragmentShader from "./shaders/smoothFragmentShader.glsl";
-import readWaterLevelFragmentShader from "./shaders/readWaterLevelFragmentShader.glsl";
-import waterVertexShader from "./shaders/waterVertexShader.glsl";
+import heightmapFragmentShader_ from "./shaders/heightmapFragmentShader.glsl";
+import smoothFragmentShader_ from "./shaders/smoothFragmentShader.glsl";
+import readWaterLevelFragmentShader_ from "./shaders/readWaterLevelFragmentShader.glsl";
+import waterVertexShader_ from "./shaders/waterVertexShader.glsl";
 
 import "./style.css"; // For webpack support
 

@@ -1,7 +1,7 @@
 //Shaders
 
-import fragmentShaderPosition from "./shaders/fragmentShaderPosition.glsl";
-import fragmentShaderVelocity from "./shaders/fragmentShaderVelocity.glsl";
+import fragmentShaderPosition_ from "./shaders/fragmentShaderPosition.glsl";
+import fragmentShaderVelocity_ from "./shaders/fragmentShaderVelocity.glsl";
 
 import "./style.css"; // For webpack support
 
