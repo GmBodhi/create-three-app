@@ -14,9 +14,7 @@ async function installDeps(manager, isExample) {
     cwd: path.join(process.cwd(), dir),
   })
     .on("close", () => {
-      console.clear();
       console.log(chalk.green("Dependencies installed..!"));
-      console.clear();
       console.log(
         `${chalk.cyanBright(`\n\n    cd `)}${chalk.yellowBright(dir)}\n`,
         chalk.dim(
