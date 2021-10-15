@@ -104,10 +104,10 @@ function init() {
   );
 
   const fireUV = new Nodes.SpriteSheetUVNode(
-    spriteSheetCount,
-    new Nodes.PointUVNode()
+    spriteSheetCount, // count
+    new Nodes.PointUVNode(), // uv
+    new Nodes.OperatorNode("*", time, particleSpeed) // current frame
   );
-  fireUV.frame = new Nodes.OperatorNode("*", time, particleSpeed);
 
   const fireSprite = new Nodes.TextureNode(fireMap, fireUV);
   const fire = new Nodes.OperatorNode("*", fireSprite, particleIntensity);
