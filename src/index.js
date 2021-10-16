@@ -20,7 +20,6 @@ const downloadFiles = require("./scripts/downloadfiles");
 const dir = process.argv[2] || "my-three-app";
 
 (async () => {
-
   const config = await getConfig(domain).catch((e) =>
     console.log(
       chalk.red("An error occurred while fetching the config file"),
@@ -36,26 +35,24 @@ const dir = process.argv[2] || "my-three-app";
     message: "Which example do you want to use?",
     choices: examples,
   })
-    .run().catch((e) => console.log(chalk.red("Process aborted"), e));
+    .run()
+    .catch((e) => console.log(chalk.red("Process aborted"), e));
 
   if (threeExamples.includes(example)) {
-
-    if (!existsSync(dir))
-      mkdirSync(dir);
+    if (!existsSync(dir)) mkdirSync(dir);
 
     checkYarn().then(init);
 
     downloadFiles(example, config[example], domain).then(manageDir);
-
   } else {
-
     const config = await getExamplesConfig(domain);
 
     const res = await new AutoComplete({
       name: "Example",
       message: "Select example",
       choices: Object.keys(config),
-    }).run()
+    })
+      .run()
       .catch((e) => console.error(chalk.red("Process aborted"), e));
 
     console.log(
@@ -67,7 +64,5 @@ const dir = process.argv[2] || "my-three-app";
     }
     checkYarn().then((answer) => init(answer, true));
     downloadFiles(res, config[res], domain, true).then(manageDir);
-
   }
-
-})()
+})();
