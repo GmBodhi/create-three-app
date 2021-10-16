@@ -2,3 +2,4 @@ examples/
 generateConfig.js
 .github
 example-processor/
+./utils/

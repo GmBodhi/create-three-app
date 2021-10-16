@@ -19,52 +19,55 @@ const downloadFiles = require("./scripts/downloadfiles");
 
 const dir = process.argv[2] || "my-three-app";
 
-getConfig(domain)
-  .then((config) => {
-    const threeExamples = Object.keys(config);
-    const examples = [...threeExamples, "Select from threejs examples"];
+(async () => {
 
-    new AutoComplete({
-      name: "Example",
-      message: "Which example do you want to use?",
-      choices: examples,
-    })
-      .run()
-      .then((example) => {
-        if (threeExamples.includes(example)) {
-          if (!existsSync(dir)) {
-            mkdirSync(dir);
-          }
-          checkYarn().then(init);
-          downloadFiles(example, config[example], domain).then(manageDir);
-        } else {
-          getExamplesConfig(domain).then((config) => {
-            new AutoComplete({
-              name: "Example",
-              message: "Select example",
-              choices: Object.keys(config),
-            })
-              .run()
-              .then((res) => {
-                console.log(
-                  chalk.yellowBright("Note: "),
-                  "Using an example from three.js may cause unresolved resource urls, which you may have to resolve..."
-                );
-                if (!existsSync(dir)) {
-                  mkdirSync(dir);
-                }
-                checkYarn().then((answer) => init(answer, true));
-                downloadFiles(res, config[res], domain, true).then(manageDir);
-              })
-              .catch((e) => console.error(chalk.red("Process aborted"), e));
-          });
-        }
-      })
-      .catch((e) => console.log(chalk.red("Process aborted"), e));
-  })
-  .catch((e) =>
+  const config = await getConfig(domain).catch((e) =>
     console.log(
       chalk.red("An error occurred while fetching the config file"),
       e
     )
   );
+
+  const threeExamples = Object.keys(config);
+  const examples = [...threeExamples, "Select from threejs examples"];
+
+  const example = await new AutoComplete({
+    name: "Example",
+    message: "Which example do you want to use?",
+    choices: examples,
+  })
+    .run().catch((e) => console.log(chalk.red("Process aborted"), e));
+
+  if (threeExamples.includes(example)) {
+
+    if (!existsSync(dir))
+      mkdirSync(dir);
+
+    checkYarn().then(init);
+
+    downloadFiles(example, config[example], domain).then(manageDir);
+
+  } else {
+
+    const config = await getExamplesConfig(domain);
+
+    const res = await new AutoComplete({
+      name: "Example",
+      message: "Select example",
+      choices: Object.keys(config),
+    }).run()
+      .catch((e) => console.error(chalk.red("Process aborted"), e));
+
+    console.log(
+      chalk.yellowBright("Note: "),
+      "Using an example from three.js may cause unresolved resource urls, which you may have to resolve..."
+    );
+    if (!existsSync(dir)) {
+      mkdirSync(dir);
+    }
+    checkYarn().then((answer) => init(answer, true));
+    downloadFiles(res, config[res], domain, true).then(manageDir);
+
+  }
+
+})()
