@@ -19,7 +19,7 @@ import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
-import { add } from "three/examples/jsm/renderers/nodes/ShaderNode.js";
+import { addTo } from "three/examples/jsm/renderers/nodes/ShaderNode.js";
 
 let camera, scene, renderer;
 
@@ -82,11 +82,11 @@ async function init() {
   const customLightingModel = new Nodes.ShaderNode((inputs) => {
     const { lightColor, directDiffuse } = inputs;
 
-    directDiffuse.value = add(directDiffuse.value, lightColor);
+    addTo(directDiffuse, lightColor);
   });
 
   const lightingModelContext = new Nodes.ContextNode(allLightsNode);
-  lightingModelContext.setContextValue("lightingModel", customLightingModel);
+  lightingModelContext.context.lightingModel = customLightingModel;
 
   materialPoints.lightNode = lightingModelContext;
 
