@@ -23,21 +23,7 @@ function manageDir(directory, json, target = "") {
   });
 }
 
-fs.readdirSync(path.join(__dirname, "examples"), {
-  withFileTypes: true,
-}).forEach(function (file) {
-  if (file.isDirectory()) {
-    config[file.name] = { files: {}, dirs: [] };
-    return manageDir(
-      path.join(__dirname, "examples", file.name),
-      config[file.name],
-      ""
-    );
-  }
-  return;
-});
-saveFile(config);
-function saveFile(json) {
+function saveFile(json, dir) {
   let file = Object.fromEntries(
     Object.entries(json).filter((val) => {
       val[1].dirs = val[1].dirs.sort(
@@ -46,6 +32,26 @@ function saveFile(json) {
       return true;
     })
   );
-  fs.writeFileSync("./examples/config.json", JSON.stringify(file));
+  fs.writeFileSync(`${dir}/config.json`, JSON.stringify(file));
 }
+["./examples", "utils"].forEach(d => {
+  config = {};
+
+  fs.readdirSync(path.join(__dirname, d), {
+    withFileTypes: true,
+  }).forEach(function (file) {
+    if (file.isDirectory()) {
+      config[file.name] = { files: {}, dirs: [] };
+      return manageDir(
+        path.join(__dirname, d, file.name),
+      config[file.name],
+      ""
+      );
+    }
+    return;
+  });
+  
+saveFile(config, d);
+})
+
 // END OF FILE //

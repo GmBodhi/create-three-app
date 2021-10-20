@@ -2,7 +2,6 @@ const CopyWebpackPlugin = require("copy-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCSSExtractPlugin = require("mini-css-extract-plugin");
 const path = require("path");
-const portFinderSync = require("portfinder-sync");
 
 module.exports = {
   entry: path.resolve(__dirname, "../src/main.js"),
@@ -10,25 +9,14 @@ module.exports = {
     filename: "bundle.[contenthash].js",
     path: path.resolve(__dirname, "../dist"),
   },
-  stats: {
-    children: true,
-  },
   devtool: "source-map",
-  devServer: {
-    host: "localhost",
-    port: portFinderSync.getPort(8080),
-    open: true,
-    https: false,
-    client: {
-      overlay: true,
-    },
-  },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [{ from: path.resolve(__dirname, "../static") }],
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "../src/index.html"),
+      minify: true,
     }),
     new MiniCSSExtractPlugin(),
   ],
@@ -56,14 +44,29 @@ module.exports = {
       // Images
       {
         test: /\.(jpg|png|gif|svg)$/,
-        use: "file-loader",
+        type: "asset/resource",
+        generator: {
+          filename: "assets/images/[hash][ext]",
+        },
       },
 
       // Fonts
       {
         test: /\.(ttf|eot|woff|woff2)$/,
-        use: "file-loader",
+        type: "asset/resource",
+        generator: {
+          filename: "assets/fonts/[hash][ext]",
+        },
+      },
+
+      // Shaders
+      {
+        test: /\.(glsl|vs|fs|vert|frag)$/,
+        exclude: /node_modules/,
+        use: ["raw-loader", "glslify-loader"],
       },
     ],
   },
 };
+
+// Adapted from https://github.com/brunosimon/threejs-template-complex
