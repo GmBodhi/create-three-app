@@ -1,15 +1,15 @@
 {
   "common": {
-    "files": { "example.json": "", "favicon.ico": "" },
+    "files": { "example.json": "static", "favicon.ico": "static" },
     "dirs": ["/static"]
   },
   "parcel": { "files": { "package.json": "" }, "dirs": [] },
   "webpack": {
     "files": {
       ".gitkeep": "",
-      "webpack.common.js": "",
-      "webpack.dev.js": "",
-      "webpack.prod.js": "",
+      "webpack.common.js": "bundler",
+      "webpack.dev.js": "bundler",
+      "webpack.prod.js": "bundler",
       "package.json": ""
     },
     "dirs": ["/bundler"]

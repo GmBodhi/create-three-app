@@ -1,3 +1,5 @@
 node_modules
 .gitpod.yml
 res/
+waste.js
+tests

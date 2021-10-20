@@ -3,22 +3,23 @@ const path = require("path");
 
 // DON'T EDIT OR DELETE THIS FILE. //
 let config = {};
-function manageDir(directory, json, target = "") {
+function manageDir(directory, json, target = "", relative) {
   fs.readdirSync(directory, { withFileTypes: true }).forEach((file) => {
     if (file.isDirectory()) {
       manageDir(
         path.join(directory, file.name),
         json,
-        target + "/" + file.name
+        target + "/" + file.name,
+        relative
       );
       if (!json["dirs"].includes(target + "/" + file.name))
         json["dirs"].unshift(target + "/" + file.name);
     } else {
       let dir = path.relative(
-        path.join(__dirname, "examples"),
+        path.join(__dirname, relative),
         path.join(directory)
       );
-      json["files"][file.name] = dir.split("\\").slice(1).join("/");
+      json["files"][file.name] = dir.split(/\\|\//g).slice(1).join("/");
     }
   });
 }
@@ -34,7 +35,7 @@ function saveFile(json, dir) {
   );
   fs.writeFileSync(`${dir}/config.json`, JSON.stringify(file));
 }
-["./examples", "utils"].forEach(d => {
+["./examples", "utils"].forEach((d) => {
   config = {};
 
   fs.readdirSync(path.join(__dirname, d), {
@@ -44,14 +45,15 @@ function saveFile(json, dir) {
       config[file.name] = { files: {}, dirs: [] };
       return manageDir(
         path.join(__dirname, d, file.name),
-      config[file.name],
-      ""
+        config[file.name],
+        "",
+        d
       );
     }
     return;
   });
-  
-saveFile(config, d);
-})
+
+  saveFile(config, d);
+});
 
 // END OF FILE //
