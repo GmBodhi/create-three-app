@@ -1,1 +1,1 @@
-{"common":{"files":{"example.json":"","favicon.ico":""},"dirs":["/static"]},"parcel":{"files":{"package.json":""},"dirs":[]},"webpack":{"files":{".gitkeep":"","webpack.common.js":"","webpack.dev.js":"","webpack.prod.js":"","package.json":""},"dirs":["/bundler"]}}
+{"common":{"files":{"example.json":"static","favicon.ico":"static"},"dirs":["/static"]},"parcel":{"files":{"package.json":""},"dirs":[]},"webpack":{"files":{".gitkeep":"","webpack.common.js":"bundler","webpack.dev.js":"bundler","webpack.prod.js":"bundler","package.json":""},"dirs":["/bundler"]}}
