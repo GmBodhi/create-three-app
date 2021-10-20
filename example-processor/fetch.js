@@ -4,8 +4,6 @@ const parseScript = require("./parseScript");
 const parseShader = require("./parseShader");
 const parseStyle = require("./parseStyle");
 const parseHtml = require("./parseHtml");
-const moveDir = require("./moveDir");
-const path = require("path");
 const puppeteer = require("puppeteer");
 const { JSDOM } = require("jsdom");
 const { format } = require("prettier");
@@ -80,7 +78,6 @@ module.exports.fetch = async function (url, name) {
     format(style, { parser: "css" })
   );
 
-  moveDir(path.resolve(__dirname, "utils"), `./templates/${name}`);
 
   console.log(chalk.blue("Finished: ", name));
   return;
