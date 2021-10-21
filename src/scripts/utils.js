@@ -47,7 +47,7 @@ async function download(url, dest) {
     return error(`Server responded with ${res.status}: ${res.statusText}`);
   }
   const fileStream = fs.createWriteStream(dest);
-  await new Promise((resolve, reject) => {
+  return await new Promise((resolve, reject) => {
     res.body.pipe(fileStream);
     res.body.on("error", reject);
     fileStream.on("finish", resolve);
@@ -180,7 +180,7 @@ module.exports.resolveUrl = function resolveUrl(
       ? "example-processor/templates/"
       : type === consts.pathTypes.BASIC
       ? "examples/"
-      : "utils";
+      : "utils/";
   };
   return `${domain}${path()}${example}/${url ? url + "/" : ""}${file}`;
 };

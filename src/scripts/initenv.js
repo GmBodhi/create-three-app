@@ -45,15 +45,18 @@ async function installDeps(manager, dir, isExample) {
  */
 
 const init = (manager, dir, isExample = false) => {
-  spawn("npm", ["init", "-y"], {
-    cwd: path.join(process.cwd(), dir),
-  })
-    .on("exit", () => {
-      installDeps(manager, dir, isExample);
+  return new Promise((resolve, reject) => {
+    spawn("npm", ["init", "-y"], {
+      cwd: path.join(process.cwd(), dir),
     })
-    .on("error", (e) => {
-      error(e);
-    });
+      .on("exit", () => {
+        installDeps(manager, dir, isExample).then(() => resolve);
+      })
+      .on("error", (e) => {
+        reject(e);
+        error(e);
+      });
+  });
 };
 
 module.exports = init;

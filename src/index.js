@@ -70,8 +70,6 @@ const { selectTemplate } = require("./scripts/promtTemplate");
 
   //
 
-  init(useNpm ? "npm" : await checkYarn(), dir, isExample);
-
   let tempDir = mkdtempSync("create-three-app-cache-");
   const bundlerConfigs = await getBundlersConfig();
 
@@ -80,40 +78,40 @@ const { selectTemplate } = require("./scripts/promtTemplate");
   //
 
   //Download the common files
-  downloadFiles(
+
+  await downloadFiles(
     "common",
     bundlerConfigs["common"],
     tempDir,
-    dir,
     domain,
     consts.pathTypes.UTILS
-  )
-    // Move files to target dir
-    .then(manageDir);
+  );
 
   //Download the bundler files
-  downloadFiles(
+
+  await downloadFiles(
     bundler,
     bundlerConfigs[bundler],
     tempDir,
-    dir,
     domain,
     consts.pathTypes.UTILS
-  )
-    // Move files to target dir
-    .then(manageDir);
+  );
 
   // Download template
-  downloadFiles(
+
+  await downloadFiles(
     name,
     example,
     tempDir,
-    dir,
     domain,
     isExample ? consts.pathTypes.EXAMPLE : consts.pathTypes.BASIC
-  )
-    // Move files to target dir
-    .then(manageDir);
+  );
+
+  manageDir(tempDir, dir);
+
+  await init(useNpm ? "npm" : await checkYarn(), dir, isExample);
+
+  rimraf.sync(tempDir);
 
   //
 })();
