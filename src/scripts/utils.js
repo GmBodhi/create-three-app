@@ -151,7 +151,7 @@ module.exports.resolveArgs = async function resolveArgs() {
       `Provided bundler (${chalk.yellowBright(
         _bundler
       )}) could not be found in the available bundlers: \n${chalk.greenBright(
-        bundlers.join("\n")
+        bundlers.filter(b => b !== "common").join("\n")
       )}\nRun with ${chalk.red("--help")} flag, to see available commands.`
     );
 
