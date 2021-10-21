@@ -4,6 +4,7 @@ const fs = require("fs");
 const spawn = require("cross-spawn");
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
+const { help, version } = require("./help");
 
 //
 // Cache
@@ -41,7 +42,7 @@ module.exports.error = error;
 //
 
 async function download(url, dest) {
-  const res = await fetch(url, {});
+  const res = await fetch(url);
   if (!res.ok) {
     console.log(url);
     return error(`Server responded with ${res.status}: ${res.statusText}`);
@@ -71,7 +72,7 @@ module.exports.domain = domain;
 async function getBasicConfig() {
   if (cache.has(consts.pathTypes.BASIC))
     return cache.get(consts.pathTypes.BASIC);
-  const res = await fetch(domain + "examples/config.json", {}).then((res) =>
+  const res = await fetch(domain + "examples/config.json").then((res) =>
     res.json()
   );
   cache.set(consts.pathTypes.BASIC, res);
@@ -87,8 +88,7 @@ async function getExamplesConfig() {
   if (cache.has(consts.pathTypes.EXAMPLE))
     return cache.get(consts.pathTypes.EXAMPLE);
   const res = await fetch(
-    `${domain}example-processor/templates/config.json`,
-    {}
+    `${domain}example-processor/templates/config.json`
   ).then((res) => res.json());
 
   cache.set(consts.pathTypes.EXAMPLE, res);
@@ -104,7 +104,7 @@ module.exports.getExamplesConfig = getExamplesConfig;
 async function getBundlersConfig() {
   if (cache.has(consts.pathTypes.UTILS))
     return cache.get(consts.pathTypes.UTILS);
-  const res = await fetch(`${domain}utils/config.json`, {}).then((res) =>
+  const res = await fetch(`${domain}utils/config.json`).then((res) =>
     res.json()
   );
   cache.set(consts.pathTypes.UTILS, res);
@@ -135,9 +135,11 @@ module.exports.checkYarn = function checkYarn() {
 //
 
 module.exports.resolveArgs = async function resolveArgs() {
-  const args =
-    yargs(hideBin(process.argv)).argv ||
-    (await yargs(hideBin(process.argv)).argv);
+  const args = yargs(hideBin(process.argv)).version(false).help(false).argv; //||
+  // (await yargs(hideBin(process.argv)).version(false).help(false).argv);
+
+  if (args.help || args.h) help();
+  else if (args.v || args.version) version();
 
   const _example = args.example || args.e;
   const _bundler = args.bundler || args.b || "webpack";
@@ -190,3 +192,19 @@ module.exports.resolveUrl = function resolveUrl(
 //
 
 module.exports.dirIsEmpty = (dir) => fs.readdirSync(dir).length === 0;
+
+//
+// Check for new version
+//
+
+module.exports.checkForUpdates = async function checkForUpdates() {
+  const res = await fetch(
+    "https://registry.npmjs.org/-/package/create-three-app/dist-tags"
+  ).then((r) => r.json());
+  const current = require("../../package.json").version;
+  if (res.latest !== current)
+    return error(
+      `You current version (${current}) need to be updated to ${res.latest}\n We don't support global installs.`
+    );
+  return;
+};

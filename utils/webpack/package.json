@@ -1,5 +1,6 @@
 {
   "description": "App made with create-three-app",
+  "private": true,
   "repository": "#",
   "license": "UNLICENSED",
   "scripts": {
