@@ -135,13 +135,14 @@ module.exports.checkYarn = function checkYarn() {
 //
 
 module.exports.resolveArgs = async function resolveArgs() {
-  const args = yargs(hideBin(process.argv)).version(false).help(false).argv; //||
+  const args = yargs(hideBin(process.argv)).help(false).argv; //||
   // (await yargs(hideBin(process.argv)).version(false).help(false).argv);
 
   if (args.help || args.h) help();
-  else if (args.v || args.version) version();
+  else if (args.v) version();
 
   const _example = args.example || args.e;
+  const _template = args.template || args.t;
   const _bundler = args.bundler || args.b || "webpack";
 
   const bundlers = Object.keys(await getBundlersConfig());
@@ -151,14 +152,14 @@ module.exports.resolveArgs = async function resolveArgs() {
       `Provided bundler (${chalk.yellowBright(
         _bundler
       )}) could not be found in the available bundlers: \n${chalk.greenBright(
-        bundlers.filter(b => b !== "common").join("\n")
+        bundlers.filter((b) => b !== "common").join("\n")
       )}\nRun with ${chalk.red("--help")} flag, to see available commands.`
     );
 
   const configs = {
     dir: args._[0] || "my-three-app",
-    isExample: _example,
-    template: args.template || args.t,
+    isExample: _example && !_template,
+    template: _template || _example,
     bundler: _bundler,
     force: args.force || args.f,
     useNpm: args.preferNpm,
