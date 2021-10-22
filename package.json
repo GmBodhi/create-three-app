@@ -1,6 +1,6 @@
 {
   "name": "create-three-app",
-  "version": "2.0.6",
+  "version": "3.0.0",
   "description": "Create basic three.js project from three.js/examples or some predefined basic setup",
   "main": "src/index.js",
   "scripts": {
@@ -9,7 +9,6 @@
     "config": "node generateConfig",
     "format": "prettier --write ."
   },
-  "author": "",
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
@@ -20,8 +19,7 @@
     "yargs": "^17.2.1"
   },
   "bin": {
-    "create-three-app": "./src/index.js",
-    "cta": "./waste.js"
+    "create-three-app": "./src/index.js"
   },
   "publishConfig": {
     "access": "public"

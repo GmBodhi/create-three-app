@@ -47,7 +47,7 @@ module.exports.download = download;
 //
 
 const domain =
-  "https://raw.githubusercontent.com/GmBodhi/create-three-app/feat/webpack/";
+  "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/";
 
 module.exports.domain = domain;
 
