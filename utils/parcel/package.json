@@ -9,8 +9,7 @@
     "dev": "parcel ./src/index.html"
   },
   "dependencies": {
-    "three": "^0.132.2",
-    "stats.js": "^0.17.0"
+    "three": "^0.132.2"
   },
   "devDependencies": {
     "parcel": "2.0.0"
