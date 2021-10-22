@@ -78,7 +78,6 @@ module.exports.fetch = async function (url, name) {
     format(style, { parser: "css" })
   );
 
-
   console.log(chalk.blue("Finished: ", name));
   return;
 };

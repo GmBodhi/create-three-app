@@ -5,27 +5,13 @@ const spawn = require("cross-spawn");
 const yargs = require("yargs/yargs");
 const { hideBin } = require("yargs/helpers");
 const { help, version } = require("./help");
+const consts = require("./constants");
 
 //
 // Cache
 //
 
 const cache = new Map();
-
-//
-// Constants
-//
-
-const consts = {
-  // Type of the template
-  pathTypes: {
-    UTILS: 0,
-    EXAMPLE: 1,
-    BASIC: 2,
-  },
-};
-
-module.exports.consts = consts;
 
 //
 // Error utils

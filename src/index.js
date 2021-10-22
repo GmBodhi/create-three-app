@@ -18,7 +18,6 @@ const {
   domain,
   checkYarn,
   resolveArgs,
-  consts,
   dirIsEmpty,
   error,
   getBundlersConfig,
@@ -28,13 +27,13 @@ const init = require("./scripts/initenv");
 const manageDir = require("./scripts/movedir");
 const downloadFiles = require("./scripts/downloadfiles");
 const { selectTemplate } = require("./scripts/promtTemplate");
+const consts = require("./scripts/constants");
 
 //
 
 (async () => {
   //
 
-  
   const {
     dir,
     isExample: _isExample,
@@ -43,9 +42,9 @@ const { selectTemplate } = require("./scripts/promtTemplate");
     force,
     useNpm,
   } = await resolveArgs();
-  
+
   await checkForUpdates();
-  
+
   // Ask for the template; will consider the cli arg if present
   const { isExample, example, name } = await selectTemplate({
     isExample: _isExample,
@@ -70,7 +69,9 @@ const { selectTemplate } = require("./scripts/promtTemplate");
           )} flag to delete all the files in it.`
         );
       else {
-        console.log(`${chalk.redBright("force flag is enabled")} Deleting ${dir}...\r`);
+        console.log(
+          `${chalk.redBright("force flag is enabled")} Deleting ${dir}...\r`
+        );
         rimraf.sync(dir);
         mkdirSync(dir);
       }
