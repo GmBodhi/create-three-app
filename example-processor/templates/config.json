@@ -1,1 +1,1767 @@
-{"css2d_label":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"css3d_molecules":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"css3d_orthographic":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"css3d_periodictable":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"css3d_sandbox":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"css3d_sprites":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"css3d_youtube":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"games_fps":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_animation_groups":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_animation_keys":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_boxselection":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_controls_arcball":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_controls_drag":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_controls_fly":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_controls_map":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_controls_orbit":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_controls_pointerlock":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_controls_trackball":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_controls_transform":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_exporter_collada":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_exporter_draco":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_exporter_gltf":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_exporter_obj":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_exporter_ply":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_exporter_stl":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_exporter_usdz":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_lookat":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"misc_uv_tests":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"physics_ammo_break":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"physics_ammo_cloth":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"physics_ammo_instancing":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"physics_ammo_rope":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"physics_ammo_terrain":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"physics_ammo_volume":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"physics_oimo_instancing":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"svg_lines":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"svg_sandbox":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webaudio_orientation":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webaudio_sandbox":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webaudio_timing":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webaudio_visualizer":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl2_buffergeometry_attributes_integer":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl2_materials_texture2darray":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fs.glsl":"src/shaders","vs.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl2_materials_texture3d":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl2_materials_texture3d_partialupdate":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl2_multiple_rendertargets":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","gbufferFrag.glsl":"src/shaders","gbufferVert.glsl":"src/shaders","renderFrag.glsl":"src/shaders","renderVert.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl2_multisampled_renderbuffers":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl2_rendertarget_texture2darray":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentPostprocess.glsl":"src/shaders","fs.glsl":"src/shaders","vertexPostprocess.glsl":"src/shaders","vs.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl2_volume_cloud":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl2_volume_instancing":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl2_volume_perlin":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_animation_keyframes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_animation_multiple":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_animation_skinning_additive_blending":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_animation_skinning_blending":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_animation_skinning_morph":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_compression":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_custom_attributes_particles":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_buffergeometry_drawrange":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_glbufferattribute":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_indexed":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_instancing":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_buffergeometry_instancing_billboards":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fshader.glsl":"src/shaders","vshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_buffergeometry_instancing_interleaved":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_lines":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_lines_indexed":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_points":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_points_interleaved":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_buffergeometry_rawshader":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_buffergeometry_selective_draw":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_buffergeometry_uint":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_camera":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_camera_array":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_camera_cinematic":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_camera_logarithmicdepthbuffer":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_clipping":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_clipping_advanced":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_clipping_intersection":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_clipping_stencil":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_custom_attributes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_custom_attributes_lines":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_custom_attributes_points":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_custom_attributes_points2":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_custom_attributes_points3":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_decals":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_depth_texture":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","postFrag.glsl":"src/shaders","postVert.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_effects_anaglyph":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_effects_ascii":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_effects_parallaxbarrier":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_effects_peppersghost":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_effects_stereo":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_framebuffer_texture":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_furnace_test":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometries":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometries_parametric":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_colors":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_colors_lookuptable":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_convex":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_cube":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_dynamic":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_extrude_shapes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_extrude_shapes2":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_extrude_splines":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_minecraft":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_nurbs":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_shapes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_spline_editor":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_teapot":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_terrain":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_terrain_raycast":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_text":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_text_shapes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_geometry_text_stroke":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_gpgpu_birds":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","birdFS.glsl":"src/shaders","birdVS.glsl":"src/shaders","fragmentShaderPosition.glsl":"src/shaders","fragmentShaderVelocity.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_gpgpu_birds_gltf":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShaderPosition.glsl":"src/shaders","fragmentShaderVelocity.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_gpgpu_protoplanet":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","computeShaderPosition.glsl":"src/shaders","computeShaderVelocity.glsl":"src/shaders","particleFragmentShader.glsl":"src/shaders","particleVertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_gpgpu_water":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","heightmapFragmentShader.glsl":"src/shaders","readWaterLevelFragmentShader.glsl":"src/shaders","smoothFragmentShader.glsl":"src/shaders","waterVertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_helpers":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_instancing_dynamic":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_instancing_modified":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_instancing_performance":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_instancing_raycast":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_instancing_scatter":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_interactive_buffergeometry":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_interactive_cubes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_interactive_cubes_gpu":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_interactive_cubes_ortho":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_interactive_lines":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_interactive_points":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_interactive_raycasting_points":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_interactive_voxelpainter":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_layers":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lensflares":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lightningstrike":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lightprobe":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lightprobe_cubecamera":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lights_hemisphere":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_lights_physical":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lights_pointlights":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lights_rectarealight":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lights_spotlight":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lights_spotlights":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lines_colors":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lines_dashed":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lines_fat":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lines_fat_wireframe":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lines_sphere":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_3dm":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_3ds":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_3mf":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_3mf_materials":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_amf":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_bvh":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_collada":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_collada_kinematics":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_collada_skinning":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_draco":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_fbx":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_fbx_nurbs":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_gcode":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_gltf":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_gltf_compressed":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_gltf_sheen":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_gltf_transmission":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_gltf_variants":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_ifc":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_imagebitmap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_kmz":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_ldraw":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_lwo":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_md2":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_md2_control":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_mdd":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_mmd":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_mmd_audio":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_mmd_pose":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_nrrd":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_obj":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_obj_mtl":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_pcd":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_pdb":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_ply":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_prwm":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_stl":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_svg":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_basis":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_dds":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_exr":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_hdr":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_ktx":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_ktx2":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_lottie":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_pvrtc":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_rgbm":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_texture_tga":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_tilt":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_ttf":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_vox":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_vrm":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_vrml":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_vtk":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_loader_xyz":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_lod":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_marchingcubes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_blending":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_blending_custom":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_bumpmap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_car":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_channels":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_compile":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_cubemap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_cubemap_dynamic":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_cubemap_mipmaps":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_cubemap_refraction":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_curvature":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShaderRaw.glsl":"src/shaders","vertexShaderRaw.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_materials_displacementmap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_envmaps":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_envmaps_exr":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_envmaps_hdr":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_envmaps_hdr_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_envmaps_pmrem_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_instance_uniform_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_lightmap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_materials_matcap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_modified":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_normalmap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_normalmap_object_space":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_physical_clearcoat":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_physical_reflectivity":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_physical_transmission":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_standard":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_standard_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_subsurface_scattering":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_texture_anisotropy":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_texture_canvas":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_texture_filters":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_texture_manualmipmap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_texture_partialupdate":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_texture_rotation":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_variations_basic":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_variations_lambert":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_variations_phong":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_variations_physical":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_variations_standard":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_variations_toon":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_video":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_video_webcam":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_materials_wireframe":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_math_obb":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_math_orientation_transform":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_mirror":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_mirror_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_modifier_curve":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_modifier_curve_instanced":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_modifier_edgesplit":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_modifier_simplifier":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_modifier_tessellation":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_morphtargets":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_morphtargets_face":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_morphtargets_horse":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_morphtargets_sphere":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_multiple_canvases_circle":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_multiple_canvases_complex":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_multiple_canvases_grid":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_multiple_elements":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_multiple_elements_text":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_multiple_renderers":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_multiple_scenes_comparison":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_multiple_views":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_panorama_cube":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_panorama_equirectangular":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_performance":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_performance_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_performance_static":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_pmrem_test":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_points_billboards":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_points_dynamic":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_points_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_points_sprites":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_points_waves":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_portal":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_3dlut":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_advanced":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_afterimage":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_backgrounds":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_crossfade":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_dof":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_dof2":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_fxaa":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_glitch":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_godrays":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_masking":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_nodes_pass":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_outline":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_pixel":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_procedural":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","noiseRandom1DFrag.glsl":"src/shaders","noiseRandom2DFrag.glsl":"src/shaders","noiseRandom3DFrag.glsl":"src/shaders","proceduralVert.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_postprocessing_rgb_halftone":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_sao":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_smaa":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_sobel":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_ssaa":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_ssao":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_ssr":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_ssrr":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_taa":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_unreal_bloom":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_postprocessing_unreal_bloom_selective":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentshader.glsl":"src/shaders","vertexshader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_raycast_sprite":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_raycast_texture":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_raymarching_reflect":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragment_shader.glsl":"src/shaders","vertex_shader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_read_float_buffer":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragment_shader_pass_1.glsl":"src/shaders","fragment_shader_screen.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_refraction":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_rtt":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragment_shader_pass_1.glsl":"src/shaders","fragment_shader_screen.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_shader":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_shader2":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragment_shader1.glsl":"src/shaders","fragment_shader2.glsl":"src/shaders","fragment_shader3.glsl":"src/shaders","fragment_shader4.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_shader_lava":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_shaders_ocean":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shaders_sky":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shaders_tonemapping":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shadow_contact":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shadowmap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shadowmap_csm":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shadowmap_pcss":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","PCSS.glsl":"src/shaders","PCSSGetShadow.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_shadowmap_performance":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shadowmap_pointlight":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shadowmap_progressive":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shadowmap_viewer":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shadowmap_vsm":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_shadowmesh":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_simple_gi":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_skinning_simple":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_sprites":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_sprites_nodes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_test_memory":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_test_memory2":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fragmentShader.glsl":"src/shaders","vertexShader.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_tiled_forward":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_tonemapping":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_trails":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_video_kinect":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","fs.glsl":"src/shaders","vs.glsl":"src/shaders","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler","/src/shaders"]},"webgl_video_panorama_equirectangular":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_water":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_water_flowmap":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgl_worker_offscreencanvas":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgpu_compute":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgpu_instance_uniform":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgpu_lights_custom":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgpu_lights_selective":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgpu_materials":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgpu_rtt":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgpu_sandbox":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgpu_skinning":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webgpu_skinning_points":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_ar_cones":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_ar_hittest":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_ar_lighting":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_ar_paint":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_ballshooter":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_cubes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_dragging":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_handinput":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_handinput_cubes":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_handinput_pointerclick":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_handinput_pointerdrag":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_handinput_pressbutton":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_handinput_profiles":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_haptics":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_layers":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_paint":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_panorama":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_panorama_depth":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_rollercoaster":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_sandbox":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_sculpt":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]},"webxr_vr_video":{"files":{"webpack.js":"bundler","package.json":"","index.html":"src","main.js":"src","style.css":"src","example.json":"static","favicon.ico":"static"},"dirs":["/static","/src","/bundler"]}}
+{
+  "css2d_label": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "css3d_molecules": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "css3d_orthographic": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "css3d_periodictable": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "css3d_sandbox": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "css3d_sprites": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "css3d_youtube": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "games_fps": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_animation_groups": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_animation_keys": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_boxselection": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_controls_arcball": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_controls_drag": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_controls_fly": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_controls_map": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_controls_orbit": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_controls_pointerlock": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_controls_trackball": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_controls_transform": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_exporter_collada": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_exporter_draco": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_exporter_gltf": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_exporter_obj": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_exporter_ply": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_exporter_stl": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_exporter_usdz": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_lookat": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "misc_uv_tests": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "physics_ammo_break": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "physics_ammo_cloth": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "physics_ammo_instancing": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "physics_ammo_rope": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "physics_ammo_terrain": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "physics_ammo_volume": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "physics_oimo_instancing": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "svg_lines": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "svg_sandbox": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webaudio_orientation": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webaudio_sandbox": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webaudio_timing": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webaudio_visualizer": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl2_buffergeometry_attributes_integer": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl2_materials_texture2darray": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fs.glsl": "src/shaders",
+      "vs.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl2_materials_texture3d": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl2_materials_texture3d_partialupdate": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl2_multiple_rendertargets": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "gbufferFrag.glsl": "src/shaders",
+      "gbufferVert.glsl": "src/shaders",
+      "renderFrag.glsl": "src/shaders",
+      "renderVert.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl2_multisampled_renderbuffers": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl2_rendertarget_texture2darray": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentPostprocess.glsl": "src/shaders",
+      "fs.glsl": "src/shaders",
+      "vertexPostprocess.glsl": "src/shaders",
+      "vs.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl2_volume_cloud": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl2_volume_instancing": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl2_volume_perlin": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_animation_keyframes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_animation_multiple": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_animation_skinning_additive_blending": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_animation_skinning_blending": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_animation_skinning_morph": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_compression": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_custom_attributes_particles": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_buffergeometry_drawrange": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_glbufferattribute": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_indexed": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_instancing": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_buffergeometry_instancing_billboards": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fshader.glsl": "src/shaders",
+      "vshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_buffergeometry_instancing_interleaved": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_lines": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_lines_indexed": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_points": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_points_interleaved": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_buffergeometry_rawshader": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_buffergeometry_selective_draw": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_buffergeometry_uint": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_camera": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_camera_array": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_camera_cinematic": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_camera_logarithmicdepthbuffer": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_clipping": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_clipping_advanced": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_clipping_intersection": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_clipping_stencil": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_custom_attributes": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_custom_attributes_lines": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_custom_attributes_points": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_custom_attributes_points2": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_custom_attributes_points3": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_decals": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_depth_texture": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "postFrag.glsl": "src/shaders",
+      "postVert.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_effects_anaglyph": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_effects_ascii": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_effects_parallaxbarrier": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_effects_peppersghost": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_effects_stereo": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_framebuffer_texture": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_furnace_test": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometries": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometries_parametric": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_colors": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_colors_lookuptable": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_convex": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_cube": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_dynamic": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_extrude_shapes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_extrude_shapes2": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_extrude_splines": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_minecraft": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_nurbs": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_shapes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_spline_editor": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_teapot": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_terrain": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_terrain_raycast": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_text": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_text_shapes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_geometry_text_stroke": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_gpgpu_birds": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "birdFS.glsl": "src/shaders",
+      "birdVS.glsl": "src/shaders",
+      "fragmentShaderPosition.glsl": "src/shaders",
+      "fragmentShaderVelocity.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_gpgpu_birds_gltf": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShaderPosition.glsl": "src/shaders",
+      "fragmentShaderVelocity.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_gpgpu_protoplanet": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "computeShaderPosition.glsl": "src/shaders",
+      "computeShaderVelocity.glsl": "src/shaders",
+      "particleFragmentShader.glsl": "src/shaders",
+      "particleVertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_gpgpu_water": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "heightmapFragmentShader.glsl": "src/shaders",
+      "readWaterLevelFragmentShader.glsl": "src/shaders",
+      "smoothFragmentShader.glsl": "src/shaders",
+      "waterVertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_helpers": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_instancing_dynamic": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_instancing_modified": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_instancing_performance": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_instancing_raycast": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_instancing_scatter": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_interactive_buffergeometry": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_interactive_cubes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_interactive_cubes_gpu": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_interactive_cubes_ortho": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_interactive_lines": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_interactive_points": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_interactive_raycasting_points": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_interactive_voxelpainter": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_layers": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lensflares": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lightningstrike": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lightprobe": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lightprobe_cubecamera": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lights_hemisphere": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_lights_physical": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lights_pointlights": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lights_rectarealight": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lights_spotlight": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lights_spotlights": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lines_colors": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lines_dashed": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lines_fat": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lines_fat_wireframe": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lines_sphere": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_3dm": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_3ds": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_3mf": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_3mf_materials": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_amf": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_bvh": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_collada": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_collada_kinematics": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_collada_skinning": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_draco": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_fbx": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_fbx_nurbs": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_gcode": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_gltf": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_gltf_compressed": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_gltf_sheen": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_gltf_transmission": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_gltf_variants": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_ifc": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_imagebitmap": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_kmz": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_ldraw": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_lwo": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_md2": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_md2_control": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_mdd": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_mmd": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_mmd_audio": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_mmd_pose": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_nrrd": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_obj": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_obj_mtl": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_pcd": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_pdb": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_ply": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_prwm": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_stl": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_svg": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_basis": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_dds": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_exr": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_hdr": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_ktx": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_ktx2": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_lottie": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_pvrtc": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_rgbm": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_texture_tga": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_tilt": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_ttf": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_vox": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_vrm": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_vrml": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_vtk": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_loader_xyz": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_lod": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_marchingcubes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_blending": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_blending_custom": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_bumpmap": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_car": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_channels": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_compile": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_cubemap": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_cubemap_dynamic": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_cubemap_mipmaps": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_cubemap_refraction": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_curvature": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShaderRaw.glsl": "src/shaders",
+      "vertexShaderRaw.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_materials_displacementmap": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_envmaps": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_envmaps_exr": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_envmaps_hdr": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_envmaps_hdr_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_envmaps_pmrem_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_instance_uniform_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_lightmap": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_materials_matcap": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_modified": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_normalmap": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_normalmap_object_space": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_physical_clearcoat": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_physical_reflectivity": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_physical_transmission": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_standard": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_standard_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_subsurface_scattering": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_texture_anisotropy": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_texture_canvas": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_texture_filters": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_texture_manualmipmap": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_texture_partialupdate": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_texture_rotation": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_variations_basic": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_variations_lambert": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_variations_phong": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_variations_physical": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_variations_standard": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_variations_toon": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_video": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_video_webcam": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_materials_wireframe": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_math_obb": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_math_orientation_transform": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_mirror": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_mirror_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_modifier_curve": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_modifier_curve_instanced": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_modifier_edgesplit": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_modifier_simplifier": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_modifier_tessellation": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_morphtargets": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_morphtargets_face": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_morphtargets_horse": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_morphtargets_sphere": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_multiple_canvases_circle": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_multiple_canvases_complex": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_multiple_canvases_grid": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_multiple_elements": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_multiple_elements_text": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_multiple_renderers": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_multiple_scenes_comparison": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_multiple_views": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_panorama_cube": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_panorama_equirectangular": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_performance": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_performance_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_performance_static": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_pmrem_test": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_points_billboards": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_points_dynamic": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_points_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_points_sprites": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_points_waves": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_portal": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_3dlut": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_advanced": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_afterimage": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_backgrounds": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_crossfade": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_dof": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_dof2": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_fxaa": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_glitch": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_godrays": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_masking": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_nodes_pass": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_outline": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_pixel": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_procedural": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "noiseRandom1DFrag.glsl": "src/shaders",
+      "noiseRandom2DFrag.glsl": "src/shaders",
+      "noiseRandom3DFrag.glsl": "src/shaders",
+      "proceduralVert.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_postprocessing_rgb_halftone": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_sao": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_smaa": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_sobel": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_ssaa": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_ssao": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_ssr": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_ssrr": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_taa": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_unreal_bloom": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_postprocessing_unreal_bloom_selective": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentshader.glsl": "src/shaders",
+      "vertexshader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_raycast_sprite": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_raycast_texture": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_raymarching_reflect": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragment_shader.glsl": "src/shaders",
+      "vertex_shader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_read_float_buffer": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragment_shader_pass_1.glsl": "src/shaders",
+      "fragment_shader_screen.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_refraction": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_rtt": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragment_shader_pass_1.glsl": "src/shaders",
+      "fragment_shader_screen.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_shader": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_shader2": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragment_shader1.glsl": "src/shaders",
+      "fragment_shader2.glsl": "src/shaders",
+      "fragment_shader3.glsl": "src/shaders",
+      "fragment_shader4.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_shader_lava": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_shaders_ocean": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shaders_sky": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shaders_tonemapping": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shadow_contact": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shadowmap": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shadowmap_csm": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shadowmap_pcss": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "PCSS.glsl": "src/shaders",
+      "PCSSGetShadow.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_shadowmap_performance": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shadowmap_pointlight": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shadowmap_progressive": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shadowmap_viewer": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shadowmap_vsm": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_shadowmesh": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_simple_gi": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_skinning_simple": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_sprites": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_sprites_nodes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_test_memory": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_test_memory2": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fragmentShader.glsl": "src/shaders",
+      "vertexShader.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_tiled_forward": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_tonemapping": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_trails": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_video_kinect": {
+    "files": {
+      "index.html": "src",
+      "main.js": "src",
+      "fs.glsl": "src/shaders",
+      "vs.glsl": "src/shaders",
+      "style.css": "src"
+    },
+    "dirs": ["/src", "/src/shaders"]
+  },
+  "webgl_video_panorama_equirectangular": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_water": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_water_flowmap": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgl_worker_offscreencanvas": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgpu_compute": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgpu_instance_uniform": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgpu_lights_custom": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgpu_lights_selective": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgpu_materials": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgpu_rtt": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgpu_sandbox": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgpu_skinning": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webgpu_skinning_points": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_ar_cones": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_ar_hittest": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_ar_lighting": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_ar_paint": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_ballshooter": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_cubes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_dragging": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_handinput": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_handinput_cubes": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_handinput_pointerclick": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_handinput_pointerdrag": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_handinput_pressbutton": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_handinput_profiles": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_haptics": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_layers": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_paint": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_panorama": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_panorama_depth": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_rollercoaster": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_sandbox": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_sculpt": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "webxr_vr_video": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  }
+}

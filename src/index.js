@@ -1,70 +1,127 @@
 #!/usr/bin/env node
 
-// DO NOT EDIT OR DELETE THIS FILE.
-
 "use strict";
-const { mkdirSync, existsSync } = require("fs");
+
+//
+// Externals
+//
+
+const { mkdirSync, existsSync, mkdtempSync } = require("fs");
+const rimraf = require("rimraf");
 const chalk = require("chalk");
+const path = require("path");
+const { tmpdir } = require("os");
+
+//
+
 const {
   domain,
-  getConfig,
-  getExamplesConfig,
   checkYarn,
+  resolveArgs,
+  dirIsEmpty,
+  error,
+  getBundlersConfig,
+  checkForUpdates,
 } = require("./scripts/utils");
-// @ts-ignore
-const { AutoComplete } = require("enquirer");
 const init = require("./scripts/initenv");
 const manageDir = require("./scripts/movedir");
 const downloadFiles = require("./scripts/downloadfiles");
+const { selectTemplate } = require("./scripts/promtTemplate");
+const consts = require("./scripts/constants");
 
-const dir = process.argv[2] || "my-three-app";
+//
 
-getConfig(domain)
-  .then((config) => {
-    const threeExamples = Object.keys(config);
-    const examples = [...threeExamples, "Select from threejs examples"];
+(async () => {
+  //
 
-    new AutoComplete({
-      name: "Example",
-      message: "Which example do you want to use?",
-      choices: examples,
-    })
-      .run()
-      .then((example) => {
-        if (threeExamples.includes(example)) {
-          if (!existsSync(dir)) {
-            mkdirSync(dir);
-          }
-          checkYarn().then(init);
-          downloadFiles(example, config[example], domain).then(manageDir);
-        } else {
-          getExamplesConfig(domain).then((config) => {
-            new AutoComplete({
-              name: "Example",
-              message: "Select example",
-              choices: Object.keys(config),
-            })
-              .run()
-              .then((res) => {
-                console.log(
-                  chalk.yellowBright("Note: "),
-                  "Using an example from three.js may cause unresolved resource urls, which you may have to resolve..."
-                );
-                if (!existsSync(dir)) {
-                  mkdirSync(dir);
-                }
-                checkYarn().then((answer) => init(answer, true));
-                downloadFiles(res, config[res], domain, true).then(manageDir);
-              })
-              .catch((e) => console.error(chalk.red("Process aborted"), e));
-          });
-        }
-      })
-      .catch((e) => console.log(chalk.red("Process aborted"), e));
-  })
-  .catch((e) =>
-    console.log(
-      chalk.red("An error occurred while fetching the config file"),
-      e
-    )
+  const {
+    dir,
+    isExample: _isExample,
+    template,
+    bundler,
+    force,
+    useNpm,
+  } = await resolveArgs();
+
+  await checkForUpdates();
+
+  // Ask for the template; will consider the cli arg if present
+  const { isExample, example, name } = await selectTemplate({
+    isExample: _isExample,
+    template,
+  });
+
+  console.log(`Downloading ${name}`);
+
+  //
+  // Validate provided directory
+  //
+
+  if (!existsSync(dir)) mkdirSync(dir);
+  else {
+    if (!dirIsEmpty(dir)) {
+      if (!force)
+        return error(
+          `Provided directory {${dir}} is not empty.\n run with ${chalk.redBright(
+            "-f"
+          )} or ${chalk.redBright(
+            "--force"
+          )} flag to delete all the files in it.`
+        );
+      else {
+        console.log(
+          `${chalk.redBright("force flag is enabled")} Deleting ${dir}...\r`
+        );
+        rimraf.sync(dir);
+        mkdirSync(dir);
+      }
+    }
+  }
+
+  //
+
+  let tempDir = mkdtempSync(path.join(tmpdir(), "create-three-app-cache-"));
+  const bundlerConfigs = await getBundlersConfig();
+
+  //
+  // Downloads
+  //
+
+  //Download the common files
+
+  await downloadFiles(
+    "common",
+    bundlerConfigs["common"],
+    tempDir,
+    domain,
+    consts.pathTypes.UTILS
   );
+
+  //Download the bundler files
+
+  await downloadFiles(
+    bundler,
+    bundlerConfigs[bundler],
+    tempDir,
+    domain,
+    consts.pathTypes.UTILS
+  );
+
+  // Download template
+
+  await downloadFiles(
+    name,
+    example,
+    tempDir,
+    domain,
+    isExample ? consts.pathTypes.EXAMPLE : consts.pathTypes.BASIC
+  );
+
+  manageDir(tempDir, dir);
+
+  await init(useNpm ? "npm" : await checkYarn(), dir, isExample);
+
+  rimraf.sync(tempDir);
+
+  //
+})();

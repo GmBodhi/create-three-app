@@ -3,9 +3,7 @@ const spawn = require("cross-spawn");
 const path = require("path");
 const { error } = require("./utils");
 
-let dir = process.argv[2] || "my-three-app";
-
-async function installDeps(manager, isExample) {
+async function installDeps(manager, dir, isExample) {
   console.log(
     chalk.dim(chalk.green(`Installing dependencies using ${manager}..!`))
   );
@@ -42,16 +40,23 @@ async function installDeps(manager, isExample) {
     });
 }
 
-const init = (answer, isExample = false) => {
-  spawn("npm", ["init", "-y"], {
-    cwd: path.join(process.cwd(), dir),
-  })
-    .on("exit", () => {
-      installDeps(answer, isExample);
+/**
+ * @param {string} dir
+ */
+
+const init = (manager, dir, isExample = false) => {
+  return new Promise((resolve, reject) => {
+    spawn("npm", ["init", "-y"], {
+      cwd: path.join(process.cwd(), dir),
     })
-    .on("error", (e) => {
-      error(e);
-    });
+      .on("exit", () => {
+        installDeps(manager, dir, isExample).then(() => resolve);
+      })
+      .on("error", (e) => {
+        reject(e);
+        error(e);
+      });
+  });
 };
 
 module.exports = init;

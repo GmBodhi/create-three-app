@@ -1,0 +1,33 @@
+{
+  "description": "App made with create-three-app",
+  "private": true,
+  "repository": "#",
+  "license": "UNLICENSED",
+  "scripts": {
+    "build": "webpack --config ./bundler/webpack.prod.js",
+    "dev": "webpack serve --config ./bundler/webpack.dev.js"
+  },
+  "dependencies": {
+    "three": "^0.132.2"
+  },
+  "devDependencies": {
+    "babel-loader": "^8.2.2",
+    "clean-webpack-plugin": "^4.0.0",
+    "copy-webpack-plugin": "^9.0.1",
+    "css-loader": "^6.3.0",
+    "file-loader": "^6.2.0",
+    "glslify-loader": "^2.0.0",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.2",
+    "mini-css-extract-plugin": "^2.3.0",
+    "portfinder-sync": "0.0.2",
+    "raw-loader": "^4.0.2",
+    "style-loader": "^3.3.0",
+    "webpack": "^5.53.0",
+    "@babel/preset-env": "^7.15.6",
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.2.1",
+    "@babel/core": "^7.15.5",
+    "webpack-merge": "^5.8.0"
+  }
+}

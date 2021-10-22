@@ -1,1 +1,10 @@
-{"Basic":{"files":{"webpack.js":"","package.json":"","index.html":"","main.js":"","style.css":"","example.json":"","favicon.ico":""},"dirs":["/static","/src","/bundler"]},"Basic (with orbitcontrols)":{"files":{"webpack.js":"","package.json":"","index.html":"","main.js":"","style.css":"","example.json":"","favicon.ico":""},"dirs":["/static","/src","/bundler"]}}
+{
+  "Basic": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  },
+  "Basic (with orbitcontrols)": {
+    "files": { "index.html": "src", "main.js": "src", "style.css": "src" },
+    "dirs": ["/src"]
+  }
+}

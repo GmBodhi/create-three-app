@@ -2,21 +2,39 @@ const chalk = require("chalk");
 const fetch = require("node-fetch");
 const fs = require("fs");
 const spawn = require("cross-spawn");
+const yargs = require("yargs/yargs");
+const { hideBin } = require("yargs/helpers");
+const { help, version } = require("./help");
+const consts = require("./constants");
 
+//
+// Cache
+//
+
+const cache = new Map();
+
+//
 // Error utils
+//
+
 function error(message) {
   console.error(chalk.red(message));
   process.exit(1);
 }
 module.exports.error = error;
 
+//
 // Download utils
+//
+
 async function download(url, dest) {
   const res = await fetch(url);
-  if (!res.ok)
-    return error(`Srver responded with ${res.status}: ${res.statusText}`);
+  if (!res.ok) {
+    console.log(url);
+    return error(`Server responded with ${res.status}: ${res.statusText}`);
+  }
   const fileStream = fs.createWriteStream(dest);
-  await new Promise((resolve, reject) => {
+  return await new Promise((resolve, reject) => {
     res.body.pipe(fileStream);
     res.body.on("error", reject);
     fileStream.on("finish", resolve);
@@ -24,22 +42,66 @@ async function download(url, dest) {
 }
 module.exports.download = download;
 
-module.exports.domain =
+//
+// Base URL
+//
+
+const domain =
   "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/";
 
-// Get Config
-async function getConfig(domain) {
-  return await fetch(domain + "examples/config.json").then((res) => res.json());
-}
-module.exports.getConfig = getConfig;
+module.exports.domain = domain;
 
-async function getExamplesConfig(domain) {
-  return await fetch(domain + "example-processor/templates/config.json").then(
-    (res) => res.json()
+//
+// Get Config
+//
+
+async function getBasicConfig() {
+  if (cache.has(consts.pathTypes.BASIC))
+    return cache.get(consts.pathTypes.BASIC);
+  const res = await fetch(domain + "examples/config.json").then((res) =>
+    res.json()
   );
+  cache.set(consts.pathTypes.BASIC, res);
+  return res;
+}
+module.exports.getBasicConfig = getBasicConfig;
+
+//
+// Get examples Config
+//
+
+async function getExamplesConfig() {
+  if (cache.has(consts.pathTypes.EXAMPLE))
+    return cache.get(consts.pathTypes.EXAMPLE);
+  const res = await fetch(
+    `${domain}example-processor/templates/config.json`
+  ).then((res) => res.json());
+
+  cache.set(consts.pathTypes.EXAMPLE, res);
+  return res;
 }
 
 module.exports.getExamplesConfig = getExamplesConfig;
+
+//
+// Get bundler Config
+//
+
+async function getBundlersConfig() {
+  if (cache.has(consts.pathTypes.UTILS))
+    return cache.get(consts.pathTypes.UTILS);
+  const res = await fetch(`${domain}utils/config.json`).then((res) =>
+    res.json()
+  );
+  cache.set(consts.pathTypes.UTILS, res);
+  return res;
+}
+
+module.exports.getBundlersConfig = getBundlersConfig;
+
+//
+// Check for Yarn
+//
 
 module.exports.checkYarn = function checkYarn() {
   return new Promise((resolve) => {
@@ -52,4 +114,84 @@ module.exports.checkYarn = function checkYarn() {
         resolve("npm");
       });
   });
+};
+
+//
+// Resolve and check args
+//
+
+module.exports.resolveArgs = async function resolveArgs() {
+  const args = yargs(hideBin(process.argv)).help(false).argv; //||
+  // (await yargs(hideBin(process.argv)).version(false).help(false).argv);
+
+  if (args.help || args.h) help();
+  else if (args.v) version();
+
+  const _example = args.example || args.e;
+  const _template = args.template || args.t;
+  const _bundler = args.bundler || args.b || "webpack";
+
+  const bundlers = Object.keys(await getBundlersConfig());
+
+  if ((!bundlers.includes(_bundler) || _bundler === "common") && _bundler)
+    error(
+      `Provided bundler (${chalk.yellowBright(
+        _bundler
+      )}) could not be found in the available bundlers: \n${chalk.greenBright(
+        bundlers.filter((b) => b !== "common").join("\n")
+      )}\nRun with ${chalk.red("--help")} flag, to see available commands.`
+    );
+
+  const configs = {
+    dir: args._[0] || "my-three-app",
+    isExample: _example && !_template,
+    template: _template || _example,
+    bundler: _bundler,
+    force: args.force || args.f,
+    useNpm: args.preferNpm,
+  };
+
+  return configs;
+};
+
+//
+// Resolve URL
+//
+
+module.exports.resolveUrl = function resolveUrl(
+  domain,
+  { url, example },
+  file,
+  type
+) {
+  const path = () => {
+    return type === consts.pathTypes.EXAMPLE
+      ? "example-processor/templates/"
+      : type === consts.pathTypes.BASIC
+      ? "examples/"
+      : "utils/";
+  };
+  return `${domain}${path()}${example}/${url ? url + "/" : ""}${file}`;
+};
+
+//
+// Check whether a directory is empty
+//
+
+module.exports.dirIsEmpty = (dir) => fs.readdirSync(dir).length === 0;
+
+//
+// Check for new version
+//
+
+module.exports.checkForUpdates = async function checkForUpdates() {
+  const res = await fetch(
+    "https://registry.npmjs.org/-/package/create-three-app/dist-tags"
+  ).then((r) => r.json());
+  const current = require("../../package.json").version;
+  if (res.latest !== current)
+    return error(
+      `You current version (${current}) need to be updated to ${res.latest}\n We don't support global installs.`
+    );
+  return;
 };
