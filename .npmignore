@@ -2,7 +2,7 @@ examples/
 generateConfig.js
 .github
 example-processor/
-./utils/
+utils/
 .eslintrc.js
 .eslintignore
 .prettierignore
