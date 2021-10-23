@@ -1,10 +1,10 @@
 const chalk = require("chalk");
 // @ts-ignore
 const { AutoComplete } = require("enquirer");
-const { getExamplesConfig, getBasicConfig, error } = require("./utils");
+const { getConfig, error } = require("./utils");
 
 async function selectFromExamples(template = "Not_an_example") {
-  const config = await getExamplesConfig();
+  const { examples: config } = await getConfig();
 
   if (config[template]) return { example: config[template], name: template };
 
@@ -28,7 +28,7 @@ async function selectFromExamples(template = "Not_an_example") {
 }
 
 async function selectFromBasic({ isExample, template }) {
-  const config = await getBasicConfig().catch((e) =>
+  const { basic: config } = await getConfig().catch((e) =>
     console.log(
       chalk.red("An error occurred while fetching the config file"),
       e

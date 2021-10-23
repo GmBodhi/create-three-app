@@ -20,7 +20,7 @@ const {
   resolveArgs,
   dirIsEmpty,
   error,
-  getBundlersConfig,
+  getConfig,
   checkForUpdates,
 } = require("./scripts/utils");
 const init = require("./scripts/initenv");
@@ -81,7 +81,7 @@ const consts = require("./scripts/constants");
   //
 
   let tempDir = mkdtempSync(path.join(tmpdir(), "create-three-app-cache-"));
-  const bundlerConfigs = await getBundlersConfig();
+  const bundlerConfigs = (await getConfig()).utils;
 
   //
   // Downloads

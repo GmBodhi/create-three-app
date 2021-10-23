@@ -55,49 +55,14 @@ module.exports.domain = domain;
 // Get Config
 //
 
-async function getBasicConfig() {
+async function getConfig() {
   if (cache.has(consts.pathTypes.BASIC))
     return cache.get(consts.pathTypes.BASIC);
-  const res = await fetch(domain + "examples/config.json").then((res) =>
-    res.json()
-  );
+  const res = await fetch(domain + "config.json").then((res) => res.json());
   cache.set(consts.pathTypes.BASIC, res);
   return res;
 }
-module.exports.getBasicConfig = getBasicConfig;
-
-//
-// Get examples Config
-//
-
-async function getExamplesConfig() {
-  if (cache.has(consts.pathTypes.EXAMPLE))
-    return cache.get(consts.pathTypes.EXAMPLE);
-  const res = await fetch(
-    `${domain}example-processor/templates/config.json`
-  ).then((res) => res.json());
-
-  cache.set(consts.pathTypes.EXAMPLE, res);
-  return res;
-}
-
-module.exports.getExamplesConfig = getExamplesConfig;
-
-//
-// Get bundler Config
-//
-
-async function getBundlersConfig() {
-  if (cache.has(consts.pathTypes.UTILS))
-    return cache.get(consts.pathTypes.UTILS);
-  const res = await fetch(`${domain}utils/config.json`).then((res) =>
-    res.json()
-  );
-  cache.set(consts.pathTypes.UTILS, res);
-  return res;
-}
-
-module.exports.getBundlersConfig = getBundlersConfig;
+module.exports.getConfig = getConfig;
 
 //
 // Check for Yarn
@@ -131,7 +96,7 @@ module.exports.resolveArgs = async function resolveArgs() {
   const _template = args.template || args.t;
   const _bundler = args.bundler || args.b || "webpack";
 
-  const bundlers = Object.keys(await getBundlersConfig());
+  const bundlers = Object.keys((await getConfig()).utils);
 
   if ((!bundlers.includes(_bundler) || _bundler === "common") && _bundler)
     error(

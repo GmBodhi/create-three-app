@@ -32,9 +32,7 @@ jobs:
           node index.js --unhandled-rejections=strict
 
       - name: Generate Config
-        run: |
-          cd example-processor
-          node generateConfig.js --unhandled-rejections=strict
+        run: node generateConfig.js --unhandled-rejections=strict
 
       - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
