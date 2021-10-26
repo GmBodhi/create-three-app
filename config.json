@@ -6,9 +6,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "css3d_molecules": {
       "files": {
@@ -16,9 +14,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "css3d_orthographic": {
       "files": {
@@ -26,9 +22,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "css3d_periodictable": {
       "files": {
@@ -36,9 +30,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "css3d_sandbox": {
       "files": {
@@ -46,9 +38,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "css3d_sprites": {
       "files": {
@@ -56,9 +46,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "css3d_youtube": {
       "files": {
@@ -66,9 +54,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "games_fps": {
       "files": {
@@ -76,9 +62,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_animation_groups": {
       "files": {
@@ -86,9 +70,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_animation_keys": {
       "files": {
@@ -96,9 +78,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_boxselection": {
       "files": {
@@ -106,9 +86,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_controls_arcball": {
       "files": {
@@ -116,9 +94,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_controls_drag": {
       "files": {
@@ -126,9 +102,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_controls_fly": {
       "files": {
@@ -136,9 +110,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_controls_map": {
       "files": {
@@ -146,9 +118,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_controls_orbit": {
       "files": {
@@ -156,9 +126,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_controls_pointerlock": {
       "files": {
@@ -166,9 +134,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_controls_trackball": {
       "files": {
@@ -176,9 +142,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_controls_transform": {
       "files": {
@@ -186,9 +150,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_exporter_collada": {
       "files": {
@@ -196,9 +158,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_exporter_draco": {
       "files": {
@@ -206,9 +166,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_exporter_gltf": {
       "files": {
@@ -216,9 +174,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_exporter_obj": {
       "files": {
@@ -226,9 +182,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_exporter_ply": {
       "files": {
@@ -236,9 +190,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_exporter_stl": {
       "files": {
@@ -246,9 +198,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_exporter_usdz": {
       "files": {
@@ -256,9 +206,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_lookat": {
       "files": {
@@ -266,9 +214,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "misc_uv_tests": {
       "files": {
@@ -276,9 +222,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "physics_ammo_break": {
       "files": {
@@ -286,9 +230,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "physics_ammo_cloth": {
       "files": {
@@ -296,9 +238,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "physics_ammo_instancing": {
       "files": {
@@ -306,9 +246,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "physics_ammo_rope": {
       "files": {
@@ -316,9 +254,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "physics_ammo_terrain": {
       "files": {
@@ -326,9 +262,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "physics_ammo_volume": {
       "files": {
@@ -336,9 +270,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "physics_oimo_instancing": {
       "files": {
@@ -346,9 +278,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "svg_lines": {
       "files": {
@@ -356,9 +286,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "svg_sandbox": {
       "files": {
@@ -366,9 +294,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webaudio_orientation": {
       "files": {
@@ -376,9 +302,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webaudio_sandbox": {
       "files": {
@@ -386,9 +310,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webaudio_timing": {
       "files": {
@@ -396,9 +318,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webaudio_visualizer": {
       "files": {
@@ -408,10 +328,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl2_buffergeometry_attributes_integer": {
       "files": {
@@ -421,10 +338,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl2_materials_texture2darray": {
       "files": {
@@ -434,10 +348,7 @@
         "vs.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl2_materials_texture3d": {
       "files": {
@@ -445,9 +356,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl2_materials_texture3d_partialupdate": {
       "files": {
@@ -455,9 +364,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl2_multiple_rendertargets": {
       "files": {
@@ -469,10 +376,7 @@
         "renderVert.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl2_multisampled_renderbuffers": {
       "files": {
@@ -480,9 +384,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl2_rendertarget_texture2darray": {
       "files": {
@@ -494,10 +396,7 @@
         "vs.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl2_volume_cloud": {
       "files": {
@@ -505,9 +404,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl2_volume_instancing": {
       "files": {
@@ -515,9 +412,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl2_volume_perlin": {
       "files": {
@@ -525,9 +420,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_animation_keyframes": {
       "files": {
@@ -535,9 +428,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_animation_multiple": {
       "files": {
@@ -545,9 +436,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_animation_skinning_additive_blending": {
       "files": {
@@ -555,9 +444,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_animation_skinning_blending": {
       "files": {
@@ -565,9 +452,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_animation_skinning_morph": {
       "files": {
@@ -575,9 +460,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry": {
       "files": {
@@ -585,9 +468,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_compression": {
       "files": {
@@ -595,9 +476,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_custom_attributes_particles": {
       "files": {
@@ -607,10 +486,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_buffergeometry_drawrange": {
       "files": {
@@ -618,9 +494,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_glbufferattribute": {
       "files": {
@@ -628,9 +502,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_indexed": {
       "files": {
@@ -638,9 +510,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_instancing": {
       "files": {
@@ -650,10 +520,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_buffergeometry_instancing_billboards": {
       "files": {
@@ -663,10 +530,7 @@
         "vshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_buffergeometry_instancing_interleaved": {
       "files": {
@@ -674,9 +538,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_lines": {
       "files": {
@@ -684,9 +546,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_lines_indexed": {
       "files": {
@@ -694,9 +554,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_points": {
       "files": {
@@ -704,9 +562,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_points_interleaved": {
       "files": {
@@ -714,9 +570,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_buffergeometry_rawshader": {
       "files": {
@@ -726,10 +580,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_buffergeometry_selective_draw": {
       "files": {
@@ -739,10 +590,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_buffergeometry_uint": {
       "files": {
@@ -750,9 +598,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_camera": {
       "files": {
@@ -760,9 +606,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_camera_array": {
       "files": {
@@ -770,9 +614,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_camera_cinematic": {
       "files": {
@@ -780,9 +622,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_camera_logarithmicdepthbuffer": {
       "files": {
@@ -790,9 +630,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_clipping": {
       "files": {
@@ -800,9 +638,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_clipping_advanced": {
       "files": {
@@ -810,9 +646,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_clipping_intersection": {
       "files": {
@@ -820,9 +654,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_clipping_stencil": {
       "files": {
@@ -830,9 +662,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_custom_attributes": {
       "files": {
@@ -842,10 +672,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_custom_attributes_lines": {
       "files": {
@@ -855,10 +682,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_custom_attributes_points": {
       "files": {
@@ -868,10 +692,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_custom_attributes_points2": {
       "files": {
@@ -881,10 +702,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_custom_attributes_points3": {
       "files": {
@@ -894,10 +712,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_decals": {
       "files": {
@@ -905,9 +720,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_depth_texture": {
       "files": {
@@ -917,10 +730,7 @@
         "postVert.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_effects_anaglyph": {
       "files": {
@@ -928,9 +738,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_effects_ascii": {
       "files": {
@@ -938,9 +746,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_effects_parallaxbarrier": {
       "files": {
@@ -948,9 +754,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_effects_peppersghost": {
       "files": {
@@ -958,9 +762,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_effects_stereo": {
       "files": {
@@ -968,9 +770,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_framebuffer_texture": {
       "files": {
@@ -978,9 +778,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_furnace_test": {
       "files": {
@@ -988,9 +786,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometries": {
       "files": {
@@ -998,9 +794,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometries_parametric": {
       "files": {
@@ -1008,9 +802,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_colors": {
       "files": {
@@ -1018,9 +810,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_colors_lookuptable": {
       "files": {
@@ -1028,9 +818,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_convex": {
       "files": {
@@ -1038,9 +826,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_cube": {
       "files": {
@@ -1048,9 +834,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_dynamic": {
       "files": {
@@ -1058,9 +842,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_extrude_shapes": {
       "files": {
@@ -1068,9 +850,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_extrude_shapes2": {
       "files": {
@@ -1078,9 +858,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_extrude_splines": {
       "files": {
@@ -1088,9 +866,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_minecraft": {
       "files": {
@@ -1098,9 +874,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_nurbs": {
       "files": {
@@ -1108,9 +882,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_shapes": {
       "files": {
@@ -1118,9 +890,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_spline_editor": {
       "files": {
@@ -1128,9 +898,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_teapot": {
       "files": {
@@ -1138,9 +906,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_terrain": {
       "files": {
@@ -1148,9 +914,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_terrain_raycast": {
       "files": {
@@ -1158,9 +922,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_text": {
       "files": {
@@ -1168,9 +930,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_text_shapes": {
       "files": {
@@ -1178,9 +938,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_geometry_text_stroke": {
       "files": {
@@ -1188,9 +946,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_gpgpu_birds": {
       "files": {
@@ -1202,10 +958,7 @@
         "fragmentShaderVelocity.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_gpgpu_birds_gltf": {
       "files": {
@@ -1215,10 +968,7 @@
         "fragmentShaderVelocity.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_gpgpu_protoplanet": {
       "files": {
@@ -1230,10 +980,7 @@
         "particleVertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_gpgpu_water": {
       "files": {
@@ -1245,10 +992,7 @@
         "waterVertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_helpers": {
       "files": {
@@ -1256,9 +1000,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_instancing_dynamic": {
       "files": {
@@ -1266,9 +1008,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_instancing_modified": {
       "files": {
@@ -1276,9 +1016,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_instancing_performance": {
       "files": {
@@ -1286,9 +1024,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_instancing_raycast": {
       "files": {
@@ -1296,9 +1032,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_instancing_scatter": {
       "files": {
@@ -1306,9 +1040,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_interactive_buffergeometry": {
       "files": {
@@ -1316,9 +1048,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_interactive_cubes": {
       "files": {
@@ -1326,9 +1056,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_interactive_cubes_gpu": {
       "files": {
@@ -1336,9 +1064,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_interactive_cubes_ortho": {
       "files": {
@@ -1346,9 +1072,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_interactive_lines": {
       "files": {
@@ -1356,9 +1080,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_interactive_points": {
       "files": {
@@ -1368,10 +1090,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_interactive_raycasting_points": {
       "files": {
@@ -1379,9 +1098,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_interactive_voxelpainter": {
       "files": {
@@ -1389,9 +1106,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_layers": {
       "files": {
@@ -1399,9 +1114,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lensflares": {
       "files": {
@@ -1409,9 +1122,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lightningstrike": {
       "files": {
@@ -1419,9 +1130,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lightprobe": {
       "files": {
@@ -1429,9 +1138,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lightprobe_cubecamera": {
       "files": {
@@ -1439,9 +1146,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lights_hemisphere": {
       "files": {
@@ -1451,10 +1156,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_lights_physical": {
       "files": {
@@ -1462,9 +1164,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lights_pointlights": {
       "files": {
@@ -1472,9 +1172,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lights_rectarealight": {
       "files": {
@@ -1482,9 +1180,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lights_spotlight": {
       "files": {
@@ -1492,9 +1188,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lights_spotlights": {
       "files": {
@@ -1502,9 +1196,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lines_colors": {
       "files": {
@@ -1512,9 +1204,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lines_dashed": {
       "files": {
@@ -1522,9 +1212,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lines_fat": {
       "files": {
@@ -1532,9 +1220,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lines_fat_wireframe": {
       "files": {
@@ -1542,9 +1228,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lines_sphere": {
       "files": {
@@ -1552,9 +1236,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_3dm": {
       "files": {
@@ -1562,9 +1244,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_3ds": {
       "files": {
@@ -1572,9 +1252,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_3mf": {
       "files": {
@@ -1582,9 +1260,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_3mf_materials": {
       "files": {
@@ -1592,9 +1268,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_amf": {
       "files": {
@@ -1602,9 +1276,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_bvh": {
       "files": {
@@ -1612,9 +1284,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_collada": {
       "files": {
@@ -1622,9 +1292,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_collada_kinematics": {
       "files": {
@@ -1632,9 +1300,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_collada_skinning": {
       "files": {
@@ -1642,9 +1308,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_draco": {
       "files": {
@@ -1652,9 +1316,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_fbx": {
       "files": {
@@ -1662,9 +1324,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_fbx_nurbs": {
       "files": {
@@ -1672,9 +1332,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_gcode": {
       "files": {
@@ -1682,9 +1340,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_gltf": {
       "files": {
@@ -1692,9 +1348,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_gltf_compressed": {
       "files": {
@@ -1702,9 +1356,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_gltf_sheen": {
       "files": {
@@ -1712,9 +1364,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_gltf_transmission": {
       "files": {
@@ -1722,9 +1372,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_gltf_variants": {
       "files": {
@@ -1732,9 +1380,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_ifc": {
       "files": {
@@ -1742,9 +1388,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_imagebitmap": {
       "files": {
@@ -1752,9 +1396,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_kmz": {
       "files": {
@@ -1762,9 +1404,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_ldraw": {
       "files": {
@@ -1772,9 +1412,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_lwo": {
       "files": {
@@ -1782,9 +1420,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_md2": {
       "files": {
@@ -1792,9 +1428,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_md2_control": {
       "files": {
@@ -1802,9 +1436,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_mdd": {
       "files": {
@@ -1812,9 +1444,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_mmd": {
       "files": {
@@ -1822,9 +1452,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_mmd_audio": {
       "files": {
@@ -1832,9 +1460,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_mmd_pose": {
       "files": {
@@ -1842,9 +1468,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_nodes": {
       "files": {
@@ -1852,9 +1476,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_nrrd": {
       "files": {
@@ -1862,9 +1484,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_obj": {
       "files": {
@@ -1872,9 +1492,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_obj_mtl": {
       "files": {
@@ -1882,9 +1500,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_pcd": {
       "files": {
@@ -1892,9 +1508,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_pdb": {
       "files": {
@@ -1902,9 +1516,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_ply": {
       "files": {
@@ -1912,9 +1524,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_prwm": {
       "files": {
@@ -1922,9 +1532,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_stl": {
       "files": {
@@ -1932,9 +1540,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_svg": {
       "files": {
@@ -1942,9 +1548,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_basis": {
       "files": {
@@ -1952,9 +1556,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_dds": {
       "files": {
@@ -1962,9 +1564,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_exr": {
       "files": {
@@ -1972,9 +1572,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_hdr": {
       "files": {
@@ -1982,9 +1580,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_ktx": {
       "files": {
@@ -1992,9 +1588,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_ktx2": {
       "files": {
@@ -2002,9 +1596,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_lottie": {
       "files": {
@@ -2012,9 +1604,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_pvrtc": {
       "files": {
@@ -2022,9 +1612,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_rgbm": {
       "files": {
@@ -2032,9 +1620,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_texture_tga": {
       "files": {
@@ -2042,9 +1628,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_tilt": {
       "files": {
@@ -2052,9 +1636,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_ttf": {
       "files": {
@@ -2062,9 +1644,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_vox": {
       "files": {
@@ -2072,9 +1652,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_vrm": {
       "files": {
@@ -2082,9 +1660,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_vrml": {
       "files": {
@@ -2092,9 +1668,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_vtk": {
       "files": {
@@ -2102,9 +1676,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_loader_xyz": {
       "files": {
@@ -2112,9 +1684,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_lod": {
       "files": {
@@ -2122,9 +1692,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_marchingcubes": {
       "files": {
@@ -2132,9 +1700,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials": {
       "files": {
@@ -2142,9 +1708,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_blending": {
       "files": {
@@ -2152,9 +1716,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_blending_custom": {
       "files": {
@@ -2162,9 +1724,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_bumpmap": {
       "files": {
@@ -2172,9 +1732,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_car": {
       "files": {
@@ -2182,9 +1740,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_channels": {
       "files": {
@@ -2192,9 +1748,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_compile": {
       "files": {
@@ -2202,9 +1756,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_cubemap": {
       "files": {
@@ -2212,9 +1764,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_cubemap_dynamic": {
       "files": {
@@ -2222,9 +1772,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_cubemap_mipmaps": {
       "files": {
@@ -2232,9 +1780,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_cubemap_refraction": {
       "files": {
@@ -2242,9 +1788,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_curvature": {
       "files": {
@@ -2254,10 +1798,7 @@
         "vertexShaderRaw.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_materials_displacementmap": {
       "files": {
@@ -2265,9 +1806,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_envmaps": {
       "files": {
@@ -2275,9 +1814,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_envmaps_exr": {
       "files": {
@@ -2285,9 +1822,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_envmaps_hdr": {
       "files": {
@@ -2295,9 +1830,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_envmaps_hdr_nodes": {
       "files": {
@@ -2305,9 +1838,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_envmaps_pmrem_nodes": {
       "files": {
@@ -2315,9 +1846,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_instance_uniform_nodes": {
       "files": {
@@ -2325,9 +1854,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_lightmap": {
       "files": {
@@ -2337,10 +1864,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_materials_matcap": {
       "files": {
@@ -2348,9 +1872,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_modified": {
       "files": {
@@ -2358,9 +1880,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_nodes": {
       "files": {
@@ -2368,9 +1888,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_normalmap": {
       "files": {
@@ -2378,9 +1896,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_normalmap_object_space": {
       "files": {
@@ -2388,9 +1904,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_physical_clearcoat": {
       "files": {
@@ -2398,9 +1912,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_physical_reflectivity": {
       "files": {
@@ -2408,9 +1920,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_physical_transmission": {
       "files": {
@@ -2418,9 +1928,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_standard": {
       "files": {
@@ -2428,9 +1936,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_standard_nodes": {
       "files": {
@@ -2438,9 +1944,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_subsurface_scattering": {
       "files": {
@@ -2448,9 +1952,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_texture_anisotropy": {
       "files": {
@@ -2458,9 +1960,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_texture_canvas": {
       "files": {
@@ -2468,9 +1968,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_texture_filters": {
       "files": {
@@ -2478,9 +1976,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_texture_manualmipmap": {
       "files": {
@@ -2488,9 +1984,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_texture_partialupdate": {
       "files": {
@@ -2498,9 +1992,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_texture_rotation": {
       "files": {
@@ -2508,9 +2000,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_variations_basic": {
       "files": {
@@ -2518,9 +2008,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_variations_lambert": {
       "files": {
@@ -2528,9 +2016,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_variations_phong": {
       "files": {
@@ -2538,9 +2024,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_variations_physical": {
       "files": {
@@ -2548,9 +2032,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_variations_standard": {
       "files": {
@@ -2558,9 +2040,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_variations_toon": {
       "files": {
@@ -2568,9 +2048,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_video": {
       "files": {
@@ -2578,9 +2056,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_video_webcam": {
       "files": {
@@ -2588,9 +2064,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_materials_wireframe": {
       "files": {
@@ -2600,10 +2074,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_math_obb": {
       "files": {
@@ -2611,9 +2082,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_math_orientation_transform": {
       "files": {
@@ -2621,9 +2090,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_mirror": {
       "files": {
@@ -2631,9 +2098,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_mirror_nodes": {
       "files": {
@@ -2641,9 +2106,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_modifier_curve": {
       "files": {
@@ -2651,9 +2114,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_modifier_curve_instanced": {
       "files": {
@@ -2661,9 +2122,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_modifier_edgesplit": {
       "files": {
@@ -2671,9 +2130,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_modifier_simplifier": {
       "files": {
@@ -2681,9 +2138,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_modifier_tessellation": {
       "files": {
@@ -2693,10 +2148,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_morphtargets": {
       "files": {
@@ -2704,9 +2156,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_morphtargets_face": {
       "files": {
@@ -2714,9 +2164,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_morphtargets_horse": {
       "files": {
@@ -2724,9 +2172,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_morphtargets_sphere": {
       "files": {
@@ -2734,9 +2180,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_multiple_canvases_circle": {
       "files": {
@@ -2744,9 +2188,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_multiple_canvases_complex": {
       "files": {
@@ -2754,9 +2196,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_multiple_canvases_grid": {
       "files": {
@@ -2764,9 +2204,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_multiple_elements": {
       "files": {
@@ -2774,9 +2212,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_multiple_elements_text": {
       "files": {
@@ -2784,9 +2220,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_multiple_renderers": {
       "files": {
@@ -2794,9 +2228,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_multiple_scenes_comparison": {
       "files": {
@@ -2804,9 +2236,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_multiple_views": {
       "files": {
@@ -2814,9 +2244,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_panorama_cube": {
       "files": {
@@ -2824,9 +2252,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_panorama_equirectangular": {
       "files": {
@@ -2834,9 +2260,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_performance": {
       "files": {
@@ -2844,9 +2268,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_performance_nodes": {
       "files": {
@@ -2854,9 +2276,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_performance_static": {
       "files": {
@@ -2864,9 +2284,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_pmrem_test": {
       "files": {
@@ -2874,9 +2292,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_points_billboards": {
       "files": {
@@ -2884,9 +2300,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_points_dynamic": {
       "files": {
@@ -2894,9 +2308,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_points_nodes": {
       "files": {
@@ -2904,9 +2316,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_points_sprites": {
       "files": {
@@ -2914,9 +2324,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_points_waves": {
       "files": {
@@ -2926,10 +2334,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_portal": {
       "files": {
@@ -2937,9 +2342,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing": {
       "files": {
@@ -2947,9 +2350,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_3dlut": {
       "files": {
@@ -2957,9 +2358,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_advanced": {
       "files": {
@@ -2967,9 +2366,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_afterimage": {
       "files": {
@@ -2977,9 +2374,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_backgrounds": {
       "files": {
@@ -2987,9 +2382,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_crossfade": {
       "files": {
@@ -2997,9 +2390,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_dof": {
       "files": {
@@ -3007,9 +2398,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_dof2": {
       "files": {
@@ -3017,9 +2406,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_fxaa": {
       "files": {
@@ -3027,9 +2414,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_glitch": {
       "files": {
@@ -3037,9 +2422,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_godrays": {
       "files": {
@@ -3047,9 +2430,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_masking": {
       "files": {
@@ -3057,9 +2438,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_nodes": {
       "files": {
@@ -3067,9 +2446,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_nodes_pass": {
       "files": {
@@ -3077,9 +2454,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_outline": {
       "files": {
@@ -3087,9 +2462,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_pixel": {
       "files": {
@@ -3097,9 +2470,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_procedural": {
       "files": {
@@ -3111,10 +2482,7 @@
         "proceduralVert.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_postprocessing_rgb_halftone": {
       "files": {
@@ -3122,9 +2490,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_sao": {
       "files": {
@@ -3132,9 +2498,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_smaa": {
       "files": {
@@ -3142,9 +2506,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_sobel": {
       "files": {
@@ -3152,9 +2514,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_ssaa": {
       "files": {
@@ -3162,9 +2522,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_ssao": {
       "files": {
@@ -3172,9 +2530,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_ssr": {
       "files": {
@@ -3182,9 +2538,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_ssrr": {
       "files": {
@@ -3192,9 +2546,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_taa": {
       "files": {
@@ -3202,9 +2554,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_unreal_bloom": {
       "files": {
@@ -3212,9 +2562,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_postprocessing_unreal_bloom_selective": {
       "files": {
@@ -3224,10 +2572,7 @@
         "vertexshader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_raycast_sprite": {
       "files": {
@@ -3235,9 +2580,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_raycast_texture": {
       "files": {
@@ -3245,9 +2588,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_raymarching_reflect": {
       "files": {
@@ -3257,10 +2598,7 @@
         "vertex_shader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_read_float_buffer": {
       "files": {
@@ -3271,10 +2609,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_refraction": {
       "files": {
@@ -3282,9 +2617,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_rtt": {
       "files": {
@@ -3295,10 +2628,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_shader": {
       "files": {
@@ -3308,10 +2638,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_shader2": {
       "files": {
@@ -3324,10 +2651,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_shaders_ocean": {
       "files": {
@@ -3335,9 +2659,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shaders_sky": {
       "files": {
@@ -3345,9 +2667,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shaders_tonemapping": {
       "files": {
@@ -3355,9 +2675,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shader_lava": {
       "files": {
@@ -3367,10 +2685,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_shadowmap": {
       "files": {
@@ -3378,9 +2693,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shadowmap_csm": {
       "files": {
@@ -3388,9 +2701,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shadowmap_pcss": {
       "files": {
@@ -3400,10 +2711,7 @@
         "PCSSGetShadow.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_shadowmap_performance": {
       "files": {
@@ -3411,9 +2719,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shadowmap_pointlight": {
       "files": {
@@ -3421,9 +2727,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shadowmap_progressive": {
       "files": {
@@ -3431,9 +2735,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shadowmap_viewer": {
       "files": {
@@ -3441,9 +2743,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shadowmap_vsm": {
       "files": {
@@ -3451,9 +2751,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shadowmesh": {
       "files": {
@@ -3461,9 +2759,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_shadow_contact": {
       "files": {
@@ -3471,9 +2767,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_simple_gi": {
       "files": {
@@ -3481,9 +2775,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_skinning_simple": {
       "files": {
@@ -3491,9 +2783,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_sprites": {
       "files": {
@@ -3501,9 +2791,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_sprites_nodes": {
       "files": {
@@ -3511,9 +2799,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_test_memory": {
       "files": {
@@ -3521,9 +2807,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_test_memory2": {
       "files": {
@@ -3533,10 +2817,7 @@
         "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_tiled_forward": {
       "files": {
@@ -3544,9 +2825,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_tonemapping": {
       "files": {
@@ -3554,9 +2833,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_trails": {
       "files": {
@@ -3564,9 +2841,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_video_kinect": {
       "files": {
@@ -3576,10 +2851,7 @@
         "vs.glsl": "src/shaders",
         "style.css": "src"
       },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
+      "dirs": ["/src", "/src/shaders"]
     },
     "webgl_video_panorama_equirectangular": {
       "files": {
@@ -3587,9 +2859,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_water": {
       "files": {
@@ -3597,9 +2867,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_water_flowmap": {
       "files": {
@@ -3607,9 +2875,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgl_worker_offscreencanvas": {
       "files": {
@@ -3617,9 +2883,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgpu_compute": {
       "files": {
@@ -3627,9 +2891,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgpu_instance_uniform": {
       "files": {
@@ -3637,9 +2899,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgpu_lights_custom": {
       "files": {
@@ -3647,9 +2907,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgpu_lights_selective": {
       "files": {
@@ -3657,9 +2915,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgpu_materials": {
       "files": {
@@ -3667,9 +2923,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgpu_rtt": {
       "files": {
@@ -3677,9 +2931,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgpu_sandbox": {
       "files": {
@@ -3687,9 +2939,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgpu_skinning": {
       "files": {
@@ -3697,9 +2947,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webgpu_skinning_points": {
       "files": {
@@ -3707,9 +2955,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_ar_cones": {
       "files": {
@@ -3717,9 +2963,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_ar_hittest": {
       "files": {
@@ -3727,9 +2971,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_ar_lighting": {
       "files": {
@@ -3737,9 +2979,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_ar_paint": {
       "files": {
@@ -3747,9 +2987,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_ballshooter": {
       "files": {
@@ -3757,9 +2995,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_cubes": {
       "files": {
@@ -3767,9 +3003,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_dragging": {
       "files": {
@@ -3777,9 +3011,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_handinput": {
       "files": {
@@ -3787,9 +3019,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_handinput_cubes": {
       "files": {
@@ -3797,9 +3027,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_handinput_pointerclick": {
       "files": {
@@ -3807,9 +3035,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_handinput_pointerdrag": {
       "files": {
@@ -3817,9 +3043,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_handinput_pressbutton": {
       "files": {
@@ -3827,9 +3051,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_handinput_profiles": {
       "files": {
@@ -3837,9 +3059,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_haptics": {
       "files": {
@@ -3847,9 +3067,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_layers": {
       "files": {
@@ -3857,9 +3075,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_paint": {
       "files": {
@@ -3867,9 +3083,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_panorama": {
       "files": {
@@ -3877,9 +3091,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_panorama_depth": {
       "files": {
@@ -3887,9 +3099,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_rollercoaster": {
       "files": {
@@ -3897,9 +3107,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_sandbox": {
       "files": {
@@ -3907,9 +3115,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_sculpt": {
       "files": {
@@ -3917,9 +3123,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     },
     "webxr_vr_video": {
       "files": {
@@ -3927,9 +3131,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     }
   },
   "basic": {
@@ -3939,9 +3141,7 @@
         "main.js": "src",
         "style.css": "src"
       },
-      "dirs": [
-        "/src"
-      ]
+      "dirs": ["/src"]
     }
   },
   "utils": {
@@ -3950,9 +3150,7 @@
         "example.json": "static",
         "favicon.ico": "static"
       },
-      "dirs": [
-        "/static"
-      ]
+      "dirs": ["/static"]
     },
     "parcel": {
       "files": {
@@ -3967,9 +3165,7 @@
         "webpack.prod.js": "bundler",
         "package.json": ""
       },
-      "dirs": [
-        "/bundler"
-      ]
+      "dirs": ["/bundler"]
     }
   }
 }
