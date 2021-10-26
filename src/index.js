@@ -28,6 +28,7 @@ const manageDir = require("./scripts/movedir");
 const downloadFiles = require("./scripts/downloadfiles");
 const { selectTemplate } = require("./scripts/promtTemplate");
 const consts = require("./scripts/constants");
+const { promtBundler } = require("./scripts/promtBundler");
 
 //
 
@@ -37,10 +38,11 @@ const consts = require("./scripts/constants");
   const {
     dir,
     isExample: _isExample,
-    template,
-    bundler,
+    example: _example,
+    bundler: _bundler,
     force,
     useNpm,
+    interactive,
   } = await resolveArgs();
 
   await checkForUpdates();
@@ -48,8 +50,11 @@ const consts = require("./scripts/constants");
   // Ask for the template; will consider the cli arg if present
   const { isExample, example, name } = await selectTemplate({
     isExample: _isExample,
-    template,
+    template: _example,
+    interactive,
   });
+
+  const bundler = interactive ? await promtBundler() : _bundler;
 
   console.log(`Downloading ${name}`);
 

@@ -8,12 +8,13 @@ module.exports.help = () => {
     Options:
         ${blueBright("-h")}, ${blueBright("--help")}                  Prints this help message
         ${blueBright("-v")}, ${blueBright("--version")}               Prints the version number
-        ${blueBright("-t")}, ${blueBright("--template")} ${magentaBright("<name>")}       Specifies the name of the template
-        ${blueBright("-e")}, ${blueBright("--example")+ magentaBright(" <name>")}        Selects template from three.js examples
+        ${blueBright("-i")}, ${blueBright("--interactive")}           Enables interactive mode
         ${blueBright("-f")}, ${blueBright("--force")}                 Deletes all contents of the ${magentaBright("<directory>")} if not empty
+        ${blueBright("-e")}, ${blueBright("--example")+ magentaBright(" <name>")}        Selects template from three.js examples
         ${blueBright("-b")}, ${blueBright("--bundler") + magentaBright(" <name>")}    \
-    Selects a bundler to use: ${blueBright("<webpack|parcel>")} default: ${blueBright("webpack")} ~ ${redBright("looking for contributors")}
-
+    Selects a bundler to use: ${blueBright("<webpack|parcel>")} default: ${blueBright("webpack")}
+        ${blueBright("--prefer-npm")}                Prefer npm over yarn
+        
     Example:
         ${greenBright("npx create-three-app")} ${magentaBright("my-three-app")} ${blueBright("-e")} ${magentaBright("webgl_shader")}
 

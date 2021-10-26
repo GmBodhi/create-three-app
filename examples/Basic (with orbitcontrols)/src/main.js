@@ -19,6 +19,8 @@ let camera, scene, renderer, mesh, controls;
 init();
 
 function init() {
+  //
+
   // Camera
   camera = new PerspectiveCamera(
     50,
@@ -26,6 +28,7 @@ function init() {
     1,
     1000
   );
+
   camera.position.set(100, 400, 0);
 
   // Scene
@@ -56,11 +59,13 @@ function init() {
   controls.autoRotate = true;
   controls.enableDamping = true;
 
+  // Window resize
   window.addEventListener("resize", onWindowResize, false);
 
   animate();
 }
 
+// Resize the canvas to fill browser window dynamically
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
@@ -68,9 +73,14 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+// Animate the scene
 function animate() {
+  // Request animation frame
   requestAnimationFrame(animate);
+
+  // Render the scene
   renderer.render(scene, camera);
 
+  // Update controls
   controls.update();
 }

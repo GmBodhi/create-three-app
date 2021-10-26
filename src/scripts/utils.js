@@ -27,11 +27,17 @@ module.exports.error = error;
 // Download utils
 //
 
-async function download(url, dest) {
+async function download(url, dest, kill = false) {
   const res = await fetch(url);
   if (!res.ok) {
     console.log(url);
-    return error(`Server responded with ${res.status}: ${res.statusText}`);
+    console.log(
+      chalk.redBright(`Server responded with ${res.status}: ${res.statusText}`)
+    );
+    if (kill)
+      return error(`Server responded with ${res.status}: ${res.statusText}`);
+    console.log(chalk.blueBright("\nRetrying..!\r"));
+    return download(url, dest, true);
   }
   const fileStream = fs.createWriteStream(dest);
   return await new Promise((resolve, reject) => {
@@ -47,7 +53,7 @@ module.exports.download = download;
 //
 
 const domain =
-  "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/";
+  "https://raw.githubusercontent.com/GmBodhi/create-three-app/fix/config/";
 
 module.exports.domain = domain;
 
@@ -93,7 +99,6 @@ module.exports.resolveArgs = async function resolveArgs() {
   else if (args.v) version();
 
   const _example = args.example || args.e;
-  const _template = args.template || args.t;
   const _bundler = args.bundler || args.b || "webpack";
 
   const bundlers = Object.keys((await getConfig()).utils);
@@ -109,11 +114,12 @@ module.exports.resolveArgs = async function resolveArgs() {
 
   const configs = {
     dir: args._[0] || "my-three-app",
-    isExample: _example && !_template,
-    template: _template || _example,
+    isExample: !!_example,
+    example: _example,
     bundler: _bundler,
     force: args.force || args.f,
     useNpm: args.preferNpm,
+    interactive: args.interactive || args.i,
   };
 
   return configs;
