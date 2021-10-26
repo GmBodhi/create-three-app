@@ -1,4 +1,4 @@
-const { blueBright, magentaBright, greenBright, redBright } = require("chalk");
+const { blueBright, magentaBright, greenBright } = require("chalk");
 
 module.exports.help = () => {
   // prettier-ignore
