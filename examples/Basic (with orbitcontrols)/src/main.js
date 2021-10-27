@@ -76,7 +76,7 @@ function onWindowResize() {
 // Animate the scene
 function animate() {
   // Request animation frame
-  requestAnimationFrame(animate);
+  renderer.setAnimationLoop(animate);
 
   // Render the scene
   renderer.render(scene, camera);
