@@ -27,11 +27,17 @@ module.exports.error = error;
 // Download utils
 //
 
-async function download(url, dest) {
+async function download(url, dest, kill = false) {
   const res = await fetch(url);
   if (!res.ok) {
     console.log(url);
-    return error(`Server responded with ${res.status}: ${res.statusText}`);
+    console.log(
+      chalk.redBright(`Server responded with ${res.status}: ${res.statusText}`)
+    );
+    if (kill)
+      return error(`Server responded with ${res.status}: ${res.statusText}`);
+    console.log(chalk.blueBright("\nRetrying..!\r"));
+    return download(url, dest, true);
   }
   const fileStream = fs.createWriteStream(dest);
   return await new Promise((resolve, reject) => {
@@ -55,49 +61,14 @@ module.exports.domain = domain;
 // Get Config
 //
 
-async function getBasicConfig() {
+async function getConfig() {
   if (cache.has(consts.pathTypes.BASIC))
     return cache.get(consts.pathTypes.BASIC);
-  const res = await fetch(domain + "examples/config.json").then((res) =>
-    res.json()
-  );
+  const res = await fetch(domain + "config.json").then((res) => res.json());
   cache.set(consts.pathTypes.BASIC, res);
   return res;
 }
-module.exports.getBasicConfig = getBasicConfig;
-
-//
-// Get examples Config
-//
-
-async function getExamplesConfig() {
-  if (cache.has(consts.pathTypes.EXAMPLE))
-    return cache.get(consts.pathTypes.EXAMPLE);
-  const res = await fetch(
-    `${domain}example-processor/templates/config.json`
-  ).then((res) => res.json());
-
-  cache.set(consts.pathTypes.EXAMPLE, res);
-  return res;
-}
-
-module.exports.getExamplesConfig = getExamplesConfig;
-
-//
-// Get bundler Config
-//
-
-async function getBundlersConfig() {
-  if (cache.has(consts.pathTypes.UTILS))
-    return cache.get(consts.pathTypes.UTILS);
-  const res = await fetch(`${domain}utils/config.json`).then((res) =>
-    res.json()
-  );
-  cache.set(consts.pathTypes.UTILS, res);
-  return res;
-}
-
-module.exports.getBundlersConfig = getBundlersConfig;
+module.exports.getConfig = getConfig;
 
 //
 // Check for Yarn
@@ -128,10 +99,9 @@ module.exports.resolveArgs = async function resolveArgs() {
   else if (args.v) version();
 
   const _example = args.example || args.e;
-  const _template = args.template || args.t;
   const _bundler = args.bundler || args.b || "webpack";
 
-  const bundlers = Object.keys(await getBundlersConfig());
+  const bundlers = Object.keys((await getConfig()).utils);
 
   if ((!bundlers.includes(_bundler) || _bundler === "common") && _bundler)
     error(
@@ -144,11 +114,12 @@ module.exports.resolveArgs = async function resolveArgs() {
 
   const configs = {
     dir: args._[0] || "my-three-app",
-    isExample: _example && !_template,
-    template: _template || _example,
+    isExample: !!_example,
+    example: _example,
     bundler: _bundler,
     force: args.force || args.f,
     useNpm: args.preferNpm,
+    interactive: args.interactive || args.i,
   };
 
   return configs;

@@ -1,6 +1,6 @@
 {
   "name": "create-three-app",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Create basic three.js project from three.js/examples or some predefined basic setup",
   "main": "src/index.js",
   "scripts": {
