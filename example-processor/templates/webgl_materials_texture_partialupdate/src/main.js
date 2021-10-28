@@ -12,7 +12,6 @@ import {
   MeshBasicMaterial,
   Mesh,
   DataTexture,
-  RGBFormat,
   WebGLRenderer,
   MathUtils,
 } from "three";
@@ -57,8 +56,8 @@ function init() {
   const width = 32;
   const height = 32;
 
-  const data = new Uint8Array(width * height * 3);
-  dataTexture = new DataTexture(data, width, height, RGBFormat);
+  const data = new Uint8Array(width * height * 4);
+  dataTexture = new DataTexture(data, width, height);
 
   //
 
@@ -115,10 +114,11 @@ function updateDataTexture(texture) {
   const b = Math.floor(color.b * 255);
 
   for (let i = 0; i < size; i++) {
-    const stride = i * 3;
+    const stride = i * 4;
 
     data[stride] = r;
     data[stride + 1] = g;
     data[stride + 2] = b;
+    data[stride + 3] = 1;
   }
 }
