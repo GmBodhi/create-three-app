@@ -6,6 +6,7 @@ import {
   GridHelper,
   TextureLoader,
   RepeatWrapping,
+  Color,
   Mesh,
 } from "three";
 
@@ -15,6 +16,11 @@ import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
 
 import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
+import {
+  ShaderNode,
+  vec3,
+  dot,
+} from "three/examples/jsm/renderers/nodes/ShaderNode.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
@@ -72,6 +78,10 @@ async function init() {
 
   let material;
 
+  //
+  //	BASIC
+  //
+
   // PositionNode.LOCAL
   material = new Nodes.MeshBasicNodeMaterial();
   material.colorNode = new Nodes.PositionNode(Nodes.PositionNode.LOCAL);
@@ -99,6 +109,7 @@ async function init() {
 
   // Opacity
   material = new Nodes.MeshBasicNodeMaterial();
+  material.colorNode = new Nodes.ColorNode(new Color(0x0099ff));
   material.opacityNode = new Nodes.TextureNode(texture);
   material.transparent = true;
   materials.push(material);
@@ -110,7 +121,43 @@ async function init() {
   material.alphaTestNode = new Nodes.FloatNode(0.5);
   materials.push(material);
 
+  //
+  //	ADVANCED
+  //
+
+  // Custom ShaderNode ( desaturate filter )
+
+  const desaturateShaderNode = new Nodes.ShaderNode((input) => {
+    return dot(vec3(0.299, 0.587, 0.114), input.color.xyz);
+  });
+
+  material = new Nodes.MeshBasicNodeMaterial();
+  material.colorNode = desaturateShaderNode({
+    color: new Nodes.TextureNode(texture),
+  });
+  materials.push(material);
+
+  // Custom WGSL ( desaturate filter )
+
+  const desaturateWGSLNode = new Nodes.FunctionNode(`
+					fn desaturate( color:vec3<f32> ) -> vec3<f32> {
+
+						let lum = vec3<f32>( 0.299, 0.587, 0.114 );
+
+						return vec3<f32>( dot( lum, color ) );
+
+					}
+				`);
+
+  material = new Nodes.MeshBasicNodeMaterial();
+  material.colorNode = desaturateWGSLNode.call({
+    color: new Nodes.TextureNode(texture),
+  });
+  materials.push(material);
+
+  //
   // Geometry
+  //
 
   const geometry = new TeapotGeometry(50, 18);
 

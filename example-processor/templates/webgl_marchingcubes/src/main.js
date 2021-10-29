@@ -14,8 +14,8 @@ import {
   CubeRefractionMapping,
   TextureLoader,
   RepeatWrapping,
-  MeshLambertMaterial,
   MeshStandardMaterial,
+  MeshLambertMaterial,
   MeshPhongMaterial,
   UniformsUtils,
   ShaderMaterial,
@@ -46,6 +46,7 @@ let effect, resolution;
 let effectController;
 
 let time = 0;
+
 const clock = new Clock();
 
 init();
@@ -93,9 +94,10 @@ function init() {
 
   effect = new MarchingCubes(
     resolution,
-    materials[current_material].m,
+    materials[current_material],
     true,
-    true
+    true,
+    100000
   );
   effect.position.set(0, 0, 0);
   effect.scale.set(700, 700, 700);
@@ -182,123 +184,43 @@ function generateMaterials() {
   texture.wrapT = RepeatWrapping;
 
   const materials = {
-    chrome: {
-      m: new MeshLambertMaterial({ color: 0xffffff, envMap: reflectionCube }),
-      h: 0,
-      s: 0,
-      l: 1,
-    },
-
-    liquid: {
-      m: new MeshLambertMaterial({
-        color: 0xffffff,
-        envMap: refractionCube,
-        refractionRatio: 0.85,
-      }),
-      h: 0,
-      s: 0,
-      l: 1,
-    },
-
-    shiny: {
-      m: new MeshStandardMaterial({
-        color: 0x550000,
-        envMap: reflectionCube,
-        roughness: 0.1,
-        metalness: 1.0,
-      }),
-      h: 0,
-      s: 0.8,
-      l: 0.2,
-    },
-
-    matte: {
-      m: new MeshPhongMaterial({
-        color: 0x000000,
-        specular: 0x111111,
-        shininess: 1,
-      }),
-      h: 0,
-      s: 0,
-      l: 1,
-    },
-
-    flat: {
-      m: new MeshLambertMaterial({ color: 0x000000 }),
-      h: 0,
-      s: 0,
-      l: 1,
-    },
-
-    textured: {
-      m: new MeshPhongMaterial({
-        color: 0xffffff,
-        specular: 0x111111,
-        shininess: 1,
-        map: texture,
-      }),
-      h: 0,
-      s: 0,
-      l: 1,
-    },
-
-    colors: {
-      m: new MeshPhongMaterial({
-        color: 0xffffff,
-        specular: 0xffffff,
-        shininess: 2,
-        vertexColors: true,
-      }),
-      h: 0,
-      s: 0,
-      l: 1,
-    },
-
-    multiColors: {
-      m: new MeshPhongMaterial({ shininess: 2, vertexColors: true }),
-      h: 0,
-      s: 0,
-      l: 1,
-    },
-
-    plastic: {
-      m: new MeshPhongMaterial({
-        color: 0x000000,
-        specular: 0x888888,
-        shininess: 250,
-      }),
-      h: 0.6,
-      s: 0.8,
-      l: 0.1,
-    },
-
-    toon1: {
-      m: toonMaterial1,
-      h: 0.2,
-      s: 1,
-      l: 0.75,
-    },
-
-    toon2: {
-      m: toonMaterial2,
-      h: 0.4,
-      s: 1,
-      l: 0.75,
-    },
-
-    hatching: {
-      m: hatchingMaterial,
-      h: 0.2,
-      s: 1,
-      l: 0.9,
-    },
-
-    dotted: {
-      m: dottedMaterial,
-      h: 0.2,
-      s: 1,
-      l: 0.9,
-    },
+    shiny: new MeshStandardMaterial({
+      color: 0x550000,
+      envMap: reflectionCube,
+      roughness: 0.1,
+      metalness: 1.0,
+    }),
+    chrome: new MeshLambertMaterial({
+      color: 0xffffff,
+      envMap: reflectionCube,
+    }),
+    liquid: new MeshLambertMaterial({
+      color: 0xffffff,
+      envMap: refractionCube,
+      refractionRatio: 0.85,
+    }),
+    matte: new MeshPhongMaterial({ specular: 0x111111, shininess: 1 }),
+    flat: new MeshLambertMaterial({
+      /*TODO flatShading: true */
+    }),
+    textured: new MeshPhongMaterial({
+      color: 0xffffff,
+      specular: 0x111111,
+      shininess: 1,
+      map: texture,
+    }),
+    colors: new MeshPhongMaterial({
+      color: 0xffffff,
+      specular: 0xffffff,
+      shininess: 2,
+      vertexColors: true,
+    }),
+    multiColors: new MeshPhongMaterial({ shininess: 2, vertexColors: true }),
+    plastic: new MeshPhongMaterial({ specular: 0x888888, shininess: 250 }),
+    toon1: toonMaterial1,
+    toon2: toonMaterial2,
+    hatching: hatchingMaterial,
+    dotted: dottedMaterial,
   };
 
   return materials;
@@ -329,20 +251,9 @@ function createShaderMaterial(shader, light, ambientLight) {
 function setupGui() {
   const createHandler = function (id) {
     return function () {
-      const mat_old = materials[current_material];
-      mat_old.h = m_h.getValue();
-      mat_old.s = m_s.getValue();
-      mat_old.l = m_l.getValue();
-
       current_material = id;
 
-      const mat = materials[id];
-      effect.material = mat.m;
-
-      m_h.setValue(mat.h);
-      m_s.setValue(mat.s);
-      m_l.setValue(mat.l);
-
+      effect.material = materials[id];
       effect.enableUvs = current_material === "textured" ? true : false;
       effect.enableColors =
         current_material === "colors" || current_material === "multiColors"
@@ -363,18 +274,6 @@ function setupGui() {
     wallx: false,
     wallz: false,
 
-    hue: 0.0,
-    saturation: 0.8,
-    lightness: 0.1,
-
-    lhue: 0.04,
-    lsaturation: 1.0,
-    llightness: 0.5,
-
-    lx: 0.5,
-    ly: 0.5,
-    lz: 1.0,
-
     dummy: function () {},
   };
 
@@ -390,30 +289,6 @@ function setupGui() {
     effectController[m] = createHandler(m);
     h.add(effectController, m).name(m);
   }
-
-  // material (color)
-
-  h = gui.addFolder("Material color");
-
-  const m_h = h.add(effectController, "hue", 0.0, 1.0, 0.025);
-  const m_s = h.add(effectController, "saturation", 0.0, 1.0, 0.025);
-  const m_l = h.add(effectController, "lightness", 0.0, 1.0, 0.025);
-
-  // light (point)
-
-  h = gui.addFolder("Point light color");
-
-  h.add(effectController, "lhue", 0.0, 1.0, 0.025).name("hue");
-  h.add(effectController, "lsaturation", 0.0, 1.0, 0.025).name("saturation");
-  h.add(effectController, "llightness", 0.0, 1.0, 0.025).name("lightness");
-
-  // light (directional)
-
-  h = gui.addFolder("Directional light orientation");
-
-  h.add(effectController, "lx", -1.0, 1.0, 0.025).name("x");
-  h.add(effectController, "ly", -1.0, 1.0, 0.025).name("y");
-  h.add(effectController, "lz", -1.0, 1.0, 0.025).name("z");
 
   // simulation
 
@@ -501,37 +376,6 @@ function render() {
     effectController.floor,
     effectController.wallx,
     effectController.wallz
-  );
-
-  // materials
-
-  if (effect.material instanceof ShaderMaterial) {
-    effect.material.uniforms["uBaseColor"].value.setHSL(
-      effectController.hue,
-      effectController.saturation,
-      effectController.lightness
-    );
-  } else {
-    effect.material.color.setHSL(
-      effectController.hue,
-      effectController.saturation,
-      effectController.lightness
-    );
-  }
-
-  // lights
-
-  light.position.set(
-    effectController.lx,
-    effectController.ly,
-    effectController.lz
-  );
-  light.position.normalize();
-
-  pointLight.color.setHSL(
-    effectController.lhue,
-    effectController.lsaturation,
-    effectController.llightness
   );
 
   // render

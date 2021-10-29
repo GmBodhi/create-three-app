@@ -29,7 +29,7 @@ const params = {
   ior: 1.5,
   thickness: 0.01,
   specularIntensity: 1,
-  specularTint: 0xffffff,
+  specularColor: 0xffffff,
   envMapIntensity: 1,
   lightIntensity: 1,
   exposure: 1,
@@ -94,7 +94,7 @@ function init() {
     envMapIntensity: params.envMapIntensity,
     transmission: params.transmission, // use material.transmission for glass materials
     specularIntensity: params.specularIntensity,
-    specularTint: params.specularTint,
+    specularColor: params.specularColor,
     opacity: params.opacity,
     side: DoubleSide,
     transparent: true,
@@ -156,8 +156,8 @@ function init() {
     render();
   });
 
-  gui.addColor(params, "specularTint").onChange(function () {
-    material.specularTint.set(params.specularTint);
+  gui.addColor(params, "specularColor").onChange(function () {
+    material.specularColor.set(params.specularColor);
     render();
   });
 
