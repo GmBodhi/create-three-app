@@ -37,6 +37,7 @@
   },
   "devDependencies": {
     "@types/node": "^16.6.1",
+    "csso": "^4.2.0",
     "eslint": "^7.32.0",
     "glslx": "^0.2.13",
     "jsdom": "^17.0.0",

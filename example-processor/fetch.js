@@ -7,13 +7,21 @@ const parseHtml = require("./parseHtml");
 const puppeteer = require("puppeteer");
 const { JSDOM } = require("jsdom");
 const { format } = require("prettier");
+const fetch = require("node-fetch");
+const { minify } = require("csso");
 
-let browser, page;
+let browser,
+  page,
+  commomStyle = " ";
 
 module.exports.launch = async ({ urls, json, port }) => {
   browser = await puppeteer.launch({ args: ["--no-sandbox"] });
 
   page = await browser.newPage();
+
+  commomStyle = await fetch("https://threejs.org/examples/main.css")
+    .then((r) => r.text())
+    .catch((e) => console.log(e));
 
   page.on("request", (request) => {
     let url =
@@ -62,7 +70,7 @@ module.exports.fetch = async function (url, name) {
 
   let { additions, replace } = parseShader(window, name);
   let script = parseScript(window, additions, replace);
-  let style = parseStyle(window);
+  let style = minify(`${parseStyle(window)} ${commomStyle}`).css;
   let html = parseHtml(window);
 
   writeFileSync(
