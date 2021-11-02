@@ -28,9 +28,7 @@ module.exports.launch = async ({ urls, json, port }) => {
       request.frame()?.url()?.split("/").at(-1)?.split(".")[0] ?? "unknown";
 
     let reqUrl =
-      request.url()?.split("/")[
-        request.frame()?.url()?.split("/").length - 1
-      ] ?? "unknown";
+      request.url()?.split("/").at(-1) ?? "unknown";
 
     if (json.includes(url)) return;
 
@@ -68,7 +66,7 @@ module.exports.fetch = async function (url, name) {
 
   mkdirSync("./templates/" + name + "/src");
 
-  let { additions, replace } = parseShader(window, name);
+  let { additions, replace } = parseShader({ window, name });
   let script = parseScript(window, additions, replace);
   let style = minify(`${parseStyle(window)} ${commomStyle}`).css;
   let html = parseHtml(window);

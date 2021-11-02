@@ -9,9 +9,13 @@ function getAdditions(imports) {
     .replace(/,/g, "");
 }
 
-module.exports = function parseShader(window, name) {
+module.exports = function parseShader({ window, name }) {
   const shaders = Array.from(window.document.querySelectorAll("script")).filter(
-    (s) => /(x-)?shader\/(x-*)?/i.test(s.type)
+    (s) => {
+      const _ = /(x-)?shader\/(x-*)?/i.test(s.type);
+      _ ? s.remove() : null;
+      return _;
+    }
   );
 
   if (!shaders.length) return {};
