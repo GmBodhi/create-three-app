@@ -1,32 +1,37 @@
 body {
-  margin: 0px;
-  background-color: #111;
   overflow: hidden;
-  font-family: arial;
+  margin: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: Monospace;
+  font-size: 13px;
+  line-height: 24px;
+  overscroll-behavior: none;
 }
-
+.lbl,
 .menu {
   color: #fff;
-  font-weight: bold;
+  width: 75px;
+}
+.menu {
+  font-weight: 700;
   font-size: 12px;
   z-index: 100;
-  width: 75px;
   position: absolute;
-  top: 0px;
+  top: 0;
   padding: 16px;
 }
-.menu img,
-.menu canvas {
+.menu canvas,
+.menu img {
   width: 75px;
   margin: 10px 0;
 }
-
+#backgrounds,
 #images {
-  background: rgba(0, 0, 0, 0);
-  left: 0px;
+  background: 0 0;
+  left: 0;
 }
 #backgrounds {
-  background: rgba(0, 0, 0, 0);
   left: 107px;
 }
 #labels {
@@ -34,13 +39,10 @@ body {
   left: 214px;
   width: 100px;
 }
-
 .lbl {
-  color: #fff;
   z-index: 150;
   float: left;
   padding: 0.25em;
-  width: 75px;
   display: block;
 }
 #lbl_dst {
@@ -49,31 +51,84 @@ body {
 #lbl_src {
   background: green;
 }
-
 .btn {
-  background: darkorange;
+  background: #ff8c00;
   width: 100px;
   cursor: pointer;
 }
-
+#btn_max,
+#btn_min,
+#btn_pre,
+#btn_rsub,
 #btn_sub {
-  background: transparent;
+  background: 0 0;
 }
-#btn_rsub {
-  background: transparent;
-}
-#btn_min {
-  background: transparent;
-}
-#btn_max {
-  background: transparent;
-}
-
-#btn_pre {
-  background: transparent;
-}
-
 #btn_max,
 #btn_nopre {
   margin-bottom: 2em;
+}
+a {
+  color: #ff0;
+  text-decoration: none;
+  pointer-events: auto;
+}
+a:hover {
+  text-decoration: underline;
+}
+#overlay button,
+button {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+#info,
+#overlay {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+#info,
+.dg.ac {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+#info {
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  pointer-events: none;
+  z-index: 1;
+}
+button,
+input,
+select {
+  pointer-events: auto;
+}
+.dg.ac {
+  z-index: 2 !important;
+}
+#overlay {
+  font-size: 16px;
+  z-index: 2;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.7);
+}
+#overlay button {
+  background: 0 0;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  color: #fff;
+  padding: 12px 18px;
+}
+#notSupported {
+  width: 50%;
+  background-color: red;
+  margin: 20px auto auto;
+  padding: 10px;
 }
