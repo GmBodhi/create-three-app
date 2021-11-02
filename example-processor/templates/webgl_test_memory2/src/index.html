@@ -13,30 +13,5 @@
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
       - memory test II
     </div>
-
-    <script type="x-shader/x-fragment" id="fragmentShader">
-
-      void main() {
-
-      	if ( mod ( gl_FragCoord.x, 4.0001 ) < 1.0 || mod ( gl_FragCoord.y, 4.0001 ) < 1.0 )
-
-      		gl_FragColor = vec4( XXX, 1.0 );
-
-      	else
-
-      		gl_FragColor = vec4( 1.0 );
-
-      }
-    </script>
-
-    <script type="x-shader/x-vertex" id="vertexShader">
-
-      void main() {
-
-      	vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-      	gl_Position = projectionMatrix * mvPosition;
-
-      }
-    </script>
   </body>
 </html>

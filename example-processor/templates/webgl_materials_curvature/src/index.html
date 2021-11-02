@@ -15,31 +15,5 @@
       by
       <a href="http://codercat.club" target="_blank" rel="noopener">CoderCat</a>
     </div>
-
-    <script id="vertexShaderRaw" type="x-shader/x-vertex">
-
-      attribute float curvature;
-
-      varying float vCurvature;
-
-      void main() {
-
-      	vec3 p = position;
-      	vec4 modelViewPosition = modelViewMatrix * vec4( p , 1.0 );
-      	gl_Position = projectionMatrix * modelViewPosition;
-      	vCurvature = curvature;
-
-      }
-    </script>
-
-    <script id="fragmentShaderRaw" type="x-shader/x-fragment">
-
-      varying vec3 vViewPosition;
-      varying float vCurvature;
-
-      void main() {
-      		gl_FragColor = vec4( vCurvature * 2.0, 0.0, 0.0, 0.0 );
-      }
-    </script>
   </body>
 </html>
