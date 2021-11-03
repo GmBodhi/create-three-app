@@ -9,6 +9,9 @@
     "config": "node generateConfig",
     "format": "prettier --write ."
   },
+  "staticFiles": {
+    "staticPath": "static"
+  },
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
