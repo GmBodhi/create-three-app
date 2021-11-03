@@ -3,7 +3,7 @@
   "private": true,
   "license": "UNLICENSED",
   "source": "src/index.html",
-  "main": "src/index.html"
+  "main": "src/index.html",
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "repository": "#",
   "version": "1.0.0",
