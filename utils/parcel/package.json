@@ -2,11 +2,13 @@
   "description": "App made with create-three-app",
   "private": true,
   "license": "UNLICENSED",
+  "source": "src/index.html",
+  "browserslist": "> 0.5%, last 2 versions, not dead",
   "repository": "#",
   "version": "1.0.0",
   "scripts": {
-    "build": "parcel build ./src/index.html",
-    "dev": "parcel ./src/index.html"
+    "dev": "parcel",
+    "build": "parcel build"
   },
   "dependencies": {
     "three": "^0.132.2"
