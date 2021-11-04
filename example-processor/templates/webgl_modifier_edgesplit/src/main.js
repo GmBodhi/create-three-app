@@ -15,7 +15,7 @@ import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { EdgeSplitModifier } from "three/examples/jsm/modifiers/EdgeSplitModifier.js";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let renderer, scene, camera;
 let modifier, mesh, baseGeometry;

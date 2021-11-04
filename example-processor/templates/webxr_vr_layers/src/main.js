@@ -21,7 +21,7 @@ import {
   MeshBasicMaterial,
   CanvasTexture,
 } from "three";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { HTMLMesh } from "three/examples/jsm/interactive/HTMLMesh.js";
 import { InteractiveGroup } from "three/examples/jsm/interactive/InteractiveGroup.js";
 import { VRButton } from "three/examples/jsm/webxr/VRButton.js";

@@ -18,7 +18,7 @@ import {
   Vector2,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";

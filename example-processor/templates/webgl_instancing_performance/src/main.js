@@ -17,7 +17,7 @@ import {
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
@@ -227,10 +227,10 @@ function init() {
 
   const perfFolder = gui.addFolder("Performance");
 
-  guiStatsEl = document.createElement("li");
+  guiStatsEl = document.createElement("div");
   guiStatsEl.classList.add("gui-stats");
 
-  perfFolder.__ul.appendChild(guiStatsEl);
+  perfFolder.$children.appendChild(guiStatsEl);
   perfFolder.open();
 
   // listeners

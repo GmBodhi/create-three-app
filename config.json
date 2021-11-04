@@ -3956,6 +3956,7 @@
     },
     "parcel": {
       "files": {
+        ".parcelrc": "",
         "package.json": ""
       },
       "dirs": []

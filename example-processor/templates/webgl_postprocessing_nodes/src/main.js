@@ -17,7 +17,7 @@ import {
   DirectionalLight,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import * as Nodes from "three/examples/jsm/nodes/Nodes.js";
 
 let camera, scene, renderer;

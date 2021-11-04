@@ -19,7 +19,7 @@ import {
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
@@ -203,16 +203,12 @@ function createPanel() {
   folder3.open();
 
   crossFadeControls.forEach(function (control) {
-    control.classList1 =
-      control.domElement.parentElement.parentElement.classList;
-    control.classList2 = control.domElement.previousElementSibling.classList;
-
     control.setInactive = function () {
-      control.classList2.add("control-inactive");
+      control.domElement.classList.add("control-inactive");
     };
 
     control.setActive = function () {
-      control.classList2.remove("control-inactive");
+      control.domElement.classList.remove("control-inactive");
     };
 
     const settings = baseActions[control.property];
