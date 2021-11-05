@@ -17,7 +17,7 @@ import {
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 import { NRRDLoader } from "three/examples/jsm/loaders/NRRDLoader.js";
 import { VTKLoader } from "three/examples/jsm/loaders/VTKLoader.js";

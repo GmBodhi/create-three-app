@@ -15,7 +15,7 @@ import {
   Mesh,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
@@ -270,11 +270,13 @@ function init() {
     },
   };
 
-  const gui = new GUI({ title: "Topology" });
+  const gui = new GUI();
 
-  gui.add(params, "filterConvex");
-  gui.add(params, "filterConcave");
-  gui.add(params, "filterBoth");
+  const topologyFolder = gui.addFolder("Topology");
+  topologyFolder.add(params, "filterConvex");
+  topologyFolder.add(params, "filterConcave");
+  topologyFolder.add(params, "filterBoth");
+  topologyFolder.open();
 
   onWindowResize();
 

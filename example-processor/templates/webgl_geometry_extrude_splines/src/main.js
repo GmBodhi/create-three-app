@@ -18,7 +18,7 @@ import {
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
 import { Curves } from "three/examples/jsm/curves/CurveExtras.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -227,7 +227,7 @@ function init() {
 
   // dat.GUI
 
-  const gui = new GUI({ width: 285 });
+  const gui = new GUI({ width: 300 });
 
   const folderGeometry = gui.addFolder("Geometry");
   folderGeometry

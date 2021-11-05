@@ -24,7 +24,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import * as GeometryCompressionUtils from "three/examples/jsm/utils/GeometryCompressionUtils.js";
 import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
 import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
 const statsEnabled = true;
 

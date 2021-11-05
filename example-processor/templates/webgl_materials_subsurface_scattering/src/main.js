@@ -20,7 +20,7 @@ import {
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { SubsurfaceScatteringShader } from "three/examples/jsm/shaders/SubsurfaceScatteringShader.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
@@ -139,7 +139,7 @@ function initMaterial() {
 }
 
 function initGUI(uniforms) {
-  const gui = new GUI({ title: "Thickness Control" });
+  const gui = new GUI();
 
   const ThicknessControls = function () {
     this.distortion = uniforms["thicknessDistortion"].value;
@@ -150,18 +150,18 @@ function initGUI(uniforms) {
   };
 
   const thicknessControls = new ThicknessControls();
+  const thicknessFolder = gui.addFolder("Thickness Control");
 
-  gui
+  thicknessFolder
     .add(thicknessControls, "distortion")
     .min(0.01)
     .max(1)
     .step(0.01)
     .onChange(function () {
       uniforms["thicknessDistortion"].value = thicknessControls.distortion;
-      console.log("distortion");
     });
 
-  gui
+  thicknessFolder
     .add(thicknessControls, "ambient")
     .min(0.01)
     .max(5.0)
@@ -170,7 +170,7 @@ function initGUI(uniforms) {
       uniforms["thicknessAmbient"].value = thicknessControls.ambient;
     });
 
-  gui
+  thicknessFolder
     .add(thicknessControls, "attenuation")
     .min(0.01)
     .max(5.0)
@@ -179,7 +179,7 @@ function initGUI(uniforms) {
       uniforms["thicknessAttenuation"].value = thicknessControls.attenuation;
     });
 
-  gui
+  thicknessFolder
     .add(thicknessControls, "power")
     .min(0.01)
     .max(16.0)
@@ -188,7 +188,7 @@ function initGUI(uniforms) {
       uniforms["thicknessPower"].value = thicknessControls.power;
     });
 
-  gui
+  thicknessFolder
     .add(thicknessControls, "scale")
     .min(0.01)
     .max(50.0)
@@ -196,6 +196,8 @@ function initGUI(uniforms) {
     .onChange(function () {
       uniforms["thicknessScale"].value = thicknessControls.scale;
     });
+
+  thicknessFolder.open();
 }
 
 function onWindowResize() {

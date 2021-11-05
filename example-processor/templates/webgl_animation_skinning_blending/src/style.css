@@ -1,7 +1,13 @@
 a {
   color: #ff0;
   text-decoration: none;
-  pointer-events: auto;
+}
+.no-pointer-events {
+  pointer-events: none;
+}
+.control-disabled {
+  color: #888;
+  text-decoration: line-through;
 }
 body {
   margin: 0;
@@ -40,6 +46,7 @@ button {
   pointer-events: none;
   z-index: 1;
 }
+a,
 button,
 input,
 select {

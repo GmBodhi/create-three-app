@@ -32,7 +32,7 @@ import {
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { LightningStrike } from "three/examples/jsm/geometries/LightningStrike.js";
@@ -105,7 +105,7 @@ function createGUI() {
     gui.destroy();
   }
 
-  gui = new GUI({ width: 315 });
+  gui = new GUI({ width: 350 });
 
   const sceneFolder = gui.addFolder("Scene");
 

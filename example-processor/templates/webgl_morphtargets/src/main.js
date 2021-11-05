@@ -14,7 +14,7 @@ import {
   Float32BufferAttribute,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 let container, camera, scene, renderer, mesh;
@@ -125,20 +125,23 @@ function initGUI() {
     Spherify: 0,
     Twist: 0,
   };
-  const gui = new GUI({ title: "Morph Targets" });
+  const gui = new GUI();
+  const folder = gui.addFolder("Morph Targets");
 
-  gui
+  folder
     .add(params, "Spherify", 0, 1)
     .step(0.01)
     .onChange(function (value) {
       mesh.morphTargetInfluences[0] = value;
     });
-  gui
+  folder
     .add(params, "Twist", 0, 1)
     .step(0.01)
     .onChange(function (value) {
       mesh.morphTargetInfluences[1] = value;
     });
+
+  folder.open();
 }
 
 function onWindowResize() {
