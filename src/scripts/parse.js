@@ -1,4 +1,10 @@
-const { yellowBright, greenBright, red } = require("ansi-colors");
+const {
+  yellowBright,
+  greenBright,
+  red,
+  cyanBright,
+  whiteBright,
+} = require("ansi-colors");
 const yargsParser = require("yargs-parser");
 const { help, version } = require("./help");
 const { error, getConfig } = require("./utils");
@@ -19,9 +25,9 @@ module.exports = async () => {
   if (args.help) help();
   else if (args.v) version();
   else if (!args._.length)
-    error(`Please provide a directory
-Example:
-npx create-three-app my-app
+    error(`Error: Please provide a directory
+  ${whiteBright("Example:")}
+      ${greenBright("npx create-three-app")} ${cyanBright("my-app")}
 `);
 
   const bundlers = Object.keys((await getConfig()).utils);
