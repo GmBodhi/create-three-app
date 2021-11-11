@@ -14,12 +14,12 @@
   },
   "license": "ISC",
   "dependencies": {
-    "chalk": "^4.1.2",
+    "ansi-colors": "^4.1.1",
     "cross-spawn": "^7.0.3",
     "enquirer": "^2.3.6",
     "node-fetch": "^2.6.1",
     "rimraf": "^3.0.2",
-    "yargs": "^17.2.1"
+    "yargs-parser": "^20.2.9"
   },
   "bin": {
     "create-three-app": "./src/index.js"

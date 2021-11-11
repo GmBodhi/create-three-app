@@ -1,10 +1,7 @@
-const chalk = require("chalk");
+const { red, redBright, blueBright } = require("ansi-colors");
 const fetch = require("node-fetch");
 const fs = require("fs");
 const spawn = require("cross-spawn");
-const yargs = require("yargs/yargs");
-const { hideBin } = require("yargs/helpers");
-const { help, version } = require("./help");
 const consts = require("./constants");
 
 //
@@ -18,7 +15,7 @@ const cache = new Map();
 //
 
 function error(message) {
-  console.error(chalk.red(message));
+  console.error(red(message));
   process.exit(1);
 }
 module.exports.error = error;
@@ -32,11 +29,11 @@ async function download(url, dest, kill = false) {
   if (!res.ok) {
     console.log(url);
     console.log(
-      chalk.redBright(`Server responded with ${res.status}: ${res.statusText}`)
+      redBright(`Server responded with ${res.status}: ${res.statusText}`)
     );
     if (kill)
       return error(`Server responded with ${res.status}: ${res.statusText}`);
-    console.log(chalk.blueBright("\nRetrying..!\r"));
+    console.log(blueBright("\nRetrying..!\r"));
     return download(url, dest, true);
   }
   const fileStream = fs.createWriteStream(dest);
@@ -85,44 +82,6 @@ module.exports.checkYarn = function checkYarn() {
         resolve("npm");
       });
   });
-};
-
-//
-// Resolve and check args
-//
-
-module.exports.resolveArgs = async function resolveArgs() {
-  const args = yargs(hideBin(process.argv)).help(false).argv; //||
-  // (await yargs(hideBin(process.argv)).version(false).help(false).argv);
-
-  if (args.help || args.h) help();
-  else if (args.v) version();
-
-  const _example = args.example || args.e;
-  const _bundler = args.bundler || args.b || "webpack";
-
-  const bundlers = Object.keys((await getConfig()).utils);
-
-  if ((!bundlers.includes(_bundler) || _bundler === "common") && _bundler)
-    error(
-      `Provided bundler (${chalk.yellowBright(
-        _bundler
-      )}) could not be found in the available bundlers: \n${chalk.greenBright(
-        bundlers.filter((b) => b !== "common").join("\n")
-      )}\nRun with ${chalk.red("--help")} flag, to see available commands.`
-    );
-
-  const configs = {
-    dir: args._[0] || "my-three-app",
-    isExample: !!_example,
-    example: _example,
-    bundler: _bundler,
-    force: args.force || args.f,
-    useNpm: args.preferNpm,
-    interactive: args.interactive || args.i,
-  };
-
-  return configs;
 };
 
 //

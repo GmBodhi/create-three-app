@@ -1,5 +1,5 @@
 const { writeFileSync, mkdirSync } = require("fs");
-const chalk = require("chalk");
+const { cyan, red, blue } = require("ansi-colors");
 const parseScript = require("./parseScript");
 const parseShader = require("./parseShader");
 const parseStyle = require("./parseStyle");
@@ -51,13 +51,13 @@ module.exports.launch = async ({ urls, json, port }) => {
 };
 
 module.exports.close = async () => {
-  console.log(chalk.cyan("Closing browser"));
+  console.log(cyan("Closing browser"));
 
   return await browser.close();
 };
 
 module.exports.fetch = async function (url, name) {
-  console.log(chalk.red("Resolved: ", name));
+  console.log(red(`Resolved: ${name}`));
   let p = await page.goto(url, { timeout: 0 });
 
   mkdirSync("./templates/" + name);
@@ -84,6 +84,6 @@ module.exports.fetch = async function (url, name) {
     format(style, { parser: "css" })
   );
 
-  console.log(chalk.blue("Finished: ", name));
+  console.log(blue(`Finished: ${name}`));
   return;
 };

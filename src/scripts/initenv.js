@@ -1,36 +1,36 @@
-const chalk = require("chalk");
+const { dim, green, cyanBright, yellowBright } = require("ansi-colors");
 const spawn = require("cross-spawn");
 const path = require("path");
 const { error } = require("./utils");
 
 async function installDeps(manager, dir, isExample) {
   console.log(
-    chalk.dim(chalk.green(`Installing dependencies using ${manager}..!`))
+    dim(green(`Installing dependencies using ${manager}..!`))
   );
   spawn(manager === "npm" ? "npm" : "yarn", ["install"], {
     stdio: "inherit",
     cwd: path.join(process.cwd(), dir),
   })
     .on("close", () => {
-      console.log(chalk.green("Dependencies installed..!"));
+      console.log(green("Dependencies installed..!"));
       console.log(
-        `${chalk.cyanBright(`\n\n    cd `)}${chalk.yellowBright(dir)}\n`,
-        chalk.dim(
-          `   ${chalk.cyanBright(
+        `${cyanBright(`\n\n    cd `)}${yellowBright(dir)}\n`,
+        dim(
+          `   ${cyanBright(
             `${manager === "yarn" ? "yarn" : "npm run"} `
-          )}${chalk.yellowBright("dev")}\n`
+          )}${yellowBright("dev")}\n`
         )
       );
       console.log(
-        chalk.dim(
-          `\nDon't forget to run ${chalk.green(
+        dim(
+          `\nDon't forget to run ${green(
             `${manager === "yarn" ? "yarn" : "npm run"} build`
           )} for production\n`
         )
       );
       if (isExample)
         console.log(
-          chalk.yellowBright(
+          yellowBright(
             "You can find some info about assets in assets.json"
           )
         );
