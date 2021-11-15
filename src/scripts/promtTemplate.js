@@ -1,4 +1,4 @@
-const chalk = require("chalk");
+const { yellowBright, red } = require("ansi-colors");
 // @ts-ignore
 const { AutoComplete } = require("enquirer");
 const { getConfig, error } = require("./utils");
@@ -20,7 +20,7 @@ async function selectFromExamples(template = "Not_an_example") {
     });
 
   console.log(
-    chalk.yellowBright("DISCLAIMER: "),
+    yellowBright("DISCLAIMER: "),
     "Using an example from three.js may cause unresolved resource urls, which you may have to resolve..."
   );
 
@@ -30,7 +30,7 @@ async function selectFromExamples(template = "Not_an_example") {
 async function selectFromBasic({ isExample, template, interactive }) {
   const { basic: config } = await getConfig().catch((e) =>
     console.log(
-      chalk.red("An error occurred while fetching the config file"),
+      red("An error occurred while fetching the config file"),
       e
     )
   );
