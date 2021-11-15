@@ -8,9 +8,14 @@ on:
 jobs:
   Example:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        ref: ["master", "dev"]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
+        with:
+          ref: ${{ matrix.ref }}
 
       - name: Install Node v14
         uses: actions/setup-node@v2
@@ -23,8 +28,8 @@ jobs:
       - name: Run Config
         run: yarn run config
 
-      - name: clone three.js
-        run: git clone --single-branch -b master --depth=1 https://github.com/mrdoob/three.js.git res
+      - name: clone three.js ${{ matrix.ref }}
+        run: git clone --single-branch -b ${{ matrix.ref }} --depth=0 https://github.com/mrdoob/three.js.git res
 
       - name: Generate examples
         run: |
@@ -34,7 +39,7 @@ jobs:
       - name: Generate Config
         run: node generateConfig.js --unhandled-rejections=strict
 
-      - name: Commit changes
+      - name: Commit changes 
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "automated: Examples generated (actions)"
