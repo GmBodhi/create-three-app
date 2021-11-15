@@ -4,13 +4,6 @@
   top: 0;
   width: 100%;
 }
-#info,
-.dg.ac {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
 #info {
   background-color: rgba(0, 0, 0, 0.75);
   padding: 10px;
@@ -19,8 +12,9 @@
   pointer-events: none;
   z-index: 1;
 }
-.dg .folder .gui-stats {
-  height: auto;
+.lil-gui .gui-stats {
+  line-height: var(--widget-height);
+  padding: var(--padding);
 }
 body {
   margin: 0;
@@ -48,6 +42,13 @@ button,
 input,
 select {
   pointer-events: auto;
+}
+#info,
+.dg.ac {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 .dg.ac {
   z-index: 2 !important;

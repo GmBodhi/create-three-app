@@ -15,7 +15,7 @@ import {
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { TexturePass } from "three/examples/jsm/postprocessing/TexturePass.js";

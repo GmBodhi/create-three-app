@@ -15,7 +15,7 @@ import {
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";

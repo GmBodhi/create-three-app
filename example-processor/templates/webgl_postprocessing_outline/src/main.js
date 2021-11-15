@@ -23,7 +23,7 @@ import {
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
@@ -56,7 +56,7 @@ const params = {
 
 // Init gui
 
-const gui = new GUI({ width: 300 });
+const gui = new GUI({ width: 280 });
 
 gui.add(params, "edgeStrength", 0.01, 10).onChange(function (value) {
   outlinePass.edgeStrength = Number(value);

@@ -11,7 +11,7 @@ import {
   Mesh,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader.js";
 

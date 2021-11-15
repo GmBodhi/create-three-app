@@ -3,7 +3,7 @@ a {
   text-decoration: none;
   pointer-events: auto;
 }
-.control-inactive {
+.control-inactive button {
   color: #888;
 }
 body {

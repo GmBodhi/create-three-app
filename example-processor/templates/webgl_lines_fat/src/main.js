@@ -17,7 +17,7 @@ import {
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GPUStatsPanel } from "three/examples/jsm/utils/GPUStatsPanel.js";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Line2 } from "three/examples/jsm/lines/Line2.js";
 import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";

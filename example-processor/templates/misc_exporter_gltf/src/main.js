@@ -65,6 +65,9 @@ function exportGLTF(input) {
         saveString(output, "scene.gltf");
       }
     },
+    function (error) {
+      console.log("An error happened during parsing", error);
+    },
     options
   );
 }

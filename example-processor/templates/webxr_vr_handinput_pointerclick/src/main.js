@@ -86,7 +86,7 @@ class HandRaySystem extends System {
       let intersectingEntity = null;
       this.queries.intersectable.results.forEach((entity) => {
         const object = entity.getComponent(Object3D).object;
-        const intersections = hp.intersectObject(object);
+        const intersections = hp.intersectObject(object, false);
         if (intersections && intersections.length > 0) {
           if (distance == null || intersections[0].distance < distance) {
             distance = intersections[0].distance;
