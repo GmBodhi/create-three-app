@@ -112,14 +112,16 @@ const checkForUpdates = async function checkForUpdates() {
   const { version } = JSON.parse(
     fs.readFileSync("./package.json", { encoding: "utf8" })
   );
+  
   const res = await fetch(
     "https://registry.npmjs.org/-/package/create-three-app/dist-tags"
   ).then((r) => r.json());
-  version;
+  
   if (res.latest !== version)
     return error(
       `You current version (${version}) need to be updated to ${res.latest}\n We don't support global installs.`
     );
+  
   return;
 };
 
