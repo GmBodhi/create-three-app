@@ -1,36 +1,40 @@
-const { dim, green, cyanBright, yellowBright } = require("ansi-colors");
-const spawn = require("cross-spawn");
-const path = require("path");
-const { error } = require("./utils");
+import * as ansiColors from "ansi-colors";
+import spawn from "cross-spawn";
+import path from "path";
+import { error } from "./utils";
 
 async function installDeps(manager, dir, isExample) {
   console.log(
-    dim(green(`Installing dependencies using ${manager}..!`))
+    ansiColors.dim(
+      ansiColors.green(`Installing dependencies using ${manager}..!`)
+    )
   );
   spawn(manager === "npm" ? "npm" : "yarn", ["install"], {
     stdio: "inherit",
     cwd: path.join(process.cwd(), dir),
   })
     .on("close", () => {
-      console.log(green("Dependencies installed..!"));
+      console.log(ansiColors.green("Dependencies installed..!"));
       console.log(
-        `${cyanBright(`\n\n    cd `)}${yellowBright(dir)}\n`,
-        dim(
-          `   ${cyanBright(
+        `${ansiColors.cyanBright(`\n\n    cd `)}${ansiColors.yellowBright(
+          dir
+        )}\n`,
+        ansiColors.dim(
+          `   ${ansiColors.cyanBright(
             `${manager === "yarn" ? "yarn" : "npm run"} `
-          )}${yellowBright("dev")}\n`
+          )}${ansiColors.yellowBright("dev")}\n`
         )
       );
       console.log(
-        dim(
-          `\nDon't forget to run ${green(
+        ansiColors.dim(
+          `\nDon't forget to run ${ansiColors.green(
             `${manager === "yarn" ? "yarn" : "npm run"} build`
           )} for production\n`
         )
       );
       if (isExample)
         console.log(
-          yellowBright(
+          ansiColors.yellowBright(
             "You can find some info about assets in assets.json"
           )
         );
@@ -59,4 +63,4 @@ const init = (manager, dir, isExample = false) => {
   });
 };
 
-module.exports = init;
+export default init;

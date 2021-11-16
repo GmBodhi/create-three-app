@@ -6,29 +6,29 @@
 // Externals
 //
 
-const { mkdirSync, existsSync, mkdtempSync } = require("fs");
-const rimraf = require("rimraf");
-const { redBright } = require("ansi-colors");
-const path = require("path");
-const { tmpdir } = require("os");
+import { mkdirSync, existsSync, mkdtempSync } from "fs";
+import rimraf from "rimraf";
+import { redBright } from "ansi-colors";
+import path from "path";
+import { tmpdir } from "os";
 
 //
 
-const {
+import {
   domain,
   checkYarn,
   dirIsEmpty,
   error,
   getConfig,
   checkForUpdates,
-} = require("./scripts/utils");
-const resolveArgs = require("./scripts/parse");
-const init = require("./scripts/initenv");
-const manageDir = require("./scripts/movedir");
-const downloadFiles = require("./scripts/downloadfiles");
-const { selectTemplate } = require("./scripts/promtTemplate");
-const consts = require("./scripts/constants");
-const { promtBundler } = require("./scripts/promtBundler");
+} from "./scripts/utils";
+import resolveArgs from "./scripts/parse";
+import init from "./scripts/initenv";
+import manageDir from "./scripts/movedir";
+import downloadFiles from "./scripts/downloadfiles";
+import { selectTemplate } from "./scripts/promtTemplate";
+import consts from "./scripts/constants";
+import { promtBundler } from "./scripts/promtBundler";
 
 //
 

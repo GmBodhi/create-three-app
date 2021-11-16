@@ -1,30 +1,31 @@
-const { blueBright, magentaBright, greenBright } = require("ansi-colors");
+import * as ansiColors from "ansi-colors";
 
-module.exports.help = () => {
+const help = () => {
   // prettier-ignore
   process.stdout.write(`
-    Usage: ${greenBright("npx create-three-app")} ${blueBright("[options]") + magentaBright(" <directory>")}
+    Usage: ${ansiColors.greenBright("npx create-three-app")} ${ansiColors.blueBright("[options]") + ansiColors.magentaBright(" <directory>")}
 
     Options:
-        ${blueBright("-h")}, ${blueBright("--help")}                  Prints this help message
-        ${blueBright("-v")}, ${blueBright("--version")}               Prints the version number
-        ${blueBright("-i")}, ${blueBright("--interactive")}           Enables interactive mode
-        ${blueBright("-f")}, ${blueBright("--force")}                 Deletes all contents of the ${magentaBright("<directory>")} if not empty
-        ${blueBright("-e")}, ${blueBright("--example")+ magentaBright(" <name>")}        Selects template from three.js examples
-        ${blueBright("-b")}, ${blueBright("--bundler") + magentaBright(" <name>")}    \
-    Selects a bundler to use: ${blueBright("<webpack|parcel>")} default: ${blueBright("webpack")}
-        ${blueBright("--prefer-npm")}                Prefer npm over yarn
+        ${ansiColors.blueBright("-h")}, ${ansiColors.blueBright("--help")}                  Prints this help message
+        ${ansiColors.blueBright("-v")}, ${ansiColors.blueBright("--version")}               Prints the version number
+        ${ansiColors.blueBright("-i")}, ${ansiColors.blueBright("--interactive")}           Enables interactive mode
+        ${ansiColors.blueBright("-f")}, ${ansiColors.blueBright("--force")}                 Deletes all contents of the ${ansiColors.magentaBright("<directory>")} if not empty
+        ${ansiColors.blueBright("-e")}, ${ansiColors.blueBright("--example")+ ansiColors.magentaBright(" <name>")}        Selects template from three.js examples
+        ${ansiColors.blueBright("-b")}, ${ansiColors.blueBright("--bundler") + ansiColors.magentaBright(" <name>")}    \
+    Selects a bundler to use: ${ansiColors.blueBright("<webpack|parcel>")} default: ${ansiColors.blueBright("webpack")}
+        ${ansiColors.blueBright("--prefer-npm")}                Prefer npm over yarn
         
     Example:
-        ${greenBright("npx create-three-app")} ${magentaBright("my-three-app")} ${blueBright("-e")} ${magentaBright("webgl_shader")}
+        ${ansiColors.greenBright("npx create-three-app")} ${ansiColors.magentaBright("my-three-app")} ${ansiColors.blueBright("-e")} ${ansiColors.magentaBright("webgl_shader")}
 
     More information:
-        Visit ${greenBright("https://github.com/GmBodhi/create-three-app")}
+        Visit ${ansiColors.greenBright("https://github.com/GmBodhi/create-three-app")}
 `);
   process.exit(0);
 };
 
-module.exports.version = () => {
+const version = () => {
   console.log(require("../../package.json").version);
   process.exit(0);
 };
+export { help, version };

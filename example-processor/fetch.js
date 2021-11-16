@@ -1,25 +1,25 @@
-const { writeFileSync, mkdirSync } = require("fs");
-const { cyan, red, blue } = require("ansi-colors");
-const parseScript = require("./parseScript");
-const parseShader = require("./parseShader");
-const parseStyle = require("./parseStyle");
-const parseHtml = require("./parseHtml");
-const puppeteer = require("puppeteer");
-const { JSDOM } = require("jsdom");
-const { format } = require("prettier");
-const fetch = require("node-fetch");
-const { minify } = require("csso");
+import { writeFileSync, mkdirSync } from "fs";
+import { cyan, red, blue } from "ansi-colors";
+import parseScript from "./parseScript";
+import parseShader from "./parseShader";
+import parseStyle from "./parseStyle";
+import parseHtml from "./parseHtml";
+import puppeteer from "puppeteer";
+import { JSDOM } from "jsdom";
+import { format } from "prettier";
+import fetch from "node-fetch";
+import { minify } from "csso";
 
 let browser,
   page,
   commomStyle = " ";
 
-module.exports.launch = async ({ urls, json, port }) => {
+const launch = async ({ urls, json, port }) => {
   browser = await puppeteer.launch({ args: ["--no-sandbox"] });
 
   page = await browser.newPage();
 
-  commomStyle = await fetch("https://threejs.org/examples/main.css")
+  commomStyle = await fetch("https://threejs.org/examples/main.css", null)
     .then((r) => r.text())
     .catch((e) => console.log(e));
 
@@ -27,8 +27,7 @@ module.exports.launch = async ({ urls, json, port }) => {
     let url =
       request.frame()?.url()?.split("/").at(-1)?.split(".")[0] ?? "unknown";
 
-    let reqUrl =
-      request.url()?.split("/").at(-1) ?? "unknown";
+    let reqUrl = request.url()?.split("/").at(-1) ?? "unknown";
 
     if (json.includes(url)) return;
 
@@ -50,13 +49,13 @@ module.exports.launch = async ({ urls, json, port }) => {
   return;
 };
 
-module.exports.close = async () => {
+const close = async () => {
   console.log(cyan("Closing browser"));
 
   return await browser.close();
 };
 
-module.exports.fetch = async function (url, name) {
+const _fetch = async function (url, name) {
   console.log(red(`Resolved: ${name}`));
   let p = await page.goto(url, { timeout: 0 });
 
@@ -87,3 +86,4 @@ module.exports.fetch = async function (url, name) {
   console.log(blue(`Finished: ${name}`));
   return;
 };
+export { launch, close, _fetch };

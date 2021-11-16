@@ -1,7 +1,7 @@
-const { mkdirSync } = require("fs");
-const { download, resolveUrl } = require("./utils");
+import { mkdirSync } from "fs";
+import { download, resolveUrl } from "./utils";
 
-module.exports = async function (example, config, dir, domain, type) {
+export default async function (example, config, dir, domain, type) {
   //
   config.dirs.forEach((directory) => mkdirSync(`${dir}/${directory}`));
 
@@ -15,4 +15,4 @@ module.exports = async function (example, config, dir, domain, type) {
   }
 
   return;
-};
+}

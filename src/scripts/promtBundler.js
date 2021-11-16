@@ -1,6 +1,6 @@
-const { getConfig, error } = require("./utils");
+import { getConfig, error } from "./utils";
 //@ts-ignore
-const { AutoComplete } = require("enquirer");
+import { AutoComplete } from "enquirer";
 
 async function promtBundler() {
   const config = (await getConfig()).utils;
@@ -21,4 +21,4 @@ async function promtBundler() {
   return bundler;
 }
 
-module.exports.promtBundler = promtBundler;
+export { promtBundler };

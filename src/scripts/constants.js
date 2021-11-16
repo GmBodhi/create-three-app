@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   // Type of the template
   pathTypes: {
     UTILS: 0,

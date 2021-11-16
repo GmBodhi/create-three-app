@@ -1,7 +1,7 @@
-const { yellowBright, red } = require("ansi-colors");
+import * as ansiColors from "ansi-colors";
 // @ts-ignore
-const { AutoComplete } = require("enquirer");
-const { getConfig, error } = require("./utils");
+import { AutoComplete } from "enquirer";
+import { getConfig, error } from "./utils";
 
 async function selectFromExamples(template = "Not_an_example") {
   const { examples: config } = await getConfig();
@@ -20,7 +20,7 @@ async function selectFromExamples(template = "Not_an_example") {
     });
 
   console.log(
-    yellowBright("DISCLAIMER: "),
+    ansiColors.yellowBright("DISCLAIMER: "),
     "Using an example from three.js may cause unresolved resource urls, which you may have to resolve..."
   );
 
@@ -30,7 +30,7 @@ async function selectFromExamples(template = "Not_an_example") {
 async function selectFromBasic({ isExample, template, interactive }) {
   const { basic: config } = await getConfig().catch((e) =>
     console.log(
-      red("An error occurred while fetching the config file"),
+      ansiColors.red("An error occurred while fetching the config file"),
       e
     )
   );
@@ -70,4 +70,5 @@ async function selectFromBasic({ isExample, template, interactive }) {
   };
 }
 
-module.exports.selectTemplate = selectFromBasic;
+const selectTemplate = selectFromBasic;
+export { selectTemplate };

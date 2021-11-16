@@ -1,5 +1,5 @@
-const { readdirSync, mkdirSync, copyFileSync } = require("fs");
-const path = require("path");
+import { readdirSync, mkdirSync, copyFileSync } from "fs";
+import path from "path";
 
 function manageDir(targetDirectory, dir, target = "") {
   readdirSync(targetDirectory, { withFileTypes: true }).forEach((file) => {
@@ -19,4 +19,4 @@ function manageDir(targetDirectory, dir, target = "") {
   });
 }
 
-module.exports = manageDir;
+export default manageDir;

@@ -1,6 +1,6 @@
-const path = require("path");
-const fs = require("fs");
-const { format } = require("glslx");
+import path from "path";
+import fs from "fs";
+import { format } from "glslx";
 
 function getAdditions(imports) {
   return imports
@@ -9,7 +9,7 @@ function getAdditions(imports) {
     .replace(/,/g, "");
 }
 
-module.exports = function parseShader({ window, name }) {
+export default function parseShader({ window, name }) {
   const shaders = Array.from(window.document.querySelectorAll("script")).filter(
     (s) => {
       const _ = /(x-)?shader\/(x-*)?/i.test(s.type);
@@ -46,4 +46,4 @@ module.exports = function parseShader({ window, name }) {
       },
     },
   };
-};
+}
