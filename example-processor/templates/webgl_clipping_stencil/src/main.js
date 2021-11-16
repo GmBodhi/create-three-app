@@ -189,7 +189,7 @@ function init() {
 
   const ground = new Mesh(
     new PlaneGeometry(9, 9, 1, 1),
-    new ShadowMaterial({ color: 0, opacity: 0.25, side: DoubleSide })
+    new ShadowMaterial({ color: 0x000000, opacity: 0.25, side: DoubleSide })
   );
 
   ground.rotation.x = -Math.PI / 2; // rotates X/Y to X/Z

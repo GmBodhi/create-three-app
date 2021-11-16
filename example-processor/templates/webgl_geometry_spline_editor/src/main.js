@@ -88,7 +88,7 @@ function init() {
 
   const planeGeometry = new PlaneGeometry(2000, 2000);
   planeGeometry.rotateX(-Math.PI / 2);
-  const planeMaterial = new ShadowMaterial({ opacity: 0.2 });
+  const planeMaterial = new ShadowMaterial({ color: 0x000000, opacity: 0.2 });
 
   const plane = new Mesh(planeGeometry, planeMaterial);
   plane.position.y = -200;

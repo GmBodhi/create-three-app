@@ -2372,6 +2372,16 @@
         "/src"
       ]
     },
+    "webgl_materials_nodes_playground": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_materials_normalmap": {
       "files": {
         "index.html": "src",
