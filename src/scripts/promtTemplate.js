@@ -1,14 +1,14 @@
-import * as ansiColors from "ansi-colors";
+import ansiColors from "ansi-colors";
 // @ts-ignore
-import { AutoComplete } from "enquirer";
-import { getConfig, error } from "./utils";
+import  enquirer from "enquirer";
+import { getConfig, error } from "./utils.js";
 
 async function selectFromExamples(template = "Not_an_example") {
   const { examples: config } = await getConfig();
 
   if (config[template]) return { example: config[template], name: template };
 
-  const example = await new AutoComplete({
+  const example = await new enquirer.AutoComplete({
     name: "Example",
     message: "Select example",
     choices: Object.keys(config),
@@ -39,7 +39,7 @@ async function selectFromBasic({ isExample, template, interactive }) {
   if (interactive) {
     const examples = [...threeExamples, "Select from threejs examples"];
 
-    const example = await new AutoComplete({
+    const example = await new enquirer.AutoComplete({
       name: "Example",
       message: "Which template do you want to use?",
       choices: examples,

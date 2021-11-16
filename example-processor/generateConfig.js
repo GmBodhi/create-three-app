@@ -1,5 +1,5 @@
-import fs  from "fs";
-import path  from "path";
+import fs from "fs";
+import path from "path";
 
 // DON'T EDIT OR DELETE THIS FILE. //
 let config = {};

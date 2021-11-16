@@ -1,9 +1,10 @@
-import * as ansiColors from "ansi-colors";
+import ansiColors from "ansi-colors";
 import fetch from "node-fetch";
 import fs from "fs";
 import spawn from "cross-spawn";
-import consts from "./constants";
-import { version } from "../../package.json";
+import consts from "./constants.js";
+import rimraf from "rimraf";
+// import { version } from "../../package.json";
 
 //
 // Cache
@@ -25,7 +26,7 @@ function error(message) {
 //
 
 async function download(url, dest, kill = false) {
-  const res = await fetch(url, null);
+  const res = await fetch(url);
   if (!res.ok) {
     console.log(url);
     console.log(
@@ -60,9 +61,7 @@ const domain =
 async function getConfig() {
   if (cache.has(consts.pathTypes.BASIC))
     return cache.get(consts.pathTypes.BASIC);
-  const res = await fetch(domain + "config.json", null).then((res) =>
-    res.json()
-  );
+  const res = await fetch(domain + "config.json").then((res) => res.json());
   cache.set(consts.pathTypes.BASIC, res);
   return res;
 }
@@ -110,9 +109,11 @@ const dirIsEmpty = (dir) => fs.readdirSync(dir).length === 0;
 //
 
 const checkForUpdates = async function checkForUpdates() {
+  const { version } = JSON.parse(
+    fs.readFileSync("./package.json", { encoding: "utf8" })
+  );
   const res = await fetch(
-    "https://registry.npmjs.org/-/package/create-three-app/dist-tags",
-    null
+    "https://registry.npmjs.org/-/package/create-three-app/dist-tags"
   ).then((r) => r.json());
   version;
   if (res.latest !== version)
@@ -121,6 +122,36 @@ const checkForUpdates = async function checkForUpdates() {
     );
   return;
 };
+
+//
+// Validate dir
+//
+
+function validateDir(dir, force) {
+  if (!fs.existsSync(dir)) return true;
+  else {
+    if (!dirIsEmpty(dir)) {
+      if (!force)
+        return error(
+          `Provided directory {${dir}} is not empty.\n run with ${ansiColors.redBright(
+            "-f"
+          )} or ${ansiColors.redBright(
+            "--force"
+          )} flag to delete all the files in it.`
+        );
+      else {
+        console.log(
+          `${ansiColors.redBright(
+            "force flag is enabled"
+          )} Deleting { ${dir} }...\r`
+        );
+        rimraf.sync(dir);
+        fs.mkdirSync(dir);
+      }
+    }
+  }
+  return false;
+}
 
 export {
   error,
@@ -131,4 +162,5 @@ export {
   resolveUrl,
   dirIsEmpty,
   checkForUpdates,
+  validateDir,
 };

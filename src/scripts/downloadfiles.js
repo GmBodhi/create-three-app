@@ -1,5 +1,5 @@
 import { mkdirSync } from "fs";
-import { download, resolveUrl } from "./utils";
+import { download, resolveUrl } from "./utils.js";
 
 export default async function (example, config, dir, domain, type) {
   //

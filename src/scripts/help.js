@@ -1,4 +1,4 @@
-import * as ansiColors from "ansi-colors";
+import ansiColors from "ansi-colors";
 
 const help = () => {
   // prettier-ignore

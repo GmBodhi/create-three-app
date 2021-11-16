@@ -1,7 +1,7 @@
-import * as ansiColors from "ansi-colors";
+import ansiColors from "ansi-colors";
 import spawn from "cross-spawn";
 import path from "path";
-import { error } from "./utils";
+import { error } from "./utils.js";
 
 async function installDeps(manager, dir, isExample) {
   console.log(

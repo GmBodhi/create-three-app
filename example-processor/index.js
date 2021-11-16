@@ -1,6 +1,6 @@
-import fetch  from "node-fetch";
-import {_fetch, close, launch}  from "./fetch";
-import rimraf  from "rimraf";
+import fetch from "node-fetch";
+import { _fetch, close, launch } from "./fetch";
+import rimraf from "rimraf";
 import { mkdirSync, writeFileSync, existsSync } from "fs";
 const { init: initServer } = require("./initServer");
 
@@ -12,7 +12,7 @@ function writeAssets(json) {
 initServer().then(({ port }) => {
   const init = () => {
     mkdirSync("./templates");
-    fetch(`http://localhost:${port}/examples/files.json`, null)
+    fetch(`http://localhost:${port}/examples/files.json`)
       .then((r) => r.json())
       .then(async (json) => {
         let targets = [];
@@ -20,10 +20,7 @@ initServer().then(({ port }) => {
         let urls = {};
         await launch({ urls, json: targets, port });
         for (let key of targets) {
-          await _fetch(
-            `http://localhost:${port}/examples/${key}.html`,
-            key
-          );
+          await _fetch(`http://localhost:${port}/examples/${key}.html`, key);
         }
         writeFileSync("./templates/assets.json", JSON.stringify(urls));
         writeAssets(urls);

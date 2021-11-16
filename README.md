@@ -48,8 +48,6 @@ We don't recommend this for beginners, as there can be some bugs that you may ha
 
 [Watch this video](https://user-images.githubusercontent.com/71921036/139236348-f283e2bf-a978-4e07-b000-eb7afd23fec8.mp4)
 
-
-
 ## Contributing
 
 Thank you for your interest in contributing to this project!

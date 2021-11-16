@@ -19,7 +19,7 @@ const launch = async ({ urls, json, port }) => {
 
   page = await browser.newPage();
 
-  commomStyle = await fetch("https://threejs.org/examples/main.css", null)
+  commomStyle = await fetch("https://threejs.org/examples/main.css")
     .then((r) => r.text())
     .catch((e) => console.log(e));
 

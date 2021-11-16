@@ -1,7 +1,7 @@
-import * as ansiColors from "ansi-colors";
+import ansiColors from "ansi-colors";
 import yargsParser from "yargs-parser";
-import { help, version } from "./help";
-import { error, getConfig } from "./utils";
+import { help, version } from "./help.js";
+import { error, getConfig } from "./utils.js";
 
 export default async () => {
   const args = yargsParser(process.argv.slice(2), {
