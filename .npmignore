@@ -1,8 +1,0 @@
-examples/
-generateConfig.js
-.github
-example-processor/
-utils/
-.eslintrc.js
-.eslintignore
-.prettierignore

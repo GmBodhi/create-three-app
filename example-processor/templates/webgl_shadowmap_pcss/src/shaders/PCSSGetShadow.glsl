@@ -1,1 +1,0 @@
-return PCSS(shadowMap, shadowCoord);
