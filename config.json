@@ -2006,6 +2006,16 @@
         "/src"
       ]
     },
+    "webgl_loader_texture_logluv": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_texture_lottie": {
       "files": {
         "index.html": "src",
