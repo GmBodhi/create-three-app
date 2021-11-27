@@ -12,7 +12,7 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { VRMLLoader } from "three/examples/jsm/loaders/VRMLLoader.js";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, stats, controls, loader;
 
@@ -90,7 +90,7 @@ function init() {
 
   //
 
-  const gui = new GUI({ width: 300 });
+  const gui = new GUI();
   gui.add(params, "asset", assets).onChange(function (value) {
     if (vrmlScene) {
       vrmlScene.traverse(function (object) {

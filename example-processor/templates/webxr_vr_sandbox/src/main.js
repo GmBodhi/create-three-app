@@ -31,7 +31,7 @@ import { HTMLMesh } from "three/examples/jsm/interactive/HTMLMesh.js";
 import { InteractiveGroup } from "three/examples/jsm/interactive/InteractiveGroup.js";
 import { XRControllerModelFactory } from "three/examples/jsm/webxr/XRControllerModelFactory.js";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
 let reflector;

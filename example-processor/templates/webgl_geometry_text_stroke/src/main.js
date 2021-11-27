@@ -19,7 +19,6 @@ import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
 let camera, scene, renderer;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -103,6 +102,8 @@ function init() {
     }
 
     scene.add(strokeText);
+
+    render();
   }); //end load function
 
   renderer = new WebGLRenderer({ antialias: true });
@@ -114,6 +115,8 @@ function init() {
   controls.target.set(0, 0, 0);
   controls.update();
 
+  controls.addEventListener("change", render);
+
   window.addEventListener("resize", onWindowResize);
 } // end init
 
@@ -122,10 +125,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
 
   render();
 }

@@ -4,23 +4,21 @@
   top: 0;
   width: 100%;
 }
-#info,
-.dg.ac {
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
 #info {
   background-color: rgba(0, 0, 0, 0.75);
   padding: 10px;
   box-sizing: border-box;
   text-align: center;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   pointer-events: none;
   z-index: 1;
 }
-.dg .folder .gui-stats {
-  height: auto;
+.lil-gui .gui-stats {
+  line-height: var(--widget-height);
+  padding: var(--padding);
 }
 body {
   margin: 0;
@@ -49,8 +47,18 @@ input,
 select {
   pointer-events: auto;
 }
-.dg.ac {
+.lil-gui {
   z-index: 2 !important;
+}
+@media all and (max-width: 640px) {
+  .lil-gui.root {
+    right: auto;
+    top: auto;
+    max-height: 50%;
+    max-width: 80%;
+    bottom: 0;
+    left: 0;
+  }
 }
 #overlay {
   font-size: 16px;

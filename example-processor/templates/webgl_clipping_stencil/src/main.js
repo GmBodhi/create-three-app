@@ -27,7 +27,7 @@ import {
   WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
 let camera, scene, renderer, object, stats;
@@ -189,7 +189,7 @@ function init() {
 
   const ground = new Mesh(
     new PlaneGeometry(9, 9, 1, 1),
-    new ShadowMaterial({ color: 0, opacity: 0.25, side: DoubleSide })
+    new ShadowMaterial({ color: 0x000000, opacity: 0.25, side: DoubleSide })
   );
 
   ground.rotation.x = -Math.PI / 2; // rotates X/Y to X/Z

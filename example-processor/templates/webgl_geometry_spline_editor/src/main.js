@@ -23,7 +23,7 @@ import {
   MeshLambertMaterial,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
@@ -88,7 +88,7 @@ function init() {
 
   const planeGeometry = new PlaneGeometry(2000, 2000);
   planeGeometry.rotateX(-Math.PI / 2);
-  const planeMaterial = new ShadowMaterial({ opacity: 0.2 });
+  const planeMaterial = new ShadowMaterial({ color: 0x000000, opacity: 0.2 });
 
   const plane = new Mesh(planeGeometry, planeMaterial);
   plane.position.y = -200;

@@ -13,7 +13,7 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { Rhino3dmLoader } from "three/examples/jsm/loaders/3DMLoader.js";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
 let controls, gui;
@@ -45,7 +45,7 @@ function init() {
   scene.add(directionalLight);
 
   const loader = new Rhino3dmLoader();
-  loader.setLibraryPath("https://cdn.jsdelivr.net/npm/rhino3dm@0.15.0-beta/");
+  loader.setLibraryPath("https://cdn.jsdelivr.net/npm/rhino3dm@7.11.1/");
   loader.load("models/3dm/Rhino_Logo.3dm", function (object) {
     scene.add(object);
     initGUI(object.userData.layers);
@@ -77,14 +77,11 @@ function animate() {
 }
 
 function initGUI(layers) {
-  gui = new GUI({ width: 300 });
-
-  const layersControl = gui.addFolder("layers");
-  layersControl.open();
+  gui = new GUI({ title: "layers" });
 
   for (let i = 0; i < layers.length; i++) {
     const layer = layers[i];
-    layersControl
+    gui
       .add(layer, "visible")
       .name(layer.name)
       .onChange(function (val) {

@@ -9,7 +9,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { OutlineEffect } from "three/examples/jsm/effects/OutlineEffect.js";
 import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader.js";

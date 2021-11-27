@@ -16,7 +16,7 @@ import {
   PerspectiveCamera,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { ArcballControls } from "three/examples/jsm/controls/ArcballControls.js";
 

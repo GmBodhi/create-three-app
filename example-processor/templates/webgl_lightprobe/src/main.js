@@ -15,7 +15,7 @@ import {
   Mesh,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { LightProbeGenerator } from "three/examples/jsm/lights/LightProbeGenerator.js";
@@ -119,36 +119,31 @@ function init() {
   });
 
   // gui
-  gui = new GUI();
+  gui = new GUI({ title: "Intensity" });
 
-  gui.width = 300;
-
-  gui.domElement.style.userSelect = "none";
-
-  const fl = gui.addFolder("Intensity");
-
-  fl.add(API, "lightProbeIntensity", 0, 1, 0.02)
+  gui
+    .add(API, "lightProbeIntensity", 0, 1, 0.02)
     .name("light probe")
     .onChange(function () {
       lightProbe.intensity = API.lightProbeIntensity;
       render();
     });
 
-  fl.add(API, "directionalLightIntensity", 0, 1, 0.02)
+  gui
+    .add(API, "directionalLightIntensity", 0, 1, 0.02)
     .name("directional light")
     .onChange(function () {
       directionalLight.intensity = API.directionalLightIntensity;
       render();
     });
 
-  fl.add(API, "envMapIntensity", 0, 1, 0.02)
+  gui
+    .add(API, "envMapIntensity", 0, 1, 0.02)
     .name("envMap")
     .onChange(function () {
       mesh.material.envMapIntensity = API.envMapIntensity;
       render();
     });
-
-  fl.open();
 
   // listener
   window.addEventListener("resize", onWindowResize);

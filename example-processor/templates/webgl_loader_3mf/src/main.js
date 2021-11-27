@@ -14,7 +14,7 @@ import {
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { ThreeMFLoader } from "three/examples/jsm/loaders/3MFLoader.js";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, object, loader, controls;
 
@@ -83,7 +83,7 @@ function init() {
 
   //
 
-  const gui = new GUI({ width: 300 });
+  const gui = new GUI();
   gui.add(params, "asset", assets).onChange(function (value) {
     loadAsset(value);
   });
