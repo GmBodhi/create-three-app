@@ -3691,6 +3691,16 @@
         "/src"
       ]
     },
+    "webgpu_nodes_playground": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_rtt": {
       "files": {
         "index.html": "src",

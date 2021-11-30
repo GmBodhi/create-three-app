@@ -95,6 +95,7 @@ function createGUI() {
       "Test 8": "models/svg/tests/8.svg",
       "Test 9": "models/svg/tests/9.svg",
       Units: "models/svg/tests/units.svg",
+      Ordering: "models/svg/tests/ordering.svg",
       Defs: "models/svg/tests/testDefs/Svg-defs.svg",
       Defs2: "models/svg/tests/testDefs/Svg-defs2.svg",
       Defs3: "models/svg/tests/testDefs/Wave-defs.svg",
@@ -161,7 +162,7 @@ function loadSVG(url) {
         const material = new MeshBasicMaterial({
           color: new Color().setStyle(fillColor),
           opacity: path.userData.style.fillOpacity,
-          transparent: path.userData.style.fillOpacity < 1,
+          transparent: true,
           side: DoubleSide,
           depthWrite: false,
           wireframe: guiData.fillShapesWireframe,
@@ -189,7 +190,7 @@ function loadSVG(url) {
         const material = new MeshBasicMaterial({
           color: new Color().setStyle(strokeColor),
           opacity: path.userData.style.strokeOpacity,
-          transparent: path.userData.style.strokeOpacity < 1,
+          transparent: true,
           side: DoubleSide,
           depthWrite: false,
           wireframe: guiData.strokesWireframe,
