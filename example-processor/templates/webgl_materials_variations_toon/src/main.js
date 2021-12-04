@@ -4,18 +4,18 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
+  WebGLRenderer,
+  sRGBEncoding,
+  RedFormat,
+  LuminanceFormat,
   SphereGeometry,
   DataTexture,
-  LuminanceFormat,
-  NearestFilter,
   MeshToonMaterial,
   Mesh,
   MeshBasicMaterial,
   Vector3,
   AmbientLight,
   PointLight,
-  WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
@@ -53,12 +53,21 @@ function init(font) {
   scene = new Scene();
   scene.background = new Color(0x444488);
 
+  //
+
+  renderer = new WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  container.appendChild(renderer.domElement);
+  renderer.outputEncoding = sRGBEncoding;
+
   // Materials
 
   const cubeWidth = 400;
   const numberOfSphersPerSide = 5;
   const sphereRadius = (cubeWidth / numberOfSphersPerSide) * 0.8 * 0.5;
   const stepSize = 1.0 / numberOfSphersPerSide;
+  const format = renderer.capabilities.isWebGL2 ? RedFormat : LuminanceFormat;
 
   const geometry = new SphereGeometry(sphereRadius, 32, 16);
 
@@ -73,15 +82,8 @@ function init(font) {
       colors[c] = (c / colors.length) * 256;
     }
 
-    const gradientMap = new DataTexture(
-      colors,
-      colors.length,
-      1,
-      LuminanceFormat
-    );
-    gradientMap.minFilter = NearestFilter;
-    gradientMap.magFilter = NearestFilter;
-    gradientMap.generateMipmaps = false;
+    const gradientMap = new DataTexture(colors, colors.length, 1, format);
+    gradientMap.needsUpdate = true;
 
     for (let beta = 0; beta <= 1.0; beta += stepSize) {
       for (let gamma = 0; gamma <= 1.0; gamma += stepSize) {
@@ -141,12 +143,6 @@ function init(font) {
   particleLight.add(pointLight);
 
   //
-
-  renderer = new WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
-  renderer.outputEncoding = sRGBEncoding;
 
   effect = new OutlineEffect(renderer);
 
