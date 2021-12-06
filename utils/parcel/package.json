@@ -3,7 +3,9 @@
   "private": true,
   "license": "UNLICENSED",
   "source": "src/index.html",
-  "main": "src/index.html",
+  "targets": {
+    "main": false
+  },
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "repository": "#",
   "version": "1.0.0",
