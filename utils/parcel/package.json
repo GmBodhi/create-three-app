@@ -12,10 +12,10 @@
     "build": "parcel build"
   },
   "dependencies": {
-    "three": "^0.132.2"
+    "three": "^0.135.x"
   },
   "devDependencies": {
-    "parcel": "2.0.0",
+    "parcel": "latest",
     "parcel-reporter-static-files-copy": "^1.3.0"
   }
 }
