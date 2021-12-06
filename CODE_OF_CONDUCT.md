@@ -62,7 +62,7 @@ representative at an online or offline event.
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
 reported to the community leaders responsible for enforcement at
-[Gm#1000 (Discord)](https://discord.com/users/830394727684898856) or bodhigm3@gmail.com.
+[Gm#5635 (Discord)](https://discord.com/users/830394727684898856) or bodhigm3@gmail.com.
 All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the

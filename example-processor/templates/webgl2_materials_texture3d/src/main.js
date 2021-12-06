@@ -102,6 +102,7 @@ function init() {
     texture.type = FloatType;
     texture.minFilter = texture.magFilter = LinearFilter;
     texture.unpackAlignment = 1;
+    texture.needsUpdate = true;
 
     // Colormap textures
     cmtextures = {

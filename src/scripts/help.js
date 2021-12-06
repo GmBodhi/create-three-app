@@ -1,4 +1,4 @@
-const { blueBright, magentaBright, greenBright } = require("chalk");
+const { blueBright, magentaBright, greenBright } = require("ansi-colors");
 
 module.exports.help = () => {
   // prettier-ignore

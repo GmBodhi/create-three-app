@@ -8,7 +8,7 @@
 
 const { mkdirSync, existsSync, mkdtempSync } = require("fs");
 const rimraf = require("rimraf");
-const chalk = require("chalk");
+const { redBright } = require("ansi-colors");
 const path = require("path");
 const { tmpdir } = require("os");
 
@@ -17,12 +17,12 @@ const { tmpdir } = require("os");
 const {
   domain,
   checkYarn,
-  resolveArgs,
   dirIsEmpty,
   error,
   getConfig,
   checkForUpdates,
 } = require("./scripts/utils");
+const resolveArgs = require("./scripts/parse");
 const init = require("./scripts/initenv");
 const manageDir = require("./scripts/movedir");
 const downloadFiles = require("./scripts/downloadfiles");
@@ -67,15 +67,13 @@ const { promtBundler } = require("./scripts/promtBundler");
     if (!dirIsEmpty(dir)) {
       if (!force)
         return error(
-          `Provided directory {${dir}} is not empty.\n run with ${chalk.redBright(
+          `Provided directory {${dir}} is not empty.\n run with ${redBright(
             "-f"
-          )} or ${chalk.redBright(
-            "--force"
-          )} flag to delete all the files in it.`
+          )} or ${redBright("--force")} flag to delete all the files in it.`
         );
       else {
         console.log(
-          `${chalk.redBright("force flag is enabled")} Deleting ${dir}...\r`
+          `${redBright("force flag is enabled")} Deleting ${dir}...\r`
         );
         rimraf.sync(dir);
         mkdirSync(dir);
