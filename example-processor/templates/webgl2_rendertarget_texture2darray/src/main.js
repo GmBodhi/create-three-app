@@ -132,7 +132,7 @@ function init() {
         DIMENSIONS.depth
       );
       texture.format = RedFormat;
-      texture.needsUpdate = true;
+      texture.type = UnsignedByteType;
 
       var material = new ShaderMaterial({
         uniforms: {

@@ -144,7 +144,6 @@ function init() {
   const gradientTexture = new DataTexture(data, 100, 100, RGBFormat);
   gradientTexture.minFilter = LinearFilter;
   gradientTexture.magFilter = LinearFilter;
-  gradientTexture.needsUpdate = true;
 
   scene1 = new Scene();
   scene1.name = "Scene1";

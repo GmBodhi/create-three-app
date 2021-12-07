@@ -4,6 +4,11 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
+  AmbientLight,
+  DirectionalLight,
+  Mesh,
+  SphereGeometry,
+  MeshBasicMaterial,
   PointLight,
   WebGLRenderer,
   sRGBEncoding,
@@ -40,13 +45,21 @@ function init() {
 
   // Lights
 
-  const topLight = new PointLight(0xf4f6f0, 1);
-  topLight.position.set(0, 100000, 100000);
-  scene.add(topLight);
+  //scene.add( new AmbientLight( 0x111111 ) );
 
-  const backLight = new PointLight(0x0c1445, 1.4);
-  backLight.position.set(-100, 20, -260);
-  scene.add(backLight);
+  const directionalLight = new DirectionalLight(0xf4f6f0, 0.8);
+  directionalLight.position.set(0.0, 0.5, 0.5).normalize();
+  scene.add(directionalLight);
+
+  const pointLight = new Mesh(
+    new SphereGeometry(4, 8, 8),
+    new MeshBasicMaterial({ color: 0x0c1445 })
+  );
+  pointLight.add(new PointLight(0x0c1445, 0.7, 500));
+  scene.add(pointLight);
+  pointLight.position.x = -100;
+  pointLight.position.y = 20;
+  pointLight.position.z = -260;
 
   renderer = new WebGLRenderer({ antialias: true });
   document.body.appendChild(renderer.domElement);

@@ -12,7 +12,7 @@ import {
   DynamicDrawUsage,
   LineBasicMaterial,
   Line,
-  FramebufferTexture,
+  DataTexture,
   RGBFormat,
   NearestFilter,
   SpriteMaterial,
@@ -85,7 +85,9 @@ function init() {
 
   //
 
-  texture = new FramebufferTexture(textureSize, textureSize, RGBFormat);
+  const data = new Uint8Array(textureSize * textureSize * 3);
+
+  texture = new DataTexture(data, textureSize, textureSize, RGBFormat);
   texture.minFilter = NearestFilter;
   texture.magFilter = NearestFilter;
 
