@@ -154,6 +154,10 @@ function init() {
       case 32: // Spacebar
         control.enabled = !control.enabled;
         break;
+
+      case 27: // Esc
+        control.reset();
+        break;
     }
   });
 
