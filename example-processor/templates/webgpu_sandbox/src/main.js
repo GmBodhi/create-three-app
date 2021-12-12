@@ -262,7 +262,7 @@ function createDataTexture() {
     data[stride + 3] = 255;
   }
 
-  const texture = DataTexture(data, width, height, RGBAFormat);
+  const texture = new DataTexture(data, width, height, RGBAFormat);
   texture.needsUpdate = true;
   return texture;
 }
