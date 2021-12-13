@@ -96,14 +96,12 @@ async function init() {
 					// Buffer
 					//
 
-					[[ block ]]
 					struct Particle {
 						value : array< vec4<f32> >;
 					};
 					[[ binding( 0 ), group( 0 ) ]]
 					var<storage,read_write> particle : Particle;
 
-					[[ block ]]
 					struct Velocity {
 						value : array< vec4<f32> >;
 					};
@@ -114,14 +112,12 @@ async function init() {
 					// Uniforms
 					//
 
-					[[ block ]]
 					struct Scale {
 						value : array< vec3<f32>, 2 >;
 					};
 					[[ binding( 2 ), group( 0 ) ]]
 					var<uniform> scaleUniform : Scale;
 
-					[[block]]
 					struct MouseUniforms {
 						pointer : vec2<f32>;
 					};
