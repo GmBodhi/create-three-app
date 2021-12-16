@@ -145,6 +145,7 @@ function init() {
           render();
         });
 
+      window.addEventListener("keydown", onKeyDown);
       window.addEventListener("resize", onWindowResize);
 
       //
@@ -222,6 +223,18 @@ function onWindowResize() {
 
 function render() {
   renderer.render(scene, camera);
+}
+
+function onKeyDown(event) {
+  if (event.key === "c") {
+    if (event.ctrlKey || event.metaKey) {
+      controls.copyState();
+    }
+  } else if (event.key === "v") {
+    if (event.ctrlKey || event.metaKey) {
+      controls.pasteState();
+    }
+  }
 }
 
 function setCamera(type) {
