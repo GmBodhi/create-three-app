@@ -124,7 +124,6 @@ async function init() {
       updateGUI();
 
       renderer.toneMapping = toneMappingOptions[params.toneMapping];
-      mesh.material.needsUpdate = true;
       render();
     });
 
