@@ -12,17 +12,13 @@ import {
   ShapeGeometry,
   Mesh,
 } from "three";
-
-import Stats from "three/examples/jsm/libs/stats.module.js";
-
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 
-let renderer, stats, scene, camera, gui, guiData;
+let renderer, scene, camera, gui, guiData;
 
 init();
-animate();
 
 //
 
@@ -49,12 +45,8 @@ function init() {
   //
 
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.addEventListener("change", render);
   controls.screenSpacePanning = true;
-
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
 
   //
 
@@ -214,6 +206,8 @@ function loadSVG(url) {
     }
 
     scene.add(group);
+
+    render();
   });
 }
 
@@ -222,13 +216,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
 }
 
 function render() {

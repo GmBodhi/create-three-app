@@ -7,11 +7,11 @@ import {
   Scene,
   PerspectiveCamera,
   LoadingManager,
-  UnsignedByteType,
   TextureLoader,
   MeshMatcapMaterial,
   Color,
   Texture,
+  UnsignedByteType,
   DataTexture,
   RGBEEncoding,
   NearestFilter,
@@ -70,8 +70,7 @@ function init() {
   const manager = new LoadingManager(render);
 
   // matcap
-  const loaderEXR = new EXRLoader(manager).setDataType(UnsignedByteType); // default: FloatType
-
+  const loaderEXR = new EXRLoader(manager);
   const matcap = loaderEXR.load("textures/matcaps/040full.exr");
 
   // normalmap

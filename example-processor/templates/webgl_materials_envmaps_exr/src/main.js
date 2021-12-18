@@ -10,7 +10,6 @@ import {
   PlaneGeometry,
   MeshBasicMaterial,
   DefaultLoadingManager,
-  UnsignedByteType,
   TextureLoader,
   sRGBEncoding,
   PMREMGenerator,
@@ -80,14 +79,12 @@ function init() {
     pmremGenerator.dispose();
   };
 
-  new EXRLoader()
-    .setDataType(UnsignedByteType)
-    .load("textures/piz_compressed.exr", function (texture) {
-      exrCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
-      exrBackground = exrCubeRenderTarget.texture;
+  new EXRLoader().load("textures/piz_compressed.exr", function (texture) {
+    exrCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
+    exrBackground = exrCubeRenderTarget.texture;
 
-      texture.dispose();
-    });
+    texture.dispose();
+  });
 
   new TextureLoader().load("textures/equirectangular.png", function (texture) {
     texture.encoding = sRGBEncoding;
