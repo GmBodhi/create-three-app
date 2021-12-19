@@ -17,7 +17,6 @@ import {
   LinearFilter,
   CubeTextureLoader,
   sRGBEncoding,
-  RGBM16Encoding,
   PMREMGenerator,
 } from "three";
 
@@ -115,10 +114,9 @@ function init() {
 
   const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
   rgbmCubeMap = new RGBMLoader()
+    .setMaxRange(16)
     .setPath("three/examples/textures/cube/pisaRGBM16/")
     .loadCubemap(rgbmUrls, function () {
-      rgbmCubeMap.encoding = RGBM16Encoding;
-
       rgbmCubeRenderTarget = pmremGenerator.fromCubemap(rgbmCubeMap);
     });
 

@@ -6,7 +6,6 @@ import {
   sRGBEncoding,
   Scene,
   OrthographicCamera,
-  RGBM16Encoding,
   MeshBasicMaterial,
   PlaneGeometry,
   Mesh,
@@ -41,19 +40,19 @@ function init() {
 
   camera = new OrthographicCamera(-aspect, aspect, 1, -1, 0, 1);
 
-  new RGBMLoader().load("textures/memorial.png", function (texture) {
-    texture.encoding = RGBM16Encoding;
+  new RGBMLoader()
+    .setMaxRange(16)
+    .load("textures/memorial.png", function (texture) {
+      const material = new MeshBasicMaterial({ map: texture });
 
-    const material = new MeshBasicMaterial({ map: texture });
+      const quad = new PlaneGeometry(1, 1.5);
 
-    const quad = new PlaneGeometry(1, 1.5);
+      const mesh = new Mesh(quad, material);
 
-    const mesh = new Mesh(quad, material);
+      scene.add(mesh);
 
-    scene.add(mesh);
-
-    render();
-  });
+      render();
+    });
 
   //
 
