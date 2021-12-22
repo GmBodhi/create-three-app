@@ -9,7 +9,6 @@ import {
   MeshStandardMaterial,
   TextureLoader,
   RepeatWrapping,
-  UnsignedByteType,
   EquirectangularReflectionMapping,
   MathUtils,
   OrthographicCamera,
@@ -135,7 +134,6 @@ function init() {
       render();
 
       new RGBELoader()
-        .setDataType(UnsignedByteType)
         .setPath("textures/equirectangular/")
         .load("venice_sunset_1k.hdr", function (hdrEquirect) {
           hdrEquirect.mapping = EquirectangularReflectionMapping;

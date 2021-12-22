@@ -13,7 +13,6 @@ import {
   PlaneGeometry,
   MeshBasicMaterial,
   DefaultLoadingManager,
-  UnsignedByteType,
   LinearFilter,
   CubeTextureLoader,
   sRGBEncoding,
@@ -95,7 +94,6 @@ function init() {
   const hdrUrls = ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"];
   hdrCubeMap = new HDRCubeTextureLoader()
     .setPath("three/examples/textures/cube/pisaHDR/")
-    .setDataType(UnsignedByteType)
     .load(hdrUrls, function () {
       hdrCubeRenderTarget = pmremGenerator.fromCubemap(hdrCubeMap);
 

@@ -6,7 +6,6 @@ import {
   AmbientLight,
   WebGLRenderer,
   sRGBEncoding,
-  UnsignedByteType,
   EquirectangularReflectionMapping,
   SphereBufferGeometry,
   Group,
@@ -78,7 +77,6 @@ function init() {
   //
 
   new RGBELoader()
-    .setDataType(UnsignedByteType)
     .setPath("textures/equirectangular/")
     .load("royal_esplanade_1k.hdr", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;

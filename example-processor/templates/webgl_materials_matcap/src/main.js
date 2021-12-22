@@ -11,12 +11,8 @@ import {
   MeshMatcapMaterial,
   Color,
   Texture,
-  UnsignedByteType,
-  DataTexture,
-  RGBEEncoding,
-  NearestFilter,
-  FloatType,
   HalfFloatType,
+  DataTexture,
   LinearEncoding,
   LinearFilter,
 } from "three";
@@ -175,7 +171,7 @@ function handleEXR(event) {
 
   const loader = new EXRLoader();
 
-  loader.setDataType(UnsignedByteType); // default: FloatType
+  loader.setDataType(HalfFloatType);
 
   const texData = loader.parse(contents);
 
@@ -187,25 +183,11 @@ function handleEXR(event) {
 
   texture.format = texData.format;
   texture.type = texData.type;
-
-  switch (texture.type) {
-    case UnsignedByteType:
-      texture.encoding = RGBEEncoding;
-      texture.minFilter = NearestFilter;
-      texture.magFilter = NearestFilter;
-      texture.generateMipmaps = false;
-      texture.flipY = false;
-      break;
-
-    case FloatType:
-    case HalfFloatType:
-      texture.encoding = LinearEncoding;
-      texture.minFilter = LinearFilter;
-      texture.magFilter = LinearFilter;
-      texture.generateMipmaps = false;
-      texture.flipY = false;
-      break;
-  }
+  texture.encoding = LinearEncoding;
+  texture.minFilter = LinearFilter;
+  texture.magFilter = LinearFilter;
+  texture.generateMipmaps = false;
+  texture.flipY = false;
 
   updateMatcap(texture);
 }

@@ -8,7 +8,6 @@ import {
   PerspectiveCamera,
   DirectionalLight,
   DirectionalLightHelper,
-  UnsignedByteType,
   FloatType,
   SphereGeometry,
   MeshPhysicalMaterial,
@@ -107,7 +106,6 @@ function init() {
 function createObjects() {
   let radianceMap = null;
   new RGBELoader()
-    .setDataType(UnsignedByteType)
     // .setDataType( FloatType )
     .setPath("textures/equirectangular/")
     .load("spot1Lux.hdr", function (texture) {
