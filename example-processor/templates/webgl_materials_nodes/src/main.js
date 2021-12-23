@@ -2913,7 +2913,7 @@ function updateMaterial() {
       addGui("ignoreIndirectLight", false, function (val) {
         mtl.ao = val ? new Nodes.FloatNode() : undefined;
 
-        mtl.needsUpdate = true;
+        mtl.dispose();
       });
 
       break;
@@ -2986,8 +2986,8 @@ function updateMaterial() {
       var keywordsexample = new Nodes.FunctionNode(
         [
           // use "uv" reserved keyword
-          "vec4 keywordsexample( sampler2D texture ) {",
-          "	return texture2D( texture, myUV ) + vec4( position * myAlpha, 0.0 );",
+          "vec4 keywordsexample( sampler2D tex ) {",
+          "	return texture2D( tex, myUV ) + vec4( position * myAlpha, 0.0 );",
           "}",
         ].join("\n")
       );
