@@ -31,7 +31,7 @@ function init() {
     0.1,
     20
   );
-  camera.position.set(0, 1, 2);
+  camera.position.set(-0.75, 0.7, 1.25);
 
   scene = new Scene();
 
@@ -68,7 +68,7 @@ function init() {
   controls.enableDamping = true;
   controls.minDistance = 1;
   controls.maxDistance = 10;
-  controls.target.set(0, 0.5, 0);
+  controls.target.set(0, 0.35, 0);
   controls.update();
 
   window.addEventListener("resize", onWindowResize);

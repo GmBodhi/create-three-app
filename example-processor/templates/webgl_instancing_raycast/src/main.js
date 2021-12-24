@@ -18,7 +18,7 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-let camera, scene, renderer, stats;
+let camera, scene, renderer, controls, stats;
 
 let mesh;
 const amount = parseInt(window.location.search.substr(1)) || 10;
@@ -28,6 +28,7 @@ const raycaster = new Raycaster();
 const mouse = new Vector2(1, 1);
 
 const color = new Color();
+const white = new Color().setHex(0xffffff);
 
 init();
 animate();
@@ -44,16 +45,12 @@ function init() {
 
   scene = new Scene();
 
-  const light1 = new HemisphereLight(0xffffff, 0x000088);
-  light1.position.set(-1, 1.5, 1);
-  scene.add(light1);
-
-  const light2 = new HemisphereLight(0xffffff, 0x880000, 0.5);
-  light2.position.set(-1, -1.5, -1);
-  scene.add(light2);
+  const light = new HemisphereLight(0xffffff, 0x888888);
+  light.position.set(0, 1, 0);
+  scene.add(light);
 
   const geometry = new IcosahedronGeometry(0.5, 3);
-  const material = new MeshPhongMaterial();
+  const material = new MeshPhongMaterial({ color: 0xffffff });
 
   mesh = new InstancedMesh(geometry, material, count);
 
@@ -87,7 +84,10 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.enableZoom = false;
+  controls.enablePan = false;
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
@@ -113,10 +113,8 @@ function onMouseMove(event) {
 function animate() {
   requestAnimationFrame(animate);
 
-  render();
-}
+  controls.update();
 
-function render() {
   raycaster.setFromCamera(mouse, camera);
 
   const intersection = raycaster.intersectObject(mesh);
@@ -124,11 +122,20 @@ function render() {
   if (intersection.length > 0) {
     const instanceId = intersection[0].instanceId;
 
-    mesh.setColorAt(instanceId, color.setHex(Math.random() * 0xffffff));
-    mesh.instanceColor.needsUpdate = true;
+    mesh.getColorAt(instanceId, color);
+
+    if (color.equals(white)) {
+      mesh.setColorAt(instanceId, color.setHex(Math.random() * 0xffffff));
+
+      mesh.instanceColor.needsUpdate = true;
+    }
   }
 
-  renderer.render(scene, camera);
+  render();
 
   stats.update();
+}
+
+function render() {
+  renderer.render(scene, camera);
 }
