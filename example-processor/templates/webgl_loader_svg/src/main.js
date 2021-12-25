@@ -12,17 +12,13 @@ import {
   ShapeGeometry,
   Mesh,
 } from "three";
-
-import Stats from "three/examples/jsm/libs/stats.module.js";
-
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 
-let renderer, stats, scene, camera, gui, guiData;
+let renderer, scene, camera, gui, guiData;
 
 init();
-animate();
 
 //
 
@@ -49,12 +45,8 @@ function init() {
   //
 
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.addEventListener("change", render);
   controls.screenSpacePanning = true;
-
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
 
   //
 
@@ -95,6 +87,7 @@ function createGUI() {
       "Test 8": "models/svg/tests/8.svg",
       "Test 9": "models/svg/tests/9.svg",
       Units: "models/svg/tests/units.svg",
+      Ordering: "models/svg/tests/ordering.svg",
       Defs: "models/svg/tests/testDefs/Svg-defs.svg",
       Defs2: "models/svg/tests/testDefs/Svg-defs2.svg",
       Defs3: "models/svg/tests/testDefs/Wave-defs.svg",
@@ -161,7 +154,7 @@ function loadSVG(url) {
         const material = new MeshBasicMaterial({
           color: new Color().setStyle(fillColor),
           opacity: path.userData.style.fillOpacity,
-          transparent: path.userData.style.fillOpacity < 1,
+          transparent: true,
           side: DoubleSide,
           depthWrite: false,
           wireframe: guiData.fillShapesWireframe,
@@ -189,7 +182,7 @@ function loadSVG(url) {
         const material = new MeshBasicMaterial({
           color: new Color().setStyle(strokeColor),
           opacity: path.userData.style.strokeOpacity,
-          transparent: path.userData.style.strokeOpacity < 1,
+          transparent: true,
           side: DoubleSide,
           depthWrite: false,
           wireframe: guiData.strokesWireframe,
@@ -213,6 +206,8 @@ function loadSVG(url) {
     }
 
     scene.add(group);
+
+    render();
   });
 }
 
@@ -221,13 +216,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
 }
 
 function render() {

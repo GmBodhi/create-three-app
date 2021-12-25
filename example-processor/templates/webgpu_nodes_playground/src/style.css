@@ -1,5 +1,7 @@
 body {
-  background: #bbb;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
   margin: 0;
   background-color: #000;
   color: #fff;
@@ -7,6 +9,26 @@ body {
   font-size: 13px;
   line-height: 24px;
   overscroll-behavior: none;
+}
+.renderer {
+  top: 0;
+}
+#info,
+#overlay,
+.renderer,
+flow {
+  position: absolute;
+  width: 100%;
+}
+.renderer,
+flow {
+  left: 0;
+  height: 50%;
+}
+flow {
+  top: 50%;
+  background: #222;
+  box-shadow: inset 0 0 20px 0 #000;
 }
 a {
   color: #ff0;
@@ -23,9 +45,7 @@ button {
 }
 #info,
 #overlay {
-  position: absolute;
   top: 0;
-  width: 100%;
 }
 #info {
   padding: 10px;

@@ -5,14 +5,16 @@ import {
   Scene,
   Color,
   PointLight,
-  WebGLRenderer,
   sRGBEncoding,
 } from "three";
 
-import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
+import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import { NodeEditor } from "three/examples/jsm/node-editor/NodeEditor.js";
 import { StandardMaterialEditor } from "three/examples/jsm/node-editor/materials/StandardMaterialEditor.js";
+
+import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
@@ -22,11 +24,19 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 let stats;
 let camera, scene, renderer;
 let model;
+let nodeLights;
 
-init();
-animate();
+init()
+  .then(animate)
+  .catch((error) => console.error(error));
 
-function init() {
+async function init() {
+  if (WebGPU.isAvailable() === false) {
+    document.body.appendChild(WebGPU.getErrorMessage());
+
+    throw "No WebGPU support";
+  }
+
   camera = new PerspectiveCamera(
     40,
     window.innerWidth / window.innerHeight,
@@ -48,7 +58,11 @@ function init() {
   backLight.position.set(-100, 20, -260);
   scene.add(backLight);
 
-  renderer = new WebGLRenderer({ antialias: true });
+  nodeLights = Nodes.LightsNode.fromLights([topLight, backLight]);
+
+  renderer = new WebGPURenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   renderer.outputEncoding = sRGBEncoding;
 
@@ -68,6 +82,8 @@ function init() {
   onWindowResize();
 
   initEditor();
+
+  return renderer.init();
 }
 
 function initEditor() {
@@ -80,6 +96,7 @@ function initEditor() {
     nodeEditor.add(materialEditor);
 
     model.material = materialEditor.material;
+    model.material.lightNode = nodeLights;
   });
 
   nodeEditor.addEventListener("load", () => {
@@ -87,6 +104,7 @@ function initEditor() {
     materialEditor.update(); // need move to deserialization
 
     model.material = materialEditor.material;
+    model.material.lightNode = nodeLights;
   });
 
   document.body.appendChild(nodeEditor.domElement);
@@ -102,6 +120,7 @@ function initEditor() {
     model.position.set(0, 0, 10);
     model.scale.setScalar(1);
     model.material = materialEditor.material;
+    model.material.lightNode = nodeLights;
     scene.add(model);
   });
 }
@@ -120,8 +139,6 @@ function onWindowResize() {
 
 function animate() {
   requestAnimationFrame(animate);
-
-  nodeFrame.update();
 
   render();
 

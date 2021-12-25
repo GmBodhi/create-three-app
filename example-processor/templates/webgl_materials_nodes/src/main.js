@@ -192,54 +192,57 @@ function clearGui() {
 
   gui
     .add(param, "example", {
+      "basic / blur": "blur",
+      "basic / bump": "bump",
+      "basic / color-adjustment": "color-adjustment",
+      "basic / layers": "layers",
       "basic / mesh-standard": "mesh-standard",
-      "basic / standard": "standard",
+      "basic / phong": "phong",
       "basic / physical": "physical",
       "basic / prem": "prem",
-      "basic / phong": "phong",
-      "basic / layers": "layers",
       "basic / rim": "rim",
-      "basic / color-adjustment": "color-adjustment",
-      "basic / uv-transform": "uv-transform",
-      "basic / bump": "bump",
-      "basic / blur": "blur",
       "basic / spherical-reflection": "spherical-reflection",
-      "adv / fresnel": "fresnel",
-      "adv / saturation": "saturation",
-      "adv / top-bottom": "top-bottom",
-      "adv / skin": "skin",
-      "adv / skin-phong": "skin-phong",
+      "basic / standard": "standard",
+      "basic / uv-transform": "uv-transform",
+
+      "adv / bias": "bias",
+      "adv / camera-depth": "camera-depth",
       "adv / caustic": "caustic",
+      "adv / conditional": "conditional",
       "adv / displace": "displace",
       "adv / dissolve": "dissolve",
       "adv / dissolve-fire": "dissolve-fire",
+      "adv / expression": "expression",
+      "adv / fresnel": "fresnel",
       "adv / plush": "plush",
-      "adv / toon": "toon",
-      "adv / camera-depth": "camera-depth",
+      "adv / render-to-texture": "rtt",
+      "adv / saturation": "saturation",
+      "adv / skin": "skin",
+      "adv / skin-phong": "skin-phong",
       "adv / soft-body": "soft-body",
-      "adv / wave": "wave",
+      "adv / sss": "sss",
+      "adv / temporal-blur": "temporal-blur",
+      "adv / toon": "toon",
+      "adv / top-bottom": "top-bottom",
+      "adv / translucent": "translucent",
       "adv / triangle-blur": "triangle-blur",
       "adv / triplanar-mapping": "triplanar-mapping",
-      "adv / render-to-texture": "rtt",
-      "adv / temporal-blur": "temporal-blur",
-      "adv / conditional": "conditional",
-      "adv / expression": "expression",
-      "adv / sss": "sss",
-      "adv / translucent": "translucent",
-      "adv / bias": "bias",
-      "node / position": "node-position",
+      "adv / wave": "wave",
+
       "node / normal": "node-normal",
+      "node / position": "node-position",
       "node / reflect": "node-reflect",
-      "misc / sub-slot": "sub-slot",
-      "misc / smoke": "smoke",
+
+      "misc / basic-material": "basic-material",
+      "misc / custom-attribute": "custom-attribute",
       "misc / firefly": "firefly",
+      "misc / label": "label",
+      "misc / readonly": "readonly",
       "misc / reserved-keywords": "reserved-keywords",
+      "misc / smoke": "smoke",
+      "misc / sub-slot": "sub-slot",
       "misc / varying": "varying",
       "misc / void-function": "void-function",
-      "misc / basic-material": "basic-material",
-      "misc / readonly": "readonly",
-      "misc / label": "label",
-      "misc / custom-attribute": "custom-attribute",
     })
     .onFinishChange(function () {
       updateMaterial();
@@ -2289,9 +2292,9 @@ function updateMaterial() {
         ].join("\n")
       );
 
+      // Based off of iq's described here: https://www.iquilezles.org/www/articles/voronoilines/voronoilines.htm
       var voronoi = new Nodes.FunctionNode(
         [
-          // Based off of iq's described here: http://www.iquilezles.org/www/articles/voronoili
           "float voronoi(vec2 p, in float time) {",
           "	vec2 n = floor(p);",
           "	vec2 f = fract(p);",
@@ -2910,7 +2913,7 @@ function updateMaterial() {
       addGui("ignoreIndirectLight", false, function (val) {
         mtl.ao = val ? new Nodes.FloatNode() : undefined;
 
-        mtl.needsUpdate = true;
+        mtl.dispose();
       });
 
       break;
@@ -2983,8 +2986,8 @@ function updateMaterial() {
       var keywordsexample = new Nodes.FunctionNode(
         [
           // use "uv" reserved keyword
-          "vec4 keywordsexample( sampler2D texture ) {",
-          "	return texture2D( texture, myUV ) + vec4( position * myAlpha, 0.0 );",
+          "vec4 keywordsexample( sampler2D tex ) {",
+          "	return texture2D( tex, myUV ) + vec4( position * myAlpha, 0.0 );",
           "}",
         ].join("\n")
       );

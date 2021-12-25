@@ -2878,6 +2878,19 @@
         "/src"
       ]
     },
+    "webgl_performance_shader": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "fragmentShader.glsl": "src/shaders",
+        "vertexShader.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgl_performance_static": {
       "files": {
         "index.html": "src",
@@ -3682,6 +3695,16 @@
       ]
     },
     "webgpu_materials": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_nodes_playground": {
       "files": {
         "index.html": "src",
         "main.js": "src",

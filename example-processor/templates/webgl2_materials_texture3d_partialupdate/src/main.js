@@ -122,6 +122,7 @@ function init() {
   texture.minFilter = LinearFilter;
   texture.magFilter = LinearFilter;
   texture.unpackAlignment = 1;
+  texture.needsUpdate = true;
 
   cloudTexture = texture;
 

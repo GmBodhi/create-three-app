@@ -13,11 +13,9 @@ import {
   PlaneGeometry,
   MeshBasicMaterial,
   DefaultLoadingManager,
-  UnsignedByteType,
   LinearFilter,
   CubeTextureLoader,
   sRGBEncoding,
-  RGBM16Encoding,
   PMREMGenerator,
 } from "three";
 
@@ -96,7 +94,6 @@ function init() {
   const hdrUrls = ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"];
   hdrCubeMap = new HDRCubeTextureLoader()
     .setPath("three/examples/textures/cube/pisaHDR/")
-    .setDataType(UnsignedByteType)
     .load(hdrUrls, function () {
       hdrCubeRenderTarget = pmremGenerator.fromCubemap(hdrCubeMap);
 
@@ -115,10 +112,9 @@ function init() {
 
   const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
   rgbmCubeMap = new RGBMLoader()
+    .setMaxRange(16)
     .setPath("three/examples/textures/cube/pisaRGBM16/")
     .loadCubemap(rgbmUrls, function () {
-      rgbmCubeMap.encoding = RGBM16Encoding;
-
       rgbmCubeRenderTarget = pmremGenerator.fromCubemap(rgbmCubeMap);
     });
 

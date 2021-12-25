@@ -9,7 +9,6 @@ import {
   HemisphereLight,
   TextureLoader,
   RepeatWrapping,
-  UnsignedByteType,
   PMREMGenerator,
 } from "three";
 
@@ -122,7 +121,6 @@ function init() {
 
     const filename = environments[name].filename;
     new RGBELoader()
-      .setDataType(UnsignedByteType)
       .setPath("textures/equirectangular/")
       .load(filename, function (hdrEquirect) {
         const hdrCubeRenderTarget =

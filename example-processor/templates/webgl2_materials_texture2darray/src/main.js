@@ -11,7 +11,6 @@ import {
   FileLoader,
   DataTexture2DArray,
   RedFormat,
-  UnsignedByteType,
   ShaderMaterial,
   Vector2,
   GLSL3,
@@ -63,7 +62,7 @@ function init() {
 
       const texture = new DataTexture2DArray(array, 256, 256, 109);
       texture.format = RedFormat;
-      texture.type = UnsignedByteType;
+      texture.needsUpdate = true;
 
       const material = new ShaderMaterial({
         uniforms: {

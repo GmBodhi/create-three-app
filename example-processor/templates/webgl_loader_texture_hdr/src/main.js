@@ -6,7 +6,6 @@ import {
   sRGBEncoding,
   Scene,
   OrthographicCamera,
-  UnsignedByteType,
   MeshBasicMaterial,
   PlaneGeometry,
   Mesh,
@@ -41,9 +40,9 @@ function init() {
 
   camera = new OrthographicCamera(-aspect, aspect, 1, -1, 0, 1);
 
-  new RGBELoader()
-    .setDataType(UnsignedByteType) // alt: FloatType, HalfFloatType
-    .load("textures/memorial.hdr", function (texture, textureData) {
+  new RGBELoader().load(
+    "textures/memorial.hdr",
+    function (texture, textureData) {
       //console.log( textureData );
       //console.log( texture );
 
@@ -59,7 +58,8 @@ function init() {
       scene.add(mesh);
 
       render();
-    });
+    }
+  );
 
   //
 

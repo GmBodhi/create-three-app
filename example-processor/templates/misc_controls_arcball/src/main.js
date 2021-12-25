@@ -9,7 +9,6 @@ import {
   MeshStandardMaterial,
   TextureLoader,
   RepeatWrapping,
-  UnsignedByteType,
   EquirectangularReflectionMapping,
   MathUtils,
   OrthographicCamera,
@@ -135,7 +134,6 @@ function init() {
       render();
 
       new RGBELoader()
-        .setDataType(UnsignedByteType)
         .setPath("textures/equirectangular/")
         .load("venice_sunset_1k.hdr", function (hdrEquirect) {
           hdrEquirect.mapping = EquirectangularReflectionMapping;
@@ -145,6 +143,7 @@ function init() {
           render();
         });
 
+      window.addEventListener("keydown", onKeyDown);
       window.addEventListener("resize", onWindowResize);
 
       //
@@ -222,6 +221,18 @@ function onWindowResize() {
 
 function render() {
   renderer.render(scene, camera);
+}
+
+function onKeyDown(event) {
+  if (event.key === "c") {
+    if (event.ctrlKey || event.metaKey) {
+      controls.copyState();
+    }
+  } else if (event.key === "v") {
+    if (event.ctrlKey || event.metaKey) {
+      controls.pasteState();
+    }
+  }
 }
 
 function setCamera(type) {

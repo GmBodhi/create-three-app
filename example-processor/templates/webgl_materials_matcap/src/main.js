@@ -7,16 +7,12 @@ import {
   Scene,
   PerspectiveCamera,
   LoadingManager,
-  UnsignedByteType,
   TextureLoader,
   MeshMatcapMaterial,
   Color,
   Texture,
-  DataTexture,
-  RGBEEncoding,
-  NearestFilter,
-  FloatType,
   HalfFloatType,
+  DataTexture,
   LinearEncoding,
   LinearFilter,
 } from "three";
@@ -70,8 +66,7 @@ function init() {
   const manager = new LoadingManager(render);
 
   // matcap
-  const loaderEXR = new EXRLoader(manager).setDataType(UnsignedByteType); // default: FloatType
-
+  const loaderEXR = new EXRLoader(manager);
   const matcap = loaderEXR.load("textures/matcaps/040full.exr");
 
   // normalmap
@@ -176,7 +171,7 @@ function handleEXR(event) {
 
   const loader = new EXRLoader();
 
-  loader.setDataType(UnsignedByteType); // default: FloatType
+  loader.setDataType(HalfFloatType);
 
   const texData = loader.parse(contents);
 
@@ -188,25 +183,11 @@ function handleEXR(event) {
 
   texture.format = texData.format;
   texture.type = texData.type;
-
-  switch (texture.type) {
-    case UnsignedByteType:
-      texture.encoding = RGBEEncoding;
-      texture.minFilter = NearestFilter;
-      texture.magFilter = NearestFilter;
-      texture.generateMipmaps = false;
-      texture.flipY = false;
-      break;
-
-    case FloatType:
-    case HalfFloatType:
-      texture.encoding = LinearEncoding;
-      texture.minFilter = LinearFilter;
-      texture.magFilter = LinearFilter;
-      texture.generateMipmaps = false;
-      texture.flipY = false;
-      break;
-  }
+  texture.encoding = LinearEncoding;
+  texture.minFilter = LinearFilter;
+  texture.magFilter = LinearFilter;
+  texture.generateMipmaps = false;
+  texture.flipY = false;
 
   updateMatcap(texture);
 }
