@@ -14,7 +14,7 @@ function subimports() {
   return `import { ${imports.toString()} } from "three"`;
 }
 
-module.exports = function parseScript(window, addition, replace) {
+export default function parseScript(window, addition, replace) {
   imports = [];
 
   let js = `${
@@ -37,4 +37,4 @@ module.exports = function parseScript(window, addition, replace) {
     });
 
   return js;
-};
+}

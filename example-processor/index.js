@@ -1,7 +1,7 @@
-const fetch = require("node-fetch");
-const fetch1 = require("./fetch");
-const rimraf = require("rimraf");
-const { mkdirSync, writeFileSync, existsSync } = require("fs");
+import fetch from "node-fetch";
+import { _fetch, close, launch } from "./fetch";
+import rimraf from "rimraf";
+import { mkdirSync, writeFileSync, existsSync } from "fs";
 const { init: initServer } = require("./initServer");
 
 function writeAssets(json) {
@@ -18,16 +18,13 @@ initServer().then(({ port }) => {
         let targets = [];
         Object.values(json).forEach((r) => targets.push(...r));
         let urls = {};
-        await fetch1.launch({ urls, json: targets, port });
+        await launch({ urls, json: targets, port });
         for (let key of targets) {
-          await fetch1.fetch(
-            `http://localhost:${port}/examples/${key}.html`,
-            key
-          );
+          await _fetch(`http://localhost:${port}/examples/${key}.html`, key);
         }
         writeFileSync("./templates/assets.json", JSON.stringify(urls));
         writeAssets(urls);
-        await fetch1.close();
+        await close();
         process.exit(0);
       });
   };

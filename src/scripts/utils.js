@@ -1,8 +1,10 @@
-const { red, redBright, blueBright } = require("ansi-colors");
-const fetch = require("node-fetch");
-const fs = require("fs");
-const spawn = require("cross-spawn");
-const consts = require("./constants");
+import ansiColors from "ansi-colors";
+import fetch from "node-fetch";
+import fs from "fs";
+import spawn from "cross-spawn";
+import consts from "./constants.js";
+import rimraf from "rimraf";
+// import { version } from "../../package.json";
 
 //
 // Cache
@@ -15,10 +17,9 @@ const cache = new Map();
 //
 
 function error(message) {
-  console.error(red(message));
+  console.error(ansiColors.red(message));
   process.exit(1);
 }
-module.exports.error = error;
 
 //
 // Download utils
@@ -29,11 +30,13 @@ async function download(url, dest, kill = false) {
   if (!res.ok) {
     console.log(url);
     console.log(
-      redBright(`Server responded with ${res.status}: ${res.statusText}`)
+      ansiColors.redBright(
+        `Server responded with ${res.status}: ${res.statusText}`
+      )
     );
     if (kill)
       return error(`Server responded with ${res.status}: ${res.statusText}`);
-    console.log(blueBright("\nRetrying..!\r"));
+    console.log(ansiColors.blueBright("\nRetrying..!\r"));
     return download(url, dest, true);
   }
   const fileStream = fs.createWriteStream(dest);
@@ -43,7 +46,6 @@ async function download(url, dest, kill = false) {
     fileStream.on("finish", resolve);
   });
 }
-module.exports.download = download;
 
 //
 // Base URL
@@ -51,8 +53,6 @@ module.exports.download = download;
 
 const domain =
   "https://raw.githubusercontent.com/GmBodhi/create-three-app/master/";
-
-module.exports.domain = domain;
 
 //
 // Get Config
@@ -65,13 +65,12 @@ async function getConfig() {
   cache.set(consts.pathTypes.BASIC, res);
   return res;
 }
-module.exports.getConfig = getConfig;
 
 //
 // Check for Yarn
 //
 
-module.exports.checkYarn = function checkYarn() {
+const checkYarn = function checkYarn() {
   return new Promise((resolve) => {
     spawn("yarn", ["--version"], { stdio: "ignore" })
       .on("close", (code) => {
@@ -88,12 +87,7 @@ module.exports.checkYarn = function checkYarn() {
 // Resolve URL
 //
 
-module.exports.resolveUrl = function resolveUrl(
-  domain,
-  { url, example },
-  file,
-  type
-) {
+const resolveUrl = function resolveUrl(domain, { url, example }, file, type) {
   const path = () => {
     return type === consts.pathTypes.EXAMPLE
       ? "example-processor/templates/"
@@ -108,20 +102,67 @@ module.exports.resolveUrl = function resolveUrl(
 // Check whether a directory is empty
 //
 
-module.exports.dirIsEmpty = (dir) => fs.readdirSync(dir).length === 0;
+const dirIsEmpty = (dir) => fs.readdirSync(dir).length === 0;
 
 //
 // Check for new version
 //
 
-module.exports.checkForUpdates = async function checkForUpdates() {
+const checkForUpdates = async function checkForUpdates() {
+  const { version } = JSON.parse(
+    fs.readFileSync("./package.json", { encoding: "utf8" })
+  );
+  
   const res = await fetch(
     "https://registry.npmjs.org/-/package/create-three-app/dist-tags"
   ).then((r) => r.json());
-  const current = require("../../package.json").version;
-  if (res.latest !== current)
+  
+  if (res.latest !== version)
     return error(
-      `You current version (${current}) need to be updated to ${res.latest}\n We don't support global installs.`
+      `You current version (${version}) need to be updated to ${res.latest}\n We don't support global installs.`
     );
+  
   return;
+};
+
+//
+// Validate dir
+//
+
+function validateDir(dir, force) {
+  if (!fs.existsSync(dir)) return true;
+  else {
+    if (!dirIsEmpty(dir)) {
+      if (!force)
+        return error(
+          `Provided directory {${dir}} is not empty.\n run with ${ansiColors.redBright(
+            "-f"
+          )} or ${ansiColors.redBright(
+            "--force"
+          )} flag to delete all the files in it.`
+        );
+      else {
+        console.log(
+          `${ansiColors.redBright(
+            "force flag is enabled"
+          )} Deleting { ${dir} }...\r`
+        );
+        rimraf.sync(dir);
+        fs.mkdirSync(dir);
+      }
+    }
+  }
+  return false;
+}
+
+export {
+  error,
+  download,
+  domain,
+  getConfig,
+  checkYarn,
+  resolveUrl,
+  dirIsEmpty,
+  checkForUpdates,
+  validateDir,
 };

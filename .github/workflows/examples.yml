@@ -39,7 +39,7 @@ jobs:
       - name: Generate Config
         run: node generateConfig.js --unhandled-rejections=strict
 
-      - name: Commit changes 
+      - name: Commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           commit_message: "automated: Examples generated (actions)"

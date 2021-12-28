@@ -1,8 +1,8 @@
-const http = require("http");
-const handler = require("serve-handler");
-const { getPort } = require("portfinder-sync");
+import http from "http";
+import handler from "serve-handler";
+import { getPort } from "portfinder-sync";
 
-module.exports.init = function init() {
+const init = function init() {
   const port = getPort(2000);
 
   return new Promise((resolve) => {
@@ -16,3 +16,4 @@ module.exports.init = function init() {
     resolve({ port });
   });
 };
+export { init };

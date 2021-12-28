@@ -6,29 +6,21 @@
 // Externals
 //
 
-const { mkdirSync, existsSync, mkdtempSync } = require("fs");
-const rimraf = require("rimraf");
-const { redBright } = require("ansi-colors");
-const path = require("path");
-const { tmpdir } = require("os");
+import { mkdirSync, mkdtempSync } from "fs";
+import rimraf from "rimraf";
+import path from "path";
+import { tmpdir } from "os";
 
 //
 
-const {
-  domain,
-  checkYarn,
-  dirIsEmpty,
-  error,
-  getConfig,
-  checkForUpdates,
-} = require("./scripts/utils");
-const resolveArgs = require("./scripts/parse");
-const init = require("./scripts/initenv");
-const manageDir = require("./scripts/movedir");
-const downloadFiles = require("./scripts/downloadfiles");
-const { selectTemplate } = require("./scripts/promtTemplate");
-const consts = require("./scripts/constants");
-const { promtBundler } = require("./scripts/promtBundler");
+import * as utils from "./scripts/utils.js";
+import resolveArgs from "./scripts/parse.js";
+import init from "./scripts/initenv.js";
+import manageDir from "./scripts/movedir.js";
+import downloadFiles from "./scripts/downloadfiles.js";
+import { selectTemplate } from "./scripts/promtTemplate.js";
+import consts from "./scripts/constants.js";
+import { promtBundler } from "./scripts/promtBundler.js";
 
 //
 
@@ -45,7 +37,9 @@ const { promtBundler } = require("./scripts/promtBundler");
     interactive,
   } = await resolveArgs();
 
-  await checkForUpdates();
+  await utils.checkForUpdates();
+
+  const shouldCreateDir = utils.validateDir(dir, force);
 
   // Ask for the template; will consider the cli arg if present
   const { isExample, example, name } = await selectTemplate({
@@ -59,32 +53,15 @@ const { promtBundler } = require("./scripts/promtBundler");
   console.log(`Downloading ${name}`);
 
   //
-  // Validate provided directory
-  //
-
-  if (!existsSync(dir)) mkdirSync(dir);
-  else {
-    if (!dirIsEmpty(dir)) {
-      if (!force)
-        return error(
-          `Provided directory {${dir}} is not empty.\n run with ${redBright(
-            "-f"
-          )} or ${redBright("--force")} flag to delete all the files in it.`
-        );
-      else {
-        console.log(
-          `${redBright("force flag is enabled")} Deleting ${dir}...\r`
-        );
-        rimraf.sync(dir);
-        mkdirSync(dir);
-      }
-    }
-  }
-
-  //
 
   let tempDir = mkdtempSync(path.join(tmpdir(), "create-three-app-cache-"));
-  const bundlerConfigs = (await getConfig()).utils;
+  const bundlerConfigs = (await utils.getConfig()).utils;
+
+  //
+  // Create Project Directory
+  //
+
+  if (shouldCreateDir) mkdirSync(dir);
 
   //
   // Downloads
@@ -96,7 +73,7 @@ const { promtBundler } = require("./scripts/promtBundler");
     "common",
     bundlerConfigs["common"],
     tempDir,
-    domain,
+    utils.domain,
     consts.pathTypes.UTILS
   );
 
@@ -106,7 +83,7 @@ const { promtBundler } = require("./scripts/promtBundler");
     bundler,
     bundlerConfigs[bundler],
     tempDir,
-    domain,
+    utils.domain,
     consts.pathTypes.UTILS
   );
 
@@ -116,13 +93,13 @@ const { promtBundler } = require("./scripts/promtBundler");
     name,
     example,
     tempDir,
-    domain,
+    utils.domain,
     isExample ? consts.pathTypes.EXAMPLE : consts.pathTypes.BASIC
   );
 
   manageDir(tempDir, dir);
 
-  await init(useNpm ? "npm" : await checkYarn(), dir, isExample);
+  await init(useNpm ? "npm" : await utils.checkYarn(), dir, isExample);
 
   rimraf.sync(tempDir);
 

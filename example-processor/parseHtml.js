@@ -1,4 +1,4 @@
-module.exports = function parseScript(window) {
+export default function parseScript(window) {
   let { document } = window;
   Array.from(document.querySelectorAll("style")).forEach((s) => s.remove());
   Array.from(document.querySelectorAll("script"))
@@ -11,4 +11,4 @@ module.exports = function parseScript(window) {
     /(<link\s+type\s*=['"]text\/css["']\s*rel\s*=\s*["']stylesheet["']\s*href\s*=\s*['"]main\.css["']>)/gi,
     ""
   );
-};
+}

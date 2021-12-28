@@ -1,4 +1,4 @@
-module.exports = function parseScript(window) {
+export default function parseScript(window) {
   let style = "";
 
   let { document } = window;
@@ -6,4 +6,4 @@ module.exports = function parseScript(window) {
     style += s.innerHTML;
   });
   return style;
-};
+}
