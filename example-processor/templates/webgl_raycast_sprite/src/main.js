@@ -50,7 +50,6 @@ function init() {
   camera.lookAt(scene.position);
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableRotate = true;
 
   // add sprites
 

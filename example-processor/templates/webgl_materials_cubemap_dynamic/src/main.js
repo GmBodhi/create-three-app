@@ -72,7 +72,6 @@ function init(texture) {
     format: RGBFormat,
     generateMipmaps: true,
     minFilter: LinearMipmapLinearFilter,
-    encoding: sRGBEncoding, // temporary -- to prevent the material's shader from recompiling every frame
   });
 
   cubeCamera1 = new CubeCamera(1, 1000, cubeRenderTarget1);
@@ -81,7 +80,6 @@ function init(texture) {
     format: RGBFormat,
     generateMipmaps: true,
     minFilter: LinearMipmapLinearFilter,
-    encoding: sRGBEncoding,
   });
 
   cubeCamera2 = new CubeCamera(1, 1000, cubeRenderTarget2);
