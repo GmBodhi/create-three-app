@@ -7,6 +7,7 @@ import {
   PMREMGenerator,
   Scene,
   Color,
+  MeshBasicMaterial,
   Box3,
   Vector3,
 } from "three";
@@ -88,6 +89,7 @@ function init() {
     smoothNormals: true,
     constructionStep: 0,
     noConstructionSteps: "No steps.",
+    flatColors: false,
   };
 
   window.addEventListener("resize", onWindowResize);
@@ -132,9 +134,10 @@ function reloadObject(resetCamera) {
   updateProgressBar(0);
   showProgressBar();
 
+  // only smooth when not rendering with flat colors to improve processing time
   const lDrawLoader = new LDrawLoader();
   lDrawLoader.separateObjects = guiData.separateObjects;
-  lDrawLoader.smoothNormals = guiData.smoothNormals;
+  lDrawLoader.smoothNormals = guiData.smoothNormals && !guiData.flatColors;
   lDrawLoader.setPath(ldrawPath).load(
     guiData.modelFileName,
     function (group2) {
@@ -143,6 +146,33 @@ function reloadObject(resetCamera) {
       }
 
       model = group2;
+
+      // demonstrate how to use convert to flat colors to better mimic the lego instructions look
+      if (guiData.flatColors) {
+        function convertMaterial(material) {
+          const newMaterial = new MeshBasicMaterial();
+          newMaterial.color.copy(material.color);
+          newMaterial.polygonOffset = material.polygonOffset;
+          newMaterial.polygonOffsetUnits = material.polygonOffsetUnits;
+          newMaterial.polygonOffsetFactor = material.polygonOffsetFactor;
+          newMaterial.opacity = material.opacity;
+          newMaterial.transparent = material.transparent;
+          newMaterial.depthWrite = material.depthWrite;
+          newMaterial.toneMapping = false;
+
+          return newMaterial;
+        }
+
+        model.traverse((c) => {
+          if (c.isMesh) {
+            if (Array.isArray(c.material)) {
+              c.material = c.material.map(convertMaterial);
+            } else {
+              c.material = convertMaterial(c.material);
+            }
+          }
+        });
+      }
 
       // Convert from LDraw coordinates: rotate 180 degrees around OX
       model.rotation.x = Math.PI;
@@ -201,6 +231,13 @@ function createGUI() {
   gui
     .add(guiData, "separateObjects")
     .name("Separate Objects")
+    .onChange(function () {
+      reloadObject(false);
+    });
+
+  gui
+    .add(guiData, "flatColors")
+    .name("Flat Colors")
     .onChange(function () {
       reloadObject(false);
     });
