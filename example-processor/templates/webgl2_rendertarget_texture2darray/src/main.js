@@ -27,7 +27,7 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 import { unzipSync } from "three/examples/jsm/libs/fflate.module.js";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
-import { WEBGL } from "three/examples/jsm/WebGL.js";
+import { WEBGL } from "three/examples/jsm/capabilities/WebGL.js";
 
 if (WEBGL.isWebGL2Available() === false) {
   document.body.appendChild(WEBGL.getWebGL2ErrorMessage());

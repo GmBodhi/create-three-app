@@ -1,5 +1,11 @@
 import "./style.css"; // For webpack support
 
+import ImportMaps from "three/examples/jsm/capabilities/ImportMaps.js";
+
+if (ImportMaps.isAvailable() === false) {
+  document.body.appendChild(ImportMaps.getErrorMessage());
+}
+
 import {
   Vector2,
   PerspectiveCamera,
@@ -12,9 +18,9 @@ import {
   PlaneGeometry,
 } from "three";
 
+import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 import WebGPUTextureRenderer from "three/examples/jsm/renderers/webgpu/WebGPUTextureRenderer.js";
-import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 

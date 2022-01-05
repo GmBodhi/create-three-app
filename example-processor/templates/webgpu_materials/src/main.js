@@ -1,5 +1,11 @@
 import "./style.css"; // For webpack support
 
+import ImportMaps from "three/examples/jsm/capabilities/ImportMaps.js";
+
+if (ImportMaps.isAvailable() === false) {
+  document.body.appendChild(ImportMaps.getErrorMessage());
+}
+
 import {
   PerspectiveCamera,
   Scene,
@@ -10,8 +16,8 @@ import {
   Mesh,
 } from "three";
 
+import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
 

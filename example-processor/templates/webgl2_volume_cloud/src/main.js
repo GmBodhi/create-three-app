@@ -22,7 +22,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise.js";
 
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { WEBGL } from "three/examples/jsm/WebGL.js";
+import { WEBGL } from "three/examples/jsm/capabilities/WebGL.js";
 
 if (WEBGL.isWebGL2Available() === false) {
   document.body.appendChild(WEBGL.getWebGL2ErrorMessage());

@@ -83,7 +83,6 @@ function init() {
 
   guiData = {
     modelFileName: modelFileList["Car"],
-    separateObjects: false,
     displayLines: true,
     conditionalLines: true,
     smoothNormals: true,
@@ -136,7 +135,6 @@ function reloadObject(resetCamera) {
 
   // only smooth when not rendering with flat colors to improve processing time
   const lDrawLoader = new LDrawLoader();
-  lDrawLoader.separateObjects = guiData.separateObjects;
   lDrawLoader.smoothNormals = guiData.smoothNormals && !guiData.flatColors;
   lDrawLoader.setPath(ldrawPath).load(
     guiData.modelFileName,
@@ -229,37 +227,28 @@ function createGUI() {
     });
 
   gui
-    .add(guiData, "separateObjects")
-    .name("Separate Objects")
-    .onChange(function () {
-      reloadObject(false);
-    });
-
-  gui
     .add(guiData, "flatColors")
     .name("Flat Colors")
     .onChange(function () {
       reloadObject(false);
     });
 
-  if (guiData.separateObjects) {
-    if (model.userData.numConstructionSteps > 1) {
-      gui
-        .add(
-          guiData,
-          "constructionStep",
-          0,
-          model.userData.numConstructionSteps - 1
-        )
-        .step(1)
-        .name("Construction step")
-        .onChange(updateObjectsVisibility);
-    } else {
-      gui
-        .add(guiData, "noConstructionSteps")
-        .name("Construction step")
-        .onChange(updateObjectsVisibility);
-    }
+  if (model.userData.numConstructionSteps > 1) {
+    gui
+      .add(
+        guiData,
+        "constructionStep",
+        0,
+        model.userData.numConstructionSteps - 1
+      )
+      .step(1)
+      .name("Construction step")
+      .onChange(updateObjectsVisibility);
+  } else {
+    gui
+      .add(guiData, "noConstructionSteps")
+      .name("Construction step")
+      .onChange(updateObjectsVisibility);
   }
 
   gui

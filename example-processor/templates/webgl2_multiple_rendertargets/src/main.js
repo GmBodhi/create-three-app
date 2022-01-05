@@ -25,7 +25,7 @@ import {
   PlaneGeometry,
 } from "three";
 
-import { WEBGL } from "three/examples/jsm/WebGL.js";
+import { WEBGL } from "three/examples/jsm/capabilities/WebGL.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 let camera, scene, renderer, controls;

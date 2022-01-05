@@ -21,7 +21,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { WEBGL } from "three/examples/jsm/WebGL.js";
+import { WEBGL } from "three/examples/jsm/capabilities/WebGL.js";
 
 if (WEBGL.isWebGL2Available() === false) {
   document.body.appendChild(WEBGL.getWebGL2ErrorMessage());

@@ -22,7 +22,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
-import { WEBGL } from "three/examples/jsm/WebGL.js";
+import { WEBGL } from "three/examples/jsm/capabilities/WebGL.js";
 
 let camera, renderer, clock, group, container;
 
