@@ -21,10 +21,10 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { WEBGL } from "three/examples/jsm/capabilities/WebGL.js";
+import WebGL from "three/examples/jsm/capabilities/WebGL.js";
 
-if (WEBGL.isWebGL2Available() === false) {
-  document.body.appendChild(WEBGL.getWebGL2ErrorMessage());
+if (WebGL.isWebGL2Available() === false) {
+  document.body.appendChild(WebGL.getWebGL2ErrorMessage());
 }
 
 let camera, scene, renderer, mesh;

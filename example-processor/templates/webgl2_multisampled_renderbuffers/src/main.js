@@ -22,7 +22,7 @@ import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
-import { WEBGL } from "three/examples/jsm/capabilities/WebGL.js";
+import WebGL from "three/examples/jsm/capabilities/WebGL.js";
 
 let camera, renderer, clock, group, container;
 
@@ -31,8 +31,8 @@ let composer1, composer2;
 init();
 
 function init() {
-  if (WEBGL.isWebGL2Available() === false) {
-    document.body.appendChild(WEBGL.getWebGL2ErrorMessage());
+  if (WebGL.isWebGL2Available() === false) {
+    document.body.appendChild(WebGL.getWebGL2ErrorMessage());
     return;
   }
 

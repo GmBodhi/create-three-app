@@ -47,7 +47,7 @@ const MOLECULES = {
   Salt: "nacl.pdb",
   "YBCO superconductor": "ybco.pdb",
   Buckyball: "buckyball.pdb",
-  //"Diamond": "diamond.pdb",
+  // 'Diamond': 'diamond.pdb',
   Graphite: "graphite.pdb",
 };
 
