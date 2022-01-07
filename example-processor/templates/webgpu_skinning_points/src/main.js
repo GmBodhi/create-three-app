@@ -1,11 +1,5 @@
 import "./style.css"; // For webpack support
 
-import ImportMaps from "three/examples/jsm/capabilities/ImportMaps.js";
-
-if (ImportMaps.isAvailable() === false) {
-  document.body.appendChild(ImportMaps.getErrorMessage());
-}
-
 import { PerspectiveCamera, Scene, Clock, AnimationMixer, Points } from "three";
 
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
