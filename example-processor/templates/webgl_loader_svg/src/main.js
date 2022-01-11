@@ -93,6 +93,7 @@ function createGUI() {
       Defs3: "models/svg/tests/testDefs/Wave-defs.svg",
       Defs4: "models/svg/tests/testDefs/defs4.svg",
       Defs5: "models/svg/tests/testDefs/defs5.svg",
+      "Multiple CSS classes": "models/svg/multiple-css-classes.svg",
       "Zero Radius": "models/svg/zero-radius.svg",
     })
     .name("SVG File")
