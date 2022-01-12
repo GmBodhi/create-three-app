@@ -20,6 +20,7 @@ import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
 import { LUTPass } from "three/examples/jsm/postprocessing/LUTPass.js";
 import { LUTCubeLoader } from "three/examples/jsm/loaders/LUTCubeLoader.js";
+import { LUT3dlLoader } from "three/examples/jsm/loaders/LUT3dlLoader.js";
 import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
@@ -36,6 +37,7 @@ const lutMap = {
   "Clayton 33.CUBE": null,
   "Cubicle 99.CUBE": null,
   "Remy 24.CUBE": null,
+  "Presetpro-Cinematic.3dl": null,
 };
 
 let gui;
@@ -78,9 +80,15 @@ function init() {
     });
 
   Object.keys(lutMap).forEach((name) => {
-    new LUTCubeLoader().load("luts/" + name, function (result) {
-      lutMap[name] = result;
-    });
+    if (/\.CUBE$/i.test(name)) {
+      new LUTCubeLoader().load("luts/" + name, function (result) {
+        lutMap[name] = result;
+      });
+    } else {
+      new LUT3dlLoader().load("luts/" + name, function (result) {
+        lutMap[name] = result;
+      });
+    }
   });
 
   renderer = new WebGLRenderer();
