@@ -13,7 +13,7 @@ import {
   LineBasicMaterial,
   Line,
   FramebufferTexture,
-  RGBFormat,
+  RGBAFormat,
   NearestFilter,
   SpriteMaterial,
   Sprite,
@@ -85,7 +85,7 @@ function init() {
 
   //
 
-  texture = new FramebufferTexture(textureSize, textureSize, RGBFormat);
+  texture = new FramebufferTexture(textureSize, textureSize, RGBAFormat);
   texture.minFilter = NearestFilter;
   texture.magFilter = NearestFilter;
 
@@ -100,7 +100,8 @@ function init() {
 
   //
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true, alpha: true });
+  renderer.setClearAlpha(1);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.autoClear = false;

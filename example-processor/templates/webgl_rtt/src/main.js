@@ -12,9 +12,6 @@ import {
   Scene,
   DirectionalLight,
   WebGLRenderTarget,
-  LinearFilter,
-  NearestFilter,
-  RGBFormat,
   ShaderMaterial,
   PlaneGeometry,
   Mesh,
@@ -79,11 +76,7 @@ function init() {
   light.position.set(0, 0, -1).normalize();
   sceneRTT.add(light);
 
-  rtTexture = new WebGLRenderTarget(window.innerWidth, window.innerHeight, {
-    minFilter: LinearFilter,
-    magFilter: NearestFilter,
-    format: RGBFormat,
-  });
+  rtTexture = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
 
   material = new ShaderMaterial({
     uniforms: { time: { value: 0.0 } },

@@ -8,7 +8,7 @@ import "./style.css"; // For webpack support
 import {
   BufferGeometry,
   DataTexture,
-  RGBFormat,
+  RGBAFormat,
   FloatType,
   BufferAttribute,
   PerspectiveCamera,
@@ -62,11 +62,11 @@ new GLTFLoader().load(gltfs[selectModel], function (gltf) {
   const tHeight = nextPowerOf2(durationAnimation);
   const tWidth = nextPowerOf2(birdGeo.getAttribute("position").count);
   vertexPerBird = birdGeo.getAttribute("position").count;
-  const tData = new Float32Array(3 * tWidth * tHeight);
+  const tData = new Float32Array(4 * tWidth * tHeight);
 
   for (let i = 0; i < tWidth; i++) {
     for (let j = 0; j < tHeight; j++) {
-      const offset = j * tWidth * 3;
+      const offset = j * tWidth * 4;
 
       const curMorph = Math.floor(
         (j / durationAnimation) * morphAttributes.length
@@ -83,19 +83,21 @@ new GLTFLoader().load(gltfs[selectModel], function (gltf) {
         d1 = morphAttributes[nextMorph].array[i * 3];
 
         if (d0 !== undefined && d1 !== undefined)
-          tData[offset + i * 3] = Math.lerp(d0, d1, lerpAmount);
+          tData[offset + i * 4] = Math.lerp(d0, d1, lerpAmount);
 
         d0 = morphAttributes[curMorph].array[i * 3 + 1];
         d1 = morphAttributes[nextMorph].array[i * 3 + 1];
 
         if (d0 !== undefined && d1 !== undefined)
-          tData[offset + i * 3 + 1] = Math.lerp(d0, d1, lerpAmount);
+          tData[offset + i * 4 + 1] = Math.lerp(d0, d1, lerpAmount);
 
         d0 = morphAttributes[curMorph].array[i * 3 + 2];
         d1 = morphAttributes[nextMorph].array[i * 3 + 2];
 
         if (d0 !== undefined && d1 !== undefined)
-          tData[offset + i * 3 + 2] = Math.lerp(d0, d1, lerpAmount);
+          tData[offset + i * 4 + 2] = Math.lerp(d0, d1, lerpAmount);
+
+        tData[offset + i * 4 + 3] = 1;
       }
     }
   }
@@ -104,7 +106,7 @@ new GLTFLoader().load(gltfs[selectModel], function (gltf) {
     tData,
     tWidth,
     tHeight,
-    RGBFormat,
+    RGBAFormat,
     FloatType
   );
   textureAnimation.needsUpdate = true;

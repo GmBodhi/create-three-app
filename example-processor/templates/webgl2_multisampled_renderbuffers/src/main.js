@@ -13,7 +13,6 @@ import {
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
-  RGBFormat,
   Vector2,
   WebGLMultisampleRenderTarget,
 } from "three";
@@ -95,15 +94,10 @@ function init() {
 
   //
 
-  const parameters = {
-    format: RGBFormat,
-  };
-
   const size = renderer.getDrawingBufferSize(new Vector2());
   const renderTarget = new WebGLMultisampleRenderTarget(
     size.width,
-    size.height,
-    parameters
+    size.height
   );
 
   const renderPass = new RenderPass(scene, camera);

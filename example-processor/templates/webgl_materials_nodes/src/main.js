@@ -24,9 +24,6 @@ import {
   AdditiveBlending,
   NormalBlending,
   WebGLRenderTarget,
-  LinearFilter,
-  NearestFilter,
-  RGBFormat,
 } from "three";
 
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
@@ -3775,11 +3772,7 @@ function updateMaterial() {
 
       // RTT ( get back distance )
 
-      rtTexture = new WebGLRenderTarget(window.innerWidth, window.innerHeight, {
-        minFilter: LinearFilter,
-        magFilter: NearestFilter,
-        format: RGBFormat,
-      });
+      rtTexture = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
 
       library[rtTexture.texture.uuid] = rtTexture.texture;
 

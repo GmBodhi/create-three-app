@@ -9,7 +9,6 @@ import {
   WebGLRenderer,
   TextureLoader,
   LinearFilter,
-  RGBFormat,
   WebGLRenderTarget,
 } from "three";
 
@@ -77,9 +76,6 @@ function init() {
   const outputPass = new ShaderPass(CopyShader);
 
   const parameters = {
-    minFilter: LinearFilter,
-    magFilter: LinearFilter,
-    format: RGBFormat,
     stencilBuffer: true,
   };
 

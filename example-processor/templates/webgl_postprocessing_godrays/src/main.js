@@ -11,8 +11,6 @@ import {
   Mesh,
   WebGLRenderer,
   OrthographicCamera,
-  LinearFilter,
-  RGBFormat,
   WebGLRenderTarget,
   UniformsUtils,
   ShaderMaterial,
@@ -159,15 +157,9 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
 
   postprocessing.scene.add(postprocessing.camera);
 
-  const pars = {
-    minFilter: LinearFilter,
-    magFilter: LinearFilter,
-    format: RGBFormat,
-  };
   postprocessing.rtTextureColors = new WebGLRenderTarget(
     renderTargetWidth,
-    renderTargetHeight,
-    pars
+    renderTargetHeight
   );
 
   // Switching the depth formats to luminance from rgb doesn't seem to work. I didn't
@@ -179,13 +171,11 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
 
   postprocessing.rtTextureDepth = new WebGLRenderTarget(
     renderTargetWidth,
-    renderTargetHeight,
-    pars
+    renderTargetHeight
   );
   postprocessing.rtTextureDepthMask = new WebGLRenderTarget(
     renderTargetWidth,
-    renderTargetHeight,
-    pars
+    renderTargetHeight
   );
 
   // The ping-pong render targets can use an adjusted resolution to minimize cost
@@ -196,13 +186,11 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
     renderTargetHeight * godrayRenderTargetResolutionMultiplier;
   postprocessing.rtTextureGodRays1 = new WebGLRenderTarget(
     adjustedWidth,
-    adjustedHeight,
-    pars
+    adjustedHeight
   );
   postprocessing.rtTextureGodRays2 = new WebGLRenderTarget(
     adjustedWidth,
-    adjustedHeight,
-    pars
+    adjustedHeight
   );
 
   // god-ray shaders

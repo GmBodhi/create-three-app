@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   DataTexture,
-  RGBFormat,
+  RGBAFormat,
   LinearFilter,
   Scene,
   PerspectiveCamera,
@@ -133,15 +133,21 @@ function init() {
   document.body.appendChild(container);
 
   // Make linear gradient texture
-  const data = new Uint8ClampedArray(100 * 100 * 3);
+
+  const data = new Uint8ClampedArray(100 * 100 * 4);
+
   for (let y = 0; y < 100; y++) {
     for (let x = 0; x < 100; x++) {
-      data[3 * (100 * y + x)] = Math.round((255 * y) / 99);
-      data[3 * (100 * y + x) + 1] = Math.round(255 - (255 * y) / 99);
+      const stride = 4 * (100 * y + x);
+
+      data[stride] = Math.round((255 * y) / 99);
+      data[stride + 1] = Math.round(255 - (255 * y) / 99);
+      data[stride + 2] = 0;
+      data[stride + 3] = 1;
     }
   }
 
-  const gradientTexture = new DataTexture(data, 100, 100, RGBFormat);
+  const gradientTexture = new DataTexture(data, 100, 100, RGBAFormat);
   gradientTexture.minFilter = LinearFilter;
   gradientTexture.magFilter = LinearFilter;
   gradientTexture.needsUpdate = true;

@@ -12,8 +12,6 @@ import {
   Mesh,
   CameraHelper,
   WebGLRenderTarget,
-  LinearFilter,
-  RGBFormat,
   MeshBasicMaterial,
   PointLight,
 } from "three";
@@ -97,11 +95,7 @@ function init() {
   topLeftCorner = new Vector3();
   reflectedPosition = new Vector3();
 
-  leftPortalTexture = new WebGLRenderTarget(256, 256, {
-    minFilter: LinearFilter,
-    magFilter: LinearFilter,
-    format: RGBFormat,
-  });
+  leftPortalTexture = new WebGLRenderTarget(256, 256);
   leftPortal = new Mesh(
     planeGeo,
     new MeshBasicMaterial({ map: leftPortalTexture.texture })
@@ -111,11 +105,7 @@ function init() {
   leftPortal.scale.set(0.35, 0.35, 0.35);
   scene.add(leftPortal);
 
-  rightPortalTexture = new WebGLRenderTarget(256, 256, {
-    minFilter: LinearFilter,
-    magFilter: LinearFilter,
-    format: RGBFormat,
-  });
+  rightPortalTexture = new WebGLRenderTarget(256, 256);
   rightPortal = new Mesh(
     planeGeo,
     new MeshBasicMaterial({ map: rightPortalTexture.texture })
