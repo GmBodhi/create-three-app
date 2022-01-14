@@ -6,7 +6,6 @@ import {
   Scene,
   PerspectiveCamera,
   WebGLCubeRenderTarget,
-  RGBAFormat,
   CubeCamera,
   LightProbe,
   CubeTextureLoader,
@@ -42,9 +41,7 @@ function init() {
   );
   camera.position.set(0, 0, 30);
 
-  const cubeRenderTarget = new WebGLCubeRenderTarget(256, {
-    format: RGBAFormat,
-  });
+  const cubeRenderTarget = new WebGLCubeRenderTarget(256);
 
   cubeCamera = new CubeCamera(1, 1000, cubeRenderTarget);
 
