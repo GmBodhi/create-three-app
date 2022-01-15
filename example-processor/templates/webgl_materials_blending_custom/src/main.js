@@ -251,7 +251,10 @@ function init() {
 
   // RENDERER
 
-  renderer = new WebGLRenderer();
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("webgl", { alpha: false }); // TODO Remove workaround
+
+  renderer = new WebGLRenderer({ canvas: canvas, context: context });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 

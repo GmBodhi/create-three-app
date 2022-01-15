@@ -275,6 +275,10 @@ function animate() {
   cameraHelper.visible = false;
   scene.overrideMaterial = depthMaterial;
 
+  // set renderer clear alpha
+  const initialClearAlpha = renderer.getClearAlpha();
+  renderer.setClearAlpha(0);
+
   // render to the render target to get the depths
   renderer.setRenderTarget(renderTarget);
   renderer.render(scene, shadowCamera);
@@ -291,6 +295,7 @@ function animate() {
 
   // reset and render the normal scene
   renderer.setRenderTarget(null);
+  renderer.setClearAlpha(initialClearAlpha);
   scene.background = initialBackground;
 
   renderer.render(scene, camera);
