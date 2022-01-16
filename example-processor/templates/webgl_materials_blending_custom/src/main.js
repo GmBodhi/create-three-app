@@ -252,7 +252,7 @@ function init() {
   // RENDERER
 
   const canvas = document.createElement("canvas");
-  const context = canvas.getContext("webgl", { alpha: false }); // TODO Remove workaround
+  const context = canvas.getContext("webgl2", { alpha: false }); // TODO Remove workaround
 
   renderer = new WebGLRenderer({ canvas: canvas, context: context });
   renderer.setPixelRatio(window.devicePixelRatio);

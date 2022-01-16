@@ -12,7 +12,6 @@ import {
   MeshLambertMaterial,
   DoubleSide,
   WebGLRenderer,
-  AxesHelper,
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
@@ -22,17 +21,7 @@ import { TrackballControls } from "three/examples/jsm/controls/TrackballControls
 import { NRRDLoader } from "three/examples/jsm/loaders/NRRDLoader.js";
 import { VTKLoader } from "three/examples/jsm/loaders/VTKLoader.js";
 
-let container,
-  stats,
-  camera,
-  controls,
-  scene,
-  renderer,
-  container2,
-  renderer2,
-  camera2,
-  axes2,
-  scene2;
+let container, stats, camera, controls, scene, renderer;
 
 init();
 animate();
@@ -186,8 +175,6 @@ function init() {
 
   const gui = new GUI();
 
-  setupInset();
-
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -205,39 +192,7 @@ function animate() {
 
   controls.update();
 
-  //copy position of the camera into inset
-  camera2.position.copy(camera.position);
-  camera2.position.sub(controls.target);
-  camera2.position.setLength(300);
-  camera2.lookAt(scene2.position);
-
   renderer.render(scene, camera);
-  renderer2.render(scene2, camera2);
 
   stats.update();
-}
-
-function setupInset() {
-  const insetWidth = 150,
-    insetHeight = 150;
-  container2 = document.getElementById("inset");
-  container2.width = insetWidth;
-  container2.height = insetHeight;
-
-  // renderer
-  renderer2 = new WebGLRenderer({ alpha: true });
-  renderer2.setClearColor(0x000000, 0);
-  renderer2.setSize(insetWidth, insetHeight);
-  container2.appendChild(renderer2.domElement);
-
-  // scene
-  scene2 = new Scene();
-
-  // camera
-  camera2 = new PerspectiveCamera(50, insetWidth / insetHeight, 1, 1000);
-  camera2.up = camera.up; // important!
-
-  // axes
-  axes2 = new AxesHelper(100);
-  scene2.add(axes2);
 }

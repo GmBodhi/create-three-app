@@ -118,7 +118,7 @@ function init() {
 
   // renderer
 
-  renderer = new WebGLRenderer({ antialias: true, alpha: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = sRGBEncoding;

@@ -42,9 +42,9 @@ function init() {
 
   // BACKGROUND
 
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  canvas.width = canvas.height = 128;
+  const canvasBackground = document.createElement("canvas");
+  const ctx = canvasBackground.getContext("2d");
+  canvasBackground.width = canvasBackground.height = 128;
   ctx.fillStyle = "#ddd";
   ctx.fillRect(0, 0, 128, 128);
   ctx.fillStyle = "#555";
@@ -56,7 +56,7 @@ function init() {
   ctx.fillStyle = "#777";
   ctx.fillRect(96, 96, 32, 32);
 
-  mapBg = new CanvasTexture(canvas);
+  mapBg = new CanvasTexture(canvasBackground);
   mapBg.wrapS = mapBg.wrapT = RepeatWrapping;
   mapBg.repeat.set(128, 64);
 
@@ -118,9 +118,12 @@ function init() {
     }
   }
 
+  const canvas = document.createElement("canvas");
+  const context = canvas.getContext("webgl2", { alpha: false }); // TODO Remove workaround
+
   // RENDERER
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ canvas: canvas, context: context });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
