@@ -299,10 +299,11 @@ function onProgress(xhr) {
   }
 }
 
-function onError() {
+function onError(error) {
   const message = "Error loading model";
   progressBarDiv.innerText = message;
   console.log(message);
+  console.error(error);
 }
 
 function showProgressBar() {
