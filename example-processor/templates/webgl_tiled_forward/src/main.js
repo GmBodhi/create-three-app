@@ -260,7 +260,7 @@ function init(geom) {
   const tIndex = Math.round(Math.random() * 3);
 
   Object.keys(Heads).forEach(function (t, index) {
-    let g = new Group();
+    const g = new Group();
     const conf = Heads[t];
     const ml = ShaderLib[conf.type];
     const mtl = new ShaderMaterial({

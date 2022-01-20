@@ -222,6 +222,7 @@ function d3threeD(exports) {
             x1 = 2 * x - x1;
             y1 = 2 * y - y1;
           }
+
           nx = eatNum();
           ny = eatNum();
           path.quadraticCurveTo(x1, y1, nx, ny);
