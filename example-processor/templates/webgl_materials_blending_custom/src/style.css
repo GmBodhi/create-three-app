@@ -1,5 +1,4 @@
 body {
-  overflow: hidden;
   margin: 0;
   background-color: #000;
   color: #fff;
@@ -7,65 +6,6 @@ body {
   font-size: 13px;
   line-height: 24px;
   overscroll-behavior: none;
-}
-.lbl,
-.menu {
-  color: #fff;
-  width: 75px;
-}
-.menu {
-  font-weight: 700;
-  font-size: 12px;
-  z-index: 100;
-  position: absolute;
-  top: 0;
-  padding: 16px;
-}
-.menu canvas,
-.menu img {
-  width: 75px;
-  margin: 10px 0;
-}
-#backgrounds,
-#images {
-  background: 0 0;
-  left: 0;
-}
-#backgrounds {
-  left: 107px;
-}
-#labels {
-  background: rgba(0, 0, 0, 0.75);
-  left: 214px;
-  width: 100px;
-}
-.lbl {
-  z-index: 150;
-  float: left;
-  padding: 0.25em;
-  display: block;
-}
-#lbl_dst {
-  background: #800;
-}
-#lbl_src {
-  background: green;
-}
-.btn {
-  background: #ff8c00;
-  width: 100px;
-  cursor: pointer;
-}
-#btn_max,
-#btn_min,
-#btn_pre,
-#btn_rsub,
-#btn_sub {
-  background: 0 0;
-}
-#btn_max,
-#btn_nopre {
-  margin-bottom: 2em;
 }
 a {
   color: #ff0;

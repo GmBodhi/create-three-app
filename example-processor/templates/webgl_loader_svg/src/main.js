@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   WebGLRenderer,
+  sRGBEncoding,
   Scene,
   Color,
   GridHelper,
@@ -40,6 +41,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
 
   //
@@ -153,7 +155,7 @@ function loadSVG(url) {
         fillColor !== "none"
       ) {
         const material = new MeshBasicMaterial({
-          color: new Color().setStyle(fillColor),
+          color: new Color().setStyle(fillColor).convertSRGBToLinear(),
           opacity: path.userData.style.fillOpacity,
           transparent: true,
           side: DoubleSide,
@@ -181,7 +183,7 @@ function loadSVG(url) {
         strokeColor !== "none"
       ) {
         const material = new MeshBasicMaterial({
-          color: new Color().setStyle(strokeColor),
+          color: new Color().setStyle(strokeColor).convertSRGBToLinear(),
           opacity: path.userData.style.strokeOpacity,
           transparent: true,
           side: DoubleSide,
