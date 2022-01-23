@@ -25,11 +25,8 @@ import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer.js";
 
-const isIE = /Trident/i.test(navigator.userAgent);
-const isEdge = /Edge/i.test(navigator.userAgent);
-
 // Texture width for simulation (each texel is a debris particle)
-const WIDTH = isIE || isEdge ? 4 : 64;
+const WIDTH = 64;
 
 let container, stats;
 let camera, scene, renderer, geometry;
