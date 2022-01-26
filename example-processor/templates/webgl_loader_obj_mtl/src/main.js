@@ -5,11 +5,10 @@ import {
   Scene,
   AmbientLight,
   PointLight,
-  LoadingManager,
   WebGLRenderer,
+  sRGBEncoding,
 } from "three";
 
-import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader.js";
 import { MTLLoader } from "three/examples/jsm/loaders/MTLLoader.js";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 
@@ -56,20 +55,12 @@ function init() {
     }
   };
 
-  const onError = function () {};
-
-  const manager = new LoadingManager();
-  manager.addHandler(/\.dds$/i, new DDSLoader());
-
-  // comment in the following line and import TGALoader if your asset uses TGA textures
-  // manager.addHandler( /\.tga$/i, new TGALoader() );
-
-  new MTLLoader(manager)
+  new MTLLoader()
     .setPath("models/obj/male02/")
-    .load("male02_dds.mtl", function (materials) {
+    .load("male02.mtl", function (materials) {
       materials.preload();
 
-      new OBJLoader(manager)
+      new OBJLoader()
         .setMaterials(materials)
         .setPath("models/obj/male02/")
         .load(
@@ -78,14 +69,14 @@ function init() {
             object.position.y = -95;
             scene.add(object);
           },
-          onProgress,
-          onError
+          onProgress
         );
     });
 
   //
 
   renderer = new WebGLRenderer();
+  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

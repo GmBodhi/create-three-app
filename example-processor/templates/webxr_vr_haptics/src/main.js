@@ -30,6 +30,9 @@ const oscillators = [];
 let controls, group;
 let audioCtx = null;
 
+// minor pentatonic scale, so whichever notes is striked would be more pleasant
+const musicScale = [0, 3, 5, 7, 10, 12];
+
 init();
 animate();
 
@@ -40,17 +43,9 @@ function initAudio() {
 
   audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   function createOscillator() {
+    // creates oscillator
     const oscillator = audioCtx.createOscillator();
-    const real = Array.from({ length: 8192 }, (_, n) =>
-      n === 0 ? 0 : (4 / (n * Math.PI)) * Math.sin(Math.PI * n * 0.18)
-    );
-    const imag = real.map(() => 0);
-    oscillator.setPeriodicWave(
-      audioCtx.createPeriodicWave(
-        Float32Array.from(real),
-        Float32Array.from(imag)
-      )
-    );
+    oscillator.type = "sine"; // possible values: sine, triangle, square
     oscillator.start();
     return oscillator;
   }
@@ -105,9 +100,10 @@ function init() {
   group = new Group();
   group.position.z = -0.5;
   scene.add(group);
+  const BOXES = 10;
 
-  for (let i = 0; i < 10; i++) {
-    const intensity = (i + 1) / 10;
+  for (let i = 0; i < BOXES; i++) {
+    const intensity = (i + 1) / BOXES;
     const w = 0.1;
     const h = 0.1;
     const minH = 1;
@@ -207,47 +203,65 @@ function animate() {
 }
 
 function handleCollisions() {
-  for (let g = 0; g < controllers.length; g++) {
-    controllers[g].colliding = false;
+  for (let i = 0; i < group.children.length; i++) {
+    group.children[i].collided = false;
+  }
 
-    const { grip, gamepad } = controllers[g];
+  for (let g = 0; g < controllers.length; g++) {
+    const controller = controllers[g];
+    controller.colliding = false;
+
+    const { grip, gamepad } = controller;
     const sphere = {
       radius: 0.03,
       center: grip.position,
     };
 
-    if (
+    const supportHaptic =
       "hapticActuators" in gamepad &&
       gamepad.hapticActuators != null &&
-      gamepad.hapticActuators.length > 0
-    ) {
-      for (let i = 0; i < group.children.length; i++) {
-        const child = group.children[i];
-        box.setFromObject(child);
-        if (box.intersectsSphere(sphere)) {
-          child.material.emissive.b = 1;
-          const intensity = child.userData.index / group.children.length;
-          child.scale.setScalar(1 + Math.random() * 0.1 * intensity);
+      gamepad.hapticActuators.length > 0;
+
+    for (let i = 0; i < group.children.length; i++) {
+      const child = group.children[i];
+      box.setFromObject(child);
+      if (box.intersectsSphere(sphere)) {
+        child.material.emissive.b = 1;
+        const intensity = child.userData.index / group.children.length;
+        child.scale.setScalar(1 + Math.random() * 0.1 * intensity);
+
+        if (supportHaptic) {
           gamepad.hapticActuators[0].pulse(intensity, 100);
-          oscillators[g].frequency.value = 100 + intensity * 60;
-          controllers[g].colliding = true;
-        } else {
-          child.material.emissive.b = 0;
-          child.scale.setScalar(1);
         }
+
+        const musicInterval =
+          musicScale[child.userData.index % musicScale.length] +
+          12 * Math.floor(child.userData.index / musicScale.length);
+        oscillators[g].frequency.value = 110 * Math.pow(2, musicInterval / 12);
+        controller.colliding = true;
+        group.children[i].collided = true;
       }
     }
 
-    if (controllers[g].colliding) {
-      if (!controllers[g].playing) {
-        controllers[g].playing = true;
+    if (controller.colliding) {
+      if (!controller.playing) {
+        controller.playing = true;
         oscillators[g].connect(audioCtx.destination);
       }
     } else {
-      if (controllers[g].playing) {
-        controllers[g].playing = false;
+      if (controller.playing) {
+        controller.playing = false;
         oscillators[g].disconnect(audioCtx.destination);
       }
+    }
+  }
+
+  for (let i = 0; i < group.children.length; i++) {
+    let child = group.children[i];
+    if (!child.collided) {
+      // reset uncollided boxes
+      child.material.emissive.b = 0;
+      child.scale.setScalar(1);
     }
   }
 }
