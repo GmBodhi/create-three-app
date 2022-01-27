@@ -9,13 +9,14 @@ import {
   Mesh,
   SphereGeometry,
   BoxGeometry,
+  Points,
+  TorusKnotGeometry,
 } from "three";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 
 import { NodeEditor } from "three/examples/jsm/node-editor/NodeEditor.js";
-import { StandardMaterialEditor } from "three/examples/jsm/node-editor/materials/StandardMaterialEditor.js";
 import { MeshEditor } from "three/examples/jsm/node-editor/scene/MeshEditor.js";
 
 import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
@@ -126,6 +127,17 @@ function initEditor() {
     box.name = "Box";
     box.position.set(-500, 0, -500);
     scene.add(box);
+
+    const defaultPointsMaterial = new Nodes.PointsNodeMaterial();
+    defaultPointsMaterial.colorNode = new Nodes.FloatNode(0);
+
+    const torusKnot = new Points(
+      new TorusKnotGeometry(100, 30, 100, 16),
+      defaultPointsMaterial
+    );
+    torusKnot.name = "Torus Knot ( Points )";
+    torusKnot.position.set(0, 0, -500);
+    scene.add(torusKnot);
 
     model = object.children[0];
     model.position.set(0, 0, 10);

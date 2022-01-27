@@ -216,7 +216,7 @@ function initWater() {
 
   gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
 
-  if (isSafari()) {
+  if (renderer.capabilities.isWebGL2 === false) {
     gpuCompute.setDataType(HalfFloatType);
   }
 
@@ -273,13 +273,6 @@ function initWater() {
     type: UnsignedByteType,
     depthBuffer: false,
   });
-}
-
-function isSafari() {
-  return (
-    !!navigator.userAgent.match(/Safari/i) &&
-    !navigator.userAgent.match(/Chrome/i)
-  );
 }
 
 function fillTexture(texture) {

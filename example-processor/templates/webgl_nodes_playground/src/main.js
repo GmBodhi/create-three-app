@@ -10,6 +10,8 @@ import {
   Mesh,
   SphereGeometry,
   BoxGeometry,
+  Points,
+  TorusKnotGeometry,
 } from "three";
 
 import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
@@ -101,6 +103,17 @@ function initEditor() {
     box.name = "Box";
     box.position.set(-500, 0, -500);
     scene.add(box);
+
+    const defaultPointsMaterial = new Nodes.PointsNodeMaterial();
+    defaultPointsMaterial.colorNode = new Nodes.FloatNode(0);
+
+    const torusKnot = new Points(
+      new TorusKnotGeometry(100, 30, 100, 16),
+      defaultPointsMaterial
+    );
+    torusKnot.name = "Torus Knot ( Points )";
+    torusKnot.position.set(0, 0, -500);
+    scene.add(torusKnot);
 
     model = object.children[0];
     model.position.set(0, 0, 10);

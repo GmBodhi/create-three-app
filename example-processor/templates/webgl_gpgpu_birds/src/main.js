@@ -191,7 +191,7 @@ function init() {
 function initComputeRenderer() {
   gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
 
-  if (isSafari()) {
+  if (renderer.capabilities.isWebGL2 === false) {
     gpuCompute.setDataType(HalfFloatType);
   }
 
@@ -245,13 +245,6 @@ function initComputeRenderer() {
   if (error !== null) {
     console.error(error);
   }
-}
-
-function isSafari() {
-  return (
-    !!navigator.userAgent.match(/Safari/i) &&
-    !navigator.userAgent.match(/Chrome/i)
-  );
 }
 
 function initBirds() {
