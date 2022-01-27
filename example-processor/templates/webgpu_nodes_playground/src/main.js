@@ -17,6 +17,7 @@ import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 
 import { NodeEditor } from "three/examples/jsm/node-editor/NodeEditor.js";
+
 import { MeshEditor } from "three/examples/jsm/node-editor/scene/MeshEditor.js";
 
 import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
