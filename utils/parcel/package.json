@@ -14,7 +14,7 @@
     "build": "parcel build"
   },
   "dependencies": {
-    "three": "^0.135.x"
+    "three": "^0.137.x"
   },
   "devDependencies": {
     "parcel": "latest",
