@@ -14,8 +14,6 @@ import {
   AmbientLight,
   SpotLight,
   MeshPhongMaterial,
-  LinearFilter,
-  RGBFormat,
   WebGLRenderTarget,
   OrthographicCamera,
   TextureLoader,
@@ -169,16 +167,7 @@ function FXScene(geometry, rotationSpeed, clearColor) {
   const mesh = generateInstancedMesh(geometry, material, 500);
   scene.add(mesh);
 
-  const renderTargetParameters = {
-    minFilter: LinearFilter,
-    magFilter: LinearFilter,
-    format: RGBFormat,
-  };
-  this.fbo = new WebGLRenderTarget(
-    window.innerWidth,
-    window.innerHeight,
-    renderTargetParameters
-  );
+  this.fbo = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
 
   this.render = function (delta, rtt) {
     mesh.rotation.x += delta * this.rotationSpeed.x;

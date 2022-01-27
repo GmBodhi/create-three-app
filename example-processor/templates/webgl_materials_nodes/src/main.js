@@ -2,13 +2,14 @@ import "./style.css"; // For webpack support
 
 import {
   Clock,
+  sRGBEncoding,
+  LinearEncoding,
   TextureLoader,
   RepeatWrapping,
   PMREMGenerator,
   CubeTextureLoader,
   WebGLRenderer,
   MathUtils,
-  sRGBEncoding,
   Scene,
   PerspectiveCamera,
   Group,
@@ -23,9 +24,6 @@ import {
   AdditiveBlending,
   NormalBlending,
   WebGLRenderTarget,
-  LinearFilter,
-  NearestFilter,
-  RGBFormat,
 } from "three";
 
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
@@ -54,13 +52,22 @@ let gui;
 const library = {};
 let serialized = false;
 const textures = {
-  brick: { url: "textures/brick_diffuse.jpg" },
-  grass: { url: "textures/terrain/grasslight-big.jpg" },
-  grassNormal: { url: "textures/terrain/grasslight-big-nm.jpg" },
-  decalDiffuse: { url: "textures/decal/decal-diffuse.png" },
-  decalNormal: { url: "textures/decal/decal-normal.jpg" },
-  cloud: { url: "textures/lava/cloud.png" },
-  spherical: { url: "textures/envmap.png" },
+  brick: { url: "textures/brick_diffuse.jpg", encoding: sRGBEncoding },
+  grass: { url: "textures/terrain/grasslight-big.jpg", encoding: sRGBEncoding },
+  grassNormal: {
+    url: "textures/terrain/grasslight-big-nm.jpg",
+    encoding: LinearEncoding,
+  },
+  decalDiffuse: {
+    url: "textures/decal/decal-diffuse.png",
+    encoding: sRGBEncoding,
+  },
+  decalNormal: {
+    url: "textures/decal/decal-normal.jpg",
+    encoding: LinearEncoding,
+  },
+  cloud: { url: "textures/lava/cloud.png", encoding: sRGBEncoding },
+  spherical: { url: "textures/envmap.png", encoding: sRGBEncoding },
 };
 
 const param = {
@@ -76,6 +83,7 @@ function getTexture(name) {
       textures[name].url
     );
     texture.wrapS = texture.wrapT = RepeatWrapping;
+    texture.encoding = textures[name].encoding;
 
     library[texture.uuid] = texture;
   }
@@ -3764,11 +3772,7 @@ function updateMaterial() {
 
       // RTT ( get back distance )
 
-      rtTexture = new WebGLRenderTarget(window.innerWidth, window.innerHeight, {
-        minFilter: LinearFilter,
-        magFilter: NearestFilter,
-        format: RGBFormat,
-      });
+      rtTexture = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
 
       library[rtTexture.texture.uuid] = rtTexture.texture;
 

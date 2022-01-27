@@ -116,7 +116,7 @@ function init() {
 
   //
 
-  renderer = new WebGLRenderer({ antialias: false, alpha: true });
+  renderer = new WebGLRenderer({ antialias: false });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setClearAlpha(1);
   renderer.setClearColor(new Color(0), 0);

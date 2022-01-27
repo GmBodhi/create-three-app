@@ -14,7 +14,6 @@ import {
   WebGLRenderer,
   PerspectiveCamera,
   WebGLRenderTarget,
-  RGBFormat,
   NearestFilter,
   DepthTexture,
   OrthographicCamera,
@@ -113,12 +112,9 @@ function setupRenderTarget() {
   const type = parseFloat(params.type);
 
   target = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
-  target.texture.format = RGBFormat;
   target.texture.minFilter = NearestFilter;
   target.texture.magFilter = NearestFilter;
-  target.texture.generateMipmaps = false;
   target.stencilBuffer = format === DepthStencilFormat ? true : false;
-  target.depthBuffer = true;
   target.depthTexture = new DepthTexture();
   target.depthTexture.format = format;
   target.depthTexture.type = type;

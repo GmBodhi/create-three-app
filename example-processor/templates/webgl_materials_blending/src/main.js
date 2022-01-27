@@ -6,14 +6,14 @@ import {
   Scene,
   CanvasTexture,
   RepeatWrapping,
-  MeshBasicMaterial,
-  Mesh,
-  PlaneGeometry,
   NoBlending,
   NormalBlending,
   AdditiveBlending,
   SubtractiveBlending,
   MultiplyBlending,
+  PlaneGeometry,
+  MeshBasicMaterial,
+  Mesh,
   WebGLRenderer,
 } from "three";
 
@@ -58,19 +58,9 @@ function init() {
 
   mapBg = new CanvasTexture(canvas);
   mapBg.wrapS = mapBg.wrapT = RepeatWrapping;
-  mapBg.repeat.set(128, 64);
+  mapBg.repeat.set(64, 32);
 
-  /*
-				let mapBg = textureLoader.load( 'textures/disturb.jpg' );
-				mapBg.wrapS = mapBg.wrapT = RepeatWrapping;
-				mapBg.repeat.set( 8, 4 );
-				*/
-
-  const materialBg = new MeshBasicMaterial({ map: mapBg });
-
-  const meshBg = new Mesh(new PlaneGeometry(4000, 2000), materialBg);
-  meshBg.position.set(0, 0, -1);
-  scene.add(meshBg);
+  scene.background = mapBg;
 
   // OBJECTS
 

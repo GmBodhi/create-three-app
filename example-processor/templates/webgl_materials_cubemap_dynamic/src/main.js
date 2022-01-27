@@ -8,11 +8,8 @@ import {
   Scene,
   PerspectiveCamera,
   WebGLCubeRenderTarget,
-  RGBFormat,
-  LinearMipmapLinearFilter,
   CubeCamera,
-  MeshBasicMaterial,
-  MultiplyOperation,
+  MeshStandardMaterial,
   Mesh,
   IcosahedronGeometry,
   BoxGeometry,
@@ -20,7 +17,9 @@ import {
   MathUtils,
 } from "three";
 
-let camera, scene, renderer;
+import Stats from "three/examples/jsm/libs/stats.module.js";
+
+let camera, scene, renderer, stats;
 let cube, sphere, torus, material;
 
 let count = 0,
@@ -56,6 +55,9 @@ function init(texture) {
   renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
+
   scene = new Scene();
   scene.background = texture;
 
@@ -68,30 +70,20 @@ function init(texture) {
 
   //
 
-  cubeRenderTarget1 = new WebGLCubeRenderTarget(256, {
-    format: RGBFormat,
-    generateMipmaps: true,
-    minFilter: LinearMipmapLinearFilter,
-    encoding: sRGBEncoding, // temporary -- to prevent the material's shader from recompiling every frame
-  });
+  cubeRenderTarget1 = new WebGLCubeRenderTarget(256);
 
   cubeCamera1 = new CubeCamera(1, 1000, cubeRenderTarget1);
 
-  cubeRenderTarget2 = new WebGLCubeRenderTarget(256, {
-    format: RGBFormat,
-    generateMipmaps: true,
-    minFilter: LinearMipmapLinearFilter,
-    encoding: sRGBEncoding,
-  });
+  cubeRenderTarget2 = new WebGLCubeRenderTarget(256);
 
   cubeCamera2 = new CubeCamera(1, 1000, cubeRenderTarget2);
 
   //
 
-  material = new MeshBasicMaterial({
+  material = new MeshStandardMaterial({
     envMap: cubeRenderTarget2.texture,
-    combine: MultiplyOperation,
-    reflectivity: 1,
+    roughness: 0.2,
+    metalness: 1,
   });
 
   sphere = new Mesh(new IcosahedronGeometry(20, 8), material);
@@ -151,10 +143,7 @@ function onDocumentMouseWheel(event) {
 
 function animate() {
   requestAnimationFrame(animate);
-  render();
-}
 
-function render() {
   const time = Date.now();
 
   lon += 0.15;
@@ -195,5 +184,11 @@ function render() {
 
   count++;
 
+  render();
+
+  stats.update();
+}
+
+function render() {
   renderer.render(scene, camera);
 }

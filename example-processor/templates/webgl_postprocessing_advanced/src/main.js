@@ -14,8 +14,6 @@ import {
   Vector2,
   Uniform,
   Color,
-  LinearFilter,
-  RGBFormat,
   WebGLRenderTarget,
   MeshPhongMaterial,
 } from "three";
@@ -190,9 +188,6 @@ function init() {
   //
 
   const rtParameters = {
-    minFilter: LinearFilter,
-    magFilter: LinearFilter,
-    format: RGBFormat,
     stencilBuffer: true,
   };
 

@@ -134,9 +134,9 @@ function onPointerMove(event) {
       .floor()
       .multiplyScalar(50)
       .addScalar(25);
-  }
 
-  render();
+    render();
+  }
 }
 
 function onPointerDown(event) {

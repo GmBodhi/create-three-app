@@ -11,8 +11,8 @@ import {
 
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
+import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import LightsNode from "three/examples/jsm/renderers/nodes/lights/LightsNode.js";
 
@@ -26,7 +26,7 @@ async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw "No WebGPU support";
+    throw new Error("No WebGPU support");
   }
 
   camera = new PerspectiveCamera(

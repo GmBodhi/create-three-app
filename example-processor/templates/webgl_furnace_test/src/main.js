@@ -81,20 +81,16 @@ function createObjects() {
 }
 
 function createEnvironment() {
-  return new Promise(function (resolve) {
-    const envScene = new Scene();
-    envScene.background = new Color(COLOR);
-    if (renderer.outputEncoding === sRGBEncoding)
-      envScene.background.convertSRGBToLinear();
+  const envScene = new Scene();
+  envScene.background = new Color(COLOR);
+  if (renderer.outputEncoding === sRGBEncoding)
+    envScene.background.convertSRGBToLinear();
 
-    const pmremGenerator = new PMREMGenerator(renderer);
-    radianceMap = pmremGenerator.fromScene(envScene).texture;
-    pmremGenerator.dispose();
+  const pmremGenerator = new PMREMGenerator(renderer);
+  radianceMap = pmremGenerator.fromScene(envScene).texture;
+  pmremGenerator.dispose();
 
-    scene.background = radianceMap;
-
-    resolve();
-  });
+  scene.background = radianceMap;
 }
 
 function onWindowResize() {

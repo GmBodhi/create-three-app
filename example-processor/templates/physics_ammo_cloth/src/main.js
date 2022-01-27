@@ -212,6 +212,7 @@ function createObjects() {
         pos.z += brickLength;
       }
     }
+
     pos.y += brickHeight;
   }
 

@@ -18,10 +18,10 @@ import {
   VOXDataTexture3D,
 } from "three/examples/jsm/loaders/VOXLoader.js";
 
-import { WEBGL } from "three/examples/jsm/WebGL.js";
+import WebGL from "three/examples/jsm/capabilities/WebGL.js";
 
-if (WEBGL.isWebGL2Available() === false) {
-  document.body.appendChild(WEBGL.getWebGL2ErrorMessage());
+if (WebGL.isWebGL2Available() === false) {
+  document.body.appendChild(WebGL.getWebGL2ErrorMessage());
 }
 
 let renderer, scene, camera;

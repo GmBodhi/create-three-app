@@ -3,13 +3,13 @@ import "./style.css"; // For webpack support
 import {
   Scene,
   PerspectiveCamera,
-  AmbientLight,
+  HemisphereLight,
   WebGLRenderer,
   sRGBEncoding,
   EquirectangularReflectionMapping,
   SphereBufferGeometry,
   Group,
-  MeshPhongMaterial,
+  MeshStandardMaterial,
   Mesh,
 } from "three";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
@@ -36,7 +36,8 @@ function init() {
     20
   );
 
-  const defaultLight = new AmbientLight(0xffffff);
+  const defaultLight = new HemisphereLight(0xffffff, 0xbbbbff, 1);
+  defaultLight.position.set(0.5, 1, 0.25);
   scene.add(defaultLight);
 
   //
@@ -61,7 +62,7 @@ function init() {
 
     // The estimated lighting also provides an environment cubemap, which we can apply here.
     if (xrLight.environment) {
-      updateEnvironment(xrLight.environment);
+      scene.environment = xrLight.environment;
     }
   });
 
@@ -71,7 +72,7 @@ function init() {
     scene.remove(xrLight);
 
     // Revert back to the default environment.
-    updateEnvironment(defaultEnvironment);
+    scene.environment = defaultEnvironment;
   });
 
   //
@@ -83,7 +84,7 @@ function init() {
 
       defaultEnvironment = texture;
 
-      updateEnvironment(defaultEnvironment);
+      scene.environment = defaultEnvironment;
     });
 
   //
@@ -99,14 +100,15 @@ function init() {
   const ballGroup = new Group();
   ballGroup.position.z = -2;
 
-  const rows = 1;
-  const cols = 4;
+  const rows = 3;
+  const cols = 3;
 
   for (let i = 0; i < rows; i++) {
     for (let j = 0; j < cols; j++) {
-      const ballMaterial = new MeshPhongMaterial({
+      const ballMaterial = new MeshStandardMaterial({
         color: 0xdddddd,
-        reflectivity: j / cols,
+        roughness: i / rows,
+        metalness: j / cols,
       });
       const ballMesh = new Mesh(ballGeometry, ballMaterial);
       ballMesh.position.set(
@@ -151,10 +153,4 @@ function animate() {
 
 function render() {
   renderer.render(scene, camera);
-}
-
-function updateEnvironment(envMap) {
-  scene.traverse(function (object) {
-    if (object.isMesh) object.material.envMap = envMap;
-  });
 }

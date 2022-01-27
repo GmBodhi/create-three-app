@@ -3,10 +3,12 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   WebGLRenderer,
+  sRGBEncoding,
   ACESFilmicToneMapping,
   PMREMGenerator,
   Scene,
   Color,
+  MeshBasicMaterial,
   Box3,
   Vector3,
 } from "three";
@@ -17,6 +19,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
 import { LDrawLoader } from "three/examples/jsm/loaders/LDrawLoader.js";
+import { LDrawUtils } from "three/examples/jsm/utils/LDrawUtils.js";
 
 let container, progressBarDiv;
 
@@ -65,6 +68,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = sRGBEncoding;
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
@@ -82,12 +86,13 @@ function init() {
 
   guiData = {
     modelFileName: modelFileList["Car"],
-    separateObjects: false,
     displayLines: true,
     conditionalLines: true,
     smoothNormals: true,
     constructionStep: 0,
     noConstructionSteps: "No steps.",
+    flatColors: false,
+    mergeModel: false,
   };
 
   window.addEventListener("resize", onWindowResize);
@@ -132,9 +137,9 @@ function reloadObject(resetCamera) {
   updateProgressBar(0);
   showProgressBar();
 
+  // only smooth when not rendering with flat colors to improve processing time
   const lDrawLoader = new LDrawLoader();
-  lDrawLoader.separateObjects = guiData.separateObjects;
-  lDrawLoader.smoothNormals = guiData.smoothNormals;
+  lDrawLoader.smoothNormals = guiData.smoothNormals && !guiData.flatColors;
   lDrawLoader.setPath(ldrawPath).load(
     guiData.modelFileName,
     function (group2) {
@@ -143,6 +148,36 @@ function reloadObject(resetCamera) {
       }
 
       model = group2;
+
+      // demonstrate how to use convert to flat colors to better mimic the lego instructions look
+      if (guiData.flatColors) {
+        function convertMaterial(material) {
+          const newMaterial = new MeshBasicMaterial();
+          newMaterial.color.copy(material.color);
+          newMaterial.polygonOffset = material.polygonOffset;
+          newMaterial.polygonOffsetUnits = material.polygonOffsetUnits;
+          newMaterial.polygonOffsetFactor = material.polygonOffsetFactor;
+          newMaterial.opacity = material.opacity;
+          newMaterial.transparent = material.transparent;
+          newMaterial.depthWrite = material.depthWrite;
+          newMaterial.toneMapping = false;
+
+          return newMaterial;
+        }
+
+        model.traverse((c) => {
+          if (c.isMesh) {
+            if (Array.isArray(c.material)) {
+              c.material = c.material.map(convertMaterial);
+            } else {
+              c.material = convertMaterial(c.material);
+            }
+          }
+        });
+      }
+
+      // Merge model geometries by material
+      if (guiData.mergeModel) model = LDrawUtils.mergeObject(model);
 
       // Convert from LDraw coordinates: rotate 180 degrees around OX
       model.rotation.x = Math.PI;
@@ -199,30 +234,35 @@ function createGUI() {
     });
 
   gui
-    .add(guiData, "separateObjects")
-    .name("Separate Objects")
+    .add(guiData, "flatColors")
+    .name("Flat Colors")
     .onChange(function () {
       reloadObject(false);
     });
 
-  if (guiData.separateObjects) {
-    if (model.userData.numConstructionSteps > 1) {
-      gui
-        .add(
-          guiData,
-          "constructionStep",
-          0,
-          model.userData.numConstructionSteps - 1
-        )
-        .step(1)
-        .name("Construction step")
-        .onChange(updateObjectsVisibility);
-    } else {
-      gui
-        .add(guiData, "noConstructionSteps")
-        .name("Construction step")
-        .onChange(updateObjectsVisibility);
-    }
+  gui
+    .add(guiData, "mergeModel")
+    .name("Merge model")
+    .onChange(function () {
+      reloadObject(false);
+    });
+
+  if (model.userData.numConstructionSteps > 1) {
+    gui
+      .add(
+        guiData,
+        "constructionStep",
+        0,
+        model.userData.numConstructionSteps - 1
+      )
+      .step(1)
+      .name("Construction step")
+      .onChange(updateObjectsVisibility);
+  } else {
+    gui
+      .add(guiData, "noConstructionSteps")
+      .name("Construction step")
+      .onChange(updateObjectsVisibility);
   }
 
   gui
@@ -261,10 +301,11 @@ function onProgress(xhr) {
   }
 }
 
-function onError() {
+function onError(error) {
   const message = "Error loading model";
   progressBarDiv.innerText = message;
   console.log(message);
+  console.error(error);
 }
 
 function showProgressBar() {

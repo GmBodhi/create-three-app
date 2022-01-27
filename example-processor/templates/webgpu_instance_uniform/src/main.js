@@ -2,8 +2,8 @@ import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, Scene, GridHelper, Mesh, Color } from "three";
 
+import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
 
@@ -43,7 +43,7 @@ async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw "No WebGPU support";
+    throw new Error("No WebGPU support");
   }
 
   const container = document.createElement("div");

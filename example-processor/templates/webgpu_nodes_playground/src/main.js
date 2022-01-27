@@ -6,13 +6,19 @@ import {
   Color,
   PointLight,
   sRGBEncoding,
+  Mesh,
+  SphereGeometry,
+  BoxGeometry,
+  Points,
+  TorusKnotGeometry,
 } from "three";
 
+import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import { NodeEditor } from "three/examples/jsm/node-editor/NodeEditor.js";
 import { StandardMaterialEditor } from "three/examples/jsm/node-editor/materials/StandardMaterialEditor.js";
+import { MeshEditor } from "three/examples/jsm/node-editor/scene/MeshEditor.js";
 
 import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
@@ -34,7 +40,7 @@ async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw "No WebGPU support";
+    throw new Error("No WebGPU support");
   }
 
   camera = new PerspectiveCamera(
@@ -87,41 +93,63 @@ async function init() {
 }
 
 function initEditor() {
-  const nodeEditor = new NodeEditor();
+  const nodeEditor = new NodeEditor(scene);
 
   nodeEditor.addEventListener("new", () => {
-    const materialEditor = new StandardMaterialEditor();
-    materialEditor.setPosition(window.innerWidth / 2 - 150, 100);
+    const materialEditor = new MeshEditor(model);
 
     nodeEditor.add(materialEditor);
-
-    model.material = materialEditor.material;
-    model.material.lightNode = nodeLights;
+    nodeEditor.centralizeNode(materialEditor);
   });
 
-  nodeEditor.addEventListener("load", () => {
-    const materialEditor = nodeEditor.nodes[0];
-    materialEditor.update(); // need move to deserialization
+  nodeEditor.addEventListener("add", (e) => {
+    const node = e.node;
 
-    model.material = materialEditor.material;
-    model.material.lightNode = nodeLights;
+    if (node.value !== null && node.value.isMaterial === true) {
+      const material = node.value;
+
+      material.lightNode = nodeLights;
+    }
   });
 
   document.body.appendChild(nodeEditor.domElement);
 
   const loaderFBX = new FBXLoader();
   loaderFBX.load("models/fbx/stanford-bunny.fbx", (object) => {
-    const materialEditor = new StandardMaterialEditor();
-    materialEditor.setPosition(window.innerWidth / 2 - 150, 100); // canvas position
+    const defaultMaterial = new Nodes.MeshBasicNodeMaterial();
+    defaultMaterial.colorNode = new Nodes.FloatNode(0);
 
-    nodeEditor.add(materialEditor);
+    const sphere = new Mesh(new SphereGeometry(200, 32, 16), defaultMaterial);
+    sphere.name = "Sphere";
+    sphere.position.set(500, 0, -500);
+    scene.add(sphere);
+
+    const box = new Mesh(new BoxGeometry(200, 200, 200), defaultMaterial);
+    box.name = "Box";
+    box.position.set(-500, 0, -500);
+    scene.add(box);
+
+    const defaultPointsMaterial = new Nodes.PointsNodeMaterial();
+    defaultPointsMaterial.colorNode = new Nodes.FloatNode(0);
+
+    const torusKnot = new Points(
+      new TorusKnotGeometry(100, 30, 100, 16),
+      defaultPointsMaterial
+    );
+    torusKnot.name = "Torus Knot ( Points )";
+    torusKnot.position.set(0, 0, -500);
+    scene.add(torusKnot);
 
     model = object.children[0];
     model.position.set(0, 0, 10);
     model.scale.setScalar(1);
-    model.material = materialEditor.material;
-    model.material.lightNode = nodeLights;
+    model.material = defaultMaterial;
     scene.add(model);
+
+    const materialEditor = new MeshEditor(model);
+
+    nodeEditor.add(materialEditor);
+    nodeEditor.centralizeNode(materialEditor);
   });
 }
 

@@ -18,8 +18,6 @@ import {
   AmbientLight,
   DirectionalLight,
   OrthographicCamera,
-  LinearFilter,
-  RGBFormat,
   WebGLRenderTarget,
   UniformsUtils,
 } from "three";
@@ -329,20 +327,13 @@ function initPostprocessing() {
 
   postprocessing.scene.add(postprocessing.camera);
 
-  const pars = {
-    minFilter: LinearFilter,
-    magFilter: LinearFilter,
-    format: RGBFormat,
-  };
   postprocessing.rtTextureDepth = new WebGLRenderTarget(
     window.innerWidth,
-    window.innerHeight,
-    pars
+    window.innerHeight
   );
   postprocessing.rtTextureColor = new WebGLRenderTarget(
     window.innerWidth,
-    window.innerHeight,
-    pars
+    window.innerHeight
   );
 
   const bokeh_shader = BokehShader;

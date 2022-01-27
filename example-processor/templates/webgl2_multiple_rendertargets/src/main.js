@@ -25,7 +25,7 @@ import {
   PlaneGeometry,
 } from "three";
 
-import { WEBGL } from "three/examples/jsm/WebGL.js";
+import WebGL from "three/examples/jsm/capabilities/WebGL.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 let camera, scene, renderer, controls;
@@ -35,8 +35,8 @@ let postScene, postCamera;
 init();
 
 function init() {
-  if (WEBGL.isWebGL2Available() === false) {
-    document.body.appendChild(WEBGL.getWebGL2ErrorMessage());
+  if (WebGL.isWebGL2Available() === false) {
+    document.body.appendChild(WebGL.getWebGL2ErrorMessage());
     return;
   }
 

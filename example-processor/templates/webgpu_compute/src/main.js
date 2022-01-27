@@ -13,8 +13,8 @@ import {
 
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
+import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-import WebGPU from "three/examples/jsm/renderers/webgpu/WebGPU.js";
 
 import WebGPUStorageBuffer from "three/examples/jsm/renderers/webgpu/WebGPUStorageBuffer.js";
 import WebGPUUniformBuffer from "three/examples/jsm/renderers/webgpu/WebGPUUniformBuffer.js";
@@ -27,7 +27,7 @@ import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 let camera, scene, renderer;
 let pointer;
 let scaleUniformBuffer;
-let scaleVector = new Vector3(1, 1, 1);
+const scaleVector = new Vector3(1, 1, 1);
 
 const computeParams = [];
 
@@ -37,7 +37,7 @@ async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw "No WebGPU support";
+    throw new Error("No WebGPU support");
   }
 
   camera = new OrthographicCamera(-1.0, 1.0, 1.0, -1.0, 0, 1);

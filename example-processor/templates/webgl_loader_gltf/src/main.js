@@ -12,7 +12,6 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { RoughnessMipmapper } from "three/examples/jsm/utils/RoughnessMipmapper.js";
 
 let camera, scene, renderer;
 
@@ -45,22 +44,11 @@ function init() {
 
       // model
 
-      // use of RoughnessMipmapper is optional
-      const roughnessMipmapper = new RoughnessMipmapper(renderer);
-
       const loader = new GLTFLoader().setPath(
         "models/gltf/DamagedHelmet/glTF/"
       );
       loader.load("DamagedHelmet.gltf", function (gltf) {
-        gltf.scene.traverse(function (child) {
-          if (child.isMesh) {
-            roughnessMipmapper.generateMipmaps(child.material);
-          }
-        });
-
         scene.add(gltf.scene);
-
-        roughnessMipmapper.dispose();
 
         render();
       });
