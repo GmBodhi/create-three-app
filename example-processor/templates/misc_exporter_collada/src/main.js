@@ -16,6 +16,7 @@ import {
   MeshLambertMaterial,
   Scene,
   Mesh,
+  Uint8BufferAttribute,
 } from "three";
 
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
@@ -42,6 +43,7 @@ let bBody;
 let bFitLid;
 let bNonBlinn;
 let shading;
+let vertexColors;
 let wireMaterial,
   flatMaterial,
   gouraudMaterial,
@@ -208,6 +210,7 @@ function setupGui() {
     lhue: 0.04,
     lsaturation: 0.01, // non-zero so that fractions will be shown
     llightness: 1.0,
+    vertexColors: false,
 
     // bizarrely, if you initialize these with negative numbers, the sliders
     // will not show any decimal places.
@@ -253,6 +256,7 @@ function setupGui() {
   h.add(effectController, "lightness", 0.0, 1.0, 0.025)
     .name("lightness")
     .onChange(render);
+  h.add(effectController, "vertexColors").onChange(render);
 
   // light (point)
 
@@ -316,7 +320,8 @@ function render() {
     effectController.body !== bBody ||
     effectController.fitLid !== bFitLid ||
     effectController.nonblinn !== bNonBlinn ||
-    effectController.newShading !== shading
+    effectController.newShading !== shading ||
+    effectController.vertexColors !== vertexColors
   ) {
     tess = effectController.newTess;
     bBottom = effectController.bottom;
@@ -325,6 +330,7 @@ function render() {
     bFitLid = effectController.fitLid;
     bNonBlinn = effectController.nonblinn;
     shading = effectController.newShading;
+    vertexColors = effectController.vertexColors;
 
     createNewTeapot();
   }
@@ -421,6 +427,33 @@ function createNewTeapot() {
       ? normalMaterial
       : reflectiveMaterial
   ); // if no match, pick Phong
+
+  if (effectController.vertexColors) {
+    teapot.geometry.computeBoundingBox();
+    const minY = teapot.geometry.boundingBox.min.y;
+    const maxY = teapot.geometry.boundingBox.max.y;
+    const sizeY = maxY - minY;
+
+    const colors = [];
+    const position = teapot.geometry.getAttribute("position");
+    for (let i = 0, l = position.count; i < l; i++) {
+      const y = position.getY(i);
+      const r = (y - minY) / sizeY;
+      const b = 1.0 - r;
+
+      colors.push(r * 128, 0, b * 128);
+    }
+    teapot.geometry.setAttribute(
+      "color",
+      new Uint8BufferAttribute(colors, 3, true)
+    );
+    teapot.material.vertexColors = true;
+    teapot.material.needsUpdate = true;
+  } else {
+    teapot.geometry.deleteAttribute("color");
+    teapot.material.vertexColors = false;
+    teapot.material.needsUpdate = true;
+  }
 
   scene.add(teapot);
 }

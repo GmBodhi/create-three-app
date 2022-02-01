@@ -20,7 +20,27 @@ import {
   CSS2DObject,
 } from "three/examples/jsm/renderers/CSS2DRenderer.js";
 
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+
+let gui;
+
 let camera, scene, renderer, labelRenderer;
+
+const layers = {
+  "Toggle Name": function () {
+    camera.layers.toggle(0);
+  },
+  "Toggle Mass": function () {
+    camera.layers.toggle(1);
+  },
+  "Enable All": function () {
+    camera.layers.enableAll();
+  },
+
+  "Disable All": function () {
+    camera.layers.disableAll();
+  },
+};
 
 const clock = new Clock();
 const textureLoader = new TextureLoader();
@@ -41,14 +61,18 @@ function init() {
     200
   );
   camera.position.set(10, 5, 20);
+  camera.layers.enableAll();
+  camera.layers.toggle(1);
 
   scene = new Scene();
 
   const dirLight = new DirectionalLight(0xffffff);
   dirLight.position.set(0, 0, 1);
+  dirLight.layers.enableAll();
   scene.add(dirLight);
 
   const axesHelper = new AxesHelper(5);
+  axesHelper.layers.enableAll();
   scene.add(axesHelper);
 
   //
@@ -75,6 +99,9 @@ function init() {
 
   //
 
+  earth.layers.enableAll();
+  moon.layers.enableAll();
+
   const earthDiv = document.createElement("div");
   earthDiv.className = "label";
   earthDiv.textContent = "Earth";
@@ -82,6 +109,16 @@ function init() {
   const earthLabel = new CSS2DObject(earthDiv);
   earthLabel.position.set(0, EARTH_RADIUS, 0);
   earth.add(earthLabel);
+  earthLabel.layers.set(0);
+
+  const earthMassDiv = document.createElement("div");
+  earthMassDiv.className = "label";
+  earthMassDiv.textContent = "5.97237e24 kg";
+  earthMassDiv.style.marginTop = "-1em";
+  const earthMassLabel = new CSS2DObject(earthMassDiv);
+  earthMassLabel.position.set(0, -2 * EARTH_RADIUS, 0);
+  earth.add(earthMassLabel);
+  earthMassLabel.layers.set(1);
 
   const moonDiv = document.createElement("div");
   moonDiv.className = "label";
@@ -90,6 +127,16 @@ function init() {
   const moonLabel = new CSS2DObject(moonDiv);
   moonLabel.position.set(0, MOON_RADIUS, 0);
   moon.add(moonLabel);
+  moonLabel.layers.set(0);
+
+  const moonMassDiv = document.createElement("div");
+  moonMassDiv.className = "label";
+  moonMassDiv.textContent = "7.342e22 kg";
+  moonMassDiv.style.marginTop = "-1em";
+  const moonMassLabel = new CSS2DObject(moonMassDiv);
+  moonMassLabel.position.set(0, -2 * MOON_RADIUS, 0);
+  moon.add(moonMassLabel);
+  moonMassLabel.layers.set(1);
 
   //
 
@@ -111,6 +158,8 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
+
+  initGui();
 }
 
 function onWindowResize() {
@@ -132,4 +181,15 @@ function animate() {
 
   renderer.render(scene, camera);
   labelRenderer.render(scene, camera);
+}
+
+//
+
+function initGui() {
+  gui = new GUI();
+
+  gui.add(layers, "Toggle Name");
+  gui.add(layers, "Toggle Mass");
+  gui.add(layers, "Enable All");
+  gui.add(layers, "Disable All");
 }

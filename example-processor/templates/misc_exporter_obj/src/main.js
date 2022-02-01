@@ -10,6 +10,7 @@ import {
   PointsMaterial,
   Points,
   WebGLRenderer,
+  sRGBEncoding,
   PerspectiveCamera,
   Scene,
   DirectionalLight,
@@ -77,7 +78,7 @@ function addGeometry(type) {
     }
   } else if (type === 6) {
     const points = [0, 0, 0, 100, 0, 0, 100, 100, 0, 0, 100, 0];
-    const colors = [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0];
+    const colors = [0.5, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0.5, 0];
 
     const geometry = new BufferGeometry();
     geometry.setAttribute("position", new Float32BufferAttribute(points, 3));
@@ -93,6 +94,7 @@ function addGeometry(type) {
 
 function init() {
   renderer = new WebGLRenderer();
+  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

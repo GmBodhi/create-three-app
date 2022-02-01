@@ -12,7 +12,9 @@ import {
   MeshPhongMaterial,
   GridHelper,
   BoxGeometry,
+  BufferAttribute,
   WebGLRenderer,
+  sRGBEncoding,
 } from "three";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
@@ -71,7 +73,15 @@ function init() {
   // export mesh
 
   const geometry = new BoxGeometry(50, 50, 50);
-  const material = new MeshPhongMaterial({ color: 0x00ff00 });
+  const material = new MeshPhongMaterial({ vertexColors: true });
+
+  // color vertices based on vertex positions
+  const colors = geometry.getAttribute("position").array.slice();
+  for (let i = 0, l = colors.length; i < l; i++) {
+    if (colors[i] > 0) colors[i] = 0.5;
+    else colors[i] = 0;
+  }
+  geometry.setAttribute("color", new BufferAttribute(colors, 3, false));
 
   mesh = new Mesh(geometry, material);
   mesh.castShadow = true;
@@ -81,6 +91,7 @@ function init() {
   //
 
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;

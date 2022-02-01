@@ -8,7 +8,6 @@ import {
   MeshPhysicalMaterial,
   BackSide,
   FrontSide,
-  LoadingManager,
   Mesh,
   Group,
   EquirectangularReflectionMapping,
@@ -84,12 +83,7 @@ function init() {
     premultipliedAlpha: true,
   });
 
-  const manager = new LoadingManager();
-  manager.onProgress = function (item, loaded, total) {
-    console.log(item, loaded, total);
-  };
-
-  const loader = new OBJLoader(manager);
+  const loader = new OBJLoader();
   loader.load("models/obj/emerald.obj", function (object) {
     object.traverse(function (child) {
       if (child instanceof Mesh) {

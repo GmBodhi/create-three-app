@@ -63,10 +63,6 @@ function init() {
 
   const manager = new LoadingManager(loadModel);
 
-  manager.onProgress = function (item, loaded, total) {
-    console.log(item, loaded, total);
-  };
-
   // texture
 
   const textureLoader = new TextureLoader(manager);
