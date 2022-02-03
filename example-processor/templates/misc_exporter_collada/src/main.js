@@ -224,6 +224,8 @@ function setupGui() {
     fitLid: false,
     nonblinn: false,
     newShading: "glossy",
+
+    export: exportCollada,
   };
 
   let h;
@@ -306,8 +308,8 @@ function setupGui() {
     .name("Shading")
     .onChange(render);
 
-  const exportButton = document.getElementById("export");
-  exportButton.addEventListener("click", exportCollada);
+  h = gui.addFolder("Export");
+  h.add(effectController, "export").name("Export Collada");
 }
 
 //

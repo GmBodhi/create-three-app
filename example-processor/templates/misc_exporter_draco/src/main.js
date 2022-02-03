@@ -17,8 +17,13 @@ import {
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { DRACOExporter } from "three/examples/jsm/exporters/DRACOExporter.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let scene, camera, renderer, exporter, mesh;
+
+const params = {
+  export: exportFile,
+};
 
 init();
 animate();
@@ -97,8 +102,10 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 
-  const exportButton = document.getElementById("exportFile");
-  exportButton.addEventListener("click", exportFile);
+  const gui = new GUI();
+
+  gui.add(params, "export").name("Export DRC");
+  gui.open();
 }
 
 function onWindowResize() {

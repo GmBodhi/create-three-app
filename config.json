@@ -2076,16 +2076,6 @@
         "/src"
       ]
     },
-    "webgl_loader_vrm": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_vrml": {
       "files": {
         "index.html": "src",

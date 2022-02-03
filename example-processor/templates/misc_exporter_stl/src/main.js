@@ -17,8 +17,14 @@ import {
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { STLExporter } from "three/examples/jsm/exporters/STLExporter.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let scene, camera, renderer, exporter, mesh;
+
+const params = {
+  exportASCII: exportASCII,
+  exportBinary: exportBinary,
+};
 
 init();
 animate();
@@ -96,11 +102,11 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 
-  const buttonExportASCII = document.getElementById("exportASCII");
-  buttonExportASCII.addEventListener("click", exportASCII);
+  const gui = new GUI();
 
-  const buttonExportBinary = document.getElementById("exportBinary");
-  buttonExportBinary.addEventListener("click", exportBinary);
+  gui.add(params, "exportASCII").name("Export STL (ASCII)");
+  gui.add(params, "exportBinary").name("Export STL (Binary)");
+  gui.open();
 }
 
 function onWindowResize() {

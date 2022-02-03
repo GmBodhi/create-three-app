@@ -19,8 +19,15 @@ import {
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { PLYExporter } from "three/examples/jsm/exporters/PLYExporter.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let scene, camera, renderer, exporter, mesh;
+
+const params = {
+  exportASCII: exportASCII,
+  exportBinaryBigEndian: exportBinaryBigEndian,
+  exportBinaryLittleEndian: exportBinaryLittleEndian,
+};
 
 init();
 animate();
@@ -81,6 +88,7 @@ function init() {
     if (colors[i] > 0) colors[i] = 0.5;
     else colors[i] = 0;
   }
+
   geometry.setAttribute("color", new BufferAttribute(colors, 3, false));
 
   mesh = new Mesh(geometry, material);
@@ -107,16 +115,12 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 
-  const buttonExportASCII = document.getElementById("exportASCII");
-  buttonExportASCII.addEventListener("click", exportASCII);
+  const gui = new GUI();
 
-  const buttonExportBinaryBE = document.getElementById("exportBinaryBigEndian");
-  buttonExportBinaryBE.addEventListener("click", exportBinaryBigEndian);
-
-  const buttonExportBinaryLE = document.getElementById(
-    "exportBinaryLittleEndian"
-  );
-  buttonExportBinaryLE.addEventListener("click", exportBinaryLittleEndian);
+  gui.add(params, "exportASCII").name("Export PLY (ASCII)");
+  gui.add(params, "exportBinaryBigEndian").name("Export PLY (Binary BE)");
+  gui.add(params, "exportBinaryLittleEndian").name("Export PLY (Binary LE)");
+  gui.open();
 }
 
 function onWindowResize() {

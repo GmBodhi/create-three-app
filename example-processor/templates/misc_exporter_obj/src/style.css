@@ -1,17 +1,3 @@
-.floating {
-  background: #000;
-  opacity: 0.8;
-  width: 80%;
-  height: 80%;
-  position: absolute;
-  left: 10%;
-  top: 10%;
-  border: 1px solid #555;
-  padding: 10px;
-  display: none;
-  overflow: auto;
-  z-index: 100;
-}
 body {
   margin: 0;
   background-color: #000;
