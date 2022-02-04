@@ -1846,16 +1846,6 @@
         "/src"
       ]
     },
-    "webgl_loader_nodes": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_nrrd": {
       "files": {
         "index.html": "src",
@@ -2186,16 +2176,6 @@
         "/src"
       ]
     },
-    "webgl_materials_compile": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_materials_cubemap": {
       "files": {
         "index.html": "src",
@@ -2289,26 +2269,6 @@
         "/src"
       ]
     },
-    "webgl_materials_envmaps_hdr_nodes": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_materials_envmaps_pmrem_nodes": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_materials_instance_uniform_nodes": {
       "files": {
         "index.html": "src",
@@ -2343,16 +2303,6 @@
       ]
     },
     "webgl_materials_modified": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_materials_nodes": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -2625,16 +2575,6 @@
         "/src"
       ]
     },
-    "webgl_mirror_nodes": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_modifier_curve": {
       "files": {
         "index.html": "src",
@@ -2839,16 +2779,6 @@
       ]
     },
     "webgl_performance": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_performance_nodes": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3065,26 +2995,6 @@
       ]
     },
     "webgl_postprocessing_masking": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_postprocessing_nodes": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_postprocessing_nodes_pass": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3509,16 +3419,6 @@
       ]
     },
     "webgl_sprites": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_sprites_nodes": {
       "files": {
         "index.html": "src",
         "main.js": "src",
