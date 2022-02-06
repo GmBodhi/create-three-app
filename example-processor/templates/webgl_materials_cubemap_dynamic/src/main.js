@@ -73,12 +73,10 @@ function init(texture) {
   const envSize = 64; // minimum size for roughness >= 0.1
 
   cubeRenderTarget1 = new WebGLCubeRenderTarget(envSize);
-  cubeRenderTarget1.texture.image[0] = { width: envSize, height: envSize };
 
   cubeCamera1 = new CubeCamera(1, 1000, cubeRenderTarget1);
 
   cubeRenderTarget2 = new WebGLCubeRenderTarget(envSize);
-  cubeRenderTarget2.texture.image[0] = { width: envSize, height: envSize };
 
   cubeCamera2 = new CubeCamera(1, 1000, cubeRenderTarget2);
 
