@@ -7,6 +7,7 @@ import {
   Scene,
   PerspectiveCamera,
   HemisphereLight,
+  LoadingManager,
   TextureLoader,
   RepeatWrapping,
   PMREMGenerator,
@@ -68,7 +69,11 @@ function init() {
   new OBJLoader()
     .setPath("models/obj/cerberus/")
     .load("Cerberus.obj", function (group) {
-      const loader = new TextureLoader().setPath("models/obj/cerberus/");
+      const loaderManager = new LoadingManager();
+
+      const loader = new TextureLoader(loaderManager).setPath(
+        "models/obj/cerberus/"
+      );
 
       const diffuseMap = loader.load("Cerberus_A.jpg");
       diffuseMap.wrapS = RepeatWrapping;
@@ -85,7 +90,7 @@ function init() {
       material.colorNode = new Nodes.OperatorNode(
         "*",
         new Nodes.TextureNode(diffuseMap),
-        new Nodes.Vector3Node(material.color)
+        new Nodes.ColorNode(material.color)
       );
 
       // roughness is in G channel, metalness is in B channel
@@ -104,7 +109,25 @@ function init() {
 
       group.position.x = -0.45;
       group.rotation.y = -Math.PI / 2;
-      scene.add(group);
+      //scene.add( group );
+
+      // TODO: Serialization test
+
+      loaderManager.onLoad = () => {
+        const groupJSON = JSON.stringify(group.toJSON());
+
+        const objectLoader = new Nodes.NodeObjectLoader();
+        objectLoader.parse(JSON.parse(groupJSON), (newGroup) => {
+          //scene.remove( group );
+
+          newGroup.position.copy(group.position);
+          newGroup.rotation.copy(group.rotation);
+
+          scene.add(newGroup);
+
+          console.log("Serialized!");
+        });
+      };
     });
 
   const environments = {
