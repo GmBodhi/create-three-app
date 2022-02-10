@@ -164,6 +164,8 @@ async function init() {
 
   const materialCompressed = new Nodes.MeshBasicNodeMaterial();
   materialCompressed.colorNode = new Nodes.TextureNode(dxt5Texture);
+  materialCompressed.emissiveNode = new Nodes.ColorNode(new Color(0x663300));
+  materialCompressed.alphaTestNode = new Nodes.OscNode();
   materialCompressed.transparent = true;
 
   const boxCompressed = new Mesh(geometryBox, materialCompressed);
