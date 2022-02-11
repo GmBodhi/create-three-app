@@ -5,9 +5,9 @@ import {
   sRGBEncoding,
   ACESFilmicToneMapping,
   PerspectiveCamera,
-  PMREMGenerator,
   Scene,
   Color,
+  EquirectangularReflectionMapping,
   Fog,
   GridHelper,
   MeshPhysicalMaterial,
@@ -22,10 +22,10 @@ import {
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
 
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
 let camera, scene, renderer;
 let stats;
@@ -66,15 +66,16 @@ function init() {
   controls.target.set(0, 0.5, 0);
   controls.update();
 
-  const pmremGenerator = new PMREMGenerator(renderer);
-
   scene = new Scene();
-  scene.background = new Color(0xeeeeee);
-  scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
-  scene.fog = new Fog(0xeeeeee, 10, 50);
+  scene.background = new Color(0x333333);
+  scene.environment = new RGBELoader().load(
+    "textures/equirectangular/venice_sunset_1k.hdr"
+  );
+  scene.environment.mapping = EquirectangularReflectionMapping;
+  scene.fog = new Fog(0x333333, 10, 15);
 
-  grid = new GridHelper(100, 40, 0x000000, 0x000000);
-  grid.material.opacity = 0.1;
+  grid = new GridHelper(20, 40, 0xffffff, 0xffffff);
+  grid.material.opacity = 0.2;
   grid.material.depthWrite = false;
   grid.material.transparent = true;
   scene.add(grid);
@@ -83,10 +84,11 @@ function init() {
 
   const bodyMaterial = new MeshPhysicalMaterial({
     color: 0xff0000,
-    metalness: 0.6,
-    roughness: 0.4,
-    clearcoat: 0.05,
-    clearcoatRoughness: 0.05,
+    metalness: 1.0,
+    roughness: 0.5,
+    clearcoat: 1.0,
+    clearcoatRoughness: 0.03,
+    sheen: 0.5,
   });
 
   const detailsMaterial = new MeshStandardMaterial({
@@ -97,10 +99,9 @@ function init() {
 
   const glassMaterial = new MeshPhysicalMaterial({
     color: 0xffffff,
-    metalness: 0,
-    roughness: 0.1,
-    transmission: 0.9,
-    transparent: true,
+    metalness: 0.25,
+    roughness: 0,
+    transmission: 1.0,
   });
 
   const bodyColorInput = document.getElementById("body-color");
@@ -177,10 +178,10 @@ function render() {
   const time = -performance.now() / 1000;
 
   for (let i = 0; i < wheels.length; i++) {
-    wheels[i].rotation.x = time * Math.PI;
+    wheels[i].rotation.x = time * Math.PI * 2;
   }
 
-  grid.position.z = -time % 5;
+  grid.position.z = -time % 1;
 
   renderer.render(scene, camera);
 
