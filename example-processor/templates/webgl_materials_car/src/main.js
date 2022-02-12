@@ -63,6 +63,8 @@ function init() {
   camera.position.set(4.25, 1.4, -4.5);
 
   controls = new OrbitControls(camera, container);
+  controls.enableDamping = true;
+  controls.maxDistance = 9;
   controls.target.set(0, 0.5, 0);
   controls.update();
 
@@ -175,6 +177,8 @@ function onWindowResize() {
 }
 
 function render() {
+  controls.update();
+
   const time = -performance.now() / 1000;
 
   for (let i = 0; i < wheels.length; i++) {
