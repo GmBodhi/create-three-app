@@ -16,7 +16,7 @@ import {
   WebGLRenderTarget,
   ShaderMaterial,
   PerspectiveCamera,
-  PlaneBufferGeometry,
+  PlaneGeometry,
   Mesh,
   WebGLRenderer,
   FileLoader,
@@ -91,7 +91,7 @@ function init() {
 
   /** Post-processing scene */
 
-  const planeGeometry = new PlaneBufferGeometry(2, 2);
+  const planeGeometry = new PlaneGeometry(2, 2);
   const screenQuad = new Mesh(planeGeometry, postProcessMaterial);
   postProcessScene.add(screenQuad);
 
@@ -144,7 +144,7 @@ function init() {
         fragmentShader: fs_,
       });
 
-      var geometry = new PlaneBufferGeometry(planeWidth, planeHeight);
+      var geometry = new PlaneGeometry(planeWidth, planeHeight);
 
       mesh = new Mesh(geometry, material);
 

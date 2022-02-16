@@ -9,7 +9,7 @@ import {
   Fog,
   Group,
   DirectionalLight,
-  PlaneBufferGeometry,
+  PlaneGeometry,
   MeshPhongMaterial,
   LoadingManager,
 } from "three";
@@ -105,7 +105,7 @@ function init() {
 
   // ground
   const groundMesh = new Mesh(
-    new PlaneBufferGeometry(600, 600),
+    new PlaneGeometry(600, 600),
     new MeshPhongMaterial({ color: 0xffffff, depthWrite: true })
   );
   groundMesh.position.y = -0.1;
