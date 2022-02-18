@@ -15,7 +15,7 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import {
   VOXLoader,
-  VOXDataTexture3D,
+  VOXData3DTexture,
 } from "three/examples/jsm/loaders/VOXLoader.js";
 
 import WebGL from "three/examples/jsm/capabilities/WebGL.js";
@@ -171,7 +171,7 @@ function init() {
       const material = new RawShaderMaterial({
         glslVersion: GLSL3,
         uniforms: {
-          map: { value: new VOXDataTexture3D(chunk) },
+          map: { value: new VOXData3DTexture(chunk) },
           cameraPos: { value: new Vector3() },
         },
         vertexShader,

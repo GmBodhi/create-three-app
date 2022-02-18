@@ -5,7 +5,7 @@ import {
   Scene,
   PerspectiveCamera,
   Vector3,
-  DataTexture3D,
+  Data3DTexture,
   RedFormat,
   LinearFilter,
   BoxGeometry,
@@ -69,7 +69,7 @@ function init() {
     }
   }
 
-  const texture = new DataTexture3D(data, size, size, size);
+  const texture = new Data3DTexture(data, size, size, size);
   texture.format = RedFormat;
   texture.minFilter = LinearFilter;
   texture.magFilter = LinearFilter;

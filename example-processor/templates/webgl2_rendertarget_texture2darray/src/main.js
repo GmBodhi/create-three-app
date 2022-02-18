@@ -10,16 +10,15 @@ import "./style.css"; // For webpack support
 import {
   Scene,
   OrthographicCamera,
-  DataTexture2DArray,
+  WebGLArrayRenderTarget,
   RedFormat,
-  UnsignedByteType,
-  WebGLRenderTarget,
   ShaderMaterial,
   PerspectiveCamera,
   PlaneGeometry,
   Mesh,
   WebGLRenderer,
   FileLoader,
+  DataArrayTexture,
   Vector2,
 } from "three";
 
@@ -48,13 +47,12 @@ const params = {
 const postProcessScene = new Scene();
 const postProcessCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
-const renderTargetTexture = new DataTexture2DArray();
-renderTargetTexture.format = RedFormat;
-renderTargetTexture.type = UnsignedByteType;
-
-const renderTarget = new WebGLRenderTarget(DIMENSIONS.width, DIMENSIONS.height);
-renderTarget.depth = DIMENSIONS.depth;
-renderTarget.setTexture(renderTargetTexture);
+const renderTarget = new WebGLArrayRenderTarget(
+  DIMENSIONS.width,
+  DIMENSIONS.height,
+  DIMENSIONS.depth
+);
+renderTarget.texture.format = RedFormat;
 
 const postProcessMaterial = new ShaderMaterial({
   uniforms: {
@@ -125,7 +123,7 @@ function init() {
       var zip = unzipSync(new Uint8Array(data));
       const array = new Uint8Array(zip["head256x256x109"].buffer);
 
-      const texture = new DataTexture2DArray(
+      const texture = new DataArrayTexture(
         array,
         DIMENSIONS.width,
         DIMENSIONS.height,
@@ -194,8 +192,7 @@ function renderTo2DArray() {
 }
 
 function render() {
-  // Step 1 - Render the input DataTexture2DArray into a
-  // DataTexture2DArray render target.
+  // Step 1 - Render the input DataArrayTexture into render target
   renderTo2DArray();
 
   // Step 2 - Renders the scene containing the plane with a material

@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   Vector3,
-  DataTexture3D,
+  Data3DTexture,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
@@ -67,7 +67,7 @@ function generateCloudTexture(size, scaleFactor = 1.0) {
     }
   }
 
-  return new DataTexture3D(data, size, size, size);
+  return new Data3DTexture(data, size, size, size);
 }
 
 function init() {
@@ -110,7 +110,7 @@ function init() {
 
   // Texture
 
-  const texture = new DataTexture3D(
+  const texture = new Data3DTexture(
     new Uint8Array(
       INITIAL_CLOUD_SIZE * INITIAL_CLOUD_SIZE * INITIAL_CLOUD_SIZE
     ).fill(0),

@@ -6,7 +6,7 @@ import {
   OrthographicCamera,
   RedFormat,
   FloatType,
-  DataTexture3D,
+  Data3DTexture,
   LinearFilter,
   TextureLoader,
   UniformsUtils,
@@ -92,7 +92,7 @@ function init() {
     // THREEJS will select R32F (33326) based on the RedFormat and FloatType.
     // Also see https://www.khronos.org/registry/webgl/specs/latest/2.0/#TEXTURE_TYPES_FORMATS_FROM_DOM_ELEMENTS_TABLE
     // TODO: look the dtype up in the volume metadata
-    const texture = new DataTexture3D(
+    const texture = new Data3DTexture(
       volume.data,
       volume.xLength,
       volume.yLength,
