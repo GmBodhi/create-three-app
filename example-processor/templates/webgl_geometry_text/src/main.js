@@ -81,7 +81,7 @@ animate();
 
 function decimalToHex(d) {
   let hex = Number(d).toString(16);
-  hex = "000000".substr(0, 6 - hex.length) + hex;
+  hex = "000000".substring(0, 6 - hex.length) + hex;
   return hex.toUpperCase();
 }
 
@@ -121,7 +121,7 @@ function init() {
 
   // Get text from hash
 
-  const hash = document.location.hash.substr(1);
+  const hash = document.location.hash.slice(1);
 
   if (hash.length !== 0) {
     const colorhash = hash.substring(0, 6);

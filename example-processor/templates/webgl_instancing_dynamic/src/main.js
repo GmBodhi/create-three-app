@@ -18,7 +18,7 @@ import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 let camera, scene, renderer, stats;
 
 let mesh;
-const amount = parseInt(window.location.search.substr(1)) || 10;
+const amount = parseInt(window.location.search.slice(1)) || 10;
 const count = Math.pow(amount, 3);
 const dummy = new Object3D();
 
