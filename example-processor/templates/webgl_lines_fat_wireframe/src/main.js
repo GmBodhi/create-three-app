@@ -166,14 +166,14 @@ function initGui() {
     .add(param, "line type", { LineGeometry: 0, "gl.LINE": 1 })
     .onChange(function (val) {
       switch (val) {
-        case "0":
+        case 0:
           wireframe.visible = true;
 
           wireframe1.visible = false;
 
           break;
 
-        case "1":
+        case 1:
           wireframe.visible = false;
 
           wireframe1.visible = true;
@@ -208,7 +208,7 @@ function initGui() {
     .add(param, "dash / gap", { "2 : 1": 0, "1 : 1": 1, "1 : 2": 2 })
     .onChange(function (val) {
       switch (val) {
-        case "0":
+        case 0:
           matLine.dashSize = 2;
           matLine.gapSize = 1;
 
@@ -217,7 +217,7 @@ function initGui() {
 
           break;
 
-        case "1":
+        case 1:
           matLine.dashSize = 1;
           matLine.gapSize = 1;
 
@@ -226,7 +226,7 @@ function initGui() {
 
           break;
 
-        case "2":
+        case 2:
           matLine.dashSize = 1;
           matLine.gapSize = 2;
 
