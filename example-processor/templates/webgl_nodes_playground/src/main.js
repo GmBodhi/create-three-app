@@ -13,13 +13,12 @@ import {
   Points,
   TorusKnotGeometry,
 } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
 
 import { NodeEditor } from "three/examples/jsm/node-editor/NodeEditor.js";
 import { MeshEditor } from "three/examples/jsm/node-editor/scene/MeshEditor.js";
-
-import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 

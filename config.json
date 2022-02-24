@@ -3109,16 +3109,6 @@
         "/src"
       ]
     },
-    "webgl_postprocessing_ssrr": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_postprocessing_taa": {
       "files": {
         "index.html": "src",

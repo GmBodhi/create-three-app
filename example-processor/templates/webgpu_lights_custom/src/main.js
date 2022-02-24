@@ -12,14 +12,14 @@ import {
   BufferGeometry,
   Points,
 } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
-import { addTo } from "three/examples/jsm/renderers/nodes/ShaderNode.js";
+import { addTo } from "three-nodes/ShaderNode.js";
 
 let camera, scene, renderer;
 

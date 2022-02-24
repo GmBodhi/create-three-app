@@ -10,6 +10,7 @@ import {
   Mesh,
   MeshBasicMaterial,
 } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
@@ -20,8 +21,6 @@ import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js"
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-
-import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 
