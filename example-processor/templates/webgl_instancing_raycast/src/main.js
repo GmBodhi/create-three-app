@@ -21,7 +21,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 let camera, scene, renderer, controls, stats;
 
 let mesh;
-const amount = parseInt(window.location.search.substr(1)) || 10;
+const amount = parseInt(window.location.search.slice(1)) || 10;
 const count = Math.pow(amount, 3);
 
 const raycaster = new Raycaster();

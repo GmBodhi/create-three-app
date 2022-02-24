@@ -9,7 +9,7 @@ import {
   PerspectiveCamera,
   Scene,
   FileLoader,
-  DataTexture2DArray,
+  DataArrayTexture,
   RedFormat,
   ShaderMaterial,
   Vector2,
@@ -60,7 +60,7 @@ function init() {
       const zip = unzipSync(new Uint8Array(data));
       const array = new Uint8Array(zip["head256x256x109"].buffer);
 
-      const texture = new DataTexture2DArray(array, 256, 256, 109);
+      const texture = new DataArrayTexture(array, 256, 256, 109);
       texture.format = RedFormat;
       texture.needsUpdate = true;
 

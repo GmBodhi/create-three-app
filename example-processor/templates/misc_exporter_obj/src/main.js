@@ -1,6 +1,12 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGLRenderer,
+  sRGBEncoding,
+  PerspectiveCamera,
+  Scene,
+  AmbientLight,
+  DirectionalLight,
   MeshLambertMaterial,
   Mesh,
   BoxGeometry,
@@ -9,24 +15,78 @@ import {
   Float32BufferAttribute,
   PointsMaterial,
   Points,
-  WebGLRenderer,
-  PerspectiveCamera,
-  Scene,
-  DirectionalLight,
 } from "three";
 
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { OBJExporter } from "three/examples/jsm/exporters/OBJExporter.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
-let camera, scene, light, renderer;
-let exportButton, floatingDiv;
-let mouseX = 0,
-  mouseY = 0;
+let camera, scene, renderer;
+
+const params = {
+  addTriangle: addTriangle,
+  addCube: addCube,
+  addCylinder: addCylinder,
+  addMultiple: addMultiple,
+  addTransformed: addTransformed,
+  addPoints: addPoints,
+  exportToObj: exportToObj,
+};
+
+init();
+animate();
+
+function init() {
+  renderer = new WebGLRenderer();
+  renderer.outputEncoding = sRGBEncoding;
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
+
+  camera = new PerspectiveCamera(
+    70,
+    window.innerWidth / window.innerHeight,
+    1,
+    1000
+  );
+  camera.position.set(0, 0, 400);
+
+  scene = new Scene();
+
+  const ambientLight = new AmbientLight(0xcccccc, 0.4);
+  scene.add(ambientLight);
+
+  const directionalLight = new DirectionalLight(0xffffff, 0.8);
+  directionalLight.position.set(0, 1, 1);
+  scene.add(directionalLight);
+
+  const gui = new GUI();
+
+  let h = gui.addFolder("Geometry Selection");
+  h.add(params, "addTriangle").name("Triangle");
+  h.add(params, "addCube").name("Cube");
+  h.add(params, "addCylinder").name("Cylinder");
+  h.add(params, "addMultiple").name("Multiple objects");
+  h.add(params, "addTransformed").name("Transformed objects");
+  h.add(params, "addPoints").name("Point Cloud");
+
+  h = gui.addFolder("Export");
+  h.add(params, "exportToObj").name("Export OBJ");
+
+  gui.open();
+
+  addGeometry(1);
+
+  window.addEventListener("resize", onWindowResize);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
+}
 
 function exportToObj() {
   const exporter = new OBJExporter();
   const result = exporter.parse(scene);
-  floatingDiv.style.display = "block";
-  floatingDiv.innerHTML = result.split("\n").join("<br />");
+  saveString(result, "object.obj");
 }
 
 function addGeometry(type) {
@@ -77,7 +137,7 @@ function addGeometry(type) {
     }
   } else if (type === 6) {
     const points = [0, 0, 0, 100, 0, 0, 100, 100, 0, 0, 100, 0];
-    const colors = [1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0];
+    const colors = [0.5, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0.5, 0];
 
     const geometry = new BufferGeometry();
     geometry.setAttribute("position", new Float32BufferAttribute(points, 3));
@@ -91,77 +151,42 @@ function addGeometry(type) {
   }
 }
 
-function init() {
-  renderer = new WebGLRenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-
-  camera = new PerspectiveCamera(
-    70,
-    window.innerWidth / window.innerHeight,
-    1,
-    1000
-  );
-  camera.position.set(0, 0, 400);
-
-  scene = new Scene();
-
-  light = new DirectionalLight(0xffffff);
-  scene.add(light);
-
+function addTriangle() {
   addGeometry(1);
-
-  window.addEventListener("click", onWindowClick);
-  window.addEventListener("resize", onWindowResize);
-  document.addEventListener("mousemove", onDocumentMouseMove);
-  document.addEventListener("mouseover", onDocumentMouseMove);
-
-  document.getElementById("triangle").addEventListener("click", function () {
-    addGeometry(1);
-  });
-  document.getElementById("cube").addEventListener("click", function () {
-    addGeometry(2);
-  });
-  document.getElementById("cylinder").addEventListener("click", function () {
-    addGeometry(3);
-  });
-  document.getElementById("multiple").addEventListener("click", function () {
-    addGeometry(4);
-  });
-  document.getElementById("transformed").addEventListener("click", function () {
-    addGeometry(5);
-  });
-  document.getElementById("points").addEventListener("click", function () {
-    addGeometry(6);
-  });
-
-  exportButton = document.getElementById("export");
-  exportButton.addEventListener("click", function () {
-    exportToObj();
-  });
-
-  floatingDiv = document.createElement("div");
-  floatingDiv.className = "floating";
-  document.body.appendChild(floatingDiv);
 }
 
-function onWindowClick(event) {
-  let needToClose = true;
-  let target = event.target;
+function addCube() {
+  addGeometry(2);
+}
 
-  while (target !== null) {
-    if (target === floatingDiv || target === exportButton) {
-      needToClose = false;
-      break;
-    }
+function addCylinder() {
+  addGeometry(3);
+}
 
-    target = target.parentElement;
-  }
+function addMultiple() {
+  addGeometry(4);
+}
 
-  if (needToClose) {
-    floatingDiv.style.display = "none";
-  }
+function addTransformed() {
+  addGeometry(5);
+}
+
+function addPoints() {
+  addGeometry(6);
+}
+
+const link = document.createElement("a");
+link.style.display = "none";
+document.body.appendChild(link);
+
+function save(blob, filename) {
+  link.href = URL.createObjectURL(blob);
+  link.download = filename;
+  link.click();
+}
+
+function saveString(text, filename) {
+  save(new Blob([text], { type: "text/plain" }), filename);
 }
 
 function onWindowResize() {
@@ -171,23 +196,9 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onDocumentMouseMove(event) {
-  const windowHalfX = window.innerWidth / 2;
-  const windowHalfY = window.innerHeight / 2;
-  mouseX = (event.clientX - windowHalfX) / 2;
-  mouseY = (event.clientY - windowHalfY) / 2;
-}
-
 function animate() {
   requestAnimationFrame(animate);
 
-  camera.position.x += (mouseX - camera.position.x) * 0.05;
-  camera.position.y += (-mouseY - camera.position.y) * 0.05;
-  camera.lookAt(scene.position);
-
-  light.position
-    .set(camera.position.x, camera.position.y, camera.position.z)
-    .normalize();
   renderer.render(scene, camera);
 }
 
@@ -204,6 +215,3 @@ function generateTriangleGeometry() {
 
   return geometry;
 }
-
-init();
-animate();

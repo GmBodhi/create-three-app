@@ -9,6 +9,7 @@ import {
   AmbientLight,
   PointLight,
   WebGLRenderer,
+  sRGBEncoding,
 } from "three";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
@@ -76,6 +77,7 @@ function init() {
   //
 
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

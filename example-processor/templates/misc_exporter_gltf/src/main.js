@@ -42,17 +42,17 @@ import {
 
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
 import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 function exportGLTF(input) {
   const gltfExporter = new GLTFExporter();
 
   const options = {
-    trs: document.getElementById("option_trs").checked,
-    onlyVisible: document.getElementById("option_visible").checked,
-    truncateDrawRange: document.getElementById("option_drawrange").checked,
-    binary: document.getElementById("option_binary").checked,
-    maxTextureSize:
-      Number(document.getElementById("option_maxsize").value) || Infinity, // To prevent NaN value
+    trs: params.trs,
+    onlyVisible: params.onlyVisible,
+    truncateDrawRange: params.truncateDrawRange,
+    binary: params.binary,
+    maxTextureSize: params.maxTextureSize,
   };
   gltfExporter.parse(
     input,
@@ -71,34 +71,6 @@ function exportGLTF(input) {
     options
   );
 }
-
-document.getElementById("export_scene").addEventListener("click", function () {
-  exportGLTF(scene1);
-});
-
-document.getElementById("export_scenes").addEventListener("click", function () {
-  exportGLTF([scene1, scene2]);
-});
-
-document.getElementById("export_object").addEventListener("click", function () {
-  exportGLTF(sphere);
-});
-
-document.getElementById("export_obj").addEventListener("click", function () {
-  exportGLTF(waltHead);
-});
-
-document
-  .getElementById("export_objects")
-  .addEventListener("click", function () {
-    exportGLTF([sphere, gridHelper]);
-  });
-
-document
-  .getElementById("export_scene_object")
-  .addEventListener("click", function () {
-    exportGLTF([scene1, gridHelper]);
-  });
 
 const link = document.createElement("a");
 link.style.display = "none";
@@ -125,6 +97,20 @@ let container;
 let camera, object, object2, material, geometry, scene1, scene2, renderer;
 let gridHelper, sphere, waltHead;
 
+const params = {
+  trs: false,
+  onlyVisible: true,
+  truncateDrawRange: true,
+  binary: false,
+  maxTextureSize: 4096,
+  exportScene1: exportScene1,
+  exportScenes: exportScenes,
+  exportSphere: exportSphere,
+  exportHead: exportHead,
+  exportObjects: exportObjects,
+  exportSceneObject: exportSceneObject,
+};
+
 init();
 animate();
 
@@ -143,7 +129,7 @@ function init() {
       data[stride] = Math.round((255 * y) / 99);
       data[stride + 1] = Math.round(255 - (255 * y) / 99);
       data[stride + 2] = 0;
-      data[stride + 3] = 1;
+      data[stride + 3] = 255;
     }
   }
 
@@ -483,6 +469,49 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
+
+  const gui = new GUI();
+
+  let h = gui.addFolder("Settings");
+  h.add(params, "trs").name("Use TRS");
+  h.add(params, "onlyVisible").name("Only Visible Objects");
+  h.add(params, "truncateDrawRange").name("Truncate Draw Range");
+  h.add(params, "binary").name("Binary (GLB)");
+  h.add(params, "maxTextureSize", 2, 8192).name("Max Texture Size").step(1);
+
+  h = gui.addFolder("Export");
+  h.add(params, "exportScene1").name("Export Scene 1");
+  h.add(params, "exportScenes").name("Export Scene 1 and 2");
+  h.add(params, "exportSphere").name("Export Sphere");
+  h.add(params, "exportHead").name("Export Head");
+  h.add(params, "exportObjects").name("Export Sphere With Grid");
+  h.add(params, "exportSceneObject").name("Export Scene 1 and Object");
+
+  gui.open();
+}
+
+function exportScene1() {
+  exportGLTF(scene1);
+}
+
+function exportScenes() {
+  exportGLTF([scene1, scene2]);
+}
+
+function exportSphere() {
+  exportGLTF(sphere);
+}
+
+function exportHead() {
+  exportGLTF(waltHead);
+}
+
+function exportObjects() {
+  exportGLTF([sphere, gridHelper]);
+}
+
+function exportSceneObject() {
+  exportGLTF([scene1, gridHelper]);
 }
 
 function onWindowResize() {

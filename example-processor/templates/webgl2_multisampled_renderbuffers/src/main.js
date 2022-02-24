@@ -14,7 +14,7 @@ import {
   Mesh,
   WebGLRenderer,
   Vector2,
-  WebGLMultisampleRenderTarget,
+  WebGLRenderTarget,
 } from "three";
 
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
@@ -95,10 +95,9 @@ function init() {
   //
 
   const size = renderer.getDrawingBufferSize(new Vector2());
-  const renderTarget = new WebGLMultisampleRenderTarget(
-    size.width,
-    size.height
-  );
+  const renderTarget = new WebGLRenderTarget(size.width, size.height, {
+    samples: 4,
+  });
 
   const renderPass = new RenderPass(scene, camera);
   const copyPass = new ShaderPass(CopyShader);

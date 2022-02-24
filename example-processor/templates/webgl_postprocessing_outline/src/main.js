@@ -10,7 +10,6 @@ import {
   PerspectiveCamera,
   AmbientLight,
   DirectionalLight,
-  LoadingManager,
   Mesh,
   MeshPhongMaterial,
   SphereGeometry,
@@ -145,13 +144,7 @@ function init() {
 
   // model
 
-  const manager = new LoadingManager();
-
-  manager.onProgress = function (item, loaded, total) {
-    console.log(item, loaded, total);
-  };
-
-  const loader = new OBJLoader(manager);
+  const loader = new OBJLoader();
   loader.load("models/obj/tree.obj", function (object) {
     let scale = 1.0;
 

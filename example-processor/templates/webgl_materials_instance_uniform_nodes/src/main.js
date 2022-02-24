@@ -14,12 +14,11 @@ import {
   WebGLRenderer,
   Color,
 } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
 import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
-
-import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 class InstanceUniformNode extends Nodes.Node {
   constructor() {

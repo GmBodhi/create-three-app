@@ -18,13 +18,12 @@ import {
   DataTexture,
   RGBAFormat,
 } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-
-import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let camera, scene, renderer;
 
@@ -164,6 +163,8 @@ async function init() {
 
   const materialCompressed = new Nodes.MeshBasicNodeMaterial();
   materialCompressed.colorNode = new Nodes.TextureNode(dxt5Texture);
+  materialCompressed.emissiveNode = new Nodes.ColorNode(new Color(0x663300));
+  materialCompressed.alphaTestNode = new Nodes.OscNode();
   materialCompressed.transparent = true;
 
   const boxCompressed = new Mesh(geometryBox, materialCompressed);

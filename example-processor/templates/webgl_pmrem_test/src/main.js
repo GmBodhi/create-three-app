@@ -18,6 +18,8 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+
 let scene, camera, controls, renderer;
 
 function init() {
@@ -80,27 +82,21 @@ function init() {
   // angle of the pixel in steradians. This image is 1024 x 512,
   // so the value is 1 / ( sin( phi ) * ( pi / 512 ) ^ 2 ) = 27,490 nits.
 
-  document.body.addEventListener("mouseover", function () {
-    scene.traverse(function (child) {
-      if (child.isMesh) {
-        child.material.envMapIntensity = 1;
-        directionalLight.intensity = 0;
-      }
+  const gui = new GUI();
+  gui
+    .add({ enabled: true }, "enabled")
+    .name("PMREM")
+    .onChange((value) => {
+      directionalLight.intensity = value ? 0 : 1;
+
+      scene.traverse(function (child) {
+        if (child.isMesh) {
+          child.material.envMapIntensity = 1 - directionalLight.intensity;
+        }
+      });
+
+      render();
     });
-
-    render();
-  });
-
-  document.body.addEventListener("mouseout", function () {
-    scene.traverse(function (child) {
-      if (child.isMesh) {
-        child.material.envMapIntensity = 0;
-        directionalLight.intensity = 1;
-      }
-    });
-
-    render();
-  });
 }
 
 function createObjects() {

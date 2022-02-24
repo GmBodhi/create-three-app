@@ -39,7 +39,7 @@ let textureAnimation,
   durationAnimation,
   birdMesh,
   materialShader,
-  vertexPerBird;
+  indicesPerBird;
 
 function nextPowerOf2(n) {
   return Math.pow(2, Math.ceil(Math.log(n) / Math.log(2)));
@@ -61,7 +61,7 @@ new GLTFLoader().load(gltfs[selectModel], function (gltf) {
   const morphAttributes = birdGeo.morphAttributes.position;
   const tHeight = nextPowerOf2(durationAnimation);
   const tWidth = nextPowerOf2(birdGeo.getAttribute("position").count);
-  vertexPerBird = birdGeo.getAttribute("position").count;
+  indicesPerBird = birdGeo.index.count;
   const tData = new Float32Array(4 * tWidth * tHeight);
 
   for (let i = 0; i < tWidth; i++) {
@@ -241,7 +241,7 @@ function init() {
     cohesion: 20.0,
     freedom: 0.75,
     size: sizes[selectModel],
-    count: BIRDS,
+    count: Math.floor(BIRDS / 4),
   };
 
   const valuesChanger = function () {
@@ -251,7 +251,7 @@ function init() {
     velocityUniforms["freedomFactor"].value = effectController.freedom;
     if (materialShader)
       materialShader.uniforms["size"].value = effectController.size;
-    BirdGeometry.setDrawRange(0, vertexPerBird * effectController.count);
+    BirdGeometry.setDrawRange(0, indicesPerBird * effectController.count);
   };
 
   valuesChanger();

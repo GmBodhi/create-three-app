@@ -11,10 +11,9 @@ import {
   HemisphereLight,
   SpotLight,
   MeshStandardMaterial,
-  BoxBufferGeometry,
-  IcosahedronBufferGeometry,
-  ConeBufferGeometry,
-  PlaneBufferGeometry,
+  BoxGeometry,
+  IcosahedronGeometry,
+  ConeGeometry,
   WebGLRenderer,
 } from "three";
 
@@ -110,7 +109,7 @@ function init() {
 
   let geometry, material, mesh;
 
-  geometry = new BoxBufferGeometry(0.05, 0.05, 0.05);
+  geometry = new BoxGeometry(0.05, 0.05, 0.05);
   material = new MeshStandardMaterial({ color: "green" });
   mesh = new Mesh(geometry, material);
   mesh.position.set(-0.12, 0.025, 0.015);
@@ -118,7 +117,7 @@ function init() {
   otherMeshes.push(mesh);
   selects.push(mesh);
 
-  geometry = new IcosahedronBufferGeometry(0.025, 4);
+  geometry = new IcosahedronGeometry(0.025, 4);
   material = new MeshStandardMaterial({ color: "cyan" });
   mesh = new Mesh(geometry, material);
   mesh.position.set(-0.05, 0.025, 0.08);
@@ -126,7 +125,7 @@ function init() {
   otherMeshes.push(mesh);
   selects.push(mesh);
 
-  geometry = new ConeBufferGeometry(0.025, 0.05, 64);
+  geometry = new ConeGeometry(0.025, 0.05, 64);
   material = new MeshStandardMaterial({ color: "yellow" });
   mesh = new Mesh(geometry, material);
   mesh.position.set(-0.05, 0.025, -0.055);
@@ -134,7 +133,7 @@ function init() {
   otherMeshes.push(mesh);
   selects.push(mesh);
 
-  geometry = new PlaneBufferGeometry(1, 1);
+  geometry = new PlaneGeometry(1, 1);
   groundReflector = new ReflectorForSSRPass(geometry, {
     clipBias: 0.0003,
     textureWidth: window.innerWidth,

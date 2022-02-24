@@ -10,6 +10,7 @@ import {
   BufferGeometry,
   Points,
 } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
@@ -21,8 +22,6 @@ import WebGPUUniformBuffer from "three/examples/jsm/renderers/webgpu/WebGPUUnifo
 import * as WebGPUBufferUtils from "three/examples/jsm/renderers/webgpu/WebGPUBufferUtils.js";
 import WebGPUUniformsGroup from "three/examples/jsm/renderers/webgpu/WebGPUUniformsGroup.js";
 import { Vector2Uniform } from "three/examples/jsm/renderers/webgpu/WebGPUUniform.js";
-
-import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let camera, scene, renderer;
 let pointer;
@@ -99,13 +98,13 @@ async function init() {
 					struct Particle {
 						value : array< vec4<f32> >;
 					};
-					[[ binding( 0 ), group( 0 ) ]]
+					@binding( 0 ) @group( 0 )
 					var<storage,read_write> particle : Particle;
 
 					struct Velocity {
 						value : array< vec4<f32> >;
 					};
-					[[ binding( 1 ), group( 0 ) ]]
+					@binding( 1 ) @group( 0 )
 					var<storage,read_write> velocity : Velocity;
 
 					//
@@ -115,17 +114,17 @@ async function init() {
 					struct Scale {
 						value : array< vec3<f32>, 2 >;
 					};
-					[[ binding( 2 ), group( 0 ) ]]
+					@binding( 2 ) @group( 0 )
 					var<uniform> scaleUniform : Scale;
 
 					struct MouseUniforms {
 						pointer : vec2<f32>;
 					};
-					[[ binding( 3 ), group( 0 ) ]]
+					@binding( 3 ) @group( 0 )
 					var<uniform> mouseUniforms : MouseUniforms;
 
-					[[ stage( compute ), workgroup_size( 64 ) ]]
-					fn main( [[builtin(global_invocation_id)]] id : vec3<u32> ) {
+					@stage( compute ) @workgroup_size( 64 )
+					fn main( @builtin(global_invocation_id) id : vec3<u32> ) {
 
 						// get particle index
 

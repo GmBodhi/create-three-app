@@ -20,7 +20,7 @@ import {
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
-import { Curves } from "three/examples/jsm/curves/CurveExtras.js";
+import * as Curves from "three/examples/jsm/curves/CurveExtras.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 let container, stats;

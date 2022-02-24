@@ -32,9 +32,11 @@ import { InteractiveGroup } from "three/examples/jsm/interactive/InteractiveGrou
 import { XRControllerModelFactory } from "three/examples/jsm/webxr/XRControllerModelFactory.js";
 
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/examples/jsm/libs/stats.module.js";
 
 let camera, scene, renderer;
 let reflector;
+let stats, statsMesh;
 
 const parameters = {
   radius: 0.6,
@@ -196,6 +198,20 @@ function init() {
   mesh.rotation.y = Math.PI / 4;
   mesh.scale.setScalar(2);
   group.add(mesh);
+
+  // Add stats.js
+  stats = new Stats();
+  stats.dom.style.width = "80px";
+  stats.dom.style.height = "48px";
+  document.body.appendChild(stats.dom);
+
+  statsMesh = new HTMLMesh(stats.dom);
+  statsMesh.position.x = -0.75;
+  statsMesh.position.y = 2;
+  statsMesh.position.z = -0.6;
+  statsMesh.rotation.y = Math.PI / 4;
+  statsMesh.scale.setScalar(2.5);
+  group.add(statsMesh);
 }
 
 function onWindowResize() {
@@ -216,4 +232,8 @@ function render() {
   torus.rotation.y = time * 5;
 
   renderer.render(scene, camera);
+  stats.update();
+
+  // Canvas elements doesn't trigger DOM updates, so we have to update the texture
+  statsMesh.material.map.update();
 }

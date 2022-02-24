@@ -1,13 +1,12 @@
 import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, Scene, GridHelper, Mesh, Color } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 
 import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
-
-import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 

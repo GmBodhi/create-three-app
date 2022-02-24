@@ -10,6 +10,7 @@ import {
   HemisphereLight,
   PointLight,
   WebGLRenderer,
+  sRGBEncoding,
   MathUtils,
 } from "three";
 
@@ -90,6 +91,7 @@ function init() {
   particleLight.add(pointLight);
 
   renderer = new WebGLRenderer();
+  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

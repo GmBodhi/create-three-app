@@ -31,7 +31,7 @@ let controls, group;
 let audioCtx = null;
 
 // minor pentatonic scale, so whichever notes is striked would be more pleasant
-const musicScale = [0, 3, 5, 7, 10, 12];
+const musicScale = [0, 3, 5, 7, 10];
 
 init();
 animate();

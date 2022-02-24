@@ -4,13 +4,16 @@ import {
   Clock,
   Scene,
   Color,
+  Fog,
   PerspectiveCamera,
-  AmbientLight,
+  HemisphereLight,
   DirectionalLight,
   WebGLRenderer,
   VSMShadowMap,
-  SphereGeometry,
-  MeshStandardMaterial,
+  sRGBEncoding,
+  ACESFilmicToneMapping,
+  IcosahedronGeometry,
+  MeshLambertMaterial,
   Mesh,
   Sphere,
   Vector3,
@@ -21,33 +24,31 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 import { Octree } from "three/examples/jsm/math/Octree.js";
+import { OctreeHelper } from "three/examples/jsm/helpers/OctreeHelper.js";
+
 import { Capsule } from "three/examples/jsm/math/Capsule.js";
+
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 const clock = new Clock();
 
 const scene = new Scene();
-scene.background = new Color(0x88ccff);
+scene.background = new Color(0x88ccee);
+scene.fog = new Fog(0x88ccee, 0, 50);
 
 const camera = new PerspectiveCamera(
-  75,
+  70,
   window.innerWidth / window.innerHeight,
   0.1,
   1000
 );
 camera.rotation.order = "YXZ";
 
-const ambientlight = new AmbientLight(0x6688cc);
-scene.add(ambientlight);
-
-const fillLight1 = new DirectionalLight(0xff9999, 0.5);
-fillLight1.position.set(-1, 1, 2);
+const fillLight1 = new HemisphereLight(0x4488bb, 0x002244, 0.5);
+fillLight1.position.set(2, 1, 1);
 scene.add(fillLight1);
 
-const fillLight2 = new DirectionalLight(0x8888ff, 0.2);
-fillLight2.position.set(0, -1, 0);
-scene.add(fillLight2);
-
-const directionalLight = new DirectionalLight(0xffffaa, 1.2);
+const directionalLight = new DirectionalLight(0xffffff, 0.8);
 directionalLight.position.set(-5, 25, -1);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.near = 0.01;
@@ -62,20 +63,20 @@ directionalLight.shadow.radius = 4;
 directionalLight.shadow.bias = -0.00006;
 scene.add(directionalLight);
 
+const container = document.getElementById("container");
+
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = VSMShadowMap;
-
-const container = document.getElementById("container");
-
+renderer.outputEncoding = sRGBEncoding;
+renderer.toneMapping = ACESFilmicToneMapping;
 container.appendChild(renderer.domElement);
 
 const stats = new Stats();
 stats.domElement.style.position = "absolute";
 stats.domElement.style.top = "0px";
-
 container.appendChild(stats.domElement);
 
 const GRAVITY = 30;
@@ -85,12 +86,8 @@ const SPHERE_RADIUS = 0.2;
 
 const STEPS_PER_FRAME = 5;
 
-const sphereGeometry = new SphereGeometry(SPHERE_RADIUS, 32, 32);
-const sphereMaterial = new MeshStandardMaterial({
-  color: 0x888855,
-  roughness: 0.8,
-  metalness: 0.5,
-});
+const sphereGeometry = new IcosahedronGeometry(SPHERE_RADIUS, 5);
+const sphereMaterial = new MeshLambertMaterial({ color: 0xbbbb44 });
 
 const spheres = [];
 let sphereIdx = 0;
@@ -137,14 +134,14 @@ document.addEventListener("keyup", (event) => {
   keyStates[event.code] = false;
 });
 
-document.addEventListener("mousedown", () => {
+container.addEventListener("mousedown", () => {
   document.body.requestPointerLock();
 
   mouseTime = performance.now();
 });
 
 document.addEventListener("mouseup", () => {
-  throwBall();
+  if (document.pointerLockElement !== null) throwBall();
 });
 
 document.body.addEventListener("mousemove", (event) => {
@@ -371,9 +368,18 @@ loader.load("collision-world.glb", (gltf) => {
       child.receiveShadow = true;
 
       if (child.material.map) {
-        child.material.map.anisotropy = 8;
+        child.material.map.anisotropy = 4;
       }
     }
+  });
+
+  const helper = new OctreeHelper(worldOctree);
+  helper.visible = false;
+  scene.add(helper);
+
+  const gui = new GUI({ width: 200 });
+  gui.add({ debug: false }, "debug").onChange(function (value) {
+    helper.visible = value;
   });
 
   animate();

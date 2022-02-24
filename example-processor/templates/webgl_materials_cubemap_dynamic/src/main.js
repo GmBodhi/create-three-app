@@ -1,12 +1,12 @@
 import "./style.css"; // For webpack support
 
 import {
-  TextureLoader,
-  sRGBEncoding,
-  EquirectangularReflectionMapping,
   WebGLRenderer,
-  Scene,
+  sRGBEncoding,
+  ACESFilmicToneMapping,
   PerspectiveCamera,
+  Scene,
+  EquirectangularReflectionMapping,
   WebGLCubeRenderTarget,
   CubeCamera,
   MeshStandardMaterial,
@@ -14,9 +14,12 @@ import {
   IcosahedronGeometry,
   BoxGeometry,
   TorusKnotGeometry,
-  MathUtils,
 } from "three";
 
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
 let camera, scene, renderer, stats;
@@ -28,38 +31,23 @@ let count = 0,
   cubeRenderTarget1,
   cubeRenderTarget2;
 
-let onPointerDownPointerX,
-  onPointerDownPointerY,
-  onPointerDownLon,
-  onPointerDownLat;
+let controls;
 
-let lon = 0,
-  lat = 0;
-let phi = 0,
-  theta = 0;
+init();
+animate();
 
-const textureLoader = new TextureLoader();
-
-textureLoader.load("textures/2294472375_24a3b8ef46_o.jpg", function (texture) {
-  texture.encoding = sRGBEncoding;
-  texture.mapping = EquirectangularReflectionMapping;
-
-  init(texture);
-  animate();
-});
-
-function init(texture) {
+function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
+
+  window.addEventListener("resize", onWindowResized);
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
-
-  scene = new Scene();
-  scene.background = texture;
 
   camera = new PerspectiveCamera(
     60,
@@ -67,40 +55,53 @@ function init(texture) {
     1,
     1000
   );
+  camera.position.z = 75;
+
+  scene = new Scene();
+
+  new RGBELoader()
+    .setPath("textures/equirectangular/")
+    .load("quarry_01_1k.hdr", function (texture) {
+      texture.mapping = EquirectangularReflectionMapping;
+      scene.background = texture;
+    });
 
   //
 
-  cubeRenderTarget1 = new WebGLCubeRenderTarget(256);
+  const envSize = 256;
+
+  cubeRenderTarget1 = new WebGLCubeRenderTarget(envSize);
+  cubeRenderTarget2 = new WebGLCubeRenderTarget(envSize);
 
   cubeCamera1 = new CubeCamera(1, 1000, cubeRenderTarget1);
-
-  cubeRenderTarget2 = new WebGLCubeRenderTarget(256);
-
   cubeCamera2 = new CubeCamera(1, 1000, cubeRenderTarget2);
 
   //
 
   material = new MeshStandardMaterial({
     envMap: cubeRenderTarget2.texture,
-    roughness: 0.2,
-    metalness: 1,
+    roughness: 0.05,
+    metalness: 0,
   });
 
-  sphere = new Mesh(new IcosahedronGeometry(20, 8), material);
+  const gui = new GUI();
+  gui.add(material, "roughness", 0, 1);
+  gui.add(material, "metalness", 0, 1);
+  gui.add(renderer, "toneMappingExposure", 0, 2).name("exposure");
+
+  sphere = new Mesh(new IcosahedronGeometry(15, 8), material);
   scene.add(sphere);
 
-  cube = new Mesh(new BoxGeometry(20, 20, 20), material);
+  cube = new Mesh(new BoxGeometry(15, 15, 15), material);
   scene.add(cube);
 
-  torus = new Mesh(new TorusKnotGeometry(10, 5, 128, 16), material);
+  torus = new Mesh(new TorusKnotGeometry(10, 3, 128, 16), material);
   scene.add(torus);
 
   //
 
-  document.addEventListener("pointerdown", onPointerDown);
-  document.addEventListener("wheel", onDocumentMouseWheel);
-
-  window.addEventListener("resize", onWindowResized);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.autoRotate = true;
 }
 
 function onWindowResized() {
@@ -110,47 +111,10 @@ function onWindowResized() {
   camera.updateProjectionMatrix();
 }
 
-function onPointerDown(event) {
-  event.preventDefault();
-
-  onPointerDownPointerX = event.clientX;
-  onPointerDownPointerY = event.clientY;
-
-  onPointerDownLon = lon;
-  onPointerDownLat = lat;
-
-  document.addEventListener("pointermove", onPointerMove);
-  document.addEventListener("pointerup", onPointerUp);
-}
-
-function onPointerMove(event) {
-  lon = (event.clientX - onPointerDownPointerX) * 0.1 + onPointerDownLon;
-  lat = (event.clientY - onPointerDownPointerY) * 0.1 + onPointerDownLat;
-}
-
-function onPointerUp() {
-  document.removeEventListener("pointermove", onPointerMove);
-  document.removeEventListener("pointerup", onPointerUp);
-}
-
-function onDocumentMouseWheel(event) {
-  const fov = camera.fov + event.deltaY * 0.05;
-
-  camera.fov = MathUtils.clamp(fov, 10, 75);
-
-  camera.updateProjectionMatrix();
-}
-
 function animate() {
   requestAnimationFrame(animate);
 
   const time = Date.now();
-
-  lon += 0.15;
-
-  lat = Math.max(-85, Math.min(85, lat));
-  phi = MathUtils.degToRad(90 - lat);
-  theta = MathUtils.degToRad(lon);
 
   cube.position.x = Math.cos(time * 0.001) * 30;
   cube.position.y = Math.sin(time * 0.001) * 30;
@@ -166,12 +130,6 @@ function animate() {
   torus.rotation.x += 0.02;
   torus.rotation.y += 0.03;
 
-  camera.position.x = 100 * Math.sin(phi) * Math.cos(theta);
-  camera.position.y = 100 * Math.cos(phi);
-  camera.position.z = 100 * Math.sin(phi) * Math.sin(theta);
-
-  camera.lookAt(scene.position);
-
   // pingpong
 
   if (count % 2 === 0) {
@@ -184,11 +142,9 @@ function animate() {
 
   count++;
 
-  render();
+  controls.update();
+
+  renderer.render(scene, camera);
 
   stats.update();
-}
-
-function render() {
-  renderer.render(scene, camera);
 }

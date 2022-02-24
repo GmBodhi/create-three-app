@@ -1,8 +1,5 @@
 <html>
-  <head></head>
-  <body style="overflow: hidden">
-    @ -1,189 +0,0 @@
-
+  <head>
     <title>three.js webgl - node-editor playground</title>
     <meta charset="utf-8" />
     <meta
@@ -19,7 +16,8 @@
       href="fonts/tabler-icons/tabler-icons.min.css"
       type="text/css"
     />
-
+  </head>
+  <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
       - WebGL - Node Editor ( Playground version )<br />
@@ -33,7 +31,9 @@
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js"
+          "three": "../build/three.module.js",
+          "three-addons/": "./jsm/",
+          "three-nodes/": "./jsm/nodes/"
         }
       }
     </script>

@@ -1,13 +1,12 @@
 import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, Scene, Clock, AnimationMixer, Points } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-
-import * as Nodes from "three/examples/jsm/renderers/nodes/Nodes.js";
 
 let camera, scene, renderer;
 
