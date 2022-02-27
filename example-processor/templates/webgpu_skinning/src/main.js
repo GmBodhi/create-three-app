@@ -6,8 +6,8 @@ import {
   Clock,
   PointLight,
   AnimationMixer,
-  MeshStandardMaterial,
 } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
@@ -59,7 +59,7 @@ async function init() {
 
     object.traverse(function (child) {
       if (child.isMesh) {
-        child.material = new MeshStandardMaterial();
+        child.material = new Nodes.MeshStandardNodeMaterial();
         child.material.lightNode = lightNode;
       }
     });

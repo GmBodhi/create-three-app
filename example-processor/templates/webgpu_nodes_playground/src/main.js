@@ -25,6 +25,9 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
+// Use PreviewEditor in WebGL for now
+import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+
 let stats;
 let camera, scene, renderer;
 let model;
@@ -103,7 +106,7 @@ function initEditor() {
   nodeEditor.addEventListener("add", (e) => {
     const node = e.node;
 
-    if (node.value !== null && node.value.isMaterial === true) {
+    if (node.value !== null && node.value.isMeshStandardNodeMaterial === true) {
       const material = node.value;
 
       material.lightNode = nodeLights;
@@ -165,6 +168,8 @@ function onWindowResize() {
 
 function animate() {
   requestAnimationFrame(animate);
+
+  nodeFrame.update();
 
   render();
 
