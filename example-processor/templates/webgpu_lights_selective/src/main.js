@@ -22,6 +22,8 @@ import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js"
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 
+import { color, float } from "three-nodes/ShaderNode.js";
+
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 
 init().then(animate).catch(error);
@@ -42,6 +44,11 @@ async function init() {
   camera.position.z = 70;
 
   scene = new Scene();
+  scene.fogNode = new Nodes.FogRangeNode(
+    color(0xff00ff),
+    float(30),
+    float(300)
+  );
 
   const sphere = new SphereGeometry(0.5, 16, 8);
 
@@ -144,7 +151,7 @@ async function init() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 30;
-  controls.maxDistance = 150;
+  controls.maxDistance = 250;
 
   //stats
 
