@@ -1,6 +1,6 @@
 import "./style.css"; // For webpack support
 
-import { Scene, PerspectiveCamera, GridHelper, WebGL1Renderer } from "three";
+import { Scene, PerspectiveCamera, GridHelper, WebGLRenderer } from "three";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { TiltLoader } from "three/examples/jsm/loaders/TiltLoader.js";
@@ -27,7 +27,7 @@ function init() {
   const grid = new GridHelper(50, 50, 0xffffff, 0x555555);
   scene.add(grid);
 
-  renderer = new WebGL1Renderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
