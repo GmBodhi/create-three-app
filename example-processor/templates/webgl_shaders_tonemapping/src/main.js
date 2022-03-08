@@ -441,7 +441,7 @@ function onWindowResize() {
 function animate() {
   requestAnimationFrame(animate);
   if (bloomPass) {
-    bloomPass.copyUniforms["opacity"].value = params.bloomAmount;
+    bloomPass.combineUniforms["strength"].value = params.bloomAmount;
   }
 
   if (adaptToneMappingPass) {
