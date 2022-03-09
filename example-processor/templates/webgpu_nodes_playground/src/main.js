@@ -65,7 +65,7 @@ async function init() {
   backLight.position.set(-100, 20, -260);
   scene.add(backLight);
 
-  nodeLights = Nodes.LightsNode.fromLights([topLight, backLight]);
+  nodeLights = new Nodes.LightsNode().fromLights([topLight, backLight]);
 
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);

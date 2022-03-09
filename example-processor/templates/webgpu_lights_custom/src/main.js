@@ -63,7 +63,11 @@ async function init() {
 
   //light nodes ( selective lights )
 
-  const allLightsNode = Nodes.LightsNode.fromLights([light1, light2, light3]);
+  const allLightsNode = new Nodes.LightsNode().fromLights([
+    light1,
+    light2,
+    light3,
+  ]);
 
   // points
 

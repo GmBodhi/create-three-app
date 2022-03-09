@@ -3534,6 +3534,16 @@
         "/src"
       ]
     },
+    "webgpu_depth_texture": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_instance_uniform": {
       "files": {
         "index.html": "src",

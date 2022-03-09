@@ -48,7 +48,7 @@ async function init() {
   camera.add(light);
   scene.add(camera);
 
-  const lightNode = LightsNode.fromLights([light]);
+  const lightNode = new LightsNode().fromLights([light]);
 
   const loader = new FBXLoader();
   loader.load("models/fbx/Samba Dancing.fbx", function (object) {
