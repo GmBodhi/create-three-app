@@ -1536,6 +1536,16 @@
         "/src"
       ]
     },
+    "webgl_lines_fat_raycasting": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_lines_fat_wireframe": {
       "files": {
         "index.html": "src",
