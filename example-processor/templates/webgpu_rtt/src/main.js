@@ -84,8 +84,8 @@ async function init() {
 
   const screenFXNode = new Nodes.OperatorNode(
     "+",
-    new Nodes.Vector2Node(mouse),
-    new Nodes.Vector2Node(new Vector2(0.5, 0.5)).setConst(true)
+    new Nodes.UniformNode(mouse),
+    new Nodes.ConstNode(new Vector2(0.5, 0.5))
   );
 
   const materialFX = new Nodes.MeshBasicNodeMaterial();

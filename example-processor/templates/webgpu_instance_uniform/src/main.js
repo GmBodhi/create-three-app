@@ -1,6 +1,6 @@
 import "./style.css"; // For webpack support
 
-import { PerspectiveCamera, Scene, GridHelper, Mesh, Color } from "three";
+import { Color, PerspectiveCamera, Scene, GridHelper, Mesh } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
@@ -16,17 +16,19 @@ class InstanceUniformNode extends Nodes.Node {
 
     this.updateType = Nodes.NodeUpdateType.Object;
 
-    this.inputNode = new Nodes.ColorNode();
+    this.uniformNode = new Nodes.UniformNode(new Color());
   }
 
   update(frame) {
     const mesh = frame.object;
 
-    this.inputNode.value.copy(mesh.color);
+    const meshColor = mesh.color;
+
+    this.uniformNode.value.copy(meshColor);
   }
 
   generate(builder, output) {
-    return this.inputNode.build(builder, output);
+    return this.uniformNode.build(builder, output);
   }
 }
 

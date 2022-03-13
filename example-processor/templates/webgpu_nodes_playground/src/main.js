@@ -118,7 +118,7 @@ function initEditor() {
   const loaderFBX = new FBXLoader();
   loaderFBX.load("models/fbx/stanford-bunny.fbx", (object) => {
     const defaultMaterial = new Nodes.MeshBasicNodeMaterial();
-    defaultMaterial.colorNode = new Nodes.FloatNode(0);
+    defaultMaterial.colorNode = new Nodes.UniformNode(0);
 
     const sphere = new Mesh(new SphereGeometry(200, 32, 16), defaultMaterial);
     sphere.name = "Sphere";
@@ -131,7 +131,7 @@ function initEditor() {
     scene.add(box);
 
     const defaultPointsMaterial = new Nodes.PointsNodeMaterial();
-    defaultPointsMaterial.colorNode = new Nodes.FloatNode(0);
+    defaultPointsMaterial.colorNode = new Nodes.UniformNode(0);
 
     const torusKnot = new Points(
       new TorusKnotGeometry(100, 30, 100, 16),

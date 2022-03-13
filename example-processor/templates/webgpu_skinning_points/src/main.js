@@ -1,6 +1,13 @@
 import "./style.css"; // For webpack support
 
-import { PerspectiveCamera, Scene, Clock, AnimationMixer, Points } from "three";
+import {
+  PerspectiveCamera,
+  Scene,
+  Clock,
+  AnimationMixer,
+  Color,
+  Points,
+} from "three";
 import * as Nodes from "three-nodes/Nodes.js";
 
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
@@ -46,7 +53,7 @@ async function init() {
         child.visible = false;
 
         const materialPoints = new Nodes.PointsNodeMaterial();
-        materialPoints.colorNode = new Nodes.ColorNode();
+        materialPoints.colorNode = new Nodes.UniformNode(new Color());
         materialPoints.positionNode = new Nodes.SkinningNode(child);
 
         const pointCloud = new Points(child.geometry, materialPoints);

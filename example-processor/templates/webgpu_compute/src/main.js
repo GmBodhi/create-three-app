@@ -211,7 +211,7 @@ async function init() {
   pointsMaterial.colorNode = new Nodes.OperatorNode(
     "+",
     new Nodes.PositionNode(),
-    new Nodes.ColorNode(new Color(0xffffff))
+    new Nodes.UniformNode(new Color(0xffffff))
   );
 
   const mesh = new Points(pointsGeometry, pointsMaterial);

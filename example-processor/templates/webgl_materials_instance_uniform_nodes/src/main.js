@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  Color,
   PerspectiveCamera,
   Scene,
   GridHelper,
@@ -12,7 +13,6 @@ import {
   Mesh,
   MeshBasicMaterial,
   WebGLRenderer,
-  Color,
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
 
@@ -26,7 +26,7 @@ class InstanceUniformNode extends Nodes.Node {
 
     this.updateType = Nodes.NodeUpdateType.Object;
 
-    this.inputNode = new Nodes.ColorNode();
+    this.uniformNode = new Nodes.UniformNode(new Color());
   }
 
   update(frame) {
@@ -35,14 +35,14 @@ class InstanceUniformNode extends Nodes.Node {
 
     const meshColor = mesh.color;
 
-    this.inputNode.value.copy(meshColor);
+    this.uniformNode.value.copy(meshColor);
 
     // force refresh material uniforms
     rendererState.useProgram(null);
   }
 
   generate(builder, output) {
-    return this.inputNode.build(builder, output);
+    return this.uniformNode.build(builder, output);
   }
 }
 

@@ -9,6 +9,7 @@ import {
   PCFSoftShadowMap,
   Vector3,
   AmbientLight,
+  DirectionalLight,
   MeshPhongMaterial,
   Mesh,
   PlaneGeometry,
@@ -81,6 +82,13 @@ function init() {
 
   const ambientLight = new AmbientLight(0xffffff, 0.5);
   scene.add(ambientLight);
+
+  const additionalDirectionalLight = new DirectionalLight(0x000020, 0.5);
+  additionalDirectionalLight.position
+    .set(params.lightX, params.lightY, params.lightZ)
+    .normalize()
+    .multiplyScalar(-200);
+  scene.add(additionalDirectionalLight);
 
   csm = new CSM({
     maxFar: params.far,

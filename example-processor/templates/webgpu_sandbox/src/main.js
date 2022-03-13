@@ -83,7 +83,7 @@ async function init() {
   const timerScaleNode = new Nodes.OperatorNode(
     "*",
     timerNode,
-    new Nodes.Vector2Node(new Vector2(-0.5, 0.1)).setConst(true)
+    new Nodes.ConstNode(new Vector2(-0.5, 0.1))
   );
   const animateUV = new Nodes.OperatorNode(
     "+",
@@ -97,7 +97,7 @@ async function init() {
     "mix",
     textureNode,
     new Nodes.CheckerNode(animateUV),
-    new Nodes.FloatNode(0.5)
+    new Nodes.UniformNode(0.5)
   );
 
   // test uv 2
@@ -120,7 +120,7 @@ async function init() {
   const displaceY = new Nodes.OperatorNode(
     "*",
     displaceAnimated,
-    new Nodes.FloatNode(0.25).setConst(true)
+    new Nodes.ConstNode(0.25)
   );
 
   const displace = new Nodes.OperatorNode(
@@ -147,7 +147,7 @@ async function init() {
   materialPlane.colorNode = new Nodes.OperatorNode(
     "+",
     new Nodes.TextureNode(createDataTexture()),
-    new Nodes.ColorNode(new Color(0x0000ff))
+    new Nodes.UniformNode(new Color(0x0000ff))
   );
   materialPlane.opacityNode = new Nodes.SplitNode(
     new Nodes.TextureNode(dxt5Texture),
@@ -163,7 +163,7 @@ async function init() {
 
   const materialCompressed = new Nodes.MeshBasicNodeMaterial();
   materialCompressed.colorNode = new Nodes.TextureNode(dxt5Texture);
-  materialCompressed.emissiveNode = new Nodes.ColorNode(new Color(0x663300));
+  materialCompressed.emissiveNode = new Nodes.UniformNode(new Color(0x663300));
   materialCompressed.alphaTestNode = new Nodes.OscNode();
   materialCompressed.transparent = true;
 
@@ -186,7 +186,7 @@ async function init() {
   materialPoints.colorNode = new Nodes.OperatorNode(
     "*",
     new Nodes.PositionNode(),
-    new Nodes.FloatNode(3).setConst(true)
+    new Nodes.ConstNode(3)
   );
 
   const pointCloud = new Points(geometryPoints, materialPoints);

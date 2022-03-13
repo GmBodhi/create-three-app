@@ -105,7 +105,7 @@ async function init() {
 
   // Opacity
   material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = new Nodes.ColorNode(new Color(0x0099ff));
+  material.colorNode = new Nodes.UniformNode(new Color(0x0099ff));
   material.opacityNode = new Nodes.TextureNode(texture);
   material.transparent = true;
   materials.push(material);
@@ -114,7 +114,7 @@ async function init() {
   material = new Nodes.MeshBasicNodeMaterial();
   material.colorNode = new Nodes.TextureNode(texture);
   material.opacityNode = new Nodes.TextureNode(opacityTexture);
-  material.alphaTestNode = new Nodes.FloatNode(0.5);
+  material.alphaTestNode = new Nodes.UniformNode(0.5);
   materials.push(material);
 
   //
