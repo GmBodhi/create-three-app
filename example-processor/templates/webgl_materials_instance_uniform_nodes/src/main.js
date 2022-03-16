@@ -5,7 +5,6 @@ import {
   PerspectiveCamera,
   Scene,
   GridHelper,
-  MeshStandardMaterial,
   SphereGeometry,
   AmbientLight,
   DirectionalLight,
@@ -80,7 +79,7 @@ function init() {
 
   const instanceUniform = new InstanceUniformNode();
 
-  const material = new MeshStandardMaterial();
+  const material = new Nodes.MeshStandardNodeMaterial();
   material.colorNode = instanceUniform;
 
   // Spheres geometry
