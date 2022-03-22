@@ -5,6 +5,8 @@ import {
   PerspectiveCamera,
   Scene,
   GridHelper,
+  CubeTextureLoader,
+  MeshStandardMaterial,
   SphereGeometry,
   AmbientLight,
   DirectionalLight,
@@ -14,8 +16,11 @@ import {
   WebGLRenderer,
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
+import { add, mul } from "three-nodes/ShaderNode.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
+
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
 
@@ -35,9 +40,6 @@ class InstanceUniformNode extends Nodes.Node {
     const meshColor = mesh.color;
 
     this.uniformNode.value.copy(meshColor);
-
-    // force refresh material uniforms
-    rendererState.useProgram(null);
   }
 
   generate(builder, output) {
@@ -48,6 +50,7 @@ class InstanceUniformNode extends Nodes.Node {
 let stats;
 
 let camera, scene, renderer;
+let controls;
 let pointLight;
 
 const objects = [];
@@ -63,9 +66,9 @@ function init() {
     45,
     window.innerWidth / window.innerHeight,
     1,
-    2000
+    4000
   );
-  camera.position.set(0, 200, 800);
+  camera.position.set(0, 200, 1200);
 
   scene = new Scene();
 
@@ -75,12 +78,29 @@ function init() {
   helper.position.y = -75;
   scene.add(helper);
 
+  // CubeMap
+
+  const path = "textures/cube/SwedishRoyalCastle/";
+  const format = ".jpg";
+  const urls = [
+    path + "px" + format,
+    path + "nx" + format,
+    path + "py" + format,
+    path + "ny" + format,
+    path + "pz" + format,
+    path + "nz" + format,
+  ];
+
+  const cubeTexture = new CubeTextureLoader().load(urls);
+
   // Material
 
   const instanceUniform = new InstanceUniformNode();
+  const cubeTextureNode = new Nodes.CubeTextureNode(cubeTexture);
 
-  const material = new Nodes.MeshStandardNodeMaterial();
-  material.colorNode = instanceUniform;
+  const material = new MeshStandardMaterial();
+  material.colorNode = add(instanceUniform, cubeTextureNode);
+  material.emissiveNode = mul(instanceUniform, cubeTextureNode);
 
   // Spheres geometry
 
@@ -122,6 +142,12 @@ function init() {
 
   //
 
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 400;
+  controls.maxDistance = 2000;
+
+  //
+
   stats = new Stats();
   container.appendChild(stats.dom);
 
@@ -135,7 +161,7 @@ function addMesh(geometry, material) {
 
   mesh.color = new Color(Math.random() * 0xffffff);
 
-  mesh.position.x = (objects.length % 4) * 200 - 400;
+  mesh.position.x = (objects.length % 4) * 200 - 300;
   mesh.position.z = Math.floor(objects.length / 4) * 200 - 200;
 
   mesh.rotation.x = Math.random() * 200 - 100;
@@ -167,11 +193,6 @@ function animate() {
 
 function render() {
   const timer = 0.0001 * Date.now();
-
-  camera.position.x = Math.cos(timer) * 1000;
-  camera.position.z = Math.sin(timer) * 1000;
-
-  camera.lookAt(scene.position);
 
   for (let i = 0, l = objects.length; i < l; i++) {
     const object = objects[i];
