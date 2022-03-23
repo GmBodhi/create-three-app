@@ -16,7 +16,7 @@ import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.j
 
 import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
 
-import { ShaderNode, vec3, dot } from "three-nodes/ShaderNode.js";
+import { ShaderNode, vec3, dot, sampler } from "three-nodes/ShaderNode.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
@@ -148,6 +148,27 @@ async function init() {
   material = new Nodes.MeshBasicNodeMaterial();
   material.colorNode = desaturateWGSLNode.call({
     color: new Nodes.TextureNode(texture),
+  });
+  materials.push(material);
+
+  // Custom WGSL ( get texture from keywords )
+
+  const getWGSLTextureSample = new Nodes.FunctionNode(`
+					fn getWGSLTextureSample( tex: texture_2d<f32>, tex_sampler: sampler, uv:vec2<f32> ) -> vec4<f32> {
+
+						return textureSample( tex, tex_sampler, uv ) * vec4<f32>( 0.0, 1.0, 0.0, 1.0 );
+
+					}
+				`);
+
+  const textureNode = new Nodes.TextureNode(texture);
+  //getWGSLTextureSample.keywords = { tex: textureNode, tex_sampler: sampler( textureNode ) };
+
+  material = new Nodes.MeshBasicNodeMaterial();
+  material.colorNode = getWGSLTextureSample.call({
+    tex: textureNode,
+    tex_sampler: textureNode,
+    uv: new Nodes.UVNode(),
   });
   materials.push(material);
 
