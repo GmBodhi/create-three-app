@@ -3,8 +3,6 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Color,
-  Fog,
   Clock,
   HemisphereLight,
   DirectionalLight,
@@ -13,6 +11,7 @@ import {
   MeshStandardMaterial,
   Mesh,
   WebGLRenderer,
+  Color,
 } from "three";
 
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
@@ -40,8 +39,6 @@ function init() {
   camera.position.z = 500;
 
   scene = new Scene();
-  scene.background = new Color(0xffffff);
-  scene.fog = new Fog(0xcccccc, 100, 1500);
 
   clock = new Clock();
 
@@ -94,10 +91,13 @@ function init() {
   //
 
   const renderPass = new RenderPass(scene, camera);
+  renderPass.clearColor = new Color(0, 0, 0);
+  renderPass.clearAlpha = 0;
 
   //
 
   fxaaPass = new ShaderPass(FXAAShader);
+
   const copyPass = new ShaderPass(CopyShader);
 
   composer1 = new EffectComposer(renderer);

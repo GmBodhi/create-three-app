@@ -142,7 +142,7 @@ function generateLabelMaterial(text) {
   ctx.fillRect(0, 0, 128, 32);
 
   ctx.fillStyle = "white";
-  ctx.font = "12pt arial bold";
+  ctx.font = "bold 12pt arial";
   ctx.fillText(text, 10, 22);
 
   const map = new CanvasTexture(canvas);

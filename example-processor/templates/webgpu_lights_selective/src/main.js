@@ -22,6 +22,8 @@ import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js"
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 
+import { color, float } from "three-nodes/ShaderNode.js";
+
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 
 init().then(animate).catch(error);
@@ -42,6 +44,11 @@ async function init() {
   camera.position.z = 70;
 
   scene = new Scene();
+  scene.fogNode = new Nodes.FogRangeNode(
+    color(0xff00ff),
+    float(30),
+    float(300)
+  );
 
   const sphere = new SphereGeometry(0.5, 16, 8);
 
@@ -81,14 +88,8 @@ async function init() {
 
   //light nodes ( selective lights )
 
-  const allLightsNode = Nodes.LightsNode.fromLights([
-    light1,
-    light2,
-    light3,
-    light4,
-  ]);
-  const redLightNode = Nodes.LightsNode.fromLights([light1]);
-  const blueLightNode = Nodes.LightsNode.fromLights([light2]);
+  const redLightNode = new Nodes.LightsNode().fromLights([light1]);
+  const blueLightNode = new Nodes.LightsNode().fromLights([light2]);
 
   //models
 
@@ -108,7 +109,6 @@ async function init() {
     geometryTeapot,
     new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
   );
-  centerObject.material.lightNode = allLightsNode;
   centerObject.material.normalNode = new Nodes.NormalMapNode(
     new Nodes.TextureNode(normalMapTexture)
   );
@@ -144,7 +144,7 @@ async function init() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 30;
-  controls.maxDistance = 150;
+  controls.maxDistance = 250;
 
   //stats
 
@@ -178,24 +178,32 @@ function animate() {
 }
 
 function render() {
-  const time = Date.now() * 0.0005;
+  const time = performance.now() / 1000;
+  const lightTime = time * 0.5;
 
-  light1.position.x = Math.sin(time * 0.7) * 30;
-  light1.position.y = Math.cos(time * 0.5) * 40;
-  light1.position.z = Math.cos(time * 0.3) * 30;
+  light1.position.x = Math.sin(lightTime * 0.7) * 30;
+  light1.position.y = Math.cos(lightTime * 0.5) * 40;
+  light1.position.z = Math.cos(lightTime * 0.3) * 30;
 
-  light2.position.x = Math.cos(time * 0.3) * 30;
-  light2.position.y = Math.sin(time * 0.5) * 40;
-  light2.position.z = Math.sin(time * 0.7) * 30;
+  light2.position.x = Math.cos(lightTime * 0.3) * 30;
+  light2.position.y = Math.sin(lightTime * 0.5) * 40;
+  light2.position.z = Math.sin(lightTime * 0.7) * 30;
 
-  light3.position.x = Math.sin(time * 0.7) * 30;
-  light3.position.y = Math.cos(time * 0.3) * 40;
-  light3.position.z = Math.sin(time * 0.5) * 30;
+  light3.position.x = Math.sin(lightTime * 0.7) * 30;
+  light3.position.y = Math.cos(lightTime * 0.3) * 40;
+  light3.position.z = Math.sin(lightTime * 0.5) * 30;
 
-  light4.position.x = Math.sin(time * 0.3) * 30;
-  light4.position.y = Math.cos(time * 0.7) * 40;
-  light4.position.z = Math.sin(time * 0.5) * 30;
+  light4.position.x = Math.sin(lightTime * 0.3) * 30;
+  light4.position.y = Math.cos(lightTime * 0.7) * 40;
+  light4.position.z = Math.sin(lightTime * 0.5) * 30;
+  /*
+				@TODO: Used to test scene light change ( currently unavailable )
 
+				if ( time > 2.0 && light1.parent === null ) scene.add( light1 );
+				if ( time > 2.5 && light2.parent === null ) scene.add( light2 );
+				if ( time > 3.0 && light3.parent === null ) scene.add( light3 );
+				if ( time > 3.5 && light4.parent === null ) scene.add( light4 );
+*/
   renderer.render(scene, camera);
 }
 

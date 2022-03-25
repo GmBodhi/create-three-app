@@ -1,12 +1,10 @@
 import "./style.css"; // For webpack support
 
 import {
-  Vector2,
   PerspectiveCamera,
   Scene,
   Color,
-  TextureLoader,
-  BoxGeometry,
+  TorusKnotGeometry,
   Mesh,
   OrthographicCamera,
   PlaneGeometry,
@@ -17,12 +15,18 @@ import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 import WebGPUTextureRenderer from "three/examples/jsm/renderers/webgpu/WebGPUTextureRenderer.js";
 
-let camera, scene, renderer;
-const mouse = new Vector2();
+import {
+  smoothstep,
+  negate,
+  positionView,
+  invert,
+} from "three-nodes/ShaderNode.js";
+
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+
+let camera, scene, controls, renderer;
 
 let cameraFX, sceneFX, textureRenderer;
-
-let box;
 
 const dpr = window.devicePixelRatio;
 
@@ -38,27 +42,38 @@ async function init() {
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
-    0.1,
-    10
+    0.01,
+    30
   );
   camera.position.z = 4;
 
   scene = new Scene();
   scene.background = new Color(0x222222);
 
-  // textured mesh
+  // depth material
 
-  const loader = new TextureLoader();
-  const texture = loader.load("three/examples/textures/uv_grid_opengl.jpg");
-
-  const geometryBox = new BoxGeometry();
-  const materialBox = new Nodes.MeshBasicNodeMaterial();
-  materialBox.colorNode = new Nodes.TextureNode(texture);
+  const material = new Nodes.MeshBasicNodeMaterial();
+  material.colorNode = invert(
+    smoothstep(camera.near, camera.far, negate(positionView.z))
+  );
 
   //
 
-  box = new Mesh(geometryBox, materialBox);
-  scene.add(box);
+  const geometry = new TorusKnotGeometry(1, 0.3, 128, 64);
+
+  const count = 50;
+  const scale = 5;
+
+  for (let i = 0; i < count; i++) {
+    const r = Math.random() * 2.0 * Math.PI;
+    const z = Math.random() * 2.0 - 1.0;
+    const zScale = Math.sqrt(1.0 - z * z) * scale;
+
+    const mesh = new Mesh(geometry, material);
+    mesh.position.set(Math.cos(r) * zScale, Math.sin(r) * zScale, z * scale);
+    mesh.rotation.set(Math.random(), Math.random(), Math.random());
+    scene.add(mesh);
+  }
 
   //
 
@@ -70,7 +85,6 @@ async function init() {
   textureRenderer = new WebGPUTextureRenderer(renderer);
   textureRenderer.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
 
-  window.addEventListener("mousemove", onWindowMouseMove);
   window.addEventListener("resize", onWindowResize);
 
   // FX
@@ -80,32 +94,22 @@ async function init() {
 
   const geometryFX = new PlaneGeometry(2, 2);
 
-  // modulate the final color based on the mouse position
-
-  const screenFXNode = new Nodes.OperatorNode(
-    "+",
-    new Nodes.UniformNode(mouse),
-    new Nodes.ConstNode(new Vector2(0.5, 0.5))
-  );
+  //
 
   const materialFX = new Nodes.MeshBasicNodeMaterial();
-  materialFX.colorNode = new Nodes.OperatorNode(
-    "*",
-    new Nodes.TextureNode(textureRenderer.getTexture()),
-    screenFXNode
-  );
+  materialFX.colorNode = new Nodes.TextureNode(textureRenderer.getTexture());
 
   const quad = new Mesh(geometryFX, materialFX);
   sceneFX.add(quad);
 
   //
 
-  return renderer.init();
-}
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
 
-function onWindowMouseMove(e) {
-  mouse.x = e.offsetX / screen.width;
-  mouse.y = e.offsetY / screen.height;
+  //
+
+  return renderer.init();
 }
 
 function onWindowResize() {
@@ -118,9 +122,6 @@ function onWindowResize() {
 
 function animate() {
   requestAnimationFrame(animate);
-
-  box.rotation.x += 0.01;
-  box.rotation.y += 0.02;
 
   textureRenderer.render(scene, camera);
   renderer.render(sceneFX, cameraFX);

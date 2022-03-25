@@ -1536,6 +1536,16 @@
         "/src"
       ]
     },
+    "webgl_lines_fat_raycasting": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_lines_fat_wireframe": {
       "files": {
         "index.html": "src",
@@ -3109,16 +3119,6 @@
         "/src"
       ]
     },
-    "webgl_postprocessing_ssrr": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_postprocessing_taa": {
       "files": {
         "index.html": "src",
@@ -3535,6 +3535,16 @@
       ]
     },
     "webgpu_compute": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_depth_texture": {
       "files": {
         "index.html": "src",
         "main.js": "src",

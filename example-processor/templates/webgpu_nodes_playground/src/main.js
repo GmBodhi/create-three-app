@@ -25,6 +25,9 @@ import Stats from "three/examples/jsm/libs/stats.module.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
+// Use PreviewEditor in WebGL for now
+import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+
 let stats;
 let camera, scene, renderer;
 let model;
@@ -62,7 +65,7 @@ async function init() {
   backLight.position.set(-100, 20, -260);
   scene.add(backLight);
 
-  nodeLights = Nodes.LightsNode.fromLights([topLight, backLight]);
+  nodeLights = new Nodes.LightsNode().fromLights([topLight, backLight]);
 
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -103,7 +106,7 @@ function initEditor() {
   nodeEditor.addEventListener("add", (e) => {
     const node = e.node;
 
-    if (node.value !== null && node.value.isMaterial === true) {
+    if (node.value !== null && node.value.isMeshStandardNodeMaterial === true) {
       const material = node.value;
 
       material.lightNode = nodeLights;
@@ -115,7 +118,7 @@ function initEditor() {
   const loaderFBX = new FBXLoader();
   loaderFBX.load("models/fbx/stanford-bunny.fbx", (object) => {
     const defaultMaterial = new Nodes.MeshBasicNodeMaterial();
-    defaultMaterial.colorNode = new Nodes.FloatNode(0);
+    defaultMaterial.colorNode = new Nodes.UniformNode(0);
 
     const sphere = new Mesh(new SphereGeometry(200, 32, 16), defaultMaterial);
     sphere.name = "Sphere";
@@ -128,7 +131,7 @@ function initEditor() {
     scene.add(box);
 
     const defaultPointsMaterial = new Nodes.PointsNodeMaterial();
-    defaultPointsMaterial.colorNode = new Nodes.FloatNode(0);
+    defaultPointsMaterial.colorNode = new Nodes.UniformNode(0);
 
     const torusKnot = new Points(
       new TorusKnotGeometry(100, 30, 100, 16),
@@ -165,6 +168,8 @@ function onWindowResize() {
 
 function animate() {
   requestAnimationFrame(animate);
+
+  nodeFrame.update();
 
   render();
 

@@ -98,9 +98,7 @@ function init() {
 
   const time = new Nodes.TimerNode();
 
-  const spriteSheetCount = new Nodes.Vector2Node(new Vector2(6, 6)).setConst(
-    true
-  );
+  const spriteSheetCount = new Nodes.ConstNode(new Vector2(6, 6));
 
   const fireUV = new Nodes.SpriteSheetUVNode(
     spriteSheetCount, // count
@@ -111,7 +109,7 @@ function init() {
   const fireSprite = new Nodes.TextureNode(fireMap, fireUV);
   const fire = new Nodes.OperatorNode("*", fireSprite, particleIntensity);
 
-  const lerpPosition = new Nodes.FloatNode(0);
+  const lerpPosition = new Nodes.UniformNode(0);
 
   const positionNode = new Nodes.MathNode(
     Nodes.MathNode.MIX,

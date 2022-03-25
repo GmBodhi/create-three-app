@@ -6,8 +6,8 @@ import {
   Clock,
   PointLight,
   AnimationMixer,
-  MeshStandardMaterial,
 } from "three";
+import * as Nodes from "three-nodes/Nodes.js";
 
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
@@ -48,7 +48,7 @@ async function init() {
   camera.add(light);
   scene.add(camera);
 
-  const lightNode = LightsNode.fromLights([light]);
+  const lightNode = new LightsNode().fromLights([light]);
 
   const loader = new FBXLoader();
   loader.load("models/fbx/Samba Dancing.fbx", function (object) {
@@ -59,7 +59,7 @@ async function init() {
 
     object.traverse(function (child) {
       if (child.isMesh) {
-        child.material = new MeshStandardMaterial();
+        child.material = new Nodes.MeshStandardNodeMaterial();
         child.material.lightNode = lightNode;
       }
     });

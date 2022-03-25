@@ -66,7 +66,7 @@ function init() {
         color: 0xffffff * Math.random(),
       });
       const mesh = new Mesh(geometry, material);
-      mesh.position.setFromMatrixPosition(reticle.matrix);
+      reticle.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
       mesh.scale.y = Math.random() * 2 + 1;
       scene.add(mesh);
     }
