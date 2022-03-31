@@ -19,7 +19,7 @@ import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.j
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-import { addTo } from "three-nodes/ShaderNode.js";
+import { addTo } from "three-nodes/Nodes.js";
 
 let camera, scene, renderer;
 
