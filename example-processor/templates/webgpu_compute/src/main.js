@@ -96,13 +96,13 @@ async function init() {
 					//
 
 					struct Particle {
-						value : array< vec4<f32> >;
+						value : array< vec4<f32> >
 					};
 					@binding( 0 ) @group( 0 )
 					var<storage,read_write> particle : Particle;
 
 					struct Velocity {
-						value : array< vec4<f32> >;
+						value : array< vec4<f32> >
 					};
 					@binding( 1 ) @group( 0 )
 					var<storage,read_write> velocity : Velocity;
@@ -112,13 +112,13 @@ async function init() {
 					//
 
 					struct Scale {
-						value : array< vec3<f32>, 2 >;
+						value : array< vec3<f32>, 2 >
 					};
 					@binding( 2 ) @group( 0 )
 					var<uniform> scaleUniform : Scale;
 
 					struct MouseUniforms {
-						pointer : vec2<f32>;
+						pointer : vec2<f32>
 					};
 					@binding( 3 ) @group( 0 )
 					var<uniform> mouseUniforms : MouseUniforms;
