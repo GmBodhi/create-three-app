@@ -33,7 +33,7 @@ async function init() {
     50,
     window.innerWidth / window.innerHeight,
     1,
-    1000
+    5000
   );
   camera.position.set(100, 200, 300);
 
@@ -60,7 +60,7 @@ async function init() {
     const action = mixer.clipAction(object.animations[0]);
     action.play();
 
-    const instanceCount = 50;
+    const instanceCount = 30;
     const dummy = new Object3D();
 
     object.traverse((child) => {
