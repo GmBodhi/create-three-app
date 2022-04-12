@@ -6,6 +6,8 @@ import {
   Clock,
   PointLight,
   AnimationMixer,
+  sRGBEncoding,
+  LinearToneMapping,
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
 
@@ -48,8 +50,6 @@ async function init() {
   camera.add(light);
   scene.add(camera);
 
-  const lightNode = new LightsNode().fromLights([light]);
-
   const loader = new FBXLoader();
   loader.load("models/fbx/Samba Dancing.fbx", function (object) {
     mixer = new AnimationMixer(object);
@@ -60,7 +60,7 @@ async function init() {
     object.traverse(function (child) {
       if (child.isMesh) {
         child.material = new Nodes.MeshStandardNodeMaterial();
-        child.material.lightNode = lightNode;
+        child.material.roughness = 0.1;
       }
     });
 
@@ -72,6 +72,8 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 800);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

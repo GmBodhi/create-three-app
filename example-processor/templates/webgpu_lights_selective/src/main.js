@@ -9,6 +9,8 @@ import {
   PointLight,
   Mesh,
   MeshBasicMaterial,
+  sRGBEncoding,
+  LinearToneMapping,
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
 
@@ -70,19 +72,19 @@ async function init() {
 
   //lights
 
-  light1 = new PointLight(0xff0040, 2, 100);
+  light1 = new PointLight(0xff0040, 2, 1000);
   light1.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0xff0040 })));
   scene.add(light1);
 
-  light2 = new PointLight(0x0040ff, 2, 100);
+  light2 = new PointLight(0x0040ff, 2, 1000);
   light2.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0x0040ff })));
   scene.add(light2);
 
-  light3 = new PointLight(0x80ff80, 2, 100);
+  light3 = new PointLight(0x80ff80, 2, 1000);
   light3.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0x80ff80 })));
   scene.add(light3);
 
-  light4 = new PointLight(0xffaa00, 2, 100);
+  light4 = new PointLight(0xffaa00, 2, 1000);
   light4.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0xffaa00 })));
   scene.add(light4);
 
@@ -112,6 +114,7 @@ async function init() {
   centerObject.material.normalNode = new Nodes.NormalMapNode(
     new Nodes.TextureNode(normalMapTexture)
   );
+  centerObject.material.metalness = 0.5;
   centerObject.material.roughness = 0.5;
   scene.add(centerObject);
 
@@ -139,6 +142,8 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
+  renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 100);
 
   //controls
 

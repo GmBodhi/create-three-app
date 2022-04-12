@@ -8,6 +8,8 @@ import {
   AnimationMixer,
   Object3D,
   InstancedBufferAttribute,
+  sRGBEncoding,
+  LinearToneMapping,
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
 
@@ -44,7 +46,7 @@ async function init() {
 
   //lights
 
-  const centerLight = new PointLight(0xffffff, 0.8, 7000);
+  const centerLight = new PointLight(0xff9900, 0.8, 7000);
   centerLight.position.y = 450;
   centerLight.position.z = -200;
   scene.add(centerLight);
@@ -66,6 +68,7 @@ async function init() {
     object.traverse((child) => {
       if (child.isMesh) {
         child.material = new Nodes.MeshStandardNodeMaterial();
+        child.material.roughness = 0.1;
 
         child.isInstancedMesh = true;
         child.instanceMatrix = new InstancedBufferAttribute(
@@ -93,6 +96,8 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 800);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

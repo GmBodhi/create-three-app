@@ -19,8 +19,6 @@ import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.j
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-import { addTo } from "three-nodes/Nodes.js";
-
 let camera, scene, renderer;
 
 let light1, light2, light3;
@@ -84,13 +82,15 @@ async function init() {
   // custom lighting model
 
   const customLightingModel = new Nodes.ShaderNode((inputs) => {
-    const { lightColor, directDiffuse } = inputs;
+    const { lightColor, reflectedLight } = inputs;
 
-    addTo(directDiffuse, lightColor);
+    reflectedLight.directDiffuse.add(lightColor);
   });
 
-  const lightingModelContext = new Nodes.ContextNode(allLightsNode);
-  lightingModelContext.context.lightingModel = customLightingModel;
+  const lightingModelContext = new Nodes.LightContextNode(
+    allLightsNode,
+    customLightingModel
+  );
 
   materialPoints.lightNode = lightingModelContext;
 

@@ -128,7 +128,7 @@ async function init() {
   });
 
   material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = desaturateShaderNode({
+  material.colorNode = desaturateShaderNode.call({
     color: new Nodes.TextureNode(texture),
   });
   materials.push(material);

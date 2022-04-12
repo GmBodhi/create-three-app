@@ -6,6 +6,7 @@ import {
   Color,
   PointLight,
   sRGBEncoding,
+  LinearToneMapping,
   Mesh,
   SphereGeometry,
   BoxGeometry,
@@ -58,20 +59,19 @@ async function init() {
   // Lights
 
   const topLight = new PointLight(0xf4f6f0, 1);
-  topLight.position.set(0, 100000, 100000);
+  topLight.position.set(0, 1000, 1000);
   scene.add(topLight);
 
-  const backLight = new PointLight(0x0c1445, 1.4);
+  const backLight = new PointLight(0x0c1445, 1);
   backLight.position.set(-100, 20, -260);
   scene.add(backLight);
-
-  nodeLights = new Nodes.LightsNode().fromLights([topLight, backLight]);
 
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
   renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 4000);
 
   renderer.domElement.className = "renderer";
 
@@ -101,16 +101,6 @@ function initEditor() {
 
     nodeEditor.add(materialEditor);
     nodeEditor.centralizeNode(materialEditor);
-  });
-
-  nodeEditor.addEventListener("add", (e) => {
-    const node = e.node;
-
-    if (node.value !== null && node.value.isMeshStandardNodeMaterial === true) {
-      const material = node.value;
-
-      material.lightNode = nodeLights;
-    }
   });
 
   document.body.appendChild(nodeEditor.domElement);
