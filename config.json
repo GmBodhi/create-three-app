@@ -3874,6 +3874,16 @@
         "/src"
       ]
     },
+    "webxr_vr_teleport": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webxr_vr_video": {
       "files": {
         "index.html": "src",
