@@ -32,7 +32,6 @@ import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.j
 let stats;
 let camera, scene, renderer;
 let model;
-let nodeLights;
 
 init()
   .then(animate)
