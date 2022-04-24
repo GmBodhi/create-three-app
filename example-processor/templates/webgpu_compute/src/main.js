@@ -11,16 +11,25 @@ import {
 import * as Nodes from "three-nodes/Nodes.js";
 
 import {
+  ShaderNode,
   compute,
-  color,
-  add,
   uniform,
   element,
   storage,
-  func,
+  temp,
   assign,
-  float,
-  mul,
+  add,
+  sub,
+  cond,
+  abs,
+  negate,
+  max,
+  min,
+  length,
+  vec3,
+  color,
+  greaterThanEqual,
+  lessThanEqual,
   positionLocal,
   instanceIndex,
 } from "three-nodes/Nodes.js";
@@ -33,7 +42,7 @@ import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.j
 let camera, scene, renderer;
 let computeNode;
 
-const pointer = new Vector2(-10.0, -10.0); // Out of bounds first
+const pointerVector = new Vector2(-10.0, -10.0); // Out of bounds first
 const scaleVector = new Vector2(1, 1);
 
 init().then(animate).catch(error);
@@ -74,95 +83,51 @@ async function init() {
   const particleBufferNode = storage(particleBuffer, "vec3");
   const velocityBufferNode = storage(velocityBuffer, "vec3");
 
-  // create wgsl function
+  // create function
 
-  const WGSLFnNode = func(`( pointer:vec2<f32>, limit:vec2<f32> ) {
+  const FnNode = new ShaderNode((inputs, builder) => {
+    const particle = element(particleBufferNode, instanceIndex);
+    const velocity = element(velocityBufferNode, instanceIndex);
 
-						var position = particle + velocity;
+    const pointer = uniform(pointerVector);
+    const limit = uniform(scaleVector);
 
-						if ( abs( position.x ) >= limit.x ) {
+    const position = temp(vec3());
+    assign(position, add(particle, velocity)).build(builder); // workaround
 
-							if ( position.x > 0.0 ) {
+    assign(
+      velocity.x,
+      cond(
+        greaterThanEqual(abs(position.x), limit.x),
+        negate(velocity.x),
+        velocity.x
+      )
+    ).build(builder);
+    assign(
+      velocity.y,
+      cond(
+        greaterThanEqual(abs(position.y), limit.y),
+        negate(velocity.y),
+        velocity.y
+      )
+    ).build(builder);
 
-								position.x = limit.x;
+    assign(position, max(negate(limit), min(limit, position))).build(builder);
 
-							} else {
+    const pointerSize = 0.1;
+    const distanceFromPointer = length(sub(pointer, position));
 
-								position.x = -limit.x;
-
-							}
-
-							velocity.x = - velocity.x;
-
-						}
-
-						if ( abs( position.y ) >= limit.y ) {
-
-							if ( position.y > 0.0 ) {
-
-								position.y = limit.y;
-
-							} else {
-
-								position.y = -limit.y;
-
-							}
-
-							velocity.y = - velocity.y ;
-
-						}
-
-						let POINTER_SIZE = .1;
-
-						let dx = pointer.x - position.x;
-						let dy = pointer.y - position.y;
-						let distanceFromPointer = sqrt( dx * dx + dy * dy );
-
-						if ( distanceFromPointer <= POINTER_SIZE ) {
-
-							position.x = 0.0;
-							position.y = 0.0;
-							position.z = 0.0;
-
-						}
-
-						particle = position;
-
-					}
-				`);
-
-  // define particle and velocity keywords in wgsl function
-  // it's used in case of needed change a global variable like this storageBuffer
-
-  const particleNode = element(particleBufferNode, instanceIndex);
-  const velocityNode = element(velocityBufferNode, instanceIndex);
-
-  WGSLFnNode.keywords["particle"] = particleNode;
-  WGSLFnNode.keywords["velocity"] = velocityNode;
+    assign(
+      particle,
+      cond(lessThanEqual(distanceFromPointer, pointerSize), vec3(), position)
+    ).build(builder);
+  });
 
   // compute
 
   computeNode = compute(particleNum);
 
-  // Example 1: Calling a WGSL function
-
-  computeNode.computeNode = WGSLFnNode.call({
-    pointer: uniform(pointer),
-    limit: uniform(scaleVector),
-  });
-
-  // Example 2: Creating single storage assign
-
-  //computeNode.computeNode = assign( particleNode, add( particleNode, velocityNode ) );
-
-  // Example 3: Creating multiples storage assign
-
-  /*computeNode.computeNode = new Nodes.ShaderNode( ( {}, builder ) => {
-
-					assign( particleNode, add( particleNode, velocityNode ) ).build( builder );
-					assign( velocityNode, mul( velocityNode, float( 0.99 ) ) ).build( builder );
-
-				} );/**/
+  computeNode.computeNode = FnNode;
 
   // use a compute shader to animate the point cloud's vertex data.
 
@@ -206,7 +171,7 @@ function onMouseMove(event) {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  pointer.set((x / width - 0.5) * 2.0, (-y / height + 0.5) * 2.0);
+  pointerVector.set((x / width - 0.5) * 2.0, (-y / height + 0.5) * 2.0);
 }
 
 function animate() {
