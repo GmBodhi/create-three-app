@@ -4,8 +4,9 @@ import {
   Vector2,
   OrthographicCamera,
   Scene,
-  BufferAttribute,
+  InstancedBufferAttribute,
   BufferGeometry,
+  BufferAttribute,
   Points,
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
@@ -16,6 +17,7 @@ import {
   uniform,
   element,
   storage,
+  attribute,
   temp,
   assign,
   add,
@@ -30,7 +32,6 @@ import {
   color,
   greaterThanEqual,
   lessThanEqual,
-  positionLocal,
   instanceIndex,
 } from "three-nodes/Nodes.js";
 
@@ -61,27 +62,29 @@ async function init() {
 
   // initialize particles
 
-  const particleNum = 65000; // 16-bit limit
-  const particleSize = 3; // vec3
+  const particleNum = 300000;
+  const particleSize = 2; // vec2
 
   const particleArray = new Float32Array(particleNum * particleSize);
   const velocityArray = new Float32Array(particleNum * particleSize);
 
-  for (let i = 0; i < particleArray.length; i += particleSize) {
-    const r = Math.random() * 0.01 + 0.0005;
+  for (let i = 0; i < particleNum; i++) {
+    const r = Math.random() * 0.01 + 0.005;
     const degree = Math.random() * 360;
 
-    velocityArray[i + 0] = r * Math.sin((degree * Math.PI) / 180);
-    velocityArray[i + 1] = r * Math.cos((degree * Math.PI) / 180);
+    velocityArray[i * particleSize + 0] =
+      r * Math.sin((degree * Math.PI) / 180); // x
+    velocityArray[i * particleSize + 1] =
+      r * Math.cos((degree * Math.PI) / 180); // y
   }
 
   // create buffers
 
-  const particleBuffer = new BufferAttribute(particleArray, particleSize);
-  const velocityBuffer = new BufferAttribute(velocityArray, particleSize);
+  const particleBuffer = new InstancedBufferAttribute(particleArray);
+  const velocityBuffer = new InstancedBufferAttribute(velocityArray);
 
-  const particleBufferNode = storage(particleBuffer, "vec3");
-  const velocityBufferNode = storage(velocityBuffer, "vec3");
+  const particleBufferNode = storage(particleBuffer, "vec2", particleNum);
+  const velocityBufferNode = storage(velocityBuffer, "vec2", particleNum);
 
   // create function
 
@@ -125,19 +128,27 @@ async function init() {
 
   // compute
 
-  computeNode = compute(particleNum);
-
-  computeNode.computeNode = FnNode;
+  computeNode = compute(FnNode, particleNum);
 
   // use a compute shader to animate the point cloud's vertex data.
 
+  const particleNode = attribute("particle", "vec2");
+
   const pointsGeometry = new BufferGeometry();
-  pointsGeometry.setAttribute("position", particleBuffer);
+  pointsGeometry.setAttribute(
+    "position",
+    new BufferAttribute(new Float32Array(3))
+  ); // single vertex ( not triangle )
+  pointsGeometry.setAttribute("particle", particleBuffer); // dummy the position points as instances
+  pointsGeometry.drawRange.count = 1; // force render points as instances ( not triangle )
 
   const pointsMaterial = new Nodes.PointsNodeMaterial();
-  pointsMaterial.colorNode = add(positionLocal, color(0xffffff));
+  pointsMaterial.colorNode = add(particleNode, color(0xffffff));
+  pointsMaterial.positionNode = particleNode;
 
   const mesh = new Points(pointsGeometry, pointsMaterial);
+  mesh.isInstancedMesh = true;
+  mesh.count = particleNum;
   scene.add(mesh);
 
   renderer = new WebGPURenderer();

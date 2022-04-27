@@ -342,6 +342,8 @@ function updateCubes(object, time, numblobs, floor, wallx, wallz) {
   if (floor) object.addPlaneY(2, 12);
   if (wallz) object.addPlaneZ(2, 12);
   if (wallx) object.addPlaneX(2, 12);
+
+  object.update();
 }
 
 //
