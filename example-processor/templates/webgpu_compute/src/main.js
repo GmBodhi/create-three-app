@@ -14,6 +14,7 @@ import * as Nodes from "three-nodes/Nodes.js";
 import {
   ShaderNode,
   compute,
+  context,
   uniform,
   element,
   storage,
@@ -95,8 +96,8 @@ async function init() {
     const pointer = uniform(pointerVector);
     const limit = uniform(scaleVector);
 
-    const position = temp(vec3());
-    assign(position, add(particle, velocity)).build(builder); // workaround
+    const position = temp(context(add(particle, velocity), { temp: false }));
+    position.build(builder);
 
     assign(
       velocity.x,
