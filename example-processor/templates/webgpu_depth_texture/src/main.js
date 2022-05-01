@@ -15,12 +15,7 @@ import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 import WebGPUTextureRenderer from "three/examples/jsm/renderers/webgpu/WebGPUTextureRenderer.js";
 
-import {
-  smoothstep,
-  negate,
-  positionView,
-  invert,
-} from "three-nodes/ShaderNode.js";
+import { smoothstep, negate, positionView, invert } from "three-nodes/Nodes.js";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 

@@ -7,6 +7,7 @@ import {
   PointLight,
   WebGLRenderer,
   sRGBEncoding,
+  LinearToneMapping,
   Mesh,
   SphereGeometry,
   BoxGeometry,
@@ -47,16 +48,19 @@ function init() {
   // Lights
 
   const topLight = new PointLight(0xf4f6f0, 1);
-  topLight.position.set(0, 100000, 100000);
+  topLight.position.set(0, 1000, 1000);
   scene.add(topLight);
 
-  const backLight = new PointLight(0x0c1445, 1.4);
+  const backLight = new PointLight(0x0c1445, 1);
   backLight.position.set(-100, 20, -260);
   scene.add(backLight);
 
   renderer = new WebGLRenderer({ antialias: true });
   document.body.appendChild(renderer.domElement);
   renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMapping = LinearToneMapping;
+  renderer.toneMappingExposure = 4000;
+  renderer.physicallyCorrectLights = true;
 
   renderer.domElement.className = "renderer";
 

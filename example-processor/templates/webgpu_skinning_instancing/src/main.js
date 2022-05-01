@@ -6,6 +6,8 @@ import {
   Clock,
   PointLight,
   AnimationMixer,
+  Object3D,
+  InstancedBufferAttribute,
   sRGBEncoding,
   LinearToneMapping,
 } from "three";
@@ -15,8 +17,6 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-
-import LightsNode from "three-nodes/lights/LightsNode.js";
 
 let camera, scene, renderer;
 
@@ -35,7 +35,7 @@ async function init() {
     50,
     window.innerWidth / window.innerHeight,
     1,
-    1000
+    5000
   );
   camera.position.set(100, 200, 300);
 
@@ -46,21 +46,45 @@ async function init() {
 
   //lights
 
-  const light = new PointLight(0xffffff);
-  camera.add(light);
+  const centerLight = new PointLight(0xff9900, 0.8, 7000);
+  centerLight.position.y = 450;
+  centerLight.position.z = -200;
+  scene.add(centerLight);
+
+  const cameraLight = new PointLight(0x0099ff, 0.7, 7000);
+  camera.add(cameraLight);
   scene.add(camera);
 
   const loader = new FBXLoader();
-  loader.load("models/fbx/Samba Dancing.fbx", function (object) {
+  loader.load("models/fbx/Samba Dancing.fbx", (object) => {
     mixer = new AnimationMixer(object);
 
     const action = mixer.clipAction(object.animations[0]);
     action.play();
 
-    object.traverse(function (child) {
+    const instanceCount = 30;
+    const dummy = new Object3D();
+
+    object.traverse((child) => {
       if (child.isMesh) {
         child.material = new Nodes.MeshStandardNodeMaterial();
         child.material.roughness = 0.1;
+
+        child.isInstancedMesh = true;
+        child.instanceMatrix = new InstancedBufferAttribute(
+          new Float32Array(instanceCount * 16),
+          16
+        );
+        child.count = instanceCount;
+
+        for (let i = 0; i < instanceCount; i++) {
+          dummy.position.x = -200 + (i % 5) * 70;
+          dummy.position.z = Math.floor(i / 5) * -200;
+
+          dummy.updateMatrix();
+
+          dummy.matrix.toArray(child.instanceMatrix.array, i * 16);
+        }
       }
     });
 

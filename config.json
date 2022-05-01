@@ -3554,6 +3554,16 @@
         "/src"
       ]
     },
+    "webgpu_instance_mesh": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_instance_uniform": {
       "files": {
         "index.html": "src",
@@ -3625,6 +3635,16 @@
       ]
     },
     "webgpu_skinning": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_skinning_instancing": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3845,6 +3865,16 @@
       ]
     },
     "webxr_vr_sculpt": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_vr_teleport": {
       "files": {
         "index.html": "src",
         "main.js": "src",

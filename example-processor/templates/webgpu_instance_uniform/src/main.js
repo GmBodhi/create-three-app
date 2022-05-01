@@ -10,7 +10,7 @@ import {
   Mesh,
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
-import { add, mul } from "three-nodes/ShaderNode.js";
+import { add, mul } from "three-nodes/Nodes.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
