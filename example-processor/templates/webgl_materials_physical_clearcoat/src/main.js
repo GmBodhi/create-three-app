@@ -87,7 +87,7 @@ function init() {
 
         const normalMap4 = textureLoader.load("textures/golfball.jpg");
 
-        const clearcoatNormaMap = textureLoader.load(
+        const clearcoatNormalMap = textureLoader.load(
           "textures/pbr/Scratched_gold/Scratched_gold_01_1K_Normal.png"
         );
 
@@ -129,7 +129,7 @@ function init() {
           roughness: 0.1,
           clearcoat: 1.0,
           normalMap: normalMap4,
-          clearcoatNormalMap: clearcoatNormaMap,
+          clearcoatNormalMap: clearcoatNormalMap,
 
           // y scale is negated to compensate for normal map handedness.
           clearcoatNormalScale: new Vector2(2.0, -2.0),
@@ -147,7 +147,7 @@ function init() {
           color: 0xff0000,
           normalMap: normalMap2,
           normalScale: new Vector2(0.15, 0.15),
-          clearcoatNormalMap: clearcoatNormaMap,
+          clearcoatNormalMap: clearcoatNormalMap,
 
           // y scale is negated to compensate for normal map handedness.
           clearcoatNormalScale: new Vector2(2.0, -2.0),
