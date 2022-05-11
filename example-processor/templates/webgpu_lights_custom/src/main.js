@@ -11,6 +11,8 @@ import {
   Vector3,
   BufferGeometry,
   Points,
+  LinearToneMapping,
+  sRGBEncoding,
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
 
@@ -87,12 +89,11 @@ async function init() {
     reflectedLight.directDiffuse.add(lightColor);
   });
 
-  const lightingModelContext = new Nodes.LightContextNode(
-    allLightsNode,
-    customLightingModel
-  );
+  const lightingModelContext = new Nodes.ContextNode(allLightsNode, {
+    lightingModelNode: { direct: customLightingModel },
+  });
 
-  materialPoints.lightNode = lightingModelContext;
+  materialPoints.lightsNode = lightingModelContext;
 
   //
 
@@ -104,6 +105,8 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
+  renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
   // controls

@@ -16,8 +16,6 @@ import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
 
-import LightsNode from "three-nodes/lights/LightsNode.js";
-
 let camera, scene, renderer;
 
 let mixer, clock;
