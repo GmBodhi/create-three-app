@@ -205,7 +205,7 @@ async function init() {
   geometryLine.setAttribute("color", geometryLine.getAttribute("position"));
 
   const materialLine = new Nodes.LineBasicNodeMaterial();
-  materialLine.colorNode = new Nodes.AttributeNode("color", "vec3");
+  materialLine.colorNode = new Nodes.AttributeNode("color");
 
   const line = new Line(geometryLine, materialLine);
   line.position.set(2, 1, 0);

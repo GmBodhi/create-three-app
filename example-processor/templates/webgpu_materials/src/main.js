@@ -52,7 +52,7 @@ async function init() {
   // Grid
 
   const helper = new GridHelper(1000, 40, 0x303030, 0x303030);
-  helper.material.colorNode = new Nodes.AttributeNode("color", "vec3");
+  helper.material.colorNode = new Nodes.AttributeNode("color");
   helper.position.y = -75;
   scene.add(helper);
 

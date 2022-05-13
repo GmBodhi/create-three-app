@@ -80,8 +80,8 @@ async function init() {
 
   // create buffers
 
-  const particleBuffer = new InstancedBufferAttribute(particleArray);
-  const velocityBuffer = new InstancedBufferAttribute(velocityArray);
+  const particleBuffer = new InstancedBufferAttribute(particleArray, 2);
+  const velocityBuffer = new InstancedBufferAttribute(velocityArray, 2);
 
   const particleBufferNode = storage(particleBuffer, "vec2", particleNum);
   const velocityBufferNode = storage(velocityBuffer, "vec2", particleNum);
@@ -137,7 +137,7 @@ async function init() {
   const pointsGeometry = new BufferGeometry();
   pointsGeometry.setAttribute(
     "position",
-    new BufferAttribute(new Float32Array(3))
+    new BufferAttribute(new Float32Array(3), 3)
   ); // single vertex ( not triangle )
   pointsGeometry.setAttribute("particle", particleBuffer); // dummy the position points as instances
   pointsGeometry.drawRange.count = 1; // force render points as instances ( not triangle )
