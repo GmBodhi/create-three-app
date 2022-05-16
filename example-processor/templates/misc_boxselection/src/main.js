@@ -115,7 +115,7 @@ function render() {
 }
 
 const selectionBox = new SelectionBox(camera, scene);
-const helper = new SelectionHelper(selectionBox, renderer, "selectBox");
+const helper = new SelectionHelper(renderer, "selectBox");
 
 document.addEventListener("pointerdown", function (event) {
   for (const item of selectionBox.collection) {
