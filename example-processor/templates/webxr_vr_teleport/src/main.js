@@ -33,7 +33,7 @@ let camera, scene, raycaster, renderer;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
 
-let room, marker, floor;
+let room, marker, floor, baseReferenceSpace;
 
 let INTERSECTION;
 const tempMatrix = new Matrix4();
@@ -85,6 +85,9 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = sRGBEncoding;
+  renderer.xr.addEventListener("sessionstart", () => {
+    baseReferenceSpace = renderer.xr.getReferenceSpace();
+  });
   renderer.xr.enabled = true;
   document.body.appendChild(renderer.domElement);
 
@@ -102,7 +105,6 @@ function init() {
     this.userData.isSelecting = false;
 
     if (INTERSECTION) {
-      const baseReferenceSpace = renderer.xr.getReferenceSpace();
       const offsetPosition = {
         x: -INTERSECTION.x,
         y: -INTERSECTION.y,
