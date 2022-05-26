@@ -170,8 +170,6 @@ function animate() {
 }
 
 function render() {
-  const timer = 0.0001 * Date.now();
-
   for (let i = 0, l = objects.length; i < l; i++) {
     const object = objects[i];
 

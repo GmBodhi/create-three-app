@@ -474,6 +474,21 @@
         "/src/shaders"
       ]
     },
+    "webgl2_multiple_rendertargets_multisampled": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "gbufferFrag.glsl": "src/shaders",
+        "gbufferVert.glsl": "src/shaders",
+        "renderFrag.glsl": "src/shaders",
+        "renderVert.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgl2_multisampled_renderbuffers": {
       "files": {
         "index.html": "src",

@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   Matrix4,
-  Clock,
   Scene,
   Color,
   PerspectiveCamera,
@@ -37,8 +36,6 @@ let room, marker, floor, baseReferenceSpace;
 
 let INTERSECTION;
 const tempMatrix = new Matrix4();
-
-const clock = new Clock();
 
 init();
 animate();
@@ -85,9 +82,10 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.xr.addEventListener("sessionstart", () => {
-    baseReferenceSpace = renderer.xr.getReferenceSpace();
-  });
+  renderer.xr.addEventListener(
+    "sessionstart",
+    () => (baseReferenceSpace = renderer.xr.getReferenceSpace())
+  );
   renderer.xr.enabled = true;
   document.body.appendChild(renderer.domElement);
 
@@ -200,20 +198,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function handleController(controller) {
-  if (controller.userData.isSelecting) {
-    const object = room.children[count++];
-
-    object.position.copy(controller.position);
-    object.userData.velocity.x = (Math.random() - 0.5) * 3;
-    object.userData.velocity.y = (Math.random() - 0.5) * 3;
-    object.userData.velocity.z = Math.random() - 9;
-    object.userData.velocity.applyQuaternion(controller.quaternion);
-
-    if (count === room.children.length) count = 0;
-  }
 }
 
 //
