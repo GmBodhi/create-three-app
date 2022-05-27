@@ -40,6 +40,7 @@ function init() {
     function (points) {
       points.geometry.center();
       points.geometry.rotateX(Math.PI);
+      points.name = "Zaghetto.pcd";
       scene.add(points);
 
       render();

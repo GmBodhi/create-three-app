@@ -75,7 +75,7 @@ async function init() {
   // Grid
 
   const helper = new GridHelper(1000, 40, 0x303030, 0x303030);
-  helper.material.colorNode = new Nodes.AttributeNode("color", "vec3");
+  helper.material.colorNode = new Nodes.AttributeNode("color");
   helper.position.y = -75;
   scene.add(helper);
 
@@ -170,8 +170,6 @@ function animate() {
 }
 
 function render() {
-  const timer = 0.0001 * Date.now();
-
   for (let i = 0, l = objects.length; i < l; i++) {
     const object = objects[i];
 

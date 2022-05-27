@@ -34,12 +34,7 @@ class InstanceUniformNode extends Nodes.Node {
   }
 
   update(frame) {
-    const rendererState = frame.renderer.state;
-    const mesh = frame.object;
-
-    const meshColor = mesh.color;
-
-    this.uniformNode.value.copy(meshColor);
+    this.uniformNode.value.copy(frame.object.color);
   }
 
   generate(builder, output) {

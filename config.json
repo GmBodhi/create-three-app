@@ -1716,6 +1716,16 @@
         "/src"
       ]
     },
+    "webgl_loader_gltf_iridescence": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_gltf_sheen": {
       "files": {
         "index.html": "src",
@@ -3544,6 +3554,16 @@
         "/src"
       ]
     },
+    "webgpu_cubemap_mix": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_depth_texture": {
       "files": {
         "index.html": "src",
@@ -3585,6 +3605,16 @@
       ]
     },
     "webgpu_lights_selective": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_loader_gltf": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3655,6 +3685,16 @@
       ]
     },
     "webgpu_skinning_points": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_sprites": {
       "files": {
         "index.html": "src",
         "main.js": "src",

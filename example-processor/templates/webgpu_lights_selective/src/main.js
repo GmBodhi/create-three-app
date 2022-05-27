@@ -90,8 +90,8 @@ async function init() {
 
   //light nodes ( selective lights )
 
-  const redLightNode = new Nodes.LightsNode().fromLights([light1]);
-  const blueLightNode = new Nodes.LightsNode().fromLights([light2]);
+  const redLightsNode = new Nodes.LightsNode().fromLights([light1]);
+  const blueLightsNode = new Nodes.LightsNode().fromLights([light2]);
 
   //models
 
@@ -101,7 +101,7 @@ async function init() {
     geometryTeapot,
     new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
   );
-  leftObject.material.lightNode = redLightNode;
+  leftObject.material.lightsNode = redLightsNode;
   leftObject.material.roughnessNode = new Nodes.TextureNode(alphaTexture);
   leftObject.material.metalness = 0;
   leftObject.position.x = -30;
@@ -122,7 +122,7 @@ async function init() {
     geometryTeapot,
     new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
   );
-  rightObject.material.lightNode = blueLightNode;
+  rightObject.material.lightsNode = blueLightsNode;
   rightObject.material.metalnessNode = new Nodes.TextureNode(alphaTexture);
   rightObject.position.x = 30;
   scene.add(rightObject);

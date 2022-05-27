@@ -16,7 +16,7 @@ import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.j
 
 import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
 
-import { ShaderNode, vec3, dot, sampler } from "three-nodes/Nodes.js";
+import { ShaderNode, vec3, dot } from "three-nodes/Nodes.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
@@ -52,7 +52,7 @@ async function init() {
   // Grid
 
   const helper = new GridHelper(1000, 40, 0x303030, 0x303030);
-  helper.material.colorNode = new Nodes.AttributeNode("color", "vec3");
+  helper.material.colorNode = new Nodes.AttributeNode("color");
   helper.position.y = -75;
   scene.add(helper);
 

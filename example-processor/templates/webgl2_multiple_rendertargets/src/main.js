@@ -13,6 +13,7 @@ import {
   NearestFilter,
   FloatType,
   Scene,
+  Color,
   PerspectiveCamera,
   TextureLoader,
   RepeatWrapping,
@@ -27,10 +28,21 @@ import {
 
 import WebGL from "three/examples/jsm/capabilities/WebGL.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, controls;
 let renderTarget;
 let postScene, postCamera;
+
+const parameters = {
+  samples: 4,
+  wireframe: false,
+};
+
+const gui = new GUI();
+gui.add(parameters, "samples", 0, 4).step(1);
+gui.add(parameters, "wireframe");
+gui.onChange(render);
 
 init();
 
@@ -67,29 +79,25 @@ function init() {
   // Scene setup
 
   scene = new Scene();
+  scene.background = new Color(0x222222);
 
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
-    1,
-    10
+    0.1,
+    50
   );
   camera.position.z = 4;
 
-  const diffuse = new TextureLoader().load(
-    "textures/brick_diffuse.jpg",
+  const loader = new TextureLoader();
 
-    function () {
-      // ready to render
-      render();
-    }
-  );
-
-  diffuse.wrapS = diffuse.wrapT = RepeatWrapping;
+  const diffuse = loader.load("textures/hardwood2_diffuse.jpg", render);
+  diffuse.wrapS = RepeatWrapping;
+  diffuse.wrapT = RepeatWrapping;
 
   scene.add(
     new Mesh(
-      new TorusKnotGeometry(1, 0.3, 128, 64),
+      new TorusKnotGeometry(1, 0.3, 128, 32),
       new RawShaderMaterial({
         vertexShader: gbufferVert_,
         fragmentShader: gbufferFrag_,
@@ -126,8 +134,7 @@ function init() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render);
-  controls.enableZoom = false;
-  controls.screenSpacePanning = true;
+  //controls.enableZoom = false;
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -145,6 +152,14 @@ function onWindowResize() {
 }
 
 function render() {
+  renderTarget.samples = parameters.samples;
+
+  scene.traverse(function (child) {
+    if (child.material !== undefined) {
+      child.material.wireframe = parameters.wireframe;
+    }
+  });
+
   // render scene into target
   renderer.setRenderTarget(renderTarget);
   renderer.render(scene, camera);

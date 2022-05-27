@@ -1,29 +1,32 @@
 <html>
   <head>
-    <title>three.js webgl - GLTFloader + Sheen</title>
+    <title>three.js webgpu - GLTFloader</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
   </head>
-
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - GLTFLoader +
+      - GLTFLoader<br />
+      Battle Damaged Sci-fi Helmet by
       <a
-        href="https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_sheen"
+        href="https://sketchfab.com/theblueturtle_"
         target="_blank"
         rel="noopener"
-        >KHR_materials_sheen</a
+        >theblueturtle_</a
       ><br />
-      Sheen Chair from
       <a
-        href="https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/SheenChair"
+        href="https://hdrihaven.com/hdri/?h=royal_esplanade"
         target="_blank"
         rel="noopener"
-        >glTF-Sample-Models</a
+        >Royal Esplanade</a
+      >
+      by
+      <a href="https://hdrihaven.com/" target="_blank" rel="noopener"
+        >HDRI Haven</a
       >
     </div>
 
@@ -37,7 +40,8 @@
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js"
+          "three": "../build/three.module.js",
+          "three-nodes/": "./jsm/nodes/"
         }
       }
     </script>
