@@ -474,21 +474,6 @@
         "/src/shaders"
       ]
     },
-    "webgl2_multiple_rendertargets_multisampled": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "gbufferFrag.glsl": "src/shaders",
-        "gbufferVert.glsl": "src/shaders",
-        "renderFrag.glsl": "src/shaders",
-        "renderVert.glsl": "src/shaders",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
-    },
     "webgl2_multisampled_renderbuffers": {
       "files": {
         "index.html": "src",
@@ -1722,6 +1707,16 @@
       ]
     },
     "webgl_loader_gltf_compressed": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_loader_gltf_iridescence": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3690,6 +3685,16 @@
       ]
     },
     "webgpu_skinning_points": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_sprites": {
       "files": {
         "index.html": "src",
         "main.js": "src",

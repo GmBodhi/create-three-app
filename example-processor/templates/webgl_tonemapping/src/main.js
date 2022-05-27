@@ -104,12 +104,8 @@ async function init() {
 
   // model
 
-  gltf.scene.traverse(function (child) {
-    if (child.isMesh) {
-      mesh = child;
-      scene.add(mesh);
-    }
-  });
+  mesh = gltf.scene.getObjectByName("node_damagedHelmet_-6514");
+  scene.add(mesh);
 
   render();
 

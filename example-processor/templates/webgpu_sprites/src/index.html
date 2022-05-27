@@ -1,24 +1,18 @@
 <html>
   <head>
-    <title>three.js webgl - Multiple Render Targets</title>
+    <title>three.js - WebGPU - Sprites</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-
-    <!-- Write to G-Buffer -->
-
-    <!-- Read G-Buffer and render to screen -->
   </head>
   <body style="overflow: hidden">
     <div id="info">
-      <a href="http://threejs.org" target="_blank">threejs</a> webgl - Multiple
-      RenderTargets
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      WebGPU - Sprites
     </div>
 
-    <!-- Import maps polyfill -->
-    <!-- Remove this when import maps will be widely supported -->
     <script
       async=""
       src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
@@ -27,7 +21,8 @@
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js"
+          "three": "../build/three.module.js",
+          "three-nodes/": "./jsm/nodes/"
         }
       }
     </script>
