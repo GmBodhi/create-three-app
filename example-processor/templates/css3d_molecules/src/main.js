@@ -16,6 +16,7 @@ import {
   CSS3DObject,
   CSS3DSprite,
 } from "three/examples/jsm/renderers/CSS3DRenderer.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
 let controls;
@@ -28,7 +29,11 @@ const tmpVec3 = new Vector3();
 const tmpVec4 = new Vector3();
 const offset = new Vector3();
 
-let visualizationType = 2;
+const VIZ_TYPE = {
+  Atoms: 0,
+  Bonds: 1,
+  "Atoms + Bonds": 2,
+};
 
 const MOLECULES = {
   Ethanol: "ethanol.pdb",
@@ -51,11 +56,14 @@ const MOLECULES = {
   Graphite: "graphite.pdb",
 };
 
+const params = {
+  vizType: 2,
+  molecule: "caffeine.pdb",
+};
+
 const loader = new PDBLoader();
 const colorSpriteMap = {};
 const baseSprite = document.createElement("img");
-
-const menu = document.getElementById("menu");
 
 init();
 animate();
@@ -88,8 +96,7 @@ function init() {
   //
 
   baseSprite.onload = function () {
-    loadMolecule("models/pdb/caffeine.pdb");
-    createMenu();
+    loadMolecule(params.molecule);
   };
 
   baseSprite.src = "textures/sprites/ball.png";
@@ -97,43 +104,20 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
+
+  //
+
+  const gui = new GUI();
+
+  gui.add(params, "vizType", VIZ_TYPE).onChange(changeVizType);
+  gui.add(params, "molecule", MOLECULES).onChange(loadMolecule);
+  gui.open();
 }
 
-//
-
-function generateButtonCallback(url) {
-  return function () {
-    loadMolecule(url);
-  };
-}
-
-function createMenu() {
-  for (const m in MOLECULES) {
-    const button = document.createElement("button");
-    button.innerHTML = m;
-    menu.appendChild(button);
-
-    const url = "models/pdb/" + MOLECULES[m];
-
-    button.addEventListener("click", generateButtonCallback(url));
-  }
-
-  const b_a = document.getElementById("b_a");
-  const b_b = document.getElementById("b_b");
-  const b_ab = document.getElementById("b_ab");
-
-  b_a.addEventListener("click", function () {
-    visualizationType = 0;
-    showAtoms();
-  });
-  b_b.addEventListener("click", function () {
-    visualizationType = 1;
-    showBonds();
-  });
-  b_ab.addEventListener("click", function () {
-    visualizationType = 2;
-    showAtomsBonds();
-  });
+function changeVizType(value) {
+  if (value === 0) showAtoms();
+  else if (value === 1) showBonds();
+  else showAtomsBonds();
 }
 
 //
@@ -216,7 +200,9 @@ function imageToCanvas(image) {
 
 //
 
-function loadMolecule(url) {
+function loadMolecule(model) {
+  const url = "models/pdb/" + model;
+
   for (let i = 0; i < objects.length; i++) {
     const object = objects[i];
     object.parent.remove(object);
@@ -360,17 +346,7 @@ function loadMolecule(url) {
 
     //console.log( "CSS3DObjects:", objects.length );
 
-    switch (visualizationType) {
-      case 0:
-        showAtoms();
-        break;
-      case 1:
-        showBonds();
-        break;
-      case 2:
-        showAtomsBonds();
-        break;
-    }
+    changeVizType(params.vizType);
   });
 }
 

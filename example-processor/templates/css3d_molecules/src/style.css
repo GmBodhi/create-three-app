@@ -8,45 +8,6 @@ body {
   line-height: 24px;
   overscroll-behavior: none;
 }
-#topmenu {
-  top: 50px;
-  padding: 10px;
-  box-sizing: border-box;
-  text-align: center;
-}
-#info,
-#menu,
-#overlay,
-#topmenu {
-  position: absolute;
-  width: 100%;
-}
-#menu {
-  bottom: 20px;
-  padding: 10px;
-  box-sizing: border-box;
-  text-align: center;
-}
-#overlay button,
-button {
-  color: #fff;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-button {
-  background: rgb(255, 255, 255, 0.1);
-  border: 0;
-  padding: 5px 10px;
-  margin: 2px;
-  font-size: 14px;
-}
-button:hover {
-  background-color: rgba(0, 255, 255, 0.5);
-}
-button:active {
-  color: #000;
-  background-color: #0ff;
-}
 .bond {
   width: 5px;
   height: 10px;
@@ -56,13 +17,21 @@ button:active {
 a {
   color: #ff0;
   text-decoration: none;
+  pointer-events: auto;
 }
 a:hover {
   text-decoration: underline;
 }
+#overlay button,
+button {
+  text-transform: uppercase;
+  cursor: pointer;
+}
 #info,
 #overlay {
+  position: absolute;
   top: 0;
+  width: 100%;
 }
 #info {
   padding: 10px;
@@ -75,7 +44,6 @@ a:hover {
   pointer-events: none;
   z-index: 1;
 }
-a,
 button,
 input,
 select {
@@ -109,6 +77,7 @@ select {
   background: 0 0;
   border: 1px solid #fff;
   border-radius: 4px;
+  color: #fff;
   padding: 12px 18px;
 }
 #notSupported {

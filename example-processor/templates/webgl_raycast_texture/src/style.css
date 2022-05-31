@@ -10,19 +10,7 @@ body {
 a {
   color: #ff0;
   text-decoration: none;
-}
-#controls {
-  position: absolute;
-  text-align: left;
-  top: 60px;
-  left: 5px;
-  padding: 5px;
-}
-.control {
-  margin-bottom: 3px;
-}
-input {
-  width: 50px;
+  pointer-events: auto;
 }
 a:hover {
   text-decoration: underline;
@@ -49,7 +37,6 @@ button {
   pointer-events: none;
   z-index: 1;
 }
-a,
 button,
 input,
 select {
