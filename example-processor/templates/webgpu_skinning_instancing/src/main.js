@@ -7,11 +7,14 @@ import {
   PointLight,
   AnimationMixer,
   Object3D,
+  Color,
   InstancedBufferAttribute,
   sRGBEncoding,
   LinearToneMapping,
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
+
+import { mix, range, color, oscSine, timerLocal } from "three-nodes/Nodes.js";
 
 import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
@@ -67,8 +70,20 @@ async function init() {
 
     object.traverse((child) => {
       if (child.isMesh) {
+        // random colors between instances from 0x000000 to 0xFFFFFF
+        const randomColors = range(new Color(0x000000), new Color(0xffffff));
+
+        // random [ 0, 1 ] values between instances
+        const randomMetalness = range(0, 1);
+
         child.material = new Nodes.MeshStandardNodeMaterial();
         child.material.roughness = 0.1;
+        child.material.metalnessNode = randomMetalness;
+        child.material.colorNode = mix(
+          color(0xffffff),
+          randomColors,
+          oscSine(timerLocal(0.1))
+        );
 
         child.isInstancedMesh = true;
         child.instanceMatrix = new InstancedBufferAttribute(

@@ -5,6 +5,7 @@ import {
   PerspectiveCamera,
   Scene,
   MeshBasicMaterial,
+  Color,
   BufferGeometryLoader,
   InstancedMesh,
 } from "three";
@@ -12,7 +13,13 @@ import {
 import Stats from "three/examples/jsm/libs/stats.module.js";
 import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
-import { normalWorld } from "three-nodes/Nodes.js";
+import {
+  mix,
+  range,
+  normalWorld,
+  oscSine,
+  timerLocal,
+} from "three-nodes/Nodes.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
@@ -45,7 +52,11 @@ async function init() {
   scene = new Scene();
 
   const material = new MeshBasicMaterial();
-  material.colorNode = normalWorld;
+
+  // random colors between instances from 0x000000 to 0xFFFFFF
+  const randomColors = range(new Color(0x000000), new Color(0xffffff));
+
+  material.colorNode = mix(normalWorld, randomColors, oscSine(timerLocal(0.1)));
 
   const loader = new BufferGeometryLoader();
   loader.load("models/json/suzanne_buffergeometry.json", function (geometry) {
