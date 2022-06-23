@@ -28,7 +28,7 @@ import {
   saturate,
   saturation,
   hue,
-  reflectCube,
+  reflectVector,
   context,
 } from "three-nodes/Nodes.js";
 
@@ -135,7 +135,7 @@ async function init() {
 
   const blurNode = uniform(0);
 
-  scene.environmentNode = getEnvironmentNode(reflectCube);
+  scene.environmentNode = getEnvironmentNode(reflectVector);
 
   scene.backgroundNode = context(
     getEnvironmentNode(transformDirection(positionWorld, modelWorldMatrix)),
