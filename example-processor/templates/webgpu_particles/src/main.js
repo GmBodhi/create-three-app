@@ -5,7 +5,8 @@ import {
   Scene,
   TextureLoader,
   Vector3,
-  Sprite,
+  Mesh,
+  PlaneGeometry,
   AdditiveBlending,
   GridHelper,
 } from "three";
@@ -99,7 +100,10 @@ async function init() {
   smokeNodeMaterial.depthWrite = false;
   smokeNodeMaterial.transparent = true;
 
-  const smokeInstancedSprite = new Sprite(smokeNodeMaterial);
+  const smokeInstancedSprite = new Mesh(
+    new PlaneGeometry(1, 1),
+    smokeNodeMaterial
+  );
   smokeInstancedSprite.scale.setScalar(400);
   smokeInstancedSprite.isInstancedMesh = true;
   smokeInstancedSprite.count = 2000;
@@ -119,7 +123,10 @@ async function init() {
   fireNodeMaterial.transparent = true;
   fireNodeMaterial.depthWrite = false;
 
-  const fireInstancedSprite = new Sprite(fireNodeMaterial);
+  const fireInstancedSprite = new Mesh(
+    new PlaneGeometry(1, 1),
+    fireNodeMaterial
+  );
   fireInstancedSprite.scale.setScalar(400);
   fireInstancedSprite.isInstancedMesh = true;
   fireInstancedSprite.count = 100;
