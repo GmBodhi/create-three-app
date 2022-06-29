@@ -3162,7 +3162,7 @@
         "/src/shaders"
       ]
     },
-    "webgl_raycast_sprite": {
+    "webgl_raycaster_bvh": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3172,7 +3172,17 @@
         "/src"
       ]
     },
-    "webgl_raycast_texture": {
+    "webgl_raycaster_sprite": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_raycaster_texture": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3725,6 +3735,16 @@
       ]
     },
     "webxr_ar_cones": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_ar_dragging": {
       "files": {
         "index.html": "src",
         "main.js": "src",

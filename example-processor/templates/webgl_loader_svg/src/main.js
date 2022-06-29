@@ -98,6 +98,7 @@ function createGUI() {
       "Style CSS inside defs": "models/svg/style-css-inside-defs.svg",
       "Multiple CSS classes": "models/svg/multiple-css-classes.svg",
       "Zero Radius": "models/svg/zero-radius.svg",
+      "Styles in svg tag": "models/svg/tests/styles.svg",
     })
     .name("SVG File")
     .onChange(update);
