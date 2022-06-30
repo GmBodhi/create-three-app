@@ -3,15 +3,7 @@ import "./style.css"; // For webpack support
 import { PerspectiveCamera, Scene, TextureLoader, Group, Sprite } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
 
-import {
-  texture,
-  uv,
-  mul,
-  float,
-  color,
-  reference,
-  userData,
-} from "three-nodes/Nodes.js";
+import { texture, uv, mul, float, color, userData } from "three-nodes/Nodes.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
@@ -21,6 +13,9 @@ let camera, scene, renderer;
 let map;
 
 let group;
+
+let imageWidth = 1,
+  imageHeight = 1;
 
 init().then(animate).catch(error);
 
@@ -51,7 +46,10 @@ async function init() {
 
   const textureLoader = new TextureLoader();
 
-  map = textureLoader.load("textures/sprite1.png");
+  map = textureLoader.load("textures/sprite1.png", (map) => {
+    imageWidth = map.image.width;
+    imageHeight = map.image.height;
+  });
 
   group = new Group();
 
@@ -116,16 +114,7 @@ function render() {
 
   for (let i = 0, l = group.children.length; i < l; i++) {
     const sprite = group.children[i];
-    const material = sprite.material;
     const scale = Math.sin(time + sprite.position.x * 0.01) * 0.3 + 1.0;
-
-    let imageWidth = 1;
-    let imageHeight = 1;
-
-    if (map && map.image && map.image.width) {
-      imageWidth = map.image.width;
-      imageHeight = map.image.height;
-    }
 
     sprite.userData.rotation += 0.1 * (i / l);
     sprite.scale.set(scale * imageWidth, scale * imageHeight, 1.0);

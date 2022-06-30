@@ -53,8 +53,8 @@ async function init() {
   cubeTexture.generateMipmaps = true;
   cubeTexture.minFilter = LinearMipmapLinearFilter;
 
-  //scene.backgroundNode = texture;
   scene.environmentNode = new Nodes.CubeTextureNode(cubeTexture);
+  scene.backgroundNode = scene.environmentNode;
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
   loader.load("DamagedHelmet.gltf", function (gltf) {

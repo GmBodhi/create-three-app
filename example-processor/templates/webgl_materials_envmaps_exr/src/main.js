@@ -59,8 +59,8 @@ function init() {
 
   let geometry = new TorusKnotGeometry(18, 8, 150, 20);
   let material = new MeshStandardMaterial({
-    metalness: params.roughness,
-    roughness: params.metalness,
+    metalness: params.metalness,
+    roughness: params.roughness,
     envMapIntensity: 1.0,
   });
 

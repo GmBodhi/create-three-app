@@ -1,5 +1,4 @@
 body {
-  background: radial-gradient(ellipse at center, #2b2d30 0, #000 100%);
   margin: 0;
   background-color: #000;
   color: #fff;
@@ -7,12 +6,6 @@ body {
   font-size: 13px;
   line-height: 24px;
   overscroll-behavior: none;
-}
-.bond {
-  width: 5px;
-  height: 10px;
-  background: #eee;
-  display: block;
 }
 a {
   color: #ff0;

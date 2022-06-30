@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - GLTFloader + Iridescence</title>
+    <title>three.js raycaster - bvh</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -11,30 +11,21 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - GLTFLoader +
+      raycaster -
       <a
-        href="https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_iridescence"
+        href="https://github.com/gkjohnson/three-mesh-bvh"
         target="_blank"
         rel="noopener"
-        >KHR_materials_iridescence</a
+        >three-mesh-bvh</a
       ><br />
-      Iridescence Lamp from
+      See
       <a
-        href="https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/IridescenceLamp"
+        href="https://github.com/gkjohnson/three-mesh-bvh"
         target="_blank"
         rel="noopener"
-        >glTF-Sample-Models</a
-      ><br />
-      <a
-        href="https://hdrihaven.com/hdri/?h=venice_sunset"
-        target="_blank"
-        rel="noopener"
-        >Venice Sunset</a
+        >main project repository</a
       >
-      by
-      <a href="https://hdrihaven.com/" target="_blank" rel="noopener"
-        >HDRI Haven</a
-      >
+      for more information and examples on high performance spatial queries.
     </div>
 
     <!-- Import maps polyfill -->
@@ -47,7 +38,8 @@
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js"
+          "three": "../build/three.module.js",
+          "three-mesh-bvh": "https://unpkg.com/three-mesh-bvh@^0.5.10/build/index.module.js"
         }
       }
     </script>

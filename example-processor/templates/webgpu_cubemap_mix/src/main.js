@@ -10,7 +10,14 @@ import {
 } from "three";
 import * as Nodes from "three-nodes/Nodes.js";
 
-import { mix, oscSine, timerLocal } from "three-nodes/Nodes.js";
+import {
+  mix,
+  oscSine,
+  timerLocal,
+  cubeTexture,
+  context,
+  float,
+} from "three-nodes/Nodes.js";
 
 import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
 import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
@@ -45,13 +52,13 @@ async function init() {
   scene = new Scene();
 
   const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  const cubeTexture = new RGBMLoader()
+  const cube1Texture = new RGBMLoader()
     .setMaxRange(16)
     .setPath("three/examples/textures/cube/pisaRGBM16/")
     .loadCubemap(rgbmUrls);
 
-  cubeTexture.generateMipmaps = true;
-  cubeTexture.minFilter = LinearMipmapLinearFilter;
+  cube1Texture.generateMipmaps = true;
+  cube1Texture.minFilter = LinearMipmapLinearFilter;
 
   const cube2Urls = [
     "dark-s_px.jpg",
@@ -69,10 +76,14 @@ async function init() {
   cube2Texture.minFilter = LinearMipmapLinearFilter;
 
   scene.environmentNode = mix(
-    new Nodes.CubeTextureNode(cube2Texture),
-    new Nodes.CubeTextureNode(cubeTexture),
+    cubeTexture(cube2Texture),
+    cubeTexture(cube1Texture),
     oscSine(timerLocal(0.1))
   );
+
+  scene.backgroundNode = context(scene.environmentNode, {
+    levelNode: float(9), // @TODO: currently it uses mipmaps value, I think it should be replaced for [0,1]
+  });
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
   loader.load("DamagedHelmet.gltf", function (gltf) {

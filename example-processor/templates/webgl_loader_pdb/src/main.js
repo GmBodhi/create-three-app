@@ -20,6 +20,7 @@ import {
   CSS2DRenderer,
   CSS2DObject,
 } from "three/examples/jsm/renderers/CSS2DRenderer.js";
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, labelRenderer;
 let controls;
@@ -46,10 +47,12 @@ const MOLECULES = {
   Graphite: "graphite.pdb",
 };
 
+const params = {
+  molecule: "caffeine.pdb",
+};
+
 const loader = new PDBLoader();
 const offset = new Vector3();
-
-const menu = document.getElementById("menu");
 
 init();
 animate();
@@ -100,37 +103,25 @@ function init() {
 
   //
 
-  loadMolecule("models/pdb/caffeine.pdb");
-  createMenu();
+  loadMolecule(params.molecule);
 
   //
 
   window.addEventListener("resize", onWindowResize);
+
+  //
+
+  const gui = new GUI();
+
+  gui.add(params, "molecule", MOLECULES).onChange(loadMolecule);
+  gui.open();
 }
 
 //
 
-function generateButtonCallback(url) {
-  return function () {
-    loadMolecule(url);
-  };
-}
+function loadMolecule(model) {
+  const url = "models/pdb/" + model;
 
-function createMenu() {
-  for (const m in MOLECULES) {
-    const button = document.createElement("button");
-    button.innerHTML = m;
-    menu.appendChild(button);
-
-    const url = "models/pdb/" + MOLECULES[m];
-
-    button.addEventListener("click", generateButtonCallback(url));
-  }
-}
-
-//
-
-function loadMolecule(url) {
   while (root.children.length > 0) {
     const object = root.children[0];
     object.parent.remove(object);

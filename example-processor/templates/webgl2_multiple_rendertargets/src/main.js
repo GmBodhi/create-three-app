@@ -11,7 +11,6 @@ import {
   WebGLRenderer,
   WebGLMultipleRenderTargets,
   NearestFilter,
-  FloatType,
   Scene,
   Color,
   PerspectiveCamera,
@@ -68,7 +67,6 @@ function init() {
   for (let i = 0, il = renderTarget.texture.length; i < il; i++) {
     renderTarget.texture[i].minFilter = NearestFilter;
     renderTarget.texture[i].magFilter = NearestFilter;
-    renderTarget.texture[i].type = FloatType;
   }
 
   // Name our G-Buffer attachments for debugging

@@ -82,15 +82,14 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = sRGBEncoding;
+
   renderer.xr.addEventListener(
     "sessionstart",
     () => (baseReferenceSpace = renderer.xr.getReferenceSpace())
   );
   renderer.xr.enabled = true;
+
   document.body.appendChild(renderer.domElement);
-
-  //
-
   document.body.appendChild(VRButton.createButton(renderer));
 
   // controllers

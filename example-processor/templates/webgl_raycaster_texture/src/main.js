@@ -1,6 +1,9 @@
 import "./style.css"; // For webpack support
 
 import {
+  RepeatWrapping,
+  ClampToEdgeWrapping,
+  MirroredRepeatWrapping,
   Raycaster,
   Vector2,
   Scene,
@@ -9,14 +12,30 @@ import {
   WebGLRenderer,
   Texture,
   UVMapping,
-  RepeatWrapping,
   MeshBasicMaterial,
   BoxGeometry,
   Mesh,
-  MirroredRepeatWrapping,
   PlaneGeometry,
   CircleGeometry,
 } from "three";
+
+import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+
+const WRAPPING = {
+  RepeatWrapping: RepeatWrapping,
+  ClampToEdgeWrapping: ClampToEdgeWrapping,
+  MirroredRepeatWrapping: MirroredRepeatWrapping,
+};
+
+const params = {
+  wrapS: RepeatWrapping,
+  wrapT: RepeatWrapping,
+  offsetX: 0,
+  offsetY: 0,
+  repeatX: 1,
+  repeatY: 1,
+  rotation: 0,
+};
 
 function CanvasTexture(parentTexture) {
   this._canvas = document.createElement("canvas");
@@ -244,15 +263,19 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   container.addEventListener("mousemove", onMouseMove);
 
-  document.getElementById("setwrapS").addEventListener("change", setwrapS);
-  document.getElementById("setwrapT").addEventListener("change", setwrapT);
-  document.getElementById("setOffsetU").addEventListener("change", setOffsetU);
-  document.getElementById("setOffsetV").addEventListener("change", setOffsetV);
-  document.getElementById("setRepeatU").addEventListener("change", setRepeatU);
-  document.getElementById("setRepeatV").addEventListener("change", setRepeatV);
-  document
-    .getElementById("setRotation")
-    .addEventListener("change", setRotation);
+  //
+
+  const gui = new GUI();
+  gui.title("Circle Texture Settings");
+
+  gui.add(params, "wrapS", WRAPPING).onChange(setwrapS);
+  gui.add(params, "wrapT", WRAPPING).onChange(setwrapT);
+  gui.add(params, "offsetX", 0, 5);
+  gui.add(params, "offsetY", 0, 5);
+  gui.add(params, "repeatX", 0, 5);
+  gui.add(params, "repeatY", 0, 5);
+  gui.add(params, "rotation", 0, 2 * Math.PI);
+  gui.open();
 }
 
 function onWindowResize() {
@@ -292,35 +315,26 @@ function getIntersects(point, objects) {
 
 function render() {
   requestAnimationFrame(render);
+
+  // update texture parameters
+
+  circleTexture.offset.x = params.offsetX;
+  circleTexture.offset.y = params.offsetY;
+  circleTexture.repeat.x = params.repeatX;
+  circleTexture.repeat.y = params.repeatY;
+  circleTexture.rotation = params.rotation;
+
+  //
+
   renderer.render(scene, camera);
 }
 
-function setwrapS(event) {
-  circleTexture.wrapS = parseFloat(event.target.value);
+function setwrapS(value) {
+  circleTexture.wrapS = value;
   circleTexture.needsUpdate = true;
 }
 
-function setwrapT(event) {
-  circleTexture.wrapT = parseFloat(event.target.value);
+function setwrapT(value) {
+  circleTexture.wrapT = value;
   circleTexture.needsUpdate = true;
-}
-
-function setOffsetU(event) {
-  circleTexture.offset.x = parseFloat(event.target.value);
-}
-
-function setOffsetV(event) {
-  circleTexture.offset.y = parseFloat(event.target.value);
-}
-
-function setRepeatU(event) {
-  circleTexture.repeat.x = parseFloat(event.target.value);
-}
-
-function setRepeatV(event) {
-  circleTexture.repeat.y = parseFloat(event.target.value);
-}
-
-function setRotation(event) {
-  circleTexture.rotation = parseFloat(event.target.value);
 }
