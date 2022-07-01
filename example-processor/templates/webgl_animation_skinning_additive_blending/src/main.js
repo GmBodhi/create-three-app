@@ -175,7 +175,9 @@ function createPanel() {
       const currentAction = currentSettings ? currentSettings.action : null;
       const action = settings ? settings.action : null;
 
-      prepareCrossFade(currentAction, action, 0.35);
+      if (currentAction !== action) {
+        prepareCrossFade(currentAction, action, 0.35);
+      }
     };
 
     crossFadeControls.push(folder1.add(panelSettings, name));
