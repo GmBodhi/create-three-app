@@ -99,6 +99,7 @@ function createGUI() {
       "Multiple CSS classes": "models/svg/multiple-css-classes.svg",
       "Zero Radius": "models/svg/zero-radius.svg",
       "Styles in svg tag": "models/svg/tests/styles.svg",
+      "Round join": "models/svg/tests/roundJoinPrecisionIssue.svg",
     })
     .name("SVG File")
     .onChange(update);
