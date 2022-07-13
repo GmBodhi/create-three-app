@@ -1285,16 +1285,6 @@
         "/src"
       ]
     },
-    "webgl_instancing_modified": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_instancing_performance": {
       "files": {
         "index.html": "src",
