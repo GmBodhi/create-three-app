@@ -7,7 +7,7 @@ import {
   WebGLRenderer,
   sRGBEncoding,
   EquirectangularReflectionMapping,
-  SphereBufferGeometry,
+  SphereGeometry,
   Group,
   MeshStandardMaterial,
   Mesh,
@@ -96,7 +96,7 @@ function init() {
 
   //
 
-  const ballGeometry = new SphereBufferGeometry(0.175, 32, 32);
+  const ballGeometry = new SphereGeometry(0.175, 32, 32);
   const ballGroup = new Group();
   ballGroup.position.z = -2;
 

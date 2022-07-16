@@ -16,7 +16,7 @@ import {
   LineSegments,
   LineBasicMaterial,
   InstancedMesh,
-  SphereBufferGeometry,
+  SphereGeometry,
   MeshBasicMaterial,
   DynamicDrawUsage,
 } from "three";
@@ -105,7 +105,7 @@ function init() {
   );
 
   sphereInstance = new InstancedMesh(
-    new SphereBufferGeometry(),
+    new SphereGeometry(),
     new MeshBasicMaterial({ color: RAY_COLOR }),
     2 * MAX_RAYS
   );
