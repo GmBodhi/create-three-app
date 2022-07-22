@@ -3,8 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  CubeTextureLoader,
-  sRGBEncoding,
+  EquirectangularReflectionMapping,
   TextureLoader,
   MeshPhysicalMaterial,
   MeshStandardMaterial,
@@ -13,7 +12,8 @@ import {
   MeshBasicMaterial,
   MultiplyBlending,
   WebGLRenderer,
-  PCFSoftShadowMap,
+  sRGBEncoding,
+  ACESFilmicToneMapping,
   MathUtils,
 } from "three";
 
@@ -24,19 +24,18 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 import { GroundProjectedEnv } from "three/examples/jsm/objects/GroundProjectedEnv.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
 const params = {
   height: 34,
   radius: 440,
-  toneMappingExposure: 1,
 };
 
-let camera, scene, renderer, stats, env;
+let camera, scene, renderer, env;
 
-init();
-animate();
+init().then(render);
 
-function init() {
+async function init() {
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -47,24 +46,17 @@ function init() {
 
   scene = new Scene();
 
-  const cubeLoader = new CubeTextureLoader();
-  cubeLoader.setPath("textures/cube/lake/");
+  const hdrLoader = new RGBELoader();
+  const envMap = await hdrLoader.loadAsync(
+    "textures/equirectangular/blouberg_sunrise_2_1k.hdr"
+  );
+  envMap.mapping = EquirectangularReflectionMapping;
 
-  const textureCube = cubeLoader.load([
-    "px.png",
-    "nx.png",
-    "py.png",
-    "ny.png",
-    "pz.png",
-    "nz.png",
-  ]);
-  textureCube.encoding = sRGBEncoding;
-
-  env = new GroundProjectedEnv(textureCube);
+  env = new GroundProjectedEnv(envMap);
   env.scale.setScalar(100);
   scene.add(env);
 
-  scene.environment = textureCube;
+  scene.environment = envMap;
 
   const dracoLoader = new DRACOLoader();
   dracoLoader.setDecoderPath("js/libs/draco/gltf/");
@@ -126,6 +118,8 @@ function init() {
     carModel.add(mesh);
 
     scene.add(carModel);
+
+    render();
   });
 
   //
@@ -133,13 +127,14 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
   renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.85;
 
   //
 
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.addEventListener("change", render);
   controls.target.set(0, 0, 0);
   controls.maxPolarAngle = MathUtils.degToRad(80);
   controls.maxDistance = 100;
@@ -147,12 +142,9 @@ function init() {
   controls.enablePan = false;
   controls.update();
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   const gui = new GUI();
-  gui.add(params, "height", 20, 50, 0.1);
-  gui.add(params, "radius", 200, 600, 0.1);
+  gui.add(params, "height", 20, 50, 0.1).onChange(render);
+  gui.add(params, "radius", 200, 600, 0.1).onChange(render);
 
   //
 
@@ -165,13 +157,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-  render();
-
-  stats.update();
 }
 
 function render() {
