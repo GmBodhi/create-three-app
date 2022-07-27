@@ -2377,6 +2377,16 @@
         "/src"
       ]
     },
+    "webgl_materials_physical_clearcoat_nodes": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_materials_physical_reflectivity": {
       "files": {
         "index.html": "src",
