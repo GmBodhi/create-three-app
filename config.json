@@ -499,6 +499,21 @@
         "/src/shaders"
       ]
     },
+    "webgl2_ubo": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "fragmentShader1.glsl": "src/shaders",
+        "fragmentShader2.glsl": "src/shaders",
+        "vertexShader1.glsl": "src/shaders",
+        "vertexShader2.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgl2_volume_cloud": {
       "files": {
         "index.html": "src",
@@ -1261,16 +1276,6 @@
       ]
     },
     "webgl_instancing_dynamic": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_instancing_modified": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -2279,7 +2284,7 @@
         "/src"
       ]
     },
-    "webgl_materials_envmaps_hdr": {
+    "webgl_materials_envmaps_groundprojected": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -2289,7 +2294,7 @@
         "/src"
       ]
     },
-    "webgl_materials_instance_uniform_nodes": {
+    "webgl_materials_envmaps_hdr": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -2383,16 +2388,6 @@
       ]
     },
     "webgl_materials_standard": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_materials_standard_nodes": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -2768,7 +2763,57 @@
         "/src"
       ]
     },
+    "webgl_nodes_loader_gltf_sheen": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_nodes_materials_instance_uniform": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_nodes_materials_physical_clearcoat": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_nodes_materials_standard": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_nodes_playground": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_nodes_points": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -2852,16 +2897,6 @@
       ]
     },
     "webgl_points_dynamic": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_points_nodes": {
       "files": {
         "index.html": "src",
         "main.js": "src",

@@ -100,6 +100,7 @@ function init() {
   };
 
   const pmremGenerator = new PMREMGenerator(renderer);
+  let renderTarget;
 
   function updateSun() {
     const phi = MathUtils.degToRad(90 - parameters.elevation);
@@ -110,7 +111,11 @@ function init() {
     sky.material.uniforms["sunPosition"].value.copy(sun);
     water.material.uniforms["sunDirection"].value.copy(sun).normalize();
 
-    scene.environment = pmremGenerator.fromScene(sky).texture;
+    if (renderTarget !== undefined) renderTarget.dispose();
+
+    renderTarget = pmremGenerator.fromScene(sky);
+
+    scene.environment = renderTarget.texture;
   }
 
   updateSun();

@@ -18,6 +18,9 @@ import {
   element,
   storage,
   attribute,
+  mul,
+  sin,
+  cos,
   temp,
   assign,
   add,
@@ -28,6 +31,8 @@ import {
   max,
   min,
   length,
+  float,
+  vec2,
   vec3,
   color,
   greaterThanEqual,
@@ -68,16 +73,6 @@ async function init() {
   const particleArray = new Float32Array(particleNum * particleSize);
   const velocityArray = new Float32Array(particleNum * particleSize);
 
-  for (let i = 0; i < particleNum; i++) {
-    const r = Math.random() * 0.01 + 0.005;
-    const degree = Math.random() * 360;
-
-    velocityArray[i * particleSize + 0] =
-      r * Math.sin((degree * Math.PI) / 180); // x
-    velocityArray[i * particleSize + 1] =
-      r * Math.cos((degree * Math.PI) / 180); // y
-  }
-
   // create buffers
 
   const particleBuffer = new InstancedBufferAttribute(particleArray, 2);
@@ -88,7 +83,7 @@ async function init() {
 
   // create function
 
-  const FnNode = new ShaderNode((inputs, builder) => {
+  const computeShaderNode = new ShaderNode((inputs, builder) => {
     const particle = element(particleBufferNode, instanceIndex);
     const velocity = element(velocityBufferNode, instanceIndex);
 
@@ -128,7 +123,24 @@ async function init() {
 
   // compute
 
-  computeNode = compute(FnNode, particleNum);
+  computeNode = compute(computeShaderNode, particleNum);
+  computeNode.onInit = ({ renderer }) => {
+    const precomputeShaderNode = new ShaderNode((inputs, builder) => {
+      const particleIndex = float(instanceIndex);
+
+      const randomAngle = mul(mul(particleIndex, 0.005), Math.PI * 2);
+      const randomSpeed = add(mul(particleIndex, 0.00000001), 0.0000001);
+
+      const velX = mul(sin(randomAngle), randomSpeed);
+      const velY = mul(cos(randomAngle), randomSpeed);
+
+      const velocity = element(velocityBufferNode, instanceIndex);
+
+      assign(velocity.xy, vec2(velX, velY)).build(builder);
+    });
+
+    renderer.compute(compute(precomputeShaderNode, computeNode.count));
+  };
 
   // use a compute shader to animate the point cloud's vertex data.
 
