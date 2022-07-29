@@ -27,7 +27,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
 
 const params = {
-  height: 34,
+  height: 20,
   radius: 440,
 };
 
@@ -37,12 +37,13 @@ init().then(render);
 
 async function init() {
   camera = new PerspectiveCamera(
-    45,
+    40,
     window.innerWidth / window.innerHeight,
     1,
     1000
   );
-  camera.position.set(-16, 4, 16);
+  camera.position.set(-20, 7, 20);
+  camera.lookAt(0, 4, 0);
 
   scene = new Scene();
 
@@ -68,12 +69,11 @@ async function init() {
 
   loader.load("models/gltf/ferrari.glb", function (gltf) {
     const bodyMaterial = new MeshPhysicalMaterial({
-      color: 0xff0000,
+      color: 0x000000,
       metalness: 1.0,
-      roughness: 0.5,
+      roughness: 0.8,
       clearcoat: 1.0,
-      clearcoatRoughness: 0.03,
-      sheen: 0.5,
+      clearcoatRoughness: 0.2,
     });
 
     const detailsMaterial = new MeshStandardMaterial({
@@ -129,16 +129,15 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = sRGBEncoding;
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.85;
 
   //
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render);
-  controls.target.set(0, 0, 0);
-  controls.maxPolarAngle = MathUtils.degToRad(80);
-  controls.maxDistance = 100;
-  controls.minDistance = 30;
+  controls.target.set(0, 2, 0);
+  controls.maxPolarAngle = MathUtils.degToRad(90);
+  controls.maxDistance = 80;
+  controls.minDistance = 20;
   controls.enablePan = false;
   controls.update();
 
