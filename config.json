@@ -2763,6 +2763,16 @@
         "/src"
       ]
     },
+    "webgl_nodes_loader_gltf_iridescence": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_nodes_loader_gltf_sheen": {
       "files": {
         "index.html": "src",
