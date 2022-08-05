@@ -2061,6 +2061,16 @@
         "/src"
       ]
     },
+    "webgl_loader_texture_tiff": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_tilt": {
       "files": {
         "index.html": "src",
