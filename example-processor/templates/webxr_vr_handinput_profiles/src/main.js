@@ -123,7 +123,7 @@ function init() {
     hand1.add(model);
   }
 
-  hand1.addEventListener("pinchend", function (event) {
+  hand1.addEventListener("pinchend", function () {
     handModels.left[this.userData.currentHandModel].visible = false;
     this.userData.currentHandModel = (this.userData.currentHandModel + 1) % 3;
     handModels.left[this.userData.currentHandModel].visible = true;
@@ -153,7 +153,7 @@ function init() {
     hand2.add(model);
   }
 
-  hand2.addEventListener("pinchend", function (evevent) {
+  hand2.addEventListener("pinchend", function () {
     handModels.right[this.userData.currentHandModel].visible = false;
     this.userData.currentHandModel = (this.userData.currentHandModel + 1) % 3;
     handModels.right[this.userData.currentHandModel].visible = true;

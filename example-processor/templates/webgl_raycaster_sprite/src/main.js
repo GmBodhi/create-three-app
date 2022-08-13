@@ -16,7 +16,7 @@ import {
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 let renderer, scene, camera;
-let controls, group;
+let group;
 
 let selectedObject = null;
 const raycaster = new Raycaster();
@@ -49,7 +49,9 @@ function init() {
   camera.position.set(15, 15, 15);
   camera.lookAt(scene.position);
 
-  controls = new OrbitControls(camera, renderer.domElement);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 15;
+  controls.maxDistance = 250;
 
   // add sprites
 

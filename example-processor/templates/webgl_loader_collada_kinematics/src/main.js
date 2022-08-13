@@ -30,7 +30,6 @@ let kinematicsTween;
 const tweenParameters = {};
 
 const loader = new ColladaLoader();
-// loader.load( 'three/examples/models/collada/kawada-hironx.dae', function ( collada ) {
 loader.load(
   "three/examples/models/collada/abb_irb52_7_120.dae",
   function (collada) {

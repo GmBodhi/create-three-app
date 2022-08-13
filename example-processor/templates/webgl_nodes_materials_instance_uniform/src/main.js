@@ -6,7 +6,6 @@ import {
   Scene,
   GridHelper,
   CubeTextureLoader,
-  MeshStandardMaterial,
   SphereGeometry,
   AmbientLight,
   DirectionalLight,
@@ -15,8 +14,16 @@ import {
   MeshBasicMaterial,
   WebGLRenderer,
 } from "three";
-import * as Nodes from "three-nodes/Nodes.js";
-import { add, mul } from "three-nodes/Nodes.js";
+
+import {
+  MeshStandardNodeMaterial,
+  Node,
+  NodeUpdateType,
+  uniform,
+  cubeTexture,
+  add,
+  mul,
+} from "three-nodes/Nodes.js";
 
 import Stats from "three/examples/jsm/libs/stats.module.js";
 
@@ -24,13 +31,13 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
 
-class InstanceUniformNode extends Nodes.Node {
+class InstanceUniformNode extends Node {
   constructor() {
     super("vec3");
 
-    this.updateType = Nodes.NodeUpdateType.Object;
+    this.updateType = NodeUpdateType.Object;
 
-    this.uniformNode = new Nodes.UniformNode(new Color());
+    this.uniformNode = uniform(new Color());
   }
 
   update(frame) {
@@ -86,14 +93,14 @@ function init() {
     path + "nz" + format,
   ];
 
-  const cubeTexture = new CubeTextureLoader().load(urls);
+  const cubeMap = new CubeTextureLoader().load(urls);
 
   // Material
 
   const instanceUniform = new InstanceUniformNode();
-  const cubeTextureNode = new Nodes.CubeTextureNode(cubeTexture);
+  const cubeTextureNode = cubeTexture(cubeMap);
 
-  const material = new MeshStandardMaterial();
+  const material = new MeshStandardNodeMaterial();
   material.colorNode = add(instanceUniform, cubeTextureNode);
   material.emissiveNode = mul(instanceUniform, cubeTextureNode);
 

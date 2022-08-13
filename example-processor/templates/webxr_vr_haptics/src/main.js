@@ -257,7 +257,7 @@ function handleCollisions() {
   }
 
   for (let i = 0; i < group.children.length; i++) {
-    let child = group.children[i];
+    const child = group.children[i];
     if (!child.collided) {
       // reset uncollided boxes
       child.material.emissive.b = 0;

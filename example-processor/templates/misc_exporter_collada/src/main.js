@@ -445,6 +445,7 @@ function createNewTeapot() {
 
       colors.push(r * 128, 0, b * 128);
     }
+
     teapot.geometry.setAttribute(
       "color",
       new Uint8BufferAttribute(colors, 3, true)

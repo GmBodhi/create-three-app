@@ -2793,6 +2793,16 @@
         "/src"
       ]
     },
+    "webgl_nodes_loader_gltf_transmission": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_nodes_materials_instance_uniform": {
       "files": {
         "index.html": "src",

@@ -21,7 +21,7 @@ init();
 animate();
 
 function addImageBitmap() {
-  new ImageBitmapLoader().setOptions({ imageOrientation: "none" }).load(
+  new ImageBitmapLoader().load(
     "textures/planets/earth_atmos_2048.jpg?" + performance.now(),
     function (imageBitmap) {
       const texture = new CanvasTexture(imageBitmap);
