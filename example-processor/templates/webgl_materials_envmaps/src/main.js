@@ -3,13 +3,12 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  AmbientLight,
   CubeTextureLoader,
   sRGBEncoding,
   TextureLoader,
   EquirectangularReflectionMapping,
   IcosahedronGeometry,
-  MeshLambertMaterial,
+  MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
   EquirectangularRefractionMapping,
@@ -42,11 +41,6 @@ function init() {
 
   scene = new Scene();
 
-  // Lights
-
-  const ambient = new AmbientLight(0xffffff);
-  scene.add(ambient);
-
   // Textures
 
   const loader = new CubeTextureLoader();
@@ -73,7 +67,7 @@ function init() {
   //
 
   const geometry = new IcosahedronGeometry(400, 15);
-  sphereMaterial = new MeshLambertMaterial({ envMap: textureCube });
+  sphereMaterial = new MeshBasicMaterial({ envMap: textureCube });
   sphereMesh = new Mesh(geometry, sphereMaterial);
   scene.add(sphereMesh);
 

@@ -149,7 +149,7 @@ function updateMatcap(texture) {
 }
 
 function handleJPG(event) {
-  // PNG, too
+  // PNG, WebP, too
 
   function imgCallback(event) {
     const texture = new Texture(event.target);
