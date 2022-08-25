@@ -7,6 +7,8 @@ import {
   Scene,
   PerspectiveCamera,
   AmbientLight,
+  TextureLoader,
+  LinearFilter,
   SpotLight,
   SpotLightHelper,
   CameraHelper,
@@ -23,6 +25,8 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 let renderer, scene, camera;
 
 let spotLight, lightHelper, shadowCameraHelper;
+
+let textureUrls, textures;
 
 let gui;
 
@@ -55,6 +59,16 @@ function init() {
 
   const ambient = new AmbientLight(0xffffff, 0.1);
   scene.add(ambient);
+
+  const textureLoader = new TextureLoader();
+  textureUrls = ["none", "uv_grid_opengl.jpg", "sprite2.png", "colors.png"];
+  textures = { none: null };
+
+  for (let i = 1; i < textureUrls.length; i++) {
+    textures[textureUrls[i]] = textureLoader.load("textures/" + textureUrls[i]);
+    textures[textureUrls[i]].minFilter = LinearFilter;
+    textures[textureUrls[i]].magFilter = LinearFilter;
+  }
 
   spotLight = new SpotLight(0xffffff, 1);
   spotLight.position.set(15, 40, 35);
@@ -131,6 +145,7 @@ function buildGui() {
     penumbra: spotLight.penumbra,
     decay: spotLight.decay,
     focus: spotLight.shadow.focus,
+    map: "none",
   };
 
   gui.addColor(params, "light color").onChange(function (val) {
@@ -165,6 +180,11 @@ function buildGui() {
 
   gui.add(params, "focus", 0, 1).onChange(function (val) {
     spotLight.shadow.focus = val;
+    render();
+  });
+
+  gui.add(params, "map", textureUrls).onChange(function (val) {
+    spotLight.map = textures[val];
     render();
   });
 

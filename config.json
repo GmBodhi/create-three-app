@@ -2640,6 +2640,16 @@
         "/src"
       ]
     },
+    "webgl_modifier_subdivision": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_modifier_tessellation": {
       "files": {
         "index.html": "src",
