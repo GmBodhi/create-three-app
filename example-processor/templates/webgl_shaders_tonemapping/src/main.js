@@ -30,14 +30,14 @@ import {
   FloatType,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { AdaptiveToneMappingPass } from "three/examples/jsm/postprocessing/AdaptiveToneMappingPass.js";
-import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass.js";
-import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { AdaptiveToneMappingPass } from "three/addons/postprocessing/AdaptiveToneMappingPass.js";
+import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let bloomPass, adaptToneMappingPass, ldrToneMappingPass, hdrToneMappingPass;
 let params;

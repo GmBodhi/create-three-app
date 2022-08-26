@@ -18,10 +18,10 @@ import {
   sRGBEncoding,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let scene, renderer, camera, stats;
 let model, skeleton, mixer, clock;

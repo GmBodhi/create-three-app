@@ -12,16 +12,16 @@ import {
   RepeatWrapping,
   PMREMGenerator,
 } from "three";
-import * as Nodes from "three-nodes/Nodes.js";
+import * as Nodes from "three/nodes";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { TrackballControls } from "three/addons/controls/TrackballControls.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
 let container, stats;
 

@@ -15,16 +15,16 @@ import {
   Mesh,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { BleachBypassShader } from "three/examples/jsm/shaders/BleachBypassShader.js";
-import { ColorCorrectionShader } from "three/examples/jsm/shaders/ColorCorrectionShader.js";
-import { FXAAShader } from "three/examples/jsm/shaders/FXAAShader.js";
-import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { BleachBypassShader } from "three/addons/shaders/BleachBypassShader.js";
+import { ColorCorrectionShader } from "three/addons/shaders/ColorCorrectionShader.js";
+import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let container, stats, loader;
 

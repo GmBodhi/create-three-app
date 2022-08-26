@@ -22,13 +22,13 @@ import {
   UniformsUtils,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import {
   BokehShader,
   BokehDepthShader,
-} from "three/examples/jsm/shaders/BokehShader2.js";
+} from "three/addons/shaders/BokehShader2.js";
 
 let container, stats;
 let camera, scene, renderer, materialDepth;

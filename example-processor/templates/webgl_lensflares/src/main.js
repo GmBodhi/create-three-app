@@ -16,13 +16,10 @@ import {
   sRGBEncoding,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { FlyControls } from "three/examples/jsm/controls/FlyControls.js";
-import {
-  Lensflare,
-  LensflareElement,
-} from "three/examples/jsm/objects/Lensflare.js";
+import { FlyControls } from "three/addons/controls/FlyControls.js";
+import { Lensflare, LensflareElement } from "three/addons/objects/Lensflare.js";
 
 let container, stats;
 

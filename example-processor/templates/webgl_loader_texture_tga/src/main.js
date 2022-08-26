@@ -11,10 +11,10 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { TGALoader } from "three/examples/jsm/loaders/TGALoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TGALoader } from "three/addons/loaders/TGALoader.js";
 
 let camera, scene, renderer, stats;
 

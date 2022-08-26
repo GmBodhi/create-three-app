@@ -11,16 +11,16 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
-import { LuminosityShader } from "three/examples/jsm/shaders/LuminosityShader.js";
-import { SobelOperatorShader } from "three/examples/jsm/shaders/SobelOperatorShader.js";
+import { LuminosityShader } from "three/addons/shaders/LuminosityShader.js";
+import { SobelOperatorShader } from "three/addons/shaders/SobelOperatorShader.js";
 
 let camera, scene, renderer, composer;
 

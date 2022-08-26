@@ -20,12 +20,12 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { FlyControls } from "three/examples/jsm/controls/FlyControls.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass.js";
+import { FlyControls } from "three/addons/controls/FlyControls.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 
 const radius = 6371;
 const tilt = 0.41;

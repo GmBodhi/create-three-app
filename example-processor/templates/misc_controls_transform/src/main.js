@@ -14,8 +14,8 @@ import {
   MathUtils,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TransformControls } from "three/addons/controls/TransformControls.js";
 
 let cameraPersp, cameraOrtho, currentCamera;
 let scene, renderer, control, orbit;

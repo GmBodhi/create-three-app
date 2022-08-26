@@ -12,7 +12,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { PeppersGhostEffect } from "three/examples/jsm/effects/PeppersGhostEffect.js";
+import { PeppersGhostEffect } from "three/addons/effects/PeppersGhostEffect.js";
 
 let container;
 

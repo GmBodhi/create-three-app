@@ -16,12 +16,12 @@ import {
   Mesh,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { Water } from "three/examples/jsm/objects/Water.js";
-import { Sky } from "three/examples/jsm/objects/Sky.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Water } from "three/addons/objects/Water.js";
+import { Sky } from "three/addons/objects/Sky.js";
 
 let container, stats;
 let camera, scene, renderer;

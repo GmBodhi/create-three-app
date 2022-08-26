@@ -12,15 +12,15 @@ import {
   WebGLRenderTarget,
 } from "three";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { TexturePass } from "three/examples/jsm/postprocessing/TexturePass.js";
-import { ClearPass } from "three/examples/jsm/postprocessing/ClearPass.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { TexturePass } from "three/addons/postprocessing/TexturePass.js";
+import { ClearPass } from "three/addons/postprocessing/ClearPass.js";
 import {
   MaskPass,
   ClearMaskPass,
-} from "three/examples/jsm/postprocessing/MaskPass.js";
-import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
+} from "three/addons/postprocessing/MaskPass.js";
+import { CopyShader } from "three/addons/shaders/CopyShader.js";
 
 let camera, composer, renderer;
 let box, torus;

@@ -17,7 +17,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { PointerLockControls } from "three/examples/jsm/controls/PointerLockControls.js";
+import { PointerLockControls } from "three/addons/controls/PointerLockControls.js";
 
 let camera, scene, renderer, controls;
 

@@ -12,8 +12,8 @@ import {
   ACESFilmicToneMapping,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { LWOLoader } from "three/examples/jsm/loaders/LWOLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { LWOLoader } from "three/addons/loaders/LWOLoader.js";
 
 let camera, scene, renderer;
 

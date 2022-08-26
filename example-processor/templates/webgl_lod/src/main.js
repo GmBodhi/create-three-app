@@ -14,7 +14,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { FlyControls } from "three/examples/jsm/controls/FlyControls.js";
+import { FlyControls } from "three/addons/controls/FlyControls.js";
 
 let container;
 

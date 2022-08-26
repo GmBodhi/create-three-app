@@ -28,8 +28,8 @@ import {
   TorusKnotGeometry,
 } from "three";
 import { LoopSubdivision } from "three-subdivide";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let renderer, scene, camera;
 let texture;

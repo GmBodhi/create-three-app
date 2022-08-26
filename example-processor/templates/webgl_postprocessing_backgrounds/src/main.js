@@ -13,17 +13,17 @@ import {
   CubeTextureLoader,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { TexturePass } from "three/examples/jsm/postprocessing/TexturePass.js";
-import { CubeTexturePass } from "three/examples/jsm/postprocessing/CubeTexturePass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { ClearPass } from "three/examples/jsm/postprocessing/ClearPass.js";
-import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { TexturePass } from "three/addons/postprocessing/TexturePass.js";
+import { CubeTexturePass } from "three/addons/postprocessing/CubeTexturePass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { ClearPass } from "three/addons/postprocessing/ClearPass.js";
+import { CopyShader } from "three/addons/shaders/CopyShader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let scene, renderer, composer;
 let clearPass, texturePass, renderPass;

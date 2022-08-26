@@ -11,9 +11,9 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
 let camera, scene, renderer, light1, light2, light3, light4, object, stats;
 

@@ -11,7 +11,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { MDDLoader } from "three/examples/jsm/loaders/MDDLoader.js";
+import { MDDLoader } from "three/addons/loaders/MDDLoader.js";
 
 let camera, scene, renderer, mixer, clock;
 

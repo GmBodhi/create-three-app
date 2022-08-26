@@ -21,10 +21,10 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
-import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { TrackballControls } from "three/addons/controls/TrackballControls.js";
+import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 
 let container, stats;
 let camera, controls, scene, renderer;

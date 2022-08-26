@@ -9,14 +9,14 @@ import {
   Matrix4,
 } from "three";
 
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
-import { PDBLoader } from "three/examples/jsm/loaders/PDBLoader.js";
+import { TrackballControls } from "three/addons/controls/TrackballControls.js";
+import { PDBLoader } from "three/addons/loaders/PDBLoader.js";
 import {
   CSS3DRenderer,
   CSS3DObject,
   CSS3DSprite,
-} from "three/examples/jsm/renderers/CSS3DRenderer.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+} from "three/addons/renderers/CSS3DRenderer.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
 let controls;

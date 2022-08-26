@@ -18,13 +18,13 @@ import {
   checker,
   float,
   timerLocal,
-} from "three-nodes/Nodes.js";
+} from "three/nodes";
 
-import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 let renderer, scene, camera, controls;
 

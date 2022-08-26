@@ -11,13 +11,13 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { OutlineEffect } from "three/examples/jsm/effects/OutlineEffect.js";
-import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader.js";
-import { MMDAnimationHelper } from "three/examples/jsm/animation/MMDAnimationHelper.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
+import { MMDLoader } from "three/addons/loaders/MMDLoader.js";
+import { MMDAnimationHelper } from "three/addons/animation/MMDAnimationHelper.js";
 
 let stats;
 

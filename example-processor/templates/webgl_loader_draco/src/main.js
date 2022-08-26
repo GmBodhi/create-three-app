@@ -15,7 +15,7 @@ import {
   sRGBEncoding,
 } from "three";
 
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 let camera, scene, renderer;
 

@@ -23,10 +23,10 @@ import {
   MeshLambertMaterial,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TransformControls } from "three/addons/controls/TransformControls.js";
 
 let container;
 let camera, scene, renderer;

@@ -1,12 +1,12 @@
 import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, Scene, TextureLoader, Group, Sprite } from "three";
-import * as Nodes from "three-nodes/Nodes.js";
+import * as Nodes from "three/nodes";
 
-import { texture, uv, mul, float, color, userData } from "three-nodes/Nodes.js";
+import { texture, uv, mul, float, color, userData } from "three/nodes";
 
-import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
-import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer;
 

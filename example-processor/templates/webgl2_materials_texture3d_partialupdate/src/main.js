@@ -19,11 +19,11 @@ import {
   Color,
   Box3,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { ImprovedNoise } from "three/examples/jsm/math/ImprovedNoise.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import WebGL from "three/examples/jsm/capabilities/WebGL.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
 
 if (WebGL.isWebGL2Available() === false) {
   document.body.appendChild(WebGL.getWebGL2ErrorMessage());

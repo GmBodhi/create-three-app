@@ -17,16 +17,16 @@ import {
   PlaneGeometry,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
   GodRaysFakeSunShader,
   GodRaysDepthMaskShader,
   GodRaysCombineShader,
   GodRaysGenerateShader,
-} from "three/examples/jsm/shaders/GodRaysShader.js";
+} from "three/addons/shaders/GodRaysShader.js";
 
 let container, stats;
 let camera, scene, renderer, materialDepth;

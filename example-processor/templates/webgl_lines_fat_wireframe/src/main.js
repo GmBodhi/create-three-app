@@ -11,13 +11,13 @@ import {
   LineSegments,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
-import { Wireframe } from "three/examples/jsm/lines/Wireframe.js";
-import { WireframeGeometry2 } from "three/examples/jsm/lines/WireframeGeometry2.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { LineMaterial } from "three/addons/lines/LineMaterial.js";
+import { Wireframe } from "three/addons/lines/Wireframe.js";
+import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
 
 let wireframe, renderer, scene, camera, camera2, controls;
 let wireframe1;

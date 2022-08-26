@@ -12,9 +12,9 @@ import {
   MeshStandardMaterial,
   Mesh,
 } from "three";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { ARButton } from "three/examples/jsm/webxr/ARButton.js";
-import { XREstimatedLight } from "three/examples/jsm/webxr/XREstimatedLight.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { ARButton } from "three/addons/webxr/ARButton.js";
+import { XREstimatedLight } from "three/addons/webxr/XREstimatedLight.js";
 
 let camera, scene, renderer;
 let controller;

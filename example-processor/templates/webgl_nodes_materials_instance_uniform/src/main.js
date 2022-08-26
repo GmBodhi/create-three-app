@@ -14,7 +14,6 @@ import {
   MeshBasicMaterial,
   WebGLRenderer,
 } from "three";
-
 import {
   MeshStandardNodeMaterial,
   Node,
@@ -23,13 +22,13 @@ import {
   cubeTexture,
   add,
   mul,
-} from "three-nodes/Nodes.js";
+} from "three/nodes";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
 class InstanceUniformNode extends Node {
   constructor() {

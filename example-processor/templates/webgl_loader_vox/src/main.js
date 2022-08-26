@@ -8,8 +8,8 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { VOXLoader, VOXMesh } from "three/examples/jsm/loaders/VOXLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { VOXLoader, VOXMesh } from "three/addons/loaders/VOXLoader.js";
 
 let camera, controls, scene, renderer;
 

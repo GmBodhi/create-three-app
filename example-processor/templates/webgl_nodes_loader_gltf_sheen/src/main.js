@@ -10,20 +10,13 @@ import {
   Color,
 } from "three";
 
-import {
-  NodeMaterial,
-  color,
-  uv,
-  mix,
-  mul,
-  checker,
-} from "three-nodes/Nodes.js";
+import { NodeMaterial, color, uv, mix, mul, checker } from "three/nodes";
 
-import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 let camera, scene, renderer, controls;
 

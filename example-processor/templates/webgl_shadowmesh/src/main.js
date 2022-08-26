@@ -21,7 +21,7 @@ import {
   TorusGeometry,
 } from "three";
 
-import { ShadowMesh } from "three/examples/jsm/objects/ShadowMesh.js";
+import { ShadowMesh } from "three/addons/objects/ShadowMesh.js";
 
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;

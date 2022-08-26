@@ -14,10 +14,10 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
+import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
 let perspectiveCamera, orthographicCamera, controls, scene, renderer, stats;
 

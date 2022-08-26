@@ -13,7 +13,7 @@ import {
   Line,
 } from "three";
 
-import * as GeometryUtils from "three/examples/jsm/utils/GeometryUtils.js";
+import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
 let mouseX = 0,
   mouseY = 0;

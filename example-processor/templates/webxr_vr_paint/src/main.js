@@ -17,9 +17,9 @@ import {
   CylinderGeometry,
   IcosahedronGeometry,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TubePainter } from "three/addons/misc/TubePainter.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
 
 let camera, scene, renderer;
 let controller1, controller2;

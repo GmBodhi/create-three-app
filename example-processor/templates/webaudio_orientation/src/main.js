@@ -21,9 +21,9 @@ import {
   sRGBEncoding,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { PositionalAudioHelper } from "three/examples/jsm/helpers/PositionalAudioHelper.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let scene, camera, renderer;
 

@@ -13,12 +13,12 @@ import {
   DirectionalLight,
 } from "three";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
-import { RGBShiftShader } from "three/examples/jsm/shaders/RGBShiftShader.js";
-import { DotScreenShader } from "three/examples/jsm/shaders/DotScreenShader.js";
+import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
+import { DotScreenShader } from "three/addons/shaders/DotScreenShader.js";
 
 let camera, renderer, composer;
 let object;

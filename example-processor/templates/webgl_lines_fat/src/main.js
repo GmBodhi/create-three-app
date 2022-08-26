@@ -14,15 +14,15 @@ import {
   LineDashedMaterial,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GPUStatsPanel } from "three/examples/jsm/utils/GPUStatsPanel.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GPUStatsPanel } from "three/addons/utils/GPUStatsPanel.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { Line2 } from "three/examples/jsm/lines/Line2.js";
-import { LineMaterial } from "three/examples/jsm/lines/LineMaterial.js";
-import { LineGeometry } from "three/examples/jsm/lines/LineGeometry.js";
-import * as GeometryUtils from "three/examples/jsm/utils/GeometryUtils.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Line2 } from "three/addons/lines/Line2.js";
+import { LineMaterial } from "three/addons/lines/LineMaterial.js";
+import { LineGeometry } from "three/addons/lines/LineGeometry.js";
+import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
 let line, renderer, scene, camera, camera2, controls;
 let line1;

@@ -12,9 +12,9 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
 
 let camera, scene, renderer;
 

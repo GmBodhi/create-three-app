@@ -10,12 +10,12 @@ import {
   TextureLoader,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { EdgeSplitModifier } from "three/examples/jsm/modifiers/EdgeSplitModifier.js";
-import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { EdgeSplitModifier } from "three/addons/modifiers/EdgeSplitModifier.js";
+import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let renderer, scene, camera;
 let modifier, mesh, baseGeometry;

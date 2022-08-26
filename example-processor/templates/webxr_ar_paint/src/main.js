@@ -8,8 +8,8 @@ import {
   HemisphereLight,
   DoubleSide,
 } from "three";
-import { TubePainter } from "three/examples/jsm/misc/TubePainter.js";
-import { ARButton } from "three/examples/jsm/webxr/ARButton.js";
+import { TubePainter } from "three/addons/misc/TubePainter.js";
+import { ARButton } from "three/addons/webxr/ARButton.js";
 
 let container;
 let camera, scene, renderer;

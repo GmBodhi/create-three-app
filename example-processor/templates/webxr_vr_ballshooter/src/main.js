@@ -24,9 +24,9 @@ import {
   MathUtils,
 } from "three";
 
-import { BoxLineGeometry } from "three/examples/jsm/geometries/BoxLineGeometry.js";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
-import { XRControllerModelFactory } from "three/examples/jsm/webxr/XRControllerModelFactory.js";
+import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
+import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 
 let camera, scene, renderer;
 let controller1, controller2;

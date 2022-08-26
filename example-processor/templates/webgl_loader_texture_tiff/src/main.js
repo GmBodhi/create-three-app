@@ -9,7 +9,7 @@ import {
   Mesh,
 } from "three";
 
-import { TIFFLoader } from "three/examples/jsm/loaders/TIFFLoader.js";
+import { TIFFLoader } from "three/addons/loaders/TIFFLoader.js";
 
 let renderer, scene, camera;
 

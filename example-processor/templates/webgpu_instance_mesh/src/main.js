@@ -10,19 +10,13 @@ import {
   InstancedMesh,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import {
-  mix,
-  range,
-  normalWorld,
-  oscSine,
-  timerLocal,
-} from "three-nodes/Nodes.js";
+import { mix, range, normalWorld, oscSine, timerLocal } from "three/nodes";
 
-import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
-import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer, stats;
 

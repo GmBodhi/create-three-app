@@ -13,7 +13,7 @@ import {
   TorusKnotGeometry,
 } from "three";
 
-import { UVsDebug } from "three/examples/jsm/utils/UVsDebug.js";
+import { UVsDebug } from "three/addons/utils/UVsDebug.js";
 
 /*
  * This is to help debug UVs problems in geometry,

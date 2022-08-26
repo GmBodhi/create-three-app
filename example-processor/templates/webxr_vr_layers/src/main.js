@@ -21,12 +21,12 @@ import {
   MeshBasicMaterial,
   CanvasTexture,
 } from "three";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { HTMLMesh } from "three/examples/jsm/interactive/HTMLMesh.js";
-import { InteractiveGroup } from "three/examples/jsm/interactive/InteractiveGroup.js";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
-import { XRControllerModelFactory } from "three/examples/jsm/webxr/XRControllerModelFactory.js";
-import { XRHandModelFactory } from "three/examples/jsm/webxr/XRHandModelFactory.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { HTMLMesh } from "three/addons/interactive/HTMLMesh.js";
+import { InteractiveGroup } from "three/addons/interactive/InteractiveGroup.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
+import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+import { XRHandModelFactory } from "three/addons/webxr/XRHandModelFactory.js";
 
 let camera, scene, renderer;
 let video;

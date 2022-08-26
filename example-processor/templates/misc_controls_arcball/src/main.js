@@ -15,12 +15,12 @@ import {
   PerspectiveCamera,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { ArcballControls } from "three/examples/jsm/controls/ArcballControls.js";
+import { ArcballControls } from "three/addons/controls/ArcballControls.js";
 
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 const cameras = ["Orthographic", "Perspective"];
 const cameraType = { type: "Perspective" };

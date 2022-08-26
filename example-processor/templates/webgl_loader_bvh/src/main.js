@@ -12,8 +12,8 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { BVHLoader } from "three/examples/jsm/loaders/BVHLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { BVHLoader } from "three/addons/loaders/BVHLoader.js";
 
 const clock = new Clock();
 

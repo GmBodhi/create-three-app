@@ -19,21 +19,21 @@ import {
   normalWorld,
   saturate,
   timerLocal,
-} from "three-nodes/Nodes.js";
+} from "three/nodes";
 
 import {
   mx_perlin_noise_float,
   mx_cell_noise_float,
   mx_worley_noise_float,
   mx_fractal_noise_float,
-} from "three-nodes/materialx/functions/lib/mx_noise.js";
+} from "three/addons/nodes/materialx/functions/lib/mx_noise.js";
 
-import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { HDRCubeTextureLoader } from "three/examples/jsm/loaders/HDRCubeTextureLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
 let container, stats;
 

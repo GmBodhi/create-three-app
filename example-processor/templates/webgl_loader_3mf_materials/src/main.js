@@ -18,8 +18,8 @@ import {
   PCFSoftShadowMap,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { ThreeMFLoader } from "three/examples/jsm/loaders/3MFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { ThreeMFLoader } from "three/addons/loaders/3MFLoader.js";
 
 let camera, scene, renderer;
 

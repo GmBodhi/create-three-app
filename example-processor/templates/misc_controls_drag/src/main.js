@@ -16,7 +16,7 @@ import {
   PCFShadowMap,
 } from "three";
 
-import { DragControls } from "three/examples/jsm/controls/DragControls.js";
+import { DragControls } from "three/addons/controls/DragControls.js";
 
 let container;
 let camera, scene, renderer;

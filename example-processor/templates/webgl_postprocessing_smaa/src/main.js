@@ -10,11 +10,11 @@ import {
   TextureLoader,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { SMAAPass } from "three/examples/jsm/postprocessing/SMAAPass.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { SMAAPass } from "three/addons/postprocessing/SMAAPass.js";
 
 let camera, scene, renderer, composer, stats;
 

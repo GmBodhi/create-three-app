@@ -31,15 +31,15 @@ import {
   Float32BufferAttribute,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { LightningStrike } from "three/examples/jsm/geometries/LightningStrike.js";
-import { LightningStorm } from "three/examples/jsm/objects/LightningStorm.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { OutlinePass } from "three/examples/jsm/postprocessing/OutlinePass.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { LightningStrike } from "three/addons/geometries/LightningStrike.js";
+import { LightningStorm } from "three/addons/objects/LightningStorm.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
 
 let container, stats;
 

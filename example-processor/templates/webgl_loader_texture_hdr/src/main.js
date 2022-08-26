@@ -11,9 +11,9 @@ import {
   Mesh,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 const params = {
   exposure: 2.0,

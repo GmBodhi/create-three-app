@@ -18,9 +18,9 @@ import {
   WebGLRenderer,
   sRGBEncoding,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { OimoPhysics } from "three/examples/jsm/physics/OimoPhysics.js";
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { OimoPhysics } from "three/addons/physics/OimoPhysics.js";
+import Stats from "three/addons/libs/stats.module.js";
 
 let camera, scene, renderer, stats;
 let physics, position;

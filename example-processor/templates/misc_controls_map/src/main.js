@@ -13,9 +13,9 @@ import {
   AmbientLight,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { MapControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { MapControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, controls, scene, renderer;
 

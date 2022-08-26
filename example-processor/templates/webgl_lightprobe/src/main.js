@@ -15,10 +15,10 @@ import {
   Mesh,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { LightProbeGenerator } from "three/examples/jsm/lights/LightProbeGenerator.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { LightProbeGenerator } from "three/addons/lights/LightProbeGenerator.js";
 
 let mesh, renderer, scene, camera;
 

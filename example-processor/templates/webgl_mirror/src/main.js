@@ -15,8 +15,8 @@ import {
   PointLight,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { Reflector } from "three/examples/jsm/objects/Reflector.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Reflector } from "three/addons/objects/Reflector.js";
 
 let camera, scene, renderer;
 

@@ -11,7 +11,7 @@ import {
   LineDashedMaterial,
 } from "three";
 
-import { SVGRenderer } from "three/examples/jsm/renderers/SVGRenderer.js";
+import { SVGRenderer } from "three/addons/renderers/SVGRenderer.js";
 
 let camera, scene, renderer;
 

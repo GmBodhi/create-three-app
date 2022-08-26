@@ -24,10 +24,10 @@ import {
   MeshStandardMaterial,
   Mesh,
 } from "three";
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
 
 /* TEXTURE WIDTH FOR SIMULATION */
 const WIDTH = 64;

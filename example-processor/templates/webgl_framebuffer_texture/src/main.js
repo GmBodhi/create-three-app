@@ -20,8 +20,8 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import * as GeometryUtils from "three/examples/jsm/utils/GeometryUtils.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
 let camera, scene, renderer;
 let line, sprite, texture;

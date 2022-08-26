@@ -17,8 +17,8 @@ import {
   sRGBEncoding,
 } from "three";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import * as SkeletonUtils from "three/examples/jsm/utils/SkeletonUtils.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
 let camera, scene, renderer;
 let clock;

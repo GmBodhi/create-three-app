@@ -13,8 +13,8 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { AsciiEffect } from "three/examples/jsm/effects/AsciiEffect.js";
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
+import { AsciiEffect } from "three/addons/effects/AsciiEffect.js";
+import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
 let camera, controls, scene, renderer, effect;
 

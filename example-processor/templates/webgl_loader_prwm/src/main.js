@@ -10,7 +10,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { PRWMLoader } from "three/examples/jsm/loaders/PRWMLoader.js";
+import { PRWMLoader } from "three/addons/loaders/PRWMLoader.js";
 
 let camera, scene, renderer;
 

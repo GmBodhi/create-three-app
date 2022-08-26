@@ -16,10 +16,10 @@ import {
   Clock,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { ShadowMapViewer } from "three/examples/jsm/utils/ShadowMapViewer.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { ShadowMapViewer } from "three/addons/utils/ShadowMapViewer.js";
 
 let camera, scene, renderer, clock, stats;
 let dirLight, spotLight;

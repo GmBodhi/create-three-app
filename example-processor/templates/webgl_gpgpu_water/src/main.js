@@ -33,11 +33,11 @@ import {
   SphereGeometry,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { GPUComputationRenderer } from "three/examples/jsm/misc/GPUComputationRenderer.js";
-import { SimplexNoise } from "three/examples/jsm/math/SimplexNoise.js";
+import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
+import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 
 // Texture width for simulation
 const WIDTH = 128;
