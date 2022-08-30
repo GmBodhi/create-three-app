@@ -49,6 +49,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xbbbbbb);
   scene.environment = pmremGenerator.fromScene(environment).texture;
+  environment.dispose();
 
   const grid = new GridHelper(500, 10, 0xffffff, 0xffffff);
   grid.material.opacity = 0.5;

@@ -75,7 +75,8 @@ const params = {
   },
 };
 
-window.addEventListener("load", init);
+init();
+animate();
 
 function init() {
   renderer = new WebGLRenderer({ antialias: true });
@@ -194,9 +195,6 @@ function init() {
   gui.add(params, "rotate");
   gui.add(params, "clear");
   gui.open();
-
-  onWindowResize();
-  animate();
 }
 
 function loadLeePerrySmith() {
