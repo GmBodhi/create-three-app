@@ -50,7 +50,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xffffff);
 
-  const gridHelper = new PolarGridHelper(30, 10);
+  const gridHelper = new PolarGridHelper(30, 0);
   gridHelper.position.y = -10;
   scene.add(gridHelper);
 

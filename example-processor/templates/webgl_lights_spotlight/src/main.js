@@ -4,42 +4,40 @@ import {
   WebGLRenderer,
   PCFSoftShadowMap,
   sRGBEncoding,
+  ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
-  AmbientLight,
+  HemisphereLight,
   TextureLoader,
   LinearFilter,
   SpotLight,
   SpotLightHelper,
-  CameraHelper,
-  MeshPhongMaterial,
   PlaneGeometry,
+  MeshLambertMaterial,
   Mesh,
-  CylinderGeometry,
 } from "three";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
+import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let renderer, scene, camera;
 
-let spotLight, lightHelper, shadowCameraHelper;
+let spotLight, lightHelper;
 
-let textureUrls, textures;
-
-let gui;
+init();
 
 function init() {
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-
+  renderer.setAnimationLoop(render);
   renderer.shadowMap.enabled = true;
-
   renderer.shadowMap.type = PCFSoftShadowMap;
   renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMapping = ACESFilmicToneMapping;
+  document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
 
@@ -49,37 +47,45 @@ function init() {
     1,
     1000
   );
-  camera.position.set(160, 40, 10);
+  camera.position.set(76, 50, 10);
+  camera.rotation.set(-1.29, 1.15, 1.26);
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render);
   controls.minDistance = 20;
   controls.maxDistance = 500;
-  controls.enablePan = false;
+  controls.target.set(0, 18, 0);
+  controls.update();
 
-  const ambient = new AmbientLight(0xffffff, 0.1);
+  const ambient = new HemisphereLight(0xffffff, 0x444444, 0.05);
   scene.add(ambient);
 
-  const textureLoader = new TextureLoader();
-  textureUrls = ["none", "uv_grid_opengl.jpg", "sprite2.png", "colors.png"];
-  textures = { none: null };
+  const loader = new TextureLoader().setPath("textures/");
+  const filenames = ["disturb.jpg", "colors.png", "uv_grid_opengl.jpg"];
 
-  for (let i = 1; i < textureUrls.length; i++) {
-    textures[textureUrls[i]] = textureLoader.load("textures/" + textureUrls[i]);
-    textures[textureUrls[i]].minFilter = LinearFilter;
-    textures[textureUrls[i]].magFilter = LinearFilter;
+  const textures = { none: null };
+
+  for (let i = 0; i < filenames.length; i++) {
+    const filename = filenames[i];
+
+    const texture = loader.load(filename);
+    texture.minFilter = LinearFilter;
+    texture.magFilter = LinearFilter;
+    texture.encoding = sRGBEncoding;
+
+    textures[filename] = texture;
   }
 
-  spotLight = new SpotLight(0xffffff, 1);
-  spotLight.position.set(15, 40, 35);
-  spotLight.angle = Math.PI / 4;
-  spotLight.penumbra = 0.1;
+  spotLight = new SpotLight(0xffffff, 10);
+  spotLight.position.set(25, 50, 25);
+  spotLight.angle = Math.PI / 6;
+  spotLight.penumbra = 1;
   spotLight.decay = 2;
-  spotLight.distance = 200;
+  spotLight.distance = 100;
+  spotLight.map = textures["disturb.jpg"];
 
   spotLight.castShadow = true;
-  spotLight.shadow.mapSize.width = 512;
-  spotLight.shadow.mapSize.height = 512;
+  spotLight.shadow.mapSize.width = 1024;
+  spotLight.shadow.mapSize.height = 1024;
   spotLight.shadow.camera.near = 10;
   spotLight.shadow.camera.far = 200;
   spotLight.shadow.focus = 1;
@@ -88,35 +94,94 @@ function init() {
   lightHelper = new SpotLightHelper(spotLight);
   scene.add(lightHelper);
 
-  shadowCameraHelper = new CameraHelper(spotLight.shadow.camera);
-  scene.add(shadowCameraHelper);
-
   //
 
-  let material = new MeshPhongMaterial({ color: 0x808080, dithering: true });
+  const geometry = new PlaneGeometry(1000, 1000);
+  const material = new MeshLambertMaterial({ color: 0x808080 });
 
-  let geometry = new PlaneGeometry(2000, 2000);
-
-  let mesh = new Mesh(geometry, material);
+  const mesh = new Mesh(geometry, material);
   mesh.position.set(0, -1, 0);
-  mesh.rotation.x = -Math.PI * 0.5;
+  mesh.rotation.x = -Math.PI / 2;
   mesh.receiveShadow = true;
   scene.add(mesh);
 
   //
 
-  material = new MeshPhongMaterial({ color: 0x4080ff, dithering: true });
+  new PLYLoader().load("models/ply/binary/Lucy100k.ply", function (geometry) {
+    geometry.scale(0.024, 0.024, 0.024);
+    geometry.computeVertexNormals();
 
-  geometry = new CylinderGeometry(5, 5, 2, 32, 1, false);
+    const material = new MeshLambertMaterial();
 
-  mesh = new Mesh(geometry, material);
-  mesh.position.set(0, 5, 0);
-  mesh.castShadow = true;
-  scene.add(mesh);
-
-  render();
+    const mesh = new Mesh(geometry, material);
+    mesh.rotation.y = -Math.PI / 2;
+    mesh.position.y = 18;
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    scene.add(mesh);
+  });
 
   window.addEventListener("resize", onWindowResize);
+
+  // GUI
+
+  const gui = new GUI();
+
+  const params = {
+    map: textures["disturb.jpg"],
+    color: spotLight.color.getHex(),
+    intensity: spotLight.intensity,
+    distance: spotLight.distance,
+    angle: spotLight.angle,
+    penumbra: spotLight.penumbra,
+    decay: spotLight.decay,
+    focus: spotLight.shadow.focus,
+    shadows: true,
+  };
+
+  gui.add(params, "map", textures).onChange(function (val) {
+    spotLight.map = val;
+  });
+
+  gui.addColor(params, "color").onChange(function (val) {
+    spotLight.color.setHex(val);
+  });
+
+  gui.add(params, "intensity", 0, 10).onChange(function (val) {
+    spotLight.intensity = val;
+  });
+
+  gui.add(params, "distance", 50, 200).onChange(function (val) {
+    spotLight.distance = val;
+  });
+
+  gui.add(params, "angle", 0, Math.PI / 3).onChange(function (val) {
+    spotLight.angle = val;
+  });
+
+  gui.add(params, "penumbra", 0, 1).onChange(function (val) {
+    spotLight.penumbra = val;
+  });
+
+  gui.add(params, "decay", 1, 2).onChange(function (val) {
+    spotLight.decay = val;
+  });
+
+  gui.add(params, "focus", 0, 1).onChange(function (val) {
+    spotLight.shadow.focus = val;
+  });
+
+  gui.add(params, "shadows").onChange(function (val) {
+    renderer.shadowMap.enabled = val;
+
+    scene.traverse(function (child) {
+      if (child.material) {
+        child.material.needsUpdate = true;
+      }
+    });
+  });
+
+  gui.open();
 }
 
 function onWindowResize() {
@@ -127,72 +192,12 @@ function onWindowResize() {
 }
 
 function render() {
-  lightHelper.update();
+  const time = performance.now() / 3000;
 
-  shadowCameraHelper.update();
+  spotLight.position.x = Math.cos(time) * 25;
+  spotLight.position.z = Math.sin(time) * 25;
+
+  lightHelper.update();
 
   renderer.render(scene, camera);
 }
-
-function buildGui() {
-  gui = new GUI();
-
-  const params = {
-    "light color": spotLight.color.getHex(),
-    intensity: spotLight.intensity,
-    distance: spotLight.distance,
-    angle: spotLight.angle,
-    penumbra: spotLight.penumbra,
-    decay: spotLight.decay,
-    focus: spotLight.shadow.focus,
-    map: "none",
-  };
-
-  gui.addColor(params, "light color").onChange(function (val) {
-    spotLight.color.setHex(val);
-    render();
-  });
-
-  gui.add(params, "intensity", 0, 2).onChange(function (val) {
-    spotLight.intensity = val;
-    render();
-  });
-
-  gui.add(params, "distance", 50, 200).onChange(function (val) {
-    spotLight.distance = val;
-    render();
-  });
-
-  gui.add(params, "angle", 0, Math.PI / 3).onChange(function (val) {
-    spotLight.angle = val;
-    render();
-  });
-
-  gui.add(params, "penumbra", 0, 1).onChange(function (val) {
-    spotLight.penumbra = val;
-    render();
-  });
-
-  gui.add(params, "decay", 1, 2).onChange(function (val) {
-    spotLight.decay = val;
-    render();
-  });
-
-  gui.add(params, "focus", 0, 1).onChange(function (val) {
-    spotLight.shadow.focus = val;
-    render();
-  });
-
-  gui.add(params, "map", textureUrls).onChange(function (val) {
-    spotLight.map = textures[val];
-    render();
-  });
-
-  gui.open();
-}
-
-init();
-
-buildGui();
-
-render();

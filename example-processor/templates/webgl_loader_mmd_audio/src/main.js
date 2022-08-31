@@ -52,7 +52,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xffffff);
 
-  scene.add(new PolarGridHelper(30, 10));
+  scene.add(new PolarGridHelper(30, 0));
 
   const listener = new AudioListener();
   camera.add(listener);
