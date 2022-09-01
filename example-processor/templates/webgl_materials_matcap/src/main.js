@@ -17,10 +17,10 @@ import {
   LinearFilter,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { EXRLoader } from "three/examples/jsm/loaders/EXRLoader.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { EXRLoader } from "three/addons/loaders/EXRLoader.js";
 
 let mesh, renderer, scene, camera;
 
@@ -149,7 +149,7 @@ function updateMatcap(texture) {
 }
 
 function handleJPG(event) {
-  // PNG, too
+  // PNG, WebP, too
 
   function imgCallback(event) {
     const texture = new Texture(event.target);

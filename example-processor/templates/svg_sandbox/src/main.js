@@ -22,12 +22,9 @@ import {
   DirectionalLight,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import {
-  SVGRenderer,
-  SVGObject,
-} from "three/examples/jsm/renderers/SVGRenderer.js";
+import { SVGRenderer, SVGObject } from "three/addons/renderers/SVGRenderer.js";
 
 let camera, scene, renderer, stats;
 

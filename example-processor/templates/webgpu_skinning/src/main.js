@@ -9,12 +9,12 @@ import {
   sRGBEncoding,
   LinearToneMapping,
 } from "three";
-import * as Nodes from "three-nodes/Nodes.js";
+import * as Nodes from "three/nodes";
 
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
-import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
-import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer;
 

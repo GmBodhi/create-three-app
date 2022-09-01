@@ -2,8 +2,8 @@ import "./style.css"; // For webpack support
 
 import { WebGLRenderer, Scene, PerspectiveCamera, AxesHelper } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { PCDLoader } from "three/examples/jsm/loaders/PCDLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { PCDLoader } from "three/addons/loaders/PCDLoader.js";
 
 let camera, scene, renderer;
 

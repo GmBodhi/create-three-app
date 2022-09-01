@@ -10,9 +10,9 @@ import {
   WebGLRenderer,
   PMREMGenerator,
 } from "three";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
-import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
-import { LottieLoader } from "three/examples/jsm/loaders/LottieLoader.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
+import { LottieLoader } from "three/addons/loaders/LottieLoader.js";
 
 let renderer, scene, camera;
 let mesh;

@@ -11,9 +11,9 @@ import {
   Mesh,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { LogLuvLoader } from "three/examples/jsm/loaders/LogLuvLoader.js";
+import { LogLuvLoader } from "three/addons/loaders/LogLuvLoader.js";
 
 const params = {
   exposure: 2.0,

@@ -14,11 +14,11 @@ import {
   Mesh,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
   CSS3DRenderer,
   CSS3DObject,
-} from "three/examples/jsm/renderers/CSS3DRenderer.js";
+} from "three/addons/renderers/CSS3DRenderer.js";
 
 let camera, scene, renderer;
 

@@ -12,17 +12,17 @@ import {
   sRGBEncoding,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { LUTPass } from "three/examples/jsm/postprocessing/LUTPass.js";
-import { LUTCubeLoader } from "three/examples/jsm/loaders/LUTCubeLoader.js";
-import { LUT3dlLoader } from "three/examples/jsm/loaders/LUT3dlLoader.js";
-import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { LUTPass } from "three/addons/postprocessing/LUTPass.js";
+import { LUTCubeLoader } from "three/addons/loaders/LUTCubeLoader.js";
+import { LUT3dlLoader } from "three/addons/loaders/LUT3dlLoader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 const params = {
   enabled: true,

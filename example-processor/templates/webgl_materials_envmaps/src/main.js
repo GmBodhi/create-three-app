@@ -3,13 +3,12 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  AmbientLight,
   CubeTextureLoader,
   sRGBEncoding,
   TextureLoader,
   EquirectangularReflectionMapping,
   IcosahedronGeometry,
-  MeshLambertMaterial,
+  MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
   EquirectangularRefractionMapping,
@@ -17,8 +16,8 @@ import {
   CubeReflectionMapping,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let controls, camera, scene, renderer;
 let textureEquirec, textureCube;
@@ -41,11 +40,6 @@ function init() {
   // SCENE
 
   scene = new Scene();
-
-  // Lights
-
-  const ambient = new AmbientLight(0xffffff);
-  scene.add(ambient);
 
   // Textures
 
@@ -73,7 +67,7 @@ function init() {
   //
 
   const geometry = new IcosahedronGeometry(400, 15);
-  sphereMaterial = new MeshLambertMaterial({ envMap: textureCube });
+  sphereMaterial = new MeshBasicMaterial({ envMap: textureCube });
   sphereMesh = new Mesh(geometry, sphereMaterial);
   scene.add(sphereMesh);
 

@@ -2,8 +2,8 @@ import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, Scene, WebGLRenderer } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GCodeLoader } from "three/examples/jsm/loaders/GCodeLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GCodeLoader } from "three/addons/loaders/GCodeLoader.js";
 
 let camera, scene, renderer;
 

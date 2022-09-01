@@ -17,11 +17,11 @@ import {
   WebGLRenderer,
   Raycaster,
 } from "three";
-import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { Flow } from "three/examples/jsm/modifiers/CurveModifier.js";
-import { FontLoader } from "three/examples/jsm/loaders/FontLoader.js";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { TransformControls } from "three/addons/controls/TransformControls.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { Flow } from "three/addons/modifiers/CurveModifier.js";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 const ACTION_SELECT = 1,
   ACTION_NONE = 0;

@@ -19,16 +19,16 @@ import {
   Vector3,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { Octree } from "three/examples/jsm/math/Octree.js";
-import { OctreeHelper } from "three/examples/jsm/helpers/OctreeHelper.js";
+import { Octree } from "three/addons/math/Octree.js";
+import { OctreeHelper } from "three/addons/helpers/OctreeHelper.js";
 
-import { Capsule } from "three/examples/jsm/math/Capsule.js";
+import { Capsule } from "three/addons/math/Capsule.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 const clock = new Clock();
 

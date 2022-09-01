@@ -18,12 +18,12 @@ import {
   ShaderMaterial,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { SubsurfaceScatteringShader } from "three/examples/jsm/shaders/SubsurfaceScatteringShader.js";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { SubsurfaceScatteringShader } from "three/addons/shaders/SubsurfaceScatteringShader.js";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
 let container, stats;
 let camera, scene, renderer;

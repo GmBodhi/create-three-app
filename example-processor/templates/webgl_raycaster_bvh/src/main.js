@@ -26,10 +26,10 @@ import {
   acceleratedRaycast,
   MeshBVHVisualizer,
 } from "three-mesh-bvh";
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 // Add the extension functions
 BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -37,7 +37,7 @@ BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree;
 Mesh.prototype.raycast = acceleratedRaycast;
 
 let stats;
-let camera, scene, renderer, controls;
+let camera, scene, renderer;
 let mesh, helper, bvh;
 let sphereInstance, lineSegments;
 
@@ -136,7 +136,9 @@ function init() {
     scene.add(helper);
   });
 
-  controls = new OrbitControls(camera, renderer.domElement);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 5;
+  controls.maxDistance = 75;
 
   // set up gui
   const gui = new GUI();
@@ -246,9 +248,6 @@ function updateRays() {
 }
 
 function onWindowResize() {
-  const hx = window.innerWidth / 2;
-  const hy = window.innerHeight / 2;
-
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
@@ -271,6 +270,7 @@ function render() {
     mesh.rotation.y += 0.002;
     mesh.updateMatrixWorld();
   }
+
   updateRays();
 
   renderer.render(scene, camera);

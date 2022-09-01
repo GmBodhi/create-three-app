@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
-import initJank from "three/examples/jsm/offscreen/jank.js";
-import init from "three/examples/jsm/offscreen/scene.js";
+import initJank from "three/addons/offscreen/jank.js";
+import init from "three/addons/offscreen/scene.js";
 
 // onscreen
 

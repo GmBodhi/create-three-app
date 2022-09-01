@@ -10,7 +10,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { AnaglyphEffect } from "three/examples/jsm/effects/AnaglyphEffect.js";
+import { AnaglyphEffect } from "three/addons/effects/AnaglyphEffect.js";
 
 let container, camera, scene, renderer, effect;
 

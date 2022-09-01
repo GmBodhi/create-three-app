@@ -12,11 +12,11 @@ import {
   TorusKnotGeometry,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { RectAreaLightHelper } from "three/examples/jsm/helpers/RectAreaLightHelper.js";
-import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
+import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
 let renderer, scene, camera;
 let stats;

@@ -10,8 +10,8 @@ import {
   sRGBEncoding,
 } from "three";
 
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
-import { TDSLoader } from "three/examples/jsm/loaders/TDSLoader.js";
+import { TrackballControls } from "three/addons/controls/TrackballControls.js";
+import { TDSLoader } from "three/addons/loaders/TDSLoader.js";
 
 let container, controls;
 let camera, scene, renderer;

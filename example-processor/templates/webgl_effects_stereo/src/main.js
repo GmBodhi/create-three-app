@@ -11,7 +11,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { StereoEffect } from "three/examples/jsm/effects/StereoEffect.js";
+import { StereoEffect } from "three/addons/effects/StereoEffect.js";
 
 let container, camera, scene, renderer, effect;
 

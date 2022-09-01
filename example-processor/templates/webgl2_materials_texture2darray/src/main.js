@@ -19,10 +19,10 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { unzipSync } from "three/examples/jsm/libs/fflate.module.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { unzipSync } from "three/addons/libs/fflate.module.js";
 
-import WebGL from "three/examples/jsm/capabilities/WebGL.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
 
 if (WebGL.isWebGL2Available() === false) {
   document.body.appendChild(WebGL.getWebGL2ErrorMessage());

@@ -9,15 +9,15 @@ import {
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
-import * as Nodes from "three-nodes/Nodes.js";
+import * as Nodes from "three/nodes";
 
-import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
-import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
-import WebGPUTextureRenderer from "three/examples/jsm/renderers/webgpu/WebGPUTextureRenderer.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import WebGPUTextureRenderer from "three/addons/renderers/webgpu/WebGPUTextureRenderer.js";
 
-import { smoothstep, negate, positionView, invert } from "three-nodes/Nodes.js";
+import { smoothstep, negate, positionView, invert } from "three/nodes";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, controls, renderer;
 

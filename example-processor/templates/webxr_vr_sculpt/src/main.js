@@ -17,9 +17,9 @@ import {
   IcosahedronGeometry,
   Vector3,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { MarchingCubes } from "three/examples/jsm/objects/MarchingCubes.js";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { MarchingCubes } from "three/addons/objects/MarchingCubes.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
 
 let container;
 let camera, scene, renderer;

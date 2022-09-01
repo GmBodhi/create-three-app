@@ -19,20 +19,17 @@ import {
   Line,
 } from "three";
 
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import {
-  Lensflare,
-  LensflareElement,
-} from "three/examples/jsm/objects/Lensflare.js";
-import { Reflector } from "three/examples/jsm/objects/Reflector.js";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { Lensflare, LensflareElement } from "three/addons/objects/Lensflare.js";
+import { Reflector } from "three/addons/objects/Reflector.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
 
-import { HTMLMesh } from "three/examples/jsm/interactive/HTMLMesh.js";
-import { InteractiveGroup } from "three/examples/jsm/interactive/InteractiveGroup.js";
-import { XRControllerModelFactory } from "three/examples/jsm/webxr/XRControllerModelFactory.js";
+import { HTMLMesh } from "three/addons/interactive/HTMLMesh.js";
+import { InteractiveGroup } from "three/addons/interactive/InteractiveGroup.js";
+import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
 
 let camera, scene, renderer;
 let reflector;

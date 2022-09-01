@@ -23,8 +23,8 @@ import {
   RollerCoasterLiftersGeometry,
   TreesGeometry,
   SkyGeometry,
-} from "three/examples/jsm/misc/RollerCoaster.js";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
+} from "three/addons/misc/RollerCoaster.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
 
 let mesh, material, geometry;
 

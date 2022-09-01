@@ -16,10 +16,10 @@ import {
   BoxGeometry,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { CSM } from "three/examples/jsm/csm/CSM.js";
-import { CSMHelper } from "three/examples/jsm/csm/CSMHelper.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { CSM } from "three/addons/csm/CSM.js";
+import { CSMHelper } from "three/addons/csm/CSMHelper.js";
 
 let renderer, scene, camera, orthoCamera, controls, csm, csmHelper;
 

@@ -15,9 +15,9 @@ import {
   WebGLRenderer,
   sRGBEncoding,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
-import { XRControllerModelFactory } from "three/examples/jsm/webxr/XRControllerModelFactory.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
+import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 
 let container;
 let camera, scene, renderer;
@@ -257,7 +257,7 @@ function handleCollisions() {
   }
 
   for (let i = 0; i < group.children.length; i++) {
-    let child = group.children[i];
+    const child = group.children[i];
     if (!child.collided) {
       // reset uncollided boxes
       child.material.emissive.b = 0;

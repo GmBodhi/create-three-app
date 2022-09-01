@@ -12,13 +12,10 @@ import {
   InstancedMesh,
   Object3D,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import {
-  VOXLoader,
-  VOXData3DTexture,
-} from "three/examples/jsm/loaders/VOXLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { VOXLoader, VOXData3DTexture } from "three/addons/loaders/VOXLoader.js";
 
-import WebGL from "three/examples/jsm/capabilities/WebGL.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
 
 if (WebGL.isWebGL2Available() === false) {
   document.body.appendChild(WebGL.getWebGL2ErrorMessage());

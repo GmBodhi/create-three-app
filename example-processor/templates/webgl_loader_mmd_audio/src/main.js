@@ -14,9 +14,9 @@ import {
   Audio,
 } from "three";
 
-import { OutlineEffect } from "three/examples/jsm/effects/OutlineEffect.js";
-import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader.js";
-import { MMDAnimationHelper } from "three/examples/jsm/animation/MMDAnimationHelper.js";
+import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
+import { MMDLoader } from "three/addons/loaders/MMDLoader.js";
+import { MMDAnimationHelper } from "three/addons/animation/MMDAnimationHelper.js";
 
 let mesh, camera, scene, renderer, effect;
 let helper;
@@ -52,7 +52,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xffffff);
 
-  scene.add(new PolarGridHelper(30, 10));
+  scene.add(new PolarGridHelper(30, 0));
 
   const listener = new AudioListener();
   camera.add(listener);

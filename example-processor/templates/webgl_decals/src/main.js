@@ -20,12 +20,12 @@ import {
   MeshNormalMaterial,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { DecalGeometry } from "three/examples/jsm/geometries/DecalGeometry.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
 
 const container = document.getElementById("container");
 
@@ -75,7 +75,8 @@ const params = {
   },
 };
 
-window.addEventListener("load", init);
+init();
+animate();
 
 function init() {
   renderer = new WebGLRenderer({ antialias: true });
@@ -194,9 +195,6 @@ function init() {
   gui.add(params, "rotate");
   gui.add(params, "clear");
   gui.open();
-
-  onWindowResize();
-  animate();
 }
 
 function loadLeePerrySmith() {

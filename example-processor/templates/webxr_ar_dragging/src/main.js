@@ -18,20 +18,19 @@ import {
   sRGBEncoding,
   Raycaster,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { ARButton } from "three/examples/jsm/webxr/ARButton.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { ARButton } from "three/addons/webxr/ARButton.js";
 
 let container;
 let camera, scene, renderer;
 let controller1, controller2;
-let controllerGrip1, controllerGrip2;
 
 let raycaster;
 
 const intersected = [];
 const tempMatrix = new Matrix4();
 
-let controls, group;
+let group;
 
 init();
 animate();
@@ -50,7 +49,9 @@ function init() {
   );
   camera.position.set(0, 0, 3);
 
-  controls = new OrbitControls(camera, container);
+  const controls = new OrbitControls(camera, container);
+  controls.minDistance = 0;
+  controls.maxDistance = 8;
 
   scene.add(new HemisphereLight(0x808080, 0x606060));
 

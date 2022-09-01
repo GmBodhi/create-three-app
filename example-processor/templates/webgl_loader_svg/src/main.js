@@ -13,9 +13,9 @@ import {
   ShapeGeometry,
   Mesh,
 } from "three";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
 
 let renderer, scene, camera, gui, guiData;
 

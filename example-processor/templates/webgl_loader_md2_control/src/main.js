@@ -19,11 +19,11 @@ import {
   PCFSoftShadowMap,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { MD2CharacterComplex } from "three/examples/jsm/misc/MD2CharacterComplex.js";
-import { Gyroscope } from "three/examples/jsm/misc/Gyroscope.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { MD2CharacterComplex } from "three/addons/misc/MD2CharacterComplex.js";
+import { Gyroscope } from "three/addons/misc/Gyroscope.js";
 
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;

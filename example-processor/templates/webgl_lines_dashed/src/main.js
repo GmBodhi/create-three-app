@@ -15,9 +15,9 @@ import {
   Float32BufferAttribute,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import * as GeometryUtils from "three/examples/jsm/utils/GeometryUtils.js";
+import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
 let renderer, scene, camera, stats;
 const objects = [];

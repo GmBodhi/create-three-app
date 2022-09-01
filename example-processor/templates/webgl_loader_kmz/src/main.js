@@ -10,8 +10,8 @@ import {
   sRGBEncoding,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { KMZLoader } from "three/examples/jsm/loaders/KMZLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { KMZLoader } from "three/addons/loaders/KMZLoader.js";
 
 let camera, scene, renderer;
 

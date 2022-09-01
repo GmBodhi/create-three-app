@@ -10,7 +10,7 @@ import {
   Texture,
   ImageLoader,
 } from "three";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
 
 let camera;
 let renderer;

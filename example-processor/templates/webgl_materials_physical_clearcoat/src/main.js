@@ -18,12 +18,12 @@ import {
   ACESFilmicToneMapping,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { HDRCubeTextureLoader } from "three/examples/jsm/loaders/HDRCubeTextureLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
-import { FlakesTexture } from "three/examples/jsm/textures/FlakesTexture.js";
+import { FlakesTexture } from "three/addons/textures/FlakesTexture.js";
 
 let container, stats;
 

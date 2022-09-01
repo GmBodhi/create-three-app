@@ -10,7 +10,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { ParallaxBarrierEffect } from "three/examples/jsm/effects/ParallaxBarrierEffect.js";
+import { ParallaxBarrierEffect } from "three/addons/effects/ParallaxBarrierEffect.js";
 
 let container, camera, scene, renderer, effect;
 

@@ -11,14 +11,14 @@ import {
   NearestFilter,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { TAARenderPass } from "three/examples/jsm/postprocessing/TAARenderPass.js";
-import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { TAARenderPass } from "three/addons/postprocessing/TAARenderPass.js";
+import { CopyShader } from "three/addons/shaders/CopyShader.js";
 
 let camera, scene, renderer, composer, copyPass, taaRenderPass, renderPass;
 let gui, stats;

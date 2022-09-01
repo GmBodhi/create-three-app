@@ -29,7 +29,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
 

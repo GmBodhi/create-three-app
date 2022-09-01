@@ -18,9 +18,9 @@ import {
   WebGLRenderer,
   sRGBEncoding,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { AmmoPhysics } from "three/examples/jsm/physics/AmmoPhysics.js";
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { AmmoPhysics } from "three/addons/physics/AmmoPhysics.js";
+import Stats from "three/addons/libs/stats.module.js";
 
 let camera, scene, renderer, stats;
 let physics, position;
@@ -134,24 +134,24 @@ async function init() {
   controls.update();
 
   animate();
+
+  setInterval(() => {
+    let index = Math.floor(Math.random() * boxes.count);
+
+    position.set(0, Math.random() + 1, 0);
+    physics.setMeshPosition(boxes, position, index);
+
+    //
+
+    index = Math.floor(Math.random() * spheres.count);
+
+    position.set(0, Math.random() + 1, 0);
+    physics.setMeshPosition(spheres, position, index);
+  }, 1000 / 60);
 }
 
 function animate() {
   requestAnimationFrame(animate);
-
-  //
-
-  let index = Math.floor(Math.random() * boxes.count);
-
-  position.set(0, Math.random() + 1, 0);
-  physics.setMeshPosition(boxes, position, index);
-
-  //
-
-  index = Math.floor(Math.random() * spheres.count);
-
-  position.set(0, Math.random() + 1, 0);
-  physics.setMeshPosition(spheres, position, index);
 
   renderer.render(scene, camera);
 

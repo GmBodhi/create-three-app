@@ -13,9 +13,9 @@ import {
   Raycaster,
   WebGLRenderer,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { IFCLoader } from "three/examples/jsm/loaders/IFCLoader.js";
+import { IFCLoader } from "three/addons/loaders/IFCLoader.js";
 
 let scene, camera, renderer;
 

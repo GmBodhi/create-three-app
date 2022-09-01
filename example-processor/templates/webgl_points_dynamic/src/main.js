@@ -16,15 +16,15 @@ import {
   DynamicDrawUsage,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass.js";
-import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass.js";
-import { FocusShader } from "three/examples/jsm/shaders/FocusShader.js";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
+import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
+import { FocusShader } from "three/addons/shaders/FocusShader.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
 let camera, scene, renderer, mesh;
 

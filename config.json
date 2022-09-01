@@ -2061,6 +2061,16 @@
         "/src"
       ]
     },
+    "webgl_loader_texture_tiff": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_tilt": {
       "files": {
         "index.html": "src",
@@ -2072,6 +2082,16 @@
       ]
     },
     "webgl_loader_ttf": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_loader_usdz": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -2630,6 +2650,16 @@
         "/src"
       ]
     },
+    "webgl_modifier_subdivision": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_modifier_tessellation": {
       "files": {
         "index.html": "src",
@@ -2763,7 +2793,27 @@
         "/src"
       ]
     },
+    "webgl_nodes_loader_gltf_iridescence": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_nodes_loader_gltf_sheen": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_nodes_loader_gltf_transmission": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -2794,6 +2844,16 @@
       ]
     },
     "webgl_nodes_materials_standard": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_nodes_materialx_noise": {
       "files": {
         "index.html": "src",
         "main.js": "src",

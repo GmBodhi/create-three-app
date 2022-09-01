@@ -15,10 +15,10 @@ import {
   Vector3,
   Line,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
-import { XRControllerModelFactory } from "three/examples/jsm/webxr/XRControllerModelFactory.js";
-import { XRHandModelFactory } from "three/examples/jsm/webxr/XRHandModelFactory.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
+import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+import { XRHandModelFactory } from "three/addons/webxr/XRHandModelFactory.js";
 
 let container;
 let camera, scene, renderer;
@@ -123,7 +123,7 @@ function init() {
     hand1.add(model);
   }
 
-  hand1.addEventListener("pinchend", function (event) {
+  hand1.addEventListener("pinchend", function () {
     handModels.left[this.userData.currentHandModel].visible = false;
     this.userData.currentHandModel = (this.userData.currentHandModel + 1) % 3;
     handModels.left[this.userData.currentHandModel].visible = true;
@@ -153,7 +153,7 @@ function init() {
     hand2.add(model);
   }
 
-  hand2.addEventListener("pinchend", function (evevent) {
+  hand2.addEventListener("pinchend", function () {
     handModels.right[this.userData.currentHandModel].visible = false;
     this.userData.currentHandModel = (this.userData.currentHandModel + 1) % 3;
     handModels.right[this.userData.currentHandModel].visible = true;

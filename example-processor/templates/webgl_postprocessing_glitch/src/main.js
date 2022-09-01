@@ -13,9 +13,9 @@ import {
   DirectionalLight,
 } from "three";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { GlitchPass } from "three/examples/jsm/postprocessing/GlitchPass.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { GlitchPass } from "three/addons/postprocessing/GlitchPass.js";
 
 let camera, scene, renderer, composer;
 let object, light;

@@ -24,7 +24,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import WebGL from "three/examples/jsm/capabilities/WebGL.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
 
 let camera, scene, renderer, clock;
 

@@ -10,7 +10,7 @@ import {
   Mesh,
 } from "three";
 
-import { KTXLoader } from "three/examples/jsm/loaders/KTXLoader.js";
+import { KTXLoader } from "three/addons/loaders/KTXLoader.js";
 
 /*
 	This is how compressed textures are supposed to be used:

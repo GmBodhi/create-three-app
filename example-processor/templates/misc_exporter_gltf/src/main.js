@@ -40,9 +40,9 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader.js";
-import { GLTFExporter } from "three/examples/jsm/exporters/GLTFExporter.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 function exportGLTF(input) {
   const gltfExporter = new GLTFExporter();

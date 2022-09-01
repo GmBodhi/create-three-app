@@ -16,9 +16,9 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { TTFLoader } from "three/examples/jsm/loaders/TTFLoader.js";
-import { Font } from "three/examples/jsm/loaders/FontLoader.js";
-import { TextGeometry } from "three/examples/jsm/geometries/TextGeometry.js";
+import { TTFLoader } from "three/addons/loaders/TTFLoader.js";
+import { Font } from "three/addons/loaders/FontLoader.js";
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 let container;
 let camera, cameraTarget, scene, renderer;

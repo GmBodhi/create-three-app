@@ -13,11 +13,11 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import * as Curves from "three/examples/jsm/curves/CurveExtras.js";
-import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
-import { ParametricGeometries } from "three/examples/jsm/geometries/ParametricGeometries.js";
+import * as Curves from "three/addons/curves/CurveExtras.js";
+import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.js";
+import { ParametricGeometries } from "three/addons/geometries/ParametricGeometries.js";
 
 let camera, scene, renderer, stats;
 

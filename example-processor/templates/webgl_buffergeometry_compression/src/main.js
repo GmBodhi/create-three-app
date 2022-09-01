@@ -19,12 +19,12 @@ import {
   Vector3,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import * as GeometryCompressionUtils from "three/examples/jsm/utils/GeometryCompressionUtils.js";
-import * as BufferGeometryUtils from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import Stats from "three/addons/libs/stats.module.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import * as GeometryCompressionUtils from "three/addons/utils/GeometryCompressionUtils.js";
+import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
+import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 const statsEnabled = true;
 

@@ -15,11 +15,11 @@ import {
   Mesh,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { USDZExporter } from "three/examples/jsm/exporters/USDZExporter.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { USDZExporter } from "three/addons/exporters/USDZExporter.js";
 
 let camera, scene, renderer;
 

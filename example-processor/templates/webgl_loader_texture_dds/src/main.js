@@ -14,7 +14,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { DDSLoader } from "three/examples/jsm/loaders/DDSLoader.js";
+import { DDSLoader } from "three/addons/loaders/DDSLoader.js";
 
 let camera, scene, renderer;
 const meshes = [];

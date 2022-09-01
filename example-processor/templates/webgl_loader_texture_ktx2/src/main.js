@@ -22,8 +22,8 @@ import {
   RGBA_ETC2_EAC_Format,
 } from "three";
 
-import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const width = window.innerWidth;
 const height = window.innerHeight;

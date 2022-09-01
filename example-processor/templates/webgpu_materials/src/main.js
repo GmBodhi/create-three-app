@@ -9,16 +9,16 @@ import {
   Color,
   Mesh,
 } from "three";
-import * as Nodes from "three-nodes/Nodes.js";
+import * as Nodes from "three/nodes";
 
-import WebGPU from "three/examples/jsm/capabilities/WebGPU.js";
-import WebGPURenderer from "three/examples/jsm/renderers/webgpu/WebGPURenderer.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
-import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
+import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-import { ShaderNode, vec3, dot } from "three-nodes/Nodes.js";
+import { ShaderNode, vec3, dot } from "three/nodes";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
 let stats;
 

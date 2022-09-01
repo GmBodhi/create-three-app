@@ -19,11 +19,11 @@ import {
   Uint8BufferAttribute,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { ColladaExporter } from "three/examples/jsm/exporters/ColladaExporter.js";
-import { TeapotGeometry } from "three/examples/jsm/geometries/TeapotGeometry.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { ColladaExporter } from "three/addons/exporters/ColladaExporter.js";
+import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
 ////////////////////////////////////////////////////////////////////////////////
 // Utah/Newell Teapot demo
@@ -445,6 +445,7 @@ function createNewTeapot() {
 
       colors.push(r * 128, 0, b * 128);
     }
+
     teapot.geometry.setAttribute(
       "color",
       new Uint8BufferAttribute(colors, 3, true)

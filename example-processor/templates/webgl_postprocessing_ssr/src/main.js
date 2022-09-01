@@ -17,18 +17,18 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { SSRPass } from "three/examples/jsm/postprocessing/SSRPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
-import { ReflectorForSSRPass } from "three/examples/jsm/objects/ReflectorForSSRPass.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { SSRPass } from "three/addons/postprocessing/SSRPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { ReflectorForSSRPass } from "three/addons/objects/ReflectorForSSRPass.js";
 
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 const params = {
   enableSSR: true,

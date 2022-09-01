@@ -2,8 +2,8 @@ import "./style.css"; // For webpack support
 
 import { Scene, PerspectiveCamera, GridHelper, WebGLRenderer } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { TiltLoader } from "three/examples/jsm/loaders/TiltLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TiltLoader } from "three/addons/loaders/TiltLoader.js";
 
 let camera, scene, renderer;
 

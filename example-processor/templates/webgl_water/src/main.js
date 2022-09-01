@@ -18,9 +18,9 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { Water } from "three/examples/jsm/objects/Water2.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Water } from "three/addons/objects/Water2.js";
 
 let scene, camera, clock, renderer, water;
 

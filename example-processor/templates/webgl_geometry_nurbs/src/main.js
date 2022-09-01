@@ -20,11 +20,11 @@ import {
   WebGLRenderer,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { NURBSCurve } from "three/examples/jsm/curves/NURBSCurve.js";
-import { NURBSSurface } from "three/examples/jsm/curves/NURBSSurface.js";
-import { ParametricGeometry } from "three/examples/jsm/geometries/ParametricGeometry.js";
+import { NURBSCurve } from "three/addons/curves/NURBSCurve.js";
+import { NURBSSurface } from "three/addons/curves/NURBSSurface.js";
+import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.js";
 
 let container, stats;
 

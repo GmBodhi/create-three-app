@@ -15,10 +15,10 @@ import {
   EdgesGeometry,
 } from "three";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { VertexNormalsHelper } from "three/examples/jsm/helpers/VertexNormalsHelper.js";
-import { VertexTangentsHelper } from "three/examples/jsm/helpers/VertexTangentsHelper.js";
+import { VertexNormalsHelper } from "three/addons/helpers/VertexNormalsHelper.js";
+import { VertexTangentsHelper } from "three/addons/helpers/VertexTangentsHelper.js";
 
 let scene, renderer;
 let camera, light;

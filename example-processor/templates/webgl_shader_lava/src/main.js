@@ -19,10 +19,10 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass.js";
-import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
+import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
 
 let camera, renderer, composer, clock;
 

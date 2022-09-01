@@ -15,8 +15,8 @@ import {
   SpotLight,
 } from "three";
 
-import { TWEEN } from "three/examples/jsm/libs/tween.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { TWEEN } from "three/addons/libs/tween.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const renderer = new WebGLRenderer();
 renderer.setPixelRatio(window.devicePixelRatio);

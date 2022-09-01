@@ -18,29 +18,29 @@ import {
   MeshPhongMaterial,
 } from "three";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass.js";
-import { FilmPass } from "three/examples/jsm/postprocessing/FilmPass.js";
-import { DotScreenPass } from "three/examples/jsm/postprocessing/DotScreenPass.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
+import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
+import { DotScreenPass } from "three/addons/postprocessing/DotScreenPass.js";
 import {
   MaskPass,
   ClearMaskPass,
-} from "three/examples/jsm/postprocessing/MaskPass.js";
-import { TexturePass } from "three/examples/jsm/postprocessing/TexturePass.js";
+} from "three/addons/postprocessing/MaskPass.js";
+import { TexturePass } from "three/addons/postprocessing/TexturePass.js";
 
-import { BleachBypassShader } from "three/examples/jsm/shaders/BleachBypassShader.js";
-import { ColorifyShader } from "three/examples/jsm/shaders/ColorifyShader.js";
-import { HorizontalBlurShader } from "three/examples/jsm/shaders/HorizontalBlurShader.js";
-import { VerticalBlurShader } from "three/examples/jsm/shaders/VerticalBlurShader.js";
-import { SepiaShader } from "three/examples/jsm/shaders/SepiaShader.js";
-import { VignetteShader } from "three/examples/jsm/shaders/VignetteShader.js";
-import { GammaCorrectionShader } from "three/examples/jsm/shaders/GammaCorrectionShader.js";
+import { BleachBypassShader } from "three/addons/shaders/BleachBypassShader.js";
+import { ColorifyShader } from "three/addons/shaders/ColorifyShader.js";
+import { HorizontalBlurShader } from "three/addons/shaders/HorizontalBlurShader.js";
+import { VerticalBlurShader } from "three/addons/shaders/VerticalBlurShader.js";
+import { SepiaShader } from "three/addons/shaders/SepiaShader.js";
+import { VignetteShader } from "three/addons/shaders/VignetteShader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let container, stats;
 

@@ -16,11 +16,11 @@ import {
   BoxGeometry,
 } from "three";
 
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { NRRDLoader } from "three/examples/jsm/loaders/NRRDLoader.js";
-import { VolumeRenderShader1 } from "three/examples/jsm/shaders/VolumeShader.js";
-import WebGL from "three/examples/jsm/capabilities/WebGL.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { NRRDLoader } from "three/addons/loaders/NRRDLoader.js";
+import { VolumeRenderShader1 } from "three/addons/shaders/VolumeShader.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
 
 if (WebGL.isWebGL2Available() === false) {
   document.body.appendChild(WebGL.getWebGL2ErrorMessage());

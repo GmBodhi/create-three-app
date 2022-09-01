@@ -13,7 +13,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { PVRLoader } from "three/examples/jsm/loaders/PVRLoader.js";
+import { PVRLoader } from "three/addons/loaders/PVRLoader.js";
 
 let camera, scene, renderer;
 const meshes = [];

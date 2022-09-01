@@ -11,9 +11,9 @@ import {
   CubeTextureLoader,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { LightProbeHelper } from "three/examples/jsm/helpers/LightProbeHelper.js";
-import { LightProbeGenerator } from "three/examples/jsm/lights/LightProbeGenerator.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { LightProbeHelper } from "three/addons/helpers/LightProbeHelper.js";
+import { LightProbeGenerator } from "three/addons/lights/LightProbeGenerator.js";
 
 let renderer, scene, camera, cubeCamera;
 

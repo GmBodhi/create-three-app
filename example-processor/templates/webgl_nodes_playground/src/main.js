@@ -14,17 +14,17 @@ import {
   Points,
   TorusKnotGeometry,
 } from "three";
-import * as Nodes from "three-nodes/Nodes.js";
+import * as Nodes from "three/nodes";
 
-import { nodeFrame } from "three/examples/jsm/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
-import { NodeEditor } from "three/examples/jsm/node-editor/NodeEditor.js";
-import { MeshEditor } from "three/examples/jsm/node-editor/scene/MeshEditor.js";
+import { NodeEditor } from "three/addons/node-editor/NodeEditor.js";
+import { MeshEditor } from "three/addons/node-editor/scene/MeshEditor.js";
 
-import Stats from "three/examples/jsm/libs/stats.module.js";
+import Stats from "three/addons/libs/stats.module.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
 let stats;
 let camera, scene, renderer;

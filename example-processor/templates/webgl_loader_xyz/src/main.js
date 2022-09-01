@@ -9,7 +9,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { XYZLoader } from "three/examples/jsm/loaders/XYZLoader.js";
+import { XYZLoader } from "three/addons/loaders/XYZLoader.js";
 
 let camera, scene, renderer, clock;
 

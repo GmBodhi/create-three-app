@@ -11,12 +11,12 @@ import {
   GridHelper,
 } from "three";
 
-import { RoomEnvironment } from "three/examples/jsm/environments/RoomEnvironment.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
-import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
+import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 
 let camera, scene, renderer;
 
@@ -49,6 +49,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xbbbbbb);
   scene.environment = pmremGenerator.fromScene(environment).texture;
+  environment.dispose();
 
   const grid = new GridHelper(500, 10, 0xffffff, 0xffffff);
   grid.material.opacity = 0.5;

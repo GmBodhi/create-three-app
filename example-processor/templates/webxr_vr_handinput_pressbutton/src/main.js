@@ -18,10 +18,10 @@ import {
   PlaneGeometry,
   TorusKnotGeometry,
 } from "three";
-import { VRButton } from "three/examples/jsm/webxr/VRButton.js";
-import { XRControllerModelFactory } from "three/examples/jsm/webxr/XRControllerModelFactory.js";
-import { OculusHandModel } from "three/examples/jsm/webxr/OculusHandModel.js";
-import { createText } from "three/examples/jsm/webxr/Text2D.js";
+import { VRButton } from "three/addons/webxr/VRButton.js";
+import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+import { OculusHandModel } from "three/addons/webxr/OculusHandModel.js";
+import { createText } from "three/addons/webxr/Text2D.js";
 
 import {
   World,
@@ -29,7 +29,7 @@ import {
   Component,
   TagComponent,
   Types,
-} from "three/examples/jsm/libs/ecsy.module.js";
+} from "three/addons/libs/ecsy.module.js";
 
 class Object3D extends Component {}
 

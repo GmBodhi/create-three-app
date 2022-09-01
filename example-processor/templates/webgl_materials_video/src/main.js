@@ -11,11 +11,11 @@ import {
   Mesh,
 } from "three";
 
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/examples/jsm/postprocessing/ShaderPass.js";
-import { BloomPass } from "three/examples/jsm/postprocessing/BloomPass.js";
-import { CopyShader } from "three/examples/jsm/shaders/CopyShader.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
+import { CopyShader } from "three/addons/shaders/CopyShader.js";
 
 let container;
 

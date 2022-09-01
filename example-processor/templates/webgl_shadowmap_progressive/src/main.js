@@ -13,11 +13,11 @@ import {
   MeshPhongMaterial,
   LoadingManager,
 } from "three";
-import { GUI } from "three/examples/jsm/libs/lil-gui.module.min.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { TransformControls } from "three/examples/jsm/controls/TransformControls.js";
-import { ProgressiveLightMap } from "three/examples/jsm/misc/ProgressiveLightMap.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TransformControls } from "three/addons/controls/TransformControls.js";
+import { ProgressiveLightMap } from "three/addons/misc/ProgressiveLightMap.js";
 
 // ShadowMap + LightMap Res and Number of Directional Lights
 const shadowMapRes = 512,

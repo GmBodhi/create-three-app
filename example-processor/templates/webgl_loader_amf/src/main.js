@@ -11,8 +11,8 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { AMFLoader } from "three/examples/jsm/loaders/AMFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { AMFLoader } from "three/addons/loaders/AMFLoader.js";
 
 let camera, scene, renderer;
 

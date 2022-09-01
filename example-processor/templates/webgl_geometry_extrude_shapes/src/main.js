@@ -17,7 +17,7 @@ import {
   MathUtils,
 } from "three";
 
-import { TrackballControls } from "three/examples/jsm/controls/TrackballControls.js";
+import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 
 let camera, scene, renderer, controls;
 

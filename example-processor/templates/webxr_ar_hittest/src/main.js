@@ -11,7 +11,7 @@ import {
   RingGeometry,
   MeshBasicMaterial,
 } from "three";
-import { ARButton } from "three/examples/jsm/webxr/ARButton.js";
+import { ARButton } from "three/addons/webxr/ARButton.js";
 
 let container;
 let camera, scene, renderer;
