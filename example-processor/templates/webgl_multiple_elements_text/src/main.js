@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  Clock,
   WebGLRenderer,
   Scene,
   Color,
@@ -16,6 +17,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const scenes = [];
+
+const clock = new Clock();
 
 let views, t, canvas, renderer;
 
@@ -195,5 +198,5 @@ function render() {
     position.needsUpdate = true;
   });
 
-  t++;
+  t += clock.getDelta() * 60;
 }
