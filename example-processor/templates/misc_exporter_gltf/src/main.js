@@ -50,7 +50,6 @@ function exportGLTF(input) {
   const options = {
     trs: params.trs,
     onlyVisible: params.onlyVisible,
-    truncateDrawRange: params.truncateDrawRange,
     binary: params.binary,
     maxTextureSize: params.maxTextureSize,
   };
@@ -100,7 +99,6 @@ let gridHelper, sphere, waltHead;
 const params = {
   trs: false,
   onlyVisible: true,
-  truncateDrawRange: true,
   binary: false,
   maxTextureSize: 4096,
   exportScene1: exportScene1,
@@ -335,33 +333,6 @@ function init() {
   scene1.add(object);
 
   // ---------------------------------------------------------------------
-  // Buffer geometry truncated (DrawRange)
-  // ---------------------------------------------------------------------
-  geometry = new BufferGeometry();
-  const numElements = 6;
-  const outOfRange = 3;
-
-  positions = new Float32Array((numElements + outOfRange) * 3);
-  const colors = new Float32Array((numElements + outOfRange) * 3);
-
-  positions.set([0, 0, 0, 0, 80, 0, 80, 0, 0, 80, 0, 0, 0, 80, 0, 80, 80, 0]);
-
-  colors.set([1, 0, 0, 1, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1]);
-
-  geometry.setAttribute("position", new BufferAttribute(positions, 3));
-  geometry.setAttribute("color", new BufferAttribute(colors, 3));
-  geometry.setDrawRange(0, numElements);
-
-  object = new Mesh(
-    geometry,
-    new MeshBasicMaterial({ side: DoubleSide, vertexColors: true })
-  );
-  object.name = "Custom buffered truncated";
-  object.position.set(140, -40, -200);
-
-  scene1.add(object);
-
-  // ---------------------------------------------------------------------
   // Points
   // ---------------------------------------------------------------------
   numPoints = 100;
@@ -444,7 +415,7 @@ function init() {
   loader.load("models/obj/walt/WaltHead.obj", function (obj) {
     waltHead = obj;
     waltHead.scale.multiplyScalar(1.5);
-    waltHead.position.set(400, 0, 0);
+    waltHead.position.set(200, -40, -200);
     scene1.add(waltHead);
   });
 
@@ -475,7 +446,6 @@ function init() {
   let h = gui.addFolder("Settings");
   h.add(params, "trs").name("Use TRS");
   h.add(params, "onlyVisible").name("Only Visible Objects");
-  h.add(params, "truncateDrawRange").name("Truncate Draw Range");
   h.add(params, "binary").name("Binary (GLB)");
   h.add(params, "maxTextureSize", 2, 8192).name("Max Texture Size").step(1);
 
