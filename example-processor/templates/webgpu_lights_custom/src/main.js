@@ -5,9 +5,8 @@ import {
   Scene,
   Color,
   SphereGeometry,
-  PointLight,
   Mesh,
-  MeshBasicMaterial,
+  PointLight,
   Vector3,
   BufferGeometry,
   Points,
@@ -47,19 +46,26 @@ async function init() {
 
   // lights
 
-  const sphere = new SphereGeometry(0.02, 16, 8);
+  const sphereGeometry = new SphereGeometry(0.02, 16, 8);
 
-  light1 = new PointLight(0xffaa00, 2, 1);
-  light1.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0xffaa00 })));
-  scene.add(light1);
+  const addLight = (hexColor, intensity = 2, distance = 1) => {
+    const material = new Nodes.MeshStandardNodeMaterial();
+    material.colorNode = new Nodes.ConstNode(new Color(hexColor));
+    material.lightsNode = new Nodes.LightsNode(); // ignore scene lights
 
-  light2 = new PointLight(0x0040ff, 2, 1);
-  light2.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0x0040ff })));
-  scene.add(light2);
+    const mesh = new Mesh(sphereGeometry, material);
 
-  light3 = new PointLight(0x80ff80, 2, 1);
-  light3.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0x80ff80 })));
-  scene.add(light3);
+    const light = new PointLight(hexColor, intensity, distance);
+    light.add(mesh);
+
+    scene.add(light);
+
+    return light;
+  };
+
+  light1 = addLight(0xffaa00);
+  light2 = addLight(0x0040ff);
+  light3 = addLight(0x80ff80);
 
   //light nodes ( selective lights )
 

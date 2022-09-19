@@ -17,7 +17,7 @@ import {
   add,
   mul,
   normalWorld,
-  saturate,
+  clamp,
   timerLocal,
 } from "three/nodes";
 
@@ -105,7 +105,7 @@ function init() {
         // right bottom
 
         material = new MeshPhysicalNodeMaterial();
-        material.colorNode = saturate(
+        material.colorNode = clamp(
           mul(
             add(mx_fractal_noise_float(mul(customUV, 0.2), 7, 2, 0.7), 1),
             0.5

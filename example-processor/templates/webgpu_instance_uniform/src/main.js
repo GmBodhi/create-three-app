@@ -6,11 +6,18 @@ import {
   Scene,
   GridHelper,
   CubeTextureLoader,
-  MeshStandardMaterial,
   Mesh,
 } from "three";
-import * as Nodes from "three/nodes";
-import { add, mul } from "three/nodes";
+import {
+  MeshStandardNodeMaterial,
+  NodeUpdateType,
+  Node,
+  uniform,
+  attribute,
+  cubeTexture,
+  add,
+  mul,
+} from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -21,13 +28,13 @@ import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 
-class InstanceUniformNode extends Nodes.Node {
+class InstanceUniformNode extends Node {
   constructor() {
     super("vec3");
 
-    this.updateType = Nodes.NodeUpdateType.Object;
+    this.updateType = NodeUpdateType.Object;
 
-    this.uniformNode = new Nodes.UniformNode(new Color());
+    this.uniformNode = uniform(new Color());
   }
 
   update(frame) {
@@ -75,7 +82,7 @@ async function init() {
   // Grid
 
   const helper = new GridHelper(1000, 40, 0x303030, 0x303030);
-  helper.material.colorNode = new Nodes.AttributeNode("color");
+  helper.material.colorNode = attribute("color");
   helper.position.y = -75;
   scene.add(helper);
 
@@ -92,14 +99,14 @@ async function init() {
     path + "nz" + format,
   ];
 
-  const cubeTexture = new CubeTextureLoader().load(urls);
+  const cTexture = new CubeTextureLoader().load(urls);
 
   // Materials
 
   const instanceUniform = new InstanceUniformNode();
-  const cubeTextureNode = new Nodes.CubeTextureNode(cubeTexture);
+  const cubeTextureNode = cubeTexture(cTexture);
 
-  const material = new MeshStandardMaterial();
+  const material = new MeshStandardNodeMaterial();
   material.colorNode = add(instanceUniform, cubeTextureNode);
   material.emissiveNode = mul(instanceUniform, cubeTextureNode);
 
