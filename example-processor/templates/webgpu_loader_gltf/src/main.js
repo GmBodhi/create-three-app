@@ -61,6 +61,19 @@ async function init() {
     //const light = new PointLight( 0xffffff );
     //camera.add( light );
 
+    const mesh = gltf.scene.children[0];
+    const nodeMaterial = Nodes.NodeMaterial.fromMaterial(mesh.material);
+
+    nodeMaterial.normalNode = Nodes.normalMap(
+      Nodes.texture(nodeMaterial.normalMap)
+    );
+    nodeMaterial.normalMap = null; // ignore non-node normalMap material
+
+    // optional: use tangent to compute normalMap
+    mesh.geometry.computeTangents();
+
+    mesh.material = nodeMaterial;
+
     scene.add(gltf.scene);
 
     render();
