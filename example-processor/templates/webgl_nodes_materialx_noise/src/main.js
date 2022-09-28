@@ -17,16 +17,12 @@ import {
   add,
   mul,
   normalWorld,
-  clamp,
   timerLocal,
-} from "three/nodes";
-
-import {
-  mx_perlin_noise_float,
+  mx_noise_vec3,
+  mx_worley_noise_vec3,
   mx_cell_noise_float,
-  mx_worley_noise_float,
-  mx_fractal_noise_float,
-} from "three/addons/nodes/materialx/functions/lib/mx_noise.js";
+  mx_fractal_noise_vec3,
+} from "three/nodes";
 
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
@@ -75,7 +71,7 @@ function init() {
         // left top
 
         let material = new MeshPhysicalNodeMaterial();
-        material.colorNode = mx_perlin_noise_float(customUV);
+        material.colorNode = mx_noise_vec3(customUV);
 
         let mesh = new Mesh(geometry, material);
         mesh.position.x = -100;
@@ -95,7 +91,7 @@ function init() {
         // left bottom
 
         material = new MeshPhysicalNodeMaterial();
-        material.colorNode = mx_worley_noise_float(customUV, 1, 1);
+        material.colorNode = mx_worley_noise_vec3(customUV);
 
         mesh = new Mesh(geometry, material);
         mesh.position.x = -100;
@@ -105,12 +101,7 @@ function init() {
         // right bottom
 
         material = new MeshPhysicalNodeMaterial();
-        material.colorNode = clamp(
-          mul(
-            add(mx_fractal_noise_float(mul(customUV, 0.2), 7, 2, 0.7), 1),
-            0.5
-          )
-        );
+        material.colorNode = mx_fractal_noise_vec3(mul(customUV, 0.2));
 
         mesh = new Mesh(geometry, material);
         mesh.position.x = 100;
