@@ -138,6 +138,10 @@ function init() {
     new LineBasicMaterial({ color: 0x5555ff })
   );
 
+  // The invisible dummyMesh quads and the guiMesh need to be rendered before the controller lines so that they
+  // leave a hole in the depth buffer that the lines can intersect.
+  line.renderOrder = 1;
+
   const controllerModelFactory = new XRControllerModelFactory();
   const handModelFactory = new XRHandModelFactory().setPath(
     "three/examples/models/fbx/"
@@ -200,7 +204,7 @@ function init() {
   // projection layer is rendered.
   const dummyMeshLeft = new Mesh(
     new PlaneGeometry(snellenConfig.widthMeters, snellenConfig.heightMeters),
-    new MeshBasicMaterial({ opacity: 0 })
+    new MeshBasicMaterial({ colorWrite: false })
   );
   dummyMeshLeft.position.x = snellenConfig.x - snellenConfig.widthMeters;
   dummyMeshLeft.position.y = snellenConfig.y + snellenConfig.heightMeters;
@@ -248,7 +252,8 @@ function init() {
   guiMesh.position.set(1.0, 1.5, -1.0);
   guiMesh.rotation.y = -Math.PI / 4;
   guiMesh.scale.setScalar(2);
-  guiMesh.material.opacity = 0;
+  guiMesh.material.colorWrite = false;
+  guiMesh.material.transparent = false;
   group.add(guiMesh);
 
   // Error message if layer initialization fails.

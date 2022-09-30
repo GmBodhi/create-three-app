@@ -25,7 +25,7 @@ import {
   normalWorld,
   modelWorldMatrix,
   transformDirection,
-  saturate,
+  clamp,
   saturation,
   hue,
   reflectVector,
@@ -124,7 +124,7 @@ async function init() {
     const mixCubeMaps = mix(
       cubeTexture(cube1Texture, custom1UV),
       cubeTexture(cube2Texture, custom2UV),
-      saturate(add(positionWorld.y, mixNode))
+      clamp(add(positionWorld.y, mixNode))
     );
     const proceduralEnv = mix(mixCubeMaps, normalWorld, proceduralNode);
     const intensityFilter = mul(proceduralEnv, intensityNode);

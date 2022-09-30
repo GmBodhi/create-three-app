@@ -1,11 +1,4 @@
-.renderer,
-body,
-flow {
-  height: 100%;
-  width: 100%;
-}
 body {
-  overflow: hidden;
   margin: 0;
   background-color: #000;
   color: #fff;
@@ -14,21 +7,8 @@ body {
   line-height: 24px;
   overscroll-behavior: none;
 }
-.renderer,
-flow {
-  position: absolute;
-  top: 0;
-  left: 0;
-}
-flow {
-  box-shadow: inset 0 0 20px 0 #000;
-  pointer-events: none;
-}
-flow f-canvas {
-  pointer-events: auto;
-}
-flow f-canvas:not(.focusing) {
-  background: #191919ed;
+#info a {
+  color: #4d6675;
 }
 a {
   color: #ff0;

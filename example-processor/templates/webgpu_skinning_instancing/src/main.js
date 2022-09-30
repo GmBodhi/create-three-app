@@ -70,6 +70,8 @@ async function init() {
 
     object.traverse((child) => {
       if (child.isMesh) {
+        const oscNode = oscSine(timerLocal(0.1));
+
         // random colors between instances from 0x000000 to 0xFFFFFF
         const randomColors = range(new Color(0x000000), new Color(0xffffff));
 
@@ -78,12 +80,8 @@ async function init() {
 
         child.material = new Nodes.MeshStandardNodeMaterial();
         child.material.roughness = 0.1;
-        child.material.metalnessNode = randomMetalness;
-        child.material.colorNode = mix(
-          color(0xffffff),
-          randomColors,
-          oscSine(timerLocal(0.1))
-        );
+        child.material.metalnessNode = mix(0.0, randomMetalness, oscNode);
+        child.material.colorNode = mix(color(0xffffff), randomColors, oscNode);
 
         child.isInstancedMesh = true;
         child.instanceMatrix = new InstancedBufferAttribute(

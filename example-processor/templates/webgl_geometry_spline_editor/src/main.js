@@ -321,7 +321,7 @@ function onPointerDown(event) {
   onDownPosition.y = event.clientY;
 }
 
-function onPointerUp() {
+function onPointerUp(event) {
   onUpPosition.x = event.clientX;
   onUpPosition.y = event.clientY;
 

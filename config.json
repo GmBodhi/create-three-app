@@ -584,6 +584,16 @@
         "/src"
       ]
     },
+    "webgl_animation_skinning_ik": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_animation_skinning_morph": {
       "files": {
         "index.html": "src",

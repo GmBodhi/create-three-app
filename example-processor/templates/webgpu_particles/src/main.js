@@ -26,7 +26,7 @@ import {
   max,
   min,
   div,
-  saturate,
+  clamp,
   positionWorld,
   invert,
   timerLocal,
@@ -84,7 +84,7 @@ async function init() {
   const smokeColor = mix(
     color(0x2c1501),
     color(0x222222),
-    saturate(mul(positionWorld.y, 3))
+    clamp(mul(positionWorld.y, 3))
   );
 
   // create particles

@@ -20,8 +20,7 @@ import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { NodeEditor } from "three/addons/node-editor/NodeEditor.js";
 import { MeshEditor } from "three/addons/node-editor/scene/MeshEditor.js";
-
-import Stats from "three/addons/libs/stats.module.js";
+import { StandardMaterialEditor } from "three/addons/node-editor/materials/StandardMaterialEditor.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
@@ -29,9 +28,9 @@ import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 // Use PreviewEditor in WebGL for now
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
-let stats;
 let camera, scene, renderer;
 let model;
+let nodeEditor;
 
 init()
   .then(animate)
@@ -76,31 +75,39 @@ async function init() {
 
   //
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 500;
   controls.maxDistance = 3000;
 
   window.addEventListener("resize", onWindowResize);
 
-  onWindowResize();
-
   initEditor();
+
+  onWindowResize();
 
   return renderer.init();
 }
 
 function initEditor() {
-  const nodeEditor = new NodeEditor(scene);
+  nodeEditor = new NodeEditor(scene);
 
-  nodeEditor.addEventListener("new", () => {
-    const materialEditor = new MeshEditor(model);
+  const reset = () => {
+    const meshEditor = new MeshEditor(model);
+    const materialEditor = new StandardMaterialEditor();
 
+    nodeEditor.add(meshEditor);
     nodeEditor.add(materialEditor);
-    nodeEditor.centralizeNode(materialEditor);
-  });
+    nodeEditor.centralizeNode(meshEditor);
+
+    const { x, y } = meshEditor.getPosition();
+
+    meshEditor.setPosition(x + 250, y);
+    materialEditor.setPosition(x - 250, y);
+
+    meshEditor.material.connect(materialEditor);
+  };
+
+  nodeEditor.addEventListener("new", reset);
 
   document.body.appendChild(nodeEditor.domElement);
 
@@ -136,21 +143,20 @@ function initEditor() {
     model.material = defaultMaterial;
     scene.add(model);
 
-    const materialEditor = new MeshEditor(model);
-
-    nodeEditor.add(materialEditor);
-    nodeEditor.centralizeNode(materialEditor);
+    reset();
   });
 }
 
 function onWindowResize() {
   const width = window.innerWidth;
-  const height = window.innerHeight / 2;
+  const height = window.innerHeight;
 
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
 
   renderer.setSize(width, height);
+
+  nodeEditor.setSize(width, height);
 }
 
 //
@@ -161,8 +167,6 @@ function animate() {
   nodeFrame.update();
 
   render();
-
-  stats.update();
 }
 
 function render() {
