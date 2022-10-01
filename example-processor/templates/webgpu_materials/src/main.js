@@ -16,7 +16,7 @@ import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-import { ShaderNode, vec3, dot } from "three/nodes";
+import { ShaderNode, vec3, dot, triplanarTexture } from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -170,6 +170,11 @@ async function init() {
     tex_sampler: textureNode,
     uv: new Nodes.UVNode(),
   });
+  materials.push(material);
+
+  // Triplanar Texture Mapping
+  material = new Nodes.MeshBasicNodeMaterial();
+  material.colorNode = triplanarTexture(new Nodes.TextureNode(texture));
   materials.push(material);
 
   //
