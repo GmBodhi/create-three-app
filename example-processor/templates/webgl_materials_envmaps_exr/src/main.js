@@ -4,16 +4,17 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
+  ACESFilmicToneMapping,
+  sRGBEncoding,
   TorusKnotGeometry,
   MeshStandardMaterial,
   Mesh,
   PlaneGeometry,
   MeshBasicMaterial,
   DefaultLoadingManager,
+  EquirectangularReflectionMapping,
   TextureLoader,
-  sRGBEncoding,
   PMREMGenerator,
-  ACESFilmicToneMapping,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -54,6 +55,13 @@ function init() {
   scene = new Scene();
 
   renderer = new WebGLRenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+
+  container.appendChild(renderer.domElement);
+
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.outputEncoding = sRGBEncoding;
 
   //
 
@@ -80,32 +88,22 @@ function init() {
   };
 
   new EXRLoader().load("textures/piz_compressed.exr", function (texture) {
-    exrCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
-    exrBackground = exrCubeRenderTarget.texture;
+    texture.mapping = EquirectangularReflectionMapping;
 
-    texture.dispose();
+    exrCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
+    exrBackground = texture;
   });
 
   new TextureLoader().load("textures/equirectangular.png", function (texture) {
+    texture.mapping = EquirectangularReflectionMapping;
     texture.encoding = sRGBEncoding;
 
     pngCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
-
-    pngBackground = pngCubeRenderTarget.texture;
-
-    texture.dispose();
+    pngBackground = texture;
   });
 
   const pmremGenerator = new PMREMGenerator(renderer);
   pmremGenerator.compileEquirectangularShader();
-
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
-  container.appendChild(renderer.domElement);
-
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.outputEncoding = sRGBEncoding;
 
   stats = new Stats();
   container.appendChild(stats.dom);
