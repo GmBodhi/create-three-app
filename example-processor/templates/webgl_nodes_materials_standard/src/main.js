@@ -7,6 +7,7 @@ import {
   Scene,
   PerspectiveCamera,
   HemisphereLight,
+  MaterialLoader,
   LoadingManager,
   TextureLoader,
   RepeatWrapping,
@@ -61,9 +62,33 @@ function init() {
 
   scene.add(new HemisphereLight(0x443333, 0x222233, 4));
 
+  // Test Extended Material
+
+  class MeshCustomNodeMaterial extends Nodes.MeshStandardNodeMaterial {
+    constructor() {
+      super();
+    }
+  }
+
+  // Extends Serialization Material
+
+  const superCreateMaterialFromType = MaterialLoader.createMaterialFromType;
+
+  MaterialLoader.createMaterialFromType = function (type) {
+    const materialLib = {
+      MeshCustomNodeMaterial,
+    };
+
+    if (materialLib[type] !== undefined) {
+      return new materialLib[type]();
+    }
+
+    return superCreateMaterialFromType.call(this, type);
+  };
+
   //
 
-  const material = new Nodes.MeshStandardNodeMaterial();
+  const material = new MeshCustomNodeMaterial();
 
   new OBJLoader()
     .setPath("models/obj/cerberus/")
