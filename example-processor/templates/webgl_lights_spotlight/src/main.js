@@ -32,27 +32,32 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(render);
+  document.body.appendChild(renderer.domElement);
+
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
+
   renderer.outputEncoding = sRGBEncoding;
+
   renderer.toneMapping = ACESFilmicToneMapping;
-  document.body.appendChild(renderer.domElement);
+  renderer.toneMappingExposure = 1;
+
+  renderer.setAnimationLoop(render);
 
   scene = new Scene();
 
   camera = new PerspectiveCamera(
-    35,
+    40,
     window.innerWidth / window.innerHeight,
     1,
     1000
   );
-  camera.position.set(76, 50, 10);
-  camera.rotation.set(-1.29, 1.15, 1.26);
+  camera.position.set(70, 50, 10);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 20;
-  controls.maxDistance = 500;
+  controls.maxDistance = 100;
+  controls.maxPolarAngle = Math.PI / 2;
   controls.target.set(0, 18, 0);
   controls.update();
 
@@ -75,7 +80,7 @@ function init() {
     textures[filename] = texture;
   }
 
-  spotLight = new SpotLight(0xffffff, 10);
+  spotLight = new SpotLight(0xffffff, 5);
   spotLight.position.set(25, 50, 25);
   spotLight.angle = Math.PI / 6;
   spotLight.penumbra = 1;
