@@ -100,6 +100,7 @@ function createGUI() {
       "Zero Radius": "models/svg/zero-radius.svg",
       "Styles in svg tag": "models/svg/tests/styles.svg",
       "Round join": "models/svg/tests/roundJoinPrecisionIssue.svg",
+      "Ellipse Transformations": "models/svg/tests/ellipseTransform.svg",
     })
     .name("SVG File")
     .onChange(update);
