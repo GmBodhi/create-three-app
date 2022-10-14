@@ -24,9 +24,9 @@ let camera, scene, renderer;
 
 let light1, light2, light3;
 
-init().then(animate).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -111,6 +111,7 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
@@ -124,10 +125,6 @@ async function init() {
   // events
 
   window.addEventListener("resize", onWindowResize);
-
-  //
-
-  return renderer.init();
 }
 
 function onWindowResize() {
@@ -138,8 +135,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const time = Date.now() * 0.0005;
   const scale = 0.5;
 
@@ -156,8 +151,4 @@ function animate() {
   light3.position.z = Math.sin(time * 0.5) * scale;
 
   renderer.render(scene, camera);
-}
-
-function error(error) {
-  console.error(error);
 }

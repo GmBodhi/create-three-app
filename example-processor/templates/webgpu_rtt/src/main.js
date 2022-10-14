@@ -26,9 +26,10 @@ let box;
 
 const dpr = window.devicePixelRatio;
 
-init().then(animate).catch(error);
+init();
+animate();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -97,10 +98,6 @@ async function init() {
 
   const quad = new Mesh(geometryFX, materialFX);
   sceneFX.add(quad);
-
-  //
-
-  return renderer.init();
 }
 
 function onWindowMouseMove(e) {
@@ -124,8 +121,4 @@ function animate() {
 
   textureRenderer.render(scene, camera);
   renderer.render(sceneFX, cameraFX);
-}
-
-function error(error) {
-  console.error(error);
 }

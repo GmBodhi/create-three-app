@@ -1731,6 +1731,16 @@
         "/src"
       ]
     },
+    "webgl_loader_gltf_instancing": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_gltf_iridescence": {
       "files": {
         "index.html": "src",

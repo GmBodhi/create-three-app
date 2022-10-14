@@ -51,9 +51,9 @@ let computeNode;
 const pointerVector = new Vector2(-10.0, -10.0); // Out of bounds first
 const scaleVector = new Vector2(1, 1);
 
-init().then(animate).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -166,6 +166,7 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
@@ -177,8 +178,6 @@ async function init() {
 
   gui.add(scaleVector, "x", 0, 1, 0.01);
   gui.add(scaleVector, "y", 0, 1, 0.01);
-
-  return renderer.init();
 }
 
 function onWindowResize() {
@@ -198,12 +197,6 @@ function onMouseMove(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   renderer.compute(computeNode);
   renderer.render(scene, camera);
-}
-
-function error(error) {
-  console.error(error);
 }

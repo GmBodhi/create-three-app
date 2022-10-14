@@ -17,9 +17,9 @@ let group;
 let imageWidth = 1,
   imageHeight = 1;
 
-init().then(animate).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -87,11 +87,10 @@ async function init() {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(render);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
-
-  return renderer.init();
 }
 
 function onWindowResize() {
@@ -102,11 +101,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-  render();
 }
 
 function render() {
@@ -125,8 +119,4 @@ function render() {
   group.rotation.z = time * 1.0;
 
   renderer.render(scene, camera);
-}
-
-function error(error) {
-  console.error(error);
 }

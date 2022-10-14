@@ -29,9 +29,9 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer;
 
-init().then(render).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -88,8 +88,6 @@ async function init() {
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
   loader.load("DamagedHelmet.gltf", function (gltf) {
     scene.add(gltf.scene);
-
-    render();
   });
 
   renderer = new WebGPURenderer();
@@ -98,6 +96,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
+  renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -105,8 +104,6 @@ async function init() {
   controls.maxDistance = 10;
 
   window.addEventListener("resize", onWindowResize);
-
-  if (renderer.init) return renderer.init();
 }
 
 function onWindowResize() {
@@ -119,11 +116,5 @@ function onWindowResize() {
 //
 
 function render() {
-  requestAnimationFrame(render);
-
   renderer.render(scene, camera);
-}
-
-function error(error) {
-  console.error(error);
 }

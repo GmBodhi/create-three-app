@@ -57,9 +57,9 @@ let controls;
 
 const objects = [];
 
-init().then(animate).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -123,6 +123,7 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -139,8 +140,6 @@ async function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
-
-  return renderer.init();
 }
 
 function addMesh(geometry, material) {
@@ -170,13 +169,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   for (let i = 0, l = objects.length; i < l; i++) {
     const object = objects[i];
 
@@ -185,8 +177,6 @@ function render() {
   }
 
   renderer.render(scene, camera);
-}
 
-function error(error) {
-  console.error(error);
+  stats.update();
 }

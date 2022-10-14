@@ -40,9 +40,9 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let camera, scene, renderer;
 let controls;
 
-init().then(animate).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -146,6 +146,7 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(render);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -164,8 +165,6 @@ async function init() {
   const gui = new GUI();
 
   gui.add(timer, "scale", 0, 1, 0.01).name("speed");
-
-  return renderer.init();
 }
 
 function onWindowResize() {
@@ -177,15 +176,6 @@ function onWindowResize() {
   renderer.setSize(innerWidth, innerHeight);
 }
 
-function animate() {
-  requestAnimationFrame(animate);
-  render();
-}
-
 function render() {
   renderer.render(scene, camera);
-}
-
-function error(error) {
-  console.error(error);
 }

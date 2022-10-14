@@ -21,9 +21,10 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer;
 
-init().then(render).catch(error);
+init();
+render();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -91,6 +92,7 @@ async function init() {
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(render);
   renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
@@ -100,8 +102,6 @@ async function init() {
   controls.maxDistance = 10;
 
   window.addEventListener("resize", onWindowResize);
-
-  if (renderer.init) return renderer.init();
 }
 
 function onWindowResize() {
@@ -114,11 +114,5 @@ function onWindowResize() {
 //
 
 function render() {
-  requestAnimationFrame(render);
-
   renderer.render(scene, camera);
-}
-
-function error(error) {
-  console.error(error);
 }
