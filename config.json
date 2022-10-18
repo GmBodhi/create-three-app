@@ -3344,6 +3344,16 @@
         "/src"
       ]
     },
+    "webgl_renderer_pathtracer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_rtt": {
       "files": {
         "index.html": "src",
