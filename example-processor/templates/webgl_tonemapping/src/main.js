@@ -27,7 +27,7 @@ let gui,
 const params = {
   exposure: 1.0,
   toneMapping: "ACESFilmic",
-  blurriness: 1,
+  blurriness: 0.3,
 };
 
 const toneMappingOptions = {
@@ -69,7 +69,7 @@ async function init() {
     );
 
   scene = new Scene();
-  scene.backgroundBlurriness = 1;
+  scene.backgroundBlurriness = params.blurriness;
 
   camera = new PerspectiveCamera(
     45,
