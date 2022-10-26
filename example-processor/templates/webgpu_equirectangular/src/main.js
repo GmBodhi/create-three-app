@@ -48,8 +48,8 @@ function init() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.autoRotate = true;
-  controls.minDistance = 2;
-  controls.maxDistance = 10;
+  controls.rotateSpeed = -0.125; // negative, to track mouse pointer
+  controls.autoRotateSpeed = 1.0;
 
   window.addEventListener("resize", onWindowResize);
 }
