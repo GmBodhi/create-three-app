@@ -181,9 +181,6 @@ function initPostprocessing() {
     focus: 1.0,
     aperture: 0.025,
     maxblur: 0.01,
-
-    width: width,
-    height: height,
   });
 
   const composer = new EffectComposer(renderer);

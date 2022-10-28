@@ -17,7 +17,10 @@ import {
   BasicDepthPacking,
   RGBADepthPacking,
   MeshNormalMaterial,
+  ShaderMaterial,
+  UniformsUtils,
   Mesh,
+  Matrix4,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -25,6 +28,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { VelocityShader } from "three/addons/shaders/VelocityShader.js";
 
 let stats;
 
@@ -49,7 +53,8 @@ let mesh,
   materialStandard,
   materialDepthBasic,
   materialDepthRGBA,
-  materialNormal;
+  materialNormal,
+  materialVelocity;
 
 const SCALE = 2.436143; // from original model
 const BIAS = -0.428408; // from original model
@@ -64,6 +69,7 @@ function initGui() {
   gui.add(params, "material", [
     "standard",
     "normal",
+    "velocity",
     "depthBasic",
     "depthRGBA",
   ]);
@@ -199,6 +205,17 @@ function init() {
     side: DoubleSide,
   });
 
+  materialVelocity = new ShaderMaterial({
+    uniforms: UniformsUtils.clone(VelocityShader.uniforms),
+    vertexShader: VelocityShader.vertexShader,
+    fragmentShader: VelocityShader.fragmentShader,
+    side: DoubleSide,
+  });
+  materialVelocity.uniforms.displacementMap.value = displacementMap;
+  materialVelocity.uniforms.displacementScale.value = SCALE;
+  materialVelocity.uniforms.displacementBias.value = BIAS;
+  materialVelocity.extensions.derivatives = true;
+
   //
 
   const loader = new OBJLoader();
@@ -209,6 +226,7 @@ function init() {
 
     mesh = new Mesh(geometry, materialNormal);
     mesh.scale.multiplyScalar(25);
+    mesh.userData.matrixWorldPrevious = new Matrix4(); // for velocity
     scene.add(mesh);
   });
 
@@ -266,6 +284,9 @@ function render() {
       case "normal":
         material = materialNormal;
         break;
+      case "velocity":
+        material = materialVelocity;
+        break;
     }
 
     if (sides[params.side] !== material.side) {
@@ -299,5 +320,27 @@ function render() {
   controlsPerspective.update();
   controlsOrtho.update(); // must update both controls for damping to complete
 
+  // remember camera projection changes
+
+  materialVelocity.uniforms.previousProjectionViewMatrix.value.copy(
+    materialVelocity.uniforms.currentProjectionViewMatrix.value
+  );
+  materialVelocity.uniforms.currentProjectionViewMatrix.value.multiplyMatrices(
+    camera.projectionMatrix,
+    camera.matrixWorldInverse
+  );
+
+  if (mesh && mesh.userData.matrixWorldPrevious) {
+    materialVelocity.uniforms.modelMatrixPrev.value.copy(
+      mesh.userData.matrixWorldPrevious
+    );
+  }
+
   renderer.render(scene, camera);
+
+  scene.traverse(function (object) {
+    if (object.isMesh) {
+      object.userData.matrixWorldPrevious.copy(object.matrixWorld);
+    }
+  });
 }

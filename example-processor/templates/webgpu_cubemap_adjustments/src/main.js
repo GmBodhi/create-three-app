@@ -44,9 +44,9 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
 
-init().then(render).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -149,8 +149,6 @@ async function init() {
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
   loader.load("DamagedHelmet.gltf", function (gltf) {
     scene.add(gltf.scene);
-
-    render();
   });
 
   const sphereGeometry = new SphereGeometry(0.5, 64, 32);
@@ -177,6 +175,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
+  renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -209,8 +208,6 @@ async function init() {
   gui.add(adjustments, "intensity", 0, 5, 0.01);
   gui.add(adjustments, "hue", 0, Math.PI * 2, 0.01);
   gui.add(adjustments, "saturation", 0, 2, 0.01);
-
-  return renderer.init();
 }
 
 function onWindowResize() {
@@ -223,11 +220,5 @@ function onWindowResize() {
 //
 
 function render() {
-  requestAnimationFrame(render);
-
   renderer.render(scene, camera);
-}
-
-function error(error) {
-  console.error(error);
 }

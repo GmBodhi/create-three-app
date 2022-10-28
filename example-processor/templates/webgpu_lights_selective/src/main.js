@@ -27,9 +27,9 @@ import { color, float } from "three/nodes";
 
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 
-init().then(animate).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -144,6 +144,7 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
   renderer.outputEncoding = sRGBEncoding;
   renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 100);
@@ -167,8 +168,6 @@ async function init() {
 
   gui.add(centerObject.material, "roughness", 0, 1, 0.01);
   gui.add(centerObject.material, "metalness", 0, 1, 0.01);
-
-  return renderer.init();
 }
 
 function onWindowResize() {
@@ -179,13 +178,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   const time = performance.now() / 1000;
   const lightTime = time * 0.5;
 
@@ -213,8 +205,6 @@ function render() {
 				if ( time > 3.5 && light4.parent === null ) scene.add( light4 );
 */
   renderer.render(scene, camera);
-}
 
-function error(error) {
-  console.error(error);
+  stats.update();
 }

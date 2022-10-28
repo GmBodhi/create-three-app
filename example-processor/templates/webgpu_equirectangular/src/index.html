@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - lottie loader</title>
+    <title>three.js webgpu - equirectangular</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -9,9 +9,16 @@
   </head>
   <body style="overflow: hidden">
     <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      webgl - lottie<br /><br />
-      <input id="scrubber" type="range" value="0" style="width: 300px" />
+      <a href="https://threejs.org" target="_blank" rel="noopener"
+        >three.js webgpu</a
+      >
+      - equirectangular panorama demo. photo by
+      <a
+        href="http://www.flickr.com/photos/jonragnarsson/2294472375/"
+        target="_blank"
+        rel="noopener"
+        >Jón Ragnarsson</a
+      >.
     </div>
 
     <!-- Import maps polyfill -->
@@ -25,7 +32,8 @@
       {
         "imports": {
           "three": "../build/three.module.js",
-          "three/addons/": "./jsm/"
+          "three/addons/": "./jsm/",
+          "three/nodes": "./jsm/nodes/Nodes.js"
         }
       }
     </script>

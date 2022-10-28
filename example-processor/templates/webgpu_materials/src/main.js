@@ -16,7 +16,7 @@ import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-import { ShaderNode, vec3, dot } from "three/nodes";
+import { ShaderNode, vec3, dot, triplanarTexture } from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -27,9 +27,9 @@ let camera, scene, renderer;
 const objects = [],
   materials = [];
 
-init().then(animate).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -172,6 +172,11 @@ async function init() {
   });
   materials.push(material);
 
+  // Triplanar Texture Mapping
+  material = new Nodes.MeshBasicNodeMaterial();
+  material.colorNode = triplanarTexture(new Nodes.TextureNode(texture));
+  materials.push(material);
+
   //
   // Geometry
   //
@@ -187,6 +192,7 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -197,8 +203,6 @@ async function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
-
-  return renderer.init();
 }
 
 function addMesh(geometry, material) {
@@ -226,13 +230,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   const timer = 0.0001 * Date.now();
 
   camera.position.x = Math.cos(timer) * 1000;
@@ -248,8 +245,6 @@ function render() {
   }
 
   renderer.render(scene, camera);
-}
 
-function error(error) {
-  console.error(error);
+  stats.update();
 }

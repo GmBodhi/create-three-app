@@ -25,9 +25,9 @@ const amount = parseInt(window.location.search.slice(1)) || 10;
 const count = Math.pow(amount, 3);
 const dummy = new Object3D();
 
-init().then(animate).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -71,6 +71,7 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -81,8 +82,6 @@ async function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
-
-  return renderer.init();
 }
 
 function onWindowResize() {
@@ -95,14 +94,12 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
 
   stats.update();
 }
 
-function render() {
+async function render() {
   if (mesh) {
     const time = Date.now() * 0.001;
 
@@ -130,9 +127,5 @@ function render() {
     }
   }
 
-  renderer.render(scene, camera);
-}
-
-function error(error) {
-  console.error(error);
+  await renderer.render(scene, camera);
 }

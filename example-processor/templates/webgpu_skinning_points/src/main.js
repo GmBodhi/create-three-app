@@ -19,9 +19,9 @@ let camera, scene, renderer;
 
 let mixer, clock;
 
-init().then(animate).catch(error);
+init();
 
-async function init() {
+function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -69,11 +69,10 @@ async function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
-
-  return renderer.init();
 }
 
 function onWindowResize() {
@@ -84,15 +83,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   if (mixer) mixer.update(delta);
 
   renderer.render(scene, camera);
-}
-
-function error(error) {
-  console.error(error);
 }

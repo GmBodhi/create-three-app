@@ -3,25 +3,20 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  EquirectangularReflectionMapping,
   WebGLRenderer,
   ACESFilmicToneMapping,
   sRGBEncoding,
-  PMREMGenerator,
-  Color,
 } from "three";
-
-import { NodeMaterial, color, uv, mix, mul, checker } from "three/nodes";
-
-import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-let camera, scene, renderer, controls;
+let camera, scene, renderer;
 
 init();
-animate();
+render();
 
 function init() {
   const container = document.createElement("div");
@@ -30,19 +25,33 @@ function init() {
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
-    0.1,
+    0.25,
     20
   );
-  camera.position.set(-0.75, 0.7, 1.25);
+  camera.position.set(-0.9, 0.41, -0.89);
 
   scene = new Scene();
 
-  // model
+  new RGBELoader()
+    .setPath("textures/equirectangular/")
+    .load("royal_esplanade_1k.hdr", function (texture) {
+      texture.mapping = EquirectangularReflectionMapping;
 
-  new GLTFLoader()
-    .setPath("models/gltf/")
-    .load("SheenChair.glb", function (gltf) {
-      scene.add(gltf.scene);
+      scene.background = texture;
+      scene.environment = texture;
+
+      render();
+
+      // model
+
+      const loader = new GLTFLoader().setPath(
+        "models/gltf/DamagedHelmet/glTF-instancing/"
+      );
+      loader.load("DamagedHelmetGpuInstancing.gltf", function (gltf) {
+        scene.add(gltf.scene);
+
+        render();
+      });
     });
 
   renderer = new WebGLRenderer({ antialias: true });
@@ -53,17 +62,11 @@ function init() {
   renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
 
-  const environment = new RoomEnvironment();
-  const pmremGenerator = new PMREMGenerator(renderer);
-
-  scene.background = new Color(0xbbbbbb);
-  scene.environment = pmremGenerator.fromScene(environment).texture;
-
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.minDistance = 1;
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.addEventListener("change", render); // use if there is no animation loop
+  controls.minDistance = 0.2;
   controls.maxDistance = 10;
-  controls.target.set(0, 0.35, 0);
+  controls.target.set(0, 0.25, 0);
   controls.update();
 
   window.addEventListener("resize", onWindowResize);
@@ -74,19 +77,11 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-//
-
-function animate() {
-  requestAnimationFrame(animate);
-
-  nodeFrame.update();
-
-  controls.update(); // required if damping enabled
 
   render();
 }
+
+//
 
 function render() {
   renderer.render(scene, camera);

@@ -90,7 +90,7 @@ function createEnvironment() {
   radianceMap = pmremGenerator.fromScene(envScene).texture;
   pmremGenerator.dispose();
 
-  scene.background = radianceMap;
+  scene.background = envScene.background;
 }
 
 function onWindowResize() {

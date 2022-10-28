@@ -499,6 +499,19 @@
         "/src/shaders"
       ]
     },
+    "webgl2_texture2darray_compressed": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "fs.glsl": "src/shaders",
+        "vs.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgl2_ubo": {
       "files": {
         "index.html": "src",
@@ -1731,6 +1744,16 @@
         "/src"
       ]
     },
+    "webgl_loader_gltf_instancing": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_gltf_iridescence": {
       "files": {
         "index.html": "src",
@@ -2833,6 +2856,16 @@
         "/src"
       ]
     },
+    "webgl_nodes_loader_materialx": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_nodes_materials_instance_uniform": {
       "files": {
         "index.html": "src",
@@ -3334,6 +3367,16 @@
         "/src"
       ]
     },
+    "webgl_renderer_pathtracer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_rtt": {
       "files": {
         "index.html": "src",
@@ -3690,6 +3733,16 @@
       ]
     },
     "webgpu_depth_texture": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_equirectangular": {
       "files": {
         "index.html": "src",
         "main.js": "src",
