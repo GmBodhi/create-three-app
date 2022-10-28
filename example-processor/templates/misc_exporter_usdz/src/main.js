@@ -50,6 +50,7 @@ function init() {
     new RoomEnvironment(),
     0.04
   ).texture;
+  scene.add(camera);
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
   loader.load("DamagedHelmet.gltf", async function (gltf) {
@@ -66,7 +67,7 @@ function init() {
     // USDZ
 
     const exporter = new USDZExporter();
-    const arraybuffer = await exporter.parse(gltf.scene);
+    const arraybuffer = await exporter.parse(scene);
     const blob = new Blob([arraybuffer], { type: "application/octet-stream" });
 
     const link = document.getElementById("link");

@@ -43,18 +43,6 @@ function init() {
     .setPath("models/gltf/")
     .load("SheenChair.glb", function (gltf) {
       scene.add(gltf.scene);
-
-      const object = gltf.scene.getObjectByName("SheenChair_fabric");
-
-      // Convert to NodeMaterial
-      const material = NodeMaterial.fromMaterial(object.material);
-
-      const checkerNode = checker(mul(uv(), 5));
-
-      material.sheenNode = mix(color(0x00ffff), color(0xffff00), checkerNode);
-      material.sheenRoughnessNode = checkerNode;
-
-      object.material = material;
     });
 
   renderer = new WebGLRenderer({ antialias: true });
