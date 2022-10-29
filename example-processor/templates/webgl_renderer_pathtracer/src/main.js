@@ -39,7 +39,7 @@ import {
   PathTracingSceneGenerator,
 } from "three-gpu-pathtracer";
 
-let container, progressBarDiv, samplesEl;
+let progressBarDiv, samplesEl;
 let camera, scene, renderer, controls, gui;
 let pathTracer, sceneInfo, fsQuad, floor;
 let delaySamples = 0;
@@ -67,8 +67,6 @@ init();
 render();
 
 function init() {
-  samplesEl = document.getElementById("samples");
-
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -291,6 +289,15 @@ function createGUI() {
       pathTracer.reset();
     });
   gui.add(params, "download").name("download image");
+
+  const renderFolder = gui.addFolder("Render");
+
+  samplesEl = document.createElement("div");
+  samplesEl.classList.add("gui-render");
+  samplesEl.innerText = "samples: 0";
+
+  renderFolder.$children.appendChild(samplesEl);
+  renderFolder.open();
 }
 
 //

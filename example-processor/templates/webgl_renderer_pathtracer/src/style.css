@@ -10,19 +10,7 @@ body {
 a {
   color: #ff0;
   text-decoration: none;
-}
-#samples-container {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  font-family: "Courier New", Courier, monospace;
-  color: #fff;
-  pointer-events: none;
-}
-#samples {
-  background-color: rgba(0, 0, 0, 0.75);
-  padding: 5px;
-  display: inline-block;
+  pointer-events: auto;
 }
 .checkerboard {
   background-image: linear-gradient(45deg, #ddd 25%, transparent 25%),
@@ -31,6 +19,10 @@ a {
     linear-gradient(-45deg, transparent 75%, #ddd 75%);
   background-size: 20px 20px;
   background-position: 0 0, 0 10px, 10px -10px, -10px 0;
+}
+.lil-gui .gui-render {
+  line-height: var(--widget-height);
+  padding: var(--padding);
 }
 a:hover {
   text-decoration: underline;
@@ -57,7 +49,6 @@ button {
   pointer-events: none;
   z-index: 1;
 }
-a,
 button,
 input,
 select {
