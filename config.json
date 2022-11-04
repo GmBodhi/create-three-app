@@ -3955,6 +3955,16 @@
         "/src"
       ]
     },
+    "webxr_ar_plane_detection": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webxr_vr_ballshooter": {
       "files": {
         "index.html": "src",
