@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   PerspectiveCamera,
-  Vector3,
   Scene,
   Color,
   Fog,
@@ -43,7 +42,7 @@ function init() {
     100
   );
   camera.position.set(-5, 3, 10);
-  camera.lookAt(new Vector3(0, 2, 0));
+  camera.lookAt(0, 2, 0);
 
   scene = new Scene();
   scene.background = new Color(0xe0e0e0);
