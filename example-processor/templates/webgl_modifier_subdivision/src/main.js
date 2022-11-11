@@ -4,12 +4,13 @@ import {
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
+  HemisphereLight,
+  DirectionalLight,
   TextureLoader,
   RepeatWrapping,
-  MeshBasicMaterial,
-  DoubleSide,
   Mesh,
   BufferGeometry,
+  MeshBasicMaterial,
   BoxGeometry,
   CapsuleGeometry,
   CircleGeometry,
@@ -26,6 +27,9 @@ import {
   TetrahedronGeometry,
   TorusGeometry,
   TorusKnotGeometry,
+  DoubleSide,
+  FrontSide,
+  MeshStandardMaterial,
 } from "three";
 import { LoopSubdivision } from "three-subdivide";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -33,16 +37,20 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let renderer, scene, camera;
 let texture;
-let meshMaterial, meshNormal, meshSmooth;
-let wireMaterial, wireNormal, wireSmooth;
+let meshNormal, meshSmooth;
+let wireNormal, wireSmooth;
+let wireMaterial;
 
 const params = {
   geometry: "Box",
   iterations: 3,
   split: true,
   uvSmooth: false,
+  preserveEdges: false,
   flatOnly: false,
   maxTriangles: 25000,
+  flatShading: false,
+  textured: true,
   wireframe: false,
 };
 
@@ -66,6 +74,14 @@ function init() {
   controls.target.set(0, 0, 0);
   controls.update();
 
+  scene.add(new HemisphereLight(0xffffff, 0x737373, 1));
+
+  const frontLight = new DirectionalLight(0xffffff, 0.5);
+  const backLight = new DirectionalLight(0xffffff, 0.5);
+  frontLight.position.set(0, 1, 1);
+  backLight.position.set(0, 1, -1);
+  scene.add(frontLight, backLight);
+
   texture = new TextureLoader().load(
     "three/examples/textures/uv_grid_opengl.jpg",
     () => {
@@ -76,15 +92,8 @@ function init() {
     }
   );
 
-  meshMaterial = new MeshBasicMaterial({
-    map: texture,
-    polygonOffset: true,
-    polygonOffsetFactor: 1, // positive value pushes polygon further away
-    polygonOffsetUnits: 1,
-    side: DoubleSide,
-  });
-  meshNormal = new Mesh(new BufferGeometry(), meshMaterial);
-  meshSmooth = new Mesh(new BufferGeometry(), meshMaterial);
+  meshNormal = new Mesh(new BufferGeometry(), new MeshBasicMaterial());
+  meshSmooth = new Mesh(new BufferGeometry(), new MeshBasicMaterial());
   meshNormal.position.set(-0.7, 0, 0);
   meshSmooth.position.set(0.7, 0, 0);
   scene.add(meshNormal, meshSmooth);
@@ -132,7 +141,7 @@ function init() {
     .onFinishChange(() => {
       const geom = params.geometry.toLowerCase();
 
-      params.split = geom === "box" || geom === "ring";
+      params.split = geom === "box" || geom === "ring" || geom === "plane";
       params.uvSmooth =
         geom === "circle" || geom === "plane" || geom === "ring";
 
@@ -148,19 +157,25 @@ function init() {
   const splitController = folder1
     .add(params, "split")
     .onFinishChange(updateMeshes);
-  const smoothController = folder1
+  const uvSmoothController = folder1
     .add(params, "uvSmooth")
+    .onFinishChange(updateMeshes);
+  const preserveController = folder1
+    .add(params, "preserveEdges")
     .onFinishChange(updateMeshes);
   folder1.add(params, "flatOnly").onFinishChange(updateMeshes);
   folder1.add(params, "maxTriangles").onFinishChange(updateMeshes);
 
-  const folder2 = gui.addFolder("View");
-  folder2.add(params, "wireframe").onFinishChange(updateMeshes);
+  const folder2 = gui.addFolder("Material");
+  folder2.add(params, "flatShading").onFinishChange(updateMaterial);
+  folder2.add(params, "textured").onFinishChange(updateMaterial);
+  folder2.add(params, "wireframe").onFinishChange(updateWireframe);
 
   function refreshDisplay() {
     geomController.updateDisplay();
     splitController.updateDisplay();
-    smoothController.updateDisplay();
+    uvSmoothController.updateDisplay();
+    preserveController.updateDisplay();
 
     updateMeshes();
   }
@@ -181,7 +196,7 @@ function getGeometry() {
       return new ConeGeometry(0.6, 1.5, 5, 3);
 
     case "cylinder":
-      return new CylinderGeometry(0.5, 0.5, 1, 5, 5);
+      return new CylinderGeometry(0.5, 0.5, 1, 5, 4);
 
     case "dodecahedron":
       return new DodecahedronGeometry(0.6);
@@ -195,8 +210,8 @@ function getGeometry() {
       const points = [];
 
       for (let i = 0; i < 65; i += 5) {
-        let x = (Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50) * 1.2;
-        let y = (i - 5) * 3;
+        const x = (Math.sin(i * 0.2) * Math.sin(i * 0.1) * 15 + 50) * 1.2;
+        const y = (i - 5) * 3;
         points.push(new Vector2(x * 0.0075, y * 0.005));
       }
 
@@ -230,13 +245,11 @@ function getGeometry() {
 
 function updateMeshes() {
   const normalGeometry = getGeometry();
+
   const smoothGeometry = LoopSubdivision.modify(
     normalGeometry,
     params.iterations,
-    params.split,
-    params.uvSmooth,
-    params.flatOnly,
-    params.maxTriangles
+    params
   );
 
   meshNormal.geometry.dispose();
@@ -249,6 +262,61 @@ function updateMeshes() {
   wireNormal.geometry = normalGeometry.clone();
   wireSmooth.geometry = smoothGeometry.clone();
 
+  updateMaterial();
+}
+
+function disposeMaterial(material) {
+  const materials = Array.isArray(material) ? material : [material];
+
+  for (let i = 0; i < materials.length; i++) {
+    if (materials[i].dispose) materials[i].dispose();
+  }
+}
+
+function updateMaterial() {
+  disposeMaterial(meshNormal.material);
+  disposeMaterial(meshSmooth.material);
+
+  const materialParams = {
+    color: params.textured ? 0xffffff : 0x808080,
+    flatShading: params.flatShading,
+    map: params.textured ? texture : null,
+    polygonOffset: true,
+    polygonOffsetFactor: 1, // positive value pushes polygon further away
+    polygonOffsetUnits: 1,
+  };
+
+  switch (params.geometry.toLowerCase()) {
+    case "circle":
+    case "lathe":
+    case "plane":
+    case "ring":
+      materialParams.side = DoubleSide;
+      break;
+
+    case "box":
+    case "capsule":
+    case "cone":
+    case "cylinder":
+    case "dodecahedron":
+    case "icosahedron":
+    case "octahedron":
+    case "sphere":
+    case "tetrahedron":
+    case "torus":
+    case "torusknot":
+      materialParams.side = FrontSide;
+      break;
+  }
+
+  meshNormal.material = meshSmooth.material = new MeshStandardMaterial(
+    materialParams
+  );
+
+  render();
+}
+
+function updateWireframe() {
   wireNormal.visible = wireSmooth.visible = params.wireframe;
 
   render();
