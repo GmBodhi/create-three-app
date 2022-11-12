@@ -16,7 +16,13 @@ import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-import { ShaderNode, vec3, dot, triplanarTexture } from "three/nodes";
+import {
+  ShaderNode,
+  vec3,
+  dot,
+  triplanarTexture,
+  viewportBottomLeft,
+} from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -175,6 +181,11 @@ function init() {
   // Triplanar Texture Mapping
   material = new Nodes.MeshBasicNodeMaterial();
   material.colorNode = triplanarTexture(new Nodes.TextureNode(texture));
+  materials.push(material);
+
+  // Screen Projection Texture
+  material = new Nodes.MeshBasicNodeMaterial();
+  material.colorNode = Nodes.texture(texture, viewportBottomLeft);
   materials.push(material);
 
   //
