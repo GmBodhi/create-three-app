@@ -45,7 +45,7 @@ function init() {
   // lights
 
   function createLight(color) {
-    const intensity = 1.5;
+    const intensity = 2;
 
     const light = new PointLight(color, intensity, 20);
     light.castShadow = true;

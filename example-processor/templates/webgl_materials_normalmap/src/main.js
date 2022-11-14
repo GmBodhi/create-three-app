@@ -12,6 +12,9 @@ import {
   MeshPhongMaterial,
   Vector2,
   WebGLRenderer,
+  WebGLRenderTarget,
+  HalfFloatType,
+  DepthTexture,
   Mesh,
 } from "three";
 
@@ -68,7 +71,7 @@ function init() {
   ambientLight = new AmbientLight(0x444444);
   scene.add(ambientLight);
 
-  pointLight = new PointLight(0xffffff, 1.25, 1000);
+  pointLight = new PointLight(0xffffff, 2, 1000);
   pointLight.position.set(0, 0, 600);
 
   scene.add(pointLight);
@@ -138,7 +141,13 @@ function init() {
   effectColor.uniforms["powRGB"].value.set(1.4, 1.45, 1.45);
   effectColor.uniforms["mulRGB"].value.set(1.1, 1.1, 1.1);
 
-  composer = new EffectComposer(renderer);
+  const renderTarget = new WebGLRenderTarget(
+    window.innerWidth,
+    window.innerHeight,
+    { type: HalfFloatType, depthTexture: new DepthTexture() }
+  );
+
+  composer = new EffectComposer(renderer, renderTarget);
 
   composer.addPass(renderModel);
   composer.addPass(effectFXAA);
