@@ -39,19 +39,15 @@ function init() {
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
-    1,
-    1000
+    0.01,
+    100
   );
-  camera.position.z = 70;
+  camera.position.z = 7;
 
   scene = new Scene();
-  scene.fogNode = new Nodes.FogRangeNode(
-    color(0xff00ff),
-    float(30),
-    float(300)
-  );
+  scene.fogNode = new Nodes.FogRangeNode(color(0xff00ff), float(3), float(30));
 
-  const sphereGeometry = new SphereGeometry(0.5, 16, 8);
+  const sphereGeometry = new SphereGeometry(0.1, 16, 8);
 
   //textures
 
@@ -71,14 +67,15 @@ function init() {
 
   //lights
 
-  const addLight = (hexColor, intensity = 2, distance = 1000) => {
+  const addLight = (hexColor, power = 1700, distance = 100) => {
     const material = new Nodes.MeshStandardNodeMaterial();
     material.colorNode = color(hexColor);
     material.lightsNode = new Nodes.LightsNode(); // ignore scene lights
 
     const mesh = new Mesh(sphereGeometry, material);
 
-    const light = new PointLight(hexColor, intensity, distance);
+    const light = new PointLight(hexColor, 1, distance);
+    light.power = power;
     light.add(mesh);
 
     scene.add(light);
@@ -98,7 +95,7 @@ function init() {
 
   //models
 
-  const geometryTeapot = new TeapotGeometry(8, 18);
+  const geometryTeapot = new TeapotGeometry(0.8, 18);
 
   const leftObject = new Mesh(
     geometryTeapot,
@@ -107,7 +104,7 @@ function init() {
   leftObject.material.lightsNode = redLightsNode;
   leftObject.material.roughnessNode = new Nodes.TextureNode(alphaTexture);
   leftObject.material.metalness = 0;
-  leftObject.position.x = -30;
+  leftObject.position.x = -3;
   scene.add(leftObject);
 
   const centerObject = new Mesh(
@@ -127,17 +124,14 @@ function init() {
   );
   rightObject.material.lightsNode = blueLightsNode;
   rightObject.material.metalnessNode = new Nodes.TextureNode(alphaTexture);
-  rightObject.position.x = 30;
+  rightObject.position.x = 3;
   scene.add(rightObject);
 
   leftObject.rotation.y =
     centerObject.rotation.y =
     rightObject.rotation.y =
       Math.PI * -0.5;
-  leftObject.position.y =
-    centerObject.position.y =
-    rightObject.position.y =
-      -10;
+  leftObject.position.y = centerObject.position.y = rightObject.position.y = -1;
 
   //renderer
 
@@ -147,13 +141,13 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 100);
+  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 0.2);
 
   //controls
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 30;
-  controls.maxDistance = 250;
+  controls.minDistance = 3;
+  controls.maxDistance = 25;
 
   //stats
 
@@ -181,21 +175,21 @@ function animate() {
   const time = performance.now() / 1000;
   const lightTime = time * 0.5;
 
-  light1.position.x = Math.sin(lightTime * 0.7) * 30;
-  light1.position.y = Math.cos(lightTime * 0.5) * 40;
-  light1.position.z = Math.cos(lightTime * 0.3) * 30;
+  light1.position.x = Math.sin(lightTime * 0.7) * 3;
+  light1.position.y = Math.cos(lightTime * 0.5) * 4;
+  light1.position.z = Math.cos(lightTime * 0.3) * 3;
 
-  light2.position.x = Math.cos(lightTime * 0.3) * 30;
-  light2.position.y = Math.sin(lightTime * 0.5) * 40;
-  light2.position.z = Math.sin(lightTime * 0.7) * 30;
+  light2.position.x = Math.cos(lightTime * 0.3) * 3;
+  light2.position.y = Math.sin(lightTime * 0.5) * 4;
+  light2.position.z = Math.sin(lightTime * 0.7) * 3;
 
-  light3.position.x = Math.sin(lightTime * 0.7) * 30;
-  light3.position.y = Math.cos(lightTime * 0.3) * 40;
-  light3.position.z = Math.sin(lightTime * 0.5) * 30;
+  light3.position.x = Math.sin(lightTime * 0.7) * 3;
+  light3.position.y = Math.cos(lightTime * 0.3) * 4;
+  light3.position.z = Math.sin(lightTime * 0.5) * 3;
 
-  light4.position.x = Math.sin(lightTime * 0.3) * 30;
-  light4.position.y = Math.cos(lightTime * 0.7) * 40;
-  light4.position.z = Math.sin(lightTime * 0.5) * 30;
+  light4.position.x = Math.sin(lightTime * 0.3) * 3;
+  light4.position.y = Math.cos(lightTime * 0.7) * 4;
+  light4.position.z = Math.sin(lightTime * 0.5) * 3;
   /*
 				@TODO: Used to test scene light change ( currently unavailable )
 
@@ -203,7 +197,7 @@ function animate() {
 				if ( time > 2.5 && light2.parent === null ) scene.add( light2 );
 				if ( time > 3.0 && light3.parent === null ) scene.add( light3 );
 				if ( time > 3.5 && light4.parent === null ) scene.add( light4 );
-*/
+				*/
   renderer.render(scene, camera);
 
   stats.update();

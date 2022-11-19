@@ -36,29 +36,31 @@ function init() {
   camera = new PerspectiveCamera(
     40,
     window.innerWidth / window.innerHeight,
-    1,
-    5000
+    0.01,
+    100
   );
-  camera.position.set(0.0, 300, 400 * 3);
+  camera.position.set(0.0, 3, 4 * 3);
 
   scene = new Scene();
   scene.background = new Color(0x333333);
 
   // Lights
 
-  const topLight = new PointLight(0xf4f6f0, 1);
-  topLight.position.set(0, 1000, 1000);
+  const topLight = new PointLight(0xf4f6f0, 1, 100);
+  topLight.power = 4500;
+  topLight.position.set(0, 10, 10);
   scene.add(topLight);
 
-  const backLight = new PointLight(0x0c1445, 1);
-  backLight.position.set(-100, 20, -260);
+  const backLight = new PointLight(0x0c1445, 1, 100);
+  backLight.power = 1000;
+  backLight.position.set(-1, 0.2, -2.6);
   scene.add(backLight);
 
   renderer = new WebGLRenderer({ antialias: true });
   document.body.appendChild(renderer.domElement);
   renderer.outputEncoding = sRGBEncoding;
   renderer.toneMapping = LinearToneMapping;
-  renderer.toneMappingExposure = 4000;
+  renderer.toneMappingExposure = 1;
   renderer.physicallyCorrectLights = true;
 
   renderer.domElement.className = "renderer";
@@ -66,8 +68,8 @@ function init() {
   //
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 500;
-  controls.maxDistance = 3000;
+  controls.minDistance = 5;
+  controls.maxDistance = 30;
 
   window.addEventListener("resize", onWindowResize);
 
@@ -104,30 +106,31 @@ function initEditor() {
     const defaultMaterial = new Nodes.MeshBasicNodeMaterial();
     defaultMaterial.colorNode = new Nodes.UniformNode(0);
 
-    const sphere = new Mesh(new SphereGeometry(200, 32, 16), defaultMaterial);
+    const sphere = new Mesh(new SphereGeometry(2, 32, 16), defaultMaterial);
     sphere.name = "Sphere";
-    sphere.position.set(500, 0, -500);
+    sphere.position.set(5, 0, -5);
     scene.add(sphere);
 
-    const box = new Mesh(new BoxGeometry(200, 200, 200), defaultMaterial);
+    const box = new Mesh(new BoxGeometry(2, 2, 2), defaultMaterial);
     box.name = "Box";
-    box.position.set(-500, 0, -500);
+    box.position.set(-5, 0, -5);
     scene.add(box);
 
     const defaultPointsMaterial = new Nodes.PointsNodeMaterial();
     defaultPointsMaterial.colorNode = new Nodes.UniformNode(0);
+    defaultPointsMaterial.size = 0.01;
 
     const torusKnot = new Points(
-      new TorusKnotGeometry(100, 30, 100, 16),
+      new TorusKnotGeometry(1, 0.3, 100, 16),
       defaultPointsMaterial
     );
     torusKnot.name = "Torus Knot ( Points )";
-    torusKnot.position.set(0, 0, -500);
+    torusKnot.position.set(0, 0, -5);
     scene.add(torusKnot);
 
     model = object.children[0];
-    model.position.set(0, 0, 10);
-    model.scale.setScalar(1);
+    model.position.set(0, 0, 0.1);
+    model.scale.setScalar(0.01);
     model.material = defaultMaterial;
     scene.add(model);
 

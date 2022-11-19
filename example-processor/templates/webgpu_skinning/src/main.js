@@ -32,24 +32,27 @@ function init() {
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
-    1,
-    1000
+    0.01,
+    100
   );
-  camera.position.set(100, 200, 300);
+  camera.position.set(1, 2, 3);
 
   scene = new Scene();
-  camera.lookAt(0, 100, 0);
+  camera.lookAt(0, 1, 0);
 
   clock = new Clock();
 
   //lights
 
-  const light = new PointLight(0xffffff);
+  const light = new PointLight(0xffffff, 1, 100);
+  light.power = 1700; // 100W
   camera.add(light);
   scene.add(camera);
 
   const loader = new FBXLoader();
   loader.load("models/fbx/Samba Dancing.fbx", function (object) {
+    object.scale.setScalar(0.01);
+
     mixer = new AnimationMixer(object);
 
     const action = mixer.clipAction(object.animations[0]);
@@ -72,7 +75,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 800);
+  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 0.15);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
