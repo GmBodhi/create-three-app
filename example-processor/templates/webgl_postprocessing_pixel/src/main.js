@@ -1,165 +1,197 @@
 import "./style.css"; // For webpack support
 
 import {
-  WebGLRenderer,
-  PerspectiveCamera,
+  OrthographicCamera,
   Scene,
-  HemisphereLight,
-  DirectionalLight,
-  SphereGeometry,
-  BoxGeometry,
-  ConeGeometry,
-  TetrahedronGeometry,
-  TorusKnotGeometry,
-  Group,
   Color,
+  Clock,
+  WebGLRenderer,
+  TextureLoader,
   MeshPhongMaterial,
   Mesh,
-  Vector2,
+  BoxGeometry,
+  PlaneGeometry,
+  IcosahedronGeometry,
+  AmbientLight,
+  DirectionalLight,
+  SpotLight,
+  NearestFilter,
+  RepeatWrapping,
+  MathUtils,
 } from "three";
 
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPixelatedPass } from "three/addons/postprocessing/RenderPixelatedPass.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { TrackballControls } from "three/addons/controls/TrackballControls.js";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { PixelShader } from "three/addons/shaders/PixelShader.js";
-
-let camera, scene, renderer, gui, composer, controls;
-let pixelPass, params;
-
-let group;
+let camera, scene, renderer, composer, crystalMesh, clock;
+let gui, params;
 
 init();
 animate();
 
-function updateGUI() {
-  pixelPass.uniforms["pixelSize"].value = params.pixelSize;
-}
-
 function init() {
-  const container = document.getElementById("container");
-  renderer = new WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+  const aspectRatio = window.innerWidth / window.innerHeight;
 
-  camera = new PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    1,
-    10000
-  );
-  camera.position.set(0, 0, 30);
-  controls = new TrackballControls(camera, renderer.domElement);
-  controls.rotateSpeed = 2.0;
-  controls.panSpeed = 0.8;
-  controls.zoomSpeed = 1.5;
+  camera = new OrthographicCamera(-aspectRatio, aspectRatio, 1, -1, 0.1, 10);
+  camera.position.y = 2 * Math.tan(Math.PI / 6);
+  camera.position.z = 2;
 
   scene = new Scene();
+  scene.background = new Color(0x151729);
 
-  const hemisphereLight = new HemisphereLight(0xfceafc, 0x000000, 0.8);
-  scene.add(hemisphereLight);
+  clock = new Clock();
 
-  const dirLight = new DirectionalLight(0xffffff, 0.5);
-  dirLight.position.set(150, 75, 150);
-  scene.add(dirLight);
-
-  const dirLight2 = new DirectionalLight(0xffffff, 0.2);
-  dirLight2.position.set(-150, 75, -150);
-  scene.add(dirLight2);
-
-  const dirLight3 = new DirectionalLight(0xffffff, 0.1);
-  dirLight3.position.set(0, 125, 0);
-  scene.add(dirLight3);
-
-  const geometries = [
-    new SphereGeometry(1, 64, 64),
-    new BoxGeometry(1, 1, 1),
-    new ConeGeometry(1, 1, 32),
-    new TetrahedronGeometry(1),
-    new TorusKnotGeometry(1, 0.4),
-  ];
-
-  group = new Group();
-
-  for (let i = 0; i < 25; i++) {
-    const geom = geometries[Math.floor(Math.random() * geometries.length)];
-
-    const color = new Color();
-    color.setHSL(
-      Math.random(),
-      0.7 + 0.2 * Math.random(),
-      0.5 + 0.1 * Math.random()
-    );
-
-    const mat = new MeshPhongMaterial({ color: color, shininess: 200 });
-
-    const mesh = new Mesh(geom, mat);
-
-    const s = 4 + Math.random() * 10;
-    mesh.scale.set(s, s, s);
-    mesh.position
-      .set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5)
-      .normalize();
-    mesh.position.multiplyScalar(Math.random() * 200);
-    mesh.rotation.set(Math.random() * 2, Math.random() * 2, Math.random() * 2);
-    group.add(mesh);
-  }
-
-  scene.add(group);
+  renderer = new WebGLRenderer();
+  renderer.shadowMap.enabled = true;
+  //renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
 
   composer = new EffectComposer(renderer);
-  composer.addPass(new RenderPass(scene, camera));
-
-  pixelPass = new ShaderPass(PixelShader);
-  pixelPass.uniforms["resolution"].value = new Vector2(
-    window.innerWidth,
-    window.innerHeight
-  );
-  pixelPass.uniforms["resolution"].value.multiplyScalar(
-    window.devicePixelRatio
-  );
-  composer.addPass(pixelPass);
+  const renderPixelatedPass = new RenderPixelatedPass(6, scene, camera);
+  composer.addPass(renderPixelatedPass);
 
   window.addEventListener("resize", onWindowResize);
 
-  params = {
-    pixelSize: 16,
-    postprocessing: true,
-  };
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.maxZoom = 2;
+
+  // gui
+
   gui = new GUI();
-  gui.add(params, "pixelSize").min(2).max(32).step(2);
-  gui.add(params, "postprocessing");
+  params = { pixelSize: 6, normalEdgeStrength: 0.3, depthEdgeStrength: 0.4 };
+  gui
+    .add(params, "pixelSize")
+    .min(1)
+    .max(16)
+    .step(1)
+    .onChange(() => {
+      renderPixelatedPass.setPixelSize(params.pixelSize);
+    });
+  gui.add(renderPixelatedPass, "normalEdgeStrength").min(0).max(2).step(0.05);
+  gui.add(renderPixelatedPass, "depthEdgeStrength").min(0).max(1).step(0.05);
+
+  // textures
+
+  const loader = new TextureLoader();
+  const texChecker = pixelTexture(loader.load("textures/checker.png"));
+  const texChecker2 = pixelTexture(loader.load("textures/checker.png"));
+  texChecker.repeat.set(3, 3);
+  texChecker2.repeat.set(1.5, 1.5);
+
+  // meshes
+
+  const boxMaterial = new MeshPhongMaterial({ map: texChecker2 });
+
+  function addBox(boxSideLength, x, z, rotation) {
+    const mesh = new Mesh(
+      new BoxGeometry(boxSideLength, boxSideLength, boxSideLength),
+      boxMaterial
+    );
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    mesh.rotation.y = rotation;
+    mesh.position.y = boxSideLength / 2;
+    mesh.position.set(x, boxSideLength / 2 + 0.0001, z);
+    scene.add(mesh);
+    return mesh;
+  }
+
+  addBox(0.4, 0, 0, Math.PI / 4);
+  addBox(0.5, -0.5, -0.5, Math.PI / 4);
+
+  const planeSideLength = 2;
+  const planeMesh = new Mesh(
+    new PlaneGeometry(planeSideLength, planeSideLength),
+    new MeshPhongMaterial({ map: texChecker })
+  );
+  planeMesh.receiveShadow = true;
+  planeMesh.rotation.x = -Math.PI / 2;
+  scene.add(planeMesh);
+
+  const radius = 0.2;
+  const geometry = new IcosahedronGeometry(radius);
+  crystalMesh = new Mesh(
+    geometry,
+    new MeshPhongMaterial({
+      color: 0x2379cf,
+      emissive: 0x143542,
+      shininess: 10,
+      specular: 0xffffff,
+    })
+  );
+  crystalMesh.receiveShadow = true;
+  crystalMesh.castShadow = true;
+  scene.add(crystalMesh);
+
+  // lights
+
+  scene.add(new AmbientLight(0x2d3645, 1.5));
+
+  const directionalLight = new DirectionalLight(0xfffc9c, 0.5);
+  directionalLight.position.set(100, 100, 100);
+  directionalLight.castShadow = true;
+  directionalLight.shadow.mapSize.set(2048, 2048);
+  scene.add(directionalLight);
+
+  const spotLight = new SpotLight(0xff8800, 1, 10, Math.PI / 16, 0.02, 2);
+  spotLight.position.set(2, 2, 0);
+  const target = spotLight.target;
+  scene.add(target);
+  target.position.set(0, 0, 0);
+  spotLight.castShadow = true;
+  scene.add(spotLight);
 }
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  const aspectRatio = window.innerWidth / window.innerHeight;
+  camera.left = -aspectRatio;
+  camera.right = aspectRatio;
   camera.updateProjectionMatrix();
+
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  pixelPass.uniforms["resolution"].value
-    .set(window.innerWidth, window.innerHeight)
-    .multiplyScalar(window.devicePixelRatio);
-}
-
-function update() {
-  controls.update();
-  updateGUI();
-
-  group.rotation.y += 0.0015;
-  group.rotation.z += 0.001;
+  composer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
-  update();
+  requestAnimationFrame(animate);
 
-  if (params.postprocessing) {
-    composer.render();
-  } else {
-    renderer.render(scene, camera);
-  }
+  const t = clock.getElapsedTime();
 
-  window.requestAnimationFrame(animate);
+  crystalMesh.material.emissiveIntensity = Math.sin(t * 3) * 0.5 + 0.5;
+  crystalMesh.position.y = 0.7 + Math.sin(t * 2) * 0.05;
+  crystalMesh.rotation.y = stopGoEased(t, 2, 4) * 2 * Math.PI;
+
+  composer.render();
+}
+
+// Helper functions
+
+function pixelTexture(texture) {
+  texture.minFilter = NearestFilter;
+  texture.magFilter = NearestFilter;
+  texture.generateMipmaps = false;
+  texture.wrapS = RepeatWrapping;
+  texture.wrapT = RepeatWrapping;
+  return texture;
+}
+
+function easeInOutCubic(x) {
+  return x ** 2 * 3 - x ** 3 * 2;
+}
+
+function linearStep(x, edge0, edge1) {
+  const w = edge1 - edge0;
+  const m = 1 / w;
+  const y0 = -m * edge0;
+  return MathUtils.clamp(y0 + m * x, 0, 1);
+}
+
+function stopGoEased(x, downtime, period) {
+  const cycle = (x / period) | 0;
+  const tween = x - cycle * period;
+  const linStep = easeInOutCubic(linearStep(tween, downtime, period));
+  return cycle + linStep;
 }

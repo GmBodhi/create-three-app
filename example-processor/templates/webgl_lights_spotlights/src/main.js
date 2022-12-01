@@ -14,12 +14,12 @@ import {
   SpotLightHelper,
   SpotLight,
 } from "three";
-
 import { TWEEN } from "three/addons/libs/tween.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-const renderer = new WebGLRenderer();
+const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
 
 const camera = new PerspectiveCamera(
   35,
@@ -32,7 +32,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 
 const scene = new Scene();
 
-const matFloor = new MeshPhongMaterial();
+const matFloor = new MeshPhongMaterial({ color: 0x808080 });
 const matBox = new MeshPhongMaterial({ color: 0xaaaaaa });
 
 const geoFloor = new PlaneGeometry(2000, 2000);
@@ -65,8 +65,6 @@ function init() {
   lightHelper2 = new SpotLightHelper(spotLight2);
   lightHelper3 = new SpotLightHelper(spotLight3);
 
-  matFloor.color.set(0x808080);
-
   mshFloor.receiveShadow = true;
   mshFloor.position.set(0, -0.05, 0);
 
@@ -81,7 +79,6 @@ function init() {
   scene.add(lightHelper1, lightHelper2, lightHelper3);
 
   document.body.appendChild(renderer.domElement);
-  onWindowResize();
   window.addEventListener("resize", onWindowResize);
 
   controls.target.set(0, 7, 0);

@@ -216,6 +216,11 @@ function animate() {
 
   raycaster.setFromCamera(pointer, camera);
 
+  // renderer will set this eventually
+  // set the new resolution before raycasting so it is set correctly
+  matLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
+  matThresholdLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
+
   const obj = line.visible ? line : segments;
   const intersects = raycaster.intersectObject(obj, true);
 
@@ -239,10 +244,6 @@ function animate() {
     sphereOnLine.visible = false;
     renderer.domElement.style.cursor = "";
   }
-
-  // renderer will set this eventually
-  matLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
-  matThresholdLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
 
   gpuPanel.startQuery();
   renderer.render(scene, camera);

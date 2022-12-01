@@ -426,6 +426,19 @@
         "/src/shaders"
       ]
     },
+    "webgl2_buffergeometry_attributes_none": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "fragmentShader.glsl": "src/shaders",
+        "vertexShader.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgl2_materials_texture2darray": {
       "files": {
         "index.html": "src",
@@ -3702,6 +3715,16 @@
         "/src"
       ]
     },
+    "webgpu_audio_processing": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute": {
       "files": {
         "index.html": "src",
@@ -3933,6 +3956,16 @@
       ]
     },
     "webxr_ar_paint": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_ar_plane_detection": {
       "files": {
         "index.html": "src",
         "main.js": "src",

@@ -89,8 +89,8 @@ function init() {
     displayLines: true,
     conditionalLines: true,
     smoothNormals: true,
-    constructionStep: 0,
-    noConstructionSteps: "No steps.",
+    buildingStep: 0,
+    noBuildingSteps: "No steps.",
     flatColors: false,
     mergeModel: false,
   };
@@ -121,8 +121,8 @@ function updateObjectsVisibility() {
         c.visible = guiData.displayLines;
       }
     } else if (c.isGroup) {
-      // Hide objects with construction step > gui setting
-      c.visible = c.userData.constructionStep <= guiData.constructionStep;
+      // Hide objects with building step > gui setting
+      c.visible = c.userData.buildingStep <= guiData.buildingStep;
     }
   });
 }
@@ -184,7 +184,7 @@ function reloadObject(resetCamera) {
 
       scene.add(model);
 
-      guiData.constructionStep = model.userData.numConstructionSteps - 1;
+      guiData.buildingStep = model.userData.numBuildingSteps - 1;
 
       updateObjectsVisibility();
 
@@ -247,21 +247,16 @@ function createGUI() {
       reloadObject(false);
     });
 
-  if (model.userData.numConstructionSteps > 1) {
+  if (model.userData.numBuildingSteps > 1) {
     gui
-      .add(
-        guiData,
-        "constructionStep",
-        0,
-        model.userData.numConstructionSteps - 1
-      )
+      .add(guiData, "buildingStep", 0, model.userData.numBuildingSteps - 1)
       .step(1)
-      .name("Construction step")
+      .name("Building step")
       .onChange(updateObjectsVisibility);
   } else {
     gui
-      .add(guiData, "noConstructionSteps")
-      .name("Construction step")
+      .add(guiData, "noBuildingSteps")
+      .name("Building step")
       .onChange(updateObjectsVisibility);
   }
 

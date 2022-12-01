@@ -47,6 +47,7 @@ function init() {
   camera.position.z = 200;
 
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.addEventListener("change", render); // use if there is no animation loop
   controls.enablePan = false;
   controls.enableZoom = false;
 
@@ -88,7 +89,7 @@ function init() {
 
       //
 
-      animate();
+      render();
     }
   );
 
@@ -98,6 +99,7 @@ function init() {
 
   gui.add(API, "thickness", 0, 4).onChange(function () {
     mesh2.material.uniforms.thickness.value = API.thickness;
+    render();
   });
 
   gui.open();
@@ -131,8 +133,6 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function animate() {
-  requestAnimationFrame(animate);
-
+function render() {
   renderer.render(scene, camera);
 }
