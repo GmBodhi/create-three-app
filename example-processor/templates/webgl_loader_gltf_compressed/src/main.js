@@ -58,7 +58,7 @@ function init() {
   scene.add(grid);
 
   const ktx2Loader = new KTX2Loader()
-    .setTranscoderPath("js/libs/basis/")
+    .setTranscoderPath("jsm/libs/basis/")
     .detectSupport(renderer);
 
   const loader = new GLTFLoader().setPath("models/gltf/");

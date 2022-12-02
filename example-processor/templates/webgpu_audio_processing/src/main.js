@@ -16,7 +16,6 @@ import {
   storage,
   instanceIndex,
   float,
-  assign,
   add,
   sub,
   div,
@@ -128,7 +127,7 @@ async function init() {
 
   // compute (shader-node)
 
-  const computeShaderNode = new ShaderNode((inputs, builder) => {
+  const computeShaderNode = new ShaderNode((inputs, stack) => {
     const index = float(instanceIndex);
 
     // pitch
@@ -153,7 +152,7 @@ async function init() {
 
     const waveStorageElementNode = element(waveStorageNode, instanceIndex);
 
-    assign(waveStorageElementNode, wave).build(builder);
+    stack.assign(waveStorageElementNode, wave);
   });
 
   // compute

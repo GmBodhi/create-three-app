@@ -54,7 +54,9 @@ function init() {
 
       new GLTFLoader()
         .setPath("models/gltf/")
-        .setDRACOLoader(new DRACOLoader().setDecoderPath("js/libs/draco/gltf/"))
+        .setDRACOLoader(
+          new DRACOLoader().setDecoderPath("jsm/libs/draco/gltf/")
+        )
         .load("IridescentDishWithOlives.glb", function (gltf) {
           // nodes
 

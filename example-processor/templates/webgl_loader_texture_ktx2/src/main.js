@@ -68,7 +68,7 @@ const formatStrings = {
 
 // Samples: sample_etc1s.ktx2, sample_uastc.ktx2, sample_uastc_zstd.ktx2
 const loader = new KTX2Loader()
-  .setTranscoderPath("js/libs/basis/")
+  .setTranscoderPath("jsm/libs/basis/")
   .detectSupport(renderer);
 
 animate();

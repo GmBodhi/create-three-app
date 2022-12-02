@@ -82,7 +82,7 @@ async function init() {
   orbitControls.enableDamping = true;
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("js/libs/draco/");
+  dracoLoader.setDecoderPath("jsm/libs/draco/");
   const gltfLoader = new GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);
 
