@@ -10,8 +10,6 @@ import {
   Color,
 } from "three";
 
-import { NodeMaterial, color, uv, mix, mul, checker } from "three/nodes";
-
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
