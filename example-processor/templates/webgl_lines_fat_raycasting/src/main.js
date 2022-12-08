@@ -2,10 +2,11 @@ import "./style.css"; // For webpack support
 
 import {
   Vector2,
+  Raycaster,
+  Clock,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
-  Raycaster,
   SphereGeometry,
   MeshBasicMaterial,
   Mesh,
@@ -29,10 +30,10 @@ import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 
 let line, thresholdLine, segments, thresholdSegments;
 let renderer, scene, camera, camera2, controls;
-let raycaster, sphereInter, sphereOnLine;
-let matLine, matThresholdLine;
+let sphereInter, sphereOnLine;
 let stats, gpuPanel;
 let gui;
+let clock;
 
 // viewport
 let insetWidth;
@@ -40,10 +41,50 @@ let insetHeight;
 
 const pointer = new Vector2(Infinity, Infinity);
 
+const raycaster = new Raycaster();
+
+raycaster.params.Line2 = {};
+raycaster.params.Line2.threshold = 0;
+
+const matLine = new LineMaterial({
+  color: 0xffffff,
+  linewidth: 1, // in world units with size attenuation, pixels otherwise
+  worldUnits: true,
+  vertexColors: true,
+
+  //resolution:  // to be set by renderer, eventually
+  alphaToCoverage: true,
+});
+
+const matThresholdLine = new LineMaterial({
+  color: 0xffffff,
+  linewidth: matLine.linewidth, // in world units with size attenuation, pixels otherwise
+  worldUnits: true,
+  // vertexColors: true,
+  transparent: true,
+  opacity: 0.2,
+  depthTest: false,
+  visible: false,
+  //resolution:  // to be set by renderer, eventually
+});
+
+const params = {
+  "line type": 0,
+  "world units": matLine.worldUnits,
+  "visualize threshold": matThresholdLine.visible,
+  width: matLine.linewidth,
+  alphaToCoverage: matLine.alphaToCoverage,
+  threshold: raycaster.params.Line2.threshold,
+  translation: raycaster.params.Line2.threshold,
+  animate: true,
+};
+
 init();
 animate();
 
 function init() {
+  clock = new Clock();
+
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setClearColor(0x000000, 0.0);
@@ -66,10 +107,6 @@ function init() {
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 10;
   controls.maxDistance = 500;
-
-  raycaster = new Raycaster();
-  raycaster.params.Line2 = {};
-  raycaster.params.Line2.threshold = 0;
 
   const sphereGeometry = new SphereGeometry(0.25);
   const sphereInterMaterial = new MeshBasicMaterial({
@@ -122,28 +159,6 @@ function init() {
   const segmentsGeometry = new LineSegmentsGeometry();
   segmentsGeometry.setPositions(positions);
   segmentsGeometry.setColors(colors);
-
-  matLine = new LineMaterial({
-    color: 0xffffff,
-    linewidth: 1, // in world units with size attenuation, pixels otherwise
-    worldUnits: true,
-    vertexColors: true,
-
-    //resolution:  // to be set by renderer, eventually
-    alphaToCoverage: true,
-  });
-
-  matThresholdLine = new LineMaterial({
-    color: 0xffffff,
-    linewidth: matLine.linewidth, // in world units with size attenuation, pixels otherwise
-    worldUnits: true,
-    // vertexColors: true,
-    transparent: true,
-    opacity: 0.2,
-    depthTest: false,
-    visible: false,
-    //resolution:  // to be set by renderer, eventually
-  });
 
   segments = new LineSegments2(segmentsGeometry, matLine);
   segments.computeLineDistances();
@@ -210,6 +225,19 @@ function animate() {
 
   // main scene
 
+  const delta = clock.getDelta();
+
+  const obj = line.visible ? line : segments;
+  thresholdLine.position.copy(line.position);
+  thresholdLine.quaternion.copy(line.quaternion);
+  thresholdSegments.position.copy(segments.position);
+  thresholdSegments.quaternion.copy(segments.quaternion);
+
+  if (params.animate) {
+    line.rotation.y += delta * 0.5;
+    segments.rotation.y += delta * 0.5;
+  }
+
   renderer.setClearColor(0x000000, 0);
 
   renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
@@ -221,7 +249,6 @@ function animate() {
   matLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
   matThresholdLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
 
-  const obj = line.visible ? line : segments;
   const intersects = raycaster.intersectObject(obj, true);
 
   if (intersects.length > 0) {
@@ -299,46 +326,44 @@ function switchLine(val) {
 function initGui() {
   gui = new GUI();
 
-  const param = {
-    "line type": 0,
-    "world units": matLine.worldUnits,
-    "visualize threshold": matThresholdLine.visible,
-    width: matLine.linewidth,
-    alphaToCoverage: matLine.alphaToCoverage,
-    threshold: raycaster.params.Line2.threshold,
-  };
-
   gui
-    .add(param, "line type", { LineGeometry: 0, LineSegmentsGeometry: 1 })
+    .add(params, "line type", { LineGeometry: 0, LineSegmentsGeometry: 1 })
     .onChange(function (val) {
       switchLine(val);
     })
     .setValue(1);
 
-  gui.add(param, "world units").onChange(function (val) {
+  gui.add(params, "world units").onChange(function (val) {
     matLine.worldUnits = val;
     matLine.needsUpdate = true;
     matThresholdLine.worldUnits = val;
     matThresholdLine.needsUpdate = true;
   });
 
-  gui.add(param, "visualize threshold").onChange(function (val) {
+  gui.add(params, "visualize threshold").onChange(function (val) {
     matThresholdLine.visible = val;
   });
 
-  gui.add(param, "width", 1, 10).onChange(function (val) {
+  gui.add(params, "width", 1, 10).onChange(function (val) {
     matLine.linewidth = val;
     matThresholdLine.linewidth =
       matLine.linewidth + raycaster.params.Line2.threshold;
   });
 
-  gui.add(param, "alphaToCoverage").onChange(function (val) {
+  gui.add(params, "alphaToCoverage").onChange(function (val) {
     matLine.alphaToCoverage = val;
   });
 
-  gui.add(param, "threshold", 0, 10).onChange(function (val) {
+  gui.add(params, "threshold", 0, 10).onChange(function (val) {
     raycaster.params.Line2.threshold = val;
     matThresholdLine.linewidth =
       matLine.linewidth + raycaster.params.Line2.threshold;
   });
+
+  gui.add(params, "translation", 0, 10).onChange(function (val) {
+    line.position.x = val;
+    segments.position.x = val;
+  });
+
+  gui.add(params, "animate");
 }

@@ -22,19 +22,14 @@ import {
   sin,
   cos,
   add,
-  sub,
   cond,
   abs,
-  negate,
   max,
   min,
-  length,
   float,
   vec2,
   vec3,
   color,
-  greaterThanEqual,
-  lessThanEqual,
   instanceIndex,
 } from "three/nodes";
 
@@ -92,29 +87,25 @@ function init() {
 
     stack.assign(
       velocity.x,
-      cond(
-        greaterThanEqual(abs(position.x), limit.x),
-        negate(velocity.x),
-        velocity.x
-      )
+      abs(position.x)
+        .greaterThanEqual(limit.x)
+        .cond(velocity.x.negate(), velocity.x)
     );
     stack.assign(
       velocity.y,
-      cond(
-        greaterThanEqual(abs(position.y), limit.y),
-        negate(velocity.y),
-        velocity.y
-      )
+      abs(position.y)
+        .greaterThanEqual(limit.y)
+        .cond(velocity.y.negate(), velocity.y)
     );
 
-    stack.assign(position, max(negate(limit), min(limit, position)));
+    stack.assign(position, max(limit.negate(), min(limit, position)));
 
     const pointerSize = 0.1;
-    const distanceFromPointer = length(sub(pointer, position));
+    const distanceFromPointer = pointer.sub(position).length();
 
     stack.assign(
       particle,
-      cond(lessThanEqual(distanceFromPointer, pointerSize), vec3(), position)
+      cond(distanceFromPointer.lessThanEqual(pointerSize), vec3(), position)
     );
   });
 

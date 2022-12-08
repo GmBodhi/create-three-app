@@ -13,7 +13,6 @@ import {
   RepeatWrapping,
   MeshPhongMaterial,
   DoubleSide,
-  MeshDistanceMaterial,
   BoxGeometry,
   BackSide,
   WebGLRenderer,
@@ -74,13 +73,6 @@ function init() {
     sphere.castShadow = true;
     sphere.receiveShadow = true;
     light.add(sphere);
-
-    // custom distance material
-    const distanceMaterial = new MeshDistanceMaterial({
-      alphaMap: material.alphaMap,
-      alphaTest: material.alphaTest,
-    });
-    sphere.customDistanceMaterial = distanceMaterial;
 
     return light;
   }
