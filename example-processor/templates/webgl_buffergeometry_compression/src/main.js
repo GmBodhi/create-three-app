@@ -9,6 +9,7 @@ import {
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
+  AmbientLight,
   DirectionalLight,
   AxesHelper,
   Mesh,
@@ -40,7 +41,6 @@ const data = {
   wireframe: false,
   texture: false,
   detail: 4,
-  rotationSpeed: 0.1,
 
   QuantizePosEncoding: false,
   NormEncodingMethods: "None", // for normal encodings
@@ -101,6 +101,8 @@ function init() {
   controls.enableZoom = false;
 
   //
+
+  scene.add(new AmbientLight(0xffffff, 0.1));
 
   lights[0] = new DirectionalLight(0xffffff, 0.7);
   lights[1] = new DirectionalLight(0xffffff, 0.7);
@@ -188,7 +190,6 @@ function init() {
   folder.add(data, "wireframe", false).onChange(updateLineSegments);
   folder.add(data, "texture", false).onChange(generateGeometry);
   folder.add(data, "detail", 1, 8, 1).onChange(generateGeometry);
-  folder.add(data, "rotationSpeed", 0, 0.5, 0.1);
   folder.open();
 
   folder = gui.addFolder("Position Compression");
