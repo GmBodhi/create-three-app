@@ -1,8 +1,3 @@
-//Shaders
-
-import vertexShader_ from "./shaders/vertexShader.glsl";
-import fragmentShader_ from "./shaders/fragmentShader.glsl";
-
 import "./style.css"; // For webpack support
 
 import {
@@ -10,10 +5,9 @@ import {
   Scene,
   DirectionalLight,
   Color,
-  SphereGeometry,
-  ShaderMaterial,
   BackSide,
   Mesh,
+  SphereGeometry,
   WebGLRenderer,
   sRGBEncoding,
   ObjectLoader,
@@ -23,8 +17,16 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-const SCREEN_WIDTH = window.innerWidth;
-const SCREEN_HEIGHT = window.innerHeight;
+import {
+  MeshBasicNodeMaterial,
+  vec4,
+  color,
+  positionLocal,
+  mix,
+  max,
+  pow,
+} from "three/nodes";
+import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
 let container, stats;
 let camera, scene, renderer;
@@ -33,12 +35,14 @@ await init();
 animate();
 
 async function init() {
+  const { innerWidth, innerHeight } = window;
+
   container = document.createElement("div");
   document.body.appendChild(container);
 
   // CAMERA
 
-  camera = new PerspectiveCamera(40, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 10000);
+  camera = new PerspectiveCamera(40, innerWidth / innerHeight, 1, 10000);
   camera.position.set(700, 200, -500);
 
   // SCENE
@@ -55,32 +59,28 @@ async function init() {
 
   // SKYDOME
 
-  const vertexShader = vertexShader_;
-  const fragmentShader = fragmentShader_;
-  const uniforms = {
-    topColor: { value: new Color(0x0077ff) },
-    bottomColor: { value: new Color(0xffffff) },
-    offset: { value: 400 },
-    exponent: { value: 0.6 },
-  };
-  uniforms.topColor.value.copy(light.color);
+  const topColor = new Color().copy(light.color).convertSRGBToLinear();
+  const bottomColor = new Color(0xffffff).convertSRGBToLinear();
+  const offset = 400;
+  const exponent = 0.6;
 
-  const skyGeo = new SphereGeometry(4000, 32, 15);
-  const skyMat = new ShaderMaterial({
-    uniforms: uniforms,
-    vertexShader: vertexShader,
-    fragmentShader: fragmentShader,
-    side: BackSide,
-  });
+  const h = positionLocal.add(offset).normalize().y;
 
-  const sky = new Mesh(skyGeo, skyMat);
+  const skyMat = new MeshBasicNodeMaterial();
+  skyMat.colorNode = vec4(
+    mix(color(bottomColor), color(topColor), h.max(0.0).pow(exponent)),
+    1.0
+  );
+  skyMat.side = BackSide;
+
+  const sky = new Mesh(new SphereGeometry(4000, 32, 15), skyMat);
   scene.add(sky);
 
   // RENDERER
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setSize(innerWidth, innerHeight);
   container.appendChild(renderer.domElement);
   renderer.outputEncoding = sRGBEncoding;
 
@@ -117,6 +117,8 @@ function onWindowResize() {
 
 function animate() {
   requestAnimationFrame(animate);
+
+  nodeFrame.update();
 
   renderer.render(scene, camera);
   stats.update();
