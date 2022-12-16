@@ -20,11 +20,11 @@ import {
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 Cache.enabled = true;
 
-let container, stats, permalink, hex;
+let container;
 
 let camera, cameraTarget, scene, renderer;
 
@@ -79,17 +79,9 @@ let fontIndex = 1;
 init();
 animate();
 
-function decimalToHex(d) {
-  let hex = Number(d).toString(16);
-  hex = "000000".substring(0, 6 - hex.length) + hex;
-  return hex.toUpperCase();
-}
-
 function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
-
-  permalink = document.getElementById("permalink");
 
   // CAMERA
 
@@ -116,35 +108,9 @@ function init() {
   scene.add(dirLight);
 
   const pointLight = new PointLight(0xffffff, 1.5);
+  pointLight.color.setHSL(Math.random(), 1, 0.5);
   pointLight.position.set(0, 100, 90);
   scene.add(pointLight);
-
-  // Get text from hash
-
-  const hash = document.location.hash.slice(1);
-
-  if (hash.length !== 0) {
-    const colorhash = hash.substring(0, 6);
-    const fonthash = hash.substring(6, 7);
-    const weighthash = hash.substring(7, 8);
-    const bevelhash = hash.substring(8, 9);
-    const texthash = hash.substring(10);
-
-    hex = colorhash;
-    pointLight.color.setHex(parseInt(colorhash, 16));
-
-    fontName = reverseFontMap[parseInt(fonthash)];
-    fontWeight = reverseWeightMap[parseInt(weighthash)];
-
-    bevelEnabled = parseInt(bevelhash);
-
-    text = decodeURI(texthash);
-
-    updatePermalink();
-  } else {
-    pointLight.color.setHSL(Math.random(), 1, 0.5);
-    hex = decimalToHex(pointLight.color.getHex());
-  }
 
   materials = [
     new MeshPhongMaterial({ color: 0xffffff, flatShading: true }), // front
@@ -173,11 +139,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  // STATS
-
-  stats = new Stats();
-  //container.appendChild( stats.dom );
-
   // EVENTS
 
   container.style.touchAction = "none";
@@ -186,36 +147,44 @@ function init() {
   document.addEventListener("keypress", onDocumentKeyPress);
   document.addEventListener("keydown", onDocumentKeyDown);
 
-  document.getElementById("color").addEventListener("click", function () {
-    pointLight.color.setHSL(Math.random(), 1, 0.5);
-    hex = decimalToHex(pointLight.color.getHex());
+  //
 
-    updatePermalink();
-  });
+  const params = {
+    changeColor: function () {
+      pointLight.color.setHSL(Math.random(), 1, 0.5);
+    },
+    changeFont: function () {
+      fontIndex++;
 
-  document.getElementById("font").addEventListener("click", function () {
-    fontIndex++;
+      fontName = reverseFontMap[fontIndex % reverseFontMap.length];
 
-    fontName = reverseFontMap[fontIndex % reverseFontMap.length];
+      loadFont();
+    },
+    changeWeight: function () {
+      if (fontWeight === "bold") {
+        fontWeight = "regular";
+      } else {
+        fontWeight = "bold";
+      }
 
-    loadFont();
-  });
+      loadFont();
+    },
+    changeBevel: function () {
+      bevelEnabled = !bevelEnabled;
 
-  document.getElementById("weight").addEventListener("click", function () {
-    if (fontWeight === "bold") {
-      fontWeight = "regular";
-    } else {
-      fontWeight = "bold";
-    }
+      refreshText();
+    },
+  };
 
-    loadFont();
-  });
+  //
 
-  document.getElementById("bevel").addEventListener("click", function () {
-    bevelEnabled = !bevelEnabled;
+  const gui = new GUI();
 
-    refreshText();
-  });
+  gui.add(params, "changeColor").name("change color");
+  gui.add(params, "changeFont").name("change font");
+  gui.add(params, "changeWeight").name("change weight");
+  gui.add(params, "changeBevel").name("change bevel");
+  gui.open();
 
   //
 
@@ -232,23 +201,6 @@ function onWindowResize() {
 }
 
 //
-
-function boolToNum(b) {
-  return b ? 1 : 0;
-}
-
-function updatePermalink() {
-  const link =
-    hex +
-    fontMap[fontName] +
-    weightMap[fontWeight] +
-    boolToNum(bevelEnabled) +
-    "#" +
-    encodeURI(text);
-
-  permalink.href = "#" + link;
-  window.location.hash = link;
-}
 
 function onDocumentKeyDown(event) {
   if (firstLetter) {
@@ -341,8 +293,6 @@ function createText() {
 }
 
 function refreshText() {
-  updatePermalink();
-
   group.remove(textMesh1);
   if (mirror) group.remove(textMesh2);
 
@@ -383,7 +333,6 @@ function animate() {
   requestAnimationFrame(animate);
 
   render();
-  stats.update();
 }
 
 function render() {
