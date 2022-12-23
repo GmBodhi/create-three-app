@@ -50,7 +50,9 @@ function init() {
 
       new GLTFLoader()
         .setPath("models/gltf/")
-        .setDRACOLoader(new DRACOLoader().setDecoderPath("js/libs/draco/gltf/"))
+        .setDRACOLoader(
+          new DRACOLoader().setDecoderPath("jsm/libs/draco/gltf/")
+        )
         .load("IridescentDishWithOlives.glb", function (gltf) {
           mixer = new AnimationMixer(gltf.scene);
           mixer.clipAction(gltf.animations[0]).play();

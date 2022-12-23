@@ -82,7 +82,7 @@ function init() {
   );
 
   scene.backgroundNode = context(scene.environmentNode, {
-    levelNode: float(9), // @TODO: currently it uses mipmaps value, I think it should be replaced for [0,1]
+    getSamplerLevelNode: () => float(1),
   });
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");

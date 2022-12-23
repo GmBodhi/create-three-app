@@ -15,9 +15,12 @@ import {
   AmbientLight,
   DirectionalLight,
   SpotLight,
+  Vector2,
   NearestFilter,
   RepeatWrapping,
   MathUtils,
+  Vector3,
+  Quaternion,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -61,7 +64,12 @@ function init() {
   // gui
 
   gui = new GUI();
-  params = { pixelSize: 6, normalEdgeStrength: 0.3, depthEdgeStrength: 0.4 };
+  params = {
+    pixelSize: 6,
+    normalEdgeStrength: 0.3,
+    depthEdgeStrength: 0.4,
+    pixelAlignedPanning: true,
+  };
   gui
     .add(params, "pixelSize")
     .min(1)
@@ -72,6 +80,7 @@ function init() {
     });
   gui.add(renderPixelatedPass, "normalEdgeStrength").min(0).max(2).step(0.05);
   gui.add(renderPixelatedPass, "depthEdgeStrength").min(0).max(1).step(0.05);
+  gui.add(params, "pixelAlignedPanning");
 
   // textures
 
@@ -164,6 +173,24 @@ function animate() {
   crystalMesh.position.y = 0.7 + Math.sin(t * 2) * 0.05;
   crystalMesh.rotation.y = stopGoEased(t, 2, 4) * 2 * Math.PI;
 
+  const rendererSize = renderer.getSize(new Vector2());
+  const aspectRatio = rendererSize.x / rendererSize.y;
+  if (params["pixelAlignedPanning"]) {
+    pixelAlignFrustum(
+      camera,
+      aspectRatio,
+      Math.floor(rendererSize.x / params["pixelSize"]),
+      Math.floor(rendererSize.y / params["pixelSize"])
+    );
+  } else if (camera.left != -aspectRatio || camera.top != 1.0) {
+    // Reset the Camera Frustum if it has been modified
+    camera.left = -aspectRatio;
+    camera.right = aspectRatio;
+    camera.top = 1.0;
+    camera.bottom = -1.0;
+    camera.updateProjectionMatrix();
+  }
+
   composer.render();
 }
 
@@ -194,4 +221,42 @@ function stopGoEased(x, downtime, period) {
   const tween = x - cycle * period;
   const linStep = easeInOutCubic(linearStep(tween, downtime, period));
   return cycle + linStep;
+}
+
+function pixelAlignFrustum(
+  camera,
+  aspectRatio,
+  pixelsPerScreenWidth,
+  pixelsPerScreenHeight
+) {
+  // 0. Get Pixel Grid Units
+  let worldScreenWidth = (camera.right - camera.left) / camera.zoom;
+  let worldScreenHeight = (camera.top - camera.bottom) / camera.zoom;
+  let pixelWidth = worldScreenWidth / pixelsPerScreenWidth;
+  let pixelHeight = worldScreenHeight / pixelsPerScreenHeight;
+
+  // 1. Project the current camera position along its local rotation bases
+  let camPos = new Vector3();
+  camera.getWorldPosition(camPos);
+  let camRot = new Quaternion();
+  camera.getWorldQuaternion(camRot);
+  let camRight = new Vector3(1.0, 0.0, 0.0).applyQuaternion(camRot);
+  let camUp = new Vector3(0.0, 1.0, 0.0).applyQuaternion(camRot);
+  let camPosRight = camPos.dot(camRight);
+  let camPosUp = camPos.dot(camUp);
+
+  // 2. Find how far along its position is along these bases in pixel units
+  let camPosRightPx = camPosRight / pixelWidth;
+  let camPosUpPx = camPosUp / pixelHeight;
+
+  // 3. Find the fractional pixel units and convert to world units
+  let fractX = camPosRightPx - Math.round(camPosRightPx);
+  let fractY = camPosUpPx - Math.round(camPosUpPx);
+
+  // 4. Add fractional world units to the left/right top/bottom to align with the pixel grid
+  camera.left = -aspectRatio - fractX * pixelWidth;
+  camera.right = aspectRatio - fractX * pixelWidth;
+  camera.top = 1.0 - fractY * pixelHeight;
+  camera.bottom = -1.0 - fractY * pixelHeight;
+  camera.updateProjectionMatrix();
 }

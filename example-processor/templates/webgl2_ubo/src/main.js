@@ -120,7 +120,10 @@ function init() {
     } else {
       mesh = new Mesh(geometry2, material2.clone());
 
-      mesh.material.uniformsGroups = [cameraUniformsGroup];
+      mesh.material.uniformsGroups = [
+        cameraUniformsGroup,
+        lightingUniformsGroup,
+      ];
       mesh.material.uniforms.modelMatrix.value = mesh.matrixWorld;
       mesh.material.uniforms.diffuseMap.value = texture;
     }

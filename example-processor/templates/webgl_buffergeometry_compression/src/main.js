@@ -3,12 +3,14 @@ import "./style.css"; // For webpack support
 import {
   LineBasicMaterial,
   MeshPhongMaterial,
+  DoubleSide,
   TextureLoader,
   RepeatWrapping,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
-  PointLight,
+  AmbientLight,
+  DirectionalLight,
   AxesHelper,
   Mesh,
   LineSegments,
@@ -16,7 +18,6 @@ import {
   IcosahedronGeometry,
   CylinderGeometry,
   TorusKnotGeometry,
-  Vector3,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -40,7 +41,6 @@ const data = {
   wireframe: false,
   texture: false,
   detail: 4,
-  rotationSpeed: 0.1,
 
   QuantizePosEncoding: false,
   NormEncodingMethods: "None", // for normal encodings
@@ -61,7 +61,7 @@ const lineMaterial = new LineBasicMaterial({
 });
 const meshMaterial = new MeshPhongMaterial({
   color: 0xffffff,
-  emissive: 0x111111,
+  side: DoubleSide,
 });
 
 // texture
@@ -75,6 +75,7 @@ animate();
 
 function init() {
   //
+
   container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -90,20 +91,22 @@ function init() {
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
-    0.01,
-    10000000
+    1,
+    1000
   );
-  camera.position.x = 2 * radius;
-  camera.position.y = 2 * radius;
-  camera.position.z = 2 * radius;
+  camera.position.setScalar(2 * radius);
 
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
+  controls.enableZoom = false;
 
   //
 
-  lights[0] = new PointLight(0xffffff, 1, 0);
-  lights[1] = new PointLight(0xffffff, 1, 0);
-  lights[2] = new PointLight(0xffffff, 1, 0);
+  scene.add(new AmbientLight(0xffffff, 0.1));
+
+  lights[0] = new DirectionalLight(0xffffff, 0.7);
+  lights[1] = new DirectionalLight(0xffffff, 0.7);
+  lights[2] = new DirectionalLight(0xffffff, 0.7);
 
   lights[0].position.set(0, 2 * radius, 0);
   lights[1].position.set(2 * radius, -2 * radius, 2 * radius);
@@ -122,13 +125,14 @@ function init() {
   let geom = newGeometry(data);
 
   const mesh = new Mesh(geom, meshMaterial);
+  scene.add(mesh);
+
   const lineSegments = new LineSegments(
     new WireframeGeometry(geom),
     lineMaterial
   );
   lineSegments.visible = data.wireframe;
 
-  scene.add(mesh);
   scene.add(lineSegments);
 
   //
@@ -142,14 +146,14 @@ function init() {
         return new IcosahedronGeometry(radius, data.detail);
       case "Cylinder":
         return new CylinderGeometry(
+          radius / 1.5,
+          radius / 1.5,
           radius,
-          radius,
-          radius * 2,
           data.detail * 6
         );
       case "Teapot":
         return new TeapotGeometry(
-          radius,
+          radius / 1.5,
           data.detail * 3,
           true,
           true,
@@ -159,9 +163,9 @@ function init() {
         );
       case "TorusKnot":
         return new TorusKnotGeometry(
-          radius,
+          radius / 2,
           10,
-          data.detail * 20,
+          data.detail * 30,
           data.detail * 6,
           3,
           4
@@ -175,7 +179,6 @@ function init() {
     updateGroupGeometry(mesh, lineSegments, geom, data);
   }
 
-  // updateLineSegments
   function updateLineSegments() {
     lineSegments.visible = data.wireframe;
   }
@@ -187,7 +190,6 @@ function init() {
   folder.add(data, "wireframe", false).onChange(updateLineSegments);
   folder.add(data, "texture", false).onChange(generateGeometry);
   folder.add(data, "detail", 1, 8, 1).onChange(generateGeometry);
-  folder.add(data, "rotationSpeed", 0, 0.5, 0.1);
   folder.open();
 
   folder = gui.addFolder("Position Compression");
@@ -231,28 +233,14 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-}
 
-//
-function updateLightsPossition() {
-  lights.forEach((light) => {
-    const direction = light.position.clone();
-    direction.applyAxisAngle(
-      new Vector3(1, 1, 0),
-      (data.rotationSpeed / 180) * Math.PI
-    );
-    light.position.add(direction.sub(light.position));
-  });
+  camera.updateProjectionMatrix();
 }
 
 //
 
 function animate() {
   requestAnimationFrame(animate);
-
-  controls.update();
-  updateLightsPossition();
 
   renderer.render(scene, camera);
 
@@ -263,15 +251,15 @@ function animate() {
 
 function updateGroupGeometry(mesh, lineSegments, geometry, data) {
   // dispose first
+
   lineSegments.geometry.dispose();
   mesh.geometry.dispose();
+  mesh.material.dispose();
+  if (mesh.material.map) mesh.material.map.dispose();
 
   lineSegments.geometry = new WireframeGeometry(geometry);
   mesh.geometry = geometry;
-  mesh.material = new MeshPhongMaterial({
-    color: 0xffffff,
-    emissive: 0x111111,
-  });
+  mesh.material = new MeshPhongMaterial({ color: 0xffffff, side: DoubleSide });
   mesh.material.map = data.texture ? texture : null;
 
   if (data["QuantizePosEncoding"]) {
@@ -291,6 +279,7 @@ function updateGroupGeometry(mesh, lineSegments, geometry, data) {
 
 function computeGPUMemory(mesh) {
   // Use BufferGeometryUtils to do memory calculation
+
   memoryDisplay.setValue(
     BufferGeometryUtils.estimateBytesUsed(mesh.geometry) + " bytes"
   );

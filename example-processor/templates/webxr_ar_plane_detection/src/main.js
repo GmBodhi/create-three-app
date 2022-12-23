@@ -5,7 +5,6 @@ import {
   PerspectiveCamera,
   HemisphereLight,
   WebGLRenderer,
-  BufferGeometry,
   Mesh,
   BoxGeometry,
   MeshBasicMaterial,
@@ -13,7 +12,6 @@ import {
 import { ARButton } from "three/addons/webxr/ARButton.js";
 
 let camera, scene, renderer;
-let controller;
 
 init();
 animate();
@@ -85,7 +83,6 @@ function init() {
       planesAdded.add(plane);
       const frame = renderer.xr.getFrame();
       const planePose = frame.getPose(plane.planeSpace, referenceSpace);
-      const planeGeometry = new BufferGeometry();
       const polygon = plane.polygon;
 
       let minX = Number.MAX_SAFE_INTEGER;

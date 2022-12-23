@@ -58,7 +58,7 @@ async function init() {
   scene.environment = envMap;
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("js/libs/draco/gltf/");
+  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);

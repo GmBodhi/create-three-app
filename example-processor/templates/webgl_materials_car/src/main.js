@@ -126,7 +126,7 @@ function init() {
   const shadow = new TextureLoader().load("models/gltf/ferrari_ao.png");
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("js/libs/draco/gltf/");
+  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);

@@ -54,7 +54,7 @@ function init() {
   container.appendChild(renderer.domElement);
 
   const ktx2Loader = new KTX2Loader()
-    .setTranscoderPath("js/libs/basis/")
+    .setTranscoderPath("jsm/libs/basis/")
     .detectSupport(renderer);
 
   new GLTFLoader()

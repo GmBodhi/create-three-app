@@ -4,6 +4,7 @@ import { WebGLRenderer, Scene, PerspectiveCamera, AxesHelper } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { PCDLoader } from "three/addons/loaders/PCDLoader.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
 
@@ -43,13 +44,21 @@ function init() {
       points.name = "Zaghetto.pcd";
       scene.add(points);
 
+      //
+
+      const gui = new GUI();
+
+      gui.add(points.material, "size", 0.001, 0.01).onChange(render);
+      gui.addColor(points.material, "color").onChange(render);
+      gui.open();
+
+      //
+
       render();
     }
   );
 
   window.addEventListener("resize", onWindowResize);
-
-  window.addEventListener("keypress", keyboard);
 }
 
 function onWindowResize() {
@@ -57,24 +66,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function keyboard(ev) {
-  const points = scene.getObjectByName("Zaghetto.pcd");
-
-  switch (ev.key || String.fromCharCode(ev.keyCode || ev.charCode)) {
-    case "+":
-      points.material.size *= 1.2;
-      break;
-
-    case "-":
-      points.material.size /= 1.2;
-      break;
-
-    case "c":
-      points.material.color.setHex(Math.random() * 0xffffff);
-      break;
-  }
 
   render();
 }

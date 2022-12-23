@@ -21,22 +21,15 @@ import {
   mul,
   sin,
   cos,
-  temp,
-  assign,
   add,
-  sub,
   cond,
   abs,
-  negate,
   max,
   min,
-  length,
   float,
   vec2,
   vec3,
   color,
-  greaterThanEqual,
-  lessThanEqual,
   instanceIndex,
 } from "three/nodes";
 
@@ -83,49 +76,44 @@ function init() {
 
   // create function
 
-  const computeShaderNode = new ShaderNode((inputs, builder) => {
+  const computeShaderNode = new ShaderNode((inputs, stack) => {
     const particle = element(particleBufferNode, instanceIndex);
     const velocity = element(velocityBufferNode, instanceIndex);
 
     const pointer = uniform(pointerVector);
     const limit = uniform(scaleVector);
 
-    const position = temp(add(particle, velocity), "tempPos"); // @TODO: this should work without 'tempPos' property name
-    position.build(builder);
+    const position = add(particle, velocity);
 
-    assign(
+    stack.assign(
       velocity.x,
-      cond(
-        greaterThanEqual(abs(position.x), limit.x),
-        negate(velocity.x),
-        velocity.x
-      )
-    ).build(builder);
-    assign(
+      abs(position.x)
+        .greaterThanEqual(limit.x)
+        .cond(velocity.x.negate(), velocity.x)
+    );
+    stack.assign(
       velocity.y,
-      cond(
-        greaterThanEqual(abs(position.y), limit.y),
-        negate(velocity.y),
-        velocity.y
-      )
-    ).build(builder);
+      abs(position.y)
+        .greaterThanEqual(limit.y)
+        .cond(velocity.y.negate(), velocity.y)
+    );
 
-    assign(position, max(negate(limit), min(limit, position))).build(builder);
+    stack.assign(position, max(limit.negate(), min(limit, position)));
 
     const pointerSize = 0.1;
-    const distanceFromPointer = length(sub(pointer, position));
+    const distanceFromPointer = pointer.sub(position).length();
 
-    assign(
+    stack.assign(
       particle,
-      cond(lessThanEqual(distanceFromPointer, pointerSize), vec3(), position)
-    ).build(builder);
+      cond(distanceFromPointer.lessThanEqual(pointerSize), vec3(), position)
+    );
   });
 
   // compute
 
   computeNode = compute(computeShaderNode, particleNum);
   computeNode.onInit = ({ renderer }) => {
-    const precomputeShaderNode = new ShaderNode((inputs, builder) => {
+    const precomputeShaderNode = new ShaderNode((inputs, stack) => {
       const particleIndex = float(instanceIndex);
 
       const randomAngle = mul(mul(particleIndex, 0.005), Math.PI * 2);
@@ -136,7 +124,7 @@ function init() {
 
       const velocity = element(velocityBufferNode, instanceIndex);
 
-      assign(velocity.xy, vec2(velX, velY)).build(builder);
+      stack.assign(velocity.xy, vec2(velX, velY));
     });
 
     renderer.compute(compute(precomputeShaderNode, computeNode.count));

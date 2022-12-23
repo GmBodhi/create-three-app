@@ -140,7 +140,7 @@ function init() {
   scene.backgroundNode = context(
     getEnvironmentNode(transformDirection(positionWorld, modelWorldMatrix)),
     {
-      levelNode: blurNode, // @TODO: currently it uses mipmaps value, I think it should be replaced for [0,1]
+      getSamplerLevelNode: () => blurNode,
     }
   );
 
@@ -189,7 +189,7 @@ function init() {
   const gui = new GUI();
 
   gui
-    .add({ blurBackground: blurNode.value }, "blurBackground", 0, 10, 0.01)
+    .add({ blurBackground: blurNode.value }, "blurBackground", 0, 1, 0.01)
     .onChange((value) => {
       blurNode.value = value;
     });

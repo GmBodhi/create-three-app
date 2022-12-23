@@ -27,6 +27,7 @@ import {
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -166,19 +167,26 @@ function init() {
 
   //
 
+  const params = {
+    toggleHemisphereLight: function () {
+      hemiLight.visible = !hemiLight.visible;
+      hemiLightHelper.visible = !hemiLightHelper.visible;
+    },
+    toggleDirectionalLight: function () {
+      dirLight.visible = !dirLight.visible;
+      dirLightHelper.visible = !dirLightHelper.visible;
+    },
+  };
+
+  const gui = new GUI();
+
+  gui.add(params, "toggleHemisphereLight").name("toggle hemisphere light");
+  gui.add(params, "toggleDirectionalLight").name("toggle directional light");
+  gui.open();
+
+  //
+
   window.addEventListener("resize", onWindowResize);
-
-  const hemisphereButton = document.getElementById("hemisphereButton");
-  hemisphereButton.addEventListener("click", function () {
-    hemiLight.visible = !hemiLight.visible;
-    hemiLightHelper.visible = !hemiLightHelper.visible;
-  });
-
-  const directionalButton = document.getElementById("directionalButton");
-  directionalButton.addEventListener("click", function () {
-    dirLight.visible = !dirLight.visible;
-    dirLightHelper.visible = !dirLightHelper.visible;
-  });
 }
 
 function onWindowResize() {

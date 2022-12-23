@@ -9,7 +9,6 @@ import {
   DirectionalLight,
   CameraHelper,
   LoadingManager,
-  Euler,
   Mesh,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -65,7 +64,7 @@ function init() {
 
   const loader = new ThreeMFLoader(manager);
   loader.load("three/examples/models/3mf/truck.3mf", function (object) {
-    object.quaternion.setFromEuler(new Euler(-Math.PI / 2, 0, 0)); // z-up conversion
+    object.rotation.set(-Math.PI / 2, 0, 0); // z-up conversion
 
     object.traverse(function (child) {
       child.castShadow = true;

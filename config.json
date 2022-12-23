@@ -2374,13 +2374,10 @@
       "files": {
         "index.html": "src",
         "main.js": "src",
-        "fragmentShader.glsl": "src/shaders",
-        "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
       "dirs": [
-        "/src",
-        "/src/shaders"
+        "/src"
       ]
     },
     "webgl_materials_matcap": {
