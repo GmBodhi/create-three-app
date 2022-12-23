@@ -101,7 +101,7 @@ class ButtonSystem extends System {
         button.currState == "fully_pressed" &&
         button.prevState != "fully_pressed"
       ) {
-        button.pressSound?.play();
+        if (button.pressSound) button.pressSound.play();
         button.action();
       }
 
@@ -109,7 +109,7 @@ class ButtonSystem extends System {
         button.currState == "recovering" &&
         button.prevState != "recovering"
       ) {
-        button.releaseSound?.play();
+        if (button.releaseSound) button.releaseSound.play();
       }
 
       // preserve prevState, clear currState
