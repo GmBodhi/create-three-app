@@ -35,7 +35,7 @@ let computeNode;
 let waveBuffer, sampleRate;
 let waveGPUBuffer;
 let currentAudio, currentAnalyser;
-let analyserBuffer = new Uint8Array(1024);
+const analyserBuffer = new Uint8Array(1024);
 let analyserTexture;
 
 await init();

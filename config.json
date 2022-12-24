@@ -3802,6 +3802,16 @@
         "/src"
       ]
     },
+    "webgpu_lights_phong": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lights_selective": {
       "files": {
         "index.html": "src",

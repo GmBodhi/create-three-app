@@ -23,8 +23,6 @@ import {
   color,
   positionLocal,
   mix,
-  max,
-  pow,
 } from "three/nodes";
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 

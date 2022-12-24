@@ -15,15 +15,13 @@ import * as Nodes from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
-import { color, float } from "three/nodes";
+import { float, color, rangeFog, checker, uv, mix, texture } from "three/nodes";
 
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 
@@ -45,11 +43,11 @@ function init() {
   camera.position.z = 7;
 
   scene = new Scene();
-  scene.fogNode = new Nodes.FogRangeNode(color(0xff00ff), float(3), float(30));
+  scene.fogNode = rangeFog(color(0xff00ff), 3, 30);
 
   const sphereGeometry = new SphereGeometry(0.1, 16, 8);
 
-  //textures
+  // textures
 
   const textureLoader = new TextureLoader();
 
@@ -65,10 +63,10 @@ function init() {
   alphaTexture.wrapS = RepeatWrapping;
   alphaTexture.wrapT = RepeatWrapping;
 
-  //lights
+  // lights
 
   const addLight = (hexColor, power = 1700, distance = 100) => {
-    const material = new Nodes.MeshStandardNodeMaterial();
+    const material = new Nodes.MeshPhongNodeMaterial();
     material.colorNode = color(hexColor);
     material.lights = false;
 
@@ -83,47 +81,51 @@ function init() {
     return light;
   };
 
-  light1 = addLight(0xff0040);
-  light2 = addLight(0x0040ff);
+  light1 = addLight(0x0040ff);
+  light2 = addLight(0xffffff);
   light3 = addLight(0x80ff80);
   light4 = addLight(0xffaa00);
 
-  //light nodes ( selective lights )
+  // light nodes ( selective lights )
 
-  const redLightsNode = new Nodes.LightsNode().fromLights([light1]);
-  const blueLightsNode = new Nodes.LightsNode().fromLights([light2]);
+  const blueLightsNode = new Nodes.LightsNode().fromLights([light1]);
+  const whiteLightsNode = new Nodes.LightsNode().fromLights([light2]);
 
-  //models
+  // models
 
   const geometryTeapot = new TeapotGeometry(0.8, 18);
 
   const leftObject = new Mesh(
     geometryTeapot,
-    new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
+    new Nodes.MeshPhongNodeMaterial({ color: 0x555555 })
   );
-  leftObject.material.lightsNode = redLightsNode;
-  leftObject.material.roughnessNode = new Nodes.TextureNode(alphaTexture);
-  leftObject.material.metalness = 0;
+  leftObject.material.lightsNode = blueLightsNode;
+  leftObject.material.specularNode = texture(alphaTexture);
   leftObject.position.x = -3;
   scene.add(leftObject);
 
   const centerObject = new Mesh(
     geometryTeapot,
-    new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
+    new Nodes.MeshPhongNodeMaterial({ color: 0x555555 })
   );
   centerObject.material.normalNode = new Nodes.NormalMapNode(
-    new Nodes.TextureNode(normalMapTexture)
+    texture(normalMapTexture)
   );
-  centerObject.material.metalness = 0.5;
-  centerObject.material.roughness = 0.5;
+  centerObject.material.shininessNode = float(80);
   scene.add(centerObject);
 
   const rightObject = new Mesh(
     geometryTeapot,
-    new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
+    new Nodes.MeshPhongNodeMaterial({ color: 0x555555 })
   );
-  rightObject.material.lightsNode = blueLightsNode;
-  rightObject.material.metalnessNode = new Nodes.TextureNode(alphaTexture);
+  rightObject.material.lightsNode = whiteLightsNode;
+  //rightObject.material.specular.setHex( 0xFF00FF );
+  rightObject.material.specularNode = mix(
+    color(0x0000ff),
+    color(0xff0000),
+    checker(uv().mul(5))
+  );
+  rightObject.material.shininess = 90;
   rightObject.position.x = 3;
   scene.add(rightObject);
 
@@ -133,7 +135,7 @@ function init() {
       Math.PI * -0.5;
   leftObject.position.y = centerObject.position.y = rightObject.position.y = -1;
 
-  //renderer
+  // renderer
 
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -143,25 +145,18 @@ function init() {
   renderer.outputEncoding = sRGBEncoding;
   renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 0.2);
 
-  //controls
+  // controls
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 3;
   controls.maxDistance = 25;
 
-  //stats
+  // stats
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
   window.addEventListener("resize", onWindowResize);
-
-  //gui
-
-  const gui = new GUI();
-
-  gui.add(centerObject.material, "roughness", 0, 1, 0.01);
-  gui.add(centerObject.material, "metalness", 0, 1, 0.01);
 }
 
 function onWindowResize() {
@@ -190,14 +185,7 @@ function animate() {
   light4.position.x = Math.sin(lightTime * 0.3) * 3;
   light4.position.y = Math.cos(lightTime * 0.7) * 4;
   light4.position.z = Math.sin(lightTime * 0.5) * 3;
-  /*
-				@TODO: Used to test scene light change ( currently unavailable )
 
-				if ( time > 2.0 && light1.parent === null ) scene.add( light1 );
-				if ( time > 2.5 && light2.parent === null ) scene.add( light2 );
-				if ( time > 3.0 && light3.parent === null ) scene.add( light3 );
-				if ( time > 3.5 && light4.parent === null ) scene.add( light4 );
-				*/
   renderer.render(scene, camera);
 
   stats.update();

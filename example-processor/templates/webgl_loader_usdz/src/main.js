@@ -14,7 +14,7 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { USDZLoader } from "three/addons/loaders/USDZLoader.js";
 
-let camera, controls, scene, renderer;
+let camera, scene, renderer;
 
 init();
 animate();
@@ -47,7 +47,9 @@ function init() {
   renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
-  controls = new OrbitControls(camera, renderer.domElement);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 1;
+  controls.maxDistance = 8;
 
   const loader = new USDZLoader();
   loader.load("models/usdz/saeukkang.usdz", function (usd) {
