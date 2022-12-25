@@ -38,7 +38,7 @@ let currentAudio, currentAnalyser;
 const analyserBuffer = new Uint8Array(1024);
 let analyserTexture;
 
-await init();
+init();
 
 async function playAudioBuffer() {
   if (currentAudio) currentAudio.stop();
