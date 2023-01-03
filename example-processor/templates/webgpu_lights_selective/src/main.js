@@ -9,7 +9,7 @@ import {
   Mesh,
   PointLight,
   sRGBEncoding,
-  LinearToneMapping,
+  ACESFilmicToneMapping,
 } from "three";
 import * as Nodes from "three/nodes";
 
@@ -141,7 +141,8 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 0.2);
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.2;
 
   //controls
 
