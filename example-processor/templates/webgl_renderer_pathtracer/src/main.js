@@ -37,6 +37,7 @@ import {
   MaterialReducer,
   BlurredEnvMapGenerator,
   PathTracingSceneGenerator,
+  GradientEquirectTexture,
 } from "three-gpu-pathtracer";
 
 let progressBarDiv, samplesEl;
@@ -93,10 +94,14 @@ function init() {
   pathTracer.alpha = true;
   pathTracer.tiles.set(params.tiles, params.tiles);
   pathTracer.material = new PhysicalPathTracingMaterial();
-  pathTracer.material.setDefine("FEATURE_GRADIENT_BG", 1);
   pathTracer.material.setDefine("FEATURE_MIS", 1);
-  pathTracer.material.bgGradientTop.set(0xeeeeee);
-  pathTracer.material.bgGradientBottom.set(0xeaeaea);
+
+  const gradientMap = new GradientEquirectTexture();
+  gradientMap.topColor.set(0xeeeeee);
+  gradientMap.bottomColor.set(0xeaeaea);
+  gradientMap.update();
+
+  pathTracer.material.backgroundMap = gradientMap;
   pathTracer.camera = camera;
 
   fsQuad = new FullScreenQuad(
@@ -230,11 +235,13 @@ async function loadModel() {
   const material = pathTracer.material;
 
   material.bvh.updateFrom(bvh);
-  material.normalAttribute.updateFrom(geometry.attributes.normal);
-  material.tangentAttribute.updateFrom(geometry.attributes.tangent);
-  material.uvAttribute.updateFrom(geometry.attributes.uv);
+  material.attributesArray.updateFrom(
+    geometry.attributes.normal,
+    geometry.attributes.tangent,
+    geometry.attributes.uv,
+    geometry.attributes.color
+  );
   material.materialIndexAttribute.updateFrom(geometry.attributes.materialIndex);
-  // material.colorAttribute.updateFrom( geometry.attributes.color );
   material.textures.setTextures(renderer, 2048, 2048, textures);
   material.materials.updateFrom(materials, textures);
   pathTracer.material.envMapInfo.updateFrom(envMap);
