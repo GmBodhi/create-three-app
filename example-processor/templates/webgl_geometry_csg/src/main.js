@@ -121,7 +121,7 @@ function init() {
   );
 
   core = new Brush(
-    new IcosahedronGeometry(0.1, 1),
+    new IcosahedronGeometry(0.15, 1),
     new MeshStandardMaterial({
       flatShading: true,
       color: 0xff9800,
@@ -133,6 +133,7 @@ function init() {
       polygonOffsetFactor: 1,
     })
   );
+  core.castShadow = true;
   scene.add(core);
 
   // create wireframe
@@ -150,9 +151,7 @@ function init() {
   // set up gui
   const gui = new GUI();
   gui.add(params, "operation", { SUBTRACTION, INTERSECTION, ADDITION });
-
-  // disabling wireframe until next CSG release. See mrdoob/three.js#25299
-  // gui.add( params, 'wireframe' );
+  gui.add(params, "wireframe");
   gui.add(params, "useGroups");
 
   window.addEventListener("resize", onWindowResize);
