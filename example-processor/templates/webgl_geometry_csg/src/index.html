@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - materials - matcap</title>
+    <title>three.js geometry - csg</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -11,8 +11,21 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - webgl materials matcap<br />
-      Drag-and-drop JPG, PNG, WebP, AVIF, or EXR MatCap image files<br />
+      bvh csg -
+      <a
+        href="https://github.com/gkjohnson/three-bvh-csg"
+        target="_blank"
+        rel="noopener"
+        >three-bvh-csg</a
+      ><br />
+      See
+      <a
+        href="https://github.com/gkjohnson/three-bvh-csg"
+        target="_blank"
+        rel="noopener"
+        >main project repository</a
+      >
+      for more information and examples on constructive solid geometry.
     </div>
 
     <!-- Import maps polyfill -->
@@ -26,7 +39,9 @@
       {
         "imports": {
           "three": "../build/three.module.js",
-          "three/addons/": "./jsm/"
+          "three/addons/": "./jsm/",
+          "three-mesh-bvh": "https://unpkg.com/three-mesh-bvh@^0.5.22/build/index.module.js",
+          "three-bvh-csg": "https://unpkg.com/three-bvh-csg@^0.0.4/build/index.module.js"
         }
       }
     </script>

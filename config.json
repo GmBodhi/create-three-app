@@ -1093,6 +1093,16 @@
         "/src"
       ]
     },
+    "webgl_geometry_csg": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_geometry_cube": {
       "files": {
         "index.html": "src",
@@ -3793,6 +3803,26 @@
       ]
     },
     "webgpu_lights_custom": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lights_ies_spotlight": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lights_phong": {
       "files": {
         "index.html": "src",
         "main.js": "src",

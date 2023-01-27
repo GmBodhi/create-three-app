@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  Color,
   Vector2,
   Raycaster,
   Clock,
@@ -10,7 +11,6 @@ import {
   SphereGeometry,
   MeshBasicMaterial,
   Mesh,
-  Color,
   Vector3,
   CatmullRomCurve3,
   BufferGeometry,
@@ -29,15 +29,13 @@ import { Line2 } from "three/addons/lines/Line2.js";
 import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 
 let line, thresholdLine, segments, thresholdSegments;
-let renderer, scene, camera, camera2, controls;
+let renderer, scene, camera, controls;
 let sphereInter, sphereOnLine;
 let stats, gpuPanel;
 let gui;
 let clock;
 
-// viewport
-let insetWidth;
-let insetHeight;
+const color = new Color();
 
 const pointer = new Vector2(Infinity, Infinity);
 
@@ -101,14 +99,11 @@ function init() {
   );
   camera.position.set(-40, 0, 60);
 
-  camera2 = new PerspectiveCamera(40, 1, 1, 1000);
-  camera2.position.copy(camera.position);
-
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 10;
   controls.maxDistance = 500;
 
-  const sphereGeometry = new SphereGeometry(0.25);
+  const sphereGeometry = new SphereGeometry(0.25, 8, 4);
   const sphereInterMaterial = new MeshBasicMaterial({
     color: 0xff0000,
     depthTest: false,
@@ -187,6 +182,7 @@ function init() {
   geo.setAttribute("color", new Float32BufferAttribute(colors, 3));
 
   //
+
   document.addEventListener("pointermove", onPointerMove);
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
@@ -206,11 +202,9 @@ function onWindowResize() {
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  insetWidth = window.innerHeight / 4; // square
-  insetHeight = window.innerHeight / 4;
-
-  camera2.aspect = insetWidth / insetHeight;
-  camera2.updateProjectionMatrix();
+  // renderer will set this eventually
+  matLine.resolution.set(window.innerWidth, window.innerHeight);
+  matThresholdLine.resolution.set(window.innerWidth, window.innerHeight);
 }
 
 function onPointerMove(event) {
@@ -223,8 +217,6 @@ function animate() {
 
   stats.update();
 
-  // main scene
-
   const delta = clock.getDelta();
 
   const obj = line.visible ? line : segments;
@@ -234,37 +226,30 @@ function animate() {
   thresholdSegments.quaternion.copy(segments.quaternion);
 
   if (params.animate) {
-    line.rotation.y += delta * 0.5;
-    segments.rotation.y += delta * 0.5;
+    line.rotation.y += delta * 0.1;
+
+    segments.rotation.y = line.rotation.y;
   }
-
-  renderer.setClearColor(0x000000, 0);
-
-  renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
 
   raycaster.setFromCamera(pointer, camera);
 
-  // renderer will set this eventually
-  // set the new resolution before raycasting so it is set correctly
-  matLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
-  matThresholdLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
-
-  const intersects = raycaster.intersectObject(obj, true);
+  const intersects = raycaster.intersectObject(obj);
 
   if (intersects.length > 0) {
     sphereInter.visible = true;
     sphereOnLine.visible = true;
+
     sphereInter.position.copy(intersects[0].point);
     sphereOnLine.position.copy(intersects[0].pointOnLine);
-    const i = intersects[0].faceIndex;
+
+    const index = intersects[0].faceIndex;
     const colors = obj.geometry.getAttribute("instanceColorStart");
-    const color = new Color().setRGB(
-      colors.getX(i),
-      colors.getY(i),
-      colors.getZ(i)
-    );
-    sphereInter.material.color.copy(color.clone().offsetHSL(0.3, 0, 0));
-    sphereOnLine.material.color.copy(color.clone().offsetHSL(0.7, 0, 0));
+
+    color.fromBufferAttribute(colors, index);
+
+    sphereInter.material.color.copy(color).offsetHSL(0.3, 0, 0);
+    sphereOnLine.material.color.copy(color).offsetHSL(0.7, 0, 0);
+
     renderer.domElement.style.cursor = "crosshair";
   } else {
     sphereInter.visible = false;
@@ -275,28 +260,6 @@ function animate() {
   gpuPanel.startQuery();
   renderer.render(scene, camera);
   gpuPanel.endQuery();
-
-  // inset scene
-
-  renderer.setClearColor(0x222222, 1);
-
-  renderer.clearDepth(); // important!
-
-  renderer.setScissorTest(true);
-
-  renderer.setScissor(20, 20, insetWidth, insetHeight);
-
-  renderer.setViewport(20, 20, insetWidth, insetHeight);
-
-  camera2.position.copy(camera.position);
-  camera2.quaternion.copy(camera.quaternion);
-
-  // renderer will set this eventually
-  matLine.resolution.set(insetWidth, insetHeight); // resolution of the inset viewport
-
-  renderer.render(scene, camera2);
-
-  renderer.setScissorTest(false);
 }
 
 //
@@ -336,6 +299,7 @@ function initGui() {
   gui.add(params, "world units").onChange(function (val) {
     matLine.worldUnits = val;
     matLine.needsUpdate = true;
+
     matThresholdLine.worldUnits = val;
     matThresholdLine.needsUpdate = true;
   });

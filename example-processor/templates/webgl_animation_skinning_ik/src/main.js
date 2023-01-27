@@ -188,7 +188,7 @@ function animate() {
   }
 
   if (conf.ik_solver) {
-    IKSolver?.update();
+    if (IKSolver) IKSolver.update();
   }
 
   orbitControls.update();

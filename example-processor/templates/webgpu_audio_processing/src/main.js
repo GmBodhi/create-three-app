@@ -35,10 +35,10 @@ let computeNode;
 let waveBuffer, sampleRate;
 let waveGPUBuffer;
 let currentAudio, currentAnalyser;
-let analyserBuffer = new Uint8Array(1024);
+const analyserBuffer = new Uint8Array(1024);
 let analyserTexture;
 
-await init();
+init();
 
 async function playAudioBuffer() {
   if (currentAudio) currentAudio.stop();
@@ -47,7 +47,9 @@ async function playAudioBuffer() {
 
   renderer.compute(computeNode);
 
-  const waveArray = await renderer.getArrayFromBuffer(waveGPUBuffer);
+  const waveArray = new Float32Array(
+    await renderer.getArrayBuffer(waveGPUBuffer)
+  );
 
   // play result
 

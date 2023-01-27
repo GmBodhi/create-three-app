@@ -230,28 +230,28 @@ function pixelAlignFrustum(
   pixelsPerScreenHeight
 ) {
   // 0. Get Pixel Grid Units
-  let worldScreenWidth = (camera.right - camera.left) / camera.zoom;
-  let worldScreenHeight = (camera.top - camera.bottom) / camera.zoom;
-  let pixelWidth = worldScreenWidth / pixelsPerScreenWidth;
-  let pixelHeight = worldScreenHeight / pixelsPerScreenHeight;
+  const worldScreenWidth = (camera.right - camera.left) / camera.zoom;
+  const worldScreenHeight = (camera.top - camera.bottom) / camera.zoom;
+  const pixelWidth = worldScreenWidth / pixelsPerScreenWidth;
+  const pixelHeight = worldScreenHeight / pixelsPerScreenHeight;
 
   // 1. Project the current camera position along its local rotation bases
-  let camPos = new Vector3();
+  const camPos = new Vector3();
   camera.getWorldPosition(camPos);
-  let camRot = new Quaternion();
+  const camRot = new Quaternion();
   camera.getWorldQuaternion(camRot);
-  let camRight = new Vector3(1.0, 0.0, 0.0).applyQuaternion(camRot);
-  let camUp = new Vector3(0.0, 1.0, 0.0).applyQuaternion(camRot);
-  let camPosRight = camPos.dot(camRight);
-  let camPosUp = camPos.dot(camUp);
+  const camRight = new Vector3(1.0, 0.0, 0.0).applyQuaternion(camRot);
+  const camUp = new Vector3(0.0, 1.0, 0.0).applyQuaternion(camRot);
+  const camPosRight = camPos.dot(camRight);
+  const camPosUp = camPos.dot(camUp);
 
   // 2. Find how far along its position is along these bases in pixel units
-  let camPosRightPx = camPosRight / pixelWidth;
-  let camPosUpPx = camPosUp / pixelHeight;
+  const camPosRightPx = camPosRight / pixelWidth;
+  const camPosUpPx = camPosUp / pixelHeight;
 
   // 3. Find the fractional pixel units and convert to world units
-  let fractX = camPosRightPx - Math.round(camPosRightPx);
-  let fractY = camPosUpPx - Math.round(camPosUpPx);
+  const fractX = camPosRightPx - Math.round(camPosRightPx);
+  const fractY = camPosUpPx - Math.round(camPosUpPx);
 
   // 4. Add fractional world units to the left/right top/bottom to align with the pixel grid
   camera.left = -aspectRatio - fractX * pixelWidth;

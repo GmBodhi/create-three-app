@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   Object3D,
-  Vector3,
   WebGLRenderer,
   sRGBEncoding,
   PerspectiveCamera,
@@ -22,7 +21,7 @@ init();
 animate();
 
 function init() {
-  Object3D.DefaultUp = new Vector3(0, 0, 1);
+  Object3D.DEFAULT_UP.set(0, 0, 1);
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);

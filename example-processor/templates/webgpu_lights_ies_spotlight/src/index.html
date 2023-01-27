@@ -1,18 +1,16 @@
 <html>
   <head>
-    <title>three.js webgl - materials - matcap</title>
+    <title>three.js webgl - lights - ies spotlight</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
   </head>
-
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - webgl materials matcap<br />
-      Drag-and-drop JPG, PNG, WebP, AVIF, or EXR MatCap image files<br />
+      webgl - ies spotlight<br />
     </div>
 
     <!-- Import maps polyfill -->
@@ -26,7 +24,8 @@
       {
         "imports": {
           "three": "../build/three.module.js",
-          "three/addons/": "./jsm/"
+          "three/addons/": "./jsm/",
+          "three/nodes": "./jsm/nodes/Nodes.js"
         }
       }
     </script>

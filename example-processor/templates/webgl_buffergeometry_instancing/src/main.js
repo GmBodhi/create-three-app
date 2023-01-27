@@ -125,6 +125,7 @@ function init() {
     vertexShader: vertexShader_,
     fragmentShader: fragmentShader_,
     side: DoubleSide,
+    forceSinglePass: true,
     transparent: true,
   });
 

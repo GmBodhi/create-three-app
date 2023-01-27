@@ -1,22 +1,20 @@
 <html>
   <head>
-    <title>three.js webgl - materials - matcap</title>
+    <title>three.js - WebGPU - Lights Phong</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
   </head>
-
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - webgl materials matcap<br />
-      Drag-and-drop JPG, PNG, WebP, AVIF, or EXR MatCap image files<br />
+      - WebGPU - Phong Model Lighting<br />
+      <b style="color: red">Left: Red lights</b> - <b>Center: All lights</b> -
+      <b style="color: blue">Right: blue light</b>
     </div>
 
-    <!-- Import maps polyfill -->
-    <!-- Remove this when import maps will be widely supported -->
     <script
       async=""
       src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
@@ -26,7 +24,8 @@
       {
         "imports": {
           "three": "../build/three.module.js",
-          "three/addons/": "./jsm/"
+          "three/addons/": "./jsm/",
+          "three/nodes": "./jsm/nodes/Nodes.js"
         }
       }
     </script>

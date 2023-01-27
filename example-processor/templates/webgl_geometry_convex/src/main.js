@@ -15,9 +15,8 @@ import {
   BufferGeometry,
   Points,
   MeshLambertMaterial,
+  DoubleSide,
   Mesh,
-  BackSide,
-  FrontSide,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -114,20 +113,14 @@ function init() {
   const meshMaterial = new MeshLambertMaterial({
     color: 0xffffff,
     opacity: 0.5,
+    side: DoubleSide,
     transparent: true,
   });
 
   const meshGeometry = new ConvexGeometry(vertices);
 
-  const mesh1 = new Mesh(meshGeometry, meshMaterial);
-  mesh1.material.side = BackSide; // back faces
-  mesh1.renderOrder = 0;
-  group.add(mesh1);
-
-  const mesh2 = new Mesh(meshGeometry, meshMaterial.clone());
-  mesh2.material.side = FrontSide; // front faces
-  mesh2.renderOrder = 1;
-  group.add(mesh2);
+  const mesh = new Mesh(meshGeometry, meshMaterial);
+  group.add(mesh);
 
   //
 

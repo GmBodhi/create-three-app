@@ -23,16 +23,13 @@ import {
   color,
   positionLocal,
   mix,
-  max,
-  pow,
 } from "three/nodes";
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
 let container, stats;
 let camera, scene, renderer;
 
-await init();
-animate();
+init().then(animate);
 
 async function init() {
   const { innerWidth, innerHeight } = window;

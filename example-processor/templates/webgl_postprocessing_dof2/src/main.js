@@ -115,6 +115,7 @@ function init() {
     specular: 0xffffff,
     envMap: textureCube,
     side: DoubleSide,
+    forceSinglePass: true,
   });
 
   const rand = Math.random;
