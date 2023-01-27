@@ -15,7 +15,7 @@ import {
   BufferGeometry,
   Points,
   MeshLambertMaterial,
-  TwoPassDoubleSide,
+  DoubleSide,
   Mesh,
 } from "three";
 
@@ -113,7 +113,7 @@ function init() {
   const meshMaterial = new MeshLambertMaterial({
     color: 0xffffff,
     opacity: 0.5,
-    side: TwoPassDoubleSide,
+    side: DoubleSide,
     transparent: true,
   });
 
