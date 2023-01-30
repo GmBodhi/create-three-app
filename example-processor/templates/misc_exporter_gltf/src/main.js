@@ -38,10 +38,12 @@ import {
   Vector2,
   LatheGeometry,
   WebGLRenderer,
+  sRGBEncoding,
+  ACESFilmicToneMapping,
 } from "three";
 
-import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 function exportGLTF(input) {
@@ -94,7 +96,7 @@ function saveArrayBuffer(buffer, filename) {
 let container;
 
 let camera, object, object2, material, geometry, scene1, scene2, renderer;
-let gridHelper, sphere, waltHead;
+let gridHelper, sphere, model;
 
 const params = {
   trs: false,
@@ -104,7 +106,7 @@ const params = {
   exportScene1: exportScene1,
   exportScenes: exportScenes,
   exportSphere: exportSphere,
-  exportHead: exportHead,
+  exportModel: exportModel,
   exportObjects: exportObjects,
   exportSceneObject: exportSceneObject,
 };
@@ -409,14 +411,14 @@ function init() {
   scene1.add(object);
 
   // ---------------------------------------------------------------------
-  //
-  //
-  const loader = new OBJLoader();
-  loader.load("models/obj/walt/WaltHead.obj", function (obj) {
-    waltHead = obj;
-    waltHead.scale.multiplyScalar(1.5);
-    waltHead.position.set(200, -40, -200);
-    scene1.add(waltHead);
+  // Model requiring KHR_mesh_quantization
+  // ---------------------------------------------------------------------
+  const loader = new GLTFLoader();
+  loader.load("models/gltf/ShaderBall.glb", function (gltf) {
+    model = gltf.scene;
+    model.scale.setScalar(50);
+    model.position.set(200, -40, -200);
+    scene1.add(model);
   });
 
   // ---------------------------------------------------------------------
@@ -434,6 +436,9 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = sRGBEncoding;
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1;
 
   container.appendChild(renderer.domElement);
 
@@ -453,7 +458,7 @@ function init() {
   h.add(params, "exportScene1").name("Export Scene 1");
   h.add(params, "exportScenes").name("Export Scene 1 and 2");
   h.add(params, "exportSphere").name("Export Sphere");
-  h.add(params, "exportHead").name("Export Head");
+  h.add(params, "exportModel").name("Export Model");
   h.add(params, "exportObjects").name("Export Sphere With Grid");
   h.add(params, "exportSceneObject").name("Export Scene 1 and Object");
 
@@ -472,8 +477,8 @@ function exportSphere() {
   exportGLTF(sphere);
 }
 
-function exportHead() {
-  exportGLTF(waltHead);
+function exportModel() {
+  exportGLTF(model);
 }
 
 function exportObjects() {
