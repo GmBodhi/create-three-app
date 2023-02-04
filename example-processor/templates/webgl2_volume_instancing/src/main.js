@@ -159,9 +159,9 @@ function init() {
 					}
 				`;
 
-  var loader = new VOXLoader();
+  const loader = new VOXLoader();
   loader.load("models/vox/menger.vox", function (chunks) {
-    for (var i = 0; i < chunks.length; i++) {
+    for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
 
       const geometry = new BoxGeometry(1, 1, 1);

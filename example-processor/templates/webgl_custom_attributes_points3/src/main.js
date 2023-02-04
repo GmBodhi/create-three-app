@@ -101,7 +101,7 @@ function init() {
 
     const positionAttribute = geo.getAttribute("position");
 
-    for (var i = 0, l = positionAttribute.count; i < l; i++) {
+    for (let i = 0, l = positionAttribute.count; i < l; i++) {
       vertex.fromBufferAttribute(positionAttribute, i);
       vertex.applyMatrix4(matrix);
       vertices.push(vertex.x, vertex.y, vertex.z);
