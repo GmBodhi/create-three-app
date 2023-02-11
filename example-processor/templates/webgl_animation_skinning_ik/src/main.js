@@ -70,7 +70,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.physicallyCorrectLights = true;
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();

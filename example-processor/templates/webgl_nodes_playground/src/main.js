@@ -61,7 +61,7 @@ function init() {
   renderer.outputEncoding = sRGBEncoding;
   renderer.toneMapping = LinearToneMapping;
   renderer.toneMappingExposure = 1;
-  renderer.physicallyCorrectLights = true;
+  renderer.useLegacyLights = false;
 
   renderer.domElement.className = "renderer";
 

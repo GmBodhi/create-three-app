@@ -206,7 +206,7 @@ function init() {
   scene.add(boxMesh3);
 
   renderer = new WebGLRenderer();
-  renderer.physicallyCorrectLights = true;
+  renderer.useLegacyLights = false;
   renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = ReinhardToneMapping;

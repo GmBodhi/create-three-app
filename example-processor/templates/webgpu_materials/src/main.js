@@ -7,6 +7,7 @@ import {
   TextureLoader,
   RepeatWrapping,
   Color,
+  MeshNormalMaterial,
   Mesh,
 } from "three";
 import * as Nodes from "three/nodes";
@@ -121,6 +122,12 @@ function init() {
   material.colorNode = new Nodes.TextureNode(texture);
   material.opacityNode = new Nodes.TextureNode(opacityTexture);
   material.alphaTestNode = new Nodes.UniformNode(0.5);
+  materials.push(material);
+
+  // Normal
+  material = new MeshNormalMaterial();
+  material.opacity = 0.5;
+  material.transparent = true;
   materials.push(material);
 
   //
