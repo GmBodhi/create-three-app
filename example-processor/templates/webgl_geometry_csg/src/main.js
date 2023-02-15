@@ -7,7 +7,7 @@ import {
   HemisphereLight,
   DirectionalLight,
   WebGLRenderer,
-  PCFSoftShadow,
+  PCFSoftShadowMap,
   Mesh,
   PlaneGeometry,
   ShadowMaterial,
@@ -73,7 +73,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadow;
+  renderer.shadowMap.type = PCFSoftShadowMap;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
