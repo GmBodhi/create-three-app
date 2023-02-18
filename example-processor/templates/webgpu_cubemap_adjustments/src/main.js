@@ -12,7 +12,6 @@ import {
   LinearToneMapping,
   sRGBEncoding,
 } from "three";
-import * as Nodes from "three/nodes";
 
 import {
   uniform,
@@ -30,6 +29,7 @@ import {
   hue,
   reflectVector,
   context,
+  toneMapping,
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -173,7 +173,7 @@ function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);

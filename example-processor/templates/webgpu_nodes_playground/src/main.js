@@ -69,7 +69,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
+  renderer.toneMappingNode = Nodes.toneMapping(LinearToneMapping, 1);
   document.body.appendChild(renderer.domElement);
 
   renderer.domElement.className = "renderer";

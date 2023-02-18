@@ -93,7 +93,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
+  renderer.toneMappingNode = Nodes.toneMapping(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
 

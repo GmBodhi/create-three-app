@@ -14,7 +14,14 @@ import {
 } from "three";
 import * as Nodes from "three/nodes";
 
-import { mix, range, color, oscSine, timerLocal } from "three/nodes";
+import {
+  mix,
+  range,
+  color,
+  oscSine,
+  timerLocal,
+  toneMapping,
+} from "three/nodes";
 
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
@@ -115,7 +122,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 0.17);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.17);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

@@ -90,8 +90,8 @@ function init() {
 
   //light nodes ( selective lights )
 
-  const redLightsNode = new Nodes.LightsNode().fromLights([light1]);
-  const blueLightsNode = new Nodes.LightsNode().fromLights([light2]);
+  const redLightsNode = Nodes.lights([light1]);
+  const blueLightsNode = Nodes.lights([light2]);
 
   //models
 
@@ -112,7 +112,7 @@ function init() {
     new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
   );
   centerObject.material.normalNode = new Nodes.NormalMapNode(
-    new Nodes.TextureNode(normalMapTexture)
+    Nodes.texture(normalMapTexture)
   );
   centerObject.material.metalness = 0.5;
   centerObject.material.roughness = 0.5;

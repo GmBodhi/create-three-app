@@ -8,7 +8,6 @@ import {
   BufferGeometry,
   Float32BufferAttribute,
   TextureLoader,
-  Vector2,
   AdditiveBlending,
   Points,
   WebGLRenderer,
@@ -98,12 +97,12 @@ function init() {
 
   const time = new Nodes.TimerNode();
 
-  const spriteSheetCount = new Nodes.ConstNode(new Vector2(6, 6));
+  const spriteSheetCount = Nodes.vec2(6, 6);
 
   const fireUV = new Nodes.SpriteSheetUVNode(
     spriteSheetCount, // count
-    new Nodes.PointUVNode(), // uv
-    new Nodes.OperatorNode("*", time, particleSpeed) // current frame
+    Nodes.pointUV, // uv
+    Nodes.mul(time, particleSpeed) // current frame
   );
 
   const fireSprite = new Nodes.TextureNode(fireMap, fireUV);

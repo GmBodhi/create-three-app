@@ -92,10 +92,10 @@ function init() {
   const customLightingModel = new Nodes.ShaderNode((inputs) => {
     const { lightColor, reflectedLight } = inputs;
 
-    reflectedLight.directDiffuse.add(lightColor);
+    reflectedLight.directDiffuse.addAssign(lightColor);
   });
 
-  const lightingModelContext = new Nodes.ContextNode(allLightsNode, {
+  const lightingModelContext = Nodes.context(allLightsNode, {
     lightingModelNode: { direct: customLightingModel },
   });
 
@@ -112,7 +112,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
+  renderer.toneMappingNode = Nodes.toneMapping(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
