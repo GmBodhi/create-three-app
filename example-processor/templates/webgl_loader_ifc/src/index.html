@@ -11,13 +11,11 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      -
-      <a
-        href="https://www.buildingsmart.org/standards/bsi-standards/industry-foundation-classes/"
-        target="_blank"
-        rel="noopener"
-        >IFCLoader</a
+      - See
+      <a href="https://github.com/ifcjs/" target="_blank" rel="noopener"
+        >main project repository</a
       >
+      for more information and BIM tools.
     </div>
 
     <!-- Import maps polyfill -->
@@ -31,7 +29,11 @@
       {
         "imports": {
           "three": "../build/three.module.js",
-          "three/addons/": "./jsm/"
+          "three/addons/": "./jsm/",
+          "three/examples/jsm/utils/BufferGeometryUtils": "./jsm/utils/BufferGeometryUtils.js",
+          "three-mesh-bvh": "https://unpkg.com/three-mesh-bvh@0.5.23/build/index.module.js",
+          "web-ifc": "https://unpkg.com/web-ifc@0.0.36/web-ifc-api.js",
+          "web-ifc-three": "https://unpkg.com/web-ifc-three@0.0.122/IFCLoader.js"
         }
       }
     </script>

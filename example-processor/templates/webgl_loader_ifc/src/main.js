@@ -9,19 +9,16 @@ import {
   Mesh,
   DirectionalLight,
   AmbientLight,
-  Vector2,
-  Raycaster,
   WebGLRenderer,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { IFCLoader } from "three/addons/loaders/IFCLoader.js";
+import { IFCLoader } from "web-ifc-three";
+import { IFCSPACE } from "web-ifc";
 
 let scene, camera, renderer;
 
-init();
-
-function init() {
+async function init() {
   //Scene
   scene = new Scene();
   scene.background = new Color(0x8cc7de);
@@ -57,7 +54,19 @@ function init() {
 
   //Setup IFC Loader
   const ifcLoader = new IFCLoader();
-  ifcLoader.ifcManager.setWasmPath("jsm/loaders/ifc/");
+  await ifcLoader.ifcManager.setWasmPath(
+    "https://unpkg.com/web-ifc@0.0.36/",
+    true
+  );
+
+  await ifcLoader.ifcManager.parser.setupOptionalCategories({
+    [IFCSPACE]: false,
+  });
+
+  await ifcLoader.ifcManager.applyWebIfcConfig({
+    USE_FAST_BOOLS: true,
+  });
+
   ifcLoader.load(
     "models/ifc/rac_advanced_sample_project.ifc",
     function (model) {
@@ -65,46 +74,6 @@ function init() {
       render();
     }
   );
-
-  const highlightMaterial = new MeshPhongMaterial({
-    color: 0xff00ff,
-    depthTest: false,
-    transparent: true,
-    opacity: 0.3,
-  });
-
-  function selectObject(event) {
-    if (event.button != 0) return;
-
-    const mouse = new Vector2();
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    const raycaster = new Raycaster();
-    raycaster.setFromCamera(mouse, camera);
-
-    const intersected = raycaster.intersectObjects(scene.children, false);
-    if (intersected.length) {
-      const found = intersected[0];
-      const faceIndex = found.faceIndex;
-      const geometry = found.object.geometry;
-      const id = ifcLoader.ifcManager.getExpressId(geometry, faceIndex);
-
-      const modelID = found.object.modelID;
-      ifcLoader.ifcManager.createSubset({
-        modelID,
-        ids: [id],
-        scene,
-        removePrevious: true,
-        material: highlightMaterial,
-      });
-      const props = ifcLoader.ifcManager.getItemProperties(modelID, id, true);
-      console.log(props);
-      renderer.render(scene, camera);
-    }
-  }
-
-  window.onpointerdown = selectObject;
 
   //Renderer
   renderer = new WebGLRenderer({ antialias: true });
@@ -132,3 +101,5 @@ function onWindowResize() {
 function render() {
   renderer.render(scene, camera);
 }
+
+init();
