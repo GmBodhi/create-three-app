@@ -18,10 +18,9 @@ import {
   MeshStandardNodeMaterial,
   Node,
   NodeUpdateType,
+  nodeObject,
   uniform,
   cubeTexture,
-  add,
-  mul,
 } from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -96,12 +95,12 @@ function init() {
 
   // Material
 
-  const instanceUniform = new InstanceUniformNode();
+  const instanceUniform = nodeObject(new InstanceUniformNode());
   const cubeTextureNode = cubeTexture(cubeMap);
 
   const material = new MeshStandardNodeMaterial();
-  material.colorNode = add(instanceUniform, cubeTextureNode);
-  material.emissiveNode = mul(instanceUniform, cubeTextureNode);
+  material.colorNode = instanceUniform.add(cubeTextureNode);
+  material.emissiveNode = instanceUniform.mul(cubeTextureNode);
 
   // Spheres geometry
 

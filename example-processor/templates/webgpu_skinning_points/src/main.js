@@ -8,7 +8,7 @@ import {
   Color,
   Points,
 } from "three";
-import * as Nodes from "three/nodes";
+import { uniform, skinning, PointsNodeMaterial } from "three/nodes";
 
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
@@ -52,9 +52,9 @@ function init() {
       if (child.isMesh) {
         child.visible = false;
 
-        const materialPoints = new Nodes.PointsNodeMaterial();
-        materialPoints.colorNode = new Nodes.UniformNode(new Color());
-        materialPoints.positionNode = new Nodes.SkinningNode(child);
+        const materialPoints = new PointsNodeMaterial();
+        materialPoints.colorNode = uniform(new Color());
+        materialPoints.positionNode = skinning(child);
 
         const pointCloud = new Points(child.geometry, materialPoints);
         scene.add(pointCloud);

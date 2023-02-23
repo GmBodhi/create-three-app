@@ -9,13 +9,16 @@ import {
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
-import * as Nodes from "three/nodes";
+import {
+  smoothstep,
+  positionView,
+  texture,
+  MeshBasicNodeMaterial,
+} from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import WebGPUTextureRenderer from "three/addons/renderers/webgpu/WebGPUTextureRenderer.js";
-
-import { smoothstep, negate, positionView, invert } from "three/nodes";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -47,10 +50,12 @@ function init() {
 
   // depth material
 
-  const material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = invert(
-    smoothstep(camera.near, camera.far, negate(positionView.z))
-  );
+  const material = new MeshBasicNodeMaterial();
+  material.colorNode = smoothstep(
+    camera.near,
+    camera.far,
+    positionView.z.negate()
+  ).invert();
 
   //
 
@@ -92,8 +97,8 @@ function init() {
 
   //
 
-  const materialFX = new Nodes.MeshBasicNodeMaterial();
-  materialFX.colorNode = new Nodes.TextureNode(textureRenderer.getTexture());
+  const materialFX = new MeshBasicNodeMaterial();
+  materialFX.colorNode = texture(textureRenderer.getTexture());
 
   const quad = new Mesh(geometryFX, materialFX);
   sceneFX.add(quad);

@@ -6,24 +6,30 @@ import {
   GridHelper,
   TextureLoader,
   RepeatWrapping,
-  Color,
   MeshNormalMaterial,
   Mesh,
 } from "three";
-import * as Nodes from "three/nodes";
+import {
+  attribute,
+  positionLocal,
+  normalLocal,
+  normalWorld,
+  normalView,
+  color,
+  texture,
+  ShaderNode,
+  func,
+  uv,
+  vec3,
+  triplanarTexture,
+  viewportBottomLeft,
+  MeshBasicNodeMaterial,
+} from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
-
-import {
-  ShaderNode,
-  vec3,
-  dot,
-  triplanarTexture,
-  viewportBottomLeft,
-} from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -59,7 +65,7 @@ function init() {
   // Grid
 
   const helper = new GridHelper(1000, 40, 0x303030, 0x303030);
-  helper.material.colorNode = new Nodes.AttributeNode("color");
+  helper.material.colorNode = attribute("color");
   helper.position.y = -75;
   scene.add(helper);
 
@@ -67,11 +73,11 @@ function init() {
 
   const textureLoader = new TextureLoader();
 
-  const texture = textureLoader.load(
+  const uvTexture = textureLoader.load(
     "three/examples/textures/uv_grid_opengl.jpg"
   );
-  texture.wrapS = RepeatWrapping;
-  texture.wrapT = RepeatWrapping;
+  uvTexture.wrapS = RepeatWrapping;
+  uvTexture.wrapT = RepeatWrapping;
 
   const opacityTexture = textureLoader.load(
     "three/examples/textures/alphaMap.jpg"
@@ -85,43 +91,43 @@ function init() {
   //	BASIC
   //
 
-  // PositionNode.LOCAL
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = new Nodes.PositionNode(Nodes.PositionNode.LOCAL);
+  // PositionLocal
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = positionLocal;
   materials.push(material);
 
-  // NormalNode.LOCAL
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = new Nodes.NormalNode(Nodes.NormalNode.LOCAL);
+  // NormalLocal
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = normalLocal;
   materials.push(material);
 
-  // NormalNode.WORLD
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = new Nodes.NormalNode(Nodes.NormalNode.WORLD);
+  // NormalWorld
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = normalWorld;
   materials.push(material);
 
-  // NormalNode.VIEW
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = new Nodes.NormalNode(Nodes.NormalNode.VIEW);
+  // NormalView
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = normalView;
   materials.push(material);
 
-  // TextureNode
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = new Nodes.TextureNode(texture);
+  // Texture
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = texture(uvTexture);
   materials.push(material);
 
   // Opacity
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = new Nodes.UniformNode(new Color(0x0099ff));
-  material.opacityNode = new Nodes.TextureNode(texture);
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = color(0x0099ff);
+  material.opacityNode = texture(uvTexture);
   material.transparent = true;
   materials.push(material);
 
   // AlphaTest
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = new Nodes.TextureNode(texture);
-  material.opacityNode = new Nodes.TextureNode(opacityTexture);
-  material.alphaTestNode = new Nodes.UniformNode(0.5);
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = texture(uvTexture);
+  material.opacityNode = texture(opacityTexture);
+  material.alphaTestNode = 0.5;
   materials.push(material);
 
   // Normal
@@ -137,28 +143,26 @@ function init() {
   // Custom ShaderNode ( desaturate filter )
 
   const desaturateShaderNode = new ShaderNode((input) => {
-    return dot(vec3(0.299, 0.587, 0.114), input.color.xyz);
+    return vec3(0.299, 0.587, 0.114).dot(input.color.xyz);
   });
 
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = desaturateShaderNode.call({
-    color: new Nodes.TextureNode(texture),
-  });
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = desaturateShaderNode.call({ color: texture(uvTexture) });
   materials.push(material);
 
   // Custom ShaderNode(no inputs) > Approach 2
 
   const desaturateNoInputsShaderNode = new ShaderNode(() => {
-    return dot(vec3(0.299, 0.587, 0.114), Nodes.texture(texture).xyz);
+    return vec3(0.299, 0.587, 0.114).dot(texture(uvTexture).xyz);
   });
 
-  material = new Nodes.MeshBasicNodeMaterial();
+  material = new MeshBasicNodeMaterial();
   material.colorNode = desaturateNoInputsShaderNode;
   materials.push(material);
 
   // Custom WGSL ( desaturate filter )
 
-  const desaturateWGSLNode = Nodes.func(`
+  const desaturateWGSLNode = func(`
 					fn desaturate( color:vec3<f32> ) -> vec3<f32> {
 
 						let lum = vec3<f32>( 0.299, 0.587, 0.114 );
@@ -168,15 +172,13 @@ function init() {
 					}
 				`);
 
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = desaturateWGSLNode.call({
-    color: new Nodes.TextureNode(texture),
-  });
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = desaturateWGSLNode.call({ color: texture(uvTexture) });
   materials.push(material);
 
   // Custom WGSL ( get texture from keywords )
 
-  const getWGSLTextureSample = Nodes.func(`
+  const getWGSLTextureSample = func(`
 					fn getWGSLTextureSample( tex: texture_2d<f32>, tex_sampler: sampler, uv:vec2<f32> ) -> vec4<f32> {
 
 						return textureSample( tex, tex_sampler, uv ) * vec4<f32>( 0.0, 1.0, 0.0, 1.0 );
@@ -184,25 +186,25 @@ function init() {
 					}
 				`);
 
-  const textureNode = new Nodes.TextureNode(texture);
+  const textureNode = texture(uvTexture);
   //getWGSLTextureSample.keywords = { tex: textureNode, tex_sampler: sampler( textureNode ) };
 
-  material = new Nodes.MeshBasicNodeMaterial();
+  material = new MeshBasicNodeMaterial();
   material.colorNode = getWGSLTextureSample.call({
     tex: textureNode,
     tex_sampler: textureNode,
-    uv: new Nodes.UVNode(),
+    uv: uv(),
   });
   materials.push(material);
 
   // Triplanar Texture Mapping
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = triplanarTexture(new Nodes.TextureNode(texture));
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = triplanarTexture(texture(uvTexture));
   materials.push(material);
 
   // Screen Projection Texture
-  material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = Nodes.texture(texture, viewportBottomLeft);
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = texture(uvTexture, viewportBottomLeft);
   materials.push(material);
 
   //

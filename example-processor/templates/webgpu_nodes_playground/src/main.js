@@ -13,7 +13,12 @@ import {
   Points,
   TorusKnotGeometry,
 } from "three";
-import * as Nodes from "three/nodes";
+import {
+  toneMapping,
+  uniform,
+  MeshBasicNodeMaterial,
+  PointsNodeMaterial,
+} from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -69,7 +74,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.toneMappingNode = Nodes.toneMapping(LinearToneMapping, 1);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
   document.body.appendChild(renderer.domElement);
 
   renderer.domElement.className = "renderer";
@@ -112,8 +117,8 @@ function initEditor() {
 
   const loaderFBX = new FBXLoader();
   loaderFBX.load("models/fbx/stanford-bunny.fbx", (object) => {
-    const defaultMaterial = new Nodes.MeshBasicNodeMaterial();
-    defaultMaterial.colorNode = new Nodes.UniformNode(0);
+    const defaultMaterial = new MeshBasicNodeMaterial();
+    defaultMaterial.colorNode = uniform(0);
 
     const sphere = new Mesh(new SphereGeometry(2, 32, 16), defaultMaterial);
     sphere.name = "Sphere";
@@ -125,8 +130,8 @@ function initEditor() {
     box.position.set(-5, 0, -5);
     scene.add(box);
 
-    const defaultPointsMaterial = new Nodes.PointsNodeMaterial();
-    defaultPointsMaterial.colorNode = new Nodes.UniformNode(0);
+    const defaultPointsMaterial = new PointsNodeMaterial();
+    defaultPointsMaterial.colorNode = uniform(0);
 
     const torusKnot = new Points(
       new TorusKnotGeometry(1, 0.3, 100, 16),

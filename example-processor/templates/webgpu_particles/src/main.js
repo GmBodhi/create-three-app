@@ -10,27 +10,19 @@ import {
   AdditiveBlending,
   GridHelper,
 } from "three";
-import * as Nodes from "three/nodes";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
 import {
   range,
   texture,
   mix,
   uv,
-  mul,
-  mod,
-  rotateUV,
   color,
-  max,
-  min,
-  div,
-  clamp,
   positionWorld,
-  invert,
   timerLocal,
+  attribute,
+  SpriteNodeMaterial,
 } from "three/nodes";
+
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -55,7 +47,7 @@ function init() {
   camera.position.set(1300, 500, 0);
 
   scene = new Scene();
-  //scene.fogNode = new Nodes.FogRangeNode( Nodes.color( 0x0000ff ), Nodes.float( 1500 ), Nodes.float( 2100 )  );
+  //scene.fogNode = rangeFog( color( 0x0000ff ), 1500, 2100 );
 
   // textures
 
@@ -69,34 +61,35 @@ function init() {
 
   const timer = timerLocal(0.2, 1 /*100000*/); // @TODO: need to work with 64-bit precision
 
-  const lifeTime = mod(mul(timer, lifeRange), 1);
+  const lifeTime = timer.mul(lifeRange).mod(1);
   const scaleRange = range(0.3, 2);
   const rotateRange = range(0.1, 4);
 
-  const life = div(lifeTime, lifeRange);
+  const life = lifeTime.div(lifeRange);
 
-  const fakeLightEffect = max(0.2, invert(positionWorld.y));
+  const fakeLightEffect = positionWorld.y.invert().max(0.2);
 
-  const textureNode = texture(map, rotateUV(uv(), mul(timer, rotateRange)));
+  const textureNode = texture(map, uv().rotateUV(timer.mul(rotateRange)));
 
-  const opacityNode = mul(textureNode.a, invert(life));
+  const opacityNode = textureNode.a.mul(life.invert());
 
   const smokeColor = mix(
     color(0x2c1501),
     color(0x222222),
-    clamp(mul(positionWorld.y, 3))
+    positionWorld.y.mul(3).clamp()
   );
 
   // create particles
 
-  const smokeNodeMaterial = new Nodes.SpriteNodeMaterial();
-  smokeNodeMaterial.colorNode = mul(
-    mix(color(0xf27d0c), smokeColor, min(mul(life, 2.5), 1)),
-    fakeLightEffect
-  );
+  const smokeNodeMaterial = new SpriteNodeMaterial();
+  smokeNodeMaterial.colorNode = mix(
+    color(0xf27d0c),
+    smokeColor,
+    life.mul(2.5).min(1)
+  ).mul(fakeLightEffect);
   smokeNodeMaterial.opacityNode = opacityNode;
-  smokeNodeMaterial.positionNode = mul(offsetRange, lifeTime);
-  smokeNodeMaterial.scaleNode = mul(scaleRange, max(0.3, lifeTime));
+  smokeNodeMaterial.positionNode = offsetRange.mul(lifeTime);
+  smokeNodeMaterial.scaleNode = scaleRange.mul(lifeTime.max(0.3));
   smokeNodeMaterial.depthWrite = false;
   smokeNodeMaterial.transparent = true;
 
@@ -111,12 +104,12 @@ function init() {
 
   //
 
-  const fireNodeMaterial = new Nodes.SpriteNodeMaterial();
+  const fireNodeMaterial = new SpriteNodeMaterial();
   fireNodeMaterial.colorNode = mix(color(0xb72f17), color(0xb72f17), life);
-  fireNodeMaterial.positionNode = mul(
-    range(new Vector3(-1, 1, -1), new Vector3(1, 2, 1)),
-    lifeTime
-  );
+  fireNodeMaterial.positionNode = range(
+    new Vector3(-1, 1, -1),
+    new Vector3(1, 2, 1)
+  ).mul(lifeTime);
   fireNodeMaterial.scaleNode = smokeNodeMaterial.scaleNode;
   fireNodeMaterial.opacityNode = opacityNode;
   fireNodeMaterial.blending = AdditiveBlending;
@@ -137,7 +130,7 @@ function init() {
   //
 
   const helper = new GridHelper(3000, 40, 0x303030, 0x303030);
-  helper.material.colorNode = new Nodes.AttributeNode("color");
+  helper.material.colorNode = attribute("color");
   helper.position.y = -75;
   scene.add(helper);
 

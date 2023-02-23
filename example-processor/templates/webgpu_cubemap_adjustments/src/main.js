@@ -12,23 +12,15 @@ import {
   LinearToneMapping,
   sRGBEncoding,
 } from "three";
-
 import {
   uniform,
   mix,
   cubeTexture,
-  mul,
   reference,
-  add,
   positionWorld,
   normalWorld,
   modelWorldMatrix,
-  transformDirection,
-  clamp,
-  saturation,
-  hue,
   reflectVector,
-  context,
   toneMapping,
 } from "three/nodes";
 
@@ -118,31 +110,30 @@ function init() {
   const rotateY2Matrix = new Matrix4();
 
   const getEnvironmentNode = (reflectNode) => {
-    const custom1UV = mul(reflectNode.xyz, uniform(rotateY1Matrix));
-    const custom2UV = mul(reflectNode.xyz, uniform(rotateY2Matrix));
-
+    const custom1UV = reflectNode.xyz.mul(uniform(rotateY1Matrix));
+    const custom2UV = reflectNode.xyz.mul(uniform(rotateY2Matrix));
     const mixCubeMaps = mix(
       cubeTexture(cube1Texture, custom1UV),
       cubeTexture(cube2Texture, custom2UV),
-      clamp(add(positionWorld.y, mixNode))
+      positionWorld.y.add(mixNode).clamp()
     );
-    const proceduralEnv = mix(mixCubeMaps, normalWorld, proceduralNode);
-    const intensityFilter = mul(proceduralEnv, intensityNode);
-    const hueFilter = hue(intensityFilter, hueNode);
 
-    return saturation(hueFilter, saturationNode);
+    const proceduralEnv = mix(mixCubeMaps, normalWorld, proceduralNode);
+
+    const intensityFilter = proceduralEnv.mul(intensityNode);
+    const hueFilter = intensityFilter.hue(hueNode);
+    return hueFilter.saturation(saturationNode);
   };
 
   const blurNode = uniform(0);
 
   scene.environmentNode = getEnvironmentNode(reflectVector);
 
-  scene.backgroundNode = context(
-    getEnvironmentNode(transformDirection(positionWorld, modelWorldMatrix)),
-    {
-      getSamplerLevelNode: () => blurNode,
-    }
-  );
+  scene.backgroundNode = getEnvironmentNode(
+    positionWorld.transformDirection(modelWorldMatrix)
+  ).context({
+    getSamplerLevelNode: () => blurNode,
+  });
 
   // scene objects
 

@@ -7,19 +7,12 @@ import {
   RedFormat,
   Scene,
 } from "three";
-
 import {
   ShaderNode,
-  compute,
   uniform,
-  element,
   storage,
   instanceIndex,
   float,
-  add,
-  sub,
-  div,
-  mul,
   texture,
   viewportTopLeft,
   color,
@@ -134,32 +127,31 @@ async function init() {
 
     // pitch
 
-    const time = mul(index, pitch);
+    const time = index.mul(pitch);
 
-    let wave = element(waveNode, time);
+    let wave = waveNode.element(time);
 
     // delay
 
     for (let i = 1; i < 7; i++) {
-      const waveOffset = element(
-        waveNode,
-        mul(sub(index, mul(mul(delayOffset, sampleRate), i)), pitch)
+      const waveOffset = waveNode.element(
+        index.sub(delayOffset.mul(sampleRate).mul(i)).mul(pitch)
       );
-      const waveOffsetVolume = mul(waveOffset, div(delayVolume, i * i));
+      const waveOffsetVolume = waveOffset.mul(delayVolume.div(i * i));
 
-      wave = add(wave, waveOffsetVolume);
+      wave = wave.add(waveOffsetVolume);
     }
 
     // store
 
-    const waveStorageElementNode = element(waveStorageNode, instanceIndex);
+    const waveStorageElementNode = waveStorageNode.element(instanceIndex);
 
     stack.assign(waveStorageElementNode, wave);
   });
 
   // compute
 
-  computeNode = compute(computeShaderNode, waveBuffer.length);
+  computeNode = computeShaderNode.compute(waveBuffer.length);
 
   // gui
 
@@ -190,11 +182,10 @@ async function init() {
     RedFormat
   );
 
-  const spectrum = mul(
-    texture(analyserTexture, viewportTopLeft.x).x,
+  const spectrum = texture(analyserTexture, viewportTopLeft.x).x.mul(
     viewportTopLeft.y
   );
-  const backgroundNode = mul(color(0x0000ff), spectrum);
+  const backgroundNode = color(0x0000ff).mul(spectrum);
 
   // scene
 

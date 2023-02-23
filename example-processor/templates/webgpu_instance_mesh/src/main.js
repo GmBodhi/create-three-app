@@ -9,11 +9,10 @@ import {
   BufferGeometryLoader,
   InstancedMesh,
 } from "three";
+import { mix, range, normalWorld, oscSine, timerLocal } from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import { mix, range, normalWorld, oscSine, timerLocal } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";

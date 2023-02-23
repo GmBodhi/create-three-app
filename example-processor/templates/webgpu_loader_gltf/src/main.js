@@ -9,7 +9,7 @@ import {
   LinearToneMapping,
   sRGBEncoding,
 } from "three";
-import * as Nodes from "three/nodes";
+import { cubeTexture, texture, normalMap, toneMapping } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -46,15 +46,15 @@ function init() {
 
   const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
 
-  const cubeTexture = new RGBMLoader()
+  const cubeMap = new RGBMLoader()
     .setMaxRange(16)
     .setPath("three/examples/textures/cube/pisaRGBM16/")
     .loadCubemap(rgbmUrls);
 
-  cubeTexture.generateMipmaps = true;
-  cubeTexture.minFilter = LinearMipmapLinearFilter;
+  cubeMap.generateMipmaps = true;
+  cubeMap.minFilter = LinearMipmapLinearFilter;
 
-  scene.environmentNode = new Nodes.CubeTextureNode(cubeTexture);
+  scene.environmentNode = cubeTexture(cubeMap);
   scene.backgroundNode = scene.environmentNode;
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
@@ -63,17 +63,14 @@ function init() {
     //camera.add( light );
 
     const mesh = gltf.scene.children[0];
-    const nodeMaterial = Nodes.NodeMaterial.fromMaterial(mesh.material);
+    const material = mesh.material;
 
-    nodeMaterial.normalNode = Nodes.normalMap(
-      Nodes.texture(nodeMaterial.normalMap)
-    );
-    nodeMaterial.normalMap = null; // ignore non-node normalMap material
+    const oldNormalMap = material.normalMap;
+    material.normalNode = normalMap(texture(oldNormalMap));
+    material.normalMap = null; // ignore non-node normalMap material
 
     // optional: use tangent to compute normalMap
     mesh.geometry.computeTangents();
-
-    mesh.material = nodeMaterial;
 
     scene.add(gltf.scene);
 
@@ -93,7 +90,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
-  renderer.toneMappingNode = Nodes.toneMapping(LinearToneMapping, 1);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
 

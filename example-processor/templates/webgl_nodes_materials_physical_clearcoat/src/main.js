@@ -15,9 +15,15 @@ import {
   WebGLRenderer,
   ACESFilmicToneMapping,
 } from "three";
-import * as Nodes from "three/nodes";
-
-import { color, float, vec2, texture, normalMap, uv, mul } from "three/nodes";
+import {
+  color,
+  float,
+  vec2,
+  texture,
+  normalMap,
+  uv,
+  MeshPhysicalNodeMaterial,
+} from "three/nodes";
 
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
@@ -92,10 +98,10 @@ function init() {
 
         // car paint
 
-        const carPaintUV = mul(uv(), vec2(10, 6));
+        const carPaintUV = uv().mul(vec2(10, 6));
         const carPaintNormalScale = vec2(0.15);
 
-        let material = new Nodes.MeshPhysicalNodeMaterial();
+        let material = new MeshPhysicalNodeMaterial();
         material.clearcoatNode = float(1);
         material.clearcoatRoughnessNode = float(0.1);
         material.metalnessNode = float(0.9);
@@ -113,9 +119,9 @@ function init() {
 
         // fibers
 
-        const fibersUV = mul(uv(), 10);
+        const fibersUV = uv().mul(10);
 
-        material = new Nodes.MeshPhysicalNodeMaterial();
+        material = new MeshPhysicalNodeMaterial();
         material.roughnessNode = float(0.5);
         material.clearcoatNode = float(1);
         material.clearcoatRoughnessNode = float(0.1);
@@ -129,7 +135,7 @@ function init() {
 
         // golf
 
-        material = new Nodes.MeshPhysicalNodeMaterial();
+        material = new MeshPhysicalNodeMaterial();
         material.clearcoatNode = float(1);
         material.roughnessNode = float(0.1);
         material.metalnessNode = float(0);
@@ -148,7 +154,7 @@ function init() {
 
         // clearcoat + normalmap
 
-        material = new Nodes.MeshPhysicalNodeMaterial();
+        material = new MeshPhysicalNodeMaterial();
         material.clearcoatNode = float(1);
         material.roughnessNode = float(1);
         material.metalnessNode = float(1);

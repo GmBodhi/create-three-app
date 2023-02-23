@@ -8,13 +8,11 @@ import {
   LinearToneMapping,
   sRGBEncoding,
 } from "three";
-
 import {
   mix,
   oscSine,
   timerLocal,
   cubeTexture,
-  context,
   float,
   toneMapping,
 } from "three/nodes";
@@ -81,7 +79,7 @@ function init() {
     oscSine(timerLocal(0.1))
   );
 
-  scene.backgroundNode = context(scene.environmentNode, {
+  scene.backgroundNode = scene.environmentNode.context({
     getSamplerLevelNode: () => float(1),
   });
 

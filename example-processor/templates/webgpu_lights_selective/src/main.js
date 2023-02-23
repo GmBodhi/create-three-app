@@ -11,7 +11,14 @@ import {
   sRGBEncoding,
   ACESFilmicToneMapping,
 } from "three";
-import * as Nodes from "three/nodes";
+import {
+  rangeFog,
+  color,
+  lights,
+  texture,
+  normalMap,
+  MeshStandardNodeMaterial,
+} from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -22,8 +29,6 @@ import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
-import { color, float } from "three/nodes";
 
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 
@@ -45,7 +50,7 @@ function init() {
   camera.position.z = 7;
 
   scene = new Scene();
-  scene.fogNode = new Nodes.FogRangeNode(color(0xff00ff), float(3), float(30));
+  scene.fogNode = rangeFog(color(0xff00ff), 3, 30);
 
   const sphereGeometry = new SphereGeometry(0.1, 16, 8);
 
@@ -68,7 +73,7 @@ function init() {
   //lights
 
   const addLight = (hexColor, power = 1700, distance = 100) => {
-    const material = new Nodes.MeshStandardNodeMaterial();
+    const material = new MeshStandardNodeMaterial();
     material.colorNode = color(hexColor);
     material.lights = false;
 
@@ -90,8 +95,8 @@ function init() {
 
   //light nodes ( selective lights )
 
-  const redLightsNode = Nodes.lights([light1]);
-  const blueLightsNode = Nodes.lights([light2]);
+  const redLightsNode = lights([light1]);
+  const blueLightsNode = lights([light2]);
 
   //models
 
@@ -99,31 +104,29 @@ function init() {
 
   const leftObject = new Mesh(
     geometryTeapot,
-    new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
+    new MeshStandardNodeMaterial({ color: 0x555555 })
   );
   leftObject.material.lightsNode = redLightsNode;
-  leftObject.material.roughnessNode = new Nodes.TextureNode(alphaTexture);
+  leftObject.material.roughnessNode = texture(alphaTexture);
   leftObject.material.metalness = 0;
   leftObject.position.x = -3;
   scene.add(leftObject);
 
   const centerObject = new Mesh(
     geometryTeapot,
-    new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
+    new MeshStandardNodeMaterial({ color: 0x555555 })
   );
-  centerObject.material.normalNode = new Nodes.NormalMapNode(
-    Nodes.texture(normalMapTexture)
-  );
+  centerObject.material.normalNode = normalMap(texture(normalMapTexture));
   centerObject.material.metalness = 0.5;
   centerObject.material.roughness = 0.5;
   scene.add(centerObject);
 
   const rightObject = new Mesh(
     geometryTeapot,
-    new Nodes.MeshStandardNodeMaterial({ color: 0x555555 })
+    new MeshStandardNodeMaterial({ color: 0x555555 })
   );
   rightObject.material.lightsNode = blueLightsNode;
-  rightObject.material.metalnessNode = new Nodes.TextureNode(alphaTexture);
+  rightObject.material.metalnessNode = texture(alphaTexture);
   rightObject.position.x = 3;
   scene.add(rightObject);
 

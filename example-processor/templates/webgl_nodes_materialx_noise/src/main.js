@@ -14,8 +14,6 @@ import {
 } from "three";
 import {
   MeshPhysicalNodeMaterial,
-  add,
-  mul,
   normalWorld,
   timerLocal,
   mx_noise_vec3,
@@ -66,7 +64,7 @@ function init() {
         const geometry = new SphereGeometry(80, 64, 32);
 
         const offsetNode = timerLocal();
-        const customUV = add(mul(normalWorld, 10), offsetNode);
+        const customUV = normalWorld.mul(10).add(offsetNode);
 
         // left top
 
@@ -101,7 +99,7 @@ function init() {
         // right bottom
 
         material = new MeshPhysicalNodeMaterial();
-        material.colorNode = mx_fractal_noise_vec3(mul(customUV, 0.2));
+        material.colorNode = mx_fractal_noise_vec3(customUV.mul(0.2));
 
         mesh = new Mesh(geometry, material);
         mesh.position.x = 100;

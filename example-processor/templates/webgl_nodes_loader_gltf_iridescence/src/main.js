@@ -8,12 +8,9 @@ import {
   PerspectiveCamera,
   EquirectangularReflectionMapping,
 } from "three";
-
 import {
   NodeMaterial,
   uv,
-  add,
-  mul,
   vec2,
   checker,
   float,
@@ -72,10 +69,12 @@ async function init() {
 
     if (material && material.iridescence > 0) {
       const iridescenceFactorNode = checker(
-        mul(add(uv(), vec2(timerLocal(-0.05), 0)), 20)
+        uv()
+          .add(vec2(timerLocal(-0.05), 0))
+          .mul(20)
       );
 
-      const nodeMaterial = NodeMaterial.fromMaterial(material);
+      const nodeMaterial = NodeMaterial.fromMaterial(material); // @TODO: NodeMaterial.fromMaterial can be removed if WebGLNodes will apply it by default (as in WebGPURenderer)
       nodeMaterial.iridescenceNode = iridescenceFactorNode;
       nodeMaterial.iridescenceIORNode = float(1.3);
       nodeMaterial.iridescenceThicknessNode = float(400);

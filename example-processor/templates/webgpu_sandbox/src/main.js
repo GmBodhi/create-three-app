@@ -7,7 +7,6 @@ import {
   TextureLoader,
   RepeatWrapping,
   BoxGeometry,
-  Vector2,
   Mesh,
   SphereGeometry,
   PlaneGeometry,
@@ -18,7 +17,22 @@ import {
   DataTexture,
   RGBAFormat,
 } from "three";
-import * as Nodes from "three/nodes";
+import {
+  timerLocal,
+  vec2,
+  uv,
+  texture,
+  mix,
+  checker,
+  normalLocal,
+  positionLocal,
+  color,
+  oscSine,
+  attribute,
+  MeshBasicNodeMaterial,
+  PointsNodeMaterial,
+  LineBasicNodeMaterial,
+} from "three/nodes";
 
 import { DDSLoader } from "three/addons/loaders/DDSLoader.js";
 
@@ -52,12 +66,12 @@ function init() {
   // textures
 
   const textureLoader = new TextureLoader();
-  const texture = textureLoader.load(
+  const uvTexture = textureLoader.load(
     "three/examples/textures/uv_grid_opengl.jpg"
   );
-  texture.wrapS = RepeatWrapping;
-  texture.wrapT = RepeatWrapping;
-  texture.name = "uv_grid";
+  uvTexture.wrapS = RepeatWrapping;
+  uvTexture.wrapT = RepeatWrapping;
+  uvTexture.name = "uv_grid";
 
   const textureDisplace = textureLoader.load(
     "three/examples/textures/transition/transition1.png"
@@ -75,34 +89,19 @@ function init() {
   // box mesh
 
   const geometryBox = new BoxGeometry();
-  const materialBox = new Nodes.MeshBasicNodeMaterial();
-
-  const timerNode = new Nodes.TimerNode();
+  const materialBox = new MeshBasicNodeMaterial();
 
   // birection speed
-  const timerScaleNode = new Nodes.OperatorNode(
-    "*",
-    timerNode,
-    new Nodes.ConstNode(new Vector2(-0.5, 0.1))
-  );
-  const animateUV = new Nodes.OperatorNode(
-    "+",
-    new Nodes.UVNode(),
-    timerScaleNode
-  );
+  const timerScaleNode = timerLocal().mul(vec2(-0.5, 0.1));
+  const animateUV = uv().add(timerScaleNode);
 
-  const textureNode = new Nodes.TextureNode(texture, animateUV);
+  const textureNode = texture(uvTexture, animateUV);
 
-  materialBox.colorNode = new Nodes.MathNode(
-    "mix",
-    textureNode,
-    new Nodes.CheckerNode(animateUV),
-    new Nodes.UniformNode(0.5)
-  );
+  materialBox.colorNode = mix(textureNode, checker(animateUV), 0.5);
 
   // test uv 2
   //geometryBox.setAttribute( 'uv2', geometryBox.getAttribute( 'uv' ) );
-  //materialBox.colorNode = new TextureNode( texture, new UVNode( 1 ) );
+  //materialBox.colorNode = texture( uvTexture, uv( 1 ) );
 
   box = new Mesh(geometryBox, materialBox);
   box.position.set(0, 1, 0);
@@ -111,30 +110,14 @@ function init() {
   // displace example
 
   const geometrySphere = new SphereGeometry(0.5, 64, 64);
-  const materialSphere = new Nodes.MeshBasicNodeMaterial();
+  const materialSphere = new MeshBasicNodeMaterial();
 
-  const displaceAnimated = new Nodes.SplitNode(
-    new Nodes.TextureNode(textureDisplace),
-    "x"
-  );
-  const displaceY = new Nodes.OperatorNode(
-    "*",
-    displaceAnimated,
-    new Nodes.ConstNode(0.25)
-  );
+  const displaceY = texture(textureDisplace).x.mul(0.25);
 
-  const displace = new Nodes.OperatorNode(
-    "*",
-    new Nodes.NormalNode(Nodes.NormalNode.LOCAL),
-    displaceY
-  );
+  const displace = normalLocal.mul(displaceY);
 
   materialSphere.colorNode = displaceY;
-  materialSphere.positionNode = new Nodes.OperatorNode(
-    "+",
-    new Nodes.PositionNode(Nodes.PositionNode.LOCAL),
-    displace
-  );
+  materialSphere.positionNode = positionLocal.add(displace);
 
   const sphere = new Mesh(geometrySphere, materialSphere);
   sphere.position.set(-2, -1, 0);
@@ -143,16 +126,9 @@ function init() {
   // data texture
 
   const geometryPlane = new PlaneGeometry();
-  const materialPlane = new Nodes.MeshBasicNodeMaterial();
-  materialPlane.colorNode = new Nodes.OperatorNode(
-    "+",
-    new Nodes.TextureNode(createDataTexture()),
-    new Nodes.UniformNode(new Color(0x0000ff))
-  );
-  materialPlane.opacityNode = new Nodes.SplitNode(
-    new Nodes.TextureNode(dxt5Texture),
-    "a"
-  );
+  const materialPlane = new MeshBasicNodeMaterial();
+  materialPlane.colorNode = texture(createDataTexture()).add(color(0x0000ff));
+  materialPlane.opacityNode = texture(dxt5Texture).a;
   materialPlane.transparent = true;
 
   const plane = new Mesh(geometryPlane, materialPlane);
@@ -161,10 +137,10 @@ function init() {
 
   // compressed texture
 
-  const materialCompressed = new Nodes.MeshBasicNodeMaterial();
-  materialCompressed.colorNode = new Nodes.TextureNode(dxt5Texture);
-  materialCompressed.emissiveNode = new Nodes.UniformNode(new Color(0x663300));
-  materialCompressed.alphaTestNode = new Nodes.OscNode();
+  const materialCompressed = new MeshBasicNodeMaterial();
+  materialCompressed.colorNode = texture(dxt5Texture);
+  materialCompressed.emissiveNode = color(0x663300);
+  materialCompressed.alphaTestNode = oscSine();
   materialCompressed.transparent = true;
 
   const boxCompressed = new Mesh(geometryBox, materialCompressed);
@@ -181,13 +157,9 @@ function init() {
   }
 
   const geometryPoints = new BufferGeometry().setFromPoints(points);
-  const materialPoints = new Nodes.PointsNodeMaterial();
+  const materialPoints = new PointsNodeMaterial();
 
-  materialPoints.colorNode = new Nodes.OperatorNode(
-    "*",
-    new Nodes.PositionNode(),
-    new Nodes.ConstNode(3)
-  );
+  materialPoints.colorNode = positionLocal.mul(3);
 
   const pointCloud = new Points(geometryPoints, materialPoints);
   pointCloud.position.set(2, -1, 0);
@@ -204,8 +176,8 @@ function init() {
 
   geometryLine.setAttribute("color", geometryLine.getAttribute("position"));
 
-  const materialLine = new Nodes.LineBasicNodeMaterial();
-  materialLine.colorNode = new Nodes.AttributeNode("color");
+  const materialLine = new LineBasicNodeMaterial();
+  materialLine.colorNode = attribute("color");
 
   const line = new Line(geometryLine, materialLine);
   line.position.set(2, 1, 0);
