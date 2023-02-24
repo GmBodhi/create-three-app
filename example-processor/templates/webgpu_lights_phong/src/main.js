@@ -11,7 +11,17 @@ import {
   sRGBEncoding,
   ACESFilmicToneMapping,
 } from "three";
-import * as Nodes from "three/nodes";
+import {
+  color,
+  rangeFog,
+  checker,
+  uv,
+  mix,
+  texture,
+  lights,
+  normalMap,
+  MeshPhongNodeMaterial,
+} from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -20,8 +30,6 @@ import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
-import { float, color, rangeFog, checker, uv, mix, texture } from "three/nodes";
 
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 
@@ -66,7 +74,7 @@ function init() {
   // lights
 
   const addLight = (hexColor, power = 1700, distance = 100) => {
-    const material = new Nodes.MeshPhongNodeMaterial();
+    const material = new MeshPhongNodeMaterial();
     material.colorNode = color(hexColor);
     material.lights = false;
 
@@ -88,8 +96,8 @@ function init() {
 
   // light nodes ( selective lights )
 
-  const blueLightsNode = new Nodes.LightsNode().fromLights([light1]);
-  const whiteLightsNode = new Nodes.LightsNode().fromLights([light2]);
+  const blueLightsNode = lights([light1]);
+  const whiteLightsNode = lights([light2]);
 
   // models
 
@@ -97,7 +105,7 @@ function init() {
 
   const leftObject = new Mesh(
     geometryTeapot,
-    new Nodes.MeshPhongNodeMaterial({ color: 0x555555 })
+    new MeshPhongNodeMaterial({ color: 0x555555 })
   );
   leftObject.material.lightsNode = blueLightsNode;
   leftObject.material.specularNode = texture(alphaTexture);
@@ -106,17 +114,15 @@ function init() {
 
   const centerObject = new Mesh(
     geometryTeapot,
-    new Nodes.MeshPhongNodeMaterial({ color: 0x555555 })
+    new MeshPhongNodeMaterial({ color: 0x555555 })
   );
-  centerObject.material.normalNode = new Nodes.NormalMapNode(
-    texture(normalMapTexture)
-  );
-  centerObject.material.shininessNode = float(80);
+  centerObject.material.normalNode = normalMap(texture(normalMapTexture));
+  centerObject.material.shininess = 80;
   scene.add(centerObject);
 
   const rightObject = new Mesh(
     geometryTeapot,
-    new Nodes.MeshPhongNodeMaterial({ color: 0x555555 })
+    new MeshPhongNodeMaterial({ color: 0x555555 })
   );
   rightObject.material.lightsNode = whiteLightsNode;
   //rightObject.material.specular.setHex( 0xFF00FF );

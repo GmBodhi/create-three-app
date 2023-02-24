@@ -9,7 +9,7 @@ import {
   sRGBEncoding,
   LinearToneMapping,
 } from "three";
-import * as Nodes from "three/nodes";
+import { toneMapping, MeshStandardNodeMaterial } from "three/nodes";
 
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
@@ -60,7 +60,7 @@ function init() {
 
     object.traverse(function (child) {
       if (child.isMesh) {
-        child.material = new Nodes.MeshStandardNodeMaterial();
+        child.material = new MeshStandardNodeMaterial();
         child.material.roughness = 0.1;
       }
     });
@@ -75,7 +75,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 0.15);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.15);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

@@ -64,17 +64,17 @@ const postProcessMaterial = new ShaderMaterial({
   fragmentShader: fragmentPostprocess_,
 });
 
-var depthStep = 0.4;
+let depthStep = 0.4;
 
-var camera, scene, mesh, renderer, stats;
+let camera, scene, mesh, renderer, stats;
 
-var planeWidth = 50;
-var planeHeight = 50;
+const planeWidth = 50;
+const planeHeight = 50;
 
 init();
 
 function init() {
-  var container = document.createElement("div");
+  const container = document.createElement("div");
   document.body.appendChild(container);
 
   camera = new PerspectiveCamera(
@@ -120,7 +120,7 @@ function init() {
   new FileLoader()
     .setResponseType("arraybuffer")
     .load("textures/3d/head256x256x109.zip", function (data) {
-      var zip = unzipSync(new Uint8Array(data));
+      const zip = unzipSync(new Uint8Array(data));
       const array = new Uint8Array(zip["head256x256x109"].buffer);
 
       const texture = new DataArrayTexture(
@@ -132,7 +132,7 @@ function init() {
       texture.format = RedFormat;
       texture.needsUpdate = true;
 
-      var material = new ShaderMaterial({
+      const material = new ShaderMaterial({
         uniforms: {
           diffuse: { value: renderTarget.texture },
           depth: { value: 55 },
@@ -142,7 +142,7 @@ function init() {
         fragmentShader: fs_,
       });
 
-      var geometry = new PlaneGeometry(planeWidth, planeHeight);
+      const geometry = new PlaneGeometry(planeWidth, planeHeight);
 
       mesh = new Mesh(geometry, material);
 
@@ -164,7 +164,7 @@ function onWindowResize() {
 function animate() {
   requestAnimationFrame(animate);
 
-  var value = mesh.material.uniforms["depth"].value;
+  let value = mesh.material.uniforms["depth"].value;
 
   value += depthStep;
 

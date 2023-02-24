@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
@@ -25,6 +26,8 @@ let cameraControls;
 let sphereGroup, smallSphere;
 
 let groundMirror, verticalMirror;
+
+ColorManagement.enabled = true;
 
 init();
 animate();
@@ -69,7 +72,7 @@ function init() {
     clipBias: 0.003,
     textureWidth: window.innerWidth * window.devicePixelRatio,
     textureHeight: window.innerHeight * window.devicePixelRatio,
-    color: 0x777777,
+    color: 0xb5b5b5,
   });
   groundMirror.position.y = 0.5;
   groundMirror.rotateX(-Math.PI / 2);
@@ -80,7 +83,7 @@ function init() {
     clipBias: 0.003,
     textureWidth: window.innerWidth * window.devicePixelRatio,
     textureHeight: window.innerHeight * window.devicePixelRatio,
-    color: 0x889999,
+    color: 0xc1cbcb,
   });
   verticalMirror.position.y = 50;
   verticalMirror.position.z = -50;
@@ -96,7 +99,7 @@ function init() {
     24,
     1
   );
-  material = new MeshPhongMaterial({ color: 0xffffff, emissive: 0x444444 });
+  material = new MeshPhongMaterial({ color: 0xffffff, emissive: 0x8d8d8d });
   const sphereCap = new Mesh(geometry, material);
   sphereCap.position.y = -15 * Math.sin((Math.PI / 180) * 30) - 0.05;
   sphereCap.rotateX(-Math.PI);
@@ -121,7 +124,7 @@ function init() {
   geometry = new IcosahedronGeometry(5, 0);
   material = new MeshPhongMaterial({
     color: 0xffffff,
-    emissive: 0x333333,
+    emissive: 0x7b7b7b,
     flatShading: true,
   });
   smallSphere = new Mesh(geometry, material);
@@ -145,7 +148,7 @@ function init() {
 
   const planeFront = new Mesh(
     planeGeo,
-    new MeshPhongMaterial({ color: 0x7f7fff })
+    new MeshPhongMaterial({ color: 0xbbbbfe })
   );
   planeFront.position.z = 50;
   planeFront.position.y = 50;
@@ -171,7 +174,7 @@ function init() {
   scene.add(planeLeft);
 
   // lights
-  const mainLight = new PointLight(0xcccccc, 1.5, 250);
+  const mainLight = new PointLight(0xe7e7e7, 1.5, 250);
   mainLight.position.y = 60;
   scene.add(mainLight);
 
@@ -183,7 +186,7 @@ function init() {
   redLight.position.set(-550, 50, 0);
   scene.add(redLight);
 
-  const blueLight = new PointLight(0x7f7fff, 0.25, 1000);
+  const blueLight = new PointLight(0xbbbbfe, 0.25, 1000);
   blueLight.position.set(0, 50, 550);
   scene.add(blueLight);
 

@@ -89,7 +89,7 @@ function init() {
 
       prefab = (
         await new GLTFLoader().loadAsync(
-          "three/examples/models/gltf/MaterialX/shaderball.glb"
+          "three/examples/models/gltf/ShaderBall.glb"
         )
       ).scene;
 

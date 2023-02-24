@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, TextureLoader, Scene } from "three";
-
 import { texture, equirectUV } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";

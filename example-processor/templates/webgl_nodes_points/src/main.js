@@ -8,12 +8,22 @@ import {
   BufferGeometry,
   Float32BufferAttribute,
   TextureLoader,
-  Vector2,
   AdditiveBlending,
   Points,
   WebGLRenderer,
 } from "three";
-import * as Nodes from "three/nodes";
+import {
+  attribute,
+  timerLocal,
+  positionLocal,
+  spritesheetUV,
+  pointUV,
+  vec2,
+  texture,
+  uniform,
+  mix,
+  PointsNodeMaterial,
+} from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -88,39 +98,29 @@ function init() {
 
   // nodes
 
-  const targetPosition = new Nodes.AttributeNode("targetPosition", "vec3");
-  const particleSpeed = new Nodes.AttributeNode("particleSpeed", "float");
-  const particleIntensity = new Nodes.AttributeNode(
-    "particleIntensity",
-    "float"
-  );
-  const particleSize = new Nodes.AttributeNode("particleSize", "float");
+  const targetPosition = attribute("targetPosition", "vec3");
+  const particleSpeed = attribute("particleSpeed", "float");
+  const particleIntensity = attribute("particleIntensity", "float");
+  const particleSize = attribute("particleSize", "float");
 
-  const time = new Nodes.TimerNode();
+  const time = timerLocal();
 
-  const spriteSheetCount = new Nodes.ConstNode(new Vector2(6, 6));
-
-  const fireUV = new Nodes.SpriteSheetUVNode(
-    spriteSheetCount, // count
-    new Nodes.PointUVNode(), // uv
-    new Nodes.OperatorNode("*", time, particleSpeed) // current frame
+  const fireUV = spritesheetUV(
+    vec2(6, 6), // count
+    pointUV, // uv
+    time.mul(particleSpeed) // current frame
   );
 
-  const fireSprite = new Nodes.TextureNode(fireMap, fireUV);
-  const fire = new Nodes.OperatorNode("*", fireSprite, particleIntensity);
+  const fireSprite = texture(fireMap, fireUV);
+  const fire = fireSprite.mul(particleIntensity);
 
-  const lerpPosition = new Nodes.UniformNode(0);
+  const lerpPosition = uniform(0);
 
-  const positionNode = new Nodes.MathNode(
-    Nodes.MathNode.MIX,
-    new Nodes.PositionNode(Nodes.PositionNode.LOCAL),
-    targetPosition,
-    lerpPosition
-  );
+  const positionNode = mix(positionLocal, targetPosition, lerpPosition);
 
   // material
 
-  const material = new Nodes.PointsNodeMaterial({
+  const material = new PointsNodeMaterial({
     depthWrite: false,
     transparent: true,
     sizeAttenuation: true,

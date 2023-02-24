@@ -12,9 +12,15 @@ import {
   sRGBEncoding,
   LinearToneMapping,
 } from "three";
-import * as Nodes from "three/nodes";
-
-import { mix, range, color, oscSine, timerLocal } from "three/nodes";
+import {
+  mix,
+  range,
+  color,
+  oscSine,
+  timerLocal,
+  toneMapping,
+  MeshStandardNodeMaterial,
+} from "three/nodes";
 
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
@@ -82,7 +88,7 @@ function init() {
         // random [ 0, 1 ] values between instances
         const randomMetalness = range(0, 1);
 
-        child.material = new Nodes.MeshStandardNodeMaterial();
+        child.material = new MeshStandardNodeMaterial();
         child.material.roughness = 0.1;
         child.material.metalnessNode = mix(0.0, randomMetalness, oscNode);
         child.material.colorNode = mix(color(0xffffff), randomColors, oscNode);
@@ -115,7 +121,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 0.17);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.17);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

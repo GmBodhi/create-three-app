@@ -8,15 +8,13 @@ import {
   LinearToneMapping,
   sRGBEncoding,
 } from "three";
-import * as Nodes from "three/nodes";
-
 import {
   mix,
   oscSine,
   timerLocal,
   cubeTexture,
-  context,
   float,
+  toneMapping,
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -81,7 +79,7 @@ function init() {
     oscSine(timerLocal(0.1))
   );
 
-  scene.backgroundNode = context(scene.environmentNode, {
+  scene.backgroundNode = scene.environmentNode.context({
     getSamplerLevelNode: () => float(1),
   });
 
@@ -94,7 +92,7 @@ function init() {
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);

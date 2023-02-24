@@ -1,10 +1,10 @@
 
-			
+
 			uniform mat4 modelViewMatrix;
 			uniform mat4 projectionMatrix;
-			
+
 			uniform float seed;
-			
+
 			const uint ieeeMantissa = 0x007FFFFFu;
 			const uint ieeeOne = 0x3F800000u;
 
@@ -16,22 +16,22 @@
 				x += ( x << 15u );
 				return x;
 			}
-			
+
 			uint hash(uvec2 v) { return hash( v.x ^ hash(v.y) ); }
-			
+
 			float hashNoise(vec2 xy) {
-				uint m = hash(floatBitsToUint(xy)); 
-				
+				uint m = hash(floatBitsToUint(xy));
+
 				m &= ieeeMantissa;
 				m |= ieeeOne;
-				
+
 				return uintBitsToFloat( m ) - 1.0;
 			}
-			
+
 			float pseudoRandom(float lower, float delta, in vec2 xy) {
 				return lower + delta*hashNoise(xy);
 			}
-			
+
 			vec3 pseudoRandomVec3(float lower, float upper, int index) {
 				float delta = upper - lower;
 				float x = pseudoRandom(lower, delta, vec2(index, 0));
@@ -39,7 +39,7 @@
 				float z = pseudoRandom(lower, delta, vec2(index, 2));
 				return vec3(x, y, z);
 			}
-			
+
 			out vec3 vColor;
 
 			void main()	{

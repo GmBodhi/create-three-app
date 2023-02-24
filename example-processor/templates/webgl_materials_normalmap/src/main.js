@@ -128,8 +128,8 @@ function init() {
 
   const effectBleach = new ShaderPass(BleachBypassShader);
   const effectColor = new ShaderPass(ColorCorrectionShader);
-  effectFXAA = new ShaderPass(FXAAShader);
   const gammaCorrection = new ShaderPass(GammaCorrectionShader);
+  effectFXAA = new ShaderPass(FXAAShader);
 
   effectFXAA.uniforms["resolution"].value.set(
     1 / window.innerWidth,
@@ -150,10 +150,10 @@ function init() {
   composer = new EffectComposer(renderer, renderTarget);
 
   composer.addPass(renderModel);
-  composer.addPass(effectFXAA);
   composer.addPass(effectBleach);
   composer.addPass(effectColor);
   composer.addPass(gammaCorrection);
+  composer.addPass(effectFXAA);
 
   // EVENTS
 

@@ -12,11 +12,10 @@ import {
   MeshStandardNodeMaterial,
   NodeUpdateType,
   Node,
+  nodeObject,
   uniform,
   attribute,
   cubeTexture,
-  add,
-  mul,
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -103,12 +102,12 @@ function init() {
 
   // Materials
 
-  const instanceUniform = new InstanceUniformNode();
+  const instanceUniform = nodeObject(new InstanceUniformNode());
   const cubeTextureNode = cubeTexture(cTexture);
 
   const material = new MeshStandardNodeMaterial();
-  material.colorNode = add(instanceUniform, cubeTextureNode);
-  material.emissiveNode = mul(instanceUniform, cubeTextureNode);
+  material.colorNode = instanceUniform.add(cubeTextureNode);
+  material.emissiveNode = instanceUniform.mul(cubeTextureNode);
 
   // Geometry
 

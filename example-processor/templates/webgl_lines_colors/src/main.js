@@ -138,7 +138,10 @@ function init() {
 
   // Create lines and add to scene
 
-  var material = new LineBasicMaterial({ color: 0xffffff, vertexColors: true });
+  const material = new LineBasicMaterial({
+    color: 0xffffff,
+    vertexColors: true,
+  });
 
   let line, p;
   const scale = 0.3,

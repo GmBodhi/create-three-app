@@ -10,8 +10,7 @@ import {
   ACESFilmicToneMapping,
   sRGBEncoding,
 } from "three";
-
-import { NodeMaterial, float, texture, mul } from "three/nodes";
+import { NodeMaterial, float, texture } from "three/nodes";
 
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
@@ -65,11 +64,10 @@ function init() {
           const material = glassMesh.material;
 
           if (material && material.transmission > 0) {
-            const nodeMaterial = NodeMaterial.fromMaterial(material);
+            const nodeMaterial = NodeMaterial.fromMaterial(material); // @TODO: NodeMaterial.fromMaterial can be removed if WebGLNodes will apply it by default (as in WebGPURenderer)
             nodeMaterial.transmissionNode = float(1);
             nodeMaterial.iorNode = float(1.5);
-            nodeMaterial.thicknessNode = mul(
-              texture(material.thicknessMap).g,
+            nodeMaterial.thicknessNode = texture(material.thicknessMap).g.mul(
               0.1
             );
             //nodeMaterial.attenuationDistanceNode;

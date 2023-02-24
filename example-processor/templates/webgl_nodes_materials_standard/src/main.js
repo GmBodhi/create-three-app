@@ -13,7 +13,13 @@ import {
   RepeatWrapping,
   PMREMGenerator,
 } from "three";
-import * as Nodes from "three/nodes";
+import {
+  texture,
+  uniform,
+  normalMap,
+  MeshStandardNodeMaterial,
+  NodeObjectLoader,
+} from "three/nodes";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -64,7 +70,7 @@ function init() {
 
   // Test Extended Material
 
-  class MeshCustomNodeMaterial extends Nodes.MeshStandardNodeMaterial {
+  class MeshCustomNodeMaterial extends MeshStandardNodeMaterial {
     constructor() {
       super();
     }
@@ -106,24 +112,18 @@ function init() {
       const rmMap = loader.load("Cerberus_RM.jpg");
       rmMap.wrapS = RepeatWrapping;
 
-      const normalMap = loader.load("Cerberus_N.jpg");
-      normalMap.wrapS = RepeatWrapping;
+      const normalMapTexture = loader.load("Cerberus_N.jpg");
+      normalMapTexture.wrapS = RepeatWrapping;
 
-      const mpMapNode = new Nodes.TextureNode(rmMap);
+      const mgMapNode = texture(rmMap);
 
-      material.colorNode = new Nodes.OperatorNode(
-        "*",
-        new Nodes.TextureNode(diffuseMap),
-        new Nodes.UniformNode(material.color)
-      );
+      material.colorNode = texture(diffuseMap).mul(uniform(material.color));
 
       // roughness is in G channel, metalness is in B channel
-      material.roughnessNode = new Nodes.SplitNode(mpMapNode, "g");
-      material.metalnessNode = new Nodes.SplitNode(mpMapNode, "b");
+      material.roughnessNode = mgMapNode.g;
+      material.metalnessNode = mgMapNode.b;
 
-      material.normalNode = new Nodes.NormalMapNode(
-        new Nodes.TextureNode(normalMap)
-      );
+      material.normalNode = normalMap(texture(normalMapTexture));
 
       group.traverse(function (child) {
         if (child.isMesh) {
@@ -140,7 +140,7 @@ function init() {
       loaderManager.onLoad = () => {
         const groupJSON = JSON.stringify(group.toJSON());
 
-        const objectLoader = new Nodes.NodeObjectLoader();
+        const objectLoader = new NodeObjectLoader();
         objectLoader.parse(JSON.parse(groupJSON), (newGroup) => {
           //scene.remove( group );
 

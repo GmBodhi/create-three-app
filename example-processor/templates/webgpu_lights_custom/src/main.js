@@ -13,7 +13,14 @@ import {
   LinearToneMapping,
   sRGBEncoding,
 } from "three";
-import * as Nodes from "three/nodes";
+import {
+  ShaderNode,
+  color,
+  lights,
+  toneMapping,
+  MeshStandardNodeMaterial,
+  PointsNodeMaterial,
+} from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -49,9 +56,9 @@ function init() {
   const sphereGeometry = new SphereGeometry(0.02, 16, 8);
 
   const addLight = (hexColor, intensity = 2, distance = 1) => {
-    const material = new Nodes.MeshStandardNodeMaterial();
-    material.colorNode = new Nodes.ConstNode(new Color(hexColor));
-    material.lightsNode = new Nodes.LightsNode(); // ignore scene lights
+    const material = new MeshStandardNodeMaterial();
+    material.colorNode = color(hexColor);
+    material.lightsNode = lights(); // ignore scene lights
 
     const mesh = new Mesh(sphereGeometry, material);
 
@@ -69,11 +76,7 @@ function init() {
 
   //light nodes ( selective lights )
 
-  const allLightsNode = new Nodes.LightsNode().fromLights([
-    light1,
-    light2,
-    light3,
-  ]);
+  const allLightsNode = lights([light1, light2, light3]);
 
   // points
 
@@ -85,17 +88,17 @@ function init() {
   }
 
   const geometryPoints = new BufferGeometry().setFromPoints(points);
-  const materialPoints = new Nodes.PointsNodeMaterial();
+  const materialPoints = new PointsNodeMaterial();
 
   // custom lighting model
 
-  const customLightingModel = new Nodes.ShaderNode((inputs) => {
+  const customLightingModel = new ShaderNode((inputs) => {
     const { lightColor, reflectedLight } = inputs;
 
-    reflectedLight.directDiffuse.add(lightColor);
+    reflectedLight.directDiffuse.addAssign(lightColor);
   });
 
-  const lightingModelContext = new Nodes.ContextNode(allLightsNode, {
+  const lightingModelContext = allLightsNode.context({
     lightingModelNode: { direct: customLightingModel },
   });
 
@@ -112,7 +115,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = new Nodes.ToneMappingNode(LinearToneMapping, 1);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
   renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 

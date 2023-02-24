@@ -1,9 +1,14 @@
 import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, Scene, TextureLoader, Group, Sprite } from "three";
-import * as Nodes from "three/nodes";
-
-import { texture, uv, mul, float, color, userData } from "three/nodes";
+import {
+  texture,
+  uv,
+  userData,
+  rangeFog,
+  color,
+  SpriteNodeMaterial,
+} from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -33,11 +38,7 @@ function init() {
   camera.position.z = 1500;
 
   scene = new Scene();
-  scene.fogNode = new Nodes.FogRangeNode(
-    color(0x0000ff),
-    float(1500),
-    float(2100)
-  );
+  scene.fogNode = rangeFog(color(0x0000ff), 1500, 2100);
 
   // create sprites
 
@@ -55,8 +56,8 @@ function init() {
 
   const textureNode = texture(map);
 
-  const material = new Nodes.SpriteNodeMaterial();
-  material.colorNode = mul(textureNode, mul(uv(), 2));
+  const material = new SpriteNodeMaterial();
+  material.colorNode = textureNode.mul(uv()).mul(2);
   material.opacityNode = textureNode.a;
   material.rotationNode = userData("rotation", "float"); // get value of: sprite.userData.rotation
   material.transparent = true;

@@ -9,28 +9,17 @@ import {
   BufferAttribute,
   Points,
 } from "three";
-import * as Nodes from "three/nodes";
-
 import {
   ShaderNode,
-  compute,
   uniform,
-  element,
   storage,
   attribute,
-  mul,
-  sin,
-  cos,
-  add,
-  cond,
-  abs,
-  max,
-  min,
   float,
   vec2,
   vec3,
   color,
   instanceIndex,
+  PointsNodeMaterial,
 } from "three/nodes";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -77,57 +66,59 @@ function init() {
   // create function
 
   const computeShaderNode = new ShaderNode((inputs, stack) => {
-    const particle = element(particleBufferNode, instanceIndex);
-    const velocity = element(velocityBufferNode, instanceIndex);
+    const particle = particleBufferNode.element(instanceIndex);
+    const velocity = velocityBufferNode.element(instanceIndex);
 
     const pointer = uniform(pointerVector);
     const limit = uniform(scaleVector);
 
-    const position = add(particle, velocity);
+    const position = particle.add(velocity);
 
     stack.assign(
       velocity.x,
-      abs(position.x)
+      position.x
+        .abs()
         .greaterThanEqual(limit.x)
         .cond(velocity.x.negate(), velocity.x)
     );
     stack.assign(
       velocity.y,
-      abs(position.y)
+      position.y
+        .abs()
         .greaterThanEqual(limit.y)
         .cond(velocity.y.negate(), velocity.y)
     );
 
-    stack.assign(position, max(limit.negate(), min(limit, position)));
+    stack.assign(position, position.min(limit).max(limit.negate()));
 
     const pointerSize = 0.1;
     const distanceFromPointer = pointer.sub(position).length();
 
     stack.assign(
       particle,
-      cond(distanceFromPointer.lessThanEqual(pointerSize), vec3(), position)
+      distanceFromPointer.lessThanEqual(pointerSize).cond(vec3(), position)
     );
   });
 
   // compute
 
-  computeNode = compute(computeShaderNode, particleNum);
+  computeNode = computeShaderNode.compute(particleNum);
   computeNode.onInit = ({ renderer }) => {
     const precomputeShaderNode = new ShaderNode((inputs, stack) => {
       const particleIndex = float(instanceIndex);
 
-      const randomAngle = mul(mul(particleIndex, 0.005), Math.PI * 2);
-      const randomSpeed = add(mul(particleIndex, 0.00000001), 0.0000001);
+      const randomAngle = particleIndex.mul(0.005).mul(Math.PI * 2);
+      const randomSpeed = particleIndex.mul(0.00000001).add(0.0000001);
 
-      const velX = mul(sin(randomAngle), randomSpeed);
-      const velY = mul(cos(randomAngle), randomSpeed);
+      const velX = randomAngle.sin().mul(randomSpeed);
+      const velY = randomAngle.cos().mul(randomSpeed);
 
-      const velocity = element(velocityBufferNode, instanceIndex);
+      const velocity = velocityBufferNode.element(instanceIndex);
 
       stack.assign(velocity.xy, vec2(velX, velY));
     });
 
-    renderer.compute(compute(precomputeShaderNode, computeNode.count));
+    renderer.compute(precomputeShaderNode.compute(particleNum));
   };
 
   // use a compute shader to animate the point cloud's vertex data.
@@ -142,8 +133,8 @@ function init() {
   pointsGeometry.setAttribute("particle", particleBuffer); // dummy the position points as instances
   pointsGeometry.drawRange.count = 1; // force render points as instances ( not triangle )
 
-  const pointsMaterial = new Nodes.PointsNodeMaterial();
-  pointsMaterial.colorNode = add(particleNode, color(0xffffff));
+  const pointsMaterial = new PointsNodeMaterial();
+  pointsMaterial.colorNode = particleNode.add(color(0xffffff));
   pointsMaterial.positionNode = particleNode;
 
   const mesh = new Points(pointsGeometry, pointsMaterial);

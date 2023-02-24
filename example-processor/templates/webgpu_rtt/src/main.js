@@ -11,7 +11,7 @@ import {
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
-import * as Nodes from "three/nodes";
+import { texture, uniform, vec2, MeshBasicNodeMaterial } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -50,11 +50,11 @@ function init() {
   // textured mesh
 
   const loader = new TextureLoader();
-  const texture = loader.load("three/examples/textures/uv_grid_opengl.jpg");
+  const uvTexture = loader.load("three/examples/textures/uv_grid_opengl.jpg");
 
   const geometryBox = new BoxGeometry();
-  const materialBox = new Nodes.MeshBasicNodeMaterial();
-  materialBox.colorNode = new Nodes.TextureNode(texture);
+  const materialBox = new MeshBasicNodeMaterial();
+  materialBox.colorNode = texture(uvTexture);
 
   //
 
@@ -83,16 +83,10 @@ function init() {
 
   // modulate the final color based on the mouse position
 
-  const screenFXNode = new Nodes.OperatorNode(
-    "+",
-    new Nodes.UniformNode(mouse),
-    new Nodes.ConstNode(new Vector2(0.5, 0.5))
-  );
+  const screenFXNode = uniform(mouse).add(vec2(0.5, 0.5));
 
-  const materialFX = new Nodes.MeshBasicNodeMaterial();
-  materialFX.colorNode = new Nodes.OperatorNode(
-    "*",
-    new Nodes.TextureNode(textureRenderer.getTexture()),
+  const materialFX = new MeshBasicNodeMaterial();
+  materialFX.colorNode = texture(textureRenderer.getTexture()).mul(
     screenFXNode
   );
 

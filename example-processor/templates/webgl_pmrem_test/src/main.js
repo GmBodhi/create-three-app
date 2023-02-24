@@ -33,7 +33,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
   renderer.outputEncoding = sRGBEncoding;
-  renderer.physicallyCorrectLights = true;
+  renderer.useLegacyLights = false;
 
   // tonemapping
   renderer.toneMapping = ACESFilmicToneMapping;
