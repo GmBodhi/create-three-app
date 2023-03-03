@@ -293,6 +293,9 @@ function render() {
 
     stemMesh.instanceMatrix.needsUpdate = true;
     blossomMesh.instanceMatrix.needsUpdate = true;
+
+    stemMesh.computeBoundingSphere();
+    blossomMesh.computeBoundingSphere();
   }
 
   renderer.render(scene, camera);
