@@ -24,7 +24,7 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import { TWEEN } from "three/addons/libs/tween.module.min.js";
+import TWEEN from "three/addons/libs/tween.module.js";
 
 let container, stats;
 let renderer;

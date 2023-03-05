@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, Scene } from "three";
 
-import { TWEEN } from "three/addons/libs/tween.module.min.js";
+import TWEEN from "three/addons/libs/tween.module.js";
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 import {
   CSS3DRenderer,

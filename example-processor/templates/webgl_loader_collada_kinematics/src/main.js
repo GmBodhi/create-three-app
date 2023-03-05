@@ -16,7 +16,7 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 
-import { TWEEN } from "three/addons/libs/tween.module.min.js";
+import TWEEN from "three/addons/libs/tween.module.js";
 import { ColladaLoader } from "three/addons/loaders/ColladaLoader.js";
 
 let container, stats;
