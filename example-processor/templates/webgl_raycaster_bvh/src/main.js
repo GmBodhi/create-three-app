@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   BufferGeometry,
   Mesh,
   Raycaster,
@@ -12,6 +13,7 @@ import {
   Color,
   HemisphereLight,
   WebGLRenderer,
+  sRGBEncoding,
   BufferAttribute,
   LineSegments,
   LineBasicMaterial,
@@ -30,6 +32,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.legacyMode = false;
 
 // Add the extension functions
 BufferGeometry.prototype.computeBoundsTree = computeBoundsTree;
@@ -83,6 +87,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -15,12 +16,15 @@ import {
   GridHelper,
   AnimationMixer,
   WebGLRenderer,
+  sRGBEncoding,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, stats;
 
@@ -47,11 +51,11 @@ function init() {
   scene.background = new Color(0xa0a0a0);
   scene.fog = new Fog(0xa0a0a0, 200, 1000);
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x444444);
+  const hemiLight = new HemisphereLight(0xffffff, 0x444444, 1.5);
   hemiLight.position.set(0, 200, 0);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff);
+  const dirLight = new DirectionalLight(0xffffff, 1.5);
   dirLight.position.set(0, 200, 100);
   dirLight.castShadow = true;
   dirLight.shadow.camera.top = 180;
@@ -97,6 +101,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 
