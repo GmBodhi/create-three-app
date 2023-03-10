@@ -16,7 +16,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
-ColorManagement.legacyMode = false;
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, stats;
 

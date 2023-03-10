@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Clock,
@@ -10,10 +11,13 @@ import {
   TextureLoader,
   Points,
   WebGLRenderer,
+  sRGBEncoding,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, clock;
 
@@ -40,11 +44,11 @@ function init() {
 
   clock = new Clock();
 
-  const light1 = new PointLight(0xff2200, 0.7);
+  const light1 = new PointLight(0xff2200, 50000);
   light1.position.set(100, 100, 100);
   scene.add(light1);
 
-  const light2 = new PointLight(0x22ff00, 0.7);
+  const light2 = new PointLight(0x22ff00, 10000);
   light2.position.set(-100, -100, -100);
   scene.add(light2);
 
@@ -79,6 +83,10 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+
+  renderer.outputEncoding = sRGBEncoding;
+  renderer.useLegacyLights = false;
+
   container.appendChild(renderer.domElement);
 
   //
