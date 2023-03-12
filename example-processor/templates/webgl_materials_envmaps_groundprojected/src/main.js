@@ -19,7 +19,7 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GroundProjectedEnv } from "three/addons/objects/GroundProjectedEnv.js";
+import { GroundProjectedSkybox } from "three/addons/objects/GroundProjectedSkybox.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
@@ -29,7 +29,7 @@ const params = {
   radius: 440,
 };
 
-let camera, scene, renderer, env;
+let camera, scene, renderer, skybox;
 
 init().then(render);
 
@@ -51,9 +51,9 @@ async function init() {
   );
   envMap.mapping = EquirectangularReflectionMapping;
 
-  env = new GroundProjectedEnv(envMap);
-  env.scale.setScalar(100);
-  scene.add(env);
+  skybox = new GroundProjectedSkybox(envMap);
+  skybox.scale.setScalar(100);
+  scene.add(skybox);
 
   scene.environment = envMap;
 
@@ -140,8 +140,11 @@ async function init() {
   controls.update();
 
   const gui = new GUI();
-  gui.add(params, "height", 20, 50, 0.1).onChange(render);
-  gui.add(params, "radius", 200, 600, 0.1).onChange(render);
+  gui.add(params, "height", 20, 50, 0.1).name("Skybox height").onChange(render);
+  gui
+    .add(params, "radius", 200, 600, 0.1)
+    .name("Skybox radius")
+    .onChange(render);
 
   //
 
@@ -154,11 +157,13 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
+
+  render();
 }
 
 function render() {
   renderer.render(scene, camera);
 
-  env.radius = params.radius;
-  env.height = params.height;
+  skybox.radius = params.radius;
+  skybox.height = params.height;
 }

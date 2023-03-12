@@ -133,14 +133,14 @@ function init() {
   }
 
   const objects = new Mesh(
-    BufferGeometryUtils.mergeBufferGeometries(geometriesDrawn),
+    BufferGeometryUtils.mergeGeometries(geometriesDrawn),
     defaultMaterial
   );
   scene.add(objects);
 
   pickingScene.add(
     new Mesh(
-      BufferGeometryUtils.mergeBufferGeometries(geometriesPicking),
+      BufferGeometryUtils.mergeGeometries(geometriesPicking),
       pickingMaterial
     )
   );
