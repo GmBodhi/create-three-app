@@ -122,7 +122,7 @@ async function init() {
 
   // compute (shader-node)
 
-  const computeShaderNode = new ShaderNode((inputs, stack) => {
+  const computeShaderNode = new ShaderNode((stack) => {
     const index = float(instanceIndex);
 
     // pitch

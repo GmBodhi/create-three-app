@@ -65,7 +65,7 @@ function init() {
 
   // create function
 
-  const computeShaderNode = new ShaderNode((inputs, stack) => {
+  const computeShaderNode = new ShaderNode((stack) => {
     const particle = particleBufferNode.element(instanceIndex);
     const velocity = velocityBufferNode.element(instanceIndex);
 
@@ -104,7 +104,7 @@ function init() {
 
   computeNode = computeShaderNode.compute(particleNum);
   computeNode.onInit = ({ renderer }) => {
-    const precomputeShaderNode = new ShaderNode((inputs, stack) => {
+    const precomputeShaderNode = new ShaderNode((stack) => {
       const particleIndex = float(instanceIndex);
 
       const randomAngle = particleIndex.mul(0.005).mul(Math.PI * 2);

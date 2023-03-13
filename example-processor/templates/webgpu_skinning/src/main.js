@@ -3,15 +3,16 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  Color,
   Clock,
   PointLight,
   AnimationMixer,
   sRGBEncoding,
   LinearToneMapping,
 } from "three";
-import { toneMapping, MeshStandardNodeMaterial } from "three/nodes";
+import { toneMapping } from "three/nodes";
 
-import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -38,6 +39,7 @@ function init() {
   camera.position.set(1, 2, 3);
 
   scene = new Scene();
+  scene.background = new Color("lightblue");
   camera.lookAt(0, 1, 0);
 
   clock = new Clock();
@@ -45,25 +47,17 @@ function init() {
   //lights
 
   const light = new PointLight(0xffffff, 1, 100);
-  light.power = 1700; // 100W
+  light.power = 2500;
   camera.add(light);
   scene.add(camera);
 
-  const loader = new FBXLoader();
-  loader.load("models/fbx/Samba Dancing.fbx", function (object) {
-    object.scale.setScalar(0.01);
-
+  const loader = new GLTFLoader();
+  loader.load("models/gltf/Michelle.glb", function (gltf) {
+    const object = gltf.scene;
     mixer = new AnimationMixer(object);
 
-    const action = mixer.clipAction(object.animations[0]);
+    const action = mixer.clipAction(gltf.animations[0]);
     action.play();
-
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.material = new MeshStandardNodeMaterial();
-        child.material.roughness = 0.1;
-      }
-    });
 
     scene.add(object);
   });

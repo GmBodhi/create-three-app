@@ -22,7 +22,7 @@ import {
   MeshStandardNodeMaterial,
 } from "three/nodes";
 
-import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -66,13 +66,13 @@ function init() {
   camera.add(cameraLight);
   scene.add(camera);
 
-  const loader = new FBXLoader();
-  loader.load("models/fbx/Samba Dancing.fbx", (object) => {
-    object.scale.setScalar(0.01);
+  const loader = new GLTFLoader();
+  loader.load("models/gltf/Michelle.glb", function (gltf) {
+    const object = gltf.scene;
 
     mixer = new AnimationMixer(object);
 
-    const action = mixer.clipAction(object.animations[0]);
+    const action = mixer.clipAction(gltf.animations[0]);
     action.play();
 
     const instanceCount = 30;
@@ -102,7 +102,7 @@ function init() {
 
         for (let i = 0; i < instanceCount; i++) {
           dummy.position.x = -200 + (i % 5) * 70;
-          dummy.position.z = Math.floor(i / 5) * -200;
+          dummy.position.y = Math.floor(i / 5) * -200;
 
           dummy.updateMatrix();
 
