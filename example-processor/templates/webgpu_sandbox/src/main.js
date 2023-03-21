@@ -139,7 +139,10 @@ function init() {
 
   const materialCompressed = new MeshBasicNodeMaterial();
   materialCompressed.colorNode = texture(dxt5Texture);
-  materialCompressed.emissiveNode = color(0x663300);
+  materialCompressed.emissiveNode = oscSine().mix(
+    color(0x663300),
+    color(0x0000ff)
+  );
   materialCompressed.alphaTestNode = oscSine();
   materialCompressed.transparent = true;
 
