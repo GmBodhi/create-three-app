@@ -24,7 +24,7 @@ function init() {
     0.1,
     100
   );
-  camera.position.set(0, 8, 12);
+  camera.position.set(1.5, 4, 9);
 
   scene = new Scene();
   scene.background = new Color(0xf6eedc);
@@ -38,9 +38,6 @@ function init() {
   loader.setDRACOLoader(dracoLoader);
   loader.setPath("models/gltf/AVIFTest/");
   loader.load("forest_house.glb", function (gltf) {
-    gltf.scene.scale.multiplyScalar(40);
-    gltf.scene.rotation.y = Math.PI * 0.5;
-
     scene.add(gltf.scene);
 
     render();
