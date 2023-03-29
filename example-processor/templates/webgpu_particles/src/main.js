@@ -67,11 +67,11 @@ function init() {
 
   const life = lifeTime.div(lifeRange);
 
-  const fakeLightEffect = positionWorld.y.invert().max(0.2);
+  const fakeLightEffect = positionWorld.y.oneMinus().max(0.2);
 
   const textureNode = texture(map, uv().rotateUV(timer.mul(rotateRange)));
 
-  const opacityNode = textureNode.a.mul(life.invert());
+  const opacityNode = textureNode.a.mul(life.oneMinus());
 
   const smokeColor = mix(
     color(0x2c1501),

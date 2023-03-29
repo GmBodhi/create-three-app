@@ -55,7 +55,7 @@ function init() {
     camera.near,
     camera.far,
     positionView.z.negate()
-  ).invert();
+  ).oneMinus();
 
   //
 
