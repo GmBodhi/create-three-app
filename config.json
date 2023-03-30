@@ -2946,16 +2946,6 @@
         "/src"
       ]
     },
-    "webgl_nodes_playground": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_nodes_points": {
       "files": {
         "index.html": "src",
@@ -3883,16 +3873,6 @@
       ]
     },
     "webgpu_materials_video": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgpu_nodes_playground": {
       "files": {
         "index.html": "src",
         "main.js": "src",
