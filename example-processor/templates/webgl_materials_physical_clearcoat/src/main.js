@@ -73,6 +73,8 @@ function init() {
         );
         normalMap.wrapS = RepeatWrapping;
         normalMap.wrapT = RepeatWrapping;
+        normalMap.repeat.x = 10;
+        normalMap.repeat.y = 10;
 
         const normalMap2 = textureLoader.load(
           "textures/water/Water_1_M_Normal.jpg"

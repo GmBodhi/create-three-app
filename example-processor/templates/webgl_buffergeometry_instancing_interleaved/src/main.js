@@ -184,6 +184,7 @@ function render() {
   }
 
   mesh.instanceMatrix.needsUpdate = true;
+  mesh.computeBoundingSphere();
 
   lastTime = time;
 

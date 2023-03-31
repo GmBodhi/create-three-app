@@ -313,11 +313,7 @@ function loadMolecule(model) {
 
       //
 
-      bond = document.createElement("div");
-      bond.className = "bond";
-      bond.style.height = bondLength + "px";
-
-      const joint = new Object3D(bond);
+      const joint = new Object3D();
       joint.position.copy(start);
       joint.position.lerp(end, 0.5);
 
@@ -326,6 +322,10 @@ function loadMolecule(model) {
 
       joint.matrixAutoUpdate = false;
       joint.updateMatrix();
+
+      bond = document.createElement("div");
+      bond.className = "bond";
+      bond.style.height = bondLength + "px";
 
       object = new CSS3DObject(bond);
       object.rotation.y = Math.PI / 2;

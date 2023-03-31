@@ -81,6 +81,7 @@ function init() {
   scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
 
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
 
   //
 
@@ -281,6 +282,7 @@ function createGUI() {
 
 function animate() {
   requestAnimationFrame(animate);
+  controls.update();
   render();
 }
 

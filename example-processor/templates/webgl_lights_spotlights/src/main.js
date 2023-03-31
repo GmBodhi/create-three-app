@@ -14,7 +14,7 @@ import {
   SpotLightHelper,
   SpotLight,
 } from "three";
-import { TWEEN } from "three/addons/libs/tween.module.min.js";
+import TWEEN from "three/addons/libs/tween.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const renderer = new WebGLRenderer({ antialias: true });

@@ -325,7 +325,10 @@ function onPointerUp(event) {
   onUpPosition.x = event.clientX;
   onUpPosition.y = event.clientY;
 
-  if (onDownPosition.distanceTo(onUpPosition) === 0) transformControl.detach();
+  if (onDownPosition.distanceTo(onUpPosition) === 0) {
+    transformControl.detach();
+    render();
+  }
 }
 
 function onPointerMove(event) {

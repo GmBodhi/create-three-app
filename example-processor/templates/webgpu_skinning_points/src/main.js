@@ -7,10 +7,11 @@ import {
   AnimationMixer,
   Color,
   Points,
+  sRGBEncoding,
 } from "three";
 import { uniform, skinning, PointsNodeMaterial } from "three/nodes";
 
-import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -34,18 +35,19 @@ function init() {
     1,
     1000
   );
-  camera.position.set(100, 200, 300);
+  camera.position.set(0, 300, -85);
 
   scene = new Scene();
-  camera.lookAt(0, 100, 0);
+  camera.lookAt(0, 0, -85);
 
   clock = new Clock();
 
-  const loader = new FBXLoader();
-  loader.load("models/fbx/Samba Dancing.fbx", function (object) {
+  const loader = new GLTFLoader();
+  loader.load("models/gltf/Michelle.glb", function (gltf) {
+    const object = gltf.scene;
     mixer = new AnimationMixer(object);
 
-    const action = mixer.clipAction(object.animations[0]);
+    const action = mixer.clipAction(gltf.animations[0]);
     action.play();
 
     object.traverse(function (child) {
@@ -70,6 +72,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

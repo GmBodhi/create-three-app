@@ -67,7 +67,7 @@ function init() {
   sphereGeometry = BufferGeometryUtils.mergeVertices(sphereGeometry);
   boxGeometry = BufferGeometryUtils.mergeVertices(boxGeometry);
 
-  const combinedGeometry = BufferGeometryUtils.mergeBufferGeometries([
+  const combinedGeometry = BufferGeometryUtils.mergeGeometries([
     sphereGeometry,
     boxGeometry,
   ]);

@@ -280,8 +280,6 @@ function setupGUIAnimations(character) {
 
     playbackConfig[clip.name] = generateCallback(clip);
     guiItems[i] = folder.add(playbackConfig, clip.name, clip.name);
-
-    i++;
   }
 }
 

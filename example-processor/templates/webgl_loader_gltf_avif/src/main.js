@@ -3,15 +3,14 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  EquirectangularReflectionMapping,
+  Color,
   WebGLRenderer,
-  ACESFilmicToneMapping,
   sRGBEncoding,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 let camera, scene, renderer;
 
@@ -19,52 +18,42 @@ init();
 render();
 
 function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
-    0.25,
-    20
+    0.1,
+    100
   );
-  camera.position.set(2.5, 0, 3.0);
+  camera.position.set(1.5, 4, 9);
 
   scene = new Scene();
+  scene.background = new Color(0xf6eedc);
 
-  new RGBELoader()
-    .setPath("textures/equirectangular/")
-    .load("quarry_01_1k.hdr", function (texture) {
-      texture.mapping = EquirectangularReflectionMapping;
+  //
 
-      scene.background = texture;
-      scene.environment = texture;
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
 
-      render();
+  const loader = new GLTFLoader();
+  loader.setDRACOLoader(dracoLoader);
+  loader.setPath("models/gltf/AVIFTest/");
+  loader.load("forest_house.glb", function (gltf) {
+    scene.add(gltf.scene);
 
-      // model
+    render();
+  });
 
-      const loader = new GLTFLoader().setPath("models/gltf/AVIFTest/");
-      loader.load("DamagedHelmetAVIF.glb", function (gltf) {
-        scene.add(gltf.scene);
-
-        render();
-      });
-    });
+  //
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1;
   renderer.outputEncoding = sRGBEncoding;
-  container.appendChild(renderer.domElement);
+  document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render); // use if there is no animation loop
-  controls.minDistance = 2;
-  controls.maxDistance = 10;
-  controls.target.set(0, 0, 0);
+  controls.addEventListener("change", render);
+  controls.target.set(0, 2, 0);
   controls.update();
 
   window.addEventListener("resize", onWindowResize);

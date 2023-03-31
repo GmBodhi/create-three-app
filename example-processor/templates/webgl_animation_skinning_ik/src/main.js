@@ -41,6 +41,7 @@ async function init() {
     followSphere: false,
     turnHead: true,
     ik_solver: true,
+    update: updateIK,
   };
 
   scene = new Scene();
@@ -96,8 +97,6 @@ async function init() {
 
     if (n.name === "boule") OOI.sphere = n;
     if (n.name === "Kira_Shirt_left") OOI.kira = n;
-
-    if (n.isMesh) n.frustumCulled = false;
   });
   scene.add(gltf.scene);
 
@@ -119,6 +118,7 @@ async function init() {
   transformControls.space = "world";
   transformControls.attach(OOI.target_hand_l);
   scene.add(transformControls);
+
   // disable orbitControls while using transformControls
   transformControls.addEventListener(
     "mouseDown",
@@ -156,7 +156,7 @@ async function init() {
   gui.add(conf, "followSphere").name("follow sphere");
   gui.add(conf, "turnHead").name("turn head");
   gui.add(conf, "ik_solver").name("IK auto update");
-  gui.add(IKSolver, "update").name("IK manual update()");
+  gui.add(conf, "update").name("IK manual update()");
   gui.open();
 
   window.addEventListener("resize", onWindowResize, false);
@@ -188,7 +188,7 @@ function animate() {
   }
 
   if (conf.ik_solver) {
-    if (IKSolver) IKSolver.update();
+    updateIK();
   }
 
   orbitControls.update();
@@ -197,6 +197,14 @@ function animate() {
   stats.update(); // fps stats
 
   requestAnimationFrame(animate);
+}
+
+function updateIK() {
+  if (IKSolver) IKSolver.update();
+
+  scene.traverse(function (object) {
+    if (object.isSkinnedMesh) object.computeBoundingSphere();
+  });
 }
 
 function onWindowResize() {

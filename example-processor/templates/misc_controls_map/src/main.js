@@ -15,7 +15,7 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { MapControls } from "three/addons/controls/OrbitControls.js";
+import { MapControls } from "three/addons/controls/MapControls.js";
 
 let camera, controls, scene, renderer;
 

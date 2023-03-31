@@ -6,6 +6,7 @@ import {
   PerspectiveCamera,
   TorusKnotGeometry,
   MeshPhysicalMaterial,
+  DoubleSide,
   Mesh,
   CylinderGeometry,
   MeshStandardMaterial,
@@ -76,6 +77,7 @@ function init() {
     roughness: 0,
     metalness: 0.25,
     thickness: 0.5,
+    side: DoubleSide,
   });
   const torus = new Mesh(torusGeometry, torusMaterial);
   torus.name = "torus";
@@ -225,8 +227,8 @@ function animate() {
 function render() {
   const time = performance.now() * 0.0002;
   const torus = scene.getObjectByName("torus");
-  torus.rotation.x = time * 2;
-  torus.rotation.y = time * 5;
+  torus.rotation.x = time * 0.4;
+  torus.rotation.y = time;
 
   renderer.render(scene, camera);
   stats.update();

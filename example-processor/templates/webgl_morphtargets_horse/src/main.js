@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -14,6 +15,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+ColorManagement.enabled = true;
 
 let container, stats;
 let camera, scene, renderer;
@@ -45,11 +48,11 @@ function init() {
 
   //
 
-  const light1 = new DirectionalLight(0xefefff, 1.5);
+  const light1 = new DirectionalLight(0xefefff, 5);
   light1.position.set(1, 1, 1).normalize();
   scene.add(light1);
 
-  const light2 = new DirectionalLight(0xffefef, 1.5);
+  const light2 = new DirectionalLight(0xffefef, 5);
   light2.position.set(-1, -1, -1).normalize();
   scene.add(light2);
 
@@ -71,6 +74,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   renderer.outputEncoding = sRGBEncoding;
+  renderer.useLegacyLights = false;
 
   container.appendChild(renderer.domElement);
 

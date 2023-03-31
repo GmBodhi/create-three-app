@@ -39,7 +39,7 @@ const SimpleGI = function (renderer, scene) {
   scene.updateMatrixWorld(true);
 
   let clone = scene.clone();
-  clone.autoUpdate = false;
+  clone.matrixWorldAutoUpdate = false;
 
   const rt = new WebGLRenderTarget(SIZE, SIZE);
 
@@ -119,7 +119,7 @@ const SimpleGI = function (renderer, scene) {
 
     if (currentVertex >= totalVertex) {
       clone = scene.clone();
-      clone.autoUpdate = false;
+      clone.matrixWorldAutoUpdate = false;
 
       bounces++;
       currentVertex = 0;

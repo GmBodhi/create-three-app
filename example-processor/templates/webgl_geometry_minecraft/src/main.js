@@ -124,7 +124,7 @@ function init() {
     }
   }
 
-  const geometry = BufferGeometryUtils.mergeBufferGeometries(geometries);
+  const geometry = BufferGeometryUtils.mergeGeometries(geometries);
   geometry.computeBoundingSphere();
 
   const texture = new TextureLoader().load("textures/minecraft/atlas.png");

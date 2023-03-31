@@ -47,12 +47,6 @@ function init() {
       const avatar = collada.scene;
       const animations = avatar.animations;
 
-      avatar.traverse(function (node) {
-        if (node.isSkinnedMesh) {
-          node.frustumCulled = false;
-        }
-      });
-
       mixer = new AnimationMixer(avatar);
       mixer.clipAction(animations[0]).play();
 

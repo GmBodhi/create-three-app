@@ -118,6 +118,7 @@ function render() {
     }
 
     mesh.instanceMatrix.needsUpdate = true;
+    mesh.computeBoundingSphere();
   }
 
   renderer.render(scene, camera);

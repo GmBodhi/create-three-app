@@ -150,7 +150,7 @@ function makeMerged(geometry) {
     geometries.push(instanceGeometry);
   }
 
-  const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometries);
+  const mergedGeometry = BufferGeometryUtils.mergeGeometries(geometries);
 
   scene.add(new Mesh(mergedGeometry, material));
 
