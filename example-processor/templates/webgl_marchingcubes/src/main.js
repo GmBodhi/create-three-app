@@ -9,7 +9,7 @@ import {
   PointLight,
   AmbientLight,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   CubeTextureLoader,
   CubeRefractionMapping,
   TextureLoader,
@@ -110,7 +110,7 @@ function init() {
   // RENDERER
 
   renderer = new WebGLRenderer();
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

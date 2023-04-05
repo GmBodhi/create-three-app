@@ -11,7 +11,7 @@ import {
   BufferGeometry,
   Points,
   LinearToneMapping,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 import {
   ShaderNode,
@@ -116,7 +116,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   // controls

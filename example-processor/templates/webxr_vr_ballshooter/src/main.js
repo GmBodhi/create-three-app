@@ -14,7 +14,7 @@ import {
   Mesh,
   MeshLambertMaterial,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   BufferGeometry,
   Float32BufferAttribute,
   AdditiveBlending,
@@ -94,7 +94,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.xr.enabled = true;
   document.body.appendChild(renderer.domElement);
 

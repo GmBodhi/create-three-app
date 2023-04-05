@@ -10,7 +10,7 @@ import {
   DirectionalLight,
   WebGLRenderer,
   VSMShadowMap,
-  sRGBEncoding,
+  SRGBColorSpace,
   ACESFilmicToneMapping,
   IcosahedronGeometry,
   MeshLambertMaterial,
@@ -70,7 +70,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = VSMShadowMap;
-renderer.outputEncoding = sRGBEncoding;
+renderer.outputColorSpace = SRGBColorSpace;
 renderer.toneMapping = ACESFilmicToneMapping;
 container.appendChild(renderer.domElement);
 

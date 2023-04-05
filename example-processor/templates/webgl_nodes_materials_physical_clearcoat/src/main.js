@@ -14,6 +14,7 @@ import {
   PointLight,
   WebGLRenderer,
   ACESFilmicToneMapping,
+  SRGBColorSpace,
 } from "three";
 import {
   color,
@@ -200,7 +201,7 @@ function init() {
 
   //
 
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   //
 

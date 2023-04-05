@@ -12,7 +12,7 @@ import {
   MeshBasicMaterial,
   MultiplyBlending,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   ACESFilmicToneMapping,
   MathUtils,
 } from "three";
@@ -125,7 +125,7 @@ async function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
 
   //

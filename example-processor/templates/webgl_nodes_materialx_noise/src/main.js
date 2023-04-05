@@ -10,7 +10,7 @@ import {
   PointLight,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 import {
   MeshPhysicalNodeMaterial,
@@ -135,7 +135,7 @@ function init() {
 
   //
 
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   //
 

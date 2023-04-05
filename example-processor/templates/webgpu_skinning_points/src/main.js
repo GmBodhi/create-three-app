@@ -7,7 +7,7 @@ import {
   AnimationMixer,
   Color,
   Points,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 import { uniform, skinning, PointsNodeMaterial } from "three/nodes";
 
@@ -72,7 +72,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

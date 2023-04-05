@@ -12,7 +12,7 @@ import {
   SpotLight,
   MeshStandardMaterial,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
@@ -80,7 +80,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 

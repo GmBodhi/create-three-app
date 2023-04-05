@@ -9,7 +9,7 @@ import {
   Mesh,
   SphereGeometry,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   ObjectLoader,
 } from "three";
 
@@ -79,7 +79,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(innerWidth, innerHeight);
   container.appendChild(renderer.domElement);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   // CONTROLS
 

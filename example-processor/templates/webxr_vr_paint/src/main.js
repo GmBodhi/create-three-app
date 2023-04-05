@@ -13,7 +13,7 @@ import {
   HemisphereLight,
   DirectionalLight,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   CylinderGeometry,
   IcosahedronGeometry,
 } from "three";
@@ -94,7 +94,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 

@@ -6,9 +6,10 @@ import {
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   TextureLoader,
   RepeatWrapping,
+  sRGBEncoding,
   CubeTextureLoader,
   MeshBasicMaterial,
   MeshPhongMaterial,
@@ -87,7 +88,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(canvasWidth, canvasHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   // EVENTS

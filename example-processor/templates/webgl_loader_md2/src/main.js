@@ -16,6 +16,7 @@ import {
   RepeatWrapping,
   sRGBEncoding,
   WebGLRenderer,
+  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -120,7 +121,7 @@ function init() {
 
   //
 
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
 
   // STATS

@@ -14,7 +14,7 @@ import {
   MeshPhongMaterial,
   AnimationMixer,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -102,7 +102,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 

@@ -17,6 +17,7 @@ import {
   CubeTextureLoader,
   sRGBEncoding,
   PMREMGenerator,
+  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -129,7 +130,7 @@ function init() {
   container.appendChild(renderer.domElement);
 
   //renderer.toneMapping = ReinhardToneMapping;
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   stats = new Stats();
   container.appendChild(stats.dom);

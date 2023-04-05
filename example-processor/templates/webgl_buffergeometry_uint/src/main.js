@@ -16,7 +16,7 @@ import {
   DoubleSide,
   Mesh,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -168,7 +168,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   container.appendChild(renderer.domElement);
 

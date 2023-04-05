@@ -10,7 +10,7 @@ import {
   Mesh,
   AmbientLight,
   PCFSoftShadowMap,
-  sRGBEncoding,
+  SRGBColorSpace,
   SpotLightHelper,
   SpotLight,
 } from "three";
@@ -53,7 +53,7 @@ let lightHelper1, lightHelper2, lightHelper3;
 function init() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   camera.position.set(46, 22, -21);
 

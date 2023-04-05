@@ -11,7 +11,7 @@ import {
   MeshPhongMaterial,
   HemisphereLight,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   DirectionalLight,
 } from "three";
 
@@ -157,7 +157,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   renderer.shadowMap.enabled = true;
 

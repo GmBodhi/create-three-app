@@ -11,6 +11,7 @@ import {
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
+  SRGBColorSpace,
   EquirectangularRefractionMapping,
   CubeRefractionMapping,
   CubeReflectionMapping,
@@ -76,7 +77,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   //

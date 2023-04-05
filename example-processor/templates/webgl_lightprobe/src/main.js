@@ -3,12 +3,13 @@ import "./style.css"; // For webpack support
 import {
   WebGLRenderer,
   NoToneMapping,
-  sRGBEncoding,
+  SRGBColorSpace,
   Scene,
   PerspectiveCamera,
   LightProbe,
   DirectionalLight,
   CubeTextureLoader,
+  sRGBEncoding,
   SphereGeometry,
   TorusKnotGeometry,
   MeshStandardMaterial,
@@ -46,7 +47,7 @@ function init() {
   // tone mapping
   renderer.toneMapping = NoToneMapping;
 
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   // scene
   scene = new Scene();

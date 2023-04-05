@@ -5,7 +5,7 @@ import {
   PerspectiveCamera,
   HemisphereLight,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   EquirectangularReflectionMapping,
   SphereGeometry,
   Group,
@@ -45,7 +45,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.useLegacyLights = false;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);

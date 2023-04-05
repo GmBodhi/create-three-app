@@ -7,7 +7,7 @@ import {
   PerspectiveCamera,
   GridHelper,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -42,7 +42,7 @@ function init() {
   scene.add(grid);
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

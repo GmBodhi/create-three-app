@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   PerspectiveCamera,
   Scene,
   AmbientLight,
@@ -38,7 +38,7 @@ animate();
 
 function init() {
   renderer = new WebGLRenderer();
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

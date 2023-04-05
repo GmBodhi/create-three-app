@@ -16,6 +16,7 @@ import {
   PointLight,
   WebGLRenderer,
   ACESFilmicToneMapping,
+  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -188,7 +189,7 @@ function init() {
 
   //
 
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   //
 

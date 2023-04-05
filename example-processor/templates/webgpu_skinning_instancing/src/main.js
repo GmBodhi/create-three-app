@@ -9,7 +9,7 @@ import {
   Object3D,
   Color,
   InstancedBufferAttribute,
-  sRGBEncoding,
+  SRGBColorSpace,
   LinearToneMapping,
 } from "three";
 import {
@@ -120,7 +120,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.17);
   document.body.appendChild(renderer.domElement);
 

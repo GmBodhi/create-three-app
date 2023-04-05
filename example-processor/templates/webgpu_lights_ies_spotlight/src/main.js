@@ -6,7 +6,7 @@ import {
   MeshPhongMaterial,
   PlaneGeometry,
   Mesh,
-  sRGBEncoding,
+  SRGBColorSpace,
   PerspectiveCamera,
 } from "three";
 
@@ -108,7 +108,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(

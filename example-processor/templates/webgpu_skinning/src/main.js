@@ -7,7 +7,7 @@ import {
   Clock,
   PointLight,
   AnimationMixer,
-  sRGBEncoding,
+  SRGBColorSpace,
   LinearToneMapping,
 } from "three";
 import { toneMapping } from "three/nodes";
@@ -68,7 +68,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.15);
   document.body.appendChild(renderer.domElement);
 

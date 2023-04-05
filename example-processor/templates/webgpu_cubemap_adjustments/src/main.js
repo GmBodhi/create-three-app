@@ -10,7 +10,7 @@ import {
   Mesh,
   MeshStandardMaterial,
   LinearToneMapping,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 import {
   uniform,
@@ -165,7 +165,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 

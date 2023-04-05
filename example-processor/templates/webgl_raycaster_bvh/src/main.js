@@ -13,7 +13,7 @@ import {
   Color,
   HemisphereLight,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   BufferAttribute,
   LineSegments,
   LineBasicMaterial,
@@ -87,7 +87,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();

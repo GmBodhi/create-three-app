@@ -7,7 +7,7 @@ import {
   PointLight,
   WebGLRenderer,
   LinearToneMapping,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 import { cubeTexture, texture, normalMap, toneMapping } from "three/nodes";
 
@@ -91,7 +91,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

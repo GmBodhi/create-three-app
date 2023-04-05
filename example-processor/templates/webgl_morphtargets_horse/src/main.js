@@ -8,7 +8,7 @@ import {
   DirectionalLight,
   AnimationMixer,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   MathUtils,
 } from "three";
 
@@ -73,7 +73,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.useLegacyLights = false;
 
   container.appendChild(renderer.domElement);

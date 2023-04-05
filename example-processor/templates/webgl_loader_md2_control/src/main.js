@@ -16,6 +16,7 @@ import {
   RepeatWrapping,
   sRGBEncoding,
   WebGLRenderer,
+  SRGBColorSpace,
   PCFSoftShadowMap,
 } from "three";
 
@@ -119,7 +120,7 @@ function init() {
 
   //
 
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
 

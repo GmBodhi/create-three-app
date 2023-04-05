@@ -3,13 +3,14 @@ import "./style.css"; // For webpack support
 import {
   WebGLRenderer,
   PCFSoftShadowMap,
-  sRGBEncoding,
+  SRGBColorSpace,
   ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
   HemisphereLight,
   TextureLoader,
   LinearFilter,
+  sRGBEncoding,
   SpotLight,
   SpotLightHelper,
   PlaneGeometry,
@@ -37,7 +38,7 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
 
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;

@@ -14,6 +14,9 @@ import {
   WebGLRenderTarget,
   MeshBasicMaterial,
   PointLight,
+  SRGBColorSpace,
+  sRGBEncoding,
+  LinearEncoding,
 } from "three";
 
 import * as CameraUtils from "three/addons/utils/CameraUtils.js";
@@ -217,7 +220,10 @@ function renderPortal(thisPortalMesh, otherPortalMesh, thisPortalTexture) {
   );
 
   // render the portal
-  thisPortalTexture.texture.encoding = renderer.outputEncoding;
+  thisPortalTexture.texture.encoding =
+    renderer.outputColorSpace === SRGBColorSpace
+      ? sRGBEncoding
+      : LinearEncoding;
   renderer.setRenderTarget(thisPortalTexture);
   renderer.state.buffers.depth.setMask(true); // make sure the depth buffer is writable so it can be properly cleared, see #18897
   if (renderer.autoClear === false) renderer.clear();

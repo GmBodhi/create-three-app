@@ -11,7 +11,7 @@ import {
   Mesh,
   PerspectiveCamera,
   WebGLRenderer,
-  sRGBEncoding,
+  SRGBColorSpace,
   Scene,
   Color,
 } from "three";
@@ -199,7 +199,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
-  renderer.outputEncoding = sRGBEncoding;
+  renderer.outputColorSpace = SRGBColorSpace;
 
   container = document.getElementById("container");
   container.appendChild(renderer.domElement);
