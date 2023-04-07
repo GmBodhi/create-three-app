@@ -14,7 +14,7 @@ import {
   ShaderMaterial,
   MeshPhongMaterial,
   TextureLoader,
-  sRGBEncoding,
+  SRGBColorSpace,
   MeshBasicMaterial,
   MeshLambertMaterial,
   NormalBlending,
@@ -197,14 +197,14 @@ function init() {
 
   textureLoader.load("textures/planets/earth_atmos_4096.jpg", function (tex) {
     earthMat.map = tex;
-    earthMat.map.encoding = sRGBEncoding;
+    earthMat.map.colorSpace = SRGBColorSpace;
     earthMat.needsUpdate = true;
   });
   textureLoader.load(
     "textures/planets/earth_specular_2048.jpg",
     function (tex) {
       earthMat.specularMap = tex;
-      earthMat.specularMap.encoding = sRGBEncoding;
+      earthMat.specularMap.colorSpace = SRGBColorSpace;
       earthMat.needsUpdate = true;
     }
   );
@@ -217,7 +217,7 @@ function init() {
   const earthLights = textureLoader.load(
     "textures/planets/earth_lights_2048.png"
   );
-  earthLights.encoding = sRGBEncoding;
+  earthLights.colorSpace = SRGBColorSpace;
 
   const earthLightsMat = new MeshBasicMaterial({
     color: 0xffffff,
@@ -228,7 +228,7 @@ function init() {
   });
 
   const clouds = textureLoader.load("textures/planets/earth_clouds_2048.png");
-  clouds.encoding = sRGBEncoding;
+  clouds.colorSpace = SRGBColorSpace;
 
   const earthCloudsMat = new MeshLambertMaterial({
     color: 0xffffff,
@@ -321,7 +321,7 @@ function init() {
   ];
 
   const textureCube = new CubeTextureLoader().load(urls);
-  textureCube.encoding = sRGBEncoding;
+  textureCube.colorSpace = SRGBColorSpace;
 
   sceneCube.background = textureCube;
 

@@ -8,7 +8,6 @@ import {
   HemisphereLight,
   MeshStandardMaterial,
   TextureLoader,
-  sRGBEncoding,
   RepeatWrapping,
   EquirectangularReflectionMapping,
   MathUtils,
@@ -109,7 +108,7 @@ function init() {
       material.metalness = 1;
 
       const diffuseMap = textureLoader.load("Cerberus_A.jpg", render);
-      diffuseMap.encoding = sRGBEncoding;
+      diffuseMap.colorSpace = SRGBColorSpace;
       material.map = diffuseMap;
 
       material.metalnessMap = material.roughnessMap = textureLoader.load(

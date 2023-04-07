@@ -8,7 +8,7 @@ import {
   PointLight,
   DirectionalLight,
   TextureLoader,
-  sRGBEncoding,
+  SRGBColorSpace,
   MeshPhongMaterial,
   Vector2,
   WebGLRenderer,
@@ -85,12 +85,12 @@ function init() {
   const diffuseMap = textureLoader.load(
     "models/gltf/LeePerrySmith/Map-COL.jpg"
   );
-  diffuseMap.encoding = sRGBEncoding;
+  diffuseMap.colorSpace = SRGBColorSpace;
 
   const specularMap = textureLoader.load(
     "models/gltf/LeePerrySmith/Map-SPEC.jpg"
   );
-  specularMap.encoding = sRGBEncoding;
+  specularMap.colorSpace = SRGBColorSpace;
 
   const normalMap = textureLoader.load(
     "models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg"

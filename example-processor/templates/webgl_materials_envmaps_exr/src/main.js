@@ -14,7 +14,6 @@ import {
   DefaultLoadingManager,
   EquirectangularReflectionMapping,
   TextureLoader,
-  sRGBEncoding,
   PMREMGenerator,
 } from "three";
 
@@ -97,7 +96,7 @@ function init() {
 
   new TextureLoader().load("textures/equirectangular.png", function (texture) {
     texture.mapping = EquirectangularReflectionMapping;
-    texture.encoding = sRGBEncoding;
+    texture.colorSpace = SRGBColorSpace;
 
     pngCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
     pngBackground = texture;

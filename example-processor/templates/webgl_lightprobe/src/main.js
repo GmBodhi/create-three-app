@@ -9,7 +9,6 @@ import {
   LightProbe,
   DirectionalLight,
   CubeTextureLoader,
-  sRGBEncoding,
   SphereGeometry,
   TorusKnotGeometry,
   MeshStandardMaterial,
@@ -95,7 +94,7 @@ function init() {
   const urls = genCubeUrls("textures/cube/pisa/", ".png");
 
   new CubeTextureLoader().load(urls, function (cubeTexture) {
-    cubeTexture.encoding = sRGBEncoding;
+    cubeTexture.colorSpace = SRGBColorSpace;
 
     scene.background = cubeTexture;
 

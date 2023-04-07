@@ -8,7 +8,6 @@ import {
   SRGBColorSpace,
   TextureLoader,
   RepeatWrapping,
-  sRGBEncoding,
   CubeTextureLoader,
   MeshBasicMaterial,
   MeshPhongMaterial,
@@ -84,14 +83,14 @@ function init() {
   const textureMap = new TextureLoader().load("textures/uv_grid_opengl.jpg");
   textureMap.wrapS = textureMap.wrapT = RepeatWrapping;
   textureMap.anisotropy = 16;
-  textureMap.encoding = sRGBEncoding;
+  textureMap.colorSpace = SRGBColorSpace;
 
   // REFLECTION MAP
   const path = "textures/cube/pisa/";
   const urls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
 
   textureCube = new CubeTextureLoader().setPath(path).load(urls);
-  textureCube.encoding = sRGBEncoding;
+  textureCube.colorSpace = SRGBColorSpace;
 
   materials["wireframe"] = new MeshBasicMaterial({ wireframe: true });
   materials["flat"] = new MeshPhongMaterial({

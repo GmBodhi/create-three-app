@@ -6,7 +6,7 @@ import {
   Group,
   SphereGeometry,
   TextureLoader,
-  sRGBEncoding,
+  SRGBColorSpace,
   RepeatWrapping,
   CanvasTexture,
   MeshPhysicalMaterial,
@@ -16,7 +16,6 @@ import {
   PointLight,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -63,7 +62,7 @@ function init() {
         const textureLoader = new TextureLoader();
 
         const diffuse = textureLoader.load("textures/carbon/Carbon.png");
-        diffuse.encoding = sRGBEncoding;
+        diffuse.colorSpace = SRGBColorSpace;
         diffuse.wrapS = RepeatWrapping;
         diffuse.wrapT = RepeatWrapping;
         diffuse.repeat.x = 10;

@@ -14,9 +14,8 @@ import {
   MeshPhongMaterial,
   Mesh,
   RepeatWrapping,
-  sRGBEncoding,
-  WebGLRenderer,
   SRGBColorSpace,
+  WebGLRenderer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -107,7 +106,7 @@ function init() {
   ground.rotation.x = -Math.PI / 2;
   ground.material.map.repeat.set(8, 8);
   ground.material.map.wrapS = ground.material.map.wrapT = RepeatWrapping;
-  ground.material.map.encoding = sRGBEncoding;
+  ground.material.map.colorSpace = SRGBColorSpace;
   ground.receiveShadow = true;
 
   scene.add(ground);

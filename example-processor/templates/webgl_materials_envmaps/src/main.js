@@ -4,14 +4,13 @@ import {
   PerspectiveCamera,
   Scene,
   CubeTextureLoader,
-  sRGBEncoding,
+  SRGBColorSpace,
   TextureLoader,
   EquirectangularReflectionMapping,
   IcosahedronGeometry,
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
-  SRGBColorSpace,
   EquirectangularRefractionMapping,
   CubeRefractionMapping,
   CubeReflectionMapping,
@@ -55,13 +54,13 @@ function init() {
     "posz.jpg",
     "negz.jpg",
   ]);
-  textureCube.encoding = sRGBEncoding;
+  textureCube.colorSpace = SRGBColorSpace;
 
   const textureLoader = new TextureLoader();
 
   textureEquirec = textureLoader.load("textures/2294472375_24a3b8ef46_o.jpg");
   textureEquirec.mapping = EquirectangularReflectionMapping;
-  textureEquirec.encoding = sRGBEncoding;
+  textureEquirec.colorSpace = SRGBColorSpace;
 
   scene.background = textureCube;
 

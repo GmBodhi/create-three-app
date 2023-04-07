@@ -11,10 +11,9 @@ import {
   MeshMatcapMaterial,
   Color,
   Texture,
-  sRGBEncoding,
   HalfFloatType,
   DataTexture,
-  LinearEncoding,
+  LinearSRGBColorSpace,
   LinearFilter,
 } from "three";
 
@@ -144,7 +143,7 @@ function updateMatcap(texture) {
 
   texture.needsUpdate = true;
 
-  mesh.material.needsUpdate = true; // because the encoding can change
+  mesh.material.needsUpdate = true; // because the color space can change
 
   render();
 }
@@ -155,7 +154,7 @@ function handleJPG(event) {
   function imgCallback(event) {
     const texture = new Texture(event.target);
 
-    texture.encoding = sRGBEncoding;
+    texture.colorSpace = SRGBColorSpace;
 
     updateMatcap(texture);
   }
@@ -184,7 +183,7 @@ function handleEXR(event) {
 
   texture.format = texData.format;
   texture.type = texData.type;
-  texture.encoding = LinearEncoding;
+  texture.colorSpace = LinearSRGBColorSpace;
   texture.minFilter = LinearFilter;
   texture.magFilter = LinearFilter;
   texture.generateMipmaps = false;

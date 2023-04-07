@@ -15,9 +15,8 @@ import {
   DefaultLoadingManager,
   LinearFilter,
   CubeTextureLoader,
-  sRGBEncoding,
-  PMREMGenerator,
   SRGBColorSpace,
+  PMREMGenerator,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -106,7 +105,7 @@ function init() {
   ldrCubeMap = new CubeTextureLoader()
     .setPath("three/examples/textures/cube/pisa/")
     .load(ldrUrls, function () {
-      ldrCubeMap.encoding = sRGBEncoding;
+      ldrCubeMap.colorSpace = SRGBColorSpace;
 
       ldrCubeRenderTarget = pmremGenerator.fromCubemap(ldrCubeMap);
     });

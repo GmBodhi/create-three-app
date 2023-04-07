@@ -9,7 +9,6 @@ import {
   SRGBColorSpace,
   TextureLoader,
   RepeatWrapping,
-  sRGBEncoding,
   CubeTextureLoader,
   MeshBasicMaterial,
   MeshPhongMaterial,
@@ -104,7 +103,7 @@ function init() {
   const textureMap = loader.load("textures/uv_grid_opengl.jpg");
   textureMap.wrapS = textureMap.wrapT = RepeatWrapping;
   textureMap.anisotropy = 16;
-  textureMap.encoding = sRGBEncoding;
+  textureMap.colorSpace = SRGBColorSpace;
 
   // NORMAL MAP
 
@@ -127,7 +126,7 @@ function init() {
   ];
 
   textureCube = new CubeTextureLoader().load(urls);
-  textureCube.encoding = sRGBEncoding;
+  textureCube.colorSpace = SRGBColorSpace;
 
   // MATERIALS
   const materialColor = new Color();

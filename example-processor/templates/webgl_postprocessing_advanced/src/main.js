@@ -6,7 +6,7 @@ import {
   Scene,
   DirectionalLight,
   TextureLoader,
-  sRGBEncoding,
+  SRGBColorSpace,
   MeshBasicMaterial,
   Mesh,
   PlaneGeometry,
@@ -106,7 +106,7 @@ function init() {
   const diffuseMap = new TextureLoader().load(
     "textures/cube/SwedishRoyalCastle/pz.jpg"
   );
-  diffuseMap.encoding = sRGBEncoding;
+  diffuseMap.colorSpace = SRGBColorSpace;
 
   const materialColor = new MeshBasicMaterial({
     map: diffuseMap,
@@ -312,7 +312,7 @@ function createMesh(geometry, scene, scale) {
   const diffuseMap = new TextureLoader().load(
     "models/gltf/LeePerrySmith/Map-COL.jpg"
   );
-  diffuseMap.encoding = sRGBEncoding;
+  diffuseMap.colorSpace = SRGBColorSpace;
 
   const mat2 = new MeshPhongMaterial({
     color: 0x999999,

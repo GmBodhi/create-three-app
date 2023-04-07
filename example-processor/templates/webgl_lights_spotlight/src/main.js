@@ -10,7 +10,6 @@ import {
   HemisphereLight,
   TextureLoader,
   LinearFilter,
-  sRGBEncoding,
   SpotLight,
   SpotLightHelper,
   PlaneGeometry,
@@ -76,7 +75,7 @@ function init() {
     const texture = loader.load(filename);
     texture.minFilter = LinearFilter;
     texture.magFilter = LinearFilter;
-    texture.encoding = sRGBEncoding;
+    texture.colorSpace = SRGBColorSpace;
 
     textures[filename] = texture;
   }

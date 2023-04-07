@@ -21,7 +21,6 @@ import {
   DoubleSide,
   CubeTextureLoader,
   CubeReflectionMapping,
-  sRGBEncoding,
   MeshPhysicalMaterial,
   SphereGeometry,
   Sphere,
@@ -493,7 +492,7 @@ function createPlasmaBallScene() {
 
   const textureCube = new CubeTextureLoader().load(urls);
   textureCube.mapping = CubeReflectionMapping;
-  textureCube.encoding = sRGBEncoding;
+  textureCube.colorSpace = SRGBColorSpace;
 
   const sphereMaterial = new MeshPhysicalMaterial({
     transparent: true,

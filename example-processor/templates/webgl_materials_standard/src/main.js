@@ -9,7 +9,6 @@ import {
   HemisphereLight,
   MeshStandardMaterial,
   TextureLoader,
-  sRGBEncoding,
   RepeatWrapping,
   EquirectangularReflectionMapping,
 } from "three";
@@ -74,7 +73,7 @@ function init() {
       material.metalness = 1; // attenuates metalnessMap
 
       const diffuseMap = loader.load("Cerberus_A.jpg");
-      diffuseMap.encoding = sRGBEncoding;
+      diffuseMap.colorSpace = SRGBColorSpace;
       material.map = diffuseMap;
       // roughness is in G channel, metalness is in B channel
       material.metalnessMap = material.roughnessMap =

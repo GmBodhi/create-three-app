@@ -11,7 +11,6 @@ import {
   LoadingManager,
   TextureLoader,
   RepeatWrapping,
-  sRGBEncoding,
   PMREMGenerator,
 } from "three";
 import {
@@ -108,7 +107,7 @@ function init() {
 
       const diffuseMap = loader.load("Cerberus_A.jpg");
       diffuseMap.wrapS = RepeatWrapping;
-      diffuseMap.encoding = sRGBEncoding;
+      diffuseMap.colorSpace = SRGBColorSpace;
 
       const rmMap = loader.load("Cerberus_RM.jpg");
       rmMap.wrapS = RepeatWrapping;
