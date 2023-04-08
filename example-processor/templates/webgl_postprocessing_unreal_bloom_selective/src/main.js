@@ -9,6 +9,7 @@ import {
   Layers,
   MeshBasicMaterial,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
@@ -49,6 +50,7 @@ const materials = {};
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputColorSpace = LinearSRGBColorSpace;
 renderer.toneMapping = ReinhardToneMapping;
 document.body.appendChild(renderer.domElement);
 

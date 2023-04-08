@@ -1,8 +1,8 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
-  SRGBColorSpace,
   Scene,
   PerspectiveCamera,
   SphereGeometry,
@@ -11,6 +11,8 @@ import {
   Color,
   PMREMGenerator,
 } from "three";
+
+ColorManagement.enabled = true;
 
 let scene, camera, renderer, radianceMap;
 
@@ -27,8 +29,6 @@ function init() {
   renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
-
-  //renderer.outputColorSpace = SRGBColorSpace; // optional
 
   window.addEventListener("resize", onWindowResize);
 
@@ -83,8 +83,6 @@ function createObjects() {
 function createEnvironment() {
   const envScene = new Scene();
   envScene.background = new Color(COLOR);
-  if (renderer.outputColorSpace === SRGBColorSpace)
-    envScene.background.convertSRGBToLinear();
 
   const pmremGenerator = new PMREMGenerator(renderer);
   radianceMap = pmremGenerator.fromScene(envScene).texture;

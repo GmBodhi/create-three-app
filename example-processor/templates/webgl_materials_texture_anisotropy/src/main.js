@@ -13,6 +13,7 @@ import {
   RepeatWrapping,
   PlaneGeometry,
   Mesh,
+  LinearSRGBColorSpace,
   MathUtils,
 } from "three";
 
@@ -109,6 +110,7 @@ function init() {
 
   // RENDERER
 
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.autoClear = false;

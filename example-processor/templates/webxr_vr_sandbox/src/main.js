@@ -15,6 +15,7 @@ import {
   BoxGeometry,
   MeshPhongMaterial,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   BufferGeometry,
   Vector3,
   Line,
@@ -127,6 +128,7 @@ function init() {
   //
 
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

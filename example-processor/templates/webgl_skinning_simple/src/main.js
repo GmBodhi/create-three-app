@@ -14,6 +14,7 @@ import {
   DirectionalLight,
   AnimationMixer,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -101,6 +102,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 

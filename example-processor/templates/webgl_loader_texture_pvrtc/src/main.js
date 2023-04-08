@@ -6,6 +6,7 @@ import {
   BoxGeometry,
   LinearFilter,
   CubeReflectionMapping,
+  SRGBColorSpace,
   MeshBasicMaterial,
   DoubleSide,
   Mesh,
@@ -40,6 +41,7 @@ function init() {
     texture.magFilter = LinearFilter;
     texture.minFilter = LinearFilter;
     texture.mapping = CubeReflectionMapping;
+    texture.colorSpace = SRGBColorSpace;
     material6.needsUpdate = true;
   };
 
@@ -48,6 +50,7 @@ function init() {
     // texture.minFilter = LinearMipmapNearestFilter;
     texture.minFilter = LinearFilter;
     texture.mapping = CubeReflectionMapping;
+    texture.colorSpace = SRGBColorSpace;
     material8.needsUpdate = true;
   };
 
@@ -93,6 +96,13 @@ function init() {
     flare_2bpp_rgba.minFilter =
     flare_2bpp_rgba.magFilter =
       LinearFilter;
+
+  disturb_2bpp_rgb.encoding =
+    flare_4bpp_rgba.encoding =
+    disturb_4bpp_rgb.encoding =
+    disturb_4bpp_rgb_v3.encoding =
+    flare_2bpp_rgba.colorSpace =
+      SRGBColorSpace;
 
   const material1 = new MeshBasicMaterial({ map: disturb_4bpp_rgb });
   const material2 = new MeshBasicMaterial({ map: disturb_4bpp_rgb_mips });

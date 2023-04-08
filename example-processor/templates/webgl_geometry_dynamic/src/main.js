@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Clock,
   Scene,
@@ -10,6 +11,7 @@ import {
   DynamicDrawUsage,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
@@ -18,6 +20,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
+
+ColorManagement.enabled = true;
 
 let camera, controls, scene, renderer, stats;
 
@@ -58,6 +62,7 @@ function init() {
   const texture = new TextureLoader().load("textures/water.jpg");
   texture.wrapS = texture.wrapT = RepeatWrapping;
   texture.repeat.set(5, 5);
+  texture.colorSpace = SRGBColorSpace;
 
   material = new MeshBasicMaterial({ color: 0x0044ff, map: texture });
 

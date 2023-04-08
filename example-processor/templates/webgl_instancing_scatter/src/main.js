@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Object3D,
   Vector3,
   BoxGeometry,
@@ -22,6 +23,8 @@ import { MeshSurfaceSampler } from "three/addons/math/MeshSurfaceSampler.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, stats;
 

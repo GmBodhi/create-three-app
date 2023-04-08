@@ -5,6 +5,7 @@ import {
   Scene,
   BoxGeometry,
   LinearFilter,
+  SRGBColorSpace,
   CubeReflectionMapping,
   MeshBasicMaterial,
   DoubleSide,
@@ -48,22 +49,28 @@ function init() {
   const map1 = loader.load("textures/compressed/disturb_dxt1_nomip.dds");
   map1.minFilter = map1.magFilter = LinearFilter;
   map1.anisotropy = 4;
+  map1.colorSpace = SRGBColorSpace;
 
   const map2 = loader.load("textures/compressed/disturb_dxt1_mip.dds");
   map2.anisotropy = 4;
+  map2.colorSpace = SRGBColorSpace;
 
   const map3 = loader.load("textures/compressed/hepatica_dxt3_mip.dds");
   map3.anisotropy = 4;
+  map3.colorSpace = SRGBColorSpace;
 
   const map4 = loader.load("textures/compressed/explosion_dxt5_mip.dds");
   map4.anisotropy = 4;
+  map4.colorSpace = SRGBColorSpace;
 
   const map5 = loader.load("textures/compressed/disturb_argb_nomip.dds");
   map5.minFilter = map5.magFilter = LinearFilter;
   map5.anisotropy = 4;
+  map5.colorSpace = SRGBColorSpace;
 
   const map6 = loader.load("textures/compressed/disturb_argb_mip.dds");
   map6.anisotropy = 4;
+  map6.colorSpace = SRGBColorSpace;
 
   const cubemap1 = loader.load(
     "textures/compressed/Mountains.dds",
@@ -71,6 +78,7 @@ function init() {
       texture.magFilter = LinearFilter;
       texture.minFilter = LinearFilter;
       texture.mapping = CubeReflectionMapping;
+      texture.colorSpace = SRGBColorSpace;
       material1.needsUpdate = true;
     }
   );
@@ -81,6 +89,7 @@ function init() {
       texture.magFilter = LinearFilter;
       texture.minFilter = LinearFilter;
       texture.mapping = CubeReflectionMapping;
+      texture.colorSpace = SRGBColorSpace;
       material5.needsUpdate = true;
     }
   );
@@ -91,6 +100,7 @@ function init() {
       texture.magFilter = LinearFilter;
       texture.minFilter = LinearFilter;
       texture.mapping = CubeReflectionMapping;
+      texture.colorSpace = SRGBColorSpace;
       material6.needsUpdate = true;
     }
   );

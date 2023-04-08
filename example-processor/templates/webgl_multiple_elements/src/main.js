@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   BoxGeometry,
   SphereGeometry,
   DodecahedronGeometry,
@@ -9,6 +10,7 @@ import {
   PerspectiveCamera,
   MeshStandardMaterial,
   Color,
+  SRGBColorSpace,
   Mesh,
   HemisphereLight,
   DirectionalLight,
@@ -16,6 +18,8 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = true;
 
 let canvas, renderer;
 
@@ -72,7 +76,7 @@ function init() {
     const geometry = geometries[(geometries.length * Math.random()) | 0];
 
     const material = new MeshStandardMaterial({
-      color: new Color().setHSL(Math.random(), 1, 0.75),
+      color: new Color().setHSL(Math.random(), 1, 0.75, SRGBColorSpace),
       roughness: 0.5,
       metalness: 0,
       flatShading: true,

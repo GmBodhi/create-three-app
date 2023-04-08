@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   TextureLoader,
   PerspectiveCamera,
@@ -10,6 +11,7 @@ import {
   SphereGeometry,
   MeshPhongMaterial,
   Vector2,
+  SRGBColorSpace,
   Mesh,
   WebGLRenderer,
 } from "three";
@@ -21,6 +23,8 @@ import {
 } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.enabled = true;
 
 let gui;
 
@@ -85,6 +89,7 @@ function init() {
     normalMap: textureLoader.load("textures/planets/earth_normal_2048.jpg"),
     normalScale: new Vector2(0.85, 0.85),
   });
+  earthMaterial.map.colorSpace = SRGBColorSpace;
   const earth = new Mesh(earthGeometry, earthMaterial);
   scene.add(earth);
 
@@ -93,6 +98,7 @@ function init() {
     shininess: 5,
     map: textureLoader.load("textures/planets/moon_1024.jpg"),
   });
+  moonMaterial.map.colorSpace = SRGBColorSpace;
   moon = new Mesh(moonGeometry, moonMaterial);
   scene.add(moon);
 

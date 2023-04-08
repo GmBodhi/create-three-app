@@ -14,6 +14,7 @@ import {
   BackSide,
   BoxGeometry,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -177,6 +178,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   new SimpleGI(renderer, scene);

@@ -15,6 +15,7 @@ import {
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 let camera, scene, renderer;
@@ -111,6 +112,7 @@ function init() {
   // RENDERER
 
   renderer = new WebGLRenderer();
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

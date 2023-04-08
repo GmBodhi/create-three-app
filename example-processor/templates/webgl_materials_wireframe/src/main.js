@@ -7,6 +7,7 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
+  LinearSRGBColorSpace,
   Scene,
   PerspectiveCamera,
   BufferGeometryLoader,
@@ -32,6 +33,7 @@ init();
 
 function init() {
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

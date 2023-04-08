@@ -6,6 +6,7 @@ import {
   Color,
   TorusKnotGeometry,
   Mesh,
+  DepthTexture,
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
@@ -40,22 +41,14 @@ function init() {
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
-    0.01,
-    30
+    1,
+    20
   );
   camera.position.z = 4;
 
   scene = new Scene();
   scene.background = new Color(0x222222);
-
-  // depth material
-
-  const material = new MeshBasicNodeMaterial();
-  material.colorNode = smoothstep(
-    camera.near,
-    camera.far,
-    positionView.z.negate()
-  ).oneMinus();
+  scene.overrideMaterial = new MeshBasicNodeMaterial();
 
   //
 
@@ -69,7 +62,7 @@ function init() {
     const z = Math.random() * 2.0 - 1.0;
     const zScale = Math.sqrt(1.0 - z * z) * scale;
 
-    const mesh = new Mesh(geometry, material);
+    const mesh = new Mesh(geometry);
     mesh.position.set(Math.cos(r) * zScale, Math.sin(r) * zScale, z * scale);
     mesh.rotation.set(Math.random(), Math.random(), Math.random());
     scene.add(mesh);
@@ -83,7 +76,10 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
+  const depthTexture = new DepthTexture();
+
   textureRenderer = new WebGPUTextureRenderer(renderer);
+  textureRenderer.renderTarget.depthTexture = depthTexture;
   textureRenderer.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
 
   window.addEventListener("resize", onWindowResize);
@@ -98,7 +94,7 @@ function init() {
   //
 
   const materialFX = new MeshBasicNodeMaterial();
-  materialFX.colorNode = texture(textureRenderer.getTexture());
+  materialFX.colorNode = texture(depthTexture);
 
   const quad = new Mesh(geometryFX, materialFX);
   sceneFX.add(quad);

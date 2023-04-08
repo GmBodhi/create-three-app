@@ -12,6 +12,7 @@ import {
   MeshLambertMaterial,
   DoubleSide,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -158,6 +159,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
 
   container = document.createElement("div");
   document.body.appendChild(container);

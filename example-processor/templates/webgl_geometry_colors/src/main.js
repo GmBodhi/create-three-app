@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -11,11 +12,14 @@ import {
   Mesh,
   IcosahedronGeometry,
   BufferAttribute,
+  SRGBColorSpace,
   MeshPhongMaterial,
   WebGLRenderer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
+
+ColorManagement.enabled = true;
 
 let container, stats;
 
@@ -115,13 +119,23 @@ function init() {
   const colors3 = geometry3.attributes.color;
 
   for (let i = 0; i < count; i++) {
-    color.setHSL((positions1.getY(i) / radius + 1) / 2, 1.0, 0.5);
+    color.setHSL(
+      (positions1.getY(i) / radius + 1) / 2,
+      1.0,
+      0.5,
+      SRGBColorSpace
+    );
     colors1.setXYZ(i, color.r, color.g, color.b);
 
-    color.setHSL(0, (positions2.getY(i) / radius + 1) / 2, 0.5);
+    color.setHSL(0, (positions2.getY(i) / radius + 1) / 2, 0.5, SRGBColorSpace);
     colors2.setXYZ(i, color.r, color.g, color.b);
 
-    color.setRGB(1, 0.8 - (positions3.getY(i) / radius + 1) / 2, 0);
+    color.setRGB(
+      1,
+      0.8 - (positions3.getY(i) / radius + 1) / 2,
+      0,
+      SRGBColorSpace
+    );
     colors3.setXYZ(i, color.r, color.g, color.b);
   }
 

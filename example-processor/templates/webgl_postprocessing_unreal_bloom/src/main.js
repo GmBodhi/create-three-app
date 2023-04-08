@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   Clock,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
@@ -44,6 +45,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.toneMapping = ReinhardToneMapping;
   container.appendChild(renderer.domElement);
 

@@ -16,6 +16,7 @@ import {
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -133,6 +134,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   // gui

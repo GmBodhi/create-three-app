@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -14,6 +15,7 @@ import {
   Line,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   MeshLambertMaterial,
   DoubleSide,
   Mesh,
@@ -25,6 +27,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { NURBSCurve } from "three/addons/curves/NURBSCurve.js";
 import { NURBSSurface } from "three/addons/curves/NURBSSurface.js";
 import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.js";
+
+ColorManagement.enabled = true;
 
 let container, stats;
 
@@ -159,6 +163,7 @@ function init() {
   const map = new TextureLoader().load("textures/uv_grid_opengl.jpg");
   map.wrapS = map.wrapT = RepeatWrapping;
   map.anisotropy = 16;
+  map.colorSpace = SRGBColorSpace;
 
   function getSurfacePoint(u, v, target) {
     return nurbsSurface.getPoint(u, v, target);

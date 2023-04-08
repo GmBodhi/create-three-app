@@ -1,9 +1,17 @@
 import "./style.css"; // For webpack support
 
-import { Scene, PerspectiveCamera, GridHelper, WebGLRenderer } from "three";
+import {
+  ColorManagement,
+  Scene,
+  PerspectiveCamera,
+  GridHelper,
+  WebGLRenderer,
+} from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TiltLoader } from "three/addons/loaders/TiltLoader.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer;
 

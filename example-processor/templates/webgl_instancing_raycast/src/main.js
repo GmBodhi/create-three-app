@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Raycaster,
   Vector2,
   Color,
@@ -17,6 +18,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, controls, stats;
 

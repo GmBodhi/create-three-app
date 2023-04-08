@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -9,6 +10,7 @@ import {
   PlaneGeometry,
   CanvasTexture,
   ClampToEdgeWrapping,
+  SRGBColorSpace,
   Mesh,
   MeshBasicMaterial,
   WebGLRenderer,
@@ -19,6 +21,8 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
+
+ColorManagement.enabled = true;
 
 let container, stats;
 let camera, controls, scene, renderer;
@@ -67,6 +71,7 @@ function init() {
   texture = new CanvasTexture(generateTexture(data, worldWidth, worldDepth));
   texture.wrapS = ClampToEdgeWrapping;
   texture.wrapT = ClampToEdgeWrapping;
+  texture.colorSpace = SRGBColorSpace;
 
   mesh = new Mesh(geometry, new MeshBasicMaterial({ map: texture }));
   scene.add(mesh);

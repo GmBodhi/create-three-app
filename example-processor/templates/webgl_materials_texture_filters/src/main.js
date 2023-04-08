@@ -16,6 +16,7 @@ import {
   LinearFilter,
   UVMapping,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 const SCREEN_WIDTH = window.innerWidth;
@@ -160,6 +161,7 @@ function init() {
   texturePainting.mapping = UVMapping;
 
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.autoClear = false;

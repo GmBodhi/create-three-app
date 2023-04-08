@@ -1,12 +1,14 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Vector2,
   Color,
   PerspectiveCamera,
   Scene,
   Clock,
   TextureLoader,
+  SRGBColorSpace,
   LinearFilter,
   PlaneGeometry,
   MeshBasicMaterial,
@@ -15,6 +17,8 @@ import {
   WebGLRenderer,
   MathUtils,
 } from "three";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, clock, dataTexture, diffuseMap;
 
@@ -42,6 +46,7 @@ function init() {
     "textures/floors/FloorsCheckerboard_S_Diffuse.jpg",
     animate
   );
+  diffuseMap.colorSpace = SRGBColorSpace;
   diffuseMap.minFilter = LinearFilter;
   diffuseMap.generateMipmaps = false;
 

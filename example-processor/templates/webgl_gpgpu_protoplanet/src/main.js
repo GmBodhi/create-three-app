@@ -11,6 +11,7 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   HalfFloatType,
   BufferGeometry,
   BufferAttribute,
@@ -61,6 +62,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

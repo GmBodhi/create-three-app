@@ -15,6 +15,7 @@ import {
   BufferAttribute,
   MeshPhongMaterial,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 const views = [];
@@ -175,6 +176,7 @@ function init() {
   }
 
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(200, 300);
 

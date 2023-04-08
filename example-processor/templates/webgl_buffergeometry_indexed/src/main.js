@@ -11,6 +11,7 @@ import {
   DoubleSide,
   Mesh,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -112,6 +113,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   //

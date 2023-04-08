@@ -13,6 +13,7 @@ import {
   DoubleSide,
   PointLight,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   BufferGeometryLoader,
   Float32BufferAttribute,
 } from "three";
@@ -80,6 +81,7 @@ function init() {
   perpCamera.add(pointLight);
 
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);

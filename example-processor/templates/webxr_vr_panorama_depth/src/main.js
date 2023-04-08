@@ -12,6 +12,7 @@ import {
   Mesh,
   LoadingManager,
   TextureLoader,
+  SRGBColorSpace,
   NearestFilter,
   WebGLRenderer,
 } from "three";
@@ -58,6 +59,7 @@ function init() {
   const loader = new TextureLoader(manager);
 
   loader.load("three/examples/textures/kandao3.jpg", function (texture) {
+    texture.colorSpace = SRGBColorSpace;
     texture.minFilter = NearestFilter;
     texture.generateMipmaps = false;
     sphere.material.map = texture;

@@ -10,6 +10,7 @@ import {
   Scene,
   Color,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   NoToneMapping,
   WebGLRenderTarget,
   AmbientLight,
@@ -206,6 +207,7 @@ const scene = new Scene();
 scene.background = new Color(0x111111);
 
 const renderer = new WebGLRenderer();
+renderer.outputColorSpace = LinearSRGBColorSpace;
 renderer.toneMapping = NoToneMapping;
 container.appendChild(renderer.domElement);
 

@@ -10,6 +10,7 @@ import {
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -114,6 +115,7 @@ function init() {
 
   //renderer
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

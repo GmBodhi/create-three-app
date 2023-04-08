@@ -2,6 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
+  LinearSRGBColorSpace,
   Scene,
   Color,
   AmbientLight,
@@ -30,6 +31,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();

@@ -12,6 +12,7 @@ import {
   WebGLRenderer,
   Texture,
   UVMapping,
+  SRGBColorSpace,
   MeshBasicMaterial,
   BoxGeometry,
   Mesh,
@@ -195,6 +196,7 @@ function init() {
     RepeatWrapping,
     RepeatWrapping
   );
+  cubeTexture.colorSpace = SRGBColorSpace;
   canvas = new CanvasTexture(cubeTexture);
   const cubeMaterial = new MeshBasicMaterial({ map: cubeTexture });
   const cubeGeometry = new BoxGeometry(20, 20, 20);
@@ -218,6 +220,7 @@ function init() {
     MirroredRepeatWrapping,
     MirroredRepeatWrapping
   );
+  planeTexture.colorSpace = SRGBColorSpace;
   canvas.addParent(planeTexture);
   const planeMaterial = new MeshBasicMaterial({ map: planeTexture });
   const planeGeometry = new PlaneGeometry(25, 25, 1, 1);
@@ -243,6 +246,7 @@ function init() {
     RepeatWrapping,
     RepeatWrapping
   );
+  circleTexture.colorSpace = SRGBColorSpace;
   canvas.addParent(circleTexture);
   const circleMaterial = new MeshBasicMaterial({ map: circleTexture });
   const circleGeometry = new CircleGeometry(25, 40, 0, Math.PI * 2);

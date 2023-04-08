@@ -1,7 +1,9 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Color,
+  SRGBColorSpace,
   PerspectiveCamera,
   Scene,
   DirectionalLight,
@@ -16,6 +18,8 @@ import {
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
+
+ColorManagement.enabled = true;
 
 let stats;
 
@@ -32,7 +36,7 @@ const views = [
     bottom: 0,
     width: 0.5,
     height: 1.0,
-    background: new Color(0.5, 0.5, 0.7),
+    background: new Color().setRGB(0.5, 0.5, 0.7, SRGBColorSpace),
     eye: [0, 300, 1800],
     up: [0, 1, 0],
     fov: 30,
@@ -47,7 +51,7 @@ const views = [
     bottom: 0,
     width: 0.5,
     height: 0.5,
-    background: new Color(0.7, 0.5, 0.5),
+    background: new Color().setRGB(0.7, 0.5, 0.5, SRGBColorSpace),
     eye: [0, 1800, 0],
     up: [0, 0, 1],
     fov: 45,
@@ -62,7 +66,7 @@ const views = [
     bottom: 0.5,
     width: 0.5,
     height: 0.5,
-    background: new Color(0.5, 0.7, 0.7),
+    background: new Color().setRGB(0.5, 0.7, 0.7, SRGBColorSpace),
     eye: [1400, 800, 1400],
     up: [0, 1, 0],
     fov: 60,
@@ -169,13 +173,23 @@ function init() {
   const colors3 = geometry3.attributes.color;
 
   for (let i = 0; i < count; i++) {
-    color.setHSL((positions1.getY(i) / radius + 1) / 2, 1.0, 0.5);
+    color.setHSL(
+      (positions1.getY(i) / radius + 1) / 2,
+      1.0,
+      0.5,
+      SRGBColorSpace
+    );
     colors1.setXYZ(i, color.r, color.g, color.b);
 
-    color.setHSL(0, (positions2.getY(i) / radius + 1) / 2, 0.5);
+    color.setHSL(0, (positions2.getY(i) / radius + 1) / 2, 0.5, SRGBColorSpace);
     colors2.setXYZ(i, color.r, color.g, color.b);
 
-    color.setRGB(1, 0.8 - (positions3.getY(i) / radius + 1) / 2, 0);
+    color.setRGB(
+      1,
+      0.8 - (positions3.getY(i) / radius + 1) / 2,
+      0,
+      SRGBColorSpace
+    );
     colors3.setXYZ(i, color.r, color.g, color.b);
   }
 

@@ -13,6 +13,7 @@ import {
   BufferAttribute,
   MeshPhongMaterial,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   Vector3,
 } from "three";
 
@@ -158,11 +159,13 @@ function init() {
   renderer1 = new WebGLRenderer({ antialias: true });
   renderer1.setPixelRatio(window.devicePixelRatio);
   renderer1.setSize(window.innerWidth, window.innerHeight / 2);
+  renderer1.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer1.domElement);
 
   renderer2 = new WebGLRenderer();
   renderer2.setPixelRatio(window.devicePixelRatio);
   renderer2.setSize(window.innerWidth, window.innerHeight / 2);
+  renderer2.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer2.domElement);
 }
 

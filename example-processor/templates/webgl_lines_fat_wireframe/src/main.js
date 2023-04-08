@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
@@ -18,6 +19,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { Wireframe } from "three/addons/lines/Wireframe.js";
 import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
+
+ColorManagement.enabled = true;
 
 let wireframe, renderer, scene, camera, camera2, controls;
 let wireframe1;

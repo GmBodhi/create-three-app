@@ -5,6 +5,7 @@ import {
   Scene,
   SphereGeometry,
   TextureLoader,
+  SRGBColorSpace,
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
@@ -45,6 +46,7 @@ function init() {
   const texture = new TextureLoader().load(
     "textures/2294472375_24a3b8ef46_o.jpg"
   );
+  texture.colorSpace = SRGBColorSpace;
   const material = new MeshBasicMaterial({ map: texture });
 
   const mesh = new Mesh(geometry, material);

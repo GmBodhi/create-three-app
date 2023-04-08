@@ -10,6 +10,7 @@ import {
   Mesh,
   MeshLambertMaterial,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   PCFShadowMap,
 } from "three";
 
@@ -83,6 +84,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFShadowMap;
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   Scene,
   Color,
@@ -18,6 +19,8 @@ import {
 } from "three";
 
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, controls;
 

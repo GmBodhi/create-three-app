@@ -8,6 +8,7 @@ import {
   LoadingManager,
   TextureLoader,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
@@ -94,6 +95,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   document.addEventListener("mousemove", onDocumentMouseMove);

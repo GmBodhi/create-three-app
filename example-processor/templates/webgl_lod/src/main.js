@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -15,6 +16,8 @@ import {
 } from "three";
 
 import { FlyControls } from "three/addons/controls/FlyControls.js";
+
+ColorManagement.enabled = true;
 
 let container;
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -12,6 +13,7 @@ import {
   Vector3,
   Quaternion,
   MeshPhongMaterial,
+  SRGBColorSpace,
   RepeatWrapping,
   PlaneGeometry,
   MeshLambertMaterial,
@@ -23,6 +25,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = true;
 
 // Graphics variables
 let container, stats;
@@ -157,6 +161,7 @@ function createObjects() {
   ground.castShadow = true;
   ground.receiveShadow = true;
   textureLoader.load("textures/grid.png", function (texture) {
+    texture.colorSpace = SRGBColorSpace;
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
     texture.repeat.set(40, 40);
@@ -246,6 +251,7 @@ function createObjects() {
   cloth.receiveShadow = true;
   scene.add(cloth);
   textureLoader.load("textures/grid.png", function (texture) {
+    texture.colorSpace = SRGBColorSpace;
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
     texture.repeat.set(clothNumSegmentsZ, clothNumSegmentsY);

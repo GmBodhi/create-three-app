@@ -8,6 +8,7 @@ import {
   MeshStandardMaterial,
   Mesh,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   PMREMGenerator,
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
@@ -52,6 +53,7 @@ function init() {
   );
 
   renderer = new WebGLRenderer();
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

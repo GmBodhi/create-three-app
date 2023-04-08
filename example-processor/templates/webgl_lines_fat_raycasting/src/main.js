@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Color,
   Vector2,
   Raycaster,
@@ -13,6 +14,7 @@ import {
   Mesh,
   Vector3,
   CatmullRomCurve3,
+  SRGBColorSpace,
   BufferGeometry,
   Float32BufferAttribute,
 } from "three";
@@ -27,6 +29,8 @@ import { LineSegments2 } from "three/addons/lines/LineSegments2.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 import { Line2 } from "three/addons/lines/Line2.js";
 import { LineGeometry } from "three/addons/lines/LineGeometry.js";
+
+ColorManagement.enabled = true;
 
 let line, thresholdLine, segments, thresholdSegments;
 let renderer, scene, camera, controls;
@@ -143,7 +147,7 @@ function init() {
     spline.getPoint(t, point);
     positions.push(point.x, point.y, point.z);
 
-    color.setHSL(t, 1.0, 0.5);
+    color.setHSL(t, 1.0, 0.5, SRGBColorSpace);
     colors.push(color.r, color.g, color.b);
   }
 

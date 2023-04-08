@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Plane,
   Vector3,
   WebGLRenderer,
@@ -12,6 +13,7 @@ import {
   SphereGeometry,
   MeshLambertMaterial,
   Color,
+  SRGBColorSpace,
   DoubleSide,
   Mesh,
   PlaneHelper,
@@ -20,6 +22,8 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer;
 
@@ -77,7 +81,7 @@ function init() {
     const geometry = new SphereGeometry(i / 30, 48, 24);
 
     const material = new MeshLambertMaterial({
-      color: new Color().setHSL(Math.random(), 0.5, 0.5),
+      color: new Color().setHSL(Math.random(), 0.5, 0.5, SRGBColorSpace),
       side: DoubleSide,
       clippingPlanes: clipPlanes,
       clipIntersection: params.clipIntersection,

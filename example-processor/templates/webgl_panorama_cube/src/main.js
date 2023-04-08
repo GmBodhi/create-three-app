@@ -9,6 +9,7 @@ import {
   BoxGeometry,
   Texture,
   ImageLoader,
+  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -89,6 +90,7 @@ function getTexturesFromAtlasFile(atlasImgUrl, tilesNum) {
         tileWidth,
         tileWidth
       );
+      textures[i].colorSpace = SRGBColorSpace;
       textures[i].image = canvas;
       textures[i].needsUpdate = true;
     }

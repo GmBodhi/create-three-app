@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   OrthographicCamera,
@@ -8,6 +9,7 @@ import {
   GridHelper,
   DirectionalLight,
   TextureLoader,
+  SRGBColorSpace,
   BoxGeometry,
   MeshLambertMaterial,
   Mesh,
@@ -16,6 +18,8 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
+
+ColorManagement.enabled = true;
 
 let cameraPersp, cameraOrtho, currentCamera;
 let scene, renderer, control, orbit;
@@ -53,6 +57,7 @@ function init() {
   scene.add(light);
 
   const texture = new TextureLoader().load("textures/crate.gif", render);
+  texture.colorSpace = SRGBColorSpace;
   texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
   const geometry = new BoxGeometry(200, 200, 200);

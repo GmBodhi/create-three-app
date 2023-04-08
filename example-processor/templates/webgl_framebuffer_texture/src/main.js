@@ -18,6 +18,7 @@ import {
   SpriteMaterial,
   Sprite,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -103,6 +104,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.autoClear = false;
   document.body.appendChild(renderer.domElement);
 

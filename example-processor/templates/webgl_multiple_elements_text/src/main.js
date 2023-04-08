@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   Clock,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   Scene,
   Color,
   BufferGeometry,
@@ -42,6 +43,7 @@ function init() {
   canvas = document.getElementById("c");
 
   renderer = new WebGLRenderer({ canvas: canvas, antialias: true });
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
 
   views = document.querySelectorAll(".view");

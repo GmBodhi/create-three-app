@@ -12,6 +12,7 @@ import {
   Mesh,
   BoxGeometry,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   BasicShadowMap,
   Clock,
 } from "three";
@@ -129,6 +130,7 @@ function initMisc() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = BasicShadowMap;
 

@@ -1,11 +1,13 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
   Fog,
   BufferGeometry,
+  SRGBColorSpace,
   InterleavedBuffer,
   InterleavedBufferAttribute,
   PointsMaterial,
@@ -14,6 +16,8 @@ import {
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
+
+ColorManagement.enabled = true;
 
 let container, stats;
 
@@ -78,7 +82,7 @@ function init() {
     const vy = y / n + 0.5;
     const vz = z / n + 0.5;
 
-    color.setRGB(vx, vy, vz);
+    color.setRGB(vx, vy, vz, SRGBColorSpace);
 
     const j = (i + 3) * 4;
 

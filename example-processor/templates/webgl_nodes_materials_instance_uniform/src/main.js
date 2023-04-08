@@ -1,11 +1,13 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Color,
   PerspectiveCamera,
   Scene,
   GridHelper,
   CubeTextureLoader,
+  SRGBColorSpace,
   SphereGeometry,
   AmbientLight,
   DirectionalLight,
@@ -28,6 +30,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+
+ColorManagement.enabled = true;
 
 class InstanceUniformNode extends Node {
   constructor() {
@@ -92,6 +96,7 @@ function init() {
   ];
 
   const cubeMap = new CubeTextureLoader().load(urls);
+  cubeMap.colorSpace = SRGBColorSpace;
 
   // Material
 

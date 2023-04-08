@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Vector3,
   CatmullRomCurve3,
   MeshLambertMaterial,
@@ -22,6 +23,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import * as Curves from "three/addons/curves/CurveExtras.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = true;
 
 let container, stats;
 

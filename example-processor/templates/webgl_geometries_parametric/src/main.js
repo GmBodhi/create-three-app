@@ -1,12 +1,14 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   AmbientLight,
   PointLight,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   MeshPhongMaterial,
   DoubleSide,
   Mesh,
@@ -18,6 +20,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import * as Curves from "three/addons/curves/CurveExtras.js";
 import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.js";
 import { ParametricGeometries } from "three/addons/geometries/ParametricGeometries.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, stats;
 
@@ -51,6 +55,7 @@ function init() {
   const map = new TextureLoader().load("textures/uv_grid_opengl.jpg");
   map.wrapS = map.wrapT = RepeatWrapping;
   map.anisotropy = 16;
+  map.colorSpace = SRGBColorSpace;
 
   const material = new MeshPhongMaterial({ map: map, side: DoubleSide });
 

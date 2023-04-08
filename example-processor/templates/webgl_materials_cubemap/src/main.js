@@ -10,6 +10,7 @@ import {
   MeshLambertMaterial,
   MixOperation,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -105,6 +106,7 @@ function init() {
 
   //renderer
   renderer = new WebGLRenderer();
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

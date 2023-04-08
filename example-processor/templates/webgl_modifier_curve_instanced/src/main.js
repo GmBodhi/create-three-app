@@ -16,6 +16,7 @@ import {
   MeshStandardMaterial,
   Color,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   Raycaster,
 } from "three";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
@@ -153,6 +154,7 @@ function init() {
   //
 
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

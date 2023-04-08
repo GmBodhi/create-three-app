@@ -1,12 +1,14 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
   Color,
   Vector3,
   CatmullRomCurve3,
+  SRGBColorSpace,
   Line,
   BufferGeometry,
   LineBasicMaterial,
@@ -23,6 +25,8 @@ import { Line2 } from "three/addons/lines/Line2.js";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
+
+ColorManagement.enabled = true;
 
 let line, renderer, scene, camera, camera2, controls;
 let line1;
@@ -91,7 +95,7 @@ function init() {
     spline.getPoint(t, point);
     positions.push(point.x, point.y, point.z);
 
-    color.setHSL(t, 1.0, 0.5);
+    color.setHSL(t, 1.0, 0.5, SRGBColorSpace);
     colors.push(color.r, color.g, color.b);
   }
 

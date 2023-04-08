@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Vector2,
   Raycaster,
   PerspectiveCamera,
@@ -17,6 +18,8 @@ import {
 } from "three";
 
 import { DragControls } from "three/addons/controls/DragControls.js";
+
+ColorManagement.enabled = true;
 
 let container;
 let camera, scene, renderer;

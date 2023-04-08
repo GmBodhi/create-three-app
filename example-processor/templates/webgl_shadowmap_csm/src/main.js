@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Scene,
   Color,
   PerspectiveCamera,
@@ -20,6 +21,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { CSM } from "three/addons/csm/CSM.js";
 import { CSMHelper } from "three/addons/csm/CSMHelper.js";
+
+ColorManagement.enabled = true;
 
 let renderer, scene, camera, orthoCamera, controls, csm, csmHelper;
 

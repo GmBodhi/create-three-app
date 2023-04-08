@@ -5,6 +5,7 @@ import {
   Scene,
   SphereGeometry,
   VideoTexture,
+  SRGBColorSpace,
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
@@ -48,6 +49,7 @@ function init() {
   video.play();
 
   const texture = new VideoTexture(video);
+  texture.colorSpace = SRGBColorSpace;
   const material = new MeshBasicMaterial({ map: texture });
 
   const mesh = new Mesh(geometry, material);

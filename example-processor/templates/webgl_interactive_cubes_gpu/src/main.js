@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Vector2,
   Vector3,
   PerspectiveCamera,
@@ -25,6 +26,8 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
+
+ColorManagement.enabled = true;
 
 let container, stats;
 let camera, controls, scene, renderer;

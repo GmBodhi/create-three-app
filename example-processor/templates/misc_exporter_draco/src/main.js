@@ -13,6 +13,7 @@ import {
   GridHelper,
   TorusKnotGeometry,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -89,6 +90,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 

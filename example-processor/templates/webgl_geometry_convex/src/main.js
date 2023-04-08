@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Scene,
   WebGLRenderer,
   PerspectiveCamera,
@@ -8,6 +9,7 @@ import {
   PointLight,
   AxesHelper,
   TextureLoader,
+  SRGBColorSpace,
   Group,
   DodecahedronGeometry,
   Vector3,
@@ -22,6 +24,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ConvexGeometry } from "three/addons/geometries/ConvexGeometry.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
+
+ColorManagement.enabled = true;
 
 let group, camera, scene, renderer;
 
@@ -71,6 +75,7 @@ function init() {
 
   const loader = new TextureLoader();
   const texture = loader.load("textures/sprites/disc.png");
+  texture.colorSpace = SRGBColorSpace;
 
   group = new Group();
   scene.add(group);

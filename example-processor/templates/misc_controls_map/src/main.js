@@ -5,6 +5,7 @@ import {
   Color,
   FogExp2,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   PerspectiveCamera,
   BoxGeometry,
   MeshPhongMaterial,
@@ -31,6 +32,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(

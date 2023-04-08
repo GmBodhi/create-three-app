@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -14,6 +15,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, light1, light2, light3, light4, object, stats;
 

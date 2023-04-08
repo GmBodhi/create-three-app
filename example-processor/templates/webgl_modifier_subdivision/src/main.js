@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
@@ -8,6 +9,7 @@ import {
   DirectionalLight,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   Mesh,
   BufferGeometry,
   MeshBasicMaterial,
@@ -34,6 +36,8 @@ import {
 import { LoopSubdivision } from "three-subdivide";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.enabled = true;
 
 let renderer, scene, camera;
 let texture;
@@ -87,6 +91,7 @@ function init() {
     () => {
       texture.wrapS = RepeatWrapping;
       texture.wrapT = RepeatWrapping;
+      texture.colorSpace = SRGBColorSpace;
 
       render();
     }
