@@ -25,7 +25,7 @@ import {
 } from "three";
 
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
-import { VRButton } from "three/addons/webxr/VRButton.js";
+import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 
 let camera, scene, renderer;
@@ -100,7 +100,7 @@ function init() {
 
   //
 
-  document.body.appendChild(VRButton.createButton(renderer));
+  document.body.appendChild(XRButton.createButton(renderer));
 
   // controllers
 

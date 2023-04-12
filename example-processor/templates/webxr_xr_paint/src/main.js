@@ -19,7 +19,7 @@ import {
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TubePainter } from "three/addons/misc/TubePainter.js";
-import { VRButton } from "three/addons/webxr/VRButton.js";
+import { XRButton } from "three/addons/webxr/XRButton.js";
 
 let camera, scene, renderer;
 let controller1, controller2;
@@ -98,7 +98,7 @@ function init() {
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
-  document.body.appendChild(VRButton.createButton(renderer));
+  document.body.appendChild(XRButton.createButton(renderer));
 
   // controllers
 

@@ -3962,16 +3962,6 @@
         "/src"
       ]
     },
-    "webxr_ar_dragging": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webxr_ar_hittest": {
       "files": {
         "index.html": "src",
@@ -3992,47 +3982,7 @@
         "/src"
       ]
     },
-    "webxr_ar_paint": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webxr_ar_plane_detection": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webxr_vr_ballshooter": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webxr_vr_cubes": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webxr_vr_dragging": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4122,16 +4072,6 @@
         "/src"
       ]
     },
-    "webxr_vr_paint": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webxr_vr_panorama": {
       "files": {
         "index.html": "src",
@@ -4172,16 +4112,6 @@
         "/src"
       ]
     },
-    "webxr_vr_sculpt": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webxr_vr_teleport": {
       "files": {
         "index.html": "src",
@@ -4193,6 +4123,56 @@
       ]
     },
     "webxr_vr_video": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_xr_ballshooter": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_xr_cubes": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_xr_dragging": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_xr_paint": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_xr_sculpt": {
       "files": {
         "index.html": "src",
         "main.js": "src",
