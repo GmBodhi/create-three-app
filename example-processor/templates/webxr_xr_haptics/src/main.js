@@ -6,17 +6,18 @@ import {
   Color,
   PerspectiveCamera,
   PlaneGeometry,
-  MeshStandardMaterial,
+  ShadowMaterial,
   Mesh,
   HemisphereLight,
   DirectionalLight,
   Group,
   BoxGeometry,
+  MeshStandardMaterial,
   WebGLRenderer,
   SRGBColorSpace,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { VRButton } from "three/addons/webxr/VRButton.js";
+import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 
 let container;
@@ -75,11 +76,7 @@ function init() {
   controls.update();
 
   const floorGeometry = new PlaneGeometry(4, 4);
-  const floorMaterial = new MeshStandardMaterial({
-    color: 0xeeeeee,
-    roughness: 1.0,
-    metalness: 0.0,
-  });
+  const floorMaterial = new ShadowMaterial({ opacity: 0.25 });
   const floor = new Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
@@ -136,11 +133,9 @@ function init() {
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
-  document.body.appendChild(VRButton.createButton(renderer));
+  document.body.appendChild(XRButton.createButton(renderer));
 
-  document.getElementById("VRButton").addEventListener("click", () => {
-    initAudio();
-  });
+  document.getElementById("XRButton").addEventListener("click", initAudio);
 
   // controllers
 

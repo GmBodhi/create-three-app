@@ -6,7 +6,7 @@ import {
   Color,
   PerspectiveCamera,
   PlaneGeometry,
-  MeshStandardMaterial,
+  ShadowMaterial,
   Mesh,
   HemisphereLight,
   DirectionalLight,
@@ -16,6 +16,7 @@ import {
   CylinderGeometry,
   IcosahedronGeometry,
   TorusGeometry,
+  MeshStandardMaterial,
   WebGLRenderer,
   SRGBColorSpace,
   BufferGeometry,
@@ -61,15 +62,12 @@ function init() {
   controls.target.set(0, 1.6, 0);
   controls.update();
 
-  const floorGeometry = new PlaneGeometry(4, 4);
-  const floorMaterial = new MeshStandardMaterial({
-    color: 0xeeeeee,
-    roughness: 1.0,
-    metalness: 0.0,
-  });
+  const floorGeometry = new PlaneGeometry(6, 6);
+  const floorMaterial = new ShadowMaterial({ opacity: 0.25 });
   const floor = new Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
+  floor.renderOrder = 2;
   scene.add(floor);
 
   scene.add(new HemisphereLight(0x808080, 0x606060));
@@ -77,10 +75,10 @@ function init() {
   const light = new DirectionalLight(0xffffff);
   light.position.set(0, 6, 0);
   light.castShadow = true;
-  light.shadow.camera.top = 2;
-  light.shadow.camera.bottom = -2;
-  light.shadow.camera.right = 2;
-  light.shadow.camera.left = -2;
+  light.shadow.camera.top = 3;
+  light.shadow.camera.bottom = -3;
+  light.shadow.camera.right = 3;
+  light.shadow.camera.left = -3;
   light.shadow.mapSize.set(4096, 4096);
   scene.add(light);
 

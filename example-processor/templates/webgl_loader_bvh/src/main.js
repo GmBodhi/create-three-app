@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   ColorManagement,
   Clock,
-  SkinnedMesh,
   SkeletonHelper,
   AnimationMixer,
   PerspectiveCamera,
@@ -28,19 +27,13 @@ animate();
 
 const loader = new BVHLoader();
 loader.load("models/bvh/pirouette.bvh", function (result) {
-  const skinnedMesh = new SkinnedMesh();
-  skinnedMesh.visible = false; // dummy skinned mesh for animating the skeleton
+  const skeletonHelper = new SkeletonHelper(result.skeleton.bones[0]);
 
-  skinnedMesh.add(result.skeleton.bones[0]);
-  skinnedMesh.bind(result.skeleton);
-
-  const skeletonHelper = new SkeletonHelper(skinnedMesh);
-
-  scene.add(skinnedMesh);
+  scene.add(result.skeleton.bones[0]);
   scene.add(skeletonHelper);
 
   // play animation
-  mixer = new AnimationMixer(skinnedMesh);
+  mixer = new AnimationMixer(result.skeleton.bones[0]);
   mixer.clipAction(result.clip).play();
 });
 

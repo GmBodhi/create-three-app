@@ -4052,16 +4052,6 @@
         "/src"
       ]
     },
-    "webxr_vr_haptics": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webxr_vr_layers": {
       "files": {
         "index.html": "src",
@@ -4153,6 +4143,16 @@
       ]
     },
     "webxr_xr_dragging": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_xr_haptics": {
       "files": {
         "index.html": "src",
         "main.js": "src",
