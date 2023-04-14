@@ -14,7 +14,6 @@ import {
   AmbientLight,
   PointLight,
   ACESFilmicToneMapping,
-  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -136,8 +135,6 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
-
-  renderer.outputColorSpace = SRGBColorSpace;
 
   stats = new Stats();
   container.appendChild(stats.dom);

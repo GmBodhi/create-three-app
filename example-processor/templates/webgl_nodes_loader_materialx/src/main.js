@@ -5,7 +5,6 @@ import {
   Scene,
   WebGLRenderer,
   LinearToneMapping,
-  SRGBColorSpace,
   EquirectangularReflectionMapping,
 } from "three";
 
@@ -67,7 +66,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = LinearToneMapping;
   renderer.toneMappingExposure = 0.5;
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 

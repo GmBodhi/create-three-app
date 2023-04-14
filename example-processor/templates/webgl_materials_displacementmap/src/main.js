@@ -2,12 +2,12 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  SRGBColorSpace,
   Scene,
   OrthographicCamera,
   AmbientLight,
   PointLight,
   CubeTextureLoader,
+  SRGBColorSpace,
   TextureLoader,
   MeshStandardMaterial,
   Vector2,
@@ -114,7 +114,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
-  renderer.outputColorSpace = SRGBColorSpace;
 
   //
 

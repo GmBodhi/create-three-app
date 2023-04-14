@@ -9,7 +9,6 @@ import {
   TextureLoader,
   MeshPhongMaterial,
   WebGLRenderer,
-  SRGBColorSpace,
   Mesh,
 } from "three";
 
@@ -102,7 +101,6 @@ function init() {
   container.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
-  renderer.outputColorSpace = SRGBColorSpace;
 
   //
 

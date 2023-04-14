@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   WebGLRenderer,
   ACESFilmicToneMapping,
-  SRGBColorSpace,
   Scene,
   PerspectiveCamera,
   LoadingManager,
@@ -11,6 +10,7 @@ import {
   MeshMatcapMaterial,
   Color,
   Texture,
+  SRGBColorSpace,
   HalfFloatType,
   DataTexture,
   LinearSRGBColorSpace,
@@ -41,8 +41,6 @@ function init() {
   // tone mapping
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = API.exposure;
-
-  renderer.outputColorSpace = SRGBColorSpace;
 
   // scene
   scene = new Scene();

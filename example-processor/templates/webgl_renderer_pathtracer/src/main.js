@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   WebGLRenderer,
-  SRGBColorSpace,
   ACESFilmicToneMapping,
   MeshBasicMaterial,
   CustomBlending,
@@ -84,7 +83,6 @@ function init() {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setClearColor(0xdddddd);
   document.body.appendChild(renderer.domElement);

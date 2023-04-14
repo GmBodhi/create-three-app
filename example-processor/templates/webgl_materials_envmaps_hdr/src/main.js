@@ -129,7 +129,6 @@ function init() {
   container.appendChild(renderer.domElement);
 
   //renderer.toneMapping = ReinhardToneMapping;
-  renderer.outputColorSpace = SRGBColorSpace;
 
   stats = new Stats();
   container.appendChild(stats.dom);

@@ -20,7 +20,6 @@ import {
   BoxGeometry,
   ShaderChunk,
   WebGLRenderer,
-  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -149,7 +148,6 @@ function init() {
 
   container.appendChild(renderer.domElement);
 
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
 
   // controls

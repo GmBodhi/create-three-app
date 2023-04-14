@@ -14,7 +14,6 @@ import {
   BoxGeometry,
   MeshStandardMaterial,
   WebGLRenderer,
-  SRGBColorSpace,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
@@ -102,9 +101,9 @@ function init() {
   for (let i = 0; i < BOXES; i++) {
     const intensity = (i + 1) / BOXES;
     const w = 0.1;
-    const h = 0.1;
-    const minH = 1;
-    const geometry = new BoxGeometry(w, h * i + minH, w);
+    const h = 0.05 * i + 0.5;
+    const geometry = new BoxGeometry(w, h, w);
+    geometry.translate(0, h / 2, 0);
     const material = new MeshStandardMaterial({
       color: new Color(intensity, 0.1, 0.1),
       roughness: 0.7,
@@ -128,7 +127,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);

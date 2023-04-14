@@ -14,7 +14,6 @@ import {
   HemisphereLight,
   DirectionalLight,
   WebGLRenderer,
-  SRGBColorSpace,
   PlaneGeometry,
   TorusKnotGeometry,
 } from "three";
@@ -307,7 +306,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   renderer.xr.cameraAutoUpdate = false;

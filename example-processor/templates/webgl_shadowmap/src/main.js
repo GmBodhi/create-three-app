@@ -9,7 +9,6 @@ import {
   AmbientLight,
   SpotLight,
   WebGLRenderer,
-  SRGBColorSpace,
   PCFShadowMap,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -98,7 +97,6 @@ function init() {
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   container.appendChild(renderer.domElement);
 
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.autoClear = false;
 
   //

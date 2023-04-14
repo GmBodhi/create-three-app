@@ -10,7 +10,6 @@ import {
   PointLight,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  SRGBColorSpace,
 } from "three";
 import {
   MeshPhysicalNodeMaterial,
@@ -134,8 +133,6 @@ function init() {
   renderer.toneMappingExposure = 1.25;
 
   //
-
-  renderer.outputColorSpace = SRGBColorSpace;
 
   //
 

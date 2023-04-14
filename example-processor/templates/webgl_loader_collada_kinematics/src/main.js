@@ -10,7 +10,6 @@ import {
   HemisphereLight,
   PointLight,
   WebGLRenderer,
-  SRGBColorSpace,
   MathUtils,
 } from "three";
 
@@ -90,7 +89,6 @@ function init() {
   particleLight.add(pointLight);
 
   renderer = new WebGLRenderer();
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

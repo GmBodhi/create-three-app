@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   WebGLRenderer,
-  SRGBColorSpace,
   Scene,
   Color,
   GridHelper,
@@ -41,7 +40,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   //

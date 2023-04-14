@@ -11,7 +11,6 @@ import {
   TextureLoader,
   Points,
   WebGLRenderer,
-  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -84,7 +83,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.useLegacyLights = false;
 
   container.appendChild(renderer.domElement);

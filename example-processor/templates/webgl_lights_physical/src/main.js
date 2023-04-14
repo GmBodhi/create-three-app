@@ -207,7 +207,6 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.useLegacyLights = false;
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = ReinhardToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);

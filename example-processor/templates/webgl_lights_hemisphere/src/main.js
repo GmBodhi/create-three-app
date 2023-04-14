@@ -23,7 +23,6 @@ import {
   BackSide,
   AnimationMixer,
   WebGLRenderer,
-  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -157,7 +156,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
 
   // STATS

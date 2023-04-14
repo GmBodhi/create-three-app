@@ -3,18 +3,14 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  LinearMipmapLinearFilter,
-  PointLight,
-  WebGLRenderer,
-  LinearToneMapping,
-  SRGBColorSpace,
+  EquirectangularReflectionMapping,
+  ACESFilmicToneMapping,
 } from "three";
-import { cubeTexture, texture, normalMap, toneMapping } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
-import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -44,59 +40,40 @@ function init() {
 
   scene = new Scene();
 
-  const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
+  new RGBELoader()
+    .setPath("textures/equirectangular/")
+    .load("royal_esplanade_1k.hdr", function (texture) {
+      texture.mapping = EquirectangularReflectionMapping;
 
-  const cubeMap = new RGBMLoader()
-    .setMaxRange(16)
-    .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemap(rgbmUrls);
+      scene.background = texture;
+      scene.environment = texture;
 
-  cubeMap.generateMipmaps = true;
-  cubeMap.minFilter = LinearMipmapLinearFilter;
+      render();
 
-  scene.environmentNode = cubeTexture(cubeMap);
-  scene.backgroundNode = scene.environmentNode;
+      // model
 
-  const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
-  loader.load("DamagedHelmet.gltf", function (gltf) {
-    //const light = new PointLight( 0xffffff );
-    //camera.add( light );
+      const loader = new GLTFLoader().setPath(
+        "models/gltf/DamagedHelmet/glTF/"
+      );
+      loader.load("DamagedHelmet.gltf", function (gltf) {
+        scene.add(gltf.scene);
 
-    const mesh = gltf.scene.children[0];
-    const material = mesh.material;
+        render();
+      });
+    });
 
-    const oldNormalMap = material.normalMap;
-    material.normalNode = normalMap(texture(oldNormalMap));
-    material.normalMap = null; // ignore non-node normalMap material
-
-    // optional: use tangent to compute normalMap
-    mesh.geometry.computeTangents();
-
-    scene.add(gltf.scene);
-
-    render();
-  });
-
-  renderer = new WebGPURenderer();
-
-  /*// WebGLRenderer comparation test
-				renderer = new WebGLRenderer( { antialias: false } );
-				renderer.toneMapping = LinearToneMapping;
-				renderer.toneMappingExposure = 1;
-				scene.environment = cubeTexture;
-				document.getElementById( 'info' ).innerText = 'WebGL';
-				/**/
-
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(render);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
-  renderer.outputColorSpace = SRGBColorSpace;
+  renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
+  controls.addEventListener("change", render); // use if there is no animation loop
   controls.minDistance = 2;
   controls.maxDistance = 10;
+  controls.target.set(0, 0, -0.2);
+  controls.update();
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -106,6 +83,8 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
+
+  render();
 }
 
 //

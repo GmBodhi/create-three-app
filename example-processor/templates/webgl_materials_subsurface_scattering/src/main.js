@@ -10,7 +10,6 @@ import {
   MeshBasicMaterial,
   PointLight,
   WebGLRenderer,
-  SRGBColorSpace,
   TextureLoader,
   RepeatWrapping,
   UniformsUtils,
@@ -78,7 +77,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
-  renderer.outputColorSpace = SRGBColorSpace;
 
   //
 

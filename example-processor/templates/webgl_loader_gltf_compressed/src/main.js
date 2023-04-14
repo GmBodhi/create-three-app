@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   WebGLRenderer,
   ACESFilmicToneMapping,
-  SRGBColorSpace,
   PerspectiveCamera,
   PMREMGenerator,
   Scene,
@@ -32,7 +31,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
-  renderer.outputColorSpace = SRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(

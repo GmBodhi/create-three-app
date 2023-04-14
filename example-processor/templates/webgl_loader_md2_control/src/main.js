@@ -119,7 +119,6 @@ function init() {
 
   //
 
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
 

@@ -18,9 +18,9 @@ import {
   TorusGeometry,
   MeshStandardMaterial,
   WebGLRenderer,
-  SRGBColorSpace,
-  BufferGeometry,
+  Plane,
   Vector3,
+  BufferGeometry,
   Line,
   Raycaster,
 } from "three";
@@ -124,12 +124,16 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
   document.body.appendChild(XRButton.createButton(renderer));
+
+  // clipping
+
+  const floorClipping = new Plane(new Vector3(0, 1, 0));
+  renderer.clippingPlanes = [floorClipping];
 
   // controllers
 

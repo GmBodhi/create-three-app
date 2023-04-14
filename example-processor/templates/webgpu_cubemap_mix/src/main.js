@@ -6,7 +6,6 @@ import {
   LinearMipmapLinearFilter,
   CubeTextureLoader,
   LinearToneMapping,
-  SRGBColorSpace,
 } from "three";
 import {
   mix,
@@ -93,7 +92,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 

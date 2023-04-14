@@ -13,7 +13,6 @@ import {
   MeshPhongMaterial,
   GridHelper,
   WebGLRenderer,
-  SRGBColorSpace,
   AnimationMixer,
   LoopOnce,
 } from "three";
@@ -94,7 +93,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

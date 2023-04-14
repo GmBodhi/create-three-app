@@ -8,7 +8,6 @@ import {
   AnimationMixer,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  SRGBColorSpace,
 } from "three";
 import { NodeMaterial, float, texture } from "three/nodes";
 
@@ -91,7 +90,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
-  renderer.outputColorSpace = SRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);

@@ -10,7 +10,6 @@ import {
   HemisphereLight,
   DirectionalLight,
   WebGLRenderer,
-  SRGBColorSpace,
   BufferGeometry,
   Vector3,
   Line,
@@ -80,7 +79,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
 

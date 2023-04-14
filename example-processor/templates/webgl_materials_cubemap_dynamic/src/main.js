@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  SRGBColorSpace,
   ACESFilmicToneMapping,
   PerspectiveCamera,
   Scene,
@@ -37,7 +36,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animation);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 

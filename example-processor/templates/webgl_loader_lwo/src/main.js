@@ -8,7 +8,6 @@ import {
   DirectionalLight,
   GridHelper,
   WebGLRenderer,
-  SRGBColorSpace,
   ACESFilmicToneMapping,
 } from "three";
 
@@ -64,7 +63,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animation);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 

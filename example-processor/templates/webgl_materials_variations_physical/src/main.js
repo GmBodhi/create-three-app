@@ -14,7 +14,6 @@ import {
   DirectionalLight,
   PointLight,
   WebGLRenderer,
-  SRGBColorSpace,
   ACESFilmicToneMapping,
 } from "three";
 
@@ -151,7 +150,6 @@ function init(font) {
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.75;
 

@@ -18,7 +18,6 @@ import {
   BoxGeometry,
   MeshBasicMaterial,
   WebGLRenderer,
-  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -141,7 +140,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 

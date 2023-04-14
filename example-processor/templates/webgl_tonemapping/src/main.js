@@ -8,7 +8,6 @@ import {
   ACESFilmicToneMapping,
   CustomToneMapping,
   WebGLRenderer,
-  SRGBColorSpace,
   ShaderChunk,
   Scene,
   PerspectiveCamera,
@@ -51,8 +50,6 @@ async function init() {
 
   renderer.toneMapping = toneMappingOptions[params.toneMapping];
   renderer.toneMappingExposure = params.exposure;
-
-  renderer.outputColorSpace = SRGBColorSpace;
 
   // Set CustomToneMapping to Uncharted2
   // source: http://filmicworlds.com/blog/filmic-tonemapping-operators/

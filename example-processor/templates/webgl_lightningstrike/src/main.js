@@ -5,7 +5,6 @@ import {
   Raycaster,
   Vector2,
   WebGLRenderer,
-  SRGBColorSpace,
   Scene,
   Color,
   PerspectiveCamera,
@@ -21,6 +20,7 @@ import {
   DoubleSide,
   CubeTextureLoader,
   CubeReflectionMapping,
+  SRGBColorSpace,
   MeshPhysicalMaterial,
   SphereGeometry,
   Sphere,
@@ -69,7 +69,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
 
   container.appendChild(renderer.domElement);
 

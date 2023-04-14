@@ -200,8 +200,6 @@ function init() {
 
   //
 
-  renderer.outputColorSpace = SRGBColorSpace;
-
   //
 
   stats = new Stats();

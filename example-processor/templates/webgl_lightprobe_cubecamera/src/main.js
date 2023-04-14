@@ -2,13 +2,13 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  SRGBColorSpace,
   Scene,
   PerspectiveCamera,
   WebGLCubeRenderTarget,
   CubeCamera,
   LightProbe,
   CubeTextureLoader,
+  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -27,7 +27,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
-  renderer.outputColorSpace = SRGBColorSpace;
 
   // scene
   scene = new Scene();

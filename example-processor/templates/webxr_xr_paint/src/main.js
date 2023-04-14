@@ -9,7 +9,6 @@ import {
   HemisphereLight,
   DirectionalLight,
   WebGLRenderer,
-  SRGBColorSpace,
   Mesh,
   IcosahedronGeometry,
   Group,
@@ -69,7 +68,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 

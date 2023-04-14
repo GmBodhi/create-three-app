@@ -7,7 +7,6 @@ import {
   Scene,
   GridHelper,
   WebGLRenderer,
-  SRGBColorSpace,
   ACESFilmicToneMapping,
 } from "three";
 
@@ -94,7 +93,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   document.body.appendChild(renderer.domElement);

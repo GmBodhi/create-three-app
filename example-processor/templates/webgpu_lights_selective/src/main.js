@@ -8,7 +8,6 @@ import {
   RepeatWrapping,
   Mesh,
   PointLight,
-  SRGBColorSpace,
   ACESFilmicToneMapping,
 } from "three";
 import {
@@ -143,7 +142,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.2;
 

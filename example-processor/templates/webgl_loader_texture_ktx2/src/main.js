@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  SRGBColorSpace,
   Scene,
   Color,
   PerspectiveCamera,
@@ -35,7 +34,6 @@ async function init() {
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
-  renderer.outputColorSpace = SRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

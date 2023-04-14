@@ -14,7 +14,6 @@ import {
   AnimationMixer,
   AnimationUtils,
   WebGLRenderer,
-  SRGBColorSpace,
   PerspectiveCamera,
 } from "three";
 
@@ -129,7 +128,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 

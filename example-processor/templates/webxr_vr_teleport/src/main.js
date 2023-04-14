@@ -15,7 +15,6 @@ import {
   PlaneGeometry,
   Raycaster,
   WebGLRenderer,
-  SRGBColorSpace,
   Quaternion,
   BufferGeometry,
   Float32BufferAttribute,
@@ -81,7 +80,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
 
   renderer.xr.addEventListener(
     "sessionstart",

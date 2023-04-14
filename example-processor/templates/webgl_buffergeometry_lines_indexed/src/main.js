@@ -10,7 +10,6 @@ import {
   LineSegments,
   Object3D,
   WebGLRenderer,
-  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -179,7 +178,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = SRGBColorSpace;
 
   container.appendChild(renderer.domElement);
 

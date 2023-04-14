@@ -16,7 +16,6 @@ import {
   DynamicDrawUsage,
   IcosahedronGeometry,
   WebGLRenderer,
-  SRGBColorSpace,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OimoPhysics } from "three/addons/physics/OimoPhysics.js";
@@ -121,7 +120,6 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
-  renderer.outputColorSpace = SRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();

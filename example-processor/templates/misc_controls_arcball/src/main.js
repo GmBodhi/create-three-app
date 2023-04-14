@@ -2,12 +2,12 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  SRGBColorSpace,
   ReinhardToneMapping,
   Scene,
   HemisphereLight,
   MeshStandardMaterial,
   TextureLoader,
+  SRGBColorSpace,
   RepeatWrapping,
   EquirectangularReflectionMapping,
   MathUtils,
@@ -82,7 +82,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ReinhardToneMapping;
   renderer.toneMappingExposure = 3;
   renderer.domElement.style.background =

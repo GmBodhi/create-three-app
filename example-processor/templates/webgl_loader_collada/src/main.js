@@ -8,7 +8,6 @@ import {
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
-  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -62,7 +61,6 @@ function init() {
   //
 
   renderer = new WebGLRenderer();
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

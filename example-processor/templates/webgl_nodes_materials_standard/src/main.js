@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  SRGBColorSpace,
   ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
@@ -11,6 +10,7 @@ import {
   LoadingManager,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   PMREMGenerator,
 } from "three";
 import {
@@ -46,7 +46,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.toneMapping = ReinhardToneMapping;
   renderer.toneMappingExposure = 3;
 

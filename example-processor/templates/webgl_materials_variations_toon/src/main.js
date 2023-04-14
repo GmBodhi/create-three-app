@@ -5,7 +5,6 @@ import {
   Scene,
   Color,
   WebGLRenderer,
-  SRGBColorSpace,
   RedFormat,
   LuminanceFormat,
   SphereGeometry,
@@ -59,7 +58,6 @@ function init(font) {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
-  renderer.outputColorSpace = SRGBColorSpace;
 
   // Materials
 

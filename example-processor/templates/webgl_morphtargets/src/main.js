@@ -10,7 +10,6 @@ import {
   MeshPhongMaterial,
   Mesh,
   WebGLRenderer,
-  SRGBColorSpace,
   BoxGeometry,
   Vector3,
   Float32BufferAttribute,
@@ -61,7 +60,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.useLegacyLights = false;
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setAnimationLoop(function () {
     renderer.render(scene, camera);
   });

@@ -6,7 +6,6 @@ import {
   AmbientLight,
   PointLight,
   WebGLRenderer,
-  SRGBColorSpace,
 } from "three";
 
 import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
@@ -76,7 +75,6 @@ function init() {
   //
 
   renderer = new WebGLRenderer();
-  renderer.outputColorSpace = SRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

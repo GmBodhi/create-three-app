@@ -5,7 +5,6 @@ import {
   Scene,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  SRGBColorSpace,
   TorusKnotGeometry,
   MeshStandardMaterial,
   Mesh,
@@ -14,6 +13,7 @@ import {
   DefaultLoadingManager,
   EquirectangularReflectionMapping,
   TextureLoader,
+  SRGBColorSpace,
   PMREMGenerator,
 } from "three";
 
@@ -61,7 +61,6 @@ function init() {
   container.appendChild(renderer.domElement);
 
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.outputColorSpace = SRGBColorSpace;
 
   //
 
