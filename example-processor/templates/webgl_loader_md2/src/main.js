@@ -226,6 +226,7 @@ function setupWeaponsGUI(character) {
   const generateCallback = function (index) {
     return function () {
       character.setWeapon(index);
+      character.setWireframe(playbackConfig.wireframe);
     };
   };
 
