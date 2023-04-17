@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   LinearSRGBColorSpace,
   Scene,
@@ -19,6 +20,8 @@ import {
 
 import * as CameraUtils from "three/addons/utils/CameraUtils.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer;
 

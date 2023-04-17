@@ -1,11 +1,11 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Scene,
   Color,
   FogExp2,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   PerspectiveCamera,
   CylinderGeometry,
   MeshPhongMaterial,
@@ -15,6 +15,8 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = true;
 
 let camera, controls, scene, renderer;
 
@@ -30,7 +32,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(

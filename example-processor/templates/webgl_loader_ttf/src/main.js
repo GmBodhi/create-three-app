@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Vector3,
   Scene,
@@ -20,6 +21,8 @@ import {
 import { TTFLoader } from "three/addons/loaders/TTFLoader.js";
 import { Font } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container;
 let camera, cameraTarget, scene, renderer;

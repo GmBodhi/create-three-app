@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   WebGLRenderer,
   LinearSRGBColorSpace,
@@ -18,6 +19,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Refractor } from "three/addons/objects/Refractor.js";
 import { WaterRefractionShader } from "three/addons/shaders/WaterRefractionShader.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer, clock;
 

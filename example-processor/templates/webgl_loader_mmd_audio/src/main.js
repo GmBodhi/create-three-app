@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -18,6 +19,8 @@ import {
 import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
 import { MMDLoader } from "three/addons/loaders/MMDLoader.js";
 import { MMDAnimationHelper } from "three/addons/animation/MMDAnimationHelper.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let mesh, camera, scene, renderer, effect;
 let helper;

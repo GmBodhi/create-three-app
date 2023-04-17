@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Vector3,
   Color,
   PerspectiveCamera,
@@ -9,16 +10,18 @@ import {
   HemisphereLight,
   Raycaster,
   PlaneGeometry,
+  SRGBColorSpace,
   Float32BufferAttribute,
   MeshBasicMaterial,
   Mesh,
   BoxGeometry,
   MeshPhongMaterial,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { PointerLockControls } from "three/addons/controls/PointerLockControls.js";
+
+ColorManagement.enabled = true;
 
 let camera, scene, renderer, controls;
 
@@ -162,7 +165,12 @@ function init() {
   const colorsFloor = [];
 
   for (let i = 0, l = position.count; i < l; i++) {
-    color.setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
+    color.setHSL(
+      Math.random() * 0.3 + 0.5,
+      0.75,
+      Math.random() * 0.25 + 0.75,
+      SRGBColorSpace
+    );
     colorsFloor.push(color.r, color.g, color.b);
   }
 
@@ -184,7 +192,12 @@ function init() {
   const colorsBox = [];
 
   for (let i = 0, l = position.count; i < l; i++) {
-    color.setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
+    color.setHSL(
+      Math.random() * 0.3 + 0.5,
+      0.75,
+      Math.random() * 0.25 + 0.75,
+      SRGBColorSpace
+    );
     colorsBox.push(color.r, color.g, color.b);
   }
 
@@ -199,7 +212,8 @@ function init() {
     boxMaterial.color.setHSL(
       Math.random() * 0.2 + 0.5,
       0.75,
-      Math.random() * 0.25 + 0.75
+      Math.random() * 0.25 + 0.75,
+      SRGBColorSpace
     );
 
     const box = new Mesh(boxGeometry, boxMaterial);
@@ -216,7 +230,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   //

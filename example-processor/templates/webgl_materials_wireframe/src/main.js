@@ -6,6 +6,7 @@ import fragmentShader_ from "./shaders/fragmentShader.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   LinearSRGBColorSpace,
   Scene,
@@ -22,6 +23,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 const API = {
   thickness: 1,

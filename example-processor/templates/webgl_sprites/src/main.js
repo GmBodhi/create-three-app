@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   OrthographicCamera,
   Scene,
@@ -12,6 +13,8 @@ import {
   WebGLRenderer,
   LinearSRGBColorSpace,
 } from "three";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer;
 let cameraOrtho, sceneOrtho;

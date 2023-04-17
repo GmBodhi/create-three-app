@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Vector2,
   Scene,
   PerspectiveCamera,
@@ -23,6 +24,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { Flow } from "three/addons/modifiers/CurveModifier.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 const ACTION_SELECT = 1,
   ACTION_NONE = 0;

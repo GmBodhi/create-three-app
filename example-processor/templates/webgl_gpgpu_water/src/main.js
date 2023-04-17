@@ -8,6 +8,7 @@ import waterVertexShader_ from "./shaders/waterVertexShader.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Vector2,
   Raycaster,
   Vector3,
@@ -39,6 +40,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 // Texture width for simulation
 const WIDTH = 128;

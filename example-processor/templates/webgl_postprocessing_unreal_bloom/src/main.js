@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   WebGLRenderer,
   LinearSRGBColorSpace,
@@ -21,6 +22,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, stats;
 let composer, renderer, mixer, clock;

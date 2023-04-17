@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   LinearSRGBColorSpace,
   Scene,
@@ -17,6 +18,8 @@ import { EdgeSplitModifier } from "three/addons/modifiers/EdgeSplitModifier.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let renderer, scene, camera;
 let modifier, mesh, baseGeometry;

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   AmbientLight,
@@ -21,6 +22,8 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ShadowMapViewer } from "three/addons/utils/ShadowMapViewer.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer, clock, stats;
 let dirLight, spotLight;

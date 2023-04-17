@@ -6,6 +6,7 @@ import fragmentShaderVelocity_ from "./shaders/fragmentShaderVelocity.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   BufferGeometry,
   DataTexture,
   RGBAFormat,
@@ -29,6 +30,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 /* TEXTURE WIDTH FOR SIMULATION */
 const WIDTH = 64;

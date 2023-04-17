@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   FogExp2,
@@ -35,6 +36,8 @@ import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer, stats;
 

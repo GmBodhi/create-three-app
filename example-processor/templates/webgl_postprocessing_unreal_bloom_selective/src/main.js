@@ -6,6 +6,7 @@ import fragmentshader_ from "./shaders/fragmentshader.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Layers,
   MeshBasicMaterial,
   WebGLRenderer,
@@ -29,6 +30,8 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 const ENTIRE_SCENE = 0,
   BLOOM_SCENE = 1;

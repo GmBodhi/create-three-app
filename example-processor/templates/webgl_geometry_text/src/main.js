@@ -2,6 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   Cache,
+  ColorManagement,
   PerspectiveCamera,
   Vector3,
   Scene,
@@ -24,6 +25,7 @@ import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 Cache.enabled = true;
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container;
 

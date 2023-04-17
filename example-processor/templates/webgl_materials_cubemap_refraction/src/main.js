@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
   CubeRefractionMapping,
@@ -18,6 +19,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container, stats;
 

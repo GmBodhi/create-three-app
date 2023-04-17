@@ -20,6 +20,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Reflector } from "three/addons/objects/Reflector.js";
 
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
+
 let camera, scene, renderer;
 
 let cameraControls;

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   LinearSRGBColorSpace,
   Scene,
@@ -12,6 +13,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { SimplifyModifier } from "three/addons/modifiers/SimplifyModifier.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let renderer, scene, camera;
 

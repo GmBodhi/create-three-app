@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   TextureLoader,
   PerspectiveCamera,
   Scene,
@@ -17,6 +18,8 @@ import {
   WebGLRenderer,
   LinearSRGBColorSpace,
 } from "three";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer;
 let mapBg;

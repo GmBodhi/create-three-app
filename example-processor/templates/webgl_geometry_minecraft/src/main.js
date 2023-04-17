@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -23,6 +24,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container, stats;
 

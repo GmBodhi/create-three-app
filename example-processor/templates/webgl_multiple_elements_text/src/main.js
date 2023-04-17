@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   WebGLRenderer,
   LinearSRGBColorSpace,
@@ -16,6 +17,8 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 const scenes = [];
 

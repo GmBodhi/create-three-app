@@ -1,11 +1,11 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Scene,
   Color,
   FogExp2,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   PerspectiveCamera,
   BoxGeometry,
   MeshPhongMaterial,
@@ -17,6 +17,8 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { MapControls } from "three/addons/controls/MapControls.js";
+
+ColorManagement.enabled = true;
 
 let camera, controls, scene, renderer;
 
@@ -32,7 +34,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -64,7 +65,7 @@ function init() {
   const geometry = new BoxGeometry(1, 1, 1);
   geometry.translate(0, 0.5, 0);
   const material = new MeshPhongMaterial({
-    color: 0xffffff,
+    color: 0xeeeeee,
     flatShading: true,
   });
 

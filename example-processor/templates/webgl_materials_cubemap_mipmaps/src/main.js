@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   CubeTextureLoader,
   LinearMipMapLinearFilter,
   LinearFilter,
@@ -14,6 +15,8 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container;
 

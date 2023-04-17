@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   ShapePath,
   Vector2,
   Color,
@@ -20,6 +21,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 // From d3-threeD.js
 /* This Source Code Form is subject to the terms of the Mozilla Public

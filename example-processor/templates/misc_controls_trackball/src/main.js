@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   OrthographicCamera,
   Scene,
@@ -12,13 +13,14 @@ import {
   DirectionalLight,
   AmbientLight,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
+
+ColorManagement.enabled = true;
 
 let perspectiveCamera, orthographicCamera, controls, scene, renderer, stats;
 
@@ -87,7 +89,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -18,6 +19,8 @@ import {
   WebGLRenderer,
   LinearSRGBColorSpace,
 } from "three";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 const SCREEN_WIDTH = window.innerWidth;
 const SCREEN_HEIGHT = window.innerHeight;

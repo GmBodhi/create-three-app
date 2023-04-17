@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   ShaderChunk,
   DataTexture,
   RGBAFormat,
@@ -33,6 +34,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 // Simple form of tiled forward lighting
 // using texels as bitmasks of 32 lights
