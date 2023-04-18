@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   Raycaster,
   Vector2,
@@ -40,6 +41,8 @@ import { LightningStorm } from "three/addons/objects/LightningStorm.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 

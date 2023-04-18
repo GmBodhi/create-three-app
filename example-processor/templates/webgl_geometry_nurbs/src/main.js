@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -27,8 +26,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { NURBSCurve } from "three/addons/curves/NURBSCurve.js";
 import { NURBSSurface } from "three/addons/curves/NURBSSurface.js";
 import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.js";
-
-ColorManagement.enabled = true;
 
 let container, stats;
 

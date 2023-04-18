@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -19,8 +18,6 @@ import {
   DirectionalLight,
   WebGLRenderer,
 } from "three";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer;
 let plane;

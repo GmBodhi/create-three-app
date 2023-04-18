@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   TextureLoader,
   PerspectiveCamera,
@@ -23,8 +22,6 @@ import {
 } from "three/addons/renderers/CSS2DRenderer.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-ColorManagement.enabled = true;
 
 let gui;
 

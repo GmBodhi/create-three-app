@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Raycaster,
   Vector2,
   WebGLRenderer,
@@ -15,8 +14,6 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = true;
 
 let renderer, scene, camera;
 let group;

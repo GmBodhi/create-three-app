@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector3,
   Color,
   PerspectiveCamera,
@@ -20,8 +19,6 @@ import {
 } from "three";
 
 import { PointerLockControls } from "three/addons/controls/PointerLockControls.js";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer, controls;
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -19,6 +20,8 @@ import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
 import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
 import { DotScreenShader } from "three/addons/shaders/DotScreenShader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, renderer, composer;
 let object;

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
   SRGBColorSpace,
@@ -24,6 +25,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 

@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -14,8 +13,6 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-ColorManagement.enabled = true;
 
 let container, stats;
 let camera, scene, renderer;

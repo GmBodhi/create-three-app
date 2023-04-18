@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -13,6 +14,8 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { LWOLoader } from "three/addons/loaders/LWOLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 

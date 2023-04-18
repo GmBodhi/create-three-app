@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Vector3,
   Clock,
   Scene,
@@ -26,6 +27,8 @@ import {
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 let controller1, controller2;

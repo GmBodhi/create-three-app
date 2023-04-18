@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -16,6 +17,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let renderer, scene, camera;
 let stats;

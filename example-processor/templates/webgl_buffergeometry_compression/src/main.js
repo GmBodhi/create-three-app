@@ -7,7 +7,6 @@ import {
   TextureLoader,
   RepeatWrapping,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   Scene,
   PerspectiveCamera,
   AmbientLight,
@@ -83,7 +82,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   //

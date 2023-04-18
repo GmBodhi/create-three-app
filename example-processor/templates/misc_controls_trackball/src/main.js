@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   OrthographicCamera,
   Scene,
@@ -19,8 +18,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
-
-ColorManagement.enabled = true;
 
 let perspectiveCamera, orthographicCamera, controls, scene, renderer, stats;
 

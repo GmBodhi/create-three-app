@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Clock,
   Scene,
@@ -18,6 +19,8 @@ import {
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 let clock;

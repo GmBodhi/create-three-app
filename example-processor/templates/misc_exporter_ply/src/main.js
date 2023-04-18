@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -19,6 +20,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { PLYExporter } from "three/addons/exporters/PLYExporter.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let scene, camera, renderer, exporter, mesh;
 

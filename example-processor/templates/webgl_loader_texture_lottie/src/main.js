@@ -5,10 +5,10 @@ import {
   Scene,
   Color,
   TextureLoader,
+  SRGBColorSpace,
   MeshStandardMaterial,
   Mesh,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   PMREMGenerator,
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
@@ -41,6 +41,7 @@ function init() {
       setupControls(texture.animation);
 
       // texture = new TextureLoader().load( 'textures/uv_grid_directx.jpg' );
+      // texture.colorSpace = SRGBColorSpace;
 
       const geometry = new RoundedBoxGeometry(1, 1, 1, 7, 0.2);
       const material = new MeshStandardMaterial({
@@ -53,7 +54,6 @@ function init() {
   );
 
   renderer = new WebGLRenderer();
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

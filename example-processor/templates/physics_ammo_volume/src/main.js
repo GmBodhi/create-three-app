@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   Vector2,
   Raycaster,
@@ -27,8 +26,6 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
-
-ColorManagement.enabled = true;
 
 // Graphics variables
 let container, stats;

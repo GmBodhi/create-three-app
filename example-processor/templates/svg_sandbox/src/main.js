@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -25,6 +26,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { SVGRenderer, SVGObject } from "three/addons/renderers/SVGRenderer.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer, stats;
 

@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   WebGLRenderer,
   PerspectiveCamera,
@@ -24,8 +23,6 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ConvexGeometry } from "three/addons/geometries/ConvexGeometry.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
-
-ColorManagement.enabled = true;
 
 let group, camera, scene, renderer;
 

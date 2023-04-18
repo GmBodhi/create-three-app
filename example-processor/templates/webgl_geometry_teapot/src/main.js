@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   AmbientLight,
   DirectionalLight,
@@ -22,6 +23,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 let cameraControls;

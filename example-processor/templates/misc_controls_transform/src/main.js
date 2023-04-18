@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   OrthographicCamera,
@@ -18,8 +17,6 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
-
-ColorManagement.enabled = true;
 
 let cameraPersp, cameraOrtho, currentCamera;
 let scene, renderer, control, orbit;

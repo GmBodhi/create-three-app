@@ -6,7 +6,6 @@ import {
   HemisphereLight,
   DirectionalLight,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -31,7 +30,7 @@ function init() {
 
   // light
 
-  const hemiLight = new HemisphereLight(0x888888, 0x444444, 1);
+  const hemiLight = new HemisphereLight(0xcccccc, 0x444444, 1);
   scene.add(hemiLight);
 
   const dirLight = new DirectionalLight(0xffffff, 0.75);
@@ -58,7 +57,6 @@ function init() {
   // renderer
 
   renderer = new WebGLRenderer();
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

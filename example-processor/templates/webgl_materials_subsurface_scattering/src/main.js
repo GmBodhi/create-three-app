@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   AmbientLight,
@@ -23,6 +24,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SubsurfaceScatteringShader } from "three/addons/shaders/SubsurfaceScatteringShader.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 let camera, scene, renderer;

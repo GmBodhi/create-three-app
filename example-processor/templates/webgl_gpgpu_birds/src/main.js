@@ -8,6 +8,7 @@ import birdFS_ from "./shaders/birdFS.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   BufferGeometry,
   BufferAttribute,
   Color,
@@ -27,6 +28,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 /* TEXTURE WIDTH FOR SIMULATION */
 const WIDTH = 32;

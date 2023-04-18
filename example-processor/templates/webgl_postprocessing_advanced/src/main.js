@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   OrthographicCamera,
   PerspectiveCamera,
   Scene,
@@ -41,6 +42,8 @@ import { VignetteShader } from "three/addons/shaders/VignetteShader.js";
 import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 

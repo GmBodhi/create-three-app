@@ -30,8 +30,6 @@ let sphereGroup, smallSphere;
 
 let groundMirror, verticalMirror;
 
-ColorManagement.enabled = true;
-
 init();
 animate();
 

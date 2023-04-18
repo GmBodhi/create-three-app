@@ -10,10 +10,10 @@ import {
   DirectionalLight,
   TextureLoader,
   MeshPhongMaterial,
+  SRGBColorSpace,
   RepeatWrapping,
   PlaneGeometry,
   Mesh,
-  LinearSRGBColorSpace,
   MathUtils,
 } from "three";
 
@@ -74,6 +74,7 @@ function init() {
   const texture1 = textureLoader.load("textures/crate.gif");
   const material1 = new MeshPhongMaterial({ color: 0xffffff, map: texture1 });
 
+  texture1.colorSpace = SRGBColorSpace;
   texture1.anisotropy = maxAnisotropy;
   texture1.wrapS = texture1.wrapT = RepeatWrapping;
   texture1.repeat.set(512, 512);
@@ -81,6 +82,7 @@ function init() {
   const texture2 = textureLoader.load("textures/crate.gif");
   const material2 = new MeshPhongMaterial({ color: 0xffffff, map: texture2 });
 
+  texture2.colorSpace = SRGBColorSpace;
   texture2.anisotropy = 1;
   texture2.wrapS = texture2.wrapT = RepeatWrapping;
   texture2.repeat.set(512, 512);
@@ -110,7 +112,6 @@ function init() {
 
   // RENDERER
 
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.autoClear = false;

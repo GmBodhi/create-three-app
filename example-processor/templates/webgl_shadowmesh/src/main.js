@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   PerspectiveCamera,
   Clock,
@@ -23,8 +22,6 @@ import {
 } from "three";
 
 import { ShadowMesh } from "three/addons/objects/ShadowMesh.js";
-
-ColorManagement.enabled = true;
 
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;

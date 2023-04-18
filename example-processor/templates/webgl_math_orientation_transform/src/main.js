@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Spherical,
   Matrix4,
   Quaternion,
@@ -15,8 +14,6 @@ import {
   MeshBasicMaterial,
   WebGLRenderer,
 } from "three";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer, mesh, target;
 

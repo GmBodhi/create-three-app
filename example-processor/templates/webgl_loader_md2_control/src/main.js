@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -24,6 +25,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { MD2CharacterComplex } from "three/addons/misc/MD2CharacterComplex.js";
 import { Gyroscope } from "three/addons/misc/Gyroscope.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;

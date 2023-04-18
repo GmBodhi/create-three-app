@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -25,6 +26,8 @@ import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.j
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 const SHADOW_MAP_WIDTH = 2048,
   SHADOW_MAP_HEIGHT = 1024;

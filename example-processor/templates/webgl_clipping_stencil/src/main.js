@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Group,
   MeshBasicMaterial,
   AlwaysStencilFunc,
@@ -30,8 +29,6 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer, object, stats;
 let planes, planeObjects, planeHelpers;

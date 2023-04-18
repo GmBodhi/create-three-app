@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   Vector2,
   Raycaster,
@@ -26,8 +25,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ConvexObjectBreaker } from "three/addons/misc/ConvexObjectBreaker.js";
 import { ConvexGeometry } from "three/addons/geometries/ConvexGeometry.js";
-
-ColorManagement.enabled = true;
 
 // - Global variables -
 

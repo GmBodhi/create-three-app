@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   DataTexture,
   RGBAFormat,
   LinearFilter,
@@ -44,6 +45,8 @@ import {
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 function exportGLTF(input) {
   const gltfExporter = new GLTFExporter();

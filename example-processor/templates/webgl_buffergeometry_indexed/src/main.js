@@ -6,12 +6,12 @@ import {
   Color,
   HemisphereLight,
   BufferGeometry,
+  SRGBColorSpace,
   Float32BufferAttribute,
   MeshPhongMaterial,
   DoubleSide,
   Mesh,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -59,6 +59,8 @@ function init() {
   const halfSize = size / 2;
   const segmentSize = size / segments;
 
+  const _color = new Color();
+
   // generate vertices, normals and color data for a simple grid geometry
 
   for (let i = 0; i <= segments; i++) {
@@ -73,7 +75,9 @@ function init() {
       const r = x / size + 0.5;
       const g = y / size + 0.5;
 
-      colors.push(r, g, 1);
+      _color.setRGB(r, g, 1, SRGBColorSpace);
+
+      colors.push(_color.r, _color.g, _color.b);
     }
   }
 
@@ -113,7 +117,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   //

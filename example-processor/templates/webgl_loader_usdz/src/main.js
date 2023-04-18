@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -12,6 +13,8 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { USDZLoader } from "three/addons/loaders/USDZLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 

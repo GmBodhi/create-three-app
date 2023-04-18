@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   Scene,
   Color,
@@ -26,8 +25,6 @@ import {
   SkyGeometry,
 } from "three/addons/misc/RollerCoaster.js";
 import { VRButton } from "three/addons/webxr/VRButton.js";
-
-ColorManagement.enabled = true;
 
 let mesh, material, geometry;
 

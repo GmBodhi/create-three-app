@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
@@ -16,8 +15,6 @@ import {
 } from "three";
 
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
-
-ColorManagement.enabled = true;
 
 let mouseX = 0,
   mouseY = 0;

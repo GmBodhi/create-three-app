@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -12,8 +11,6 @@ import {
   WebGLRenderer,
   MathUtils,
 } from "three";
-
-ColorManagement.enabled = true;
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

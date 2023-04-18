@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -18,8 +17,6 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { SelectionBox } from "three/addons/interactive/SelectionBox.js";
 import { SelectionHelper } from "three/addons/interactive/SelectionHelper.js";
-
-ColorManagement.enabled = true;
 
 let container, stats;
 let camera, scene, renderer;

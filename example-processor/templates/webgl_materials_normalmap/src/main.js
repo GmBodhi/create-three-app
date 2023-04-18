@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -28,6 +29,8 @@ import { BleachBypassShader } from "three/addons/shaders/BleachBypassShader.js";
 import { ColorCorrectionShader } from "three/addons/shaders/ColorCorrectionShader.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
 import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats, loader;
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -18,6 +19,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 let camera, scene, renderer;

@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
@@ -25,8 +24,6 @@ import { Line2 } from "three/addons/lines/Line2.js";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
 import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
-
-ColorManagement.enabled = true;
 
 let line, renderer, scene, camera, camera2, controls;
 let line1;

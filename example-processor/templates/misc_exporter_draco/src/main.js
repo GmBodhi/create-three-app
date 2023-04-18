@@ -13,7 +13,6 @@ import {
   GridHelper,
   TorusKnotGeometry,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -63,7 +62,7 @@ function init() {
 
   const ground = new Mesh(
     new PlaneGeometry(2000, 2000),
-    new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    new MeshPhongMaterial({ color: 0xbbbbbb, depthWrite: false })
   );
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = -75;
@@ -90,7 +89,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 

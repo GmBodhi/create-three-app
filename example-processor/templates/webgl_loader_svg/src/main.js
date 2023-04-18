@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   WebGLRenderer,
   Scene,
@@ -15,6 +16,8 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let renderer, scene, camera, gui, guiData;
 

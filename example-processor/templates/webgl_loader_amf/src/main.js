@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   Color,
   AmbientLight,
@@ -14,8 +13,6 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { AMFLoader } from "three/addons/loaders/AMFLoader.js";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer;
 

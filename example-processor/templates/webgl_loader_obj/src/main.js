@@ -7,8 +7,8 @@ import {
   PointLight,
   LoadingManager,
   TextureLoader,
+  SRGBColorSpace,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
@@ -68,6 +68,7 @@ function init() {
 
   const textureLoader = new TextureLoader(manager);
   const texture = textureLoader.load("textures/uv_grid_opengl.jpg");
+  texture.colorSpace = SRGBColorSpace;
 
   // model
 
@@ -95,7 +96,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   document.addEventListener("mousemove", onDocumentMouseMove);

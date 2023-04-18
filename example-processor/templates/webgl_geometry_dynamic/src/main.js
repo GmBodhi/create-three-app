@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Clock,
   Scene,
@@ -20,8 +19,6 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
-
-ColorManagement.enabled = true;
 
 let camera, controls, scene, renderer, stats;
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Vector3,
   PerspectiveCamera,
   Scene,
@@ -20,6 +21,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OimoPhysics } from "three/addons/physics/OimoPhysics.js";
 import Stats from "three/addons/libs/stats.module.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer, stats;
 let physics, position;

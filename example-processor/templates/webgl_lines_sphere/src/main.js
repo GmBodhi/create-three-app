@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   LineBasicMaterial,
@@ -11,8 +10,6 @@ import {
   Vector3,
   Float32BufferAttribute,
 } from "three";
-
-ColorManagement.enabled = true;
 
 const SCREEN_WIDTH = window.innerWidth,
   SCREEN_HEIGHT = window.innerHeight,

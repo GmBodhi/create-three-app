@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Vector3,
   Scene,
@@ -18,6 +19,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 

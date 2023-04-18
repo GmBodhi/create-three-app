@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
@@ -11,8 +10,6 @@ import {
   Color,
   PMREMGenerator,
 } from "three";
-
-ColorManagement.enabled = true;
 
 let scene, camera, renderer, radianceMap;
 

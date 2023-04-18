@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -20,8 +19,6 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { VertexNormalsHelper } from "three/addons/helpers/VertexNormalsHelper.js";
 import { VertexTangentsHelper } from "three/addons/helpers/VertexTangentsHelper.js";
-
-ColorManagement.enabled = true;
 
 let scene, renderer;
 let camera, light;

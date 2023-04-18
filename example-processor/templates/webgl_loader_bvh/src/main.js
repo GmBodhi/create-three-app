@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   SkeletonHelper,
   AnimationMixer,
@@ -14,8 +13,6 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { BVHLoader } from "three/addons/loaders/BVHLoader.js";
-
-ColorManagement.enabled = true;
 
 const clock = new Clock();
 

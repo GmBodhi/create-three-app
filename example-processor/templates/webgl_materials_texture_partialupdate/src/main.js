@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector2,
   Color,
   PerspectiveCamera,
@@ -17,8 +16,6 @@ import {
   WebGLRenderer,
   MathUtils,
 } from "three";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer, clock, dataTexture, diffuseMap;
 

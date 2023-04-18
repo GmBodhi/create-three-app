@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   ImageBitmapLoader,
   CanvasTexture,
   SRGBColorSpace,
@@ -15,8 +14,6 @@ import {
   GridHelper,
   WebGLRenderer,
 } from "three";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer;
 let group, cubes;

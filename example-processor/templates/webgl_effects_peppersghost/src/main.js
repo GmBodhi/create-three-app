@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Group,
@@ -13,6 +14,8 @@ import {
 } from "three";
 
 import { PeppersGhostEffect } from "three/addons/effects/PeppersGhostEffect.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container;
 

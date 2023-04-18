@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Vector3,
   Scene,
@@ -17,6 +18,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { STLLoader } from "three/addons/loaders/STLLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 

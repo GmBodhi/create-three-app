@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   Color,
   PerspectiveCamera,
@@ -13,8 +12,6 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = true;
 
 let container, camera, renderer, controls;
 let sceneL, sceneR;

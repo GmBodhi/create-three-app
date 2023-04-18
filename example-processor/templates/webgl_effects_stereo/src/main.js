@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   CubeTextureLoader,
@@ -14,8 +13,6 @@ import {
 } from "three";
 
 import { StereoEffect } from "three/addons/effects/StereoEffect.js";
-
-ColorManagement.enabled = true;
 
 let container, camera, scene, renderer, effect;
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -25,6 +26,8 @@ import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 import { FocusShader } from "three/addons/shaders/FocusShader.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer, mesh;
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Scene,
   Color,
   DirectionalLight,
@@ -11,6 +12,8 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { KMZLoader } from "three/addons/loaders/KMZLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 

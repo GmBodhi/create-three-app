@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   PCFSoftShadowMap,
   ACESFilmicToneMapping,
@@ -21,6 +22,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let renderer, scene, camera;
 

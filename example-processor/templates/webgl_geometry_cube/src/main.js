@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   TextureLoader,
@@ -11,8 +10,6 @@ import {
   Mesh,
   WebGLRenderer,
 } from "three";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer;
 let mesh;

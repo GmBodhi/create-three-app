@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   Scene,
   OrthographicCamera,
@@ -20,9 +21,12 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-let stats;
 
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
+
+let stats;
 let camera, scene, renderer, controls;
+
 const settings = {
   metalness: 1.0,
   roughness: 0.4,

@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Plane,
   Vector3,
   WebGLRenderer,
@@ -22,8 +21,6 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer;
 

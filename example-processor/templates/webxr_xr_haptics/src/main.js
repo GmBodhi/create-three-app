@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Box3,
   Scene,
   Color,
@@ -18,6 +19,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container;
 let camera, scene, renderer;

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   Scene,
   Color,
@@ -28,6 +29,8 @@ import { OctreeHelper } from "three/addons/helpers/OctreeHelper.js";
 import { Capsule } from "three/addons/math/Capsule.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 const clock = new Clock();
 

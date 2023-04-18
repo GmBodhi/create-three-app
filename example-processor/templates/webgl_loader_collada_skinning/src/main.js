@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Clock,
@@ -15,6 +16,8 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { ColladaLoader } from "three/addons/loaders/ColladaLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats, clock, controls;
 let camera, scene, renderer, mixer;

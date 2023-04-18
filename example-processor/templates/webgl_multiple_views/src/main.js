@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Color,
   SRGBColorSpace,
   PerspectiveCamera,
@@ -18,8 +17,6 @@ import {
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
-
-ColorManagement.enabled = true;
 
 let stats;
 

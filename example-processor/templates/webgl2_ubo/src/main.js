@@ -8,6 +8,7 @@ import fragmentShader2_ from "./shaders/fragmentShader2.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Clock,
@@ -25,6 +26,8 @@ import {
 } from "three";
 
 import WebGL from "three/addons/capabilities/WebGL.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer, clock;
 

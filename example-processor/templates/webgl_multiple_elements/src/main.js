@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   BoxGeometry,
   SphereGeometry,
   DodecahedronGeometry,
@@ -18,8 +17,6 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = true;
 
 let canvas, renderer;
 

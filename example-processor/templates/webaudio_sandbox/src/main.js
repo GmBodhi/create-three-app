@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   PerspectiveCamera,
   AudioListener,
@@ -21,8 +20,6 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
-
-ColorManagement.enabled = true;
 
 let camera, controls, scene, renderer, light;
 

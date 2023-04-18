@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Raycaster,
   Vector2,
   WebGLRenderer,
@@ -23,8 +22,6 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
-
-ColorManagement.enabled = true;
 
 let container, stats;
 

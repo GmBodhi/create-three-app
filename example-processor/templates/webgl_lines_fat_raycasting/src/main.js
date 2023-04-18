@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Color,
   Vector2,
   Raycaster,
@@ -29,8 +28,6 @@ import { LineSegments2 } from "three/addons/lines/LineSegments2.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 import { Line2 } from "three/addons/lines/Line2.js";
 import { LineGeometry } from "three/addons/lines/LineGeometry.js";
-
-ColorManagement.enabled = true;
 
 let line, thresholdLine, segments, thresholdSegments;
 let renderer, scene, camera, controls;

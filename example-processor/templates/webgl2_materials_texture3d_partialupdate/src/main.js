@@ -4,13 +4,13 @@ import {
   Vector3,
   Data3DTexture,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   Scene,
   PerspectiveCamera,
+  CanvasTexture,
+  SRGBColorSpace,
   Mesh,
   SphereGeometry,
   MeshBasicMaterial,
-  CanvasTexture,
   BackSide,
   RedFormat,
   LinearFilter,
@@ -75,7 +75,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -104,9 +103,12 @@ function init() {
   context.fillStyle = gradient;
   context.fillRect(0, 0, 1, 32);
 
+  const skyMap = new CanvasTexture(canvas);
+  skyMap.colorSpace = SRGBColorSpace;
+
   const sky = new Mesh(
     new SphereGeometry(10),
-    new MeshBasicMaterial({ map: new CanvasTexture(canvas), side: BackSide })
+    new MeshBasicMaterial({ map: skyMap, side: BackSide })
   );
   scene.add(sky);
 
@@ -209,6 +211,10 @@ function init() {
 						return sample1( coord + vec3( - step ) ) - sample1( coord + vec3( step ) );
 					}
 
+					vec4 linearToSRGB( in vec4 value ) {
+						return vec4( mix( pow( value.rgb, vec3( 0.41666 ) ) * 1.055 - vec3( 0.055 ), value.rgb * 12.92, vec3( lessThanEqual( value.rgb, vec3( 0.0031308 ) ) ) ), value.a );
+					}
+
 					void main(){
 						vec3 rayDir = normalize( vDirection );
 						vec2 bounds = hitBox( vOrigin, rayDir );
@@ -253,7 +259,7 @@ function init() {
 
 						}
 
-						color = ac;
+						color = linearToSRGB( ac );
 
 						if ( color.a == 0.0 ) discard;
 

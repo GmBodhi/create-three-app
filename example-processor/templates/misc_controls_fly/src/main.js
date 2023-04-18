@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   TextureLoader,
   Vector3,
   Clock,
@@ -26,6 +27,8 @@ import { FlyControls } from "three/addons/controls/FlyControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 const radius = 6371;
 const tilt = 0.41;

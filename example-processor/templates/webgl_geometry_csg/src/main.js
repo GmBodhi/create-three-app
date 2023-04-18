@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -28,8 +27,6 @@ import {
   Brush,
   Evaluator,
 } from "three-bvh-csg";
-
-ColorManagement.enabled = true;
 
 let stats;
 let camera, scene, renderer;

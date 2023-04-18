@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   Color,
   FogExp2,
@@ -17,8 +16,6 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { MapControls } from "three/addons/controls/MapControls.js";
-
-ColorManagement.enabled = true;
 
 let camera, controls, scene, renderer;
 

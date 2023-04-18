@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Scene,
   Color,
   Fog,
@@ -18,6 +19,8 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ThreeMFLoader } from "three/addons/loaders/3MFLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -22,6 +23,8 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { CopyShader } from "three/addons/shaders/CopyShader.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, renderer, clock, group, container;
 

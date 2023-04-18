@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   DirectionalLight,
@@ -24,6 +25,8 @@ import {
   mix,
 } from "three/nodes";
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 let camera, scene, renderer;

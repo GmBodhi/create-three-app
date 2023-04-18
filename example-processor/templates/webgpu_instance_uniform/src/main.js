@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Color,
   PerspectiveCamera,
   Scene,
@@ -28,8 +27,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
 import Stats from "three/addons/libs/stats.module.js";
-
-ColorManagement.enabled = true;
 
 class InstanceUniformNode extends Node {
   constructor() {

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -31,6 +32,8 @@ import {
   ToonShaderHatching,
   ToonShaderDotted,
 } from "three/addons/shaders/ToonShader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 

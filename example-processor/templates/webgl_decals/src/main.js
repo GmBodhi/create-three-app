@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector3,
   Vector2,
   TextureLoader,
@@ -28,8 +27,6 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DecalGeometry } from "three/addons/geometries/DecalGeometry.js";
-
-ColorManagement.enabled = true;
 
 const container = document.getElementById("container");
 

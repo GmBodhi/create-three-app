@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
   Scene,
@@ -23,6 +24,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let scene, camera, renderer;
 

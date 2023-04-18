@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -19,8 +18,6 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
-
-ColorManagement.enabled = true;
 
 let renderer, scene, camera, stats;
 const objects = [];

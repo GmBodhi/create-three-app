@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   BoxGeometry,
   MeshPhongMaterial,
@@ -27,6 +28,8 @@ import {
   TagComponent,
   Types,
 } from "three/addons/libs/ecsy.module.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 class Object3D extends Component {}
 

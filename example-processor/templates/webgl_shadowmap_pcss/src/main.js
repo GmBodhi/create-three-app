@@ -6,6 +6,7 @@ import PCSSGetShadow_ from "./shaders/PCSSGetShadow.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Scene,
   Fog,
   PerspectiveCamera,
@@ -25,6 +26,8 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let stats;
 let camera, scene, renderer;
