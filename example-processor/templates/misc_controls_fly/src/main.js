@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   TextureLoader,
   Vector3,
   Clock,
@@ -11,6 +10,7 @@ import {
   DirectionalLight,
   MeshPhongMaterial,
   Vector2,
+  SRGBColorSpace,
   SphereGeometry,
   Mesh,
   MeshLambertMaterial,
@@ -27,8 +27,8 @@ import { FlyControls } from "three/addons/controls/FlyControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 const radius = 6371;
 const tilt = 0.41;
@@ -69,7 +69,7 @@ function init() {
   scene.add(dirLight);
 
   const materialNormalMap = new MeshPhongMaterial({
-    specular: 0x333333,
+    specular: 0x7c7c7c,
     shininess: 15,
     map: textureLoader.load("textures/planets/earth_atmos_2048.jpg"),
     specularMap: textureLoader.load("textures/planets/earth_specular_2048.jpg"),
@@ -78,6 +78,7 @@ function init() {
     // y scale is negated to compensate for normal map handedness.
     normalScale: new Vector2(0.85, -0.85),
   });
+  materialNormalMap.map.colorSpace = SRGBColorSpace;
 
   // planet
 
@@ -94,6 +95,7 @@ function init() {
     map: textureLoader.load("textures/planets/earth_clouds_1024.png"),
     transparent: true,
   });
+  materialClouds.map.colorSpace = SRGBColorSpace;
 
   meshClouds = new Mesh(geometry, materialClouds);
   meshClouds.scale.set(cloudsScale, cloudsScale, cloudsScale);
@@ -105,6 +107,7 @@ function init() {
   const materialMoon = new MeshPhongMaterial({
     map: textureLoader.load("textures/planets/moon_1024.jpg"),
   });
+  materialMoon.map.colorSpace = SRGBColorSpace;
 
   meshMoon = new Mesh(geometry, materialMoon);
   meshMoon.position.set(radius * 5, 0, 0);
@@ -149,12 +152,12 @@ function init() {
   );
 
   const starsMaterials = [
-    new PointsMaterial({ color: 0x555555, size: 2, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x555555, size: 1, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x333333, size: 2, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x3a3a3a, size: 1, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x1a1a1a, size: 2, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x1a1a1a, size: 1, sizeAttenuation: false }),
+    new PointsMaterial({ color: 0x9c9c9c, size: 2, sizeAttenuation: false }),
+    new PointsMaterial({ color: 0x9c9c9c, size: 1, sizeAttenuation: false }),
+    new PointsMaterial({ color: 0x7c7c7c, size: 2, sizeAttenuation: false }),
+    new PointsMaterial({ color: 0x838383, size: 1, sizeAttenuation: false }),
+    new PointsMaterial({ color: 0x5a5a5a, size: 2, sizeAttenuation: false }),
+    new PointsMaterial({ color: 0x5a5a5a, size: 1, sizeAttenuation: false }),
   ];
 
   for (let i = 10; i < 30; i++) {
@@ -197,11 +200,13 @@ function init() {
 
   const renderModel = new RenderPass(scene, camera);
   const effectFilm = new FilmPass(0.35, 0.75, 2048, false);
+  const gammaCorrection = new ShaderPass(GammaCorrectionShader);
 
   composer = new EffectComposer(renderer);
 
   composer.addPass(renderModel);
   composer.addPass(effectFilm);
+  composer.addPass(gammaCorrection);
 }
 
 function onWindowResize() {

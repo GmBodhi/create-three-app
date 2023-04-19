@@ -34,7 +34,7 @@ import {
   LineBasicNodeMaterial,
 } from "three/nodes";
 
-import { DDSLoader } from "three/addons/loaders/DDSLoader.js";
+import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
@@ -45,7 +45,7 @@ let box;
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -63,6 +63,15 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0x222222);
 
+  //
+
+  renderer = new WebGPURenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  document.body.appendChild(renderer.domElement);
+  await renderer.init();
+
   // textures
 
   const textureLoader = new TextureLoader();
@@ -79,11 +88,12 @@ function init() {
   textureDisplace.wrapS = RepeatWrapping;
   textureDisplace.wrapT = RepeatWrapping;
 
-  // compressed texture
+  const ktxLoader = new KTX2Loader()
+    .setTranscoderPath("jsm/libs/basis/")
+    .detectSupport(renderer);
 
-  const ddsLoader = new DDSLoader();
-  const dxt5Texture = ddsLoader.load(
-    "three/examples/textures/compressed/explosion_dxt5_mip.dds"
+  const ktxTexture = await ktxLoader.loadAsync(
+    "three/examples/textures/compressed/sample_uastc_zstd.ktx2"
   );
 
   // box mesh
@@ -128,7 +138,6 @@ function init() {
   const geometryPlane = new PlaneGeometry();
   const materialPlane = new MeshBasicNodeMaterial();
   materialPlane.colorNode = texture(createDataTexture()).add(color(0x0000ff));
-  materialPlane.opacityNode = texture(dxt5Texture).a;
   materialPlane.transparent = true;
 
   const plane = new Mesh(geometryPlane, materialPlane);
@@ -138,7 +147,7 @@ function init() {
   // compressed texture
 
   const materialCompressed = new MeshBasicNodeMaterial();
-  materialCompressed.colorNode = texture(dxt5Texture);
+  materialCompressed.colorNode = texture(ktxTexture);
   materialCompressed.emissiveNode = oscSine().mix(
     color(0x663300),
     color(0x0000ff)
@@ -146,9 +155,10 @@ function init() {
   materialCompressed.alphaTestNode = oscSine();
   materialCompressed.transparent = true;
 
-  const boxCompressed = new Mesh(geometryBox, materialCompressed);
-  boxCompressed.position.set(-2, 1, 0);
-  scene.add(boxCompressed);
+  const geo = flipY(new PlaneGeometry());
+  const planeCompressed = new Mesh(geo, materialCompressed);
+  planeCompressed.position.set(-2, 1, 0);
+  scene.add(planeCompressed);
 
   // points
 
@@ -186,16 +196,6 @@ function init() {
   line.position.set(2, 1, 0);
   scene.add(line);
 
-  //
-
-  renderer = new WebGPURenderer({
-    requiredFeatures: ["texture-compression-bc"],
-  });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
-  document.body.appendChild(renderer.domElement);
-
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -207,8 +207,10 @@ function onWindowResize() {
 }
 
 function animate() {
-  box.rotation.x += 0.01;
-  box.rotation.y += 0.02;
+  if (box) {
+    box.rotation.x += 0.01;
+    box.rotation.y += 0.02;
+  }
 
   renderer.render(scene, camera);
 }
@@ -238,4 +240,15 @@ function createDataTexture() {
   const texture = new DataTexture(data, width, height, RGBAFormat);
   texture.needsUpdate = true;
   return texture;
+}
+
+/** Correct UVs to be compatible with `flipY=false` textures. */
+function flipY(geometry) {
+  const uv = geometry.attributes.uv;
+
+  for (let i = 0; i < uv.count; i++) {
+    uv.setY(i, 1 - uv.getY(i));
+  }
+
+  return geometry;
 }

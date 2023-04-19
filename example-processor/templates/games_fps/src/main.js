@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   Scene,
   Color,
@@ -30,8 +29,6 @@ import { Capsule } from "three/addons/math/Capsule.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
-
 const clock = new Clock();
 
 const scene = new Scene();
@@ -46,7 +43,7 @@ const camera = new PerspectiveCamera(
 );
 camera.rotation.order = "YXZ";
 
-const fillLight1 = new HemisphereLight(0x4488bb, 0x002244, 0.5);
+const fillLight1 = new HemisphereLight(0x8dc1de, 0x00668d, 0.5);
 fillLight1.position.set(2, 1, 1);
 scene.add(fillLight1);
 
@@ -88,7 +85,7 @@ const SPHERE_RADIUS = 0.2;
 const STEPS_PER_FRAME = 5;
 
 const sphereGeometry = new IcosahedronGeometry(SPHERE_RADIUS, 5);
-const sphereMaterial = new MeshLambertMaterial({ color: 0xbbbb44 });
+const sphereMaterial = new MeshLambertMaterial({ color: 0xdede8d });
 
 const spheres = [];
 let sphereIdx = 0;
