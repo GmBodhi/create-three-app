@@ -49,6 +49,7 @@ module.exports.launch = async () => {
 const addListeners = async ({ page, json, urls, port }) => {
   await page.setCacheEnabled(false);
   page.on("request", (request) => {
+    console.log(request.url(), request.type());
     let url =
       request.frame()?.url()?.split("/").at(-1)?.split(".")[0] ?? "unknown";
 
@@ -99,7 +100,9 @@ module.exports.fetch = async function (url, name, { urls, port, json }) {
   let p = await browser
     .newPage()
     .then((p) =>
-      addListeners({ page: p, urls, port, json }).then(p => p.goto(url, { timeout: 0 }))
+      addListeners({ page: p, urls, port, json }).then((p) =>
+        p.goto(url, { timeout: 0 })
+      )
     );
 
   mkdirSync("./templates/" + name);
