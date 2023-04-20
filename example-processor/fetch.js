@@ -78,7 +78,7 @@ const addListeners = ({ page, json, urls, port }) => {
       targets
         .filter(
           (t) =>
-            !t.url().endsWith(".html") && ["", "about:blank"].includes(t.url())
+            !t.url().endsWith(".html") && !["", "about:blank"].includes(t.url())
         )
         .map((t) => t.url())
     );
