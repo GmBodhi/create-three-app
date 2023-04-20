@@ -10,12 +10,7 @@ import {
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
-import {
-  smoothstep,
-  positionView,
-  texture,
-  MeshBasicNodeMaterial,
-} from "three/nodes";
+import { texture, MeshBasicNodeMaterial } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
