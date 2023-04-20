@@ -73,14 +73,13 @@ const addListeners = ({ page, json, urls, port }) => {
 
   page.on("load", async () => {
     const targets = await browser.targets();
-    console.log(targets.filter((t) => t.url() === "").map((t) => t.type()));
     console.log(
       targets
         .filter(
           (t) =>
             !t.url().endsWith(".html") && !["", "about:blank"].includes(t.url())
         )
-        .map((t) => t.url())
+        .map((t) => `${t.url()} ~ ${t.type()} ~ ${t.opener()?.url()}`)
     );
   });
 
