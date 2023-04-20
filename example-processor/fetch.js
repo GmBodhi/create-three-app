@@ -27,8 +27,7 @@ module.exports.launch = async ({ urls, json, port }) => {
     let url =
       request.frame()?.url()?.split("/").at(-1)?.split(".")[0] ?? "unknown";
 
-    let reqUrl =
-      request.url()?.split("/").at(-1) ?? "unknown";
+    let reqUrl = request.url()?.split("/").at(-1) ?? "unknown";
 
     if (json.includes(url)) return;
 
@@ -46,6 +45,11 @@ module.exports.launch = async ({ urls, json, port }) => {
       return;
     if (!urls[url]) urls[url] = [];
     urls[url].push(request.url());
+  });
+
+  page.on("load", async () => {
+    const targets = await browser.targets();
+    console.log(targets.map((t) => t.url()));
   });
   return;
 };
