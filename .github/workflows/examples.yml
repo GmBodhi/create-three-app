@@ -30,6 +30,7 @@ jobs:
 
       - name: Install Dependencies
         run: yarn install
+        
 
       - name: Run Config
         run: yarn run config

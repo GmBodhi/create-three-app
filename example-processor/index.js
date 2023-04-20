@@ -18,11 +18,12 @@ initServer().then(({ port }) => {
         let targets = [];
         Object.values(json).forEach((r) => targets.push(...r));
         let urls = {};
-        await fetch1.launch({ urls, json: targets, port });
+        await fetch1.launch();
         for (let key of targets) {
           await fetch1.fetch(
             `http://localhost:${port}/examples/${key}.html`,
-            key
+            key,
+            { urls, port, json }
           );
         }
         writeFileSync("./templates/assets.json", JSON.stringify(urls));

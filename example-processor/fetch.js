@@ -11,18 +11,42 @@ const fetch = require("node-fetch");
 const { minify } = require("csso");
 
 let browser,
-  page,
   commomStyle = " ";
 
-module.exports.launch = async ({ urls, json, port }) => {
+module.exports.launch = async () => {
   browser = await puppeteer.launch({ args: ["--no-sandbox"] });
-
-  page = await browser.newPage();
 
   commomStyle = await fetch("https://threejs.org/examples/main.css")
     .then((r) => r.text())
     .catch((e) => console.log(e));
 
+  // page.on("request", (request) => {
+  //   let url =
+  //     request.frame()?.url()?.split("/").at(-1)?.split(".")[0] ?? "unknown";
+
+  //   let reqUrl = request.url()?.split("/").at(-1) ?? "unknown";
+
+  //   if (json.includes(url)) return;
+
+  //   if (
+  //     [
+  //       `http://localhost:${port}/build/three.module.js`,
+  //       `http://localhost:${port}/examples/jsm/libs/stats.module.js`,
+  //       `http://localhost:${port}/examples/jsm/libs/dat.gui.module.js`,
+  //       "about:blank",
+  //     ].includes(request.url()) ||
+  //     url === "about:blank" ||
+  //     reqUrl.endsWith(".js") ||
+  //     reqUrl.endsWith(".html")
+  //   )
+  //     return;
+  //   if (!urls[url]) urls[url] = [];
+  //   urls[url].push(request.url());
+  // });
+  return;
+};
+
+const addListeners = ({ page, json, urls, port }) => {
   page.on("request", (request) => {
     let url =
       request.frame()?.url()?.split("/").at(-1)?.split(".")[0] ?? "unknown";
@@ -59,7 +83,8 @@ module.exports.launch = async ({ urls, json, port }) => {
         .map((t) => t.url())
     );
   });
-  return;
+
+  return page;
 };
 
 module.exports.close = async () => {
@@ -68,10 +93,14 @@ module.exports.close = async () => {
   return await browser.close();
 };
 
-module.exports.fetch = async function (url, name) {
+module.exports.fetch = async function (url, name, { urls, port, json }) {
   console.log(red(`Resolved: ${name}`));
   // let p = await page.goto(url, { timeout: 0 });
-  let p = await browser.newPage().then((p) => p.goto(url, { timeout: 0 }));
+  let p = await browser
+    .newPage()
+    .then((p) =>
+      addListeners({ page: p, urls, port, json }).goto(url, { timeout: 0 })
+    );
 
   mkdirSync("./templates/" + name);
 
@@ -100,3 +129,5 @@ module.exports.fetch = async function (url, name) {
   console.log(blue(`Finished: ${name}`));
   return;
 };
+
+module.exports.addListeners = addListeners;
