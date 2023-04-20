@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
+    
+concurrency:
+  group: "example"
+  cancel-in-progress: true
+  
 
 jobs:
   Example:
