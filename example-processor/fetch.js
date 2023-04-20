@@ -49,7 +49,15 @@ module.exports.launch = async ({ urls, json, port }) => {
 
   page.on("load", async () => {
     const targets = await browser.targets();
-    console.log(targets.map((t) => t.url()));
+    console.log(targets.filter((t) => t.url() === "").map((t) => t.type()));
+    console.log(
+      targets
+        .filter(
+          (t) =>
+            !t.url().endsWith(".html") && ["", "about:blank"].includes(t.url())
+        )
+        .map((t) => t.url())
+    );
   });
   return;
 };
@@ -62,7 +70,8 @@ module.exports.close = async () => {
 
 module.exports.fetch = async function (url, name) {
   console.log(red(`Resolved: ${name}`));
-  let p = await page.goto(url, { timeout: 0 });
+  // let p = await page.goto(url, { timeout: 0 });
+  let p = await browser.newPage().then((p) => p.goto(url, { timeout: 0 }));
 
   mkdirSync("./templates/" + name);
 
