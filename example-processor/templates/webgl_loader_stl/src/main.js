@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Vector3,
   Scene,
@@ -18,8 +17,6 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { STLLoader } from "three/addons/loaders/STLLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 
@@ -50,7 +47,7 @@ function init() {
 
   const plane = new Mesh(
     new PlaneGeometry(40, 40),
-    new MeshPhongMaterial({ color: 0x999999, specular: 0x101010 })
+    new MeshPhongMaterial({ color: 0xcbcbcb, specular: 0x474747 })
   );
   plane.rotation.x = -Math.PI / 2;
   plane.position.y = -0.5;
@@ -65,8 +62,8 @@ function init() {
     "three/examples/models/stl/ascii/slotted_disk.stl",
     function (geometry) {
       const material = new MeshPhongMaterial({
-        color: 0xff5533,
-        specular: 0x111111,
+        color: 0xff9c7c,
+        specular: 0x494949,
         shininess: 200,
       });
       const mesh = new Mesh(geometry, material);
@@ -85,8 +82,8 @@ function init() {
   // Binary files
 
   const material = new MeshPhongMaterial({
-    color: 0xaaaaaa,
-    specular: 0x111111,
+    color: 0xd5d5d5,
+    specular: 0x494949,
     shininess: 200,
   });
 
@@ -150,10 +147,10 @@ function init() {
 
   // Lights
 
-  scene.add(new HemisphereLight(0x443333, 0x111122));
+  scene.add(new HemisphereLight(0x8d7c7c, 0x494966));
 
   addShadowedLight(1, 1, 1, 0xffffff, 1.35);
-  addShadowedLight(0.5, 1, -1, 0xffaa00, 1);
+  addShadowedLight(0.5, 1, -1, 0xffd500, 1);
   // renderer
 
   renderer = new WebGLRenderer({ antialias: true });

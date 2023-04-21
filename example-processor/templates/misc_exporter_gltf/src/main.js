@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   DataTexture,
   RGBAFormat,
   LinearFilter,
@@ -45,8 +44,6 @@ import {
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 function exportGLTF(input) {
   const gltfExporter = new GLTFExporter();
@@ -177,7 +174,7 @@ function init() {
   // ---------------------------------------------------------------------
   // Grid
   // ---------------------------------------------------------------------
-  gridHelper = new GridHelper(2000, 20, 0x888888, 0x444444);
+  gridHelper = new GridHelper(2000, 20, 0xc1c1c1, 0x8d8d8d);
   gridHelper.position.y = -50;
   gridHelper.name = "Grid";
   scene1.add(gridHelper);

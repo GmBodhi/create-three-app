@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   Color,
   DirectionalLight,
@@ -12,8 +11,6 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { KMZLoader } from "three/addons/loaders/KMZLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 
@@ -40,7 +37,7 @@ function init() {
 
   scene.add(camera);
 
-  const grid = new GridHelper(50, 50, 0xffffff, 0x333333);
+  const grid = new GridHelper(50, 50, 0xffffff, 0x7b7b7b);
   scene.add(grid);
 
   renderer = new WebGLRenderer({ antialias: true });

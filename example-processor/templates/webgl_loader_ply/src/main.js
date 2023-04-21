@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Vector3,
   Scene,
@@ -19,8 +18,6 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 
@@ -51,7 +48,7 @@ function init() {
 
   const plane = new Mesh(
     new PlaneGeometry(40, 40),
-    new MeshPhongMaterial({ color: 0x999999, specular: 0x101010 })
+    new MeshPhongMaterial({ color: 0xcbcbcb, specular: 0x474747 })
   );
   plane.rotation.x = -Math.PI / 2;
   plane.position.y = -0.5;
@@ -68,7 +65,7 @@ function init() {
       geometry.computeVertexNormals();
 
       const material = new MeshStandardMaterial({
-        color: 0x0055ff,
+        color: 0x009cff,
         flatShading: true,
       });
       const mesh = new Mesh(geometry, material);
@@ -91,7 +88,7 @@ function init() {
       geometry.computeVertexNormals();
 
       const material = new MeshStandardMaterial({
-        color: 0x0055ff,
+        color: 0x009cff,
         flatShading: true,
       });
       const mesh = new Mesh(geometry, material);
@@ -110,10 +107,10 @@ function init() {
 
   // Lights
 
-  scene.add(new HemisphereLight(0x443333, 0x111122));
+  scene.add(new HemisphereLight(0x8d7c7c, 0x494966));
 
   addShadowedLight(1, 1, 1, 0xffffff, 1.35);
-  addShadowedLight(0.5, 1, -1, 0xffaa00, 1);
+  addShadowedLight(0.5, 1, -1, 0xffd500, 1);
 
   // renderer
 

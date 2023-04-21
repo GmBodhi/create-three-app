@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   WebGLRenderer,
   Scene,
@@ -16,8 +15,6 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let renderer, scene, camera, gui, guiData;
 
@@ -137,7 +134,7 @@ function loadSVG(url) {
 
   //
 
-  const helper = new GridHelper(160, 10);
+  const helper = new GridHelper(160, 10, 0x8d8d8d, 0xc1c1c1);
   helper.rotation.x = Math.PI / 2;
   scene.add(helper);
 
@@ -164,7 +161,7 @@ function loadSVG(url) {
         fillColor !== "none"
       ) {
         const material = new MeshBasicMaterial({
-          color: new Color().setStyle(fillColor).convertSRGBToLinear(),
+          color: new Color().setStyle(fillColor),
           opacity: path.userData.style.fillOpacity,
           transparent: true,
           side: DoubleSide,
@@ -192,7 +189,7 @@ function loadSVG(url) {
         strokeColor !== "none"
       ) {
         const material = new MeshBasicMaterial({
-          color: new Color().setStyle(strokeColor).convertSRGBToLinear(),
+          color: new Color().setStyle(strokeColor),
           opacity: path.userData.style.strokeOpacity,
           transparent: true,
           side: DoubleSide,

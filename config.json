@@ -350,6 +350,16 @@
         "/src"
       ]
     },
+    "physics_rapier_instancing": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "svg_lines": {
       "files": {
         "index.html": "src",

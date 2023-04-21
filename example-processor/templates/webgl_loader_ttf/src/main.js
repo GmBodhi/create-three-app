@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Vector3,
   Scene,
@@ -9,20 +8,18 @@ import {
   Fog,
   DirectionalLight,
   PointLight,
+  SRGBColorSpace,
   MeshPhongMaterial,
   Group,
   Mesh,
   PlaneGeometry,
   MeshBasicMaterial,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { TTFLoader } from "three/addons/loaders/TTFLoader.js";
 import { Font } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container;
 let camera, cameraTarget, scene, renderer;
@@ -81,7 +78,7 @@ function init() {
 
   const pointLight = new PointLight(0xffffff, 1.5);
   pointLight.position.set(0, 100, 90);
-  pointLight.color.setHSL(Math.random(), 1, 0.5);
+  pointLight.color.setHSL(Math.random(), 1, 0.5, SRGBColorSpace);
   scene.add(pointLight);
 
   material = new MeshPhongMaterial({ color: 0xffffff, flatShading: true });
@@ -111,7 +108,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   // EVENTS

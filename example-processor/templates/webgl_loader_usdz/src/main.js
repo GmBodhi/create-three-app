@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -13,8 +12,6 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { USDZLoader } from "three/addons/loaders/USDZLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 
@@ -33,13 +30,13 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xeeeeee);
 
-  scene.add(new GridHelper(2, 4));
+  scene.add(new GridHelper(2, 4, 0xc1c1c1, 0x8d8d8d));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(1, 1, 1);
   scene.add(light);
 
-  const light2 = new HemisphereLight(0xffffff, 0x888888);
+  const light2 = new HemisphereLight(0xffffff, 0xc1c1c1);
   scene.add(light2);
 
   // renderer

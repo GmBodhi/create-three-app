@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   GridHelper,
@@ -18,8 +17,6 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import TWEEN from "three/addons/libs/tween.module.js";
 import { ColladaLoader } from "three/addons/loaders/ColladaLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 
@@ -70,7 +67,7 @@ function init() {
 
   // Grid
 
-  const grid = new GridHelper(20, 20, 0x888888, 0x444444);
+  const grid = new GridHelper(20, 20, 0xc1c1c1, 0x8d8d8d);
   scene.add(grid);
 
   // Add the COLLADA
@@ -85,7 +82,7 @@ function init() {
 
   // Lights
 
-  const light = new HemisphereLight(0xffeeee, 0x111122);
+  const light = new HemisphereLight(0xfff7f7, 0x494966);
   scene.add(light);
 
   const pointLight = new PointLight(0xffffff, 0.3);

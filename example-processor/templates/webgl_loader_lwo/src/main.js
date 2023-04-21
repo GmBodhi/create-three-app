@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -14,8 +13,6 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { LWOLoader } from "three/addons/loaders/LWOLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 
@@ -36,10 +33,10 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xa0a0a0);
 
-  const ambientLight = new AmbientLight(0x222222);
+  const ambientLight = new AmbientLight(0x666666);
   scene.add(ambientLight);
 
-  const light1 = new DirectionalLight(0x888888);
+  const light1 = new DirectionalLight(0xc1c1c1);
   light1.position.set(0, 200, 100);
   scene.add(light1);
 

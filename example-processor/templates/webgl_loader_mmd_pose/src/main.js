@@ -1,14 +1,12 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -16,8 +14,6 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
 import { MMDLoader } from "three/addons/loaders/MMDLoader.js";
 import { MMDAnimationHelper } from "three/addons/animation/MMDAnimationHelper.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer, effect;
 let mesh, helper;
@@ -48,10 +44,10 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xffffff);
 
-  const ambient = new AmbientLight(0x666666);
+  const ambient = new AmbientLight(0xaaaaaa, 1);
   scene.add(ambient);
 
-  const directionalLight = new DirectionalLight(0x887766);
+  const directionalLight = new DirectionalLight(0xffffff, 1);
   directionalLight.position.set(-1, 1, 1).normalize();
   scene.add(directionalLight);
 
@@ -60,7 +56,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   effect = new OutlineEffect(renderer);

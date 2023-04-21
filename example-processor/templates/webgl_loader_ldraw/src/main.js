@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   WebGLRenderer,
   ACESFilmicToneMapping,
@@ -20,8 +19,6 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { LDrawLoader } from "three/addons/loaders/LDrawLoader.js";
 import { LDrawUtils } from "three/addons/utils/LDrawUtils.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, progressBarDiv;
 

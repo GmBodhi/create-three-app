@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Clock,
@@ -16,8 +15,6 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { ColladaLoader } from "three/addons/loaders/ColladaLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats, clock, controls;
 let camera, scene, renderer, mixer;
@@ -58,7 +55,7 @@ function init() {
 
   //
 
-  const gridHelper = new GridHelper(10, 20, 0x888888, 0x444444);
+  const gridHelper = new GridHelper(10, 20, 0xc1c1c1, 0x8d8d8d);
   scene.add(gridHelper);
 
   //

@@ -1,9 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   Scene,
   Color,
   AmbientLight,
@@ -17,8 +15,6 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ThreeMFLoader } from "three/addons/loaders/3MFLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer, object, loader, controls;
 
@@ -34,7 +30,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
