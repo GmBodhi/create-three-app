@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector3,
   PerspectiveCamera,
   Scene,
@@ -21,8 +20,6 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { AmmoPhysics } from "three/addons/physics/AmmoPhysics.js";
 import Stats from "three/addons/libs/stats.module.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer, stats;
 let physics, position;
@@ -77,8 +74,8 @@ async function init() {
 
   // Boxes
 
-  const geometryBox = new BoxGeometry(0.1, 0.1, 0.1);
-  boxes = new InstancedMesh(geometryBox, material, 100);
+  const geometryBox = new BoxGeometry(0.075, 0.075, 0.075);
+  boxes = new InstancedMesh(geometryBox, material, 400);
   boxes.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
   boxes.castShadow = true;
   boxes.receiveShadow = true;
@@ -98,8 +95,8 @@ async function init() {
 
   // Spheres
 
-  const geometrySphere = new IcosahedronGeometry(0.075, 3);
-  spheres = new InstancedMesh(geometrySphere, material, 100);
+  const geometrySphere = new IcosahedronGeometry(0.05, 4);
+  spheres = new InstancedMesh(geometrySphere, material, 400);
   spheres.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
   spheres.castShadow = true;
   spheres.receiveShadow = true;

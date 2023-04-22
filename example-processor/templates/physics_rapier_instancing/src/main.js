@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector3,
   PerspectiveCamera,
   Scene,
@@ -22,8 +21,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RapierPhysics } from "three/addons/physics/RapierPhysics.js";
 import Stats from "three/addons/libs/stats.module.js";
 
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
-
 let camera, scene, renderer, stats;
 let physics, position;
 
@@ -32,9 +29,7 @@ let boxes, spheres;
 init();
 
 async function init() {
-  physics = await RapierPhysics(
-    "https://cdn.skypack.dev/@dimforge/rapier3d-compat@0.11.2"
-  );
+  physics = await RapierPhysics();
   position = new Vector3();
 
   //
@@ -79,8 +74,8 @@ async function init() {
 
   // Boxes
 
-  const geometryBox = new BoxGeometry(0.1, 0.1, 0.1);
-  boxes = new InstancedMesh(geometryBox, material, 100);
+  const geometryBox = new BoxGeometry(0.075, 0.075, 0.075);
+  boxes = new InstancedMesh(geometryBox, material, 400);
   boxes.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
   boxes.castShadow = true;
   boxes.receiveShadow = true;
@@ -100,8 +95,8 @@ async function init() {
 
   // Spheres
 
-  const geometrySphere = new IcosahedronGeometry(0.075, 3);
-  spheres = new InstancedMesh(geometrySphere, material, 100);
+  const geometrySphere = new IcosahedronGeometry(0.05, 4);
+  spheres = new InstancedMesh(geometrySphere, material, 400);
   spheres.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
   spheres.castShadow = true;
   spheres.receiveShadow = true;
