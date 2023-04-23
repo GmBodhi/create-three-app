@@ -3742,6 +3742,16 @@
         "/src"
       ]
     },
+    "webgpu_backdrop": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute": {
       "files": {
         "index.html": "src",

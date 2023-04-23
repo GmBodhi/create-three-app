@@ -47,7 +47,7 @@ async function init() {
   scene.background = new Color(0x666666);
 
   const hemiLight = new HemisphereLight();
-  hemiLight.intensity = 0.35;
+  hemiLight.intensity = 0.3;
   scene.add(hemiLight);
 
   const dirLight = new DirectionalLight();
@@ -58,7 +58,7 @@ async function init() {
 
   const floor = new Mesh(
     new BoxGeometry(10, 5, 10),
-    new ShadowMaterial({ color: 0x111111 })
+    new ShadowMaterial({ color: 0x444444 })
   );
   floor.position.y = -2.5;
   floor.receiveShadow = true;
