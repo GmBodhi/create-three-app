@@ -1,12 +1,12 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
   Fog,
   CanvasTexture,
+  SRGBColorSpace,
   RepeatWrapping,
   NearestFilter,
   MeshBasicMaterial,
@@ -17,10 +17,7 @@ import {
   LinearFilter,
   UVMapping,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 const SCREEN_WIDTH = window.innerWidth;
 const SCREEN_HEIGHT = window.innerHeight;
@@ -68,6 +65,7 @@ function init() {
   context.fillRect(64, 64, 64, 64);
 
   const textureCanvas = new CanvasTexture(imageCanvas);
+  textureCanvas.colorSpace = SRGBColorSpace;
   textureCanvas.repeat.set(1000, 1000);
   textureCanvas.wrapS = RepeatWrapping;
   textureCanvas.wrapT = RepeatWrapping;
@@ -150,6 +148,7 @@ function init() {
     callbackPainting
   );
   const texturePainting2 = new Texture();
+
   const materialPainting = new MeshBasicMaterial({
     color: 0xffffff,
     map: texturePainting,
@@ -159,12 +158,13 @@ function init() {
     map: texturePainting2,
   });
 
+  texturePainting.colorSpace = SRGBColorSpace;
+  texturePainting2.colorSpace = SRGBColorSpace;
   texturePainting2.minFilter = texturePainting2.magFilter = NearestFilter;
   texturePainting.minFilter = texturePainting.magFilter = LinearFilter;
   texturePainting.mapping = UVMapping;
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.autoClear = false;

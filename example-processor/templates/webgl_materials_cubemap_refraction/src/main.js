@@ -1,9 +1,9 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
+  SRGBColorSpace,
   CubeRefractionMapping,
   Scene,
   AmbientLight,
@@ -13,14 +13,11 @@ import {
   MeshBasicMaterial,
   MeshPhongMaterial,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container, stats;
 
@@ -63,6 +60,7 @@ function init() {
   ];
 
   const textureCube = new CubeTextureLoader().load(urls);
+  textureCube.colorSpace = SRGBColorSpace;
   textureCube.mapping = CubeRefractionMapping;
 
   scene = new Scene();
@@ -106,7 +104,6 @@ function init() {
   //
 
   renderer = new WebGLRenderer();
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

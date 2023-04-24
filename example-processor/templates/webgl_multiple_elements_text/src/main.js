@@ -1,15 +1,14 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   Scene,
   Color,
   BufferGeometry,
   Float32BufferAttribute,
   CanvasTexture,
+  SRGBColorSpace,
   PointsMaterial,
   Points,
   PerspectiveCamera,
@@ -17,8 +16,6 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 const scenes = [];
 
@@ -46,7 +43,6 @@ function init() {
   canvas = document.getElementById("c");
 
   renderer = new WebGLRenderer({ canvas: canvas, antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
 
   views = document.querySelectorAll(".view");
@@ -95,6 +91,7 @@ function init() {
     context.fillStyle = colors[index];
     context.fill();
     const texture = new CanvasTexture(canvas2);
+    texture.colorSpace = SRGBColorSpace;
 
     const material = new PointsMaterial({
       size: size,

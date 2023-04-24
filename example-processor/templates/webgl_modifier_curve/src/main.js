@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector2,
   Scene,
   PerspectiveCamera,
@@ -16,7 +15,6 @@ import {
   AmbientLight,
   MeshStandardMaterial,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   Raycaster,
 } from "three";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
@@ -24,8 +22,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { Flow } from "three/addons/modifiers/CurveModifier.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 const ACTION_SELECT = 1,
   ACTION_NONE = 0;
@@ -130,7 +126,6 @@ function init() {
   //
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

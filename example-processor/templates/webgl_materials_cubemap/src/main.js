@@ -4,6 +4,7 @@ import {
   ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
+  SRGBColorSpace,
   CubeRefractionMapping,
   Scene,
   AmbientLight,
@@ -11,7 +12,6 @@ import {
   MeshLambertMaterial,
   MixOperation,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -55,7 +55,9 @@ function init() {
   ];
 
   const reflectionCube = new CubeTextureLoader().load(urls);
+  reflectionCube.colorSpace = SRGBColorSpace;
   const refractionCube = new CubeTextureLoader().load(urls);
+  refractionCube.colorSpace = SRGBColorSpace;
   refractionCube.mapping = CubeRefractionMapping;
 
   scene = new Scene();
@@ -109,7 +111,6 @@ function init() {
 
   //renderer
   renderer = new WebGLRenderer();
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

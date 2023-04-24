@@ -1,11 +1,11 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   GridHelper,
   Texture,
+  SRGBColorSpace,
   MeshLambertMaterial,
   MeshPhongMaterial,
   MeshNormalMaterial,
@@ -18,12 +18,9 @@ import {
   PointLight,
   Mesh,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let stats;
 
@@ -59,6 +56,7 @@ function init() {
   // Materials
 
   const texture = new Texture(generateTexture());
+  texture.colorSpace = SRGBColorSpace;
   texture.needsUpdate = true;
 
   materials.push(new MeshLambertMaterial({ map: texture, transparent: true }));
@@ -143,7 +141,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   //

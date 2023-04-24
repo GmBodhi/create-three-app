@@ -1,15 +1,14 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   Scene,
   PerspectiveCamera,
   HemisphereLight,
   Mesh,
   MeshStandardMaterial,
   TextureLoader,
+  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -18,8 +17,6 @@ import { EdgeSplitModifier } from "three/addons/modifiers/EdgeSplitModifier.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let renderer, scene, camera;
 let modifier, mesh, baseGeometry;
@@ -46,7 +43,6 @@ function init() {
   document.body.appendChild(info);
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -96,6 +92,7 @@ function init() {
     "three/examples/models/obj/cerberus/Cerberus_A.jpg",
     function (texture) {
       map = texture;
+      map.colorSpace = SRGBColorSpace;
 
       if (mesh !== undefined && params.showMap) {
         mesh.material.map = map;

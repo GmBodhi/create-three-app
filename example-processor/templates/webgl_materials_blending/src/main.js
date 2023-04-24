@@ -1,11 +1,11 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   TextureLoader,
   PerspectiveCamera,
   Scene,
   CanvasTexture,
+  SRGBColorSpace,
   RepeatWrapping,
   NoBlending,
   NormalBlending,
@@ -16,10 +16,7 @@ import {
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer;
 let mapBg;
@@ -61,6 +58,7 @@ function init() {
   ctx.fillRect(96, 96, 32, 32);
 
   mapBg = new CanvasTexture(canvas);
+  mapBg.colorSpace = SRGBColorSpace;
   mapBg.wrapS = mapBg.wrapT = RepeatWrapping;
   mapBg.repeat.set(64, 32);
 
@@ -76,11 +74,21 @@ function init() {
     { name: "Multiply", constant: MultiplyBlending },
   ];
 
-  const map0 = textureLoader.load("textures/uv_grid_opengl.jpg");
-  const map1 = textureLoader.load("textures/sprite0.jpg");
-  const map2 = textureLoader.load("textures/sprite0.png");
-  const map3 = textureLoader.load("textures/lensflare/lensflare0.png");
-  const map4 = textureLoader.load("textures/lensflare/lensflare0_alpha.png");
+  const assignSRGB = (texture) => {
+    texture.colorSpace = SRGBColorSpace;
+  };
+
+  const map0 = textureLoader.load("textures/uv_grid_opengl.jpg", assignSRGB);
+  const map1 = textureLoader.load("textures/sprite0.jpg", assignSRGB);
+  const map2 = textureLoader.load("textures/sprite0.png", assignSRGB);
+  const map3 = textureLoader.load(
+    "textures/lensflare/lensflare0.png",
+    assignSRGB
+  );
+  const map4 = textureLoader.load(
+    "textures/lensflare/lensflare0_alpha.png",
+    assignSRGB
+  );
 
   const geo1 = new PlaneGeometry(100, 100);
   const geo2 = new PlaneGeometry(100, 25);
@@ -115,7 +123,6 @@ function init() {
   // RENDERER
 
   renderer = new WebGLRenderer();
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -151,6 +158,7 @@ function generateLabelMaterial(text) {
   ctx.fillText(text, 10, 22);
 
   const map = new CanvasTexture(canvas);
+  map.colorSpace = SRGBColorSpace;
 
   const material = new MeshBasicMaterial({ map: map, transparent: true });
 

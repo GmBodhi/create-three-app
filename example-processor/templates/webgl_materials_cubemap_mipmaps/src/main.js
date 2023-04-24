@@ -1,8 +1,8 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   CubeTextureLoader,
+  SRGBColorSpace,
   LinearMipMapLinearFilter,
   LinearFilter,
   PerspectiveCamera,
@@ -11,12 +11,9 @@ import {
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container;
 
@@ -63,6 +60,7 @@ async function loadCubeTextureWithMipmaps() {
 
   const customizedCubeTexture = mipmaps.shift();
   customizedCubeTexture.mipmaps = mipmaps;
+  customizedCubeTexture.colorSpace = SRGBColorSpace;
   customizedCubeTexture.minFilter = LinearMipMapLinearFilter;
   customizedCubeTexture.magFilter = LinearFilter;
   customizedCubeTexture.generateMipmaps = false;
@@ -118,7 +116,6 @@ function init() {
 
   //renderer
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
