@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -16,7 +15,6 @@ import {
   CylinderGeometry,
   PlaneGeometry,
   ACESFilmicToneMapping,
-  LinearSRGBColorSpace,
   Clock,
 } from "three";
 
@@ -24,8 +22,6 @@ import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer, clock;
 let dirLight, spotLight;
@@ -141,7 +137,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   // Mouse control

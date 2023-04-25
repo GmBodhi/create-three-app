@@ -6,7 +6,6 @@ import fragmentShaderVelocity_ from "./shaders/fragmentShaderVelocity.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   BufferGeometry,
   DataTexture,
   RGBAFormat,
@@ -17,9 +16,9 @@ import {
   Color,
   Fog,
   HemisphereLight,
+  SRGBColorSpace,
   DirectionalLight,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   HalfFloatType,
   Vector3,
   RepeatWrapping,
@@ -30,8 +29,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 /* TEXTURE WIDTH FOR SIMULATION */
 const WIDTH = 64;
@@ -211,13 +208,13 @@ function init() {
   // LIGHTS
 
   const hemiLight = new HemisphereLight(colors[selectModel], 0xffffff, 1.6);
-  hemiLight.color.setHSL(0.6, 1, 0.6);
-  hemiLight.groundColor.setHSL(0.095, 1, 0.75);
+  hemiLight.color.setHSL(0.6, 1, 0.6, SRGBColorSpace);
+  hemiLight.groundColor.setHSL(0.095, 1, 0.75, SRGBColorSpace);
   hemiLight.position.set(0, 50, 0);
   scene.add(hemiLight);
 
   const dirLight = new DirectionalLight(0x00ced1, 0.6);
-  dirLight.color.setHSL(0.1, 1, 0.95);
+  dirLight.color.setHSL(0.1, 1, 0.95, SRGBColorSpace);
   dirLight.position.set(-1, 1.75, 1);
   dirLight.position.multiplyScalar(30);
   scene.add(dirLight);
@@ -225,7 +222,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   initComputeRenderer();

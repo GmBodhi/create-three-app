@@ -1,24 +1,21 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   FogExp2,
   BufferGeometry,
   TextureLoader,
+  SRGBColorSpace,
   Float32BufferAttribute,
   PointsMaterial,
   Points,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer, stats, material;
 let mouseX = 0,
@@ -46,6 +43,7 @@ function init() {
   const vertices = [];
 
   const sprite = new TextureLoader().load("textures/sprites/disc.png");
+  sprite.colorSpace = SRGBColorSpace;
 
   for (let i = 0; i < 10000; i++) {
     const x = 2000 * Math.random() - 1000;
@@ -64,7 +62,7 @@ function init() {
     alphaTest: 0.5,
     transparent: true,
   });
-  material.color.setHSL(1.0, 0.3, 0.7);
+  material.color.setHSL(1.0, 0.3, 0.7, SRGBColorSpace);
 
   const particles = new Points(geometry, material);
   scene.add(particles);
@@ -74,7 +72,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   //

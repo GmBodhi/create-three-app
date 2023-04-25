@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   FogExp2,
@@ -9,10 +8,10 @@ import {
   BufferGeometry,
   Float32BufferAttribute,
   TextureLoader,
+  SRGBColorSpace,
   AdditiveBlending,
   Points,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 import {
   attribute,
@@ -36,8 +35,6 @@ import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer, stats;
 
@@ -77,7 +74,7 @@ function init() {
   for (let i = 0; i < particleCount; i++) {
     speed.push(20 + Math.random() * 50);
 
-    intensity.push(Math.random() * 0.15);
+    intensity.push(Math.random() * 0.04);
 
     size.push(30 + Math.random() * 230);
   }
@@ -99,6 +96,7 @@ function init() {
   // Forked from: https://answers.unrealengine.com/questions/143267/emergency-need-help-with-fire-fx-weird-loop.html
 
   const fireMap = new TextureLoader().load("textures/sprites/firetorch_1.jpg");
+  fireMap.colorSpace = SRGBColorSpace;
 
   // nodes
 
@@ -143,7 +141,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   // stats

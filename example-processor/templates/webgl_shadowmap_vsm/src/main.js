@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -16,7 +15,6 @@ import {
   CylinderGeometry,
   PlaneGeometry,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   VSMShadowMap,
   Clock,
 } from "three";
@@ -25,8 +23,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer, clock, stats;
 let dirLight, spotLight;
@@ -191,7 +187,6 @@ function initMisc() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = VSMShadowMap;
 

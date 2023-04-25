@@ -1,12 +1,12 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Color,
   PerspectiveCamera,
   Scene,
   DirectionalLight,
   CanvasTexture,
+  SRGBColorSpace,
   MeshBasicMaterial,
   PlaneGeometry,
   Mesh,
@@ -14,11 +14,8 @@ import {
   BufferAttribute,
   MeshPhongMaterial,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   Vector3,
 } from "three";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer1, renderer2;
 
@@ -69,6 +66,7 @@ function init() {
   context.fillRect(0, 0, canvas.width, canvas.height);
 
   const shadowTexture = new CanvasTexture(canvas);
+  shadowTexture.colorSpace = SRGBColorSpace;
 
   const shadowMaterial = new MeshBasicMaterial({ map: shadowTexture });
   const shadowGeo = new PlaneGeometry(300, 300, 1, 1);
@@ -113,13 +111,23 @@ function init() {
   const colors3 = geometry3.attributes.color;
 
   for (let i = 0; i < count; i++) {
-    color.setHSL((positions1.getY(i) / radius + 1) / 2, 1.0, 0.5);
+    color.setHSL(
+      (positions1.getY(i) / radius + 1) / 2,
+      1.0,
+      0.5,
+      SRGBColorSpace
+    );
     colors1.setXYZ(i, color.r, color.g, color.b);
 
-    color.setHSL(0, (positions2.getY(i) / radius + 1) / 2, 0.5);
+    color.setHSL(0, (positions2.getY(i) / radius + 1) / 2, 0.5, SRGBColorSpace);
     colors2.setXYZ(i, color.r, color.g, color.b);
 
-    color.setRGB(1, 0.8 - (positions3.getY(i) / radius + 1) / 2, 0);
+    color.setRGB(
+      1,
+      0.8 - (positions3.getY(i) / radius + 1) / 2,
+      0,
+      SRGBColorSpace
+    );
     colors3.setXYZ(i, color.r, color.g, color.b);
   }
 
@@ -162,13 +170,11 @@ function init() {
   renderer1 = new WebGLRenderer({ antialias: true });
   renderer1.setPixelRatio(window.devicePixelRatio);
   renderer1.setSize(window.innerWidth, window.innerHeight / 2);
-  renderer1.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer1.domElement);
 
   renderer2 = new WebGLRenderer();
   renderer2.setPixelRatio(window.devicePixelRatio);
   renderer2.setSize(window.innerWidth, window.innerHeight / 2);
-  renderer2.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer2.domElement);
 }
 
@@ -195,7 +201,8 @@ function animate() {
     color.setRGB(
       1,
       Math.sin(time + position.x),
-      Math.cos(time * 2.123 + position.x)
+      Math.cos(time * 2.123 + position.x),
+      SRGBColorSpace
     );
     colors.setXYZ(i, color.r, color.g, color.b);
   }

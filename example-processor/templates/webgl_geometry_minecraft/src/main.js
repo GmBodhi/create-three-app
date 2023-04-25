@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -9,6 +8,7 @@ import {
   Matrix4,
   PlaneGeometry,
   TextureLoader,
+  SRGBColorSpace,
   NearestFilter,
   Mesh,
   MeshLambertMaterial,
@@ -16,7 +16,6 @@ import {
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -24,8 +23,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container, stats;
 
@@ -132,6 +129,7 @@ function init() {
   geometry.computeBoundingSphere();
 
   const texture = new TextureLoader().load("textures/minecraft/atlas.png");
+  texture.colorSpace = SRGBColorSpace;
   texture.magFilter = NearestFilter;
 
   const mesh = new Mesh(
@@ -140,17 +138,16 @@ function init() {
   );
   scene.add(mesh);
 
-  const ambientLight = new AmbientLight(0xcccccc);
+  const ambientLight = new AmbientLight(0xeeeeee);
   scene.add(ambientLight);
 
-  const directionalLight = new DirectionalLight(0xffffff, 2);
+  const directionalLight = new DirectionalLight(0xffffff, 4);
   directionalLight.position.set(1, 1, 0.5).normalize();
   scene.add(directionalLight);
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   container.appendChild(renderer.domElement);
 
   controls = new FirstPersonControls(camera, renderer.domElement);
