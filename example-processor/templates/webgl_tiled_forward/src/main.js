@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   ShaderChunk,
   DataTexture,
   RGBAFormat,
@@ -10,6 +11,7 @@ import {
   Scene,
   Color,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   NoToneMapping,
   WebGLRenderTarget,
   AmbientLight,
@@ -32,6 +34,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 // Simple form of tiled forward lighting
 // using texels as bitmasks of 32 lights
@@ -206,6 +210,7 @@ const scene = new Scene();
 scene.background = new Color(0x111111);
 
 const renderer = new WebGLRenderer();
+renderer.outputColorSpace = LinearSRGBColorSpace;
 renderer.toneMapping = NoToneMapping;
 container.appendChild(renderer.domElement);
 

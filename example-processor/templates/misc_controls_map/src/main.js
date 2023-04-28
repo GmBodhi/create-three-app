@@ -62,7 +62,7 @@ function init() {
   const geometry = new BoxGeometry(1, 1, 1);
   geometry.translate(0, 0.5, 0);
   const material = new MeshPhongMaterial({
-    color: 0xffffff,
+    color: 0xeeeeee,
     flatShading: true,
   });
 

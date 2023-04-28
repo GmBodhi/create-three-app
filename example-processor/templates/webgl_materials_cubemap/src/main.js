@@ -1,8 +1,10 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
+  SRGBColorSpace,
   CubeRefractionMapping,
   Scene,
   AmbientLight,
@@ -16,6 +18,8 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container, stats;
 
@@ -51,7 +55,9 @@ function init() {
   ];
 
   const reflectionCube = new CubeTextureLoader().load(urls);
+  reflectionCube.colorSpace = SRGBColorSpace;
   const refractionCube = new CubeTextureLoader().load(urls);
+  refractionCube.colorSpace = SRGBColorSpace;
   refractionCube.mapping = CubeRefractionMapping;
 
   scene = new Scene();

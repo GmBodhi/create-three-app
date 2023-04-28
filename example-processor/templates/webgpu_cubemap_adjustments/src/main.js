@@ -10,16 +10,16 @@ import {
   Mesh,
   MeshStandardMaterial,
   LinearToneMapping,
-  sRGBEncoding,
 } from "three";
 import {
   uniform,
   mix,
   cubeTexture,
   reference,
+  positionLocal,
   positionWorld,
   normalWorld,
-  modelWorldMatrix,
+  positionWorldDirection,
   reflectVector,
   toneMapping,
 } from "three/nodes";
@@ -109,13 +109,13 @@ function init() {
   const rotateY1Matrix = new Matrix4();
   const rotateY2Matrix = new Matrix4();
 
-  const getEnvironmentNode = (reflectNode) => {
+  const getEnvironmentNode = (reflectNode, positionNode) => {
     const custom1UV = reflectNode.xyz.mul(uniform(rotateY1Matrix));
     const custom2UV = reflectNode.xyz.mul(uniform(rotateY2Matrix));
     const mixCubeMaps = mix(
       cubeTexture(cube1Texture, custom1UV),
       cubeTexture(cube2Texture, custom2UV),
-      positionWorld.y.add(mixNode).clamp()
+      positionNode.y.add(mixNode).clamp()
     );
 
     const proceduralEnv = mix(mixCubeMaps, normalWorld, proceduralNode);
@@ -127,10 +127,11 @@ function init() {
 
   const blurNode = uniform(0);
 
-  scene.environmentNode = getEnvironmentNode(reflectVector);
+  scene.environmentNode = getEnvironmentNode(reflectVector, positionWorld);
 
   scene.backgroundNode = getEnvironmentNode(
-    positionWorld.transformDirection(modelWorldMatrix)
+    positionWorldDirection,
+    positionLocal
   ).context({
     getSamplerLevelNode: () => blurNode,
   });
@@ -165,7 +166,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 

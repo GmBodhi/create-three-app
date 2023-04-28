@@ -8,6 +8,7 @@ import {
   BufferGeometry,
   Color,
   CatmullRomCurve3,
+  SRGBColorSpace,
   Float32BufferAttribute,
   LineBasicMaterial,
   Line,
@@ -80,13 +81,18 @@ function init() {
 
     vertices.push(point.x, point.y, point.z);
 
-    color.setHSL(0.6, 1.0, Math.max(0, -point.x / 200) + 0.5);
+    color.setHSL(0.6, 1.0, Math.max(0, -point.x / 200) + 0.5, SRGBColorSpace);
     colors1.push(color.r, color.g, color.b);
 
-    color.setHSL(0.9, 1.0, Math.max(0, -point.y / 200) + 0.5);
+    color.setHSL(0.9, 1.0, Math.max(0, -point.y / 200) + 0.5, SRGBColorSpace);
     colors2.push(color.r, color.g, color.b);
 
-    color.setHSL(i / (hilbertPoints.length * subdivisions), 1.0, 0.5);
+    color.setHSL(
+      i / (hilbertPoints.length * subdivisions),
+      1.0,
+      0.5,
+      SRGBColorSpace
+    );
     colors3.push(color.r, color.g, color.b);
   }
 
@@ -117,14 +123,20 @@ function init() {
     color.setHSL(
       0.6,
       1.0,
-      Math.max(0, (200 - hilbertPoints[i].x) / 400) * 0.5 + 0.5
+      Math.max(0, (200 - hilbertPoints[i].x) / 400) * 0.5 + 0.5,
+      SRGBColorSpace
     );
     colors1.push(color.r, color.g, color.b);
 
-    color.setHSL(0.3, 1.0, Math.max(0, (200 + hilbertPoints[i].x) / 400) * 0.5);
+    color.setHSL(
+      0.3,
+      1.0,
+      Math.max(0, (200 + hilbertPoints[i].x) / 400) * 0.5,
+      SRGBColorSpace
+    );
     colors2.push(color.r, color.g, color.b);
 
-    color.setHSL(i / hilbertPoints.length, 1.0, 0.5);
+    color.setHSL(i / hilbertPoints.length, 1.0, 0.5, SRGBColorSpace);
     colors3.push(color.r, color.g, color.b);
   }
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -9,13 +10,14 @@ import {
   TextureLoader,
   MeshPhongMaterial,
   WebGLRenderer,
-  sRGBEncoding,
   Mesh,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 const statsEnabled = true;
 
@@ -102,7 +104,6 @@ function init() {
   container.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
-  renderer.outputEncoding = sRGBEncoding;
 
   //
 

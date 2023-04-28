@@ -58,10 +58,10 @@ function init() {
   camera.add(listener);
   scene.add(camera);
 
-  const ambient = new AmbientLight(0x666666);
+  const ambient = new AmbientLight(0xaaaaaa, 1);
   scene.add(ambient);
 
-  const directionalLight = new DirectionalLight(0x887766);
+  const directionalLight = new DirectionalLight(0xffffff, 1);
   directionalLight.position.set(-1, 1, 1).normalize();
   scene.add(directionalLight);
 

@@ -2,12 +2,12 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  sRGBEncoding,
   ReinhardToneMapping,
   Scene,
   HemisphereLight,
   MeshStandardMaterial,
   TextureLoader,
+  SRGBColorSpace,
   RepeatWrapping,
   EquirectangularReflectionMapping,
   MathUtils,
@@ -82,7 +82,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.outputEncoding = sRGBEncoding;
   renderer.toneMapping = ReinhardToneMapping;
   renderer.toneMappingExposure = 3;
   renderer.domElement.style.background =
@@ -108,7 +107,7 @@ function init() {
       material.metalness = 1;
 
       const diffuseMap = textureLoader.load("Cerberus_A.jpg", render);
-      diffuseMap.encoding = sRGBEncoding;
+      diffuseMap.colorSpace = SRGBColorSpace;
       material.map = diffuseMap;
 
       material.metalnessMap = material.roughnessMap = textureLoader.load(

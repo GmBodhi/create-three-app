@@ -14,6 +14,7 @@ import {
   Line,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   MeshLambertMaterial,
   DoubleSide,
   Mesh,
@@ -159,6 +160,7 @@ function init() {
   const map = new TextureLoader().load("textures/uv_grid_opengl.jpg");
   map.wrapS = map.wrapT = RepeatWrapping;
   map.anisotropy = 16;
+  map.colorSpace = SRGBColorSpace;
 
   function getSurfacePoint(u, v, target) {
     return nurbsSurface.getPoint(u, v, target);

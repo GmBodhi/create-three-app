@@ -8,7 +8,6 @@ import {
   DirectionalLight,
   WebGLRenderer,
   Color,
-  sRGBEncoding,
   BufferGeometry,
   Vector3,
   Line,
@@ -121,7 +120,6 @@ function init() {
   renderer.setClearAlpha(1);
   renderer.setClearColor(new Color(0), 0);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.xr.enabled = true;
 
   document.body.appendChild(renderer.domElement);

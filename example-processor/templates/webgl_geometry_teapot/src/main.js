@@ -1,13 +1,14 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
-  sRGBEncoding,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   CubeTextureLoader,
   MeshBasicMaterial,
   MeshPhongMaterial,
@@ -22,6 +23,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 let cameraControls;
@@ -69,7 +72,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(canvasWidth, canvasHeight);
-  renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
 
   // EVENTS
@@ -83,14 +85,14 @@ function init() {
   const textureMap = new TextureLoader().load("textures/uv_grid_opengl.jpg");
   textureMap.wrapS = textureMap.wrapT = RepeatWrapping;
   textureMap.anisotropy = 16;
-  textureMap.encoding = sRGBEncoding;
+  textureMap.colorSpace = SRGBColorSpace;
 
   // REFLECTION MAP
   const path = "textures/cube/pisa/";
   const urls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
 
   textureCube = new CubeTextureLoader().setPath(path).load(urls);
-  textureCube.encoding = sRGBEncoding;
+  textureCube.colorSpace = SRGBColorSpace;
 
   materials["wireframe"] = new MeshBasicMaterial({ wireframe: true });
   materials["flat"] = new MeshPhongMaterial({

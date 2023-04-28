@@ -9,6 +9,7 @@ import {
   HemisphereLight,
   Raycaster,
   PlaneGeometry,
+  SRGBColorSpace,
   Float32BufferAttribute,
   MeshBasicMaterial,
   Mesh,
@@ -161,7 +162,12 @@ function init() {
   const colorsFloor = [];
 
   for (let i = 0, l = position.count; i < l; i++) {
-    color.setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
+    color.setHSL(
+      Math.random() * 0.3 + 0.5,
+      0.75,
+      Math.random() * 0.25 + 0.75,
+      SRGBColorSpace
+    );
     colorsFloor.push(color.r, color.g, color.b);
   }
 
@@ -183,7 +189,12 @@ function init() {
   const colorsBox = [];
 
   for (let i = 0, l = position.count; i < l; i++) {
-    color.setHSL(Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75);
+    color.setHSL(
+      Math.random() * 0.3 + 0.5,
+      0.75,
+      Math.random() * 0.25 + 0.75,
+      SRGBColorSpace
+    );
     colorsBox.push(color.r, color.g, color.b);
   }
 
@@ -198,7 +209,8 @@ function init() {
     boxMaterial.color.setHSL(
       Math.random() * 0.2 + 0.5,
       0.75,
-      Math.random() * 0.25 + 0.75
+      Math.random() * 0.25 + 0.75,
+      SRGBColorSpace
     );
 
     const box = new Mesh(boxGeometry, boxMaterial);

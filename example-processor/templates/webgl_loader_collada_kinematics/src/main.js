@@ -10,7 +10,6 @@ import {
   HemisphereLight,
   PointLight,
   WebGLRenderer,
-  sRGBEncoding,
   MathUtils,
 } from "three";
 
@@ -68,7 +67,7 @@ function init() {
 
   // Grid
 
-  const grid = new GridHelper(20, 20, 0x888888, 0x444444);
+  const grid = new GridHelper(20, 20, 0xc1c1c1, 0x8d8d8d);
   scene.add(grid);
 
   // Add the COLLADA
@@ -83,14 +82,13 @@ function init() {
 
   // Lights
 
-  const light = new HemisphereLight(0xffeeee, 0x111122);
+  const light = new HemisphereLight(0xfff7f7, 0x494966);
   scene.add(light);
 
   const pointLight = new PointLight(0xffffff, 0.3);
   particleLight.add(pointLight);
 
   renderer = new WebGLRenderer();
-  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

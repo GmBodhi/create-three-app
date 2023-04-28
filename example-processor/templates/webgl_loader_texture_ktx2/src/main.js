@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  sRGBEncoding,
   Scene,
   Color,
   PerspectiveCamera,
@@ -35,7 +34,6 @@ async function init() {
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
-  renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

@@ -5,7 +5,6 @@ import {
   Scene,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  sRGBEncoding,
   TorusKnotGeometry,
   MeshStandardMaterial,
   Mesh,
@@ -14,6 +13,7 @@ import {
   DefaultLoadingManager,
   EquirectangularReflectionMapping,
   TextureLoader,
+  SRGBColorSpace,
   PMREMGenerator,
 } from "three";
 
@@ -61,7 +61,6 @@ function init() {
   container.appendChild(renderer.domElement);
 
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.outputEncoding = sRGBEncoding;
 
   //
 
@@ -96,7 +95,7 @@ function init() {
 
   new TextureLoader().load("textures/equirectangular.png", function (texture) {
     texture.mapping = EquirectangularReflectionMapping;
-    texture.encoding = sRGBEncoding;
+    texture.colorSpace = SRGBColorSpace;
 
     pngCubeRenderTarget = pmremGenerator.fromEquirectangular(texture);
     pngBackground = texture;

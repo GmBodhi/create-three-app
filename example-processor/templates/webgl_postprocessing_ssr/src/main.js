@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -29,6 +30,8 @@ import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShade
 import { ReflectorForSSRPass } from "three/addons/objects/ReflectorForSSRPass.js";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 const params = {
   enableSSR: true,

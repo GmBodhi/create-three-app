@@ -16,6 +16,7 @@ import * as Nodes from "three/nodes";
 import {
   attribute,
   positionLocal,
+  positionWorld,
   normalLocal,
   normalWorld,
   normalView,
@@ -102,6 +103,11 @@ function init() {
   // PositionLocal
   material = new MeshBasicNodeMaterial();
   material.colorNode = positionLocal;
+  materials.push(material);
+
+  // PositionWorld
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = positionWorld;
   materials.push(material);
 
   // NormalLocal

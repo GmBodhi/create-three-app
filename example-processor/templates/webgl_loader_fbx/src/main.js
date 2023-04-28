@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -16,15 +15,12 @@ import {
   GridHelper,
   AnimationMixer,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer, stats;
 
@@ -101,7 +97,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 

@@ -9,6 +9,7 @@ import {
   PerspectiveCamera,
   MeshStandardMaterial,
   Color,
+  SRGBColorSpace,
   Mesh,
   HemisphereLight,
   DirectionalLight,
@@ -72,7 +73,7 @@ function init() {
     const geometry = geometries[(geometries.length * Math.random()) | 0];
 
     const material = new MeshStandardMaterial({
-      color: new Color().setHSL(Math.random(), 1, 0.75),
+      color: new Color().setHSL(Math.random(), 1, 0.75, SRGBColorSpace),
       roughness: 0.5,
       metalness: 0,
       flatShading: true,

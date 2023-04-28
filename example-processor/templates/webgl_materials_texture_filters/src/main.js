@@ -6,6 +6,7 @@ import {
   Color,
   Fog,
   CanvasTexture,
+  SRGBColorSpace,
   RepeatWrapping,
   NearestFilter,
   MeshBasicMaterial,
@@ -64,6 +65,7 @@ function init() {
   context.fillRect(64, 64, 64, 64);
 
   const textureCanvas = new CanvasTexture(imageCanvas);
+  textureCanvas.colorSpace = SRGBColorSpace;
   textureCanvas.repeat.set(1000, 1000);
   textureCanvas.wrapS = RepeatWrapping;
   textureCanvas.wrapT = RepeatWrapping;
@@ -146,6 +148,7 @@ function init() {
     callbackPainting
   );
   const texturePainting2 = new Texture();
+
   const materialPainting = new MeshBasicMaterial({
     color: 0xffffff,
     map: texturePainting,
@@ -155,6 +158,8 @@ function init() {
     map: texturePainting2,
   });
 
+  texturePainting.colorSpace = SRGBColorSpace;
+  texturePainting2.colorSpace = SRGBColorSpace;
   texturePainting2.minFilter = texturePainting2.magFilter = NearestFilter;
   texturePainting.minFilter = texturePainting.magFilter = LinearFilter;
   texturePainting.mapping = UVMapping;

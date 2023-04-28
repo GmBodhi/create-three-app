@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -9,7 +10,6 @@ import {
   PointLight,
   AmbientLight,
   WebGLRenderer,
-  sRGBEncoding,
   CubeTextureLoader,
   CubeRefractionMapping,
   TextureLoader,
@@ -32,6 +32,8 @@ import {
   ToonShaderHatching,
   ToonShaderDotted,
 } from "three/addons/shaders/ToonShader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 
@@ -110,7 +112,6 @@ function init() {
   // RENDERER
 
   renderer = new WebGLRenderer();
-  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

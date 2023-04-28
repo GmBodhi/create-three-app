@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Scene,
   PerspectiveCamera,
   PlaneGeometry,
@@ -9,11 +10,14 @@ import {
   TextureLoader,
   RepeatWrapping,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Water } from "three/addons/objects/Water2.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let scene, camera, renderer, water;
 
@@ -88,6 +92,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   //

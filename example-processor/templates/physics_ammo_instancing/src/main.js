@@ -16,7 +16,6 @@ import {
   DynamicDrawUsage,
   IcosahedronGeometry,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { AmmoPhysics } from "three/addons/physics/AmmoPhysics.js";
@@ -48,7 +47,7 @@ async function init() {
   scene.background = new Color(0x666666);
 
   const hemiLight = new HemisphereLight();
-  hemiLight.intensity = 0.35;
+  hemiLight.intensity = 0.3;
   scene.add(hemiLight);
 
   const dirLight = new DirectionalLight();
@@ -59,7 +58,7 @@ async function init() {
 
   const floor = new Mesh(
     new BoxGeometry(10, 5, 10),
-    new ShadowMaterial({ color: 0x111111 })
+    new ShadowMaterial({ color: 0x444444 })
   );
   floor.position.y = -2.5;
   floor.receiveShadow = true;
@@ -75,8 +74,8 @@ async function init() {
 
   // Boxes
 
-  const geometryBox = new BoxGeometry(0.1, 0.1, 0.1);
-  boxes = new InstancedMesh(geometryBox, material, 100);
+  const geometryBox = new BoxGeometry(0.075, 0.075, 0.075);
+  boxes = new InstancedMesh(geometryBox, material, 400);
   boxes.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
   boxes.castShadow = true;
   boxes.receiveShadow = true;
@@ -96,8 +95,8 @@ async function init() {
 
   // Spheres
 
-  const geometrySphere = new IcosahedronGeometry(0.075, 3);
-  spheres = new InstancedMesh(geometrySphere, material, 100);
+  const geometrySphere = new IcosahedronGeometry(0.05, 4);
+  spheres = new InstancedMesh(geometrySphere, material, 400);
   spheres.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
   spheres.castShadow = true;
   spheres.receiveShadow = true;
@@ -121,7 +120,6 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
-  renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();

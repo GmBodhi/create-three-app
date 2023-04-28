@@ -12,6 +12,7 @@ import {
   BufferAttribute,
   MeshBasicMaterial,
   TextureLoader,
+  SRGBColorSpace,
   Vector3,
   InstancedMesh,
   WebGLRenderer,
@@ -94,6 +95,7 @@ function init() {
 
   const material = new MeshBasicMaterial();
   material.map = new TextureLoader().load("textures/crate.gif");
+  material.map.colorSpace = SRGBColorSpace;
   material.map.flipY = false;
 
   // per instance data

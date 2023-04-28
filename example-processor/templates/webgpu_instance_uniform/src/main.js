@@ -6,6 +6,7 @@ import {
   Scene,
   GridHelper,
   CubeTextureLoader,
+  SRGBColorSpace,
   Mesh,
 } from "three";
 import {
@@ -99,6 +100,7 @@ function init() {
   ];
 
   const cTexture = new CubeTextureLoader().load(urls);
+  cTexture.colorSpace = SRGBColorSpace;
 
   // Materials
 

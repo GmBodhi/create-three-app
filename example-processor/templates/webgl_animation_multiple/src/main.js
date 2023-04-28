@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Clock,
   Scene,
@@ -14,11 +15,12 @@ import {
   MeshPhongMaterial,
   AnimationMixer,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 let clock;
@@ -102,7 +104,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 

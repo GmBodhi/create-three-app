@@ -1,11 +1,11 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Clock,
   Raycaster,
   Vector2,
   WebGLRenderer,
-  sRGBEncoding,
   Scene,
   Color,
   PerspectiveCamera,
@@ -21,6 +21,7 @@ import {
   DoubleSide,
   CubeTextureLoader,
   CubeReflectionMapping,
+  SRGBColorSpace,
   MeshPhysicalMaterial,
   SphereGeometry,
   Sphere,
@@ -40,6 +41,8 @@ import { LightningStorm } from "three/addons/objects/LightningStorm.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 
@@ -69,7 +72,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
 
   container.appendChild(renderer.domElement);
 
@@ -492,7 +494,7 @@ function createPlasmaBallScene() {
 
   const textureCube = new CubeTextureLoader().load(urls);
   textureCube.mapping = CubeReflectionMapping;
-  textureCube.encoding = sRGBEncoding;
+  textureCube.colorSpace = SRGBColorSpace;
 
   const sphereMaterial = new MeshPhysicalMaterial({
     transparent: true,

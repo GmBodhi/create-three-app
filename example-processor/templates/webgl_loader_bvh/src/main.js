@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   Clock,
   SkeletonHelper,
-  Group,
   AnimationMixer,
   PerspectiveCamera,
   Scene,
@@ -18,25 +17,21 @@ import { BVHLoader } from "three/addons/loaders/BVHLoader.js";
 const clock = new Clock();
 
 let camera, controls, scene, renderer;
-let mixer, skeletonHelper;
+let mixer;
 
 init();
 animate();
 
 const loader = new BVHLoader();
 loader.load("models/bvh/pirouette.bvh", function (result) {
-  skeletonHelper = new SkeletonHelper(result.skeleton.bones[0]);
-  skeletonHelper.skeleton = result.skeleton; // allow animation mixer to bind to SkeletonHelper directly
+  const skeletonHelper = new SkeletonHelper(result.skeleton.bones[0]);
 
-  const boneContainer = new Group();
-  boneContainer.add(result.skeleton.bones[0]);
-
+  scene.add(result.skeleton.bones[0]);
   scene.add(skeletonHelper);
-  scene.add(boneContainer);
 
   // play animation
-  mixer = new AnimationMixer(skeletonHelper);
-  mixer.clipAction(result.clip).setEffectiveWeight(1.0).play();
+  mixer = new AnimationMixer(result.skeleton.bones[0]);
+  mixer.clipAction(result.clip).play();
 });
 
 function init() {

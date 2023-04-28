@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   DirectionalLight,
@@ -9,7 +10,6 @@ import {
   Mesh,
   SphereGeometry,
   WebGLRenderer,
-  sRGBEncoding,
   ObjectLoader,
 } from "three";
 
@@ -25,6 +25,8 @@ import {
   mix,
 } from "three/nodes";
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 let camera, scene, renderer;
@@ -79,7 +81,6 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(innerWidth, innerHeight);
   container.appendChild(renderer.domElement);
-  renderer.outputEncoding = sRGBEncoding;
 
   // CONTROLS
 

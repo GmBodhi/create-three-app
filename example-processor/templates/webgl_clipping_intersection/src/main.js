@@ -12,6 +12,7 @@ import {
   SphereGeometry,
   MeshLambertMaterial,
   Color,
+  SRGBColorSpace,
   DoubleSide,
   Mesh,
   PlaneHelper,
@@ -77,7 +78,7 @@ function init() {
     const geometry = new SphereGeometry(i / 30, 48, 24);
 
     const material = new MeshLambertMaterial({
-      color: new Color().setHSL(Math.random(), 0.5, 0.5),
+      color: new Color().setHSL(Math.random(), 0.5, 0.5, SRGBColorSpace),
       side: DoubleSide,
       clippingPlanes: clipPlanes,
       clipIntersection: params.clipIntersection,

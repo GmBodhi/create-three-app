@@ -8,6 +8,7 @@ import {
   Mesh,
   MeshStandardMaterial,
   TextureLoader,
+  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -91,6 +92,7 @@ function init() {
     "three/examples/models/obj/cerberus/Cerberus_A.jpg",
     function (texture) {
       map = texture;
+      map.colorSpace = SRGBColorSpace;
 
       if (mesh !== undefined && params.showMap) {
         mesh.material.map = map;

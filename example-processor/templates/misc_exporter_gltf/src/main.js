@@ -38,7 +38,6 @@ import {
   Vector2,
   LatheGeometry,
   WebGLRenderer,
-  sRGBEncoding,
   ACESFilmicToneMapping,
 } from "three";
 
@@ -175,7 +174,7 @@ function init() {
   // ---------------------------------------------------------------------
   // Grid
   // ---------------------------------------------------------------------
-  gridHelper = new GridHelper(2000, 20, 0x888888, 0x444444);
+  gridHelper = new GridHelper(2000, 20, 0xc1c1c1, 0x8d8d8d);
   gridHelper.position.y = -50;
   gridHelper.name = "Grid";
   scene1.add(gridHelper);
@@ -436,7 +435,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
 

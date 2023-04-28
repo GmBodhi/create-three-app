@@ -8,6 +8,7 @@ import {
   GridHelper,
   DirectionalLight,
   TextureLoader,
+  SRGBColorSpace,
   BoxGeometry,
   MeshLambertMaterial,
   Mesh,
@@ -53,6 +54,7 @@ function init() {
   scene.add(light);
 
   const texture = new TextureLoader().load("textures/crate.gif", render);
+  texture.colorSpace = SRGBColorSpace;
   texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
   const geometry = new BoxGeometry(200, 200, 200);

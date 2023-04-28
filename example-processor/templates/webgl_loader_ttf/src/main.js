@@ -8,6 +8,7 @@ import {
   Fog,
   DirectionalLight,
   PointLight,
+  SRGBColorSpace,
   MeshPhongMaterial,
   Group,
   Mesh,
@@ -77,7 +78,7 @@ function init() {
 
   const pointLight = new PointLight(0xffffff, 1.5);
   pointLight.position.set(0, 100, 90);
-  pointLight.color.setHSL(Math.random(), 1, 0.5);
+  pointLight.color.setHSL(Math.random(), 1, 0.5, SRGBColorSpace);
   scene.add(pointLight);
 
   material = new MeshPhongMaterial({ color: 0xffffff, flatShading: true });

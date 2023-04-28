@@ -3,12 +3,12 @@ import "./style.css"; // For webpack support
 import {
   WebGLRenderer,
   NoToneMapping,
-  sRGBEncoding,
   Scene,
   PerspectiveCamera,
   LightProbe,
   DirectionalLight,
   CubeTextureLoader,
+  SRGBColorSpace,
   SphereGeometry,
   TorusKnotGeometry,
   MeshStandardMaterial,
@@ -45,8 +45,6 @@ function init() {
 
   // tone mapping
   renderer.toneMapping = NoToneMapping;
-
-  renderer.outputEncoding = sRGBEncoding;
 
   // scene
   scene = new Scene();
@@ -94,7 +92,7 @@ function init() {
   const urls = genCubeUrls("textures/cube/pisa/", ".png");
 
   new CubeTextureLoader().load(urls, function (cubeTexture) {
-    cubeTexture.encoding = sRGBEncoding;
+    cubeTexture.colorSpace = SRGBColorSpace;
 
     scene.background = cubeTexture;
 

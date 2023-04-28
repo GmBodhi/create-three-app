@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  sRGBEncoding,
   ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
@@ -32,7 +31,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.useLegacyLights = false;
 
   // tonemapping

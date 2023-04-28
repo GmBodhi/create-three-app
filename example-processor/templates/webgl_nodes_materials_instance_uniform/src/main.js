@@ -6,6 +6,7 @@ import {
   Scene,
   GridHelper,
   CubeTextureLoader,
+  SRGBColorSpace,
   SphereGeometry,
   AmbientLight,
   DirectionalLight,
@@ -92,6 +93,7 @@ function init() {
   ];
 
   const cubeMap = new CubeTextureLoader().load(urls);
+  cubeMap.colorSpace = SRGBColorSpace;
 
   // Material
 

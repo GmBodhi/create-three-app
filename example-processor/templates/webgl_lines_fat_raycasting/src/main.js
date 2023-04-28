@@ -13,6 +13,7 @@ import {
   Mesh,
   Vector3,
   CatmullRomCurve3,
+  SRGBColorSpace,
   BufferGeometry,
   Float32BufferAttribute,
 } from "three";
@@ -143,7 +144,7 @@ function init() {
     spline.getPoint(t, point);
     positions.push(point.x, point.y, point.z);
 
-    color.setHSL(t, 1.0, 0.5);
+    color.setHSL(t, 1.0, 0.5, SRGBColorSpace);
     colors.push(color.r, color.g, color.b);
   }
 

@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Matrix4,
   Scene,
   Color,
@@ -15,7 +16,6 @@ import {
   PlaneGeometry,
   Raycaster,
   WebGLRenderer,
-  sRGBEncoding,
   Quaternion,
   BufferGeometry,
   Float32BufferAttribute,
@@ -27,6 +27,8 @@ import {
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
 import { VRButton } from "three/addons/webxr/VRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, raycaster, renderer;
 let controller1, controller2;
@@ -81,7 +83,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
 
   renderer.xr.addEventListener(
     "sessionstart",

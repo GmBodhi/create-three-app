@@ -2,6 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   CubeTextureLoader,
+  SRGBColorSpace,
   LinearMipMapLinearFilter,
   LinearFilter,
   PerspectiveCamera,
@@ -59,6 +60,7 @@ async function loadCubeTextureWithMipmaps() {
 
   const customizedCubeTexture = mipmaps.shift();
   customizedCubeTexture.mipmaps = mipmaps;
+  customizedCubeTexture.colorSpace = SRGBColorSpace;
   customizedCubeTexture.minFilter = LinearMipMapLinearFilter;
   customizedCubeTexture.magFilter = LinearFilter;
   customizedCubeTexture.generateMipmaps = false;

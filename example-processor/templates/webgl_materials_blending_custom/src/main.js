@@ -9,6 +9,7 @@ import {
   PerspectiveCamera,
   Scene,
   CanvasTexture,
+  SRGBColorSpace,
   RepeatWrapping,
   ZeroFactor,
   OneFactor,
@@ -83,6 +84,7 @@ function init() {
   ctx.fillRect(96, 96, 32, 32);
 
   mapBg = new CanvasTexture(canvas);
+  mapBg.colorSpace = SRGBColorSpace;
   mapBg.wrapS = mapBg.wrapT = RepeatWrapping;
   mapBg.repeat.set(64, 32);
 
@@ -123,6 +125,7 @@ function init() {
   const texture = new TextureLoader().load(
     "textures/lensflare/lensflare0_alpha.png"
   );
+  texture.colorSpace = SRGBColorSpace;
 
   for (let i = 0; i < dst.length; i++) {
     const blendDst = dst[i];
@@ -231,6 +234,7 @@ function generateLabelMaterial(text, bg) {
   ctx.fillText(text, 8, 22);
 
   const map = new CanvasTexture(canvas);
+  map.colorSpace = SRGBColorSpace;
 
   const material = new MeshBasicMaterial({ map: map, transparent: true });
   return material;

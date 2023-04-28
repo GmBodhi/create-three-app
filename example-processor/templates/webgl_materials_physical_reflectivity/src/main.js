@@ -14,7 +14,6 @@ import {
   AmbientLight,
   PointLight,
   ACESFilmicToneMapping,
-  sRGBEncoding,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -136,8 +135,6 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
-
-  renderer.outputEncoding = sRGBEncoding;
 
   stats = new Stats();
   container.appendChild(stats.dom);

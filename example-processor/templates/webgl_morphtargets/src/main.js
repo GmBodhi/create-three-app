@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   Color,
   PerspectiveCamera,
@@ -10,7 +9,6 @@ import {
   MeshPhongMaterial,
   Mesh,
   WebGLRenderer,
-  sRGBEncoding,
   BoxGeometry,
   Vector3,
   Float32BufferAttribute,
@@ -18,8 +16,6 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = true;
 
 let container, camera, scene, renderer, mesh;
 
@@ -61,7 +57,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.useLegacyLights = false;
-  renderer.outputEncoding = sRGBEncoding;
   renderer.setAnimationLoop(function () {
     renderer.render(scene, camera);
   });

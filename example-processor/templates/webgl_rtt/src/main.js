@@ -7,6 +7,7 @@ import vertexShader_ from "./shaders/vertexShader.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   OrthographicCamera,
   Scene,
@@ -20,9 +21,12 @@ import {
   SphereGeometry,
   MeshBasicMaterial,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container, stats;
 
@@ -147,6 +151,7 @@ function init() {
   }
 
   renderer = new WebGLRenderer();
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.autoClear = false;

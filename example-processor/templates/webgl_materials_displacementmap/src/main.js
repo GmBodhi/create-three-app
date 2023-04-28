@@ -1,13 +1,14 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
-  sRGBEncoding,
   Scene,
   OrthographicCamera,
   AmbientLight,
   PointLight,
   CubeTextureLoader,
+  SRGBColorSpace,
   TextureLoader,
   MeshStandardMaterial,
   Vector2,
@@ -20,9 +21,12 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-let stats;
 
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
+
+let stats;
 let camera, scene, renderer, controls;
+
 const settings = {
   metalness: 1.0,
   roughness: 0.4,
@@ -114,7 +118,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
-  renderer.outputEncoding = sRGBEncoding;
 
   //
 
@@ -167,7 +170,7 @@ function init() {
   ];
 
   const reflectionCube = new CubeTextureLoader().load(urls);
-  reflectionCube.encoding = sRGBEncoding;
+  reflectionCube.colorSpace = SRGBColorSpace;
 
   // textures
 
@@ -206,7 +209,6 @@ function init() {
   const loader = new OBJLoader();
   loader.load("models/obj/ninja/ninjaHead_Low.obj", function (group) {
     const geometry = group.children[0].geometry;
-    geometry.attributes.uv2 = geometry.attributes.uv;
     geometry.center();
 
     mesh = new Mesh(geometry, material);

@@ -7,6 +7,7 @@ import vertexShader_ from "./shaders/vertexShader.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   OrthographicCamera,
   Scene,
   DirectionalLight,
@@ -24,6 +25,8 @@ import {
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 

@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   VideoTexture,
+  SRGBColorSpace,
   Scene,
   Color,
   SphereGeometry,
@@ -37,6 +38,7 @@ function init() {
   video.play();
 
   const texture = new VideoTexture(video);
+  texture.colorSpace = SRGBColorSpace;
 
   scene = new Scene();
   scene.background = new Color(0x101010);

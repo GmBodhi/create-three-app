@@ -1,9 +1,10 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
-  sRGBEncoding,
+  SRGBColorSpace,
   Scene,
   TextureLoader,
   RepeatWrapping,
@@ -24,6 +25,8 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 
@@ -53,7 +56,7 @@ function init(font) {
   const reflectionCube = new CubeTextureLoader()
     .setPath("textures/cube/SwedishRoyalCastle/")
     .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
-  reflectionCube.encoding = sRGBEncoding;
+  reflectionCube.colorSpace = SRGBColorSpace;
 
   scene = new Scene();
   scene.background = reflectionCube;
@@ -62,7 +65,7 @@ function init(font) {
 
   let imgTexture = new TextureLoader().load("textures/planets/moon_1024.jpg");
   imgTexture.wrapS = imgTexture.wrapT = RepeatWrapping;
-  imgTexture.encoding = sRGBEncoding;
+  imgTexture.colorSpace = SRGBColorSpace;
   imgTexture.anisotropy = 16;
   imgTexture = null;
 
@@ -159,7 +162,6 @@ function init(font) {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
-  renderer.outputEncoding = sRGBEncoding;
 
   //
 

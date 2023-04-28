@@ -5,7 +5,6 @@ import {
   Scene,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  sRGBEncoding,
   PMREMGenerator,
   Color,
 } from "three";
@@ -55,7 +54,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
-  renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
 
   const environment = new RoomEnvironment();

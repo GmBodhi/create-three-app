@@ -6,7 +6,6 @@ import {
   EquirectangularReflectionMapping,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  sRGBEncoding,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -61,7 +60,6 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
-  renderer.outputEncoding = sRGBEncoding;
   renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 

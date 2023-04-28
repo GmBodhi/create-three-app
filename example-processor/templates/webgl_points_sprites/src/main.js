@@ -6,6 +6,7 @@ import {
   FogExp2,
   BufferGeometry,
   TextureLoader,
+  SRGBColorSpace,
   Float32BufferAttribute,
   PointsMaterial,
   AdditiveBlending,
@@ -46,11 +47,30 @@ function init() {
 
   const textureLoader = new TextureLoader();
 
-  const sprite1 = textureLoader.load("textures/sprites/snowflake1.png");
-  const sprite2 = textureLoader.load("textures/sprites/snowflake2.png");
-  const sprite3 = textureLoader.load("textures/sprites/snowflake3.png");
-  const sprite4 = textureLoader.load("textures/sprites/snowflake4.png");
-  const sprite5 = textureLoader.load("textures/sprites/snowflake5.png");
+  const assignSRGB = (texture) => {
+    texture.colorSpace = SRGBColorSpace;
+  };
+
+  const sprite1 = textureLoader.load(
+    "textures/sprites/snowflake1.png",
+    assignSRGB
+  );
+  const sprite2 = textureLoader.load(
+    "textures/sprites/snowflake2.png",
+    assignSRGB
+  );
+  const sprite3 = textureLoader.load(
+    "textures/sprites/snowflake3.png",
+    assignSRGB
+  );
+  const sprite4 = textureLoader.load(
+    "textures/sprites/snowflake4.png",
+    assignSRGB
+  );
+  const sprite5 = textureLoader.load(
+    "textures/sprites/snowflake5.png",
+    assignSRGB
+  );
 
   for (let i = 0; i < 10000; i++) {
     const x = Math.random() * 2000 - 1000;
@@ -82,7 +102,7 @@ function init() {
       depthTest: false,
       transparent: true,
     });
-    materials[i].color.setHSL(color[0], color[1], color[2]);
+    materials[i].color.setHSL(color[0], color[1], color[2], SRGBColorSpace);
 
     const particles = new Points(geometry, materials[i]);
 
@@ -176,7 +196,7 @@ function render() {
     const color = parameters[i][0];
 
     const h = ((360 * (color[0] + time)) % 360) / 360;
-    materials[i].color.setHSL(h, color[1], color[2]);
+    materials[i].color.setHSL(h, color[1], color[2], SRGBColorSpace);
   }
 
   renderer.render(scene, camera);

@@ -6,9 +6,9 @@ import {
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
-  sRGBEncoding,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   CubeTextureLoader,
   MeshBasicMaterial,
   MeshPhongMaterial,
@@ -87,7 +87,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(canvasWidth, canvasHeight);
-  renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
 
   // EVENTS
@@ -103,7 +102,7 @@ function init() {
   const textureMap = loader.load("textures/uv_grid_opengl.jpg");
   textureMap.wrapS = textureMap.wrapT = RepeatWrapping;
   textureMap.anisotropy = 16;
-  textureMap.encoding = sRGBEncoding;
+  textureMap.colorSpace = SRGBColorSpace;
 
   // NORMAL MAP
 
@@ -126,7 +125,7 @@ function init() {
   ];
 
   textureCube = new CubeTextureLoader().load(urls);
-  textureCube.encoding = sRGBEncoding;
+  textureCube.colorSpace = SRGBColorSpace;
 
   // MATERIALS
   const materialColor = new Color();

@@ -8,6 +8,7 @@ import renderFrag_ from "./shaders/renderFrag.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   WebGLMultipleRenderTargets,
   NearestFilter,
@@ -28,6 +29,8 @@ import {
 import WebGL from "three/addons/capabilities/WebGL.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer, controls;
 let renderTarget;

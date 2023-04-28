@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -8,7 +9,7 @@ import {
   PointLight,
   DirectionalLight,
   TextureLoader,
-  sRGBEncoding,
+  SRGBColorSpace,
   MeshPhongMaterial,
   Vector2,
   WebGLRenderer,
@@ -28,6 +29,8 @@ import { BleachBypassShader } from "three/addons/shaders/BleachBypassShader.js";
 import { ColorCorrectionShader } from "three/addons/shaders/ColorCorrectionShader.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
 import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats, loader;
 
@@ -85,12 +88,12 @@ function init() {
   const diffuseMap = textureLoader.load(
     "models/gltf/LeePerrySmith/Map-COL.jpg"
   );
-  diffuseMap.encoding = sRGBEncoding;
+  diffuseMap.colorSpace = SRGBColorSpace;
 
   const specularMap = textureLoader.load(
     "models/gltf/LeePerrySmith/Map-SPEC.jpg"
   );
-  specularMap.encoding = sRGBEncoding;
+  specularMap.colorSpace = SRGBColorSpace;
 
   const normalMap = textureLoader.load(
     "models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg"

@@ -4,6 +4,7 @@ import {
   PerspectiveCamera,
   Scene,
   TextureLoader,
+  SRGBColorSpace,
   BoxGeometry,
   MeshBasicMaterial,
   Mesh,
@@ -28,6 +29,7 @@ function init() {
   scene = new Scene();
 
   const texture = new TextureLoader().load("textures/crate.gif");
+  texture.colorSpace = SRGBColorSpace;
 
   const geometry = new BoxGeometry(200, 200, 200);
   const material = new MeshBasicMaterial({ map: texture });

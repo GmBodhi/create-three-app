@@ -8,6 +8,7 @@ import {
   BufferGeometry,
   Float32BufferAttribute,
   CanvasTexture,
+  SRGBColorSpace,
   PointsMaterial,
   Points,
   PerspectiveCamera,
@@ -90,6 +91,7 @@ function init() {
     context.fillStyle = colors[index];
     context.fill();
     const texture = new CanvasTexture(canvas2);
+    texture.colorSpace = SRGBColorSpace;
 
     const material = new PointsMaterial({
       size: size,

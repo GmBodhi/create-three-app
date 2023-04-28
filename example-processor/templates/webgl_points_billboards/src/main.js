@@ -6,6 +6,7 @@ import {
   FogExp2,
   BufferGeometry,
   TextureLoader,
+  SRGBColorSpace,
   Float32BufferAttribute,
   PointsMaterial,
   Points,
@@ -42,6 +43,7 @@ function init() {
   const vertices = [];
 
   const sprite = new TextureLoader().load("textures/sprites/disc.png");
+  sprite.colorSpace = SRGBColorSpace;
 
   for (let i = 0; i < 10000; i++) {
     const x = 2000 * Math.random() - 1000;
@@ -60,7 +62,7 @@ function init() {
     alphaTest: 0.5,
     transparent: true,
   });
-  material.color.setHSL(1.0, 0.3, 0.7);
+  material.color.setHSL(1.0, 0.3, 0.7, SRGBColorSpace);
 
   const particles = new Points(geometry, material);
   scene.add(particles);

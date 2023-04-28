@@ -14,6 +14,7 @@ import {
   TextureLoader,
   AmbientLight,
   DirectionalLight,
+  SRGBColorSpace,
   RepeatWrapping,
   SphereGeometry,
   BoxGeometry,
@@ -160,6 +161,7 @@ function createObjects() {
   ground.castShadow = true;
   ground.receiveShadow = true;
   textureLoader.load("textures/grid.png", function (texture) {
+    texture.colorSpace = SRGBColorSpace;
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
     texture.repeat.set(40, 40);

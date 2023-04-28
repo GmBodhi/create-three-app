@@ -4,6 +4,7 @@ import {
   Vector3,
   Vector2,
   TextureLoader,
+  SRGBColorSpace,
   MeshPhongMaterial,
   Euler,
   WebGLRenderer,
@@ -44,6 +45,7 @@ const intersects = [];
 
 const textureLoader = new TextureLoader();
 const decalDiffuse = textureLoader.load("textures/decal/decal-diffuse.png");
+decalDiffuse.colorSpace = SRGBColorSpace;
 const decalNormal = textureLoader.load("textures/decal/decal-normal.jpg");
 
 const decalMaterial = new MeshPhongMaterial({
@@ -198,17 +200,24 @@ function init() {
 }
 
 function loadLeePerrySmith() {
+  const map = textureLoader.load("models/gltf/LeePerrySmith/Map-COL.jpg");
+  map.colorSpace = SRGBColorSpace;
+  const specularMap = textureLoader.load(
+    "models/gltf/LeePerrySmith/Map-SPEC.jpg"
+  );
+  const normalMap = textureLoader.load(
+    "models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg"
+  );
+
   const loader = new GLTFLoader();
 
   loader.load("models/gltf/LeePerrySmith/LeePerrySmith.glb", function (gltf) {
     mesh = gltf.scene.children[0];
     mesh.material = new MeshPhongMaterial({
       specular: 0x111111,
-      map: textureLoader.load("models/gltf/LeePerrySmith/Map-COL.jpg"),
-      specularMap: textureLoader.load("models/gltf/LeePerrySmith/Map-SPEC.jpg"),
-      normalMap: textureLoader.load(
-        "models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg"
-      ),
+      map: map,
+      specularMap: specularMap,
+      normalMap: normalMap,
       shininess: 25,
     });
 

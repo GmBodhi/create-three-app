@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   AudioListener,
   Audio,
   AudioLoader,
@@ -14,7 +15,6 @@ import {
   HemisphereLight,
   DirectionalLight,
   WebGLRenderer,
-  sRGBEncoding,
   PlaneGeometry,
   TorusKnotGeometry,
 } from "three";
@@ -30,6 +30,8 @@ import {
   TagComponent,
   Types,
 } from "three/addons/libs/ecsy.module.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 class Object3D extends Component {}
 
@@ -307,7 +309,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   renderer.xr.cameraAutoUpdate = false;

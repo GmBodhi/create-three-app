@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   Clock,
   WebGLRenderer,
-  sRGBEncoding,
   PMREMGenerator,
   Scene,
   Color,
@@ -30,7 +29,6 @@ container.appendChild(stats.dom);
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputEncoding = sRGBEncoding;
 container.appendChild(renderer.domElement);
 
 const pmremGenerator = new PMREMGenerator(renderer);

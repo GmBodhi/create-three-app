@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
   Scene,
@@ -18,12 +19,13 @@ import {
   BoxGeometry,
   MeshBasicMaterial,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let scene, camera, renderer;
 
@@ -141,7 +143,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 

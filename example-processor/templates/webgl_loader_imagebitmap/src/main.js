@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   ImageBitmapLoader,
   CanvasTexture,
+  SRGBColorSpace,
   MeshBasicMaterial,
   ImageLoader,
   BoxGeometry,
@@ -25,6 +26,7 @@ function addImageBitmap() {
     "textures/planets/earth_atmos_2048.jpg?" + performance.now(),
     function (imageBitmap) {
       const texture = new CanvasTexture(imageBitmap);
+      texture.colorSpace = SRGBColorSpace;
       const material = new MeshBasicMaterial({ map: texture });
 
       /* ImageBitmap should be disposed when done with it
@@ -50,6 +52,7 @@ function addImage() {
       "textures/planets/earth_atmos_2048.jpg?" + performance.now(),
       function (image) {
         const texture = new CanvasTexture(image);
+        texture.colorSpace = SRGBColorSpace;
         const material = new MeshBasicMaterial({
           color: 0xff8888,
           map: texture,

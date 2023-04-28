@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  sRGBEncoding,
   Scene,
   PerspectiveCamera,
   SphereGeometry,
@@ -27,8 +26,6 @@ function init() {
   renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
-
-  //renderer.outputEncoding = sRGBEncoding; // optional
 
   window.addEventListener("resize", onWindowResize);
 
@@ -83,8 +80,6 @@ function createObjects() {
 function createEnvironment() {
   const envScene = new Scene();
   envScene.background = new Color(COLOR);
-  if (renderer.outputEncoding === sRGBEncoding)
-    envScene.background.convertSRGBToLinear();
 
   const pmremGenerator = new PMREMGenerator(renderer);
   radianceMap = pmremGenerator.fromScene(envScene).texture;

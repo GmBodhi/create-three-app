@@ -6,7 +6,7 @@ import {
   Group,
   SphereGeometry,
   TextureLoader,
-  sRGBEncoding,
+  SRGBColorSpace,
   RepeatWrapping,
   CanvasTexture,
   MeshPhysicalMaterial,
@@ -62,7 +62,7 @@ function init() {
         const textureLoader = new TextureLoader();
 
         const diffuse = textureLoader.load("textures/carbon/Carbon.png");
-        diffuse.encoding = sRGBEncoding;
+        diffuse.colorSpace = SRGBColorSpace;
         diffuse.wrapS = RepeatWrapping;
         diffuse.wrapT = RepeatWrapping;
         diffuse.repeat.x = 10;
@@ -187,8 +187,6 @@ function init() {
   renderer.toneMappingExposure = 1.25;
 
   //
-
-  renderer.outputEncoding = sRGBEncoding;
 
   //
 

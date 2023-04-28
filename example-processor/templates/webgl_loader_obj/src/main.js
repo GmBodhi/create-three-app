@@ -7,6 +7,7 @@ import {
   PointLight,
   LoadingManager,
   TextureLoader,
+  SRGBColorSpace,
   WebGLRenderer,
 } from "three";
 
@@ -67,6 +68,7 @@ function init() {
 
   const textureLoader = new TextureLoader(manager);
   const texture = textureLoader.load("textures/uv_grid_opengl.jpg");
+  texture.colorSpace = SRGBColorSpace;
 
   // model
 

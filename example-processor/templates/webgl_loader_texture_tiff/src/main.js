@@ -5,6 +5,7 @@ import {
   WebGLRenderer,
   Scene,
   PlaneGeometry,
+  SRGBColorSpace,
   MeshBasicMaterial,
   Mesh,
 } from "three";
@@ -38,6 +39,8 @@ function init() {
   // uncompressed
 
   loader.load("textures/tiff/crate_uncompressed.tif", function (texture) {
+    texture.colorSpace = SRGBColorSpace;
+
     const material = new MeshBasicMaterial({ map: texture });
 
     const mesh = new Mesh(geometry, material);
@@ -51,6 +54,8 @@ function init() {
   // LZW
 
   loader.load("textures/tiff/crate_lzw.tif", function (texture) {
+    texture.colorSpace = SRGBColorSpace;
+
     const material = new MeshBasicMaterial({ map: texture });
 
     const mesh = new Mesh(geometry, material);
@@ -64,6 +69,8 @@ function init() {
   // JPEG
 
   loader.load("textures/tiff/crate_jpeg.tif", function (texture) {
+    texture.colorSpace = SRGBColorSpace;
+
     const material = new MeshBasicMaterial({ map: texture });
 
     const mesh = new Mesh(geometry, material);

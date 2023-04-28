@@ -7,8 +7,9 @@ import {
   BoxGeometry,
   MeshBasicMaterial,
   Mesh,
-  MeshLambertMaterial,
   TextureLoader,
+  SRGBColorSpace,
+  MeshLambertMaterial,
   GridHelper,
   Raycaster,
   Vector2,
@@ -58,11 +59,10 @@ function init() {
 
   // cubes
 
+  const map = new TextureLoader().load("textures/square-outline-textured.png");
+  map.colorSpace = SRGBColorSpace;
   cubeGeo = new BoxGeometry(50, 50, 50);
-  cubeMaterial = new MeshLambertMaterial({
-    color: 0xfeb74c,
-    map: new TextureLoader().load("textures/square-outline-textured.png"),
-  });
+  cubeMaterial = new MeshLambertMaterial({ color: 0xfeb74c, map: map });
 
   // grid
 

@@ -8,6 +8,7 @@ import {
   PointLight,
   AxesHelper,
   TextureLoader,
+  SRGBColorSpace,
   Group,
   DodecahedronGeometry,
   Vector3,
@@ -71,6 +72,7 @@ function init() {
 
   const loader = new TextureLoader();
   const texture = loader.load("textures/sprites/disc.png");
+  texture.colorSpace = SRGBColorSpace;
 
   group = new Group();
   scene.add(group);

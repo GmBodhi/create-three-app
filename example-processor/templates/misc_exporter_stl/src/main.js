@@ -63,7 +63,7 @@ function init() {
 
   const ground = new Mesh(
     new PlaneGeometry(2000, 2000),
-    new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    new MeshPhongMaterial({ color: 0xbbbbbb, depthWrite: false })
   );
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;

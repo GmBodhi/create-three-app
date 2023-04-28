@@ -27,7 +27,6 @@ let box;
 const dpr = window.devicePixelRatio;
 
 init();
-animate();
 
 function init() {
   if (WebGPU.isAvailable() === false) {
@@ -66,6 +65,7 @@ function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(dpr);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   textureRenderer = new WebGPUTextureRenderer(renderer);
@@ -108,8 +108,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   box.rotation.x += 0.01;
   box.rotation.y += 0.02;
 

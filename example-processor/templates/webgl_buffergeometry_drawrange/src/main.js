@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Group,
@@ -17,13 +18,14 @@ import {
   LineBasicMaterial,
   LineSegments,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let group;
 let container, stats;
@@ -175,7 +177,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
 
   container.appendChild(renderer.domElement);
 

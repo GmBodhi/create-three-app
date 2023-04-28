@@ -9,7 +9,6 @@ import {
   Float32BufferAttribute,
   Line,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -80,7 +79,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
 
   container.appendChild(renderer.domElement);
 

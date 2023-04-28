@@ -10,6 +10,7 @@ import {
   PlaneGeometry,
   CanvasTexture,
   ClampToEdgeWrapping,
+  SRGBColorSpace,
   Mesh,
   MeshBasicMaterial,
   ConeGeometry,
@@ -93,6 +94,7 @@ function init() {
   texture = new CanvasTexture(generateTexture(data, worldWidth, worldDepth));
   texture.wrapS = ClampToEdgeWrapping;
   texture.wrapT = ClampToEdgeWrapping;
+  texture.colorSpace = SRGBColorSpace;
 
   mesh = new Mesh(geometry, new MeshBasicMaterial({ map: texture }));
   scene.add(mesh);

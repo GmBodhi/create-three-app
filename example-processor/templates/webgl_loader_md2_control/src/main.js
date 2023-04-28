@@ -14,7 +14,7 @@ import {
   MeshPhongMaterial,
   Mesh,
   RepeatWrapping,
-  sRGBEncoding,
+  SRGBColorSpace,
   WebGLRenderer,
   PCFSoftShadowMap,
 } from "three";
@@ -72,7 +72,7 @@ function init() {
 
   // LIGHTS
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x666666));
 
   const light = new DirectionalLight(0xffffff, 2.25);
   light.position.set(200, 450, 500);
@@ -104,7 +104,7 @@ function init() {
   ground.material.map.repeat.set(64, 64);
   ground.material.map.wrapS = RepeatWrapping;
   ground.material.map.wrapT = RepeatWrapping;
-  ground.material.map.encoding = sRGBEncoding;
+  ground.material.map.colorSpace = SRGBColorSpace;
   // note that because the ground does not cast a shadow, .castShadow is left false
   ground.receiveShadow = true;
 
@@ -119,7 +119,6 @@ function init() {
 
   //
 
-  renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
 

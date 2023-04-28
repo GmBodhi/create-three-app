@@ -1,8 +1,8 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
-  sRGBEncoding,
   PerspectiveCamera,
   Scene,
   RectAreaLight,
@@ -18,6 +18,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
+
 let renderer, scene, camera;
 let stats;
 
@@ -28,7 +30,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animation);
-  renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(

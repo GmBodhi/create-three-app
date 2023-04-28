@@ -7,7 +7,6 @@ import {
   DirectionalLight,
   TextureLoader,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
@@ -59,7 +58,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   container.appendChild(renderer.domElement);
 
   controls = new TrackballControls(camera, renderer.domElement);

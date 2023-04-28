@@ -1,15 +1,16 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   WebGLRenderer,
   PCFSoftShadowMap,
-  sRGBEncoding,
   ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
   HemisphereLight,
   TextureLoader,
   LinearFilter,
+  SRGBColorSpace,
   SpotLight,
   SpotLightHelper,
   PlaneGeometry,
@@ -21,6 +22,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
+ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let renderer, scene, camera;
 
@@ -36,8 +39,6 @@ function init() {
 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
-
-  renderer.outputEncoding = sRGBEncoding;
 
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
@@ -75,7 +76,7 @@ function init() {
     const texture = loader.load(filename);
     texture.minFilter = LinearFilter;
     texture.magFilter = LinearFilter;
-    texture.encoding = sRGBEncoding;
+    texture.colorSpace = SRGBColorSpace;
 
     textures[filename] = texture;
   }

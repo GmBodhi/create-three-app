@@ -8,6 +8,7 @@ import {
   Matrix4,
   PlaneGeometry,
   TextureLoader,
+  SRGBColorSpace,
   NearestFilter,
   Mesh,
   MeshLambertMaterial,
@@ -128,6 +129,7 @@ function init() {
   geometry.computeBoundingSphere();
 
   const texture = new TextureLoader().load("textures/minecraft/atlas.png");
+  texture.colorSpace = SRGBColorSpace;
   texture.magFilter = NearestFilter;
 
   const mesh = new Mesh(
@@ -136,10 +138,10 @@ function init() {
   );
   scene.add(mesh);
 
-  const ambientLight = new AmbientLight(0xcccccc);
+  const ambientLight = new AmbientLight(0xeeeeee);
   scene.add(ambientLight);
 
-  const directionalLight = new DirectionalLight(0xffffff, 2);
+  const directionalLight = new DirectionalLight(0xffffff, 4);
   directionalLight.position.set(1, 1, 0.5).normalize();
   scene.add(directionalLight);
 

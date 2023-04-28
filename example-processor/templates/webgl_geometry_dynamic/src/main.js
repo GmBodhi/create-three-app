@@ -10,6 +10,7 @@ import {
   DynamicDrawUsage,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   MeshBasicMaterial,
   Mesh,
   WebGLRenderer,
@@ -58,6 +59,7 @@ function init() {
   const texture = new TextureLoader().load("textures/water.jpg");
   texture.wrapS = texture.wrapT = RepeatWrapping;
   texture.repeat.set(5, 5);
+  texture.colorSpace = SRGBColorSpace;
 
   material = new MeshBasicMaterial({ color: 0x0044ff, map: texture });
 

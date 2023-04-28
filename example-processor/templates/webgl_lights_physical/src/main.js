@@ -10,7 +10,7 @@ import {
   HemisphereLight,
   TextureLoader,
   RepeatWrapping,
-  sRGBEncoding,
+  SRGBColorSpace,
   PlaneGeometry,
   BoxGeometry,
   WebGLRenderer,
@@ -110,7 +110,7 @@ function init() {
     map.wrapT = RepeatWrapping;
     map.anisotropy = 4;
     map.repeat.set(10, 24);
-    map.encoding = sRGBEncoding;
+    map.colorSpace = SRGBColorSpace;
     floorMat.map = map;
     floorMat.needsUpdate = true;
   });
@@ -142,7 +142,7 @@ function init() {
     map.wrapT = RepeatWrapping;
     map.anisotropy = 4;
     map.repeat.set(1, 1);
-    map.encoding = sRGBEncoding;
+    map.colorSpace = SRGBColorSpace;
     cubeMat.map = map;
     cubeMat.needsUpdate = true;
   });
@@ -162,7 +162,7 @@ function init() {
   });
   textureLoader.load("textures/planets/earth_atmos_2048.jpg", function (map) {
     map.anisotropy = 4;
-    map.encoding = sRGBEncoding;
+    map.colorSpace = SRGBColorSpace;
     ballMat.map = map;
     ballMat.needsUpdate = true;
   });
@@ -170,7 +170,7 @@ function init() {
     "textures/planets/earth_specular_2048.jpg",
     function (map) {
       map.anisotropy = 4;
-      map.encoding = sRGBEncoding;
+      map.colorSpace = SRGBColorSpace;
       ballMat.metalnessMap = map;
       ballMat.needsUpdate = true;
     }
@@ -207,7 +207,6 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.useLegacyLights = false;
-  renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = ReinhardToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);

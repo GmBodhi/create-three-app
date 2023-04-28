@@ -15,7 +15,7 @@ import {
   DefaultLoadingManager,
   LinearFilter,
   CubeTextureLoader,
-  sRGBEncoding,
+  SRGBColorSpace,
   PMREMGenerator,
 } from "three";
 
@@ -105,7 +105,7 @@ function init() {
   ldrCubeMap = new CubeTextureLoader()
     .setPath("three/examples/textures/cube/pisa/")
     .load(ldrUrls, function () {
-      ldrCubeMap.encoding = sRGBEncoding;
+      ldrCubeMap.colorSpace = SRGBColorSpace;
 
       ldrCubeRenderTarget = pmremGenerator.fromCubemap(ldrCubeMap);
     });
@@ -129,7 +129,6 @@ function init() {
   container.appendChild(renderer.domElement);
 
   //renderer.toneMapping = ReinhardToneMapping;
-  renderer.outputEncoding = sRGBEncoding;
 
   stats = new Stats();
   container.appendChild(stats.dom);

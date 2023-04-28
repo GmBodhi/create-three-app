@@ -2,6 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
+  ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
   PlaneGeometry,
@@ -43,6 +44,7 @@ function init() {
 
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -217,7 +219,7 @@ function renderPortal(thisPortalMesh, otherPortalMesh, thisPortalTexture) {
   );
 
   // render the portal
-  thisPortalTexture.texture.encoding = renderer.outputEncoding;
+  thisPortalTexture.texture.colorSpace = renderer.outputColorSpace;
   renderer.setRenderTarget(thisPortalTexture);
   renderer.state.buffers.depth.setMask(true); // make sure the depth buffer is writable so it can be properly cleared, see #18897
   if (renderer.autoClear === false) renderer.clear();

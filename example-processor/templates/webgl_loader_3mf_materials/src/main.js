@@ -13,7 +13,6 @@ import {
   PlaneGeometry,
   MeshPhongMaterial,
   WebGLRenderer,
-  sRGBEncoding,
   PCFSoftShadowMap,
 } from "three";
 
@@ -40,7 +39,7 @@ function init() {
 
   //
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x444444);
+  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
   hemiLight.position.set(0, 100, 0);
   scene.add(hemiLight);
 
@@ -83,7 +82,7 @@ function init() {
 
   const ground = new Mesh(
     new PlaneGeometry(1000, 1000),
-    new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    new MeshPhongMaterial({ color: 0xcbcbcb, depthWrite: false })
   );
   ground.rotation.x = -Math.PI / 2;
   ground.position.y = 11;
@@ -95,7 +94,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
   document.body.appendChild(renderer.domElement);

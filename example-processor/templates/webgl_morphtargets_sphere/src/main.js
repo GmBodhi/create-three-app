@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Clock,
@@ -11,13 +10,10 @@ import {
   TextureLoader,
   Points,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-ColorManagement.enabled = true;
 
 let camera, scene, renderer, clock;
 
@@ -84,7 +80,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.outputEncoding = sRGBEncoding;
   renderer.useLegacyLights = false;
 
   container.appendChild(renderer.domElement);

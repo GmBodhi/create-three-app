@@ -6,7 +6,6 @@ import {
   Scene,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  sRGBEncoding,
   AnimationMixer,
   PMREMGenerator,
   Color,
@@ -49,7 +48,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.outputEncoding = sRGBEncoding;
 
   container.appendChild(renderer.domElement);
 

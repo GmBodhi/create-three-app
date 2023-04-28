@@ -3,11 +3,11 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   WebGLRenderer,
-  sRGBEncoding,
   ACESFilmicToneMapping,
   MeshBasicMaterial,
   CustomBlending,
   Scene,
+  MeshPhysicalMaterial,
   Group,
   Box3,
   Vector3,
@@ -84,7 +84,6 @@ function init() {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setClearColor(0xdddddd);
   document.body.appendChild(renderer.domElement);
@@ -155,6 +154,31 @@ async function loadModel() {
     .then(function (legoGroup) {
       legoGroup = LDrawUtils.mergeObject(legoGroup);
       legoGroup.rotation.x = Math.PI;
+
+      // adjust the materials to use transmission, be a bit shinier
+      legoGroup.traverse((c) => {
+        if (c.material) {
+          c.material.roughness *= 0.25;
+
+          if (c.material.opacity < 1.0) {
+            const oldMaterial = c.material;
+            const newMaterial = new MeshPhysicalMaterial();
+
+            newMaterial.opacity = 1.0;
+            newMaterial.transmission = 1.0;
+            newMaterial.ior = 1.4;
+            newMaterial.roughness = oldMaterial.roughness;
+            newMaterial.metalness = 0.0;
+
+            const hsl = {};
+            oldMaterial.color.getHSL(hsl);
+            hsl.l = Math.max(hsl.l, 0.35);
+            newMaterial.color.setHSL(hsl.h, hsl.s, hsl.l);
+
+            c.material = newMaterial;
+          }
+        }
+      });
 
       model = new Group();
       model.add(legoGroup);
@@ -279,7 +303,7 @@ function createGUI() {
     renderer.setClearAlpha(v ? 0 : 1);
     pathTracer.reset();
   });
-  gui.add(params, "resolutionScale", 0.1, 1.0).onChange(onWindowResize);
+  gui.add(params, "resolutionScale", 0.1, 1.0, 0.1).onChange(onWindowResize);
   gui.add(params, "tiles", 1, 3, 1).onChange((v) => {
     pathTracer.tiles.set(v, v);
   });
@@ -335,7 +359,7 @@ function render() {
       sceneInfo.materials,
       sceneInfo.textures
     );
-    pathTracer.material.filterGlossyFactor = 0.5;
+    pathTracer.material.filterGlossyFactor = 1;
     pathTracer.material.physicalCamera.updateFrom(camera);
 
     camera.updateMatrixWorld();

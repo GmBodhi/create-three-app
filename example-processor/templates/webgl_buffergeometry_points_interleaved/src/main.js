@@ -6,6 +6,7 @@ import {
   Color,
   Fog,
   BufferGeometry,
+  SRGBColorSpace,
   InterleavedBuffer,
   InterleavedBufferAttribute,
   PointsMaterial,
@@ -78,7 +79,7 @@ function init() {
     const vy = y / n + 0.5;
     const vz = z / n + 0.5;
 
-    color.setRGB(vx, vy, vz);
+    color.setRGB(vx, vy, vz, SRGBColorSpace);
 
     const j = (i + 3) * 4;
 

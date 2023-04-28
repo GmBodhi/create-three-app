@@ -6,6 +6,7 @@ import {
   Color,
   Fog,
   CanvasTexture,
+  SRGBColorSpace,
   RepeatWrapping,
   NearestFilter,
   NearestMipmapNearestFilter,
@@ -77,6 +78,7 @@ function init() {
   textureCanvas1.mipmaps[5] = mipmap(4, "#004");
   textureCanvas1.mipmaps[6] = mipmap(2, "#044");
   textureCanvas1.mipmaps[7] = mipmap(1, "#404");
+  textureCanvas1.colorSpace = SRGBColorSpace;
   textureCanvas1.repeat.set(1000, 1000);
   textureCanvas1.wrapS = RepeatWrapping;
   textureCanvas1.wrapT = RepeatWrapping;
@@ -168,6 +170,8 @@ function init() {
     map: texturePainting2,
   });
 
+  texturePainting1.colorSpace = SRGBColorSpace;
+  texturePainting2.colorSpace = SRGBColorSpace;
   texturePainting2.minFilter = texturePainting2.magFilter = NearestFilter;
   texturePainting1.minFilter = texturePainting1.magFilter = LinearFilter;
   texturePainting1.mapping = UVMapping;

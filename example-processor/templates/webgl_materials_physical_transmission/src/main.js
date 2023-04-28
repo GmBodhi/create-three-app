@@ -4,7 +4,6 @@ import {
   EquirectangularReflectionMapping,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  sRGBEncoding,
   Scene,
   PerspectiveCamera,
   SphereGeometry,
@@ -57,8 +56,6 @@ function init() {
 
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = params.exposure;
-
-  renderer.outputEncoding = sRGBEncoding;
 
   scene = new Scene();
 

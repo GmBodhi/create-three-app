@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   WebGLRenderer,
   ReinhardToneMapping,
-  sRGBEncoding,
   Scene,
   OrthographicCamera,
   MeshBasicMaterial,
@@ -31,8 +30,6 @@ function init() {
 
   renderer.toneMapping = ReinhardToneMapping;
   renderer.toneMappingExposure = params.exposure;
-
-  renderer.outputEncoding = sRGBEncoding;
 
   scene = new Scene();
 

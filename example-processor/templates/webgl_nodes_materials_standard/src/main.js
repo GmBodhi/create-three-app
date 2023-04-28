@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  sRGBEncoding,
   ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
@@ -11,6 +10,7 @@ import {
   LoadingManager,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   PMREMGenerator,
 } from "three";
 import {
@@ -46,7 +46,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  renderer.outputEncoding = sRGBEncoding;
   renderer.toneMapping = ReinhardToneMapping;
   renderer.toneMappingExposure = 3;
 
@@ -107,7 +106,7 @@ function init() {
 
       const diffuseMap = loader.load("Cerberus_A.jpg");
       diffuseMap.wrapS = RepeatWrapping;
-      diffuseMap.encoding = sRGBEncoding;
+      diffuseMap.colorSpace = SRGBColorSpace;
 
       const rmMap = loader.load("Cerberus_RM.jpg");
       rmMap.wrapS = RepeatWrapping;

@@ -5,6 +5,7 @@ import {
   Scene,
   GridHelper,
   Texture,
+  SRGBColorSpace,
   MeshLambertMaterial,
   MeshPhongMaterial,
   MeshNormalMaterial,
@@ -55,6 +56,7 @@ function init() {
   // Materials
 
   const texture = new Texture(generateTexture());
+  texture.colorSpace = SRGBColorSpace;
   texture.needsUpdate = true;
 
   materials.push(new MeshLambertMaterial({ map: texture, transparent: true }));

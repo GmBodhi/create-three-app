@@ -9,7 +9,6 @@ import {
   AmbientLight,
   PointLight,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -56,7 +55,7 @@ function init() {
 
   //
 
-  const gridHelper = new GridHelper(10, 20, 0x888888, 0x444444);
+  const gridHelper = new GridHelper(10, 20, 0xc1c1c1, 0x8d8d8d);
   scene.add(gridHelper);
 
   //
@@ -71,7 +70,6 @@ function init() {
   //
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

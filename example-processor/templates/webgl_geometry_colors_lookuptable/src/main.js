@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   Scene,
   Color,
   PerspectiveCamera,
@@ -13,6 +14,7 @@ import {
   DoubleSide,
   PointLight,
   WebGLRenderer,
+  LinearSRGBColorSpace,
   BufferGeometryLoader,
   Float32BufferAttribute,
 } from "three";
@@ -21,6 +23,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Lut } from "three/addons/math/Lut.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container;
 
@@ -80,6 +84,7 @@ function init() {
   perpCamera.add(pointLight);
 
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);

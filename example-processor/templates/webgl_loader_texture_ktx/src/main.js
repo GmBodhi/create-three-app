@@ -6,6 +6,7 @@ import {
   Scene,
   BoxGeometry,
   MeshBasicMaterial,
+  SRGBColorSpace,
   DoubleSide,
   Mesh,
 } from "three";
@@ -66,12 +67,14 @@ function init() {
     material1 = new MeshBasicMaterial({
       map: loader.load("textures/compressed/disturb_PVR2bpp.ktx"),
     });
+    material1.map.colorSpace = SRGBColorSpace;
     material2 = new MeshBasicMaterial({
       map: loader.load("textures/compressed/lensflare_PVR4bpp.ktx"),
       depthTest: false,
       transparent: true,
       side: DoubleSide,
     });
+    material2.map.colorSpace = SRGBColorSpace;
 
     meshes.push(new Mesh(geometry, material1));
     meshes.push(new Mesh(geometry, material2));
@@ -81,12 +84,14 @@ function init() {
     material1 = new MeshBasicMaterial({
       map: loader.load("textures/compressed/disturb_BC1.ktx"),
     });
+    material1.map.colorSpace = SRGBColorSpace;
     material2 = new MeshBasicMaterial({
       map: loader.load("textures/compressed/lensflare_BC3.ktx"),
       depthTest: false,
       transparent: true,
       side: DoubleSide,
     });
+    material2.map.colorSpace = SRGBColorSpace;
 
     meshes.push(new Mesh(geometry, material1));
     meshes.push(new Mesh(geometry, material2));
@@ -104,12 +109,14 @@ function init() {
     material1 = new MeshBasicMaterial({
       map: loader.load("textures/compressed/disturb_ASTC4x4.ktx"),
     });
+    material1.map.colorSpace = SRGBColorSpace;
     material2 = new MeshBasicMaterial({
       map: loader.load("textures/compressed/lensflare_ASTC8x8.ktx"),
       depthTest: false,
       transparent: true,
       side: DoubleSide,
     });
+    material2.map.colorSpace = SRGBColorSpace;
 
     meshes.push(new Mesh(geometry, material1));
     meshes.push(new Mesh(geometry, material2));

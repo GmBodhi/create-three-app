@@ -4,6 +4,7 @@ import {
   PerspectiveCamera,
   Scene,
   CubeTextureLoader,
+  SRGBColorSpace,
   SphereGeometry,
   CubeRefractionMapping,
   MeshBasicMaterial,
@@ -44,6 +45,7 @@ function init() {
   scene.background = new CubeTextureLoader()
     .setPath("textures/cube/Park3Med/")
     .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
+  scene.background.colorSpace = SRGBColorSpace;
 
   const geometry = new SphereGeometry(100, 32, 16);
 
@@ -51,6 +53,7 @@ function init() {
     .setPath("textures/cube/Park3Med/")
     .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
   textureCube.mapping = CubeRefractionMapping;
+  textureCube.colorSpace = SRGBColorSpace;
 
   const material = new MeshBasicMaterial({
     color: 0xffffff,

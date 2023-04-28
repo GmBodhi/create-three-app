@@ -5,6 +5,7 @@ import {
   Scene,
   Color,
   TextureLoader,
+  SRGBColorSpace,
   MeshStandardMaterial,
   Mesh,
   WebGLRenderer,
@@ -40,6 +41,7 @@ function init() {
       setupControls(texture.animation);
 
       // texture = new TextureLoader().load( 'textures/uv_grid_directx.jpg' );
+      // texture.colorSpace = SRGBColorSpace;
 
       const geometry = new RoundedBoxGeometry(1, 1, 1, 7, 0.2);
       const material = new MeshStandardMaterial({

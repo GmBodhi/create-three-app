@@ -9,7 +9,7 @@ import {
   WebGLRenderTarget,
   LinearFilter,
   RGBAFormat,
-  sRGBEncoding,
+  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -102,7 +102,7 @@ function init() {
     minFilter: LinearFilter,
     magFilter: LinearFilter,
     format: RGBAFormat,
-    encoding: sRGBEncoding,
+    colorSpace: SRGBColorSpace,
   });
 
   composer = new EffectComposer(renderer, target);

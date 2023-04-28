@@ -2,13 +2,13 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  sRGBEncoding,
   Scene,
   PerspectiveCamera,
   WebGLCubeRenderTarget,
   CubeCamera,
   LightProbe,
   CubeTextureLoader,
+  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -27,7 +27,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
-  renderer.outputEncoding = sRGBEncoding;
 
   // scene
   scene = new Scene();
@@ -71,7 +70,7 @@ function init() {
   const urls = genCubeUrls("textures/cube/pisa/", ".png");
 
   new CubeTextureLoader().load(urls, function (cubeTexture) {
-    cubeTexture.encoding = sRGBEncoding;
+    cubeTexture.colorSpace = SRGBColorSpace;
 
     scene.background = cubeTexture;
 

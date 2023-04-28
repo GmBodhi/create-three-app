@@ -1,22 +1,18 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
   DirectionalLight,
   AnimationMixer,
   WebGLRenderer,
-  sRGBEncoding,
   MathUtils,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-ColorManagement.enabled = true;
 
 let container, stats;
 let camera, scene, renderer;
@@ -73,7 +69,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.outputEncoding = sRGBEncoding;
   renderer.useLegacyLights = false;
 
   container.appendChild(renderer.domElement);

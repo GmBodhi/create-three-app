@@ -4,6 +4,7 @@ import {
   PerspectiveCamera,
   Scene,
   BoxGeometry,
+  SRGBColorSpace,
   MeshPhongMaterial,
   Mesh,
   AmbientLight,
@@ -43,6 +44,7 @@ function init() {
   // add box 1 - grey8 texture
 
   const texture1 = loader.load("textures/crate_grey8.tga");
+  texture1.colorSpace = SRGBColorSpace;
   const material1 = new MeshPhongMaterial({ color: 0xffffff, map: texture1 });
 
   const mesh1 = new Mesh(geometry, material1);
@@ -53,6 +55,7 @@ function init() {
   // add box 2 - tga texture
 
   const texture2 = loader.load("textures/crate_color8.tga");
+  texture2.colorSpace = SRGBColorSpace;
   const material2 = new MeshPhongMaterial({ color: 0xffffff, map: texture2 });
 
   const mesh2 = new Mesh(geometry, material2);

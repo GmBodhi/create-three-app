@@ -9,6 +9,7 @@ import {
   Mesh,
   Texture,
   ImageLoader,
+  SRGBColorSpace,
 } from "three";
 import { VRButton } from "three/addons/webxr/VRButton.js";
 
@@ -100,6 +101,7 @@ function getTexturesFromAtlasFile(atlasImgUrl, tilesNum) {
         tileWidth,
         tileWidth
       );
+      textures[i].colorSpace = SRGBColorSpace;
       textures[i].image = canvas;
       textures[i].needsUpdate = true;
     }

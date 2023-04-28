@@ -6,7 +6,6 @@ import {
   AmbientLight,
   PointLight,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
@@ -76,7 +75,6 @@ function init() {
   //
 
   renderer = new WebGLRenderer();
-  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

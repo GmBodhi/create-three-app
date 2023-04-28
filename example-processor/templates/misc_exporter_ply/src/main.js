@@ -14,7 +14,6 @@ import {
   BoxGeometry,
   BufferAttribute,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -49,7 +48,7 @@ function init() {
 
   //
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x444444);
+  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
   hemiLight.position.set(0, 200, 0);
   scene.add(hemiLight);
 
@@ -66,7 +65,7 @@ function init() {
 
   const ground = new Mesh(
     new PlaneGeometry(2000, 2000),
-    new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    new MeshPhongMaterial({ color: 0xcbcbcb, depthWrite: false })
   );
   ground.rotation.x = -Math.PI / 2;
   ground.receiveShadow = true;
@@ -99,7 +98,6 @@ function init() {
   //
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputEncoding = sRGBEncoding;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;

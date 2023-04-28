@@ -7,6 +7,7 @@ import {
   PointLight,
   Group,
   TextureLoader,
+  SRGBColorSpace,
   RepeatWrapping,
   ShapeGeometry,
   Mesh,
@@ -68,6 +69,7 @@ function init() {
 
   const loader = new TextureLoader();
   const texture = loader.load("textures/uv_grid_opengl.jpg");
+  texture.colorSpace = SRGBColorSpace;
 
   // it's necessary to apply these settings in order to correctly display the texture on a shape geometry
 

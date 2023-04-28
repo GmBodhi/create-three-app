@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   HemisphereLight,
@@ -12,6 +13,7 @@ import {
   MeshLambertMaterial,
   DoubleSide,
   WebGLRenderer,
+  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -20,6 +22,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 import { NRRDLoader } from "three/addons/loaders/NRRDLoader.js";
 import { VTKLoader } from "three/addons/loaders/VTKLoader.js";
+
+ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container, stats, camera, controls, scene, renderer;
 
@@ -158,6 +162,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.outputColorSpace = LinearSRGBColorSpace;
 
   container = document.createElement("div");
   document.body.appendChild(container);

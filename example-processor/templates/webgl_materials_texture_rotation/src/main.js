@@ -7,6 +7,7 @@ import {
   BoxGeometry,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   MeshBasicMaterial,
   Mesh,
 } from "three";
@@ -58,6 +59,7 @@ function init() {
   new TextureLoader().load("textures/uv_grid_opengl.jpg", function (texture) {
     texture.wrapS = texture.wrapT = RepeatWrapping;
     texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    texture.colorSpace = SRGBColorSpace;
 
     //texture.matrixAutoUpdate = false; // default true; set to false to update texture.matrix manually
 

@@ -8,6 +8,7 @@ import {
   DirectionalLight,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   Mesh,
   BufferGeometry,
   MeshBasicMaterial,
@@ -87,6 +88,7 @@ function init() {
     () => {
       texture.wrapS = RepeatWrapping;
       texture.wrapT = RepeatWrapping;
+      texture.colorSpace = SRGBColorSpace;
 
       render();
     }

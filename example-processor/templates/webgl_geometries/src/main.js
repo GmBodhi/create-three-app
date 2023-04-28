@@ -7,6 +7,7 @@ import {
   PointLight,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   MeshPhongMaterial,
   DoubleSide,
   Mesh,
@@ -56,6 +57,7 @@ function init() {
   const map = new TextureLoader().load("textures/uv_grid_opengl.jpg");
   map.wrapS = map.wrapT = RepeatWrapping;
   map.anisotropy = 16;
+  map.colorSpace = SRGBColorSpace;
 
   const material = new MeshPhongMaterial({ map: map, side: DoubleSide });
 

@@ -8,7 +8,6 @@ import {
   DirectionalLight,
   HemisphereLight,
   WebGLRenderer,
-  sRGBEncoding,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -31,20 +30,19 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xeeeeee);
 
-  scene.add(new GridHelper(2, 4));
+  scene.add(new GridHelper(2, 4, 0xc1c1c1, 0x8d8d8d));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(1, 1, 1);
   scene.add(light);
 
-  const light2 = new HemisphereLight(0xffffff, 0x888888);
+  const light2 = new HemisphereLight(0xffffff, 0xc1c1c1);
   scene.add(light2);
 
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputEncoding = sRGBEncoding;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

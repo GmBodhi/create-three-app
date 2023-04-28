@@ -7,6 +7,7 @@ import {
   Scene,
   Clock,
   TextureLoader,
+  SRGBColorSpace,
   LinearFilter,
   PlaneGeometry,
   MeshBasicMaterial,
@@ -42,6 +43,7 @@ function init() {
     "textures/floors/FloorsCheckerboard_S_Diffuse.jpg",
     animate
   );
+  diffuseMap.colorSpace = SRGBColorSpace;
   diffuseMap.minFilter = LinearFilter;
   diffuseMap.generateMipmaps = false;
 
