@@ -209,7 +209,6 @@ function init() {
   const loader = new OBJLoader();
   loader.load("models/obj/ninja/ninjaHead_Low.obj", function (group) {
     const geometry = group.children[0].geometry;
-    geometry.attributes.uv2 = geometry.attributes.uv;
     geometry.center();
 
     mesh = new Mesh(geometry, material);

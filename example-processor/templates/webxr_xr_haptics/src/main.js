@@ -8,6 +8,7 @@ import {
   PerspectiveCamera,
   PlaneGeometry,
   ShadowMaterial,
+  CustomBlending,
   Mesh,
   HemisphereLight,
   DirectionalLight,
@@ -78,7 +79,11 @@ function init() {
   controls.update();
 
   const floorGeometry = new PlaneGeometry(4, 4);
-  const floorMaterial = new ShadowMaterial({ opacity: 0.25 });
+  const floorMaterial = new ShadowMaterial({
+    opacity: 0.25,
+    blending: CustomBlending,
+    transparent: false,
+  });
   const floor = new Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;

@@ -8,6 +8,7 @@ import {
   PerspectiveCamera,
   PlaneGeometry,
   ShadowMaterial,
+  CustomBlending,
   Mesh,
   HemisphereLight,
   DirectionalLight,
@@ -19,9 +20,8 @@ import {
   TorusGeometry,
   MeshStandardMaterial,
   WebGLRenderer,
-  Plane,
-  Vector3,
   BufferGeometry,
+  Vector3,
   Line,
   Raycaster,
 } from "three";
@@ -66,11 +66,14 @@ function init() {
   controls.update();
 
   const floorGeometry = new PlaneGeometry(6, 6);
-  const floorMaterial = new ShadowMaterial({ opacity: 0.25 });
+  const floorMaterial = new ShadowMaterial({
+    opacity: 0.25,
+    blending: CustomBlending,
+    transparent: false,
+  });
   const floor = new Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
-  floor.renderOrder = 2;
   scene.add(floor);
 
   scene.add(new HemisphereLight(0x808080, 0x606060));
@@ -132,11 +135,6 @@ function init() {
   container.appendChild(renderer.domElement);
 
   document.body.appendChild(XRButton.createButton(renderer));
-
-  // clipping
-
-  const floorClipping = new Plane(new Vector3(0, 1, 0));
-  renderer.clippingPlanes = [floorClipping];
 
   // controllers
 
