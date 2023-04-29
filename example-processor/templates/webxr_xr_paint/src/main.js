@@ -76,6 +76,14 @@ function init() {
   // controllers
 
   function onSelectStart() {
+    this.updateMatrixWorld(true);
+
+    const pivot = this.getObjectByName("pivot");
+    cursor.setFromMatrixPosition(pivot.matrixWorld);
+
+    const painter = this.userData.painter;
+    painter.moveTo(cursor);
+
     this.userData.isSelecting = true;
   }
 
@@ -136,6 +144,8 @@ function onWindowResize() {
 //
 
 function handleController(controller) {
+  controller.updateMatrixWorld(true);
+
   const userData = controller.userData;
   const painter = userData.painter;
 
@@ -154,8 +164,6 @@ function handleController(controller) {
   if (userData.isSelecting === true) {
     painter.lineTo(cursor);
     painter.update();
-  } else {
-    painter.moveTo(cursor);
   }
 }
 
