@@ -204,6 +204,8 @@ function onSelectStart(event) {
 
     controller.userData.selected = object;
   }
+
+  controller.userData.targetRayMode = event.data.targetRayMode;
 }
 
 function onSelectEnd(event) {
@@ -219,6 +221,8 @@ function onSelectEnd(event) {
 }
 
 function getIntersections(controller) {
+  controller.updateMatrixWorld();
+
   tempMatrix.identity().extractRotation(controller.matrixWorld);
 
   raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
@@ -228,6 +232,10 @@ function getIntersections(controller) {
 }
 
 function intersectObjects(controller) {
+  // Do not highlight in mobile-ar
+
+  if (controller.userData.targetRayMode === "screen") return;
+
   // Do not highlight when already selected
 
   if (controller.userData.selected !== undefined) return;
