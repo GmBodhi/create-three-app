@@ -16,6 +16,7 @@ import {
   Quaternion,
   BoxGeometry,
   Euler,
+  NoColorSpace,
   Mesh,
   MeshLambertMaterial,
   WebGLRenderer,
@@ -121,7 +122,7 @@ function init() {
 
     // give the geometry's vertices a color corresponding to the "id"
 
-    applyVertexColors(geometry, color.setHex(i));
+    applyVertexColors(geometry, color.setHex(i, NoColorSpace));
 
     geometriesPicking.push(geometry);
 
