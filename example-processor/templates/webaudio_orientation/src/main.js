@@ -1,9 +1,9 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
+  SRGBColorSpace,
   Scene,
   Color,
   Fog,
@@ -24,8 +24,6 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let scene, camera, renderer;
 
@@ -52,13 +50,15 @@ function init() {
     .setPath("textures/cube/SwedishRoyalCastle/")
     .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
 
+  reflectionCube.colorSpace = SRGBColorSpace;
+
   scene = new Scene();
   scene.background = new Color(0xa0a0a0);
   scene.fog = new Fog(0xa0a0a0, 2, 20);
 
   //
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x444444);
+  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
   hemiLight.position.set(0, 20, 0);
   scene.add(hemiLight);
 
@@ -79,13 +79,13 @@ function init() {
 
   const mesh = new Mesh(
     new PlaneGeometry(50, 50),
-    new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    new MeshPhongMaterial({ color: 0xcbcbcb, depthWrite: false })
   );
   mesh.rotation.x = -Math.PI / 2;
   mesh.receiveShadow = true;
   scene.add(mesh);
 
-  const grid = new GridHelper(50, 50, 0x888888, 0x888888);
+  const grid = new GridHelper(50, 50, 0xc1c1c1, 0xc1c1c1);
   scene.add(grid);
 
   //

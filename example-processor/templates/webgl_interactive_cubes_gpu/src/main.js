@@ -3,20 +3,23 @@ import "./style.css"; // For webpack support
 import {
   Vector2,
   Vector3,
+  Color,
   PerspectiveCamera,
   Scene,
-  Color,
-  WebGLRenderTarget,
   AmbientLight,
   SpotLight,
-  MeshBasicMaterial,
   MeshPhongMaterial,
+  WebGLRenderTarget,
+  IntType,
+  RedIntegerFormat,
+  ShaderMaterial,
+  GLSL3,
+  BufferAttribute,
   Float32BufferAttribute,
   Matrix4,
   Quaternion,
   BoxGeometry,
   Euler,
-  NoColorSpace,
   Mesh,
   MeshLambertMaterial,
   WebGLRenderer,
@@ -36,6 +39,7 @@ const pickingData = [];
 
 const pointer = new Vector2();
 const offset = new Vector3(10, 10, 10);
+const clearColor = new Color();
 
 init();
 animate();
@@ -54,22 +58,60 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xffffff);
 
-  pickingScene = new Scene();
-  pickingTexture = new WebGLRenderTarget(1, 1);
-
   scene.add(new AmbientLight(0x555555));
 
   const light = new SpotLight(0xffffff, 1.5);
   light.position.set(0, 500, 2000);
   scene.add(light);
 
-  const pickingMaterial = new MeshBasicMaterial({ vertexColors: true });
   const defaultMaterial = new MeshPhongMaterial({
     color: 0xffffff,
     flatShading: true,
     vertexColors: true,
     shininess: 0,
   });
+
+  // set up the picking texture to use a 32 bit integer so we can write and read integer ids from it
+  pickingScene = new Scene();
+  pickingTexture = new WebGLRenderTarget(1, 1, {
+    type: IntType,
+    format: RedIntegerFormat,
+    internalFormat: "R32I",
+  });
+  const pickingMaterial = new ShaderMaterial({
+    glslVersion: GLSL3,
+
+    vertexShader: /* glsl */ `
+						attribute int id;
+						flat varying int vid;
+						void main() {
+
+							vid = id;
+							gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+						}
+					`,
+
+    fragmentShader: /* glsl */ `
+						layout(location = 0) out int out_id;
+						flat varying int vid;
+
+						void main() {
+
+							out_id = vid;
+
+						}
+					`,
+  });
+
+  function applyId(geometry, id) {
+    const position = geometry.attributes.position;
+    const array = new Int32Array(position.count);
+    array.fill(id);
+
+    const bufferAttribute = new BufferAttribute(array, 1, false);
+    geometry.setAttribute("id", bufferAttribute);
+  }
 
   function applyVertexColors(geometry, color) {
     const position = geometry.attributes.position;
@@ -82,15 +124,13 @@ function init() {
     geometry.setAttribute("color", new Float32BufferAttribute(colors, 3));
   }
 
-  const geometriesDrawn = [];
-  const geometriesPicking = [];
-
+  const geometries = [];
   const matrix = new Matrix4();
   const quaternion = new Quaternion();
   const color = new Color();
 
   for (let i = 0; i < 5000; i++) {
-    let geometry = new BoxGeometry();
+    const geometry = new BoxGeometry();
 
     const position = new Vector3();
     position.x = Math.random() * 10000 - 5000;
@@ -112,19 +152,12 @@ function init() {
 
     geometry.applyMatrix4(matrix);
 
-    // give the geometry's vertices a random color, to be displayed
-
+    // give the geometry's vertices a random color to be displayed and an integer
+    // identifier as a vertex attribute so boxes can be identified after being merged.
     applyVertexColors(geometry, color.setHex(Math.random() * 0xffffff));
+    applyId(geometry, i);
 
-    geometriesDrawn.push(geometry);
-
-    geometry = geometry.clone();
-
-    // give the geometry's vertices a color corresponding to the "id"
-
-    applyVertexColors(geometry, color.setHex(i, NoColorSpace));
-
-    geometriesPicking.push(geometry);
+    geometries.push(geometry);
 
     pickingData[i] = {
       position: position,
@@ -133,18 +166,9 @@ function init() {
     };
   }
 
-  const objects = new Mesh(
-    BufferGeometryUtils.mergeGeometries(geometriesDrawn),
-    defaultMaterial
-  );
-  scene.add(objects);
-
-  pickingScene.add(
-    new Mesh(
-      BufferGeometryUtils.mergeGeometries(geometriesPicking),
-      pickingMaterial
-    )
-  );
+  const mergedGeometry = BufferGeometryUtils.mergeGeometries(geometries);
+  scene.add(new Mesh(mergedGeometry, defaultMaterial));
+  pickingScene.add(new Mesh(mergedGeometry, pickingMaterial));
 
   highlightBox = new Mesh(
     new BoxGeometry(),
@@ -187,50 +211,43 @@ function animate() {
 }
 
 function pick() {
-  //render the picking scene off-screen
-
+  // render the picking scene off-screen
   // set the view offset to represent just a single pixel under the mouse
-
+  const dpr = window.devicePixelRatio;
   camera.setViewOffset(
     renderer.domElement.width,
     renderer.domElement.height,
-    (pointer.x * window.devicePixelRatio) | 0,
-    (pointer.y * window.devicePixelRatio) | 0,
+    Math.floor(pointer.x * dpr),
+    Math.floor(pointer.y * dpr),
     1,
     1
   );
 
   // render the scene
-
   renderer.setRenderTarget(pickingTexture);
+
+  // clear the background to - 1 meaning no item was hit
+  clearColor.setRGB(-1, -1, -1);
+  renderer.setClearColor(clearColor);
   renderer.render(pickingScene, camera);
 
   // clear the view offset so rendering returns to normal
-
   camera.clearViewOffset();
 
-  //create buffer for reading single pixel
+  // create buffer for reading single pixel
+  const pixelBuffer = new Int32Array(1);
 
-  const pixelBuffer = new Uint8Array(4);
-
-  //read the pixel
-
+  // read the pixel
   renderer.readRenderTargetPixels(pickingTexture, 0, 0, 1, 1, pixelBuffer);
 
-  //interpret the pixel as an ID
-
-  const id = (pixelBuffer[0] << 16) | (pixelBuffer[1] << 8) | pixelBuffer[2];
-  const data = pickingData[id];
-
-  if (data) {
-    //move our highlightBox so that it surrounds the picked object
-
-    if (data.position && data.rotation && data.scale) {
-      highlightBox.position.copy(data.position);
-      highlightBox.rotation.copy(data.rotation);
-      highlightBox.scale.copy(data.scale).add(offset);
-      highlightBox.visible = true;
-    }
+  const id = pixelBuffer[0];
+  if (id !== -1) {
+    // move our highlightBox so that it surrounds the picked object
+    const data = pickingData[id];
+    highlightBox.position.copy(data.position);
+    highlightBox.rotation.copy(data.rotation);
+    highlightBox.scale.copy(data.scale).add(offset);
+    highlightBox.visible = true;
   } else {
     highlightBox.visible = false;
   }
