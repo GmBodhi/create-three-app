@@ -70,7 +70,7 @@ function init() {
 
   // LIGHTS
 
-  const ambient = new AmbientLight(0x444444);
+  const ambient = new AmbientLight(0x8d8d8d);
   scene.add(ambient);
 
   light = new SpotLight(0xffffff, 1, 0, Math.PI / 5, 0.3);
@@ -159,7 +159,7 @@ function createScene() {
   // GROUND
 
   const geometry = new PlaneGeometry(100, 100);
-  const planeMaterial = new MeshPhongMaterial({ color: 0xffb851 });
+  const planeMaterial = new MeshPhongMaterial({ color: 0xffdd99 });
 
   const ground = new Mesh(geometry, planeMaterial);
 

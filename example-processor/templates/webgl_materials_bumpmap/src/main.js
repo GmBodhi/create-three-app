@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -16,8 +15,6 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 const statsEnabled = true;
 
@@ -60,9 +57,9 @@ function init() {
 
   // LIGHTS
 
-  scene.add(new HemisphereLight(0x443333, 0x111122));
+  scene.add(new HemisphereLight(0x8d7c7c, 0x494966));
 
-  spotLight = new SpotLight(0xffffbb, 2);
+  spotLight = new SpotLight(0xffffde, 2);
   spotLight.position.set(0.5, 0, 1);
   spotLight.position.multiplyScalar(700);
   scene.add(spotLight);
@@ -86,8 +83,8 @@ function init() {
   );
 
   const material = new MeshPhongMaterial({
-    color: 0x552811,
-    specular: 0x222222,
+    color: 0x9c6e49,
+    specular: 0x666666,
     shininess: 25,
     bumpMap: mapHeight,
     bumpScale: 12,

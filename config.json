@@ -3606,16 +3606,6 @@
         "/src"
       ]
     },
-    "webgl_skinning_simple": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_sprites": {
       "files": {
         "index.html": "src",

@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -18,10 +17,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
-
 let renderer, scene, camera;
-let stats;
+let stats, meshKnot;
 
 init();
 
@@ -62,7 +59,7 @@ function init() {
 
   const geoFloor = new BoxGeometry(2000, 0.1, 2000);
   const matStdFloor = new MeshStandardMaterial({
-    color: 0x808080,
+    color: 0xbcbcbc,
     roughness: 0.1,
     metalness: 0,
   });
@@ -75,8 +72,7 @@ function init() {
     roughness: 0,
     metalness: 0,
   });
-  const meshKnot = new Mesh(geoKnot, matKnot);
-  meshKnot.name = "meshKnot";
+  meshKnot = new Mesh(geoKnot, matKnot);
   meshKnot.position.set(0, 5, 0);
   scene.add(meshKnot);
 
@@ -99,8 +95,7 @@ function onWindowResize() {
 }
 
 function animation(time) {
-  const mesh = scene.getObjectByName("meshKnot");
-  mesh.rotation.y = time / 1000;
+  meshKnot.rotation.y = time / 1000;
 
   renderer.render(scene, camera);
 

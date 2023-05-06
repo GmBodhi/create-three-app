@@ -134,7 +134,7 @@ function init(font) {
 
   // Lights
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x666666));
 
   const directionalLight = new DirectionalLight(0xffffff, 1);
   directionalLight.position.set(1, 1, 1).normalize();

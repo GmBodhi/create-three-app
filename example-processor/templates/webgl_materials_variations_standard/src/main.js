@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   TextureLoader,
@@ -26,8 +25,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 
@@ -146,7 +143,7 @@ function init(font) {
 
   // Lights
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x666666));
 
   const directionalLight = new DirectionalLight(0xffffff, 1);
   directionalLight.position.set(1, 1, 1).normalize();

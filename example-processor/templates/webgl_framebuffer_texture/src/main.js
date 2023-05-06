@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector2,
   Color,
   PerspectiveCamera,
@@ -19,13 +18,10 @@ import {
   SpriteMaterial,
   Sprite,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer;
 let line, sprite, texture;
@@ -107,7 +103,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace; // TODO: Investigate use of FramebufferTexture.
   renderer.autoClear = false;
   document.body.appendChild(renderer.domElement);
 

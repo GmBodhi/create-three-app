@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Clock,
   Scene,
@@ -11,12 +10,9 @@ import {
   PointsMaterial,
   Points,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let stats;
 
@@ -78,7 +74,6 @@ function init() {
   renderer = new WebGLRenderer({ preserveDrawingBuffer: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.autoClearColor = false;
   container.appendChild(renderer.domElement);
 
