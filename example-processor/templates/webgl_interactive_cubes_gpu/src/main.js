@@ -11,10 +11,10 @@ import {
   MeshPhongMaterial,
   WebGLRenderTarget,
   IntType,
-  RedIntegerFormat,
+  RGBAIntegerFormat,
   ShaderMaterial,
   GLSL3,
-  BufferAttribute,
+  Int16BufferAttribute,
   Float32BufferAttribute,
   Matrix4,
   Quaternion,
@@ -75,8 +75,8 @@ function init() {
   pickingScene = new Scene();
   pickingTexture = new WebGLRenderTarget(1, 1, {
     type: IntType,
-    format: RedIntegerFormat,
-    internalFormat: "R32I",
+    format: RGBAIntegerFormat,
+    internalFormat: "RGBA32I",
   });
   const pickingMaterial = new ShaderMaterial({
     glslVersion: GLSL3,
@@ -106,10 +106,11 @@ function init() {
 
   function applyId(geometry, id) {
     const position = geometry.attributes.position;
-    const array = new Int32Array(position.count);
+    const array = new Int16Array(position.count);
     array.fill(id);
 
-    const bufferAttribute = new BufferAttribute(array, 1, false);
+    const bufferAttribute = new Int16BufferAttribute(array, 1, false);
+    bufferAttribute.gpuType = IntType;
     geometry.setAttribute("id", bufferAttribute);
   }
 
@@ -235,7 +236,7 @@ function pick() {
   camera.clearViewOffset();
 
   // create buffer for reading single pixel
-  const pixelBuffer = new Int32Array(1);
+  const pixelBuffer = new Int32Array(4);
 
   // read the pixel
   renderer.readRenderTargetPixels(pickingTexture, 0, 0, 1, 1, pixelBuffer);
