@@ -198,6 +198,8 @@ function updateBlob() {
       point.subtract
     );
   }
+
+  blob.update();
 }
 
 function render() {
