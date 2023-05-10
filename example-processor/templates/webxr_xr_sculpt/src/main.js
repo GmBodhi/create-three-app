@@ -11,6 +11,7 @@ import {
   Mesh,
   IcosahedronGeometry,
   Group,
+  CubeTextureLoader,
   MeshStandardMaterial,
   Vector3,
 } from "three";

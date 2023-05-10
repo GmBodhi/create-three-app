@@ -5,6 +5,7 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
+  SRGBColorSpace,
   Fog,
   BoxGeometry,
   MeshPhongMaterial,
@@ -47,7 +48,7 @@ function init() {
   // scene
 
   scene = new Scene();
-  scene.background = new Color().setHSL(0.51, 0.4, 0.01);
+  scene.background = new Color().setHSL(0.51, 0.4, 0.01, SRGBColorSpace);
   scene.fog = new Fog(scene.background, 3500, 15000);
 
   // world
