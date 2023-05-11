@@ -13,8 +13,6 @@ import {
   LineBasicMaterial,
   Line,
   FramebufferTexture,
-  RGBAFormat,
-  NearestFilter,
   SpriteMaterial,
   Sprite,
   WebGLRenderer,
@@ -85,9 +83,7 @@ function init() {
 
   //
 
-  texture = new FramebufferTexture(textureSize, textureSize, RGBAFormat);
-  texture.minFilter = NearestFilter;
-  texture.magFilter = NearestFilter;
+  texture = new FramebufferTexture(textureSize, textureSize);
 
   //
 
