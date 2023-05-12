@@ -1757,6 +1757,16 @@
         "/src"
       ]
     },
+    "webgl_loader_gltf_anisotropy": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_gltf_avif": {
       "files": {
         "index.html": "src",

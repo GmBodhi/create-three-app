@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   BoxGeometry,
   MeshPhongMaterial,
@@ -28,8 +27,6 @@ import {
   TagComponent,
   Types,
 } from "three/addons/libs/ecsy.module.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 class Object3D extends Component {}
 
@@ -233,7 +230,7 @@ function init() {
   );
   camera.position.set(0, 1.2, 0.3);
 
-  scene.add(new HemisphereLight(0x808080, 0x606060));
+  scene.add(new HemisphereLight(0xcccccc, 0x999999));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(0, 6, 0);
@@ -250,8 +247,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
-  renderer.xr.cameraAutoUpdate = false;
-
+  renderer.xr.setUserCamera(camera);
   container.appendChild(renderer.domElement);
 
   document.body.appendChild(VRButton.createButton(renderer));
@@ -442,7 +438,6 @@ function animate() {
 function render() {
   const delta = clock.getDelta();
   const elapsedTime = clock.elapsedTime;
-  renderer.xr.updateCamera(camera);
   world.execute(delta, elapsedTime);
   renderer.render(scene, camera);
 }
