@@ -2490,6 +2490,16 @@
         "/src"
       ]
     },
+    "webgl_materials_physical_transmission_alpha": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_materials_standard": {
       "files": {
         "index.html": "src",

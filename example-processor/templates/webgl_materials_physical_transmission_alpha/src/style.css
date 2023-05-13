@@ -1,0 +1,112 @@
+body {
+  margin: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: Monospace;
+  font-size: 13px;
+  line-height: 24px;
+  overscroll-behavior: none;
+}
+#table {
+  margin-top: 100px;
+  border-collapse: collapse;
+  width: 100%;
+}
+#table td {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  text-align: center;
+  vertical-align: center;
+}
+#table tr {
+  height: 250px;
+}
+#block-ff0000 {
+  background-color: red;
+  color: #fff;
+}
+#block-00ff00 {
+  background-color: #0f0;
+  color: #000;
+}
+#block-0000ff {
+  background-color: #00f;
+  color: #fff;
+}
+#block-000000 {
+  background-color: #000;
+  color: #000;
+}
+a {
+  color: #ff0;
+  text-decoration: none;
+  pointer-events: auto;
+}
+a:hover {
+  text-decoration: underline;
+}
+#overlay button,
+button {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+#info,
+#overlay {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+#info {
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+}
+button,
+input,
+select {
+  pointer-events: auto;
+}
+.lil-gui {
+  z-index: 2 !important;
+}
+@media all and (max-width: 640px) {
+  .lil-gui.root {
+    right: auto;
+    top: auto;
+    max-height: 50%;
+    max-width: 80%;
+    bottom: 0;
+    left: 0;
+  }
+}
+#overlay {
+  font-size: 16px;
+  z-index: 2;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.7);
+}
+#overlay button {
+  background: 0 0;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  color: #fff;
+  padding: 12px 18px;
+}
+#notSupported {
+  width: 50%;
+  background-color: red;
+  margin: 20px auto auto;
+  padding: 10px;
+}
