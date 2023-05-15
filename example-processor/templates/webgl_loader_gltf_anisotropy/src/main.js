@@ -38,6 +38,8 @@ async function init() {
   controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render);
   controls.target.set(0, -0.05, 0.1);
+  controls.enableZoom = false;
+  controls.enablePan = false;
   controls.update();
 
   const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");

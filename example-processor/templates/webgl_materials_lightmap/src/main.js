@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   DirectionalLight,
@@ -26,8 +25,6 @@ import {
 } from "three/nodes";
 import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
 
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
-
 let container, stats;
 let camera, scene, renderer;
 
@@ -50,7 +47,7 @@ async function init() {
 
   // LIGHTS
 
-  const light = new DirectionalLight(0xaabbff, 0.3);
+  const light = new DirectionalLight(0xd5deff, 0.3);
   light.position.x = 300;
   light.position.y = 250;
   light.position.z = -500;
@@ -58,8 +55,8 @@ async function init() {
 
   // SKYDOME
 
-  const topColor = new Color().copy(light.color).convertSRGBToLinear();
-  const bottomColor = new Color(0xffffff).convertSRGBToLinear();
+  const topColor = new Color().copy(light.color);
+  const bottomColor = new Color(0xffffff);
   const offset = 400;
   const exponent = 0.6;
 
