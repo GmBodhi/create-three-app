@@ -8,7 +8,6 @@ import birdFS_ from "./shaders/birdFS.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   BufferGeometry,
   BufferAttribute,
   Color,
@@ -28,8 +27,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 /* TEXTURE WIDTH FOR SIMULATION */
 const WIDTH = 32;
@@ -85,7 +82,7 @@ class BirdGeometry extends BufferGeometry {
       const x = (birdIndex % WIDTH) / WIDTH;
       const y = ~~(birdIndex / WIDTH) / WIDTH;
 
-      const c = new Color(0x444444 + (~~(v / 9) / BIRDS) * 0x666666);
+      const c = new Color(0x666666 + (~~(v / 9) / BIRDS) * 0x666666);
 
       birdColors.array[v * 3 + 0] = c.r;
       birdColors.array[v * 3 + 1] = c.g;

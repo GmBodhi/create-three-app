@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Mesh,
   PerspectiveCamera,
   WebGLRenderTarget,
@@ -15,12 +14,9 @@ import {
   BackSide,
   BoxGeometry,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 class GIMesh extends Mesh {
   copy(source) {
@@ -181,7 +177,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   new SimpleGI(renderer, scene);

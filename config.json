@@ -2806,6 +2806,16 @@
         "/src"
       ]
     },
+    "webgl_morphtargets_webcam": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_multiple_canvases_circle": {
       "files": {
         "index.html": "src",

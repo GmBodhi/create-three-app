@@ -1,10 +1,8 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   Scene,
   PerspectiveCamera,
   PlaneGeometry,
@@ -20,8 +18,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Refractor } from "three/addons/objects/Refractor.js";
 import { WaterRefractionShader } from "three/addons/shaders/WaterRefractionShader.js";
 
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
-
 let camera, scene, renderer, clock;
 
 let refractor, smallSphere;
@@ -35,7 +31,6 @@ function init() {
 
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -63,7 +58,7 @@ function init() {
   const refractorGeometry = new PlaneGeometry(90, 90);
 
   refractor = new Refractor(refractorGeometry, {
-    color: 0x999999,
+    color: 0xcbcbcb,
     textureWidth: 1024,
     textureHeight: 1024,
     shader: WaterRefractionShader,

@@ -1,9 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
@@ -25,8 +23,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Water } from "three/addons/objects/Water.js";
 import { Sky } from "three/addons/objects/Sky.js";
 
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
-
 let container, stats;
 let camera, scene, renderer;
 let controls, water, sun, mesh;
@@ -42,8 +38,8 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.5;
   container.appendChild(renderer.domElement);
 
   //

@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -12,6 +11,7 @@ import {
   WebGLRenderer,
   CubeTextureLoader,
   CubeRefractionMapping,
+  SRGBColorSpace,
   TextureLoader,
   RepeatWrapping,
   MeshStandardMaterial,
@@ -32,8 +32,6 @@ import {
   ToonShaderHatching,
   ToonShaderDotted,
 } from "three/addons/shaders/ToonShader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 
@@ -78,11 +76,11 @@ function init() {
   light.position.set(0.5, 0.5, 1);
   scene.add(light);
 
-  pointLight = new PointLight(0xff3300);
+  pointLight = new PointLight(0xff7c00);
   pointLight.position.set(0, 0, 100);
   scene.add(pointLight);
 
-  ambientLight = new AmbientLight(0x080808);
+  ambientLight = new AmbientLight(0x323232);
   scene.add(ambientLight);
 
   // MATERIALS
@@ -165,6 +163,9 @@ function generateMaterials() {
   const refractionCube = cubeTextureLoader.load(urls);
   refractionCube.mapping = CubeRefractionMapping;
 
+  reflectionCube.colorSpace = SRGBColorSpace;
+  refractionCube.colorSpace = SRGBColorSpace;
+
   // toons
 
   const toonMaterial1 = createShaderMaterial(ToonShader1, light, ambientLight);
@@ -183,10 +184,11 @@ function generateMaterials() {
   const texture = new TextureLoader().load("textures/uv_grid_opengl.jpg");
   texture.wrapS = RepeatWrapping;
   texture.wrapT = RepeatWrapping;
+  texture.colorSpace = SRGBColorSpace;
 
   const materials = {
     shiny: new MeshStandardMaterial({
-      color: 0x550000,
+      color: 0x9c0000,
       envMap: reflectionCube,
       roughness: 0.1,
       metalness: 1.0,
@@ -200,7 +202,7 @@ function generateMaterials() {
       envMap: refractionCube,
       refractionRatio: 0.85,
     }),
-    matte: new MeshPhongMaterial({ specular: 0x111111, shininess: 1 }),
+    matte: new MeshPhongMaterial({ specular: 0x494949, shininess: 1 }),
     flat: new MeshLambertMaterial({
       /*TODO flatShading: true */
     }),
@@ -217,7 +219,7 @@ function generateMaterials() {
       vertexColors: true,
     }),
     multiColors: new MeshPhongMaterial({ shininess: 2, vertexColors: true }),
-    plastic: new MeshPhongMaterial({ specular: 0x888888, shininess: 250 }),
+    plastic: new MeshPhongMaterial({ specular: 0xc1c1c1, shininess: 250 }),
     toon1: toonMaterial1,
     toon2: toonMaterial2,
     hatching: hatchingMaterial,
@@ -314,12 +316,12 @@ function updateCubes(object, time, numblobs, floor, wallx, wallz) {
 
   const rainbow = [
     new Color(0xff0000),
-    new Color(0xff7f00),
+    new Color(0xffbb00),
     new Color(0xffff00),
     new Color(0x00ff00),
     new Color(0x0000ff),
-    new Color(0x4b0082),
-    new Color(0x9400d3),
+    new Color(0x9400bd),
+    new Color(0xc800eb),
   ];
   const subtract = 12;
   const strength = 1.2 / ((Math.sqrt(numblobs) - 1) / 4 + 1);

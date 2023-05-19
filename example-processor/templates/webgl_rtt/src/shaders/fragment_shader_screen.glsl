@@ -3,4 +3,5 @@ uniform sampler2D tDiffuse;
 
 void main() {
   gl_FragColor = texture2D(tDiffuse, vUv);
+  #include < encodings_fragment >
 }

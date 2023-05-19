@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   AmbientLight,
@@ -12,6 +11,7 @@ import {
   PointLight,
   WebGLRenderer,
   TextureLoader,
+  SRGBColorSpace,
   RepeatWrapping,
   UniformsUtils,
   Vector3,
@@ -24,8 +24,6 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SubsurfaceScatteringShader } from "three/addons/shaders/SubsurfaceScatteringShader.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 let camera, scene, renderer;
@@ -50,7 +48,7 @@ function init() {
 
   // Lights
 
-  scene.add(new AmbientLight(0x888888));
+  scene.add(new AmbientLight(0xc1c1c1));
 
   const directionalLight = new DirectionalLight(0xffffff, 0.03);
   directionalLight.position.set(0.0, 0.5, 0.5).normalize();
@@ -58,9 +56,9 @@ function init() {
 
   const pointLight1 = new Mesh(
     new SphereGeometry(4, 8, 8),
-    new MeshBasicMaterial({ color: 0x888888 })
+    new MeshBasicMaterial({ color: 0xc1c1c1 })
   );
-  pointLight1.add(new PointLight(0x888888, 7.0, 300));
+  pointLight1.add(new PointLight(0xc1c1c1, 7.0, 300));
   scene.add(pointLight1);
   pointLight1.position.x = 0;
   pointLight1.position.y = -50;
@@ -68,9 +66,9 @@ function init() {
 
   const pointLight2 = new Mesh(
     new SphereGeometry(4, 8, 8),
-    new MeshBasicMaterial({ color: 0x888800 })
+    new MeshBasicMaterial({ color: 0xc1c100 })
   );
-  pointLight2.add(new PointLight(0x888800, 1.0, 500));
+  pointLight2.add(new PointLight(0xc1c100, 1.0, 500));
   scene.add(pointLight2);
   pointLight2.position.x = -100;
   pointLight2.position.y = 20;
@@ -98,6 +96,8 @@ function init() {
 function initMaterial() {
   const loader = new TextureLoader();
   const imgTexture = loader.load("models/fbx/white.jpg");
+  imgTexture.colorSpace = SRGBColorSpace;
+
   const thicknessTexture = loader.load("models/fbx/bunny_thickness.jpg");
   imgTexture.wrapS = imgTexture.wrapT = RepeatWrapping;
 
