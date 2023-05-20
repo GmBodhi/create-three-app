@@ -8,13 +8,13 @@ import fragmentShader2_ from "./shaders/fragmentShader2.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Clock,
   TetrahedronGeometry,
   BoxGeometry,
   TextureLoader,
+  SRGBColorSpace,
   UniformsGroup,
   Uniform,
   Vector3,
@@ -26,8 +26,6 @@ import {
 } from "three";
 
 import WebGL from "three/addons/capabilities/WebGL.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer, clock;
 
@@ -63,6 +61,7 @@ function init() {
   // texture
 
   const texture = new TextureLoader().load("textures/crate.gif");
+  texture.colorSpace = SRGBColorSpace;
 
   // uniforms groups
 
@@ -77,9 +76,9 @@ function init() {
   const lightingUniformsGroup = new UniformsGroup();
   lightingUniformsGroup.setName("LightingData");
   lightingUniformsGroup.add(new Uniform(new Vector3(0, 0, 10))); // light position
-  lightingUniformsGroup.add(new Uniform(new Color(0x333333))); // ambient color
-  lightingUniformsGroup.add(new Uniform(new Color(0xaaaaaa))); // diffuse color
-  lightingUniformsGroup.add(new Uniform(new Color(0xcccccc))); // specular color
+  lightingUniformsGroup.add(new Uniform(new Color(0x7c7c7c))); // ambient color
+  lightingUniformsGroup.add(new Uniform(new Color(0xd5d5d5))); // diffuse color
+  lightingUniformsGroup.add(new Uniform(new Color(0xe7e7e7))); // specular color
   lightingUniformsGroup.add(new Uniform(64)); // shininess
 
   // materials

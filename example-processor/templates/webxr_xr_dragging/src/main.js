@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Matrix4,
   Scene,
   Color,
@@ -28,8 +27,6 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container;
 let camera, scene, renderer;
@@ -76,7 +73,7 @@ function init() {
   floor.receiveShadow = true;
   scene.add(floor);
 
-  scene.add(new HemisphereLight(0x808080, 0x606060));
+  scene.add(new HemisphereLight(0xbcbcbc, 0xa5a5a5));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(0, 6, 0);

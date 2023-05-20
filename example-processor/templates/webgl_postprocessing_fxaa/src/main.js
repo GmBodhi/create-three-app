@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Clock,
@@ -18,10 +17,8 @@ import {
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { CopyShader } from "three/addons/shaders/CopyShader.js";
+import { ColorCorrectionShader } from "three/addons/shaders/ColorCorrectionShader.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer, clock, group, container;
 
@@ -47,7 +44,7 @@ function init() {
 
   //
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x444444);
+  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
   hemiLight.position.set(0, 1000, 0);
   scene.add(hemiLight);
 
@@ -61,7 +58,7 @@ function init() {
 
   const geometry = new TetrahedronGeometry(10);
   const material = new MeshStandardMaterial({
-    color: 0xee0808,
+    color: 0xf73232,
     flatShading: true,
   });
 
@@ -101,11 +98,11 @@ function init() {
 
   fxaaPass = new ShaderPass(FXAAShader);
 
-  const copyPass = new ShaderPass(CopyShader);
+  const colorCorrectionPass = new ShaderPass(ColorCorrectionShader);
 
   composer1 = new EffectComposer(renderer);
   composer1.addPass(renderPass);
-  composer1.addPass(copyPass);
+  composer1.addPass(colorCorrectionPass);
 
   //
 
@@ -118,6 +115,10 @@ function init() {
 
   composer2 = new EffectComposer(renderer);
   composer2.addPass(renderPass);
+  composer2.addPass(colorCorrectionPass);
+
+  // FXAA is engineered to be applied towards the end of engine post processing after conversion to low dynamic range and conversion to the sRGB color space for display.´
+
   composer2.addPass(fxaaPass);
 
   //

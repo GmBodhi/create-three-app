@@ -3669,16 +3669,6 @@
         "/src/shaders"
       ]
     },
-    "webgl_tiled_forward": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_tonemapping": {
       "files": {
         "index.html": "src",

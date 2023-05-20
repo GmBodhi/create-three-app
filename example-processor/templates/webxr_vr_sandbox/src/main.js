@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   EquirectangularReflectionMapping,
   PerspectiveCamera,
@@ -16,7 +15,7 @@ import {
   BoxGeometry,
   MeshPhongMaterial,
   WebGLRenderer,
-  LinearSRGBColorSpace,
+  ACESFilmicToneMapping,
   BufferGeometry,
   Vector3,
   Line,
@@ -33,8 +32,6 @@ import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFa
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer;
 let reflector;
@@ -131,11 +128,12 @@ function init() {
   //
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.xr.enabled = true;
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1;
   document.body.appendChild(renderer.domElement);
 
   document.body.appendChild(VRButton.createButton(renderer));

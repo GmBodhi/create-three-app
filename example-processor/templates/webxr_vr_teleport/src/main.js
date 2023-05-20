@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Matrix4,
   Scene,
   Color,
@@ -27,8 +26,6 @@ import {
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
 import { VRButton } from "three/addons/webxr/VRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, raycaster, renderer;
 let controller1, controller2;
@@ -56,11 +53,11 @@ function init() {
 
   room = new LineSegments(
     new BoxLineGeometry(6, 6, 6, 10, 10, 10).translate(0, 3, 0),
-    new LineBasicMaterial({ color: 0x808080 })
+    new LineBasicMaterial({ color: 0xbcbcbc })
   );
   scene.add(room);
 
-  scene.add(new HemisphereLight(0x606060, 0x404040));
+  scene.add(new HemisphereLight(0xa5a5a5, 0x898989));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(1, 1, 1).normalize();
@@ -68,13 +65,13 @@ function init() {
 
   marker = new Mesh(
     new CircleGeometry(0.25, 32).rotateX(-Math.PI / 2),
-    new MeshBasicMaterial({ color: 0x808080 })
+    new MeshBasicMaterial({ color: 0xbcbcbc })
   );
   scene.add(marker);
 
   floor = new Mesh(
     new PlaneGeometry(4.8, 4.8, 2, 2).rotateX(-Math.PI / 2),
-    new MeshBasicMaterial({ color: 0x808080, transparent: true, opacity: 0.25 })
+    new MeshBasicMaterial({ color: 0xbcbcbc, transparent: true, opacity: 0.25 })
   );
   scene.add(floor);
 

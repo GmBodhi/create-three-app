@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -20,11 +19,9 @@ import {
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { CopyShader } from "three/addons/shaders/CopyShader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, renderer, group, container;
 
@@ -110,19 +107,19 @@ function init() {
   });
 
   const renderPass = new RenderPass(scene, camera);
-  const copyPass = new ShaderPass(CopyShader);
+  const outputPass = new ShaderPass(GammaCorrectionShader);
 
   //
 
   composer1 = new EffectComposer(renderer);
   composer1.addPass(renderPass);
-  composer1.addPass(copyPass);
+  composer1.addPass(outputPass);
 
   //
 
   composer2 = new EffectComposer(renderer, renderTarget);
   composer2.addPass(renderPass);
-  composer2.addPass(copyPass);
+  composer2.addPass(outputPass);
 
   //
 

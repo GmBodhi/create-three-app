@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   CubeTextureLoader,
+  SRGBColorSpace,
   Scene,
   SphereGeometry,
   MeshBasicMaterial,
@@ -52,6 +53,7 @@ function init() {
   ];
 
   const textureCube = new CubeTextureLoader().load(urls);
+  textureCube.colorSpace = SRGBColorSpace;
 
   scene = new Scene();
   scene.background = textureCube;
