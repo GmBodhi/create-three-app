@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -17,8 +16,8 @@ import {
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { GlitchPass } from "three/addons/postprocessing/GlitchPass.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let camera, scene, renderer, composer;
 let object, light;
@@ -79,7 +78,7 @@ function init() {
     object.add(mesh);
   }
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x666666));
 
   light = new DirectionalLight(0xffffff);
   light.position.set(1, 1, 1);
@@ -92,6 +91,9 @@ function init() {
 
   glitchPass = new GlitchPass();
   composer.addPass(glitchPass);
+
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+  composer.addPass(outputPass);
 
   //
 

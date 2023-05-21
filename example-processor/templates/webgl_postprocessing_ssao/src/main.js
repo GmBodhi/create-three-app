@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -19,8 +18,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let container, stats;
 let camera, scene, renderer;
@@ -85,6 +84,9 @@ function init() {
   const ssaoPass = new SSAOPass(scene, camera, width, height);
   ssaoPass.kernelRadius = 16;
   composer.addPass(ssaoPass);
+
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+  composer.addPass(outputPass);
 
   // Init gui
   const gui = new GUI();

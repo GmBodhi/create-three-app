@@ -5,6 +5,7 @@ import {
   Scene,
   WebGLRenderer,
   CubeTextureLoader,
+  SRGBColorSpace,
   MeshBasicMaterial,
   SphereGeometry,
   Mesh,
@@ -16,6 +17,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let camera,
   scene,
@@ -70,8 +73,9 @@ function init() {
   ];
 
   const textureCube = new CubeTextureLoader().load(urls);
+  textureCube.colorSpace = SRGBColorSpace;
 
-  parameters = { color: 0xff1100, envMap: textureCube };
+  parameters = { color: 0xff4900, envMap: textureCube };
   cubeMaterial = new MeshBasicMaterial(parameters);
 
   singleMaterial = false;
@@ -183,10 +187,13 @@ function initPostprocessing() {
     maxblur: 0.01,
   });
 
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+
   const composer = new EffectComposer(renderer);
 
   composer.addPass(renderPass);
   composer.addPass(bokehPass);
+  composer.addPass(outputPass);
 
   postprocessing.composer = composer;
   postprocessing.bokeh = bokehPass;

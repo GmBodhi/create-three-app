@@ -8,6 +8,7 @@ import {
   TorusGeometry,
   WebGLRenderer,
   TextureLoader,
+  SRGBColorSpace,
   LinearFilter,
   WebGLRenderTarget,
 } from "three";
@@ -20,7 +21,7 @@ import {
   MaskPass,
   ClearMaskPass,
 } from "three/addons/postprocessing/MaskPass.js";
-import { CopyShader } from "three/addons/shaders/CopyShader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let camera, composer, renderer;
 let box, torus;
@@ -65,15 +66,17 @@ function init() {
   const texture1 = new TextureLoader().load(
     "textures/758px-Canestra_di_frutta_(Caravaggio).jpg"
   );
+  texture1.colorSpace = SRGBColorSpace;
   texture1.minFilter = LinearFilter;
   const texture2 = new TextureLoader().load(
     "textures/2294472375_24a3b8ef46_o.jpg"
   );
+  texture2.colorSpace = SRGBColorSpace;
 
   const texturePass1 = new TexturePass(texture1);
   const texturePass2 = new TexturePass(texture2);
 
-  const outputPass = new ShaderPass(CopyShader);
+  const outputPass = new ShaderPass(GammaCorrectionShader);
 
   const parameters = {
     stencilBuffer: true,

@@ -20,16 +20,15 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { SSAARenderPass } from "three/addons/postprocessing/SSAARenderPass.js";
-import { CopyShader } from "three/addons/shaders/CopyShader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
-let scene, renderer, composer, copyPass;
+let scene, renderer, composer;
 let cameraP, ssaaRenderPassP;
 let cameraO, ssaaRenderPassO;
 let gui, stats;
 
 const params = {
   sampleLevel: 4,
-  renderToScreen: false,
   unbiased: true,
   camera: "perspective",
   clearColor: "black",
@@ -49,7 +48,6 @@ function clearGui() {
   gui = new GUI();
 
   gui.add(params, "unbiased");
-  gui.add(params, "renderToScreen");
   gui.add(params, "sampleLevel", {
     "Level 0: 1 Sample": 0,
     "Level 1: 2 Samples": 1,
@@ -107,19 +105,19 @@ function init() {
   const group = new Group();
   scene.add(group);
 
-  const light = new PointLight(0xddffdd, 1.0);
+  const light = new PointLight(0xefffef, 0.8);
   light.position.z = 70;
   light.position.y = -70;
   light.position.x = -70;
   scene.add(light);
 
-  const light2 = new PointLight(0xffdddd, 1.0);
+  const light2 = new PointLight(0xffefef, 0.8);
   light2.position.z = 70;
   light2.position.x = -70;
   light2.position.y = 70;
   scene.add(light2);
 
-  const light3 = new PointLight(0xddddff, 1.0);
+  const light3 = new PointLight(0xefefff, 0.8);
   light3.position.z = 70;
   light3.position.x = 70;
   light3.position.y = -70;
@@ -156,8 +154,8 @@ function init() {
   composer.addPass(ssaaRenderPassP);
   ssaaRenderPassO = new SSAARenderPass(scene, cameraO);
   composer.addPass(ssaaRenderPassO);
-  copyPass = new ShaderPass(CopyShader);
-  composer.addPass(copyPass);
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+  composer.addPass(outputPass);
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -224,8 +222,6 @@ function animate() {
 
   ssaaRenderPassP.enabled = params.camera === "perspective";
   ssaaRenderPassO.enabled = params.camera === "orthographic";
-
-  copyPass.enabled = !params.renderToScreen;
 
   cameraP.view.offsetX = params.viewOffsetX;
 

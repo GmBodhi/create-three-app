@@ -30,6 +30,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
 
 let container, stats;
@@ -234,6 +235,9 @@ function init() {
     texture.wrapS = RepeatWrapping;
     texture.wrapT = RepeatWrapping;
   });
+
+  const gammaPass = new ShaderPass(GammaCorrectionShader);
+  composer.addPass(gammaPass);
 
   effectFXAA = new ShaderPass(FXAAShader);
   effectFXAA.uniforms["resolution"].value.set(

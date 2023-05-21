@@ -9,6 +9,7 @@ import {
   Mesh,
   TextureLoader,
   NearestFilter,
+  SRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -18,9 +19,9 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { TAARenderPass } from "three/addons/postprocessing/TAARenderPass.js";
-import { CopyShader } from "three/addons/shaders/CopyShader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
-let camera, scene, renderer, composer, copyPass, taaRenderPass, renderPass;
+let camera, scene, renderer, composer, taaRenderPass, renderPass;
 let gui, stats;
 let index = 0;
 
@@ -101,6 +102,7 @@ function init() {
   texture.magFilter = NearestFilter;
   texture.anisotropy = 1;
   texture.generateMipmaps = false;
+  texture.colorSpace = SRGBColorSpace;
 
   const material2 = new MeshBasicMaterial({ map: texture });
 
@@ -120,8 +122,8 @@ function init() {
   renderPass.enabled = false;
   composer.addPass(renderPass);
 
-  copyPass = new ShaderPass(CopyShader);
-  composer.addPass(copyPass);
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+  composer.addPass(outputPass);
 
   window.addEventListener("resize", onWindowResize);
 }

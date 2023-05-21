@@ -10,6 +10,7 @@ import {
   MeshStandardMaterial,
   Mesh,
   TextureLoader,
+  SRGBColorSpace,
   CubeTextureLoader,
 } from "three";
 
@@ -22,7 +23,7 @@ import { TexturePass } from "three/addons/postprocessing/TexturePass.js";
 import { CubeTexturePass } from "three/addons/postprocessing/CubeTexturePass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { ClearPass } from "three/addons/postprocessing/ClearPass.js";
-import { CopyShader } from "three/addons/shaders/CopyShader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let scene, renderer, composer;
@@ -146,6 +147,7 @@ function init() {
 
   const textureLoader = new TextureLoader();
   textureLoader.load("textures/hardwood2_diffuse.jpg", function (map) {
+    map.colorSpace = SRGBColorSpace;
     texturePass.map = map;
   });
 
@@ -153,6 +155,7 @@ function init() {
 
   const ldrUrls = genCubeUrls("textures/cube/pisa/", ".png");
   new CubeTextureLoader().load(ldrUrls, function (ldrCubeMap) {
+    ldrCubeMap.colorSpace = SRGBColorSpace;
     cubeTexturePassP = new CubeTexturePass(cameraP, ldrCubeMap);
     composer.insertPass(cubeTexturePassP, 2);
   });
@@ -161,8 +164,8 @@ function init() {
   renderPass.clear = false;
   composer.addPass(renderPass);
 
-  const copyPass = new ShaderPass(CopyShader);
-  composer.addPass(copyPass);
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+  composer.addPass(outputPass);
 
   const controls = new OrbitControls(cameraP, renderer.domElement);
   controls.enableZoom = false;

@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   OrthographicCamera,
   Scene,
   Color,
@@ -19,6 +18,7 @@ import {
   Vector2,
   NearestFilter,
   RepeatWrapping,
+  SRGBColorSpace,
   MathUtils,
   Vector3,
   Quaternion,
@@ -27,9 +27,9 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPixelatedPass } from "three/addons/postprocessing/RenderPixelatedPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer, composer, crystalMesh, clock;
 let gui, params;
@@ -58,6 +58,9 @@ function init() {
   composer = new EffectComposer(renderer);
   const renderPixelatedPass = new RenderPixelatedPass(6, scene, camera);
   composer.addPass(renderPixelatedPass);
+
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+  composer.addPass(outputPass);
 
   window.addEventListener("resize", onWindowResize);
 
@@ -128,8 +131,8 @@ function init() {
   crystalMesh = new Mesh(
     geometry,
     new MeshPhongMaterial({
-      color: 0x2379cf,
-      emissive: 0x143542,
+      color: 0x68b7e9,
+      emissive: 0x4f7e8b,
       shininess: 10,
       specular: 0xffffff,
     })
@@ -140,15 +143,15 @@ function init() {
 
   // lights
 
-  scene.add(new AmbientLight(0x2d3645, 1.5));
+  scene.add(new AmbientLight(0x757f8e));
 
-  const directionalLight = new DirectionalLight(0xfffc9c, 0.5);
+  const directionalLight = new DirectionalLight(0xfffecd, 0.5);
   directionalLight.position.set(100, 100, 100);
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.set(2048, 2048);
   scene.add(directionalLight);
 
-  const spotLight = new SpotLight(0xff8800, 1, 10, Math.PI / 16, 0.02, 2);
+  const spotLight = new SpotLight(0xffc100, 1, 10, Math.PI / 16, 0.02, 2);
   spotLight.position.set(2, 2, 0);
   const target = spotLight.target;
   scene.add(target);
@@ -205,6 +208,7 @@ function pixelTexture(texture) {
   texture.generateMipmaps = false;
   texture.wrapS = RepeatWrapping;
   texture.wrapT = RepeatWrapping;
+  texture.colorSpace = SRGBColorSpace;
   return texture;
 }
 

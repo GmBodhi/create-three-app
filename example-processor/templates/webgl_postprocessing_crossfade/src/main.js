@@ -274,6 +274,9 @@ function Transition(sceneA, sceneB) {
 
       "	}",
 
+      "	#include <tonemapping_fragment>",
+      "	#include <encodings_fragment>",
+
       "}",
     ].join("\n"),
   });

@@ -1,10 +1,8 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
@@ -22,8 +20,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let camera, stats;
 let composer, renderer, mixer, clock;
@@ -48,7 +46,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.toneMapping = ReinhardToneMapping;
   container.appendChild(renderer.domElement);
 
@@ -68,7 +65,7 @@ function init() {
   controls.minDistance = 1;
   controls.maxDistance = 10;
 
-  scene.add(new AmbientLight(0x404040));
+  scene.add(new AmbientLight(0x898989));
 
   const pointLight = new PointLight(0xffffff, 1);
   camera.add(pointLight);
@@ -85,9 +82,12 @@ function init() {
   bloomPass.strength = params.bloomStrength;
   bloomPass.radius = params.bloomRadius;
 
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+
   composer = new EffectComposer(renderer);
   composer.addPass(renderScene);
   composer.addPass(bloomPass);
+  composer.addPass(outputPass);
 
   new GLTFLoader().load("models/gltf/PrimaryIonDrive.glb", function (gltf) {
     const model = gltf.scene;
