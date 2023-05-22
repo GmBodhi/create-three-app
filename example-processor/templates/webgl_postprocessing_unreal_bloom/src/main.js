@@ -3,12 +3,12 @@ import "./style.css"; // For webpack support
 import {
   Clock,
   WebGLRenderer,
-  ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
   AmbientLight,
   PointLight,
   Vector2,
+  ReinhardToneMapping,
   AnimationMixer,
 } from "three";
 
@@ -20,17 +20,16 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, stats;
 let composer, renderer, mixer, clock;
 
 const params = {
+  threshold: 0,
+  strength: 1.5,
+  radius: 0,
   exposure: 1,
-  bloomStrength: 1.5,
-  bloomThreshold: 0,
-  bloomRadius: 0,
 };
 
 init();
@@ -46,7 +45,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = ReinhardToneMapping;
   container.appendChild(renderer.domElement);
 
   const scene = new Scene();
@@ -78,11 +76,11 @@ function init() {
     0.4,
     0.85
   );
-  bloomPass.threshold = params.bloomThreshold;
-  bloomPass.strength = params.bloomStrength;
-  bloomPass.radius = params.bloomRadius;
+  bloomPass.threshold = params.threshold;
+  bloomPass.strength = params.strength;
+  bloomPass.radius = params.radius;
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass(ReinhardToneMapping);
 
   composer = new EffectComposer(renderer);
   composer.addPass(renderScene);
@@ -103,24 +101,28 @@ function init() {
 
   const gui = new GUI();
 
-  gui.add(params, "exposure", 0.1, 2).onChange(function (value) {
-    renderer.toneMappingExposure = Math.pow(value, 4.0);
-  });
+  const bloomFolder = gui.addFolder("bloom");
 
-  gui.add(params, "bloomThreshold", 0.0, 1.0).onChange(function (value) {
+  bloomFolder.add(params, "threshold", 0.0, 1.0).onChange(function (value) {
     bloomPass.threshold = Number(value);
   });
 
-  gui.add(params, "bloomStrength", 0.0, 3.0).onChange(function (value) {
+  bloomFolder.add(params, "strength", 0.0, 3.0).onChange(function (value) {
     bloomPass.strength = Number(value);
   });
 
   gui
-    .add(params, "bloomRadius", 0.0, 1.0)
+    .add(params, "radius", 0.0, 1.0)
     .step(0.01)
     .onChange(function (value) {
       bloomPass.radius = Number(value);
     });
+
+  const toneMappingFolder = gui.addFolder("tone mapping");
+
+  toneMappingFolder.add(params, "exposure", 0.1, 2).onChange(function (value) {
+    outputPass.toneMappingExposure = Math.pow(value, 4.0);
+  });
 
   window.addEventListener("resize", onWindowResize);
 }

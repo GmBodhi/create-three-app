@@ -15,6 +15,7 @@ import {
   SpotLight,
   MeshPhongMaterial,
   WebGLRenderTarget,
+  HalfFloatType,
   OrthographicCamera,
   TextureLoader,
   ShaderMaterial,
@@ -167,7 +168,9 @@ function FXScene(geometry, rotationSpeed, clearColor) {
   const mesh = generateInstancedMesh(geometry, material, 500);
   scene.add(mesh);
 
-  this.fbo = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
+  this.fbo = new WebGLRenderTarget(window.innerWidth, window.innerHeight, {
+    type: HalfFloatType,
+  });
 
   this.render = function (delta, rtt) {
     mesh.rotation.x += delta * this.rotationSpeed.x;

@@ -20,6 +20,7 @@ import {
   DirectionalLight,
   OrthographicCamera,
   WebGLRenderTarget,
+  HalfFloatType,
   UniformsUtils,
 } from "three";
 
@@ -332,11 +333,13 @@ function initPostprocessing() {
 
   postprocessing.rtTextureDepth = new WebGLRenderTarget(
     window.innerWidth,
-    window.innerHeight
+    window.innerHeight,
+    { type: HalfFloatType }
   );
   postprocessing.rtTextureColor = new WebGLRenderTarget(
     window.innerWidth,
-    window.innerHeight
+    window.innerHeight,
+    { type: HalfFloatType }
   );
 
   const bokeh_shader = BokehShader;
