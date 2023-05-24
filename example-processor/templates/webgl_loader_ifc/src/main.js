@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   Color,
   PerspectiveCamera,
@@ -11,14 +10,11 @@ import {
   DirectionalLight,
   AmbientLight,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { IFCLoader } from "web-ifc-three";
 import { IFCSPACE } from "web-ifc";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let scene, camera, renderer;
 
@@ -83,7 +79,6 @@ async function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   //Controls

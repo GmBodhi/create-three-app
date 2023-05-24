@@ -7,6 +7,7 @@ import {
   TorusKnotGeometry,
   Mesh,
   DepthTexture,
+  FloatType,
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
@@ -14,7 +15,7 @@ import { texture, MeshBasicNodeMaterial } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import WebGPUTextureRenderer from "three/addons/renderers/webgpu/WebGPUTextureRenderer.js";
+import TextureRenderer from "three/addons/renderers/common/TextureRenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -72,8 +73,9 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   const depthTexture = new DepthTexture();
+  depthTexture.type = FloatType;
 
-  textureRenderer = new WebGPUTextureRenderer(renderer);
+  textureRenderer = new TextureRenderer(renderer);
   textureRenderer.renderTarget.depthTexture = depthTexture;
   textureRenderer.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
 

@@ -4,6 +4,7 @@ import {
   WebGLRenderer,
   ACESFilmicToneMapping,
   PerspectiveCamera,
+  MathUtils,
   Scene,
   Color,
   EquirectangularReflectionMapping,
@@ -61,8 +62,8 @@ function init() {
   camera.position.set(4.25, 1.4, -4.5);
 
   controls = new OrbitControls(camera, container);
-  controls.enableDamping = true;
   controls.maxDistance = 9;
+  controls.maxPolarAngle = MathUtils.degToRad(90);
   controls.target.set(0, 0.5, 0);
   controls.update();
 
@@ -88,7 +89,6 @@ function init() {
     roughness: 0.5,
     clearcoat: 1.0,
     clearcoatRoughness: 0.03,
-    sheen: 0.5,
   });
 
   const detailsMaterial = new MeshStandardMaterial({

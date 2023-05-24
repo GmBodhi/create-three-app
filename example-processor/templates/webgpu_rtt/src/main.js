@@ -15,7 +15,7 @@ import { texture, uniform, vec2, MeshBasicNodeMaterial } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import WebGPUTextureRenderer from "three/addons/renderers/webgpu/WebGPUTextureRenderer.js";
+import TextureRenderer from "three/addons/renderers/common/TextureRenderer.js";
 
 let camera, scene, renderer;
 const mouse = new Vector2();
@@ -68,7 +68,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
-  textureRenderer = new WebGPUTextureRenderer(renderer);
+  textureRenderer = new TextureRenderer(renderer);
   textureRenderer.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
 
   window.addEventListener("mousemove", onWindowMouseMove);
@@ -86,9 +86,7 @@ function init() {
   const screenFXNode = uniform(mouse).add(vec2(0.5, 0.5));
 
   const materialFX = new MeshBasicNodeMaterial();
-  materialFX.colorNode = texture(textureRenderer.getTexture()).mul(
-    screenFXNode
-  );
+  materialFX.colorNode = texture(textureRenderer.texture).mul(screenFXNode);
 
   const quad = new Mesh(geometryFX, materialFX);
   sceneFX.add(quad);

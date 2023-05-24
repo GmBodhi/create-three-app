@@ -7,9 +7,9 @@ import {
   Clock,
   SpotLight,
   AnimationMixer,
+  SphereGeometry,
   Group,
   MathUtils,
-  SphereGeometry,
   Mesh,
   LinearToneMapping,
 } from "three";
@@ -81,6 +81,8 @@ function init() {
 
   // portals
 
+  const geometry = new SphereGeometry(0.3, 32, 16);
+
   portals = new Group();
   scene.add(portals);
 
@@ -88,8 +90,6 @@ function init() {
     const distance = 1;
     const id = portals.children.length;
     const rotation = MathUtils.degToRad(id * 45);
-
-    const geometry = new SphereGeometry(0.3, 32, 16);
 
     const material = new MeshStandardNodeMaterial({ color: 0x0066ff });
     material.roughnessNode = float(0.2);

@@ -73,7 +73,6 @@ function createGUI() {
   gui
     .add(guiData, "currentURL", {
       Tiger: "models/svg/tiger.svg",
-      "Three.js": "models/svg/threejs.svg",
       "Joins and caps": "models/svg/lineJoinsAndCaps.svg",
       Hexagon: "models/svg/hexagon.svg",
       Energy: "models/svg/energy.svg",
@@ -143,18 +142,17 @@ function loadSVG(url) {
   const loader = new SVGLoader();
 
   loader.load(url, function (data) {
-    const paths = data.paths;
-
     const group = new Group();
     group.scale.multiplyScalar(0.25);
     group.position.x = -70;
     group.position.y = 70;
     group.scale.y *= -1;
 
-    for (let i = 0; i < paths.length; i++) {
-      const path = paths[i];
+    let renderOrder = 0;
 
+    for (const path of data.paths) {
       const fillColor = path.userData.style.fill;
+
       if (
         guiData.drawFillShapes &&
         fillColor !== undefined &&
@@ -171,11 +169,10 @@ function loadSVG(url) {
 
         const shapes = SVGLoader.createShapes(path);
 
-        for (let j = 0; j < shapes.length; j++) {
-          const shape = shapes[j];
-
+        for (const shape of shapes) {
           const geometry = new ShapeGeometry(shape);
           const mesh = new Mesh(geometry, material);
+          mesh.renderOrder = renderOrder++;
 
           group.add(mesh);
         }
@@ -197,9 +194,7 @@ function loadSVG(url) {
           wireframe: guiData.strokesWireframe,
         });
 
-        for (let j = 0, jl = path.subPaths.length; j < jl; j++) {
-          const subPath = path.subPaths[j];
-
+        for (const subPath of path.subPaths) {
           const geometry = SVGLoader.pointsToStroke(
             subPath.getPoints(),
             path.userData.style
@@ -207,6 +202,7 @@ function loadSVG(url) {
 
           if (geometry) {
             const mesh = new Mesh(geometry, material);
+            mesh.renderOrder = renderOrder++;
 
             group.add(mesh);
           }
@@ -225,6 +221,7 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
+  render();
 }
 
 function render() {
