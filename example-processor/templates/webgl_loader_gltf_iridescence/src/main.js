@@ -20,6 +20,7 @@ init().catch(function (err) {
 
 async function init() {
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.setAnimationLoop(render);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
@@ -30,13 +31,14 @@ async function init() {
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
-    0.25,
+    0.05,
     20
   );
   camera.position.set(0.35, 0.05, 0.35);
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render);
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = -0.5;
   controls.target.set(0, 0.2, 0);
   controls.update();
 
@@ -76,5 +78,6 @@ function onWindowResize() {
 }
 
 function render() {
+  controls.update();
   renderer.render(scene, camera);
 }
