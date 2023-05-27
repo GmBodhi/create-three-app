@@ -1444,16 +1444,6 @@
         "/src"
       ]
     },
-    "webgl_lightningstrike": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_lightprobe": {
       "files": {
         "index.html": "src",

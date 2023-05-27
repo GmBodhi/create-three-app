@@ -27,7 +27,7 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { SVGRenderer, SVGObject } from "three/addons/renderers/SVGRenderer.js";
 
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
+ColorManagement.enabled = false;
 
 let camera, scene, renderer, stats;
 

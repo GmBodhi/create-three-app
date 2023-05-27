@@ -43,6 +43,8 @@ import {
 
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
+import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 function exportGLTF(input) {
@@ -95,7 +97,7 @@ function saveArrayBuffer(buffer, filename) {
 let container;
 
 let camera, object, object2, material, geometry, scene1, scene2, renderer;
-let gridHelper, sphere, model;
+let gridHelper, sphere, model, coffeemat;
 
 const params = {
   trs: false,
@@ -108,6 +110,7 @@ const params = {
   exportModel: exportModel,
   exportObjects: exportObjects,
   exportSceneObject: exportSceneObject,
+  exportCompressedObject: exportCompressedObject,
 };
 
 init();
@@ -444,6 +447,27 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 
+  // ---------------------------------------------------------------------
+  // Exporting compressed textures and meshes (KTX2 / Draco / Meshopt)
+  // ---------------------------------------------------------------------
+  const ktx2Loader = new KTX2Loader()
+    .setTranscoderPath("jsm/libs/basis/")
+    .detectSupport(renderer);
+
+  const gltfLoader = new GLTFLoader().setPath("models/gltf/");
+  gltfLoader.setKTX2Loader(ktx2Loader);
+  gltfLoader.setMeshoptDecoder(MeshoptDecoder);
+  gltfLoader.load("coffeemat.glb", function (gltf) {
+    gltf.scene.position.x = 400;
+    gltf.scene.position.z = -200;
+
+    scene1.add(gltf.scene);
+
+    coffeemat = gltf.scene;
+  });
+
+  //
+
   const gui = new GUI();
 
   let h = gui.addFolder("Settings");
@@ -459,6 +483,9 @@ function init() {
   h.add(params, "exportModel").name("Export Model");
   h.add(params, "exportObjects").name("Export Sphere With Grid");
   h.add(params, "exportSceneObject").name("Export Scene 1 and Object");
+  h.add(params, "exportCompressedObject").name(
+    "Export Coffeemat (from compressed data)"
+  );
 
   gui.open();
 }
@@ -485,6 +512,10 @@ function exportObjects() {
 
 function exportSceneObject() {
   exportGLTF([scene1, gridHelper]);
+}
+
+function exportCompressedObject() {
+  exportGLTF([coffeemat]);
 }
 
 function onWindowResize() {
