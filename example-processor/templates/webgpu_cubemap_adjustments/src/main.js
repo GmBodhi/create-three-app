@@ -5,6 +5,7 @@ import {
   Scene,
   LinearMipmapLinearFilter,
   CubeTextureLoader,
+  SRGBColorSpace,
   Matrix4,
   SphereGeometry,
   Mesh,
@@ -89,6 +90,7 @@ function init() {
 
   cube2Texture.generateMipmaps = true;
   cube2Texture.minFilter = LinearMipmapLinearFilter;
+  cube2Texture.colorSpace = SRGBColorSpace;
 
   // nodes and environment
 

@@ -5,6 +5,7 @@ import {
   Scene,
   LinearMipmapLinearFilter,
   CubeTextureLoader,
+  SRGBColorSpace,
   LinearToneMapping,
 } from "three";
 import {
@@ -71,6 +72,7 @@ function init() {
 
   cube2Texture.generateMipmaps = true;
   cube2Texture.minFilter = LinearMipmapLinearFilter;
+  cube2Texture.colorSpace = SRGBColorSpace;
 
   scene.environmentNode = mix(
     cubeTexture(cube2Texture),

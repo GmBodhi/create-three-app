@@ -12,6 +12,7 @@ import {
   IcosahedronGeometry,
   Group,
   CubeTextureLoader,
+  SRGBColorSpace,
   MeshStandardMaterial,
   Vector3,
 } from "three";
@@ -119,6 +120,7 @@ function initBlob() {
 				];
 
 				let reflectionCube = new CubeTextureLoader().load( urls );
+				reflectionCube.colorSpace = SRGBColorSpace;
 				*/
 
   const material = new MeshStandardMaterial({
