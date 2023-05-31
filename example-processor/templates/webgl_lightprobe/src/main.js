@@ -8,7 +8,6 @@ import {
   LightProbe,
   DirectionalLight,
   CubeTextureLoader,
-  SRGBColorSpace,
   SphereGeometry,
   TorusKnotGeometry,
   MeshStandardMaterial,
@@ -92,8 +91,6 @@ function init() {
   const urls = genCubeUrls("textures/cube/pisa/", ".png");
 
   new CubeTextureLoader().load(urls, function (cubeTexture) {
-    cubeTexture.colorSpace = SRGBColorSpace;
-
     scene.background = cubeTexture;
 
     lightProbe.copy(LightProbeGenerator.fromCubeTexture(cubeTexture));

@@ -9,7 +9,6 @@ import {
   WebGLRenderer,
   ShaderMaterial,
   CubeTextureLoader,
-  SRGBColorSpace,
   PlaneGeometry,
   MeshPhongMaterial,
   DoubleSide,
@@ -104,7 +103,6 @@ function init() {
   ];
 
   const textureCube = new CubeTextureLoader().load(urls);
-  textureCube.colorSpace = SRGBColorSpace;
 
   scene.background = textureCube;
 

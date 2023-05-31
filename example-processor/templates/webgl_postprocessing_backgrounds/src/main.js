@@ -155,7 +155,6 @@ function init() {
 
   const ldrUrls = genCubeUrls("textures/cube/pisa/", ".png");
   new CubeTextureLoader().load(ldrUrls, function (ldrCubeMap) {
-    ldrCubeMap.colorSpace = SRGBColorSpace;
     cubeTexturePassP = new CubeTexturePass(cameraP, ldrCubeMap);
     composer.insertPass(cubeTexturePassP, 2);
   });

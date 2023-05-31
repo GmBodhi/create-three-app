@@ -7,7 +7,6 @@ import {
   AmbientLight,
   PointLight,
   CubeTextureLoader,
-  SRGBColorSpace,
   TextureLoader,
   MeshStandardMaterial,
   Vector2,
@@ -167,7 +166,6 @@ function init() {
   ];
 
   const reflectionCube = new CubeTextureLoader().load(urls);
-  reflectionCube.colorSpace = SRGBColorSpace;
 
   // textures
 

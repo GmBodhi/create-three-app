@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   CubeTextureLoader,
-  SRGBColorSpace,
   Scene,
   Color,
   Fog,
@@ -49,8 +48,6 @@ function init() {
   const reflectionCube = new CubeTextureLoader()
     .setPath("textures/cube/SwedishRoyalCastle/")
     .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
-
-  reflectionCube.colorSpace = SRGBColorSpace;
 
   scene = new Scene();
   scene.background = new Color(0xa0a0a0);

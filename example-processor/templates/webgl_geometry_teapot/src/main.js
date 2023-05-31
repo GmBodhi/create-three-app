@@ -89,7 +89,6 @@ function init() {
   const urls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
 
   textureCube = new CubeTextureLoader().setPath(path).load(urls);
-  textureCube.colorSpace = SRGBColorSpace;
 
   materials["wireframe"] = new MeshBasicMaterial({ wireframe: true });
   materials["flat"] = new MeshPhongMaterial({

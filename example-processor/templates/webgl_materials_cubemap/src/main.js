@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   CubeTextureLoader,
-  SRGBColorSpace,
   CubeRefractionMapping,
   Scene,
   AmbientLight,
@@ -52,9 +51,7 @@ function init() {
   ];
 
   const reflectionCube = new CubeTextureLoader().load(urls);
-  reflectionCube.colorSpace = SRGBColorSpace;
   const refractionCube = new CubeTextureLoader().load(urls);
-  refractionCube.colorSpace = SRGBColorSpace;
   refractionCube.mapping = CubeRefractionMapping;
 
   scene = new Scene();

@@ -3543,6 +3543,16 @@
         "/src"
       ]
     },
+    "webgpu_cubemap_dynamic": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_cubemap_mix": {
       "files": {
         "index.html": "src",

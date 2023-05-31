@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgpu - GLTFloader</title>
+    <title>three.js webgpu - dynamic cube reflection</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -9,25 +9,10 @@
   </head>
   <body style="overflow: hidden">
     <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - GLTFLoader<br />
-      Battle Damaged Sci-fi Helmet by
-      <a
-        href="https://sketchfab.com/theblueturtle_"
-        target="_blank"
-        rel="noopener"
-        >theblueturtle_</a
-      ><br />
-      <a
-        href="https://hdrihaven.com/hdri/?h=royal_esplanade"
-        target="_blank"
-        rel="noopener"
-        >Royal Esplanade</a
+      <a href="https://threejs.org" target="_blank" rel="noopener"
+        >three.js webgpu</a
       >
-      by
-      <a href="https://hdrihaven.com/" target="_blank" rel="noopener"
-        >HDRI Haven</a
-      >
+      - dynamic cube reflection
     </div>
 
     <!-- Import maps polyfill -->
@@ -41,6 +26,7 @@
       {
         "imports": {
           "three": "../build/three.module.js",
+          "three/nodes": "./jsm/nodes/Nodes.js",
           "three/addons/": "./jsm/"
         }
       }

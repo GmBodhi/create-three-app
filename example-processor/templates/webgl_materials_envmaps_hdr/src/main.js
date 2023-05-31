@@ -15,7 +15,6 @@ import {
   DefaultLoadingManager,
   LinearFilter,
   CubeTextureLoader,
-  SRGBColorSpace,
   PMREMGenerator,
 } from "three";
 
@@ -105,8 +104,6 @@ function init() {
   ldrCubeMap = new CubeTextureLoader()
     .setPath("three/examples/textures/cube/pisa/")
     .load(ldrUrls, function () {
-      ldrCubeMap.colorSpace = SRGBColorSpace;
-
       ldrCubeRenderTarget = pmremGenerator.fromCubemap(ldrCubeMap);
     });
 

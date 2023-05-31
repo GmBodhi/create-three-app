@@ -4,9 +4,9 @@ import {
   PerspectiveCamera,
   Scene,
   CubeTextureLoader,
-  SRGBColorSpace,
   TextureLoader,
   EquirectangularReflectionMapping,
+  SRGBColorSpace,
   IcosahedronGeometry,
   MeshBasicMaterial,
   Mesh,
@@ -54,7 +54,6 @@ function init() {
     "posz.jpg",
     "negz.jpg",
   ]);
-  textureCube.colorSpace = SRGBColorSpace;
 
   const textureLoader = new TextureLoader();
 

@@ -8,7 +8,6 @@ import {
   CubeCamera,
   LightProbe,
   CubeTextureLoader,
-  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -70,8 +69,6 @@ function init() {
   const urls = genCubeUrls("textures/cube/pisa/", ".png");
 
   new CubeTextureLoader().load(urls, function (cubeTexture) {
-    cubeTexture.colorSpace = SRGBColorSpace;
-
     scene.background = cubeTexture;
 
     cubeCamera.update(renderer, scene);

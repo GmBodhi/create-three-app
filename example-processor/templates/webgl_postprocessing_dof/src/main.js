@@ -5,7 +5,6 @@ import {
   Scene,
   WebGLRenderer,
   CubeTextureLoader,
-  SRGBColorSpace,
   MeshBasicMaterial,
   SphereGeometry,
   Mesh,
@@ -73,7 +72,6 @@ function init() {
   ];
 
   const textureCube = new CubeTextureLoader().load(urls);
-  textureCube.colorSpace = SRGBColorSpace;
 
   parameters = { color: 0xff4900, envMap: textureCube };
   cubeMaterial = new MeshBasicMaterial(parameters);

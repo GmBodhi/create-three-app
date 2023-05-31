@@ -11,9 +11,9 @@ import {
   WebGLRenderer,
   CubeTextureLoader,
   CubeRefractionMapping,
-  SRGBColorSpace,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   MeshStandardMaterial,
   MeshLambertMaterial,
   MeshPhongMaterial,
@@ -162,9 +162,6 @@ function generateMaterials() {
   const reflectionCube = cubeTextureLoader.load(urls);
   const refractionCube = cubeTextureLoader.load(urls);
   refractionCube.mapping = CubeRefractionMapping;
-
-  reflectionCube.colorSpace = SRGBColorSpace;
-  refractionCube.colorSpace = SRGBColorSpace;
 
   // toons
 

@@ -118,7 +118,6 @@ function init() {
     "posz.jpg",
     "negz.jpg",
   ]);
-  cubeTexture.colorSpace = SRGBColorSpace;
 
   scene.background = cubeTexture;
 
