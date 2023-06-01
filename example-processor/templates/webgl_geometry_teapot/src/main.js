@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   AmbientLight,
   DirectionalLight,
@@ -23,8 +22,6 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, renderer;
 let cameraControls;
@@ -63,7 +60,7 @@ function init() {
   camera.position.set(-600, 550, 1300);
 
   // LIGHTS
-  ambientLight = new AmbientLight(0x333333);
+  ambientLight = new AmbientLight(0x7c7c7c);
 
   light = new DirectionalLight(0xffffff, 1.0);
   light.position.set(0.32, 0.39, 0.7);
@@ -92,7 +89,6 @@ function init() {
   const urls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
 
   textureCube = new CubeTextureLoader().setPath(path).load(urls);
-  textureCube.colorSpace = SRGBColorSpace;
 
   materials["wireframe"] = new MeshBasicMaterial({ wireframe: true });
   materials["flat"] = new MeshPhongMaterial({

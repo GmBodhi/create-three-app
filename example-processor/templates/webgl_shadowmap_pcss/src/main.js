@@ -6,7 +6,6 @@ import PCSSGetShadow_ from "./shaders/PCSSGetShadow.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   Fog,
   PerspectiveCamera,
@@ -26,8 +25,6 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let stats;
 let camera, scene, renderer;
@@ -67,9 +64,9 @@ function init() {
 
   // lights
 
-  scene.add(new AmbientLight(0x666666));
+  scene.add(new AmbientLight(0xaaaaaa));
 
-  const light = new DirectionalLight(0xdfebff, 1.75);
+  const light = new DirectionalLight(0xf0f6ff, 1.75);
   light.position.set(2, 8, 4);
 
   light.castShadow = true;
@@ -105,10 +102,7 @@ function init() {
 
   // ground
 
-  const groundMaterial = new MeshPhongMaterial({
-    color: 0x404040,
-    specular: 0x111111,
-  });
+  const groundMaterial = new MeshPhongMaterial({ color: 0x898989 });
 
   const ground = new Mesh(
     new PlaneGeometry(20000, 20000, 8, 8),

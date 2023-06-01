@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
   Scene,
@@ -24,8 +23,6 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { PositionalAudioHelper } from "three/addons/helpers/PositionalAudioHelper.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let scene, camera, renderer;
 
@@ -58,7 +55,7 @@ function init() {
 
   //
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x444444);
+  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
   hemiLight.position.set(0, 20, 0);
   scene.add(hemiLight);
 
@@ -79,13 +76,13 @@ function init() {
 
   const mesh = new Mesh(
     new PlaneGeometry(50, 50),
-    new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    new MeshPhongMaterial({ color: 0xcbcbcb, depthWrite: false })
   );
   mesh.rotation.x = -Math.PI / 2;
   mesh.receiveShadow = true;
   scene.add(mesh);
 
-  const grid = new GridHelper(50, 50, 0x888888, 0x888888);
+  const grid = new GridHelper(50, 50, 0xc1c1c1, 0xc1c1c1);
   scene.add(grid);
 
   //

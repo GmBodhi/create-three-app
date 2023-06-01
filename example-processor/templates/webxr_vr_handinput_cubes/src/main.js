@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector3,
   Scene,
   Color,
@@ -20,8 +19,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { VRButton } from "three/addons/webxr/VRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 import { XRHandModelFactory } from "three/addons/webxr/XRHandModelFactory.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container;
 let camera, scene, renderer;
@@ -67,13 +64,13 @@ function init() {
   controls.update();
 
   const floorGeometry = new PlaneGeometry(4, 4);
-  const floorMaterial = new MeshStandardMaterial({ color: 0x222222 });
+  const floorMaterial = new MeshStandardMaterial({ color: 0x666666 });
   const floor = new Mesh(floorGeometry, floorMaterial);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
   scene.add(floor);
 
-  scene.add(new HemisphereLight(0x808080, 0x606060));
+  scene.add(new HemisphereLight(0xbcbcbc, 0xa5a5a5));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(0, 6, 0);

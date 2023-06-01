@@ -6,17 +6,15 @@ import fragmentshader_ from "./shaders/fragmentshader.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Layers,
   MeshBasicMaterial,
   WebGLRenderer,
-  LinearSRGBColorSpace,
-  ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
   AmbientLight,
   Vector2,
   ShaderMaterial,
+  ReinhardToneMapping,
   Raycaster,
   IcosahedronGeometry,
   Color,
@@ -30,21 +28,18 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
-
-const ENTIRE_SCENE = 0,
-  BLOOM_SCENE = 1;
+const BLOOM_SCENE = 1;
 
 const bloomLayer = new Layers();
 bloomLayer.set(BLOOM_SCENE);
 
 const params = {
+  threshold: 0,
+  strength: 3,
+  radius: 0.5,
   exposure: 1,
-  bloomStrength: 5,
-  bloomThreshold: 0,
-  bloomRadius: 0,
-  scene: "Scene with Glow",
 };
 
 const darkMaterial = new MeshBasicMaterial({ color: "black" });
@@ -53,8 +48,6 @@ const materials = {};
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.outputColorSpace = LinearSRGBColorSpace;
-renderer.toneMapping = ReinhardToneMapping;
 document.body.appendChild(renderer.domElement);
 
 const scene = new Scene();
@@ -74,7 +67,7 @@ controls.minDistance = 1;
 controls.maxDistance = 100;
 controls.addEventListener("change", render);
 
-scene.add(new AmbientLight(0x404040));
+scene.add(new AmbientLight(0x898989));
 
 const renderScene = new RenderPass(scene, camera);
 
@@ -84,16 +77,16 @@ const bloomPass = new UnrealBloomPass(
   0.4,
   0.85
 );
-bloomPass.threshold = params.bloomThreshold;
-bloomPass.strength = params.bloomStrength;
-bloomPass.radius = params.bloomRadius;
+bloomPass.threshold = params.threshold;
+bloomPass.strength = params.strength;
+bloomPass.radius = params.radius;
 
 const bloomComposer = new EffectComposer(renderer);
 bloomComposer.renderToScreen = false;
 bloomComposer.addPass(renderScene);
 bloomComposer.addPass(bloomPass);
 
-const finalPass = new ShaderPass(
+const mixPass = new ShaderPass(
   new ShaderMaterial({
     uniforms: {
       baseTexture: { value: null },
@@ -105,11 +98,14 @@ const finalPass = new ShaderPass(
   }),
   "baseTexture"
 );
-finalPass.needsSwap = true;
+mixPass.needsSwap = true;
+
+const outputPass = new OutputPass(ReinhardToneMapping);
 
 const finalComposer = new EffectComposer(renderer);
 finalComposer.addPass(renderScene);
-finalComposer.addPass(finalPass);
+finalComposer.addPass(mixPass);
+finalComposer.addPass(outputPass);
 
 const raycaster = new Raycaster();
 
@@ -119,48 +115,32 @@ window.addEventListener("pointerdown", onPointerDown);
 
 const gui = new GUI();
 
-gui
-  .add(params, "scene", ["Scene with Glow", "Glow only", "Scene only"])
-  .onChange(function (value) {
-    switch (value) {
-      case "Scene with Glow":
-        bloomComposer.renderToScreen = false;
-        break;
-      case "Glow only":
-        bloomComposer.renderToScreen = true;
-        break;
-      case "Scene only":
-        // nothing to do
-        break;
-    }
+const bloomFolder = gui.addFolder("bloom");
 
-    render();
-  });
-
-const folder = gui.addFolder("Bloom Parameters");
-
-folder.add(params, "exposure", 0.1, 2).onChange(function (value) {
-  renderer.toneMappingExposure = Math.pow(value, 4.0);
-  render();
-});
-
-folder.add(params, "bloomThreshold", 0.0, 1.0).onChange(function (value) {
+bloomFolder.add(params, "threshold", 0.0, 1.0).onChange(function (value) {
   bloomPass.threshold = Number(value);
   render();
 });
 
-folder.add(params, "bloomStrength", 0.0, 10.0).onChange(function (value) {
+bloomFolder.add(params, "strength", 0.0, 10.0).onChange(function (value) {
   bloomPass.strength = Number(value);
   render();
 });
 
-folder
-  .add(params, "bloomRadius", 0.0, 1.0)
+bloomFolder
+  .add(params, "radius", 0.0, 1.0)
   .step(0.01)
   .onChange(function (value) {
     bloomPass.radius = Number(value);
     render();
   });
+
+const toneMappingFolder = gui.addFolder("tone mapping");
+
+toneMappingFolder.add(params, "exposure", 0.1, 2).onChange(function (value) {
+  outputPass.toneMappingExposure = Math.pow(value, 4.0);
+  render();
+});
 
 setupScene();
 
@@ -224,34 +204,12 @@ function disposeMaterial(obj) {
 }
 
 function render() {
-  switch (params.scene) {
-    case "Scene only":
-      renderer.render(scene, camera);
-      break;
-    case "Glow only":
-      renderBloom(false);
-      break;
-    case "Scene with Glow":
-    default:
-      // render scene with bloom
-      renderBloom(true);
+  scene.traverse(darkenNonBloomed);
+  bloomComposer.render();
+  scene.traverse(restoreMaterial);
 
-      // render the entire scene, then render bloom scene on top
-      finalComposer.render();
-      break;
-  }
-}
-
-function renderBloom(mask) {
-  if (mask === true) {
-    scene.traverse(darkenNonBloomed);
-    bloomComposer.render();
-    scene.traverse(restoreMaterial);
-  } else {
-    camera.layers.set(BLOOM_SCENE);
-    bloomComposer.render();
-    camera.layers.set(ENTIRE_SCENE);
-  }
+  // render the entire scene, then render bloom scene on top
+  finalComposer.render();
 }
 
 function darkenNonBloomed(obj) {

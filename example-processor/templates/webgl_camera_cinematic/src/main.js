@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector2,
   Scene,
   Color,
@@ -19,8 +18,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { CinematicCamera } from "three/addons/cameras/CinematicCamera.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let camera, scene, raycaster, renderer, stats;
 

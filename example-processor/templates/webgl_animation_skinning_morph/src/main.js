@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -22,8 +21,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats, clock, gui, mixer, actions, activeAction, previousAction;
 let camera, scene, renderer, model, face;
@@ -54,7 +51,7 @@ function init() {
 
   // lights
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x444444);
+  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
   hemiLight.position.set(0, 20, 0);
   scene.add(hemiLight);
 
@@ -66,7 +63,7 @@ function init() {
 
   const mesh = new Mesh(
     new PlaneGeometry(2000, 2000),
-    new MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+    new MeshPhongMaterial({ color: 0xcbcbcb, depthWrite: false })
   );
   mesh.rotation.x = -Math.PI / 2;
   scene.add(mesh);

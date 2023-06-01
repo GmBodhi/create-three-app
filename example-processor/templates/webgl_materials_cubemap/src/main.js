@@ -1,10 +1,8 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   CubeTextureLoader,
-  SRGBColorSpace,
   CubeRefractionMapping,
   Scene,
   AmbientLight,
@@ -18,8 +16,6 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container, stats;
 
@@ -55,9 +51,7 @@ function init() {
   ];
 
   const reflectionCube = new CubeTextureLoader().load(urls);
-  reflectionCube.colorSpace = SRGBColorSpace;
   const refractionCube = new CubeTextureLoader().load(urls);
-  refractionCube.colorSpace = SRGBColorSpace;
   refractionCube.mapping = CubeRefractionMapping;
 
   scene = new Scene();
@@ -72,13 +66,13 @@ function init() {
 
   //materials
   const cubeMaterial3 = new MeshLambertMaterial({
-    color: 0xff6600,
+    color: 0xffaa00,
     envMap: reflectionCube,
     combine: MixOperation,
     reflectivity: 0.3,
   });
   const cubeMaterial2 = new MeshLambertMaterial({
-    color: 0xffee00,
+    color: 0xfff700,
     envMap: refractionCube,
     refractionRatio: 0.95,
   });

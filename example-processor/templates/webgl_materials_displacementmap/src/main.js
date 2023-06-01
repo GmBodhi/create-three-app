@@ -1,14 +1,12 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   Scene,
   OrthographicCamera,
   AmbientLight,
   PointLight,
   CubeTextureLoader,
-  SRGBColorSpace,
   TextureLoader,
   MeshStandardMaterial,
   Vector2,
@@ -21,8 +19,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let stats;
 let camera, scene, renderer, controls;
@@ -148,7 +144,7 @@ function init() {
   pointLight.position.z = 2500;
   scene.add(pointLight);
 
-  const pointLight2 = new PointLight(0xff6666, 1);
+  const pointLight2 = new PointLight(0xffaaaa, 1);
   camera.add(pointLight2);
 
   const pointLight3 = new PointLight(0x0000ff, 0.5);
@@ -170,7 +166,6 @@ function init() {
   ];
 
   const reflectionCube = new CubeTextureLoader().load(urls);
-  reflectionCube.colorSpace = SRGBColorSpace;
 
   // textures
 
@@ -184,7 +179,7 @@ function init() {
   // material
 
   material = new MeshStandardMaterial({
-    color: 0x888888,
+    color: 0xc1c1c1,
     roughness: settings.roughness,
     metalness: settings.metalness,
 

@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -26,8 +25,7 @@ import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 import { FocusShader } from "three/addons/shaders/FocusShader.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let camera, scene, renderer, mesh;
 
@@ -113,12 +111,15 @@ function init() {
   effectFocus.uniforms["screenHeight"].value =
     window.innerHeight * window.devicePixelRatio;
 
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+
   composer = new EffectComposer(renderer);
 
   composer.addPass(renderModel);
   composer.addPass(effectBloom);
   composer.addPass(effectFilm);
   composer.addPass(effectFocus);
+  composer.addPass(outputPass);
 
   //stats
   stats = new Stats();

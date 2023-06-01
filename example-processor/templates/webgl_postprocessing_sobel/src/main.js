@@ -57,7 +57,7 @@ function init() {
 
   //
 
-  const ambientLight = new AmbientLight(0xcccccc, 0.4);
+  const ambientLight = new AmbientLight(0xe7e7e7, 0.4);
   scene.add(ambientLight);
 
   const pointLight = new PointLight(0xffffff, 0.8);

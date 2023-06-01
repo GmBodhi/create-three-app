@@ -1,12 +1,10 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
   Fog,
-  Clock,
   HemisphereLight,
   Group,
   SphereGeometry,
@@ -21,14 +19,17 @@ import {
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { CopyShader } from "three/addons/shaders/CopyShader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
-
-let camera, renderer, clock, group, container;
+let camera, renderer, group, container;
 
 let composer1, composer2;
+
+const params = {
+  animate: true,
+};
 
 init();
 
@@ -43,7 +44,7 @@ function init() {
   camera = new PerspectiveCamera(
     45,
     container.offsetWidth / container.offsetHeight,
-    1,
+    10,
     2000
   );
   camera.position.z = 500;
@@ -51,8 +52,6 @@ function init() {
   const scene = new Scene();
   scene.background = new Color(0xffffff);
   scene.fog = new Fog(0xcccccc, 100, 1500);
-
-  clock = new Clock();
 
   //
 
@@ -65,10 +64,15 @@ function init() {
   group = new Group();
 
   const geometry = new SphereGeometry(10, 64, 40);
-  const material = new MeshLambertMaterial({ color: 0xee0808 });
+  const material = new MeshLambertMaterial({
+    color: 0xee0808,
+    polygonOffset: true,
+    polygonOffsetFactor: 1, // positive value pushes polygon further away
+    polygonOffsetUnits: 1,
+  });
   const material2 = new MeshBasicMaterial({ color: 0xffffff, wireframe: true });
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 50; i++) {
     const mesh = new Mesh(geometry, material);
     mesh.position.x = Math.random() * 600 - 300;
     mesh.position.y = Math.random() * 600 - 300;
@@ -103,19 +107,24 @@ function init() {
   });
 
   const renderPass = new RenderPass(scene, camera);
-  const copyPass = new ShaderPass(CopyShader);
+  const outputPass = new ShaderPass(GammaCorrectionShader);
 
   //
 
   composer1 = new EffectComposer(renderer);
   composer1.addPass(renderPass);
-  composer1.addPass(copyPass);
+  composer1.addPass(outputPass);
 
   //
 
   composer2 = new EffectComposer(renderer, renderTarget);
   composer2.addPass(renderPass);
-  composer2.addPass(copyPass);
+  composer2.addPass(outputPass);
+
+  //
+
+  const gui = new GUI();
+  gui.add(params, "animate");
 
   //
 
@@ -138,7 +147,9 @@ function animate() {
 
   const halfWidth = container.offsetWidth / 2;
 
-  group.rotation.y += clock.getDelta() * 0.1;
+  if (params.animate) {
+    group.rotation.y += 0.002;
+  }
 
   renderer.setScissorTest(true);
 

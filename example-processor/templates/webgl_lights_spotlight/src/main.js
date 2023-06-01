@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   PCFSoftShadowMap,
   ACESFilmicToneMapping,
@@ -22,8 +21,6 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let renderer, scene, camera;
 
@@ -62,7 +59,7 @@ function init() {
   controls.target.set(0, 18, 0);
   controls.update();
 
-  const ambient = new HemisphereLight(0xffffff, 0x444444, 0.05);
+  const ambient = new HemisphereLight(0xffffff, 0x8d8d8d, 0.05);
   scene.add(ambient);
 
   const loader = new TextureLoader().setPath("textures/");
@@ -103,7 +100,7 @@ function init() {
   //
 
   const geometry = new PlaneGeometry(1000, 1000);
-  const material = new MeshLambertMaterial({ color: 0x808080 });
+  const material = new MeshLambertMaterial({ color: 0xbcbcbc });
 
   const mesh = new Mesh(geometry, material);
   mesh.position.set(0, -1, 0);

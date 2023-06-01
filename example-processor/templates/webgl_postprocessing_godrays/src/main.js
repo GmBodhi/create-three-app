@@ -12,6 +12,7 @@ import {
   WebGLRenderer,
   OrthographicCamera,
   WebGLRenderTarget,
+  HalfFloatType,
   UniformsUtils,
   ShaderMaterial,
   PlaneGeometry,
@@ -159,7 +160,8 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
 
   postprocessing.rtTextureColors = new WebGLRenderTarget(
     renderTargetWidth,
-    renderTargetHeight
+    renderTargetHeight,
+    { type: HalfFloatType }
   );
 
   // Switching the depth formats to luminance from rgb doesn't seem to work. I didn't
@@ -171,11 +173,13 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
 
   postprocessing.rtTextureDepth = new WebGLRenderTarget(
     renderTargetWidth,
-    renderTargetHeight
+    renderTargetHeight,
+    { type: HalfFloatType }
   );
   postprocessing.rtTextureDepthMask = new WebGLRenderTarget(
     renderTargetWidth,
-    renderTargetHeight
+    renderTargetHeight,
+    { type: HalfFloatType }
   );
 
   // The ping-pong render targets can use an adjusted resolution to minimize cost
@@ -186,11 +190,13 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
     renderTargetHeight * godrayRenderTargetResolutionMultiplier;
   postprocessing.rtTextureGodRays1 = new WebGLRenderTarget(
     adjustedWidth,
-    adjustedHeight
+    adjustedHeight,
+    { type: HalfFloatType }
   );
   postprocessing.rtTextureGodRays2 = new WebGLRenderTarget(
     adjustedWidth,
-    adjustedHeight
+    adjustedHeight,
+    { type: HalfFloatType }
   );
 
   // god-ray shaders

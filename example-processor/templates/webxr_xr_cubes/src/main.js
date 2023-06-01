@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   Matrix4,
   Scene,
@@ -29,8 +28,6 @@ import {
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 const clock = new Clock();
 
@@ -64,11 +61,11 @@ function init() {
 
   room = new LineSegments(
     new BoxLineGeometry(6, 6, 6, 10, 10, 10).translate(0, 3, 0),
-    new LineBasicMaterial({ color: 0x808080 })
+    new LineBasicMaterial({ color: 0xbcbcbc })
   );
   scene.add(room);
 
-  scene.add(new HemisphereLight(0x606060, 0x404040));
+  scene.add(new HemisphereLight(0xa5a5a5, 0x898989));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(1, 1, 1).normalize();

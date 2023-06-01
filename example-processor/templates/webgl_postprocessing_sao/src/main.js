@@ -18,6 +18,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { SAOPass } from "three/addons/postprocessing/SAOPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let container, stats;
 let camera, scene, renderer;
@@ -49,19 +51,19 @@ function init() {
   group = new Object3D();
   scene.add(group);
 
-  const light = new PointLight(0xddffdd, 0.8);
+  const light = new PointLight(0xefffef, 0.8);
   light.position.z = 70;
   light.position.y = -70;
   light.position.x = -70;
   scene.add(light);
 
-  const light2 = new PointLight(0xffdddd, 0.8);
+  const light2 = new PointLight(0xffefef, 0.8);
   light2.position.z = 70;
   light2.position.x = -70;
   light2.position.y = 70;
   scene.add(light2);
 
-  const light3 = new PointLight(0xddddff, 0.8);
+  const light3 = new PointLight(0xefefff, 0.8);
   light3.position.z = 70;
   light3.position.x = 70;
   light3.position.y = -70;
@@ -98,6 +100,8 @@ function init() {
   composer.addPass(renderPass);
   saoPass = new SAOPass(scene, camera, false, true);
   composer.addPass(saoPass);
+  const outputPass = new ShaderPass(GammaCorrectionShader);
+  composer.addPass(outputPass);
 
   // Init gui
   const gui = new GUI();

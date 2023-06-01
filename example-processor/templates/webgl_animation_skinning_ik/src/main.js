@@ -45,7 +45,7 @@ async function init() {
 
   scene = new Scene();
   scene.fog = new FogExp2(0xffffff, 0.17);
-  scene.background = new Color(0xdddddd);
+  scene.background = new Color(0xffffff);
 
   camera = new PerspectiveCamera(
     55,

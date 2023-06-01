@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   Color,
   PerspectiveCamera,
@@ -9,12 +8,12 @@ import {
   Sprite,
   SpriteMaterial,
   CanvasTexture,
+  SRGBColorSpace,
   Mesh,
   MeshLambertMaterial,
   DoubleSide,
   PointLight,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   BufferGeometryLoader,
   Float32BufferAttribute,
 } from "three";
@@ -23,8 +22,6 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Lut } from "three/addons/math/Lut.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container;
 
@@ -62,6 +59,7 @@ function init() {
       map: new CanvasTexture(lut.createCanvas()),
     })
   );
+  sprite.material.map.colorSpace = SRGBColorSpace;
   sprite.scale.x = 0.125;
   uiScene.add(sprite);
 
@@ -84,7 +82,6 @@ function init() {
   perpCamera.add(pointLight);
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
@@ -158,17 +155,14 @@ function updateColors() {
   const geometry = mesh.geometry;
   const pressures = geometry.attributes.pressure;
   const colors = geometry.attributes.color;
+  const color = new Color();
 
   for (let i = 0; i < pressures.array.length; i++) {
     const colorValue = pressures.array[i];
 
-    const color = lut.getColor(colorValue);
+    color.copy(lut.getColor(colorValue)).convertSRGBToLinear();
 
-    if (color === undefined) {
-      console.log("Unable to determine color for value:", colorValue);
-    } else {
-      colors.setXYZ(i, color.r, color.g, color.b);
-    }
+    colors.setXYZ(i, color.r, color.g, color.b);
   }
 
   colors.needsUpdate = true;

@@ -19,6 +19,7 @@ import {
   DirectionalLight,
   OrthographicCamera,
   WebGLRenderTarget,
+  HalfFloatType,
   UniformsUtils,
 } from "three";
 
@@ -188,7 +189,7 @@ function init() {
 
   // lights
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x666666));
 
   const directionalLight1 = new DirectionalLight(0xffffff, 2);
   directionalLight1.position.set(2, 1.2, 10).normalize();
@@ -330,11 +331,13 @@ function initPostprocessing() {
 
   postprocessing.rtTextureDepth = new WebGLRenderTarget(
     window.innerWidth,
-    window.innerHeight
+    window.innerHeight,
+    { type: HalfFloatType }
   );
   postprocessing.rtTextureColor = new WebGLRenderTarget(
     window.innerWidth,
-    window.innerHeight
+    window.innerHeight,
+    { type: HalfFloatType }
   );
 
   const bokeh_shader = BokehShader;

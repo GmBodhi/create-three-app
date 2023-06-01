@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Group,
@@ -24,8 +23,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let group;
 let container, stats;
@@ -97,7 +94,7 @@ function init() {
   scene.add(group);
 
   const helper = new BoxHelper(new Mesh(new BoxGeometry(r, r, r)));
-  helper.material.color.setHex(0x101010);
+  helper.material.color.setHex(0x474747);
   helper.material.blending = AdditiveBlending;
   helper.material.transparent = true;
   group.add(helper);

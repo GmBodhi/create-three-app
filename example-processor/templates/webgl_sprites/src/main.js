@@ -1,20 +1,17 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   OrthographicCamera,
   Scene,
   Fog,
   TextureLoader,
+  SRGBColorSpace,
   Group,
   SpriteMaterial,
   Sprite,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer;
 let cameraOrtho, sceneOrtho;
@@ -61,6 +58,9 @@ function init() {
   const mapB = textureLoader.load("textures/sprite1.png");
   mapC = textureLoader.load("textures/sprite2.png");
 
+  mapB.colorSpace = SRGBColorSpace;
+  mapC.colorSpace = SRGBColorSpace;
+
   group = new Group();
 
   const materialC = new SpriteMaterial({
@@ -106,7 +106,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.autoClear = false; // To allow render overlay on top of sprited sphere
 
   document.body.appendChild(renderer.domElement);
@@ -117,6 +116,8 @@ function init() {
 }
 
 function createHUDSprites(texture) {
+  texture.colorSpace = SRGBColorSpace;
+
   const material = new SpriteMaterial({ map: texture });
 
   const width = material.map.image.width;

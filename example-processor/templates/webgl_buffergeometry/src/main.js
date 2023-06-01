@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -18,8 +17,6 @@ import {
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats;
 
@@ -49,7 +46,7 @@ function init() {
 
   //
 
-  scene.add(new AmbientLight(0x444444));
+  scene.add(new AmbientLight(0x8d8d8d));
 
   const light1 = new DirectionalLight(0xffffff, 0.5);
   light1.position.set(1, 1, 1);
@@ -161,7 +158,7 @@ function init() {
   geometry.computeBoundingSphere();
 
   const material = new MeshPhongMaterial({
-    color: 0xaaaaaa,
+    color: 0xd5d5d5,
     specular: 0xffffff,
     shininess: 250,
     side: DoubleSide,

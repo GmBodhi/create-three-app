@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -30,8 +29,6 @@ import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShade
 import { ReflectorForSSRPass } from "three/addons/objects/ReflectorForSSRPass.js";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 const params = {
   enableSSR: true,
@@ -79,7 +76,7 @@ function init() {
   // Ground
   const plane = new Mesh(
     new PlaneGeometry(8, 8),
-    new MeshPhongMaterial({ color: 0x999999, specular: 0x101010 })
+    new MeshPhongMaterial({ color: 0xcbcbcb })
   );
   plane.rotation.x = -Math.PI / 2;
   plane.position.y = -0.0001;
@@ -87,7 +84,7 @@ function init() {
   scene.add(plane);
 
   // Lights
-  const hemiLight = new HemisphereLight(0x443333, 0x111122);
+  const hemiLight = new HemisphereLight(0x8d7c7c, 0x494966);
   scene.add(hemiLight);
 
   const spotLight = new SpotLight();
@@ -100,7 +97,7 @@ function init() {
   dracoLoader.load("models/draco/bunny.drc", function (geometry) {
     geometry.computeVertexNormals();
 
-    const material = new MeshStandardMaterial({ color: 0x606060 });
+    const material = new MeshStandardMaterial({ color: 0xa5a5a5 });
     const mesh = new Mesh(geometry, material);
     mesh.position.y = -0.0365;
     scene.add(mesh);

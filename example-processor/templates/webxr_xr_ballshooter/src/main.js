@@ -1,9 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Vector3,
-  Clock,
   Scene,
   Color,
   PerspectiveCamera,
@@ -11,9 +9,6 @@ import {
   LineBasicMaterial,
   HemisphereLight,
   DirectionalLight,
-  IcosahedronGeometry,
-  Mesh,
-  MeshLambertMaterial,
   WebGLRenderer,
   BufferGeometry,
   Float32BufferAttribute,
@@ -21,30 +16,35 @@ import {
   Line,
   RingGeometry,
   MeshBasicMaterial,
-  MathUtils,
+  Mesh,
+  BoxGeometry,
+  MeshNormalMaterial,
+  IcosahedronGeometry,
+  MeshLambertMaterial,
+  InstancedMesh,
+  DynamicDrawUsage,
+  Matrix4,
 } from "three";
 
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+import { RapierPhysics } from "three/addons/physics/RapierPhysics.js";
 
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, renderer;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
 
-let room;
+let room, spheres;
+let physics,
+  velocity = new Vector3();
 
 let count = 0;
-const radius = 0.08;
-let normal = new Vector3();
-const relativeVelocity = new Vector3();
-
-const clock = new Clock();
 
 init();
-animate();
+await initPhysics();
 
 function init() {
   scene = new Scene();
@@ -54,7 +54,7 @@ function init() {
     50,
     window.innerWidth / window.innerHeight,
     0.1,
-    10
+    50
   );
   camera.position.set(0, 1.6, 3);
 
@@ -65,41 +65,27 @@ function init() {
   room.geometry.translate(0, 3, 0);
   scene.add(room);
 
-  scene.add(new HemisphereLight(0x606060, 0x404040));
+  scene.add(new HemisphereLight(0xbbbbbb, 0x888888));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(1, 1, 1).normalize();
   scene.add(light);
-
-  const geometry = new IcosahedronGeometry(radius, 3);
-
-  for (let i = 0; i < 200; i++) {
-    const object = new Mesh(
-      geometry,
-      new MeshLambertMaterial({ color: Math.random() * 0xffffff })
-    );
-
-    object.position.x = Math.random() * 4 - 2;
-    object.position.y = Math.random() * 4;
-    object.position.z = Math.random() * 4 - 2;
-
-    object.userData.velocity = new Vector3();
-    object.userData.velocity.x = Math.random() * 0.01 - 0.005;
-    object.userData.velocity.y = Math.random() * 0.01 - 0.005;
-    object.userData.velocity.z = Math.random() * 0.01 - 0.005;
-
-    room.add(object);
-  }
 
   //
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(render);
   renderer.xr.enabled = true;
   document.body.appendChild(renderer.domElement);
 
   //
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.maxDistance = 10;
+  controls.target.y = 1.6;
+  controls.update();
 
   document.body.appendChild(XRButton.createButton(renderer));
 
@@ -195,91 +181,87 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function handleController(controller) {
-  if (controller.userData.isSelecting) {
-    const object = room.children[count++];
+async function initPhysics() {
+  physics = await RapierPhysics();
 
-    object.position.copy(controller.position);
-    object.userData.velocity.x = (Math.random() - 0.5) * 3;
-    object.userData.velocity.y = (Math.random() - 0.5) * 3;
-    object.userData.velocity.z = Math.random() - 9;
-    object.userData.velocity.applyQuaternion(controller.quaternion);
+  {
+    // Floor
 
-    if (count === room.children.length) count = 0;
+    const geometry = new BoxGeometry(6, 2, 6);
+    const material = new MeshNormalMaterial();
+
+    const floor = new Mesh(geometry, material);
+    floor.position.y = -1;
+    physics.addMesh(floor);
+
+    // Walls
+
+    const wallPX = new Mesh(geometry, material);
+    wallPX.position.set(4, 3, 0);
+    wallPX.rotation.z = Math.PI / 2;
+    physics.addMesh(wallPX);
+
+    const wallNX = new Mesh(geometry, material);
+    wallNX.position.set(-4, 3, 0);
+    wallNX.rotation.z = Math.PI / 2;
+    physics.addMesh(wallNX);
+
+    const wallPZ = new Mesh(geometry, material);
+    wallPZ.position.set(0, 3, 4);
+    wallPZ.rotation.x = Math.PI / 2;
+    physics.addMesh(wallPZ);
+
+    const wallNZ = new Mesh(geometry, material);
+    wallNZ.position.set(0, 3, -4);
+    wallNZ.rotation.x = Math.PI / 2;
+    physics.addMesh(wallNZ);
   }
+
+  // Spheres
+
+  const geometry = new IcosahedronGeometry(0.08, 3);
+  const material = new MeshLambertMaterial();
+
+  spheres = new InstancedMesh(geometry, material, 800);
+  spheres.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
+  scene.add(spheres);
+
+  const matrix = new Matrix4();
+  const color = new Color();
+
+  for (let i = 0; i < spheres.count; i++) {
+    const x = Math.random() * 4 - 2;
+    const y = Math.random() * 4;
+    const z = Math.random() * 4 - 2;
+
+    matrix.setPosition(x, y, z);
+    spheres.setMatrixAt(i, matrix);
+    spheres.setColorAt(i, color.setHex(0xffffff * Math.random()));
+  }
+
+  physics.addMesh(spheres, 1, 1.1);
 }
 
 //
 
-function animate() {
-  renderer.setAnimationLoop(render);
+function handleController(controller) {
+  if (controller.userData.isSelecting) {
+    physics.setMeshPosition(spheres, controller.position, count);
+
+    velocity.x = (Math.random() - 0.5) * 2;
+    velocity.y = (Math.random() - 0.5) * 2;
+    velocity.z = Math.random() - 9;
+    velocity.applyQuaternion(controller.quaternion);
+
+    physics.setMeshVelocity(spheres, velocity, count);
+
+    if (++count === spheres.count) count = 0;
+  }
 }
 
 function render() {
   handleController(controller1);
   handleController(controller2);
-
-  //
-
-  const delta = clock.getDelta() * 0.8; // slow down simulation
-
-  const range = 3 - radius;
-
-  for (let i = 0; i < room.children.length; i++) {
-    const object = room.children[i];
-
-    object.position.x += object.userData.velocity.x * delta;
-    object.position.y += object.userData.velocity.y * delta;
-    object.position.z += object.userData.velocity.z * delta;
-
-    // keep objects inside room
-
-    if (object.position.x < -range || object.position.x > range) {
-      object.position.x = MathUtils.clamp(object.position.x, -range, range);
-      object.userData.velocity.x = -object.userData.velocity.x;
-    }
-
-    if (object.position.y < radius || object.position.y > 6) {
-      object.position.y = Math.max(object.position.y, radius);
-
-      object.userData.velocity.x *= 0.98;
-      object.userData.velocity.y = -object.userData.velocity.y * 0.8;
-      object.userData.velocity.z *= 0.98;
-    }
-
-    if (object.position.z < -range || object.position.z > range) {
-      object.position.z = MathUtils.clamp(object.position.z, -range, range);
-      object.userData.velocity.z = -object.userData.velocity.z;
-    }
-
-    for (let j = i + 1; j < room.children.length; j++) {
-      const object2 = room.children[j];
-
-      normal.copy(object.position).sub(object2.position);
-
-      const distance = normal.length();
-
-      if (distance < 2 * radius) {
-        normal.multiplyScalar(0.5 * distance - radius);
-
-        object.position.sub(normal);
-        object2.position.add(normal);
-
-        normal.normalize();
-
-        relativeVelocity
-          .copy(object.userData.velocity)
-          .sub(object2.userData.velocity);
-
-        normal = normal.multiplyScalar(relativeVelocity.dot(normal));
-
-        object.userData.velocity.sub(normal);
-        object2.userData.velocity.add(normal);
-      }
-    }
-
-    object.userData.velocity.y -= 9.8 * delta;
-  }
 
   renderer.render(scene, camera);
 }

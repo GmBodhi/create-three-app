@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   BoxGeometry,
   MeshPhongMaterial,
@@ -28,8 +27,6 @@ import {
   TagComponent,
   Types,
 } from "three/addons/libs/ecsy.module.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 class Object3D extends Component {}
 
@@ -186,10 +183,9 @@ class CalibrationSystem extends System {
       if (this.renderer.xr.getSession()) {
         const offset = entity.getComponent(OffsetFromCamera);
         const object = entity.getComponent(Object3D).object;
-        const xrCamera = this.renderer.xr.getCamera();
-        object.position.x = xrCamera.position.x + offset.x;
-        object.position.y = xrCamera.position.y + offset.y;
-        object.position.z = xrCamera.position.z + offset.z;
+        object.position.x = camera.position.x + offset.x;
+        object.position.y = camera.position.y + offset.y;
+        object.position.z = camera.position.z + offset.z;
         entity.removeComponent(NeedCalibration);
       }
     });
@@ -233,7 +229,7 @@ function init() {
   );
   camera.position.set(0, 1.2, 0.3);
 
-  scene.add(new HemisphereLight(0x808080, 0x606060));
+  scene.add(new HemisphereLight(0xcccccc, 0x999999));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(0, 6, 0);
@@ -250,8 +246,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
-  renderer.xr.cameraAutoUpdate = false;
-
+  renderer.xr.setUserCamera(camera);
   container.appendChild(renderer.domElement);
 
   document.body.appendChild(VRButton.createButton(renderer));
@@ -442,7 +437,6 @@ function animate() {
 function render() {
   const delta = clock.getDelta();
   const elapsedTime = clock.elapsedTime;
-  renderer.xr.updateCamera(camera);
   world.execute(delta, elapsedTime);
   renderer.render(scene, camera);
 }

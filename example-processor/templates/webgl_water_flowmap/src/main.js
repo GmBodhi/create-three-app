@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   PerspectiveCamera,
   PlaneGeometry,
@@ -9,15 +8,13 @@ import {
   Mesh,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Water } from "three/addons/objects/Water2.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let scene, camera, renderer, water;
 
@@ -43,7 +40,7 @@ function init() {
   // ground
 
   const groundGeometry = new PlaneGeometry(20, 20, 10, 10);
-  const groundMaterial = new MeshBasicMaterial({ color: 0xcccccc });
+  const groundMaterial = new MeshBasicMaterial({ color: 0xe7e7e7 });
   const ground = new Mesh(groundGeometry, groundMaterial);
   ground.rotation.x = Math.PI * -0.5;
   scene.add(ground);
@@ -56,6 +53,7 @@ function init() {
       map.wrapT = RepeatWrapping;
       map.anisotropy = 16;
       map.repeat.set(4, 4);
+      map.colorSpace = SRGBColorSpace;
       groundMaterial.map = map;
       groundMaterial.needsUpdate = true;
     }
@@ -92,7 +90,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   //

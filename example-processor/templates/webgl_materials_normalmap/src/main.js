@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -29,8 +28,6 @@ import { BleachBypassShader } from "three/addons/shaders/BleachBypassShader.js";
 import { ColorCorrectionShader } from "three/addons/shaders/ColorCorrectionShader.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
 import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let container, stats, loader;
 
@@ -67,11 +64,11 @@ function init() {
   camera.position.z = 1200;
 
   scene = new Scene();
-  scene.background = new Color(0x111111);
+  scene.background = new Color(0x494949);
 
   // LIGHTS
 
-  ambientLight = new AmbientLight(0x444444);
+  ambientLight = new AmbientLight(0x8d8d8d);
   scene.add(ambientLight);
 
   pointLight = new PointLight(0xffffff, 2, 1000);
@@ -100,7 +97,7 @@ function init() {
   );
 
   const material = new MeshPhongMaterial({
-    color: 0xdddddd,
+    color: 0xefefef,
     specular: 0x222222,
     shininess: 35,
     map: diffuseMap,

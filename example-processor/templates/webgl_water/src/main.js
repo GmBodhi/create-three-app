@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Scene,
   PerspectiveCamera,
   Clock,
@@ -12,19 +11,17 @@ import {
   MeshStandardMaterial,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   Vector2,
   CubeTextureLoader,
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Water } from "three/addons/objects/Water2.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let scene, camera, clock, renderer, water;
 
@@ -87,6 +84,7 @@ function init() {
     map.wrapT = RepeatWrapping;
     map.anisotropy = 16;
     map.repeat.set(4, 4);
+    map.colorSpace = SRGBColorSpace;
     groundMaterial.map = map;
     groundMaterial.needsUpdate = true;
   });
@@ -125,7 +123,7 @@ function init() {
 
   // light
 
-  const ambientLight = new AmbientLight(0xcccccc, 0.4);
+  const ambientLight = new AmbientLight(0xe7e7e7, 0.4);
   scene.add(ambientLight);
 
   const directionalLight = new DirectionalLight(0xffffff, 0.6);
@@ -137,7 +135,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   // gui

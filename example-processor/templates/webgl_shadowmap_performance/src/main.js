@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -26,8 +25,6 @@ import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.j
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 const SHADOW_MAP_WIDTH = 2048,
   SHADOW_MAP_HEIGHT = 1024;
@@ -71,7 +68,7 @@ function init() {
 
   // LIGHTS
 
-  const ambient = new AmbientLight(0x444444);
+  const ambient = new AmbientLight(0x8d8d8d);
   scene.add(ambient);
 
   const light = new SpotLight(0xffffff, 1, 0, Math.PI / 5, 0.3);
@@ -141,7 +138,7 @@ function createScene() {
   // GROUND
 
   const geometry = new PlaneGeometry(100, 100);
-  const planeMaterial = new MeshPhongMaterial({ color: 0xffb851 });
+  const planeMaterial = new MeshPhongMaterial({ color: 0xffdd99 });
 
   const ground = new Mesh(geometry, planeMaterial);
 

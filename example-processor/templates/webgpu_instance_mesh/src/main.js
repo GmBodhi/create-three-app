@@ -8,6 +8,7 @@ import {
   Color,
   BufferGeometryLoader,
   InstancedMesh,
+  DynamicDrawUsage,
 } from "three";
 import { mix, range, normalWorld, oscSine, timerLocal } from "three/nodes";
 
@@ -57,6 +58,8 @@ function init() {
     geometry.scale(0.5, 0.5, 0.5);
 
     mesh = new InstancedMesh(geometry, material, count);
+    mesh.instanceMatrix.setUsage(DynamicDrawUsage);
+
     scene.add(mesh);
 
     //

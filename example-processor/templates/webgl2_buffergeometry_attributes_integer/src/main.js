@@ -12,7 +12,8 @@ import {
   Fog,
   BufferGeometry,
   Float32BufferAttribute,
-  Int32BufferAttribute,
+  Int16BufferAttribute,
+  IntType,
   TextureLoader,
   ShaderMaterial,
   DoubleSide,
@@ -99,8 +100,9 @@ function init() {
   geometry.setAttribute("uv", new Float32BufferAttribute(uvs, 2));
   geometry.setAttribute(
     "textureIndex",
-    new Int32BufferAttribute(textureIndices, 1)
+    new Int16BufferAttribute(textureIndices, 1)
   );
+  geometry.attributes.textureIndex.gpuType = IntType;
 
   geometry.computeBoundingSphere();
 

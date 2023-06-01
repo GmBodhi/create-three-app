@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   Clock,
   PerspectiveCamera,
@@ -22,8 +21,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { HalftonePass } from "three/addons/postprocessing/HalftonePass.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
 
 let renderer, clock, camera, stats;
 

@@ -7,6 +7,7 @@ import {
   TorusKnotGeometry,
   Mesh,
   DepthTexture,
+  FloatType,
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
@@ -14,13 +15,13 @@ import { texture, MeshBasicNodeMaterial } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import WebGPUTextureRenderer from "three/addons/renderers/webgpu/WebGPUTextureRenderer.js";
+import RenderTarget from "three/addons/renderers/common/RenderTarget.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, controls, renderer;
 
-let cameraFX, sceneFX, textureRenderer;
+let cameraFX, sceneFX, renderTarget;
 
 const dpr = window.devicePixelRatio;
 
@@ -72,10 +73,13 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   const depthTexture = new DepthTexture();
+  depthTexture.type = FloatType;
 
-  textureRenderer = new WebGPUTextureRenderer(renderer);
-  textureRenderer.renderTarget.depthTexture = depthTexture;
-  textureRenderer.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
+  renderTarget = new RenderTarget(
+    window.innerWidth * dpr,
+    window.innerHeight * dpr
+  );
+  renderTarget.depthTexture = depthTexture;
 
   window.addEventListener("resize", onWindowResize);
 
@@ -105,10 +109,13 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-  textureRenderer.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
+  renderTarget.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
 }
 
 function animate() {
-  textureRenderer.render(scene, camera);
+  renderer.setRenderTarget(renderTarget);
+  renderer.render(scene, camera);
+
+  renderer.setRenderTarget(null);
   renderer.render(sceneFX, cameraFX);
 }

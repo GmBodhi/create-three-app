@@ -19,7 +19,6 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 let camera, scene, renderer, controls, clock, mixer;
 
 init();
-animate();
 
 function init() {
   clock = new Clock();
@@ -43,6 +42,8 @@ function init() {
       texture.mapping = EquirectangularReflectionMapping;
 
       scene.background = texture;
+      scene.backgroundBlurriness = 0.35;
+
       scene.environment = texture;
 
       // model
@@ -60,6 +61,7 @@ function init() {
     });
 
   renderer = new WebGLRenderer({ antialias: true });
+  renderer.setAnimationLoop(render);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
@@ -67,6 +69,8 @@ function init() {
   container.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = -0.75;
   controls.enableDamping = true;
   controls.minDistance = 0.5;
   controls.maxDistance = 1;
@@ -85,16 +89,10 @@ function onWindowResize() {
 
 //
 
-function animate() {
-  requestAnimationFrame(animate);
-
+function render() {
   if (mixer) mixer.update(clock.getDelta());
 
-  controls.update(); // required if damping enabled
+  controls.update();
 
-  render();
-}
-
-function render() {
   renderer.render(scene, camera);
 }

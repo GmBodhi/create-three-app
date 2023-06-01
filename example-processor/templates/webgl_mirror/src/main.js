@@ -1,9 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
-  LinearSRGBColorSpace,
   Scene,
   PerspectiveCamera,
   PlaneGeometry,
@@ -19,8 +17,6 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Reflector } from "three/addons/objects/Reflector.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let camera, scene, renderer;
 
@@ -38,7 +34,6 @@ function init() {
 
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -150,7 +145,7 @@ function init() {
 
   const planeFront = new Mesh(
     planeGeo,
-    new MeshPhongMaterial({ color: 0xbbbbfe })
+    new MeshPhongMaterial({ color: 0x7f7fff })
   );
   planeFront.position.z = 50;
   planeFront.position.y = 50;

@@ -6,6 +6,7 @@ import {
   DirectionalLight,
   WebGLRenderer,
   VideoTexture,
+  SRGBColorSpace,
   BoxGeometry,
   MeshLambertMaterial,
   Mesh,
@@ -15,7 +16,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
-import { CopyShader } from "three/addons/shaders/CopyShader.js";
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let container;
 
@@ -77,6 +78,7 @@ function init() {
   });
 
   texture = new VideoTexture(video);
+  texture.colorSpace = SRGBColorSpace;
 
   //
 
@@ -135,15 +137,15 @@ function init() {
 
   // postprocessing
 
-  const renderModel = new RenderPass(scene, camera);
-  const effectBloom = new BloomPass(1.3);
-  const effectCopy = new ShaderPass(CopyShader);
+  const renderPass = new RenderPass(scene, camera);
+  const bloomPass = new BloomPass(1.3);
+  const outputPass = new ShaderPass(GammaCorrectionShader);
 
   composer = new EffectComposer(renderer);
 
-  composer.addPass(renderModel);
-  composer.addPass(effectBloom);
-  composer.addPass(effectCopy);
+  composer.addPass(renderPass);
+  composer.addPass(bloomPass);
+  composer.addPass(outputPass);
 
   //
 

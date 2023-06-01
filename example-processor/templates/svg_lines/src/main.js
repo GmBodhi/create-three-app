@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  ColorManagement,
   PerspectiveCamera,
   Scene,
   Color,
@@ -12,6 +13,8 @@ import {
 } from "three";
 
 import { SVGRenderer } from "three/addons/renderers/SVGRenderer.js";
+
+ColorManagement.enabled = false;
 
 let camera, scene, renderer;
 

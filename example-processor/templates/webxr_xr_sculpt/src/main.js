@@ -11,6 +11,7 @@ import {
   Mesh,
   IcosahedronGeometry,
   Group,
+  CubeTextureLoader,
   MeshStandardMaterial,
   Vector3,
 } from "three";
@@ -198,6 +199,8 @@ function updateBlob() {
       point.subtract
     );
   }
+
+  blob.update();
 }
 
 function render() {

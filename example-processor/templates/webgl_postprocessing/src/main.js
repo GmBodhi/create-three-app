@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -20,8 +19,7 @@ import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
 import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
 import { DotScreenShader } from "three/addons/shaders/DotScreenShader.js";
-
-ColorManagement.enabled = false; // TODO: Consider enabling color management.
+import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 
 let camera, renderer, composer;
 let object;
@@ -68,7 +66,7 @@ function init() {
     object.add(mesh);
   }
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x666666));
 
   const light = new DirectionalLight(0xffffff);
   light.position.set(1, 1, 1);
@@ -86,6 +84,9 @@ function init() {
   const effect2 = new ShaderPass(RGBShiftShader);
   effect2.uniforms["amount"].value = 0.0015;
   composer.addPass(effect2);
+
+  const effect3 = new ShaderPass(GammaCorrectionShader);
+  composer.addPass(effect3);
 
   //
 

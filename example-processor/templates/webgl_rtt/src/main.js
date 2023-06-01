@@ -7,7 +7,6 @@ import vertexShader_ from "./shaders/vertexShader.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  ColorManagement,
   PerspectiveCamera,
   OrthographicCamera,
   Scene,
@@ -21,12 +20,9 @@ import {
   SphereGeometry,
   MeshBasicMaterial,
   WebGLRenderer,
-  LinearSRGBColorSpace,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
-
-ColorManagement.enabled = false; // TODO: Confirm correct color management.
 
 let container, stats;
 
@@ -76,7 +72,7 @@ function init() {
   light.position.set(0, 0, 1).normalize();
   sceneRTT.add(light);
 
-  light = new DirectionalLight(0xffaaaa, 1.5);
+  light = new DirectionalLight(0xffd5d5, 1.5);
   light.position.set(0, 0, -1).normalize();
   sceneRTT.add(light);
 
@@ -105,12 +101,12 @@ function init() {
   const torusGeometry = new TorusGeometry(100, 25, 15, 30);
 
   const mat1 = new MeshPhongMaterial({
-    color: 0x555555,
+    color: 0x9c9c9c,
     specular: 0xffaa00,
     shininess: 5,
   });
   const mat2 = new MeshPhongMaterial({
-    color: 0x550000,
+    color: 0x9c0000,
     specular: 0xff2200,
     shininess: 5,
   });
@@ -151,7 +147,6 @@ function init() {
   }
 
   renderer = new WebGLRenderer();
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.autoClear = false;

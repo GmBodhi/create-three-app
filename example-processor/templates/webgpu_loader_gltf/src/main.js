@@ -4,6 +4,7 @@ import {
   PerspectiveCamera,
   Scene,
   EquirectangularReflectionMapping,
+  LinearMipmapLinearFilter,
   ACESFilmicToneMapping,
 } from "three";
 
@@ -44,6 +45,8 @@ function init() {
     .setPath("textures/equirectangular/")
     .load("royal_esplanade_1k.hdr", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
+      //texture.minFilter = LinearMipmapLinearFilter;
+      //texture.generateMipmaps = true;
 
       scene.background = texture;
       scene.environment = texture;
