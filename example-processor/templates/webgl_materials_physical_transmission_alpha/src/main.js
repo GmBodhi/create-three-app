@@ -48,7 +48,7 @@ const hdrEquirect = new RGBELoader()
             mesh = child;
             material = mesh.material;
 
-            let color = new Color();
+            const color = new Color();
 
             params.color = color.copy(mesh.material.color).getHex();
             params.roughness = mesh.material.roughness;
@@ -129,10 +129,12 @@ function init() {
   gui.add(params, "opacity", 0, 1, 0.01).onChange(function () {
     material.opacity = params.opacity;
     const transparent = params.opacity < 1;
+
     if (transparent !== material.transparent) {
       material.transparent = transparent;
       material.needsUpdate = true;
     }
+
     render();
   });
 
