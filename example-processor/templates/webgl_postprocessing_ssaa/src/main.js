@@ -29,7 +29,6 @@ let gui, stats;
 
 const params = {
   sampleLevel: 4,
-  unbiased: true,
   camera: "perspective",
   clearColor: "black",
   clearAlpha: 1.0,
@@ -47,7 +46,6 @@ function clearGui() {
 
   gui = new GUI();
 
-  gui.add(params, "unbiased");
   gui.add(params, "sampleLevel", {
     "Level 0: 1 Sample": 0,
     "Level 1: 2 Samples": 1,
@@ -218,7 +216,6 @@ function animate() {
 
   ssaaRenderPassP.sampleLevel = ssaaRenderPassO.sampleLevel =
     params.sampleLevel;
-  ssaaRenderPassP.unbiased = ssaaRenderPassO.unbiased = params.unbiased;
 
   ssaaRenderPassP.enabled = params.camera === "perspective";
   ssaaRenderPassO.enabled = params.camera === "orthographic";
