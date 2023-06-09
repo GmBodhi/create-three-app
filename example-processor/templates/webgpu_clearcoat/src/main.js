@@ -9,23 +9,16 @@ import {
   SRGBColorSpace,
   RepeatWrapping,
   CanvasTexture,
+  MeshPhysicalMaterial,
+  Vector2,
   Mesh,
   MeshBasicMaterial,
   PointLight,
-  WebGLRenderer,
   ACESFilmicToneMapping,
 } from "three";
-import {
-  color,
-  float,
-  vec2,
-  texture,
-  normalMap,
-  uv,
-  MeshPhysicalNodeMaterial,
-} from "three/nodes";
 
-import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -45,6 +38,12 @@ init();
 animate();
 
 function init() {
+  if (WebGPU.isAvailable() === false) {
+    document.body.appendChild(WebGPU.getErrorMessage());
+
+    throw new Error("No WebGPU support");
+  }
+
   container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -65,7 +64,7 @@ function init() {
     .setPath("textures/cube/pisaHDR/")
     .load(
       ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"],
-      function (hdrTexture) {
+      function (texture) {
         const geometry = new SphereGeometry(0.8, 64, 32);
 
         const textureLoader = new TextureLoader();
@@ -74,12 +73,16 @@ function init() {
         diffuse.colorSpace = SRGBColorSpace;
         diffuse.wrapS = RepeatWrapping;
         diffuse.wrapT = RepeatWrapping;
+        diffuse.repeat.x = 10;
+        diffuse.repeat.y = 10;
 
-        const normalMap1 = textureLoader.load(
+        const normalMap = textureLoader.load(
           "textures/carbon/Carbon_Normal.png"
         );
-        normalMap1.wrapS = RepeatWrapping;
-        normalMap1.wrapT = RepeatWrapping;
+        normalMap.wrapS = RepeatWrapping;
+        normalMap.wrapT = RepeatWrapping;
+        normalMap.repeat.x = 10;
+        normalMap.repeat.y = 10;
 
         const normalMap2 = textureLoader.load(
           "textures/water/Water_1_M_Normal.jpg"
@@ -88,6 +91,8 @@ function init() {
         const normalMap3 = new CanvasTexture(new FlakesTexture());
         normalMap3.wrapS = RepeatWrapping;
         normalMap3.wrapT = RepeatWrapping;
+        normalMap3.repeat.x = 10;
+        normalMap3.repeat.y = 6;
         normalMap3.anisotropy = 16;
 
         const normalMap4 = textureLoader.load("textures/golfball.jpg");
@@ -98,20 +103,15 @@ function init() {
 
         // car paint
 
-        const carPaintUV = uv().mul(vec2(10, 6));
-        const carPaintNormalScale = vec2(0.15);
-
-        let material = new MeshPhysicalNodeMaterial();
-        material.clearcoatNode = float(1);
-        material.clearcoatRoughnessNode = float(0.1);
-        material.metalnessNode = float(0.9);
-        material.roughnessNode = float(0.5);
-        material.colorNode = color(0x0000ff);
-        material.normalNode = normalMap(
-          texture(normalMap3, carPaintUV),
-          carPaintNormalScale
-        );
-
+        let material = new MeshPhysicalMaterial({
+          clearcoat: 1.0,
+          clearcoatRoughness: 0.1,
+          metalness: 0.9,
+          roughness: 0.5,
+          color: 0x0000ff,
+          normalMap: normalMap3,
+          normalScale: new Vector2(0.15, 0.15),
+        });
         let mesh = new Mesh(geometry, material);
         mesh.position.x = -1;
         mesh.position.y = 1;
@@ -119,15 +119,13 @@ function init() {
 
         // fibers
 
-        const fibersUV = uv().mul(10);
-
-        material = new MeshPhysicalNodeMaterial();
-        material.roughnessNode = float(0.5);
-        material.clearcoatNode = float(1);
-        material.clearcoatRoughnessNode = float(0.1);
-        material.colorNode = texture(diffuse, fibersUV);
-        material.normalNode = normalMap(texture(normalMap1, fibersUV));
-
+        material = new MeshPhysicalMaterial({
+          roughness: 0.5,
+          clearcoat: 1.0,
+          clearcoatRoughness: 0.1,
+          map: diffuse,
+          normalMap: normalMap,
+        });
         mesh = new Mesh(geometry, material);
         mesh.position.x = 1;
         mesh.position.y = 1;
@@ -135,18 +133,16 @@ function init() {
 
         // golf
 
-        material = new MeshPhysicalNodeMaterial();
-        material.clearcoatNode = float(1);
-        material.roughnessNode = float(0.1);
-        material.metalnessNode = float(0);
-        material.colorNode = color(0xffffff);
-        material.normalNode = normalMap(texture(normalMap4));
-        // y scale is negated to compensate for normal map handedness.
-        material.clearcoatNormalNode = normalMap(
-          texture(clearcoatNormalMap),
-          vec2(2.0, -2.0)
-        );
+        material = new MeshPhysicalMaterial({
+          metalness: 0.0,
+          roughness: 0.1,
+          clearcoat: 1.0,
+          normalMap: normalMap4,
+          clearcoatNormalMap: clearcoatNormalMap,
 
+          // y scale is negated to compensate for normal map handedness.
+          clearcoatNormalScale: new Vector2(2.0, -2.0),
+        });
         mesh = new Mesh(geometry, material);
         mesh.position.x = -1;
         mesh.position.y = -1;
@@ -154,18 +150,17 @@ function init() {
 
         // clearcoat + normalmap
 
-        material = new MeshPhysicalNodeMaterial();
-        material.clearcoatNode = float(1);
-        material.roughnessNode = float(1);
-        material.metalnessNode = float(1);
-        material.colorNode = color(0xff0000);
-        material.normalNode = normalMap(texture(normalMap2), vec2(0.15, 0.15));
-        // y scale is negated to compensate for normal map handedness.
-        material.clearcoatNormalNode = normalMap(
-          texture(clearcoatNormalMap),
-          vec2(2.0, -2.0)
-        );
+        material = new MeshPhysicalMaterial({
+          clearcoat: 1.0,
+          metalness: 1.0,
+          color: 0xff0000,
+          normalMap: normalMap2,
+          normalScale: new Vector2(0.15, 0.15),
+          clearcoatNormalMap: clearcoatNormalMap,
 
+          // y scale is negated to compensate for normal map handedness.
+          clearcoatNormalScale: new Vector2(2.0, -2.0),
+        });
         mesh = new Mesh(geometry, material);
         mesh.position.x = 1;
         mesh.position.y = -1;
@@ -173,8 +168,8 @@ function init() {
 
         //
 
-        scene.background = hdrTexture;
-        scene.environment = hdrTexture;
+        scene.background = texture;
+        scene.environment = texture;
       }
     );
 
@@ -188,8 +183,7 @@ function init() {
 
   particleLight.add(new PointLight(0xffffff, 30));
 
-  renderer = new WebGLRenderer();
-  renderer.useLegacyLights = false;
+  renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
@@ -201,14 +195,14 @@ function init() {
 
   //
 
-  //
-
   stats = new Stats();
   container.appendChild(stats.dom);
 
   // EVENTS
 
-  new OrbitControls(camera, renderer.domElement);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 3;
+  controls.maxDistance = 30;
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -229,8 +223,6 @@ function onWindowResize() {
 
 function animate() {
   requestAnimationFrame(animate);
-
-  nodeFrame.update();
 
   render();
 
