@@ -27,7 +27,7 @@ let composer, renderer, mixer, clock;
 
 const params = {
   threshold: 0,
-  strength: 1.5,
+  strength: 1,
   radius: 0,
   exposure: 1,
 };

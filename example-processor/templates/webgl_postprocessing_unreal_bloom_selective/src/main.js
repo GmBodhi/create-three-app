@@ -37,7 +37,7 @@ bloomLayer.set(BLOOM_SCENE);
 
 const params = {
   threshold: 0,
-  strength: 3,
+  strength: 1.5,
   radius: 0.5,
   exposure: 1,
 };
@@ -122,7 +122,7 @@ bloomFolder.add(params, "threshold", 0.0, 1.0).onChange(function (value) {
   render();
 });
 
-bloomFolder.add(params, "strength", 0.0, 10.0).onChange(function (value) {
+bloomFolder.add(params, "strength", 0.0, 3).onChange(function (value) {
   bloomPass.strength = Number(value);
   render();
 });
