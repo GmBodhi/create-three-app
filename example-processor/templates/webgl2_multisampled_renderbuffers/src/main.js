@@ -18,8 +18,7 @@ import {
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -107,7 +106,7 @@ function init() {
   });
 
   const renderPass = new RenderPass(scene, camera);
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
 
   //
 

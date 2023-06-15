@@ -17,9 +17,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { TAARenderPass } from "three/addons/postprocessing/TAARenderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, scene, renderer, composer, taaRenderPass, renderPass;
 let gui, stats;
@@ -122,7 +121,7 @@ function init() {
   renderPass.enabled = false;
   composer.addPass(renderPass);
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   composer.addPass(outputPass);
 
   window.addEventListener("resize", onWindowResize);

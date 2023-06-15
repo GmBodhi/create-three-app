@@ -19,7 +19,7 @@ import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
 import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
 import { DotScreenShader } from "three/addons/shaders/DotScreenShader.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, renderer, composer;
 let object;
@@ -85,7 +85,7 @@ function init() {
   effect2.uniforms["amount"].value = 0.0015;
   composer.addPass(effect2);
 
-  const effect3 = new ShaderPass(GammaCorrectionShader);
+  const effect3 = new OutputPass();
   composer.addPass(effect3);
 
   //

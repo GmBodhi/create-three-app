@@ -21,9 +21,8 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { TexturePass } from "three/addons/postprocessing/TexturePass.js";
 import { CubeTexturePass } from "three/addons/postprocessing/CubeTexturePass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { ClearPass } from "three/addons/postprocessing/ClearPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let scene, renderer, composer;
@@ -163,7 +162,7 @@ function init() {
   renderPass.clear = false;
   composer.addPass(renderPass);
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   composer.addPass(outputPass);
 
   const controls = new OrbitControls(cameraP, renderer.domElement);

@@ -27,7 +27,7 @@ import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { BleachBypassShader } from "three/addons/shaders/BleachBypassShader.js";
 import { ColorCorrectionShader } from "three/addons/shaders/ColorCorrectionShader.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let container, stats, loader;
 
@@ -128,7 +128,7 @@ function init() {
 
   const effectBleach = new ShaderPass(BleachBypassShader);
   const effectColor = new ShaderPass(ColorCorrectionShader);
-  const gammaCorrection = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   effectFXAA = new ShaderPass(FXAAShader);
 
   effectFXAA.uniforms["resolution"].value.set(
@@ -152,7 +152,7 @@ function init() {
   composer.addPass(renderModel);
   composer.addPass(effectBleach);
   composer.addPass(effectColor);
-  composer.addPass(gammaCorrection);
+  composer.addPass(outputPass);
   composer.addPass(effectFXAA);
 
   // EVENTS

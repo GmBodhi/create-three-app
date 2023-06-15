@@ -14,14 +14,13 @@ import {
 } from "three";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { TexturePass } from "three/addons/postprocessing/TexturePass.js";
 import { ClearPass } from "three/addons/postprocessing/ClearPass.js";
 import {
   MaskPass,
   ClearMaskPass,
 } from "three/addons/postprocessing/MaskPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, composer, renderer;
 let box, torus;
@@ -76,7 +75,7 @@ function init() {
   const texturePass1 = new TexturePass(texture1);
   const texturePass2 = new TexturePass(texture2);
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
 
   const parameters = {
     stencilBuffer: true,

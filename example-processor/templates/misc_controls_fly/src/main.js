@@ -27,8 +27,7 @@ import { FlyControls } from "three/addons/controls/FlyControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 const radius = 6371;
 const tilt = 0.41;
@@ -200,13 +199,13 @@ function init() {
 
   const renderModel = new RenderPass(scene, camera);
   const effectFilm = new FilmPass(0.35, 0.75, 2048, false);
-  const gammaCorrection = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
 
   composer = new EffectComposer(renderer);
 
   composer.addPass(renderModel);
   composer.addPass(effectFilm);
-  composer.addPass(gammaCorrection);
+  composer.addPass(outputPass);
 }
 
 function onWindowResize() {

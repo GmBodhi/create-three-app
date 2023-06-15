@@ -24,8 +24,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { SSRPass } from "three/addons/postprocessing/SSRPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ReflectorForSSRPass } from "three/addons/objects/ReflectorForSSRPass.js";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
@@ -180,7 +179,7 @@ function init() {
   });
 
   composer.addPass(ssrPass);
-  composer.addPass(new ShaderPass(GammaCorrectionShader));
+  composer.addPass(new OutputPass());
 
   // GUI
 

@@ -16,8 +16,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera,
   scene,
@@ -185,7 +184,7 @@ function initPostprocessing() {
     maxblur: 0.01,
   });
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
 
   const composer = new EffectComposer(renderer);
 

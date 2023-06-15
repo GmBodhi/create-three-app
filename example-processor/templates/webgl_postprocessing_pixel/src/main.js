@@ -27,8 +27,7 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPixelatedPass } from "three/addons/postprocessing/RenderPixelatedPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, composer, crystalMesh, clock;
@@ -59,7 +58,7 @@ function init() {
   const renderPixelatedPass = new RenderPixelatedPass(6, scene, camera);
   composer.addPass(renderPixelatedPass);
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   composer.addPass(outputPass);
 
   window.addEventListener("resize", onWindowResize);

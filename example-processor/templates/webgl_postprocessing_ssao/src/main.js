@@ -18,8 +18,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let container, stats;
 let camera, scene, renderer;
@@ -85,7 +84,7 @@ function init() {
   ssaoPass.kernelRadius = 16;
   composer.addPass(ssaoPass);
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   composer.addPass(outputPass);
 
   // Init gui

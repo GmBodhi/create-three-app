@@ -25,7 +25,7 @@ import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 import { FocusShader } from "three/addons/shaders/FocusShader.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, scene, renderer, mesh;
 
@@ -111,7 +111,7 @@ function init() {
   effectFocus.uniforms["screenHeight"].value =
     window.innerHeight * window.devicePixelRatio;
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
 
   composer = new EffectComposer(renderer);
 
