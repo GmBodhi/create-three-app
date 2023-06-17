@@ -101,7 +101,7 @@ function init() {
   const pixelMaterial = new MeshBasicNodeMaterial();
   pixelMaterial.backdropNode = viewportSharedTexture(
     viewportTopLeft.mul(100).floor().div(100)
-  ); // @TODO: Move to alpha value [ 0, 1 ]
+  );
   pixelMaterial.transparent = true;
 
   // box / floor

@@ -62,7 +62,7 @@ function addImage() {
     );
 }
 
-const geometry = new BoxGeometry(1, 1, 1);
+const geometry = new BoxGeometry();
 
 function addCube(material) {
   const cube = new Mesh(geometry, material);
@@ -113,6 +113,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // TESTS

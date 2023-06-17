@@ -44,6 +44,7 @@ function init() {
   renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.85;
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

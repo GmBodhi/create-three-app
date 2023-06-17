@@ -9,7 +9,6 @@ import {
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
-  AmbientLight,
   BufferGeometry,
   Color,
   BufferAttribute,
@@ -32,6 +31,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -43,8 +43,6 @@ function init() {
     10
   );
   camera.position.z = 3.5;
-
-  scene.add(new AmbientLight(0x444444));
 
   stats = new Stats();
   document.body.appendChild(stats.dom);

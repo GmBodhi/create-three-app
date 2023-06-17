@@ -50,7 +50,7 @@ function init() {
   scene = new Scene();
   scene.fog = new FogExp2(0x000000, 0.0025);
 
-  light = new DirectionalLight(0xffffff);
+  light = new DirectionalLight(0xffffff, 3);
   light.position.set(0, 0.5, 1).normalize();
   scene.add(light);
 
@@ -226,6 +226,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //

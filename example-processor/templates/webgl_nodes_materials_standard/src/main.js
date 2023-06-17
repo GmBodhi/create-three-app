@@ -5,7 +5,6 @@ import {
   ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
-  HemisphereLight,
   MaterialLoader,
   LoadingManager,
   TextureLoader,
@@ -44,6 +43,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   renderer.toneMapping = ReinhardToneMapping;
@@ -62,10 +62,6 @@ function init() {
   camera.position.z = 2;
 
   controls = new TrackballControls(camera, renderer.domElement);
-
-  //
-
-  scene.add(new HemisphereLight(0x443333, 0x222233, 4));
 
   // Test Extended Material
 

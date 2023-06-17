@@ -64,6 +64,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.toneMapping = LinearToneMapping;
   renderer.toneMappingExposure = 0.5;
   renderer.setAnimationLoop(render);

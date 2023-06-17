@@ -70,11 +70,11 @@ function init() {
   camera.position.z = 1000;
   scene.add(camera);
 
-  const light1 = new DirectionalLight(0xffffff, 0.8);
+  const light1 = new DirectionalLight(0xffffff, 2.5);
   light1.position.set(1, 1, 1);
   scene.add(light1);
 
-  const light2 = new DirectionalLight(0xffffff, 0.5);
+  const light2 = new DirectionalLight(0xffffff, 1.5);
   light2.position.set(-1, -1, 1);
   scene.add(light2);
 
@@ -86,6 +86,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.getElementById("container").appendChild(renderer.domElement);
 
   labelRenderer = new CSS2DRenderer();

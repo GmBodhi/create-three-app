@@ -10,9 +10,10 @@ import {
   Scene,
   Clock,
   TextureLoader,
+  SRGBColorSpace,
+  RepeatWrapping,
   Vector3,
   Vector2,
-  RepeatWrapping,
   ShaderMaterial,
   Mesh,
   TorusGeometry,
@@ -23,6 +24,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, renderer, composer, clock;
 
@@ -48,19 +50,22 @@ function init() {
 
   const textureLoader = new TextureLoader();
 
+  const cloudTexture = textureLoader.load("textures/lava/cloud.png");
+  const lavaTexture = textureLoader.load("textures/lava/lavatile.jpg");
+
+  lavaTexture.colorSpace = SRGBColorSpace;
+
+  cloudTexture.wrapS = cloudTexture.wrapT = RepeatWrapping;
+  lavaTexture.wrapS = lavaTexture.wrapT = RepeatWrapping;
+
   uniforms = {
     fogDensity: { value: 0.45 },
     fogColor: { value: new Vector3(0, 0, 0) },
     time: { value: 1.0 },
     uvScale: { value: new Vector2(3.0, 1.0) },
-    texture1: { value: textureLoader.load("textures/lava/cloud.png") },
-    texture2: { value: textureLoader.load("textures/lava/lavatile.jpg") },
+    texture1: { value: cloudTexture },
+    texture2: { value: lavaTexture },
   };
-
-  uniforms["texture1"].value.wrapS = uniforms["texture1"].value.wrapT =
-    RepeatWrapping;
-  uniforms["texture2"].value.wrapS = uniforms["texture2"].value.wrapT =
-    RepeatWrapping;
 
   const size = 0.65;
 
@@ -78,20 +83,23 @@ function init() {
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  container.appendChild(renderer.domElement);
+  renderer.useLegacyLights = false;
   renderer.autoClear = false;
+  container.appendChild(renderer.domElement);
 
   //
 
   const renderModel = new RenderPass(scene, camera);
   const effectBloom = new BloomPass(1.25);
   const effectFilm = new FilmPass(0.35, 0.95, 2048, false);
+  const outputPass = new OutputPass();
 
   composer = new EffectComposer(renderer);
 
   composer.addPass(renderModel);
   composer.addPass(effectBloom);
   composer.addPass(effectFilm);
+  composer.addPass(outputPass);
 
   //
 

@@ -14,7 +14,6 @@ import {
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 

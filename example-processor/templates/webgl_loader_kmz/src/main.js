@@ -20,7 +20,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0x999999);
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0.5, 1.0, 0.5).normalize();
 
   scene.add(light);
@@ -43,6 +43,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   const loader = new KMZLoader();

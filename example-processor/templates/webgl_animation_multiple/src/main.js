@@ -43,11 +43,11 @@ function init() {
   scene.background = new Color(0xa0a0a0);
   scene.fog = new Fog(0xa0a0a0, 10, 50);
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
+  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d, 3);
   hemiLight.position.set(0, 20, 0);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff);
+  const dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(-3, 10, -10);
   dirLight.castShadow = true;
   dirLight.shadow.camera.top = 4;
@@ -102,6 +102,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

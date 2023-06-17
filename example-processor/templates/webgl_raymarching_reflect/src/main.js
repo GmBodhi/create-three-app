@@ -43,6 +43,7 @@ function init() {
   renderer = new WebGLRenderer({ canvas: canvas });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(config.resolution, config.resolution);
+  renderer.useLegacyLights = false;
 
   window.addEventListener("resize", onWindowResize);
 

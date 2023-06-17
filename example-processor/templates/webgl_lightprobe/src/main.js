@@ -29,7 +29,7 @@ let directionalLight;
 // linear color space
 const API = {
   lightProbeIntensity: 1.0,
-  directionalLightIntensity: 0.2,
+  directionalLightIntensity: 0.6,
   envMapIntensity: 1,
 };
 
@@ -40,6 +40,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   // tone mapping

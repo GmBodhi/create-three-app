@@ -30,14 +30,14 @@ function init() {
 
   // light
 
-  const hemiLight = new HemisphereLight(0xcccccc, 0x444444, 1);
+  const hemiLight = new HemisphereLight(0xcccccc, 0x444444, 3);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 0.75);
+  const dirLight = new DirectionalLight(0xffffff, 2.5);
   dirLight.position.set(1.5, 3, 2.5);
   scene.add(dirLight);
 
-  const dirLight2 = new DirectionalLight(0xffffff, 0.5);
+  const dirLight2 = new DirectionalLight(0xffffff, 1.5);
   dirLight2.position.set(-1.5, -3, -2.5);
   scene.add(dirLight2);
 
@@ -56,9 +56,10 @@ function init() {
 
   // renderer
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   // controls

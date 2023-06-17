@@ -16,37 +16,34 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 
-let container, stats;
+let stats;
 let camera, scene, raycaster, renderer;
 
 let INTERSECTED;
 let theta = 0;
 
 const pointer = new Vector2();
-const radius = 100;
+const radius = 5;
 
 init();
 animate();
 
 function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
-
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
-    1,
-    10000
+    0.1,
+    100
   );
 
   scene = new Scene();
   scene.background = new Color(0xf0f0f0);
 
-  const light = new DirectionalLight(0xffffff, 1);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(1, 1, 1).normalize();
   scene.add(light);
 
-  const geometry = new BoxGeometry(20, 20, 20);
+  const geometry = new BoxGeometry();
 
   for (let i = 0; i < 2000; i++) {
     const object = new Mesh(
@@ -54,9 +51,9 @@ function init() {
       new MeshLambertMaterial({ color: Math.random() * 0xffffff })
     );
 
-    object.position.x = Math.random() * 800 - 400;
-    object.position.y = Math.random() * 800 - 400;
-    object.position.z = Math.random() * 800 - 400;
+    object.position.x = Math.random() * 40 - 20;
+    object.position.y = Math.random() * 40 - 20;
+    object.position.z = Math.random() * 40 - 20;
 
     object.rotation.x = Math.random() * 2 * Math.PI;
     object.rotation.y = Math.random() * 2 * Math.PI;
@@ -71,13 +68,14 @@ function init() {
 
   raycaster = new Raycaster();
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+  renderer.useLegacyLights = false;
+  document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
-  container.appendChild(stats.dom);
+  document.body.appendChild(stats.dom);
 
   document.addEventListener("mousemove", onPointerMove);
 

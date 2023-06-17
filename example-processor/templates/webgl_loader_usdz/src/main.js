@@ -32,17 +32,18 @@ function init() {
 
   scene.add(new GridHelper(2, 4, 0xc1c1c1, 0x8d8d8d));
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(1, 1, 1);
   scene.add(light);
 
-  const light2 = new HemisphereLight(0xffffff, 0xc1c1c1);
+  const light2 = new HemisphereLight(0xffffff, 0xc1c1c1, 3);
   scene.add(light2);
 
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

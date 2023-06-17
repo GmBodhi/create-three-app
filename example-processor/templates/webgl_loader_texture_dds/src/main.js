@@ -27,14 +27,14 @@ function init() {
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
-    1,
-    2000
+    0.1,
+    100
   );
-  camera.position.z = 1000;
+  camera.position.z = 10;
 
   scene = new Scene();
 
-  const geometry = new BoxGeometry(200, 200, 200);
+  const geometry = new BoxGeometry(2, 2, 2);
 
   /*
 				This is how compressed textures are supposed to be used:
@@ -124,51 +124,51 @@ function init() {
   const material7 = new MeshBasicMaterial({ map: map5 });
   const material8 = new MeshBasicMaterial({ map: map6 });
 
-  let mesh = new Mesh(new TorusGeometry(100, 50, 32, 16), material1);
-  mesh.position.x = -600;
-  mesh.position.y = -200;
+  let mesh = new Mesh(new TorusGeometry(), material1);
+  mesh.position.x = -6;
+  mesh.position.y = -2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material2);
-  mesh.position.x = -200;
-  mesh.position.y = -200;
+  mesh.position.x = -2;
+  mesh.position.y = -2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material3);
-  mesh.position.x = -200;
-  mesh.position.y = 200;
+  mesh.position.x = -2;
+  mesh.position.y = 2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material4);
-  mesh.position.x = -600;
-  mesh.position.y = 200;
+  mesh.position.x = -6;
+  mesh.position.y = 2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material5);
-  mesh.position.x = 200;
-  mesh.position.y = 200;
+  mesh.position.x = 2;
+  mesh.position.y = 2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material6);
-  mesh.position.x = 200;
-  mesh.position.y = -200;
+  mesh.position.x = 2;
+  mesh.position.y = -2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material7);
-  mesh.position.x = 600;
-  mesh.position.y = -200;
+  mesh.position.x = 6;
+  mesh.position.y = -2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material8);
-  mesh.position.x = 600;
-  mesh.position.y = 200;
+  mesh.position.x = 6;
+  mesh.position.y = 2;
   scene.add(mesh);
   meshes.push(mesh);
 

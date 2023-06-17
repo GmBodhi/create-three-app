@@ -41,15 +41,15 @@ async function init() {
   scene.add(cube);
 
   //Lights
-  const directionalLight1 = new DirectionalLight(0xffeeff, 0.8);
+  const directionalLight1 = new DirectionalLight(0xffeeff, 2.5);
   directionalLight1.position.set(1, 1, 1);
   scene.add(directionalLight1);
 
-  const directionalLight2 = new DirectionalLight(0xffffff, 0.8);
+  const directionalLight2 = new DirectionalLight(0xffffff, 2.5);
   directionalLight2.position.set(-1, 0.5, -1);
   scene.add(directionalLight2);
 
-  const ambientLight = new AmbientLight(0xffffee, 0.25);
+  const ambientLight = new AmbientLight(0xffffee, 0.75);
   scene.add(ambientLight);
 
   //Setup IFC Loader
@@ -79,6 +79,7 @@ async function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //Controls
