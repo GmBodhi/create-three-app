@@ -47,7 +47,7 @@ async function init() {
 
   // LIGHTS
 
-  const light = new DirectionalLight(0xd5deff, 0.3);
+  const light = new DirectionalLight(0xd5deff);
   light.position.x = 300;
   light.position.y = 250;
   light.position.z = -500;
@@ -77,6 +77,7 @@ async function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(innerWidth, innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // CONTROLS

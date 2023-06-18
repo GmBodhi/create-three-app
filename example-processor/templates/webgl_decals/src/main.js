@@ -84,6 +84,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -103,13 +104,13 @@ function init() {
   controls.minDistance = 50;
   controls.maxDistance = 200;
 
-  scene.add(new AmbientLight(0x443333));
+  scene.add(new AmbientLight(0x666666));
 
-  const dirLight1 = new DirectionalLight(0xffddcc, 1);
+  const dirLight1 = new DirectionalLight(0xffddcc, 3);
   dirLight1.position.set(1, 0.75, 0.5);
   scene.add(dirLight1);
 
-  const dirLight2 = new DirectionalLight(0xccccff, 1);
+  const dirLight2 = new DirectionalLight(0xccccff, 3);
   dirLight2.position.set(-1, 0.75, -0.5);
   scene.add(dirLight2);
 

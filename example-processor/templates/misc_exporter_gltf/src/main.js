@@ -12,6 +12,7 @@ import {
   AxesHelper,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   MeshBasicMaterial,
   Mesh,
   IcosahedronGeometry,
@@ -160,14 +161,14 @@ function init() {
   // ---------------------------------------------------------------------
   // Ambient light
   // ---------------------------------------------------------------------
-  const ambientLight = new AmbientLight(0xffffff, 0.2);
+  const ambientLight = new AmbientLight(0xcccccc);
   ambientLight.name = "AmbientLight";
   scene1.add(ambientLight);
 
   // ---------------------------------------------------------------------
   // DirectLight
   // ---------------------------------------------------------------------
-  const dirLight = new DirectionalLight(0xffffff, 1);
+  const dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.target.position.set(0, 0, -1);
   dirLight.add(dirLight.target);
   dirLight.lookAt(-1, -1, 0);
@@ -195,6 +196,7 @@ function init() {
   // Icosahedron
   const mapGrid = new TextureLoader().load("textures/uv_grid_opengl.jpg");
   mapGrid.wrapS = mapGrid.wrapT = RepeatWrapping;
+  mapGrid.colorSpace = SRGBColorSpace;
   material = new MeshBasicMaterial({
     color: 0xffffff,
     map: mapGrid,
@@ -438,6 +440,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
 

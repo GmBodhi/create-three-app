@@ -74,9 +74,10 @@ function initGraphics() {
 
   camera.position.set(-12, 7, 4);
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -86,10 +87,10 @@ function initGraphics() {
 
   textureLoader = new TextureLoader();
 
-  const ambientLight = new AmbientLight(0x404040);
+  const ambientLight = new AmbientLight(0xbbbbbb);
   scene.add(ambientLight);
 
-  const light = new DirectionalLight(0xffffff, 1);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(-7, 10, 15);
   light.castShadow = true;
   const d = 10;

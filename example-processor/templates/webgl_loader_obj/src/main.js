@@ -33,7 +33,7 @@ function init() {
 
   scene = new Scene();
 
-  const ambientLight = new AmbientLight(0xcccccc, 1.5);
+  const ambientLight = new AmbientLight(0xffffff);
   scene.add(ambientLight);
 
   const pointLight = new PointLight(0xffffff, 15);
@@ -95,7 +95,7 @@ function init() {
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 2;
-  controls.maxDistance = 7.5;
+  controls.maxDistance = 5;
   controls.addEventListener("change", render);
 
   //

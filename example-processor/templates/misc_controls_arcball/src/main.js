@@ -4,7 +4,6 @@ import {
   WebGLRenderer,
   ReinhardToneMapping,
   Scene,
-  HemisphereLight,
   MeshStandardMaterial,
   TextureLoader,
   SRGBColorSpace,
@@ -81,7 +80,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
+  renderer.useLegacyLights = false;
   renderer.toneMapping = ReinhardToneMapping;
   renderer.toneMappingExposure = 3;
   renderer.domElement.style.background =
@@ -91,7 +90,6 @@ function init() {
   //
 
   scene = new Scene();
-  scene.add(new HemisphereLight(0x443333, 0x222233, 4));
 
   camera = makePerspectiveCamera();
   camera.position.set(0, 0, perspectiveDistance);

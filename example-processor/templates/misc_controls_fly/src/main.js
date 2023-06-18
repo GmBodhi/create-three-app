@@ -63,7 +63,7 @@ function init() {
   scene = new Scene();
   scene.fog = new FogExp2(0x000000, 0.00000025);
 
-  dirLight = new DirectionalLight(0xffffff);
+  dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(-1, 0, 1).normalize();
   scene.add(dirLight);
 
@@ -176,6 +176,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //

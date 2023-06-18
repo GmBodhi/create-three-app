@@ -53,9 +53,9 @@ function init() {
 
   scene = new Scene();
 
-  scene.add(new AmbientLight(0x222244));
+  scene.add(new AmbientLight(0x999999));
 
-  const light = new DirectionalLight();
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0.5, 0.5, 1);
   light.castShadow = true;
   light.shadow.camera.zoom = 4; // tighter shadow map
@@ -80,6 +80,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 

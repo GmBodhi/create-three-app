@@ -39,6 +39,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -51,10 +52,10 @@ function init() {
 
   scene = new Scene();
 
-  const ambientLight = new AmbientLight(0xcccccc, 0.4);
+  const ambientLight = new AmbientLight(0xffffff);
   scene.add(ambientLight);
 
-  const directionalLight = new DirectionalLight(0xffffff, 0.8);
+  const directionalLight = new DirectionalLight(0xffffff, 2.5);
   directionalLight.position.set(0, 1, 1);
   scene.add(directionalLight);
 

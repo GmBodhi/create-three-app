@@ -6,6 +6,7 @@ import {
   OrthographicCamera,
   Scene,
   GridHelper,
+  AmbientLight,
   DirectionalLight,
   TextureLoader,
   SRGBColorSpace,
@@ -25,9 +26,10 @@ init();
 render();
 
 function init() {
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   const aspect = window.innerWidth / window.innerHeight;
@@ -43,13 +45,15 @@ function init() {
   );
   currentCamera = cameraPersp;
 
-  currentCamera.position.set(1000, 500, 1000);
-  currentCamera.lookAt(0, 200, 0);
+  currentCamera.position.set(5, 2.5, 5);
 
   scene = new Scene();
-  scene.add(new GridHelper(1000, 10, 0x888888, 0x444444));
+  scene.add(new GridHelper(5, 10, 0x888888, 0x444444));
 
-  const light = new DirectionalLight(0xffffff, 2);
+  const ambientLight = new AmbientLight(0xffffff);
+  scene.add(ambientLight);
+
+  const light = new DirectionalLight(0xffffff, 4);
   light.position.set(1, 1, 1);
   scene.add(light);
 
@@ -57,8 +61,8 @@ function init() {
   texture.colorSpace = SRGBColorSpace;
   texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
 
-  const geometry = new BoxGeometry(200, 200, 200);
-  const material = new MeshLambertMaterial({ map: texture, transparent: true });
+  const geometry = new BoxGeometry();
+  const material = new MeshLambertMaterial({ map: texture });
 
   orbit = new OrbitControls(currentCamera, renderer.domElement);
   orbit.update();

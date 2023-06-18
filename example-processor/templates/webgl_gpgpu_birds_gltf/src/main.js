@@ -207,13 +207,13 @@ function init() {
 
   // LIGHTS
 
-  const hemiLight = new HemisphereLight(colors[selectModel], 0xffffff, 1.6);
+  const hemiLight = new HemisphereLight(colors[selectModel], 0xffffff, 4.5);
   hemiLight.color.setHSL(0.6, 1, 0.6, SRGBColorSpace);
   hemiLight.groundColor.setHSL(0.095, 1, 0.75, SRGBColorSpace);
   hemiLight.position.set(0, 50, 0);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0x00ced1, 0.6);
+  const dirLight = new DirectionalLight(0x00ced1, 2.0);
   dirLight.color.setHSL(0.1, 1, 0.95, SRGBColorSpace);
   dirLight.position.set(-1, 1.75, 1);
   dirLight.position.multiplyScalar(30);
@@ -222,6 +222,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   initComputeRenderer();

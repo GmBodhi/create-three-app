@@ -87,17 +87,18 @@ function init() {
 
   scene = new Scene();
 
-  const sun = new DirectionalLight(0xffffff, 1.0);
+  const sun = new DirectionalLight(0xffffff, 3.0);
   sun.position.set(300, 400, 175);
   scene.add(sun);
 
-  const sun2 = new DirectionalLight(0x40a040, 0.6);
+  const sun2 = new DirectionalLight(0x40a040, 2.0);
   sun2.position.set(-100, 350, -200);
   scene.add(sun2);
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();

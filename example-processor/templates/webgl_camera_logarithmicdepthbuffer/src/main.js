@@ -100,6 +100,7 @@ function initView(scene, name, logDepthBuf) {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+  renderer.useLegacyLights = false;
   renderer.domElement.style.position = "relative";
   renderer.domElement.id = "renderer_" + name;
   framecontainer.appendChild(renderer.domElement);
@@ -115,9 +116,9 @@ function initView(scene, name, logDepthBuf) {
 function initScene(font) {
   const scene = new Scene();
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x777777));
 
-  const light = new DirectionalLight(0xffffff, 1);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(100, 100, 100);
   scene.add(light);
 
