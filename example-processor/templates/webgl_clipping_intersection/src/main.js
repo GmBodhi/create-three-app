@@ -7,7 +7,6 @@ import {
   Scene,
   PerspectiveCamera,
   HemisphereLight,
-  CameraHelper,
   Group,
   SphereGeometry,
   MeshLambertMaterial,
@@ -43,6 +42,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.localClippingEnabled = true;
   document.body.appendChild(renderer.domElement);
 
@@ -63,12 +63,9 @@ function init() {
   controls.maxDistance = 10;
   controls.enablePan = false;
 
-  const light = new HemisphereLight(0xffffff, 0x080808, 1.5);
+  const light = new HemisphereLight(0xffffff, 0x080808, 4.5);
   light.position.set(-1.25, 1, 1.25);
   scene.add(light);
-
-  // const helper = new CameraHelper( light.shadow.camera );
-  // scene.add( helper );
 
   //
 

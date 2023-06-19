@@ -81,9 +81,9 @@ function init() {
 
     scene.add(new Mesh(geometry, material));
 
-    scene.add(new HemisphereLight(0xaaaaaa, 0x444444));
+    scene.add(new HemisphereLight(0xaaaaaa, 0x444444, 3));
 
-    const light = new DirectionalLight(0xffffff, 0.5);
+    const light = new DirectionalLight(0xffffff, 1.5);
     light.position.set(1, 1, 1);
     scene.add(light);
 
@@ -93,6 +93,7 @@ function init() {
   renderer = new WebGLRenderer({ canvas: canvas, antialias: true });
   renderer.setClearColor(0xffffff, 1);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.useLegacyLights = false;
 }
 
 function updateSize() {

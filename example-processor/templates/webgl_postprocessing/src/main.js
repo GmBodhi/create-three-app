@@ -31,6 +31,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //
@@ -66,9 +67,9 @@ function init() {
     object.add(mesh);
   }
 
-  scene.add(new AmbientLight(0x666666));
+  scene.add(new AmbientLight(0xcccccc));
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(1, 1, 1);
   scene.add(light);
 

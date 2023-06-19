@@ -45,6 +45,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   const scene = new Scene();
@@ -60,12 +61,12 @@ function init() {
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.maxPolarAngle = Math.PI * 0.5;
-  controls.minDistance = 1;
-  controls.maxDistance = 10;
+  controls.minDistance = 3;
+  controls.maxDistance = 8;
 
-  scene.add(new AmbientLight(0x898989));
+  scene.add(new AmbientLight(0xcccccc));
 
-  const pointLight = new PointLight(0xffffff, 1);
+  const pointLight = new PointLight(0xffffff, 100);
   camera.add(pointLight);
 
   const renderScene = new RenderPass(scene, camera);

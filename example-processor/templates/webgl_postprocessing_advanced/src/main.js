@@ -92,7 +92,7 @@ function init() {
 
   //
 
-  directionalLight = new DirectionalLight(0xffffff);
+  directionalLight = new DirectionalLight(0xffffff, 3);
   directionalLight.position.set(0, -0.1, 1).normalize();
   sceneModel.add(directionalLight);
 
@@ -135,6 +135,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.useLegacyLights = false;
   renderer.autoClear = false;
 
   //

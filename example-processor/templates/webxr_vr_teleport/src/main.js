@@ -57,9 +57,9 @@ function init() {
   );
   scene.add(room);
 
-  scene.add(new HemisphereLight(0xa5a5a5, 0x898989));
+  scene.add(new HemisphereLight(0xa5a5a5, 0x898989, 3));
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(1, 1, 1).normalize();
   scene.add(light);
 
@@ -80,6 +80,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
 
   renderer.xr.addEventListener(
     "sessionstart",

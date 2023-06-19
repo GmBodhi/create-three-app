@@ -31,29 +31,29 @@ function init() {
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
-    1,
-    5000
+    0.1,
+    500
   );
-  camera.position.z = 1000;
+  camera.position.z = 50;
 
   scene = new Scene();
   scene.background = new Color(0xf0f0f0);
 
-  scene.add(new AmbientLight(0x505050));
+  scene.add(new AmbientLight(0xaaaaaa));
 
-  const light = new SpotLight(0xffffff, 1.5);
-  light.position.set(0, 500, 2000);
-  light.angle = Math.PI / 9;
+  const light = new SpotLight(0xffffff, 10000);
+  light.position.set(0, 25, 50);
+  light.angle = Math.PI / 5;
 
   light.castShadow = true;
-  light.shadow.camera.near = 1000;
-  light.shadow.camera.far = 4000;
+  light.shadow.camera.near = 10;
+  light.shadow.camera.far = 100;
   light.shadow.mapSize.width = 1024;
   light.shadow.mapSize.height = 1024;
 
   scene.add(light);
 
-  const geometry = new BoxGeometry(20, 20, 20);
+  const geometry = new BoxGeometry();
 
   for (let i = 0; i < 200; i++) {
     const object = new Mesh(
@@ -61,9 +61,9 @@ function init() {
       new MeshLambertMaterial({ color: Math.random() * 0xffffff })
     );
 
-    object.position.x = Math.random() * 1600 - 800;
-    object.position.y = Math.random() * 900 - 450;
-    object.position.z = Math.random() * 900 - 500;
+    object.position.x = Math.random() * 80 - 40;
+    object.position.y = Math.random() * 45 - 25;
+    object.position.z = Math.random() * 45 - 25;
 
     object.rotation.x = Math.random() * 2 * Math.PI;
     object.rotation.y = Math.random() * 2 * Math.PI;
@@ -82,7 +82,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFShadowMap;
 

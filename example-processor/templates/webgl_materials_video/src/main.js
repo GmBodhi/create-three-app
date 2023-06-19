@@ -61,13 +61,14 @@ function init() {
 
   scene = new Scene();
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0.5, 1, 1).normalize();
   scene.add(light);
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   video = document.getElementById("video");

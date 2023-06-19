@@ -31,7 +31,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0x101010);
 
-  const light = new AmbientLight(0xffffff, 1);
+  const light = new AmbientLight(0xffffff, 3);
   scene.add(light);
 
   camera = new PerspectiveCamera(
@@ -79,6 +79,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.xr.enabled = true;
   renderer.xr.setReferenceSpaceType("local");
   container.appendChild(renderer.domElement);

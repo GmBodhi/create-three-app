@@ -6,6 +6,7 @@ import {
   DoubleSide,
   TextureLoader,
   RepeatWrapping,
+  SRGBColorSpace,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
@@ -68,6 +69,7 @@ const meshMaterial = new MeshPhongMaterial({
 const texture = new TextureLoader().load("textures/uv_grid_opengl.jpg");
 texture.wrapS = RepeatWrapping;
 texture.wrapT = RepeatWrapping;
+texture.colorSpace = SRGBColorSpace;
 
 //
 init();
@@ -82,6 +84,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //
@@ -102,11 +105,11 @@ function init() {
 
   //
 
-  scene.add(new AmbientLight(0xffffff, 0.1));
+  scene.add(new AmbientLight(0xffffff, 0.3));
 
-  lights[0] = new DirectionalLight(0xffffff, 0.7);
-  lights[1] = new DirectionalLight(0xffffff, 0.7);
-  lights[2] = new DirectionalLight(0xffffff, 0.7);
+  lights[0] = new DirectionalLight(0xffffff, 2.5);
+  lights[1] = new DirectionalLight(0xffffff, 2.5);
+  lights[2] = new DirectionalLight(0xffffff, 2.5);
 
   lights[0].position.set(0, 2 * radius, 0);
   lights[1].position.set(2 * radius, -2 * radius, 2 * radius);

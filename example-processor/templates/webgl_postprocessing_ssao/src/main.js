@@ -6,7 +6,7 @@ import {
   Scene,
   Color,
   DirectionalLight,
-  HemisphereLight,
+  AmbientLight,
   Group,
   BoxGeometry,
   MeshLambertMaterial,
@@ -34,6 +34,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -47,8 +48,8 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xaaaaaa);
 
-  scene.add(new DirectionalLight());
-  scene.add(new HemisphereLight());
+  scene.add(new DirectionalLight(0xffffff, 4));
+  scene.add(new AmbientLight(0xffffff));
 
   group = new Group();
   scene.add(group);

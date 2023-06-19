@@ -53,9 +53,9 @@ function init() {
   const grid = new GridHelper(4, 1, 0x111111, 0x111111);
   scene.add(grid);
 
-  scene.add(new HemisphereLight(0x888877, 0x777788));
+  scene.add(new HemisphereLight(0x888877, 0x777788, 3));
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0, 6, 0);
   scene.add(light);
 
@@ -64,6 +64,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -110,15 +111,15 @@ function init() {
 
 function initBlob() {
   /*
-				let path = "textures/cube/SwedishRoyalCastle/";
-				let format = '.jpg';
-				let urls = [
+				const path = 'textures/cube/SwedishRoyalCastle/';
+				const format = '.jpg';
+				const urls = [
 					path + 'px' + format, path + 'nx' + format,
 					path + 'py' + format, path + 'ny' + format,
 					path + 'pz' + format, path + 'nz' + format
 				];
 
-				let reflectionCube = new CubeTextureLoader().load( urls );
+				const reflectionCube = new CubeTextureLoader().load( urls );
 				*/
 
   const material = new MeshStandardMaterial({

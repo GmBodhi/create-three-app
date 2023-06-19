@@ -19,12 +19,13 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.useLegacyLights = false;
 
 const camera = new PerspectiveCamera(
   35,
   window.innerWidth / window.innerHeight,
-  1,
-  2000
+  0.1,
+  100
 );
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -34,14 +35,14 @@ const scene = new Scene();
 const matFloor = new MeshPhongMaterial({ color: 0x808080 });
 const matBox = new MeshPhongMaterial({ color: 0xaaaaaa });
 
-const geoFloor = new PlaneGeometry(2000, 2000);
-const geoBox = new BoxGeometry(3, 1, 2);
+const geoFloor = new PlaneGeometry(100, 100);
+const geoBox = new BoxGeometry(0.3, 0.1, 0.2);
 
 const mshFloor = new Mesh(geoFloor, matFloor);
 mshFloor.rotation.x = -Math.PI * 0.5;
 const mshBox = new Mesh(geoBox, matBox);
 
-const ambient = new AmbientLight(0x111111);
+const ambient = new AmbientLight(0x444444);
 
 const spotLight1 = createSpotlight(0xff7f00);
 const spotLight2 = createSpotlight(0x00ff7f);
@@ -53,11 +54,11 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
 
-  camera.position.set(46, 22, -21);
+  camera.position.set(4.6, 2.2, -2.1);
 
-  spotLight1.position.set(15, 40, 45);
-  spotLight2.position.set(0, 40, 35);
-  spotLight3.position.set(-15, 40, 45);
+  spotLight1.position.set(1.5, 4, 4.5);
+  spotLight2.position.set(0, 4, 3.5);
+  spotLight3.position.set(-1.5, 4, 4.5);
 
   lightHelper1 = new SpotLightHelper(spotLight1);
   lightHelper2 = new SpotLightHelper(spotLight2);
@@ -68,7 +69,7 @@ function init() {
 
   mshBox.castShadow = true;
   mshBox.receiveShadow = true;
-  mshBox.position.set(0, 5, 0);
+  mshBox.position.set(0, 0.5, 0);
 
   scene.add(mshFloor);
   scene.add(mshBox);
@@ -79,13 +80,15 @@ function init() {
   document.body.appendChild(renderer.domElement);
   window.addEventListener("resize", onWindowResize);
 
-  controls.target.set(0, 7, 0);
+  controls.target.set(0, 0.5, 0);
   controls.maxPolarAngle = Math.PI / 2;
+  controls.minDistance = 1;
+  controls.maxDistance = 10;
   controls.update();
 }
 
 function createSpotlight(color) {
-  const newObj = new SpotLight(color, 2);
+  const newObj = new SpotLight(color, 10);
 
   newObj.castShadow = true;
   newObj.angle = 0.3;
@@ -117,9 +120,9 @@ function tween(light) {
   new TWEEN.Tween(light.position)
     .to(
       {
-        x: Math.random() * 30 - 15,
-        y: Math.random() * 10 + 15,
-        z: Math.random() * 30 - 15,
+        x: Math.random() * 3 - 1.5,
+        y: Math.random() * 1 + 1.5,
+        z: Math.random() * 3 - 1.5,
       },
       Math.random() * 3000 + 2000
     )

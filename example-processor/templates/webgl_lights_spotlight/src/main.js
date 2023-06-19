@@ -32,6 +32,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
@@ -47,19 +48,19 @@ function init() {
   camera = new PerspectiveCamera(
     40,
     window.innerWidth / window.innerHeight,
-    1,
-    1000
+    0.1,
+    100
   );
-  camera.position.set(70, 50, 10);
+  camera.position.set(7, 4, 1);
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 20;
-  controls.maxDistance = 100;
+  controls.minDistance = 2;
+  controls.maxDistance = 10;
   controls.maxPolarAngle = Math.PI / 2;
-  controls.target.set(0, 18, 0);
+  controls.target.set(0, 1, 0);
   controls.update();
 
-  const ambient = new HemisphereLight(0xffffff, 0x8d8d8d, 0.05);
+  const ambient = new HemisphereLight(0xffffff, 0x8d8d8d, 0.15);
   scene.add(ambient);
 
   const loader = new TextureLoader().setPath("textures/");
@@ -78,19 +79,19 @@ function init() {
     textures[filename] = texture;
   }
 
-  spotLight = new SpotLight(0xffffff, 5);
-  spotLight.position.set(25, 50, 25);
+  spotLight = new SpotLight(0xffffff, 100);
+  spotLight.position.set(2.5, 5, 2.5);
   spotLight.angle = Math.PI / 6;
   spotLight.penumbra = 1;
   spotLight.decay = 2;
-  spotLight.distance = 100;
+  spotLight.distance = 0;
   spotLight.map = textures["disturb.jpg"];
 
   spotLight.castShadow = true;
   spotLight.shadow.mapSize.width = 1024;
   spotLight.shadow.mapSize.height = 1024;
-  spotLight.shadow.camera.near = 10;
-  spotLight.shadow.camera.far = 200;
+  spotLight.shadow.camera.near = 1;
+  spotLight.shadow.camera.far = 10;
   spotLight.shadow.focus = 1;
   scene.add(spotLight);
 
@@ -99,7 +100,7 @@ function init() {
 
   //
 
-  const geometry = new PlaneGeometry(1000, 1000);
+  const geometry = new PlaneGeometry(200, 200);
   const material = new MeshLambertMaterial({ color: 0xbcbcbc });
 
   const mesh = new Mesh(geometry, material);
@@ -111,14 +112,14 @@ function init() {
   //
 
   new PLYLoader().load("models/ply/binary/Lucy100k.ply", function (geometry) {
-    geometry.scale(0.024, 0.024, 0.024);
+    geometry.scale(0.0024, 0.0024, 0.0024);
     geometry.computeVertexNormals();
 
     const material = new MeshLambertMaterial();
 
     const mesh = new Mesh(geometry, material);
     mesh.rotation.y = -Math.PI / 2;
-    mesh.position.y = 18;
+    mesh.position.y = 0.8;
     mesh.castShadow = true;
     mesh.receiveShadow = true;
     scene.add(mesh);
@@ -150,7 +151,7 @@ function init() {
     spotLight.color.setHex(val);
   });
 
-  gui.add(params, "intensity", 0, 10).onChange(function (val) {
+  gui.add(params, "intensity", 0, 500).onChange(function (val) {
     spotLight.intensity = val;
   });
 
@@ -197,8 +198,8 @@ function onWindowResize() {
 function render() {
   const time = performance.now() / 3000;
 
-  spotLight.position.x = Math.cos(time) * 25;
-  spotLight.position.z = Math.sin(time) * 25;
+  spotLight.position.x = Math.cos(time) * 2.5;
+  spotLight.position.z = Math.sin(time) * 2.5;
 
   lightHelper.update();
 

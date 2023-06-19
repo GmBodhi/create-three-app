@@ -65,9 +65,9 @@ function init() {
   room.geometry.translate(0, 3, 0);
   scene.add(room);
 
-  scene.add(new HemisphereLight(0xbbbbbb, 0x888888));
+  scene.add(new HemisphereLight(0xbbbbbb, 0x888888, 3));
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(1, 1, 1).normalize();
   scene.add(light);
 
@@ -77,6 +77,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
+  renderer.useLegacyLights = false;
   renderer.xr.enabled = true;
   document.body.appendChild(renderer.domElement);
 

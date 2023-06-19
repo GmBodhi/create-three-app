@@ -106,6 +106,7 @@ function init() {
   const height = window.innerHeight;
 
   renderer = new WebGLRenderer();
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   // todo - support pixelRatio in this demo
   renderer.setSize(width, height);
@@ -125,9 +126,9 @@ function init() {
 
   //
 
-  scene.add(new AmbientLight(0xaaaaaa, 0.2));
+  scene.add(new AmbientLight(0xaaaaaa, 0.6));
 
-  const light = new DirectionalLight(0xddffdd, 0.6);
+  const light = new DirectionalLight(0xddffdd, 2);
   light.position.set(1, 1, 1);
   light.castShadow = true;
   light.shadow.mapSize.width = 1024;

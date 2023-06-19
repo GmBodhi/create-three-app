@@ -80,6 +80,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -95,22 +96,22 @@ function init() {
   const group = new Group();
   scene.add(group);
 
-  const light = new PointLight(0xddffdd, 1.0);
-  light.position.z = 70;
-  light.position.y = -70;
-  light.position.x = -70;
+  const light = new PointLight(0xefffef, 500);
+  light.position.z = 10;
+  light.position.y = -10;
+  light.position.x = -10;
   scene.add(light);
 
-  const light2 = new PointLight(0xffdddd, 1.0);
-  light2.position.z = 70;
-  light2.position.x = -70;
-  light2.position.y = 70;
+  const light2 = new PointLight(0xffefef, 500);
+  light2.position.z = 10;
+  light2.position.x = -10;
+  light2.position.y = 10;
   scene.add(light2);
 
-  const light3 = new PointLight(0xddddff, 1.0);
-  light3.position.z = 70;
-  light3.position.x = 70;
-  light3.position.y = -70;
+  const light3 = new PointLight(0xefefff, 500);
+  light3.position.z = 10;
+  light3.position.x = 10;
+  light3.position.y = -10;
   scene.add(light3);
 
   const geometry = new SphereGeometry(1, 48, 24);

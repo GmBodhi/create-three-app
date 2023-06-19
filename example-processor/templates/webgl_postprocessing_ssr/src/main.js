@@ -83,10 +83,11 @@ function init() {
   scene.add(plane);
 
   // Lights
-  const hemiLight = new HemisphereLight(0x8d7c7c, 0x494966);
+  const hemiLight = new HemisphereLight(0x8d7c7c, 0x494966, 3);
   scene.add(hemiLight);
 
   const spotLight = new SpotLight();
+  spotLight.intensity = 8;
   spotLight.angle = Math.PI / 16;
   spotLight.penumbra = 0.5;
   // spotLight.castShadow = true;
@@ -148,6 +149,7 @@ function init() {
   // renderer
   renderer = new WebGLRenderer({ antialias: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //

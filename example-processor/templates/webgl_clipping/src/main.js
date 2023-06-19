@@ -40,9 +40,9 @@ function init() {
 
   // Lights
 
-  scene.add(new AmbientLight(0x505050));
+  scene.add(new AmbientLight(0xcccccc));
 
-  const spotLight = new SpotLight(0xffffff);
+  const spotLight = new SpotLight(0xffffff, 60);
   spotLight.angle = Math.PI / 5;
   spotLight.penumbra = 0.2;
   spotLight.position.set(2, 3, 3);
@@ -53,7 +53,7 @@ function init() {
   spotLight.shadow.mapSize.height = 1024;
   scene.add(spotLight);
 
-  const dirLight = new DirectionalLight(0x55505a, 1);
+  const dirLight = new DirectionalLight(0x55505a, 3);
   dirLight.position.set(0, 3, 0);
   dirLight.castShadow = true;
   dirLight.shadow.camera.near = 1;
@@ -111,6 +111,7 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   window.addEventListener("resize", onWindowResize);
   document.body.appendChild(renderer.domElement);
 

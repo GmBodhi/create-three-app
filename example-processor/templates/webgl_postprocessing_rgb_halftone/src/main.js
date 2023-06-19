@@ -35,6 +35,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
 
   clock = new Clock();
 
@@ -67,7 +68,7 @@ function init() {
     new MeshPhongMaterial({})
   );
   floor.position.y = -10;
-  const light = new PointLight(0xffffff, 1.0, 50, 2);
+  const light = new PointLight(0xffffff, 250);
   light.position.y = 2;
   group.add(floor, light);
   scene.add(group);

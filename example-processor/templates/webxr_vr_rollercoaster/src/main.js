@@ -33,7 +33,7 @@ let mesh, material, geometry;
 const scene = new Scene();
 scene.background = new Color(0xf0f0ff);
 
-const light = new HemisphereLight(0xfff0f0, 0x606066);
+const light = new HemisphereLight(0xfff0f0, 0x60606, 3);
 light.position.set(1, 1, 1);
 scene.add(light);
 
@@ -175,6 +175,7 @@ funfairs.push(mesh);
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.useLegacyLights = false;
 renderer.xr.enabled = true;
 renderer.xr.setReferenceSpaceType("local");
 renderer.xr.setUserCamera(camera);

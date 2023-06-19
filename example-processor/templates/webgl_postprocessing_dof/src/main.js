@@ -57,6 +57,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   const path = "textures/cube/SwedishRoyalCastle/";

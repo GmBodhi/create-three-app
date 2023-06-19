@@ -42,14 +42,14 @@ function init() {
     70,
     window.innerWidth / window.innerHeight,
     0.1,
-    200
+    100
   );
-  camera.position.set(0, 10, 25);
+  camera.position.set(0, 1, 3);
   camera.lookAt(scene.position);
 
   //
 
-  const geometry = new TorusKnotGeometry(8, 3, 256, 32, 2, 3);
+  const geometry = new TorusKnotGeometry(1, 0.3, 256, 32);
   const material = new MeshPhongMaterial({ color: 0xffff00 });
 
   const mesh = new Mesh(geometry, material);
@@ -57,10 +57,10 @@ function init() {
 
   //
 
-  const ambientLight = new AmbientLight(0xe7e7e7, 0.4);
+  const ambientLight = new AmbientLight(0xe7e7e7);
   scene.add(ambientLight);
 
-  const pointLight = new PointLight(0xffffff, 0.8);
+  const pointLight = new PointLight(0xffffff, 20);
   camera.add(pointLight);
   scene.add(camera);
 
@@ -69,6 +69,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   // postprocessing
@@ -95,8 +96,7 @@ function init() {
   composer.addPass(effectSobel);
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 10;
-  controls.maxDistance = 100;
+  controls.enableZoom = false;
 
   //
 

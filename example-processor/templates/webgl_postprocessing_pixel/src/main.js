@@ -52,6 +52,7 @@ function init() {
   renderer.shadowMap.enabled = true;
   //renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   composer = new EffectComposer(renderer);
@@ -142,15 +143,15 @@ function init() {
 
   // lights
 
-  scene.add(new AmbientLight(0x757f8e));
+  scene.add(new AmbientLight(0x757f8e, 3));
 
-  const directionalLight = new DirectionalLight(0xfffecd, 0.5);
+  const directionalLight = new DirectionalLight(0xfffecd, 1.5);
   directionalLight.position.set(100, 100, 100);
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.set(2048, 2048);
   scene.add(directionalLight);
 
-  const spotLight = new SpotLight(0xffc100, 1, 10, Math.PI / 16, 0.02, 2);
+  const spotLight = new SpotLight(0xffc100, 10, 10, Math.PI / 16, 0.02, 2);
   spotLight.position.set(2, 2, 0);
   const target = spotLight.target;
   scene.add(target);
