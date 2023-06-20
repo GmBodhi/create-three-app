@@ -57,23 +57,23 @@ function init() {
   camera = new PerspectiveCamera(
     40,
     window.innerWidth / window.innerHeight,
-    1,
-    1000
+    0.1,
+    100
   );
-  camera.position.set(0, 150, 400);
+  camera.position.set(0, 2, 4);
 
   // SCENE
 
   scene = new Scene();
   scene.background = new Color(0x050505);
-  scene.fog = new Fog(0x050505, 400, 1000);
+  scene.fog = new Fog(0x050505, 2.5, 10);
 
   // LIGHTS
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x666666));
 
-  const light1 = new SpotLight(0xffffff, 5, 1000);
-  light1.position.set(200, 250, 500);
+  const light1 = new SpotLight(0xffffff, 150);
+  light1.position.set(2, 5, 10);
   light1.angle = 0.5;
   light1.penumbra = 0.5;
 
@@ -84,8 +84,8 @@ function init() {
   // scene.add( new CameraHelper( light1.shadow.camera ) );
   scene.add(light1);
 
-  const light2 = new SpotLight(0xffffff, 5, 1000);
-  light2.position.set(-100, 350, 350);
+  const light2 = new SpotLight(0xffffff, 150);
+  light2.position.set(-1, 3.5, 3.5);
   light2.angle = 0.5;
   light2.penumbra = 0.5;
 
@@ -99,7 +99,7 @@ function init() {
   //  GROUND
 
   const gt = new TextureLoader().load("textures/terrain/grasslight-big.jpg");
-  const gg = new PlaneGeometry(2000, 2000);
+  const gg = new PlaneGeometry(20, 20);
   const gm = new MeshPhongMaterial({ color: 0xffffff, map: gt });
 
   const ground = new Mesh(gg, gm);
@@ -116,6 +116,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //
@@ -134,7 +135,7 @@ function init() {
   // CONTROLS
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 50, 0);
+  controls.target.set(0, 0.5, 0);
   controls.update();
 
   // GUI
@@ -178,7 +179,7 @@ function init() {
   };
 
   character = new MD2Character();
-  character.scale = 3;
+  character.scale = 0.03;
 
   character.onLoadComplete = function () {
     setupSkinsGUI(character);

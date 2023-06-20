@@ -55,10 +55,10 @@ function init() {
 
   // light
 
-  const ambientLight = new AmbientLight(0xffffff, 0.4);
+  const ambientLight = new AmbientLight(0xffffff, 1.2);
   scene.add(ambientLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 0.6);
+  const dirLight = new DirectionalLight(0xffffff, 2.0);
   dirLight.position.set(200, 200, 200);
   scene.add(dirLight);
 
@@ -70,6 +70,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   // controls

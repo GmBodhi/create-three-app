@@ -33,6 +33,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // scene
@@ -136,19 +137,19 @@ function init() {
   scene.add(planeLeft);
 
   // lights
-  const mainLight = new PointLight(0xcccccc, 1.5, 250);
+  const mainLight = new PointLight(0xe7e7e7, 2.5, 250, 0);
   mainLight.position.y = 60;
   scene.add(mainLight);
 
-  const greenLight = new PointLight(0x00ff00, 0.25, 1000);
+  const greenLight = new PointLight(0x00ff00, 0.5, 1000, 0);
   greenLight.position.set(550, 50, 0);
   scene.add(greenLight);
 
-  const redLight = new PointLight(0xff0000, 0.25, 1000);
+  const redLight = new PointLight(0xff0000, 0.5, 1000, 0);
   redLight.position.set(-550, 50, 0);
   scene.add(redLight);
 
-  const blueLight = new PointLight(0x7f7fff, 0.25, 1000);
+  const blueLight = new PointLight(0xbbbbfe, 0.5, 1000, 0);
   blueLight.position.set(0, 50, 550);
   scene.add(blueLight);
 

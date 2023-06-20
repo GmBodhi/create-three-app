@@ -58,11 +58,12 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
   container.appendChild(renderer.domElement);
 
-  const environment = new RoomEnvironment();
+  const environment = new RoomEnvironment(renderer);
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.background = new Color(0xbbbbbb);

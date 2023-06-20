@@ -74,10 +74,11 @@ function init() {
   camera.position.set(0, 250, 1000);
   scene.add(camera);
 
-  scene.add(new AmbientLight(0xf0f0f0));
-  const light = new SpotLight(0xffffff, 1.5);
+  scene.add(new AmbientLight(0xf0f0f0, 3));
+  const light = new SpotLight(0xffffff, 4.5);
   light.position.set(0, 1500, 200);
   light.angle = Math.PI * 0.2;
+  light.decay = 0;
   light.castShadow = true;
   light.shadow.camera.near = 200;
   light.shadow.camera.far = 2000;
@@ -104,6 +105,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 

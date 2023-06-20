@@ -51,9 +51,9 @@ function initScene() {
 
   // Lights
 
-  scene.add(new AmbientLight(0x404040));
+  scene.add(new AmbientLight(0x404040, 3));
 
-  spotLight = new SpotLight(0xffffff);
+  spotLight = new SpotLight(0xffffff, 500);
   spotLight.name = "Spot Light";
   spotLight.angle = Math.PI / 5;
   spotLight.penumbra = 0.3;
@@ -67,7 +67,7 @@ function initScene() {
 
   scene.add(new CameraHelper(spotLight.shadow.camera));
 
-  dirLight = new DirectionalLight(0xffffff, 1);
+  dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.name = "Dir. Light";
   dirLight.position.set(0, 10, 0);
   dirLight.castShadow = true;
@@ -129,6 +129,7 @@ function initMisc() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = BasicShadowMap;
 

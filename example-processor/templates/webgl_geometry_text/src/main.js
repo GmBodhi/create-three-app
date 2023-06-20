@@ -103,11 +103,11 @@ function init() {
 
   // LIGHTS
 
-  const dirLight = new DirectionalLight(0xffffff, 0.125);
+  const dirLight = new DirectionalLight(0xffffff, 0.4);
   dirLight.position.set(0, 0, 1).normalize();
   scene.add(dirLight);
 
-  const pointLight = new PointLight(0xffffff, 1.5);
+  const pointLight = new PointLight(0xffffff, 4.5, 0, 0);
   pointLight.color.setHSL(Math.random(), 1, 0.5);
   pointLight.position.set(0, 100, 90);
   scene.add(pointLight);
@@ -137,6 +137,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // EVENTS

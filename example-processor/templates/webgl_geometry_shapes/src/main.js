@@ -60,7 +60,7 @@ function init() {
   camera.position.set(0, 150, 500);
   scene.add(camera);
 
-  const light = new PointLight(0xffffff, 0.8);
+  const light = new PointLight(0xffffff, 2.5, 0, 0);
   camera.add(light);
 
   group = new Group();
@@ -409,6 +409,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();

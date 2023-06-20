@@ -36,9 +36,10 @@ function init() {
     '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - geometry extrude shapes';
   document.body.appendChild(info);
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -56,9 +57,9 @@ function init() {
   controls.minDistance = 200;
   controls.maxDistance = 500;
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x666666));
 
-  const light = new PointLight(0xffffff);
+  const light = new PointLight(0xffffff, 3, 0, 0);
   light.position.copy(camera.position);
   scene.add(light);
 

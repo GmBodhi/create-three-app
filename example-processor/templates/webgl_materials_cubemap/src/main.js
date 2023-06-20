@@ -33,10 +33,10 @@ function init() {
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
-    1,
-    5000
+    0.1,
+    100
   );
-  camera.position.z = 2000;
+  camera.position.z = 13;
 
   //cubemap
   const path = "textures/cube/SwedishRoyalCastle/";
@@ -58,10 +58,10 @@ function init() {
   scene.background = reflectionCube;
 
   //lights
-  const ambient = new AmbientLight(0xffffff);
+  const ambient = new AmbientLight(0xffffff, 3);
   scene.add(ambient);
 
-  pointLight = new PointLight(0xffffff, 2);
+  pointLight = new PointLight(0xffffff, 200);
   scene.add(pointLight);
 
   //materials
@@ -87,26 +87,26 @@ function init() {
   objLoader.setPath("models/obj/walt/");
   objLoader.load("WaltHead.obj", function (object) {
     const head = object.children[0];
-
-    head.scale.multiplyScalar(15);
-    head.position.y = -500;
+    head.scale.setScalar(0.1);
+    head.position.y = -3;
     head.material = cubeMaterial1;
 
     const head2 = head.clone();
-    head2.position.x = -900;
+    head2.position.x = -6;
     head2.material = cubeMaterial2;
 
     const head3 = head.clone();
-    head3.position.x = 900;
+    head3.position.x = 6;
     head3.material = cubeMaterial3;
 
     scene.add(head, head2, head3);
   });
 
   //renderer
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //controls

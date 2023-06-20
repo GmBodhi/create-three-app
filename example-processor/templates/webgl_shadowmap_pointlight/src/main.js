@@ -39,12 +39,12 @@ function init() {
   camera.position.set(0, 10, 40);
 
   scene = new Scene();
-  scene.add(new AmbientLight(0x111122));
+  scene.add(new AmbientLight(0x111122, 3));
 
   // lights
 
   function createLight(color) {
-    const intensity = 2;
+    const intensity = 200;
 
     const light = new PointLight(color, intensity, 20);
     light.castShadow = true;
@@ -103,6 +103,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = BasicShadowMap;
   document.body.appendChild(renderer.domElement);

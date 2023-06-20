@@ -31,7 +31,7 @@ const camera = new PerspectiveCamera(55, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 3000);
 const clock = new Clock();
 const renderer = new WebGLRenderer();
 
-const sunLight = new DirectionalLight("rgb(255,255,255)", 1);
+const sunLight = new DirectionalLight("rgb(255,255,255)", 3);
 let useDirectionalLight = true;
 let arrowHelper1, arrowHelper2, arrowHelper3;
 const arrowDirection = new Vector3();
@@ -60,6 +60,7 @@ animate();
 function init() {
   scene.background = new Color(0x0096ff);
 
+  renderer.useLegacyLights = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   document.getElementById("container").appendChild(renderer.domElement);

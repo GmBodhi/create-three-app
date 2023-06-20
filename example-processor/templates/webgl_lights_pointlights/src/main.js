@@ -47,19 +47,19 @@ function init() {
 
   //lights
 
-  light1 = new PointLight(0xff0040, 2, 50);
+  light1 = new PointLight(0xff0040, 400);
   light1.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0xff0040 })));
   scene.add(light1);
 
-  light2 = new PointLight(0x0040ff, 2, 50);
+  light2 = new PointLight(0x0040ff, 400);
   light2.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0x0040ff })));
   scene.add(light2);
 
-  light3 = new PointLight(0x80ff80, 2, 50);
+  light3 = new PointLight(0x80ff80, 400);
   light3.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0x80ff80 })));
   scene.add(light3);
 
-  light4 = new PointLight(0xffaa00, 2, 50);
+  light4 = new PointLight(0xffaa00, 400);
   light4.add(new Mesh(sphere, new MeshBasicMaterial({ color: 0xffaa00 })));
   scene.add(light4);
 
@@ -68,6 +68,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //stats

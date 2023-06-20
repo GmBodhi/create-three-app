@@ -70,6 +70,7 @@ function init() {
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
@@ -80,10 +81,10 @@ function init() {
   controls.target = new Vector3(-100, 10, 0);
   controls.update();
 
-  const ambientLight = new AmbientLight(0xffffff, 0.5);
+  const ambientLight = new AmbientLight(0xffffff, 1.5);
   scene.add(ambientLight);
 
-  const additionalDirectionalLight = new DirectionalLight(0x000020, 0.5);
+  const additionalDirectionalLight = new DirectionalLight(0x000020, 1.5);
   additionalDirectionalLight.position
     .set(params.lightX, params.lightY, params.lightZ)
     .normalize()

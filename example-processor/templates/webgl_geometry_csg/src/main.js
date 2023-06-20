@@ -57,10 +57,10 @@ function init() {
   scene.background = new Color(0xfce4ec);
 
   // lights
-  const ambient = new HemisphereLight(0xffffff, 0xbfd4d2, 0.9);
+  const ambient = new HemisphereLight(0xffffff, 0xbfd4d2, 3);
   scene.add(ambient);
 
-  const directionalLight = new DirectionalLight(0xffffff, 0.1);
+  const directionalLight = new DirectionalLight(0xffffff, 0.3);
   directionalLight.position.set(1, 4, 3).multiplyScalar(3);
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.setScalar(2048);
@@ -72,6 +72,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
   document.body.appendChild(renderer.domElement);

@@ -66,16 +66,16 @@ function init() {
     45,
     window.innerWidth / window.innerHeight,
     1,
-    4000
+    400
   );
-  camera.position.set(0, 200, 1200);
+  camera.position.set(0, 20, 120);
 
   scene = new Scene();
 
   // Grid
 
-  const helper = new GridHelper(1000, 40, 0x303030, 0x303030);
-  helper.position.y = -75;
+  const helper = new GridHelper(100, 40, 0x303030, 0x303030);
+  helper.position.y = -7.5;
   scene.add(helper);
 
   // CubeMap
@@ -104,7 +104,7 @@ function init() {
 
   // Spheres geometry
 
-  const geometry = new SphereGeometry(70, 32, 16);
+  const geometry = new SphereGeometry(7, 32, 16);
 
   for (let i = 0, l = 12; i < l; i++) {
     addMesh(geometry, material);
@@ -112,9 +112,9 @@ function init() {
 
   // Lights
 
-  scene.add(new AmbientLight(0x111111));
+  scene.add(new AmbientLight(0x444444));
 
-  const directionalLight = new DirectionalLight(0xffffff, 0.125);
+  const directionalLight = new DirectionalLight(0xffffff, 0.4);
 
   directionalLight.position.x = Math.random() - 0.5;
   directionalLight.position.y = Math.random() - 0.5;
@@ -123,12 +123,12 @@ function init() {
 
   scene.add(directionalLight);
 
-  pointLight = new PointLight(0xffffff, 1);
+  pointLight = new PointLight(0xffffff, 1000);
   scene.add(pointLight);
 
   pointLight.add(
     new Mesh(
-      new SphereGeometry(4, 8, 8),
+      new SphereGeometry(0.4, 8, 8),
       new MeshBasicMaterial({ color: 0xffffff })
     )
   );
@@ -138,13 +138,14 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 400;
-  controls.maxDistance = 2000;
+  controls.minDistance = 40;
+  controls.maxDistance = 200;
 
   //
 
@@ -161,8 +162,8 @@ function addMesh(geometry, material) {
 
   mesh.color = new Color(Math.random() * 0xffffff);
 
-  mesh.position.x = (objects.length % 4) * 200 - 300;
-  mesh.position.z = Math.floor(objects.length / 4) * 200 - 200;
+  mesh.position.x = (objects.length % 4) * 20 - 30;
+  mesh.position.z = Math.floor(objects.length / 4) * 20 - 20;
 
   mesh.rotation.x = Math.random() * 200 - 100;
   mesh.rotation.y = Math.random() * 200 - 100;
@@ -201,9 +202,9 @@ function render() {
     object.rotation.y += 0.005;
   }
 
-  pointLight.position.x = Math.sin(timer * 7) * 300;
-  pointLight.position.y = Math.cos(timer * 5) * 400;
-  pointLight.position.z = Math.cos(timer * 3) * 300;
+  pointLight.position.x = Math.sin(timer * 7) * 30;
+  pointLight.position.y = Math.cos(timer * 5) * 40;
+  pointLight.position.z = Math.cos(timer * 3) * 30;
 
   renderer.render(scene, camera);
 }

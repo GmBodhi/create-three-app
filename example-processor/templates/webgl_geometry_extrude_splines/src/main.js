@@ -10,6 +10,7 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
+  AmbientLight,
   DirectionalLight,
   Object3D,
   CameraHelper,
@@ -180,7 +181,9 @@ function init() {
 
   // light
 
-  const light = new DirectionalLight(0xffffff);
+  scene.add(new AmbientLight(0xffffff));
+
+  const light = new DirectionalLight(0xffffff, 1.5);
   light.position.set(0, 0, 1);
   scene.add(light);
 
@@ -218,6 +221,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // stats

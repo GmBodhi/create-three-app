@@ -61,6 +61,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -75,10 +76,10 @@ function init() {
   controls.target.set(0, 0, 0);
   controls.update();
 
-  scene.add(new HemisphereLight(0xffffff, 0x737373, 1));
+  scene.add(new HemisphereLight(0xffffff, 0x737373, 3));
 
-  const frontLight = new DirectionalLight(0xffffff, 0.5);
-  const backLight = new DirectionalLight(0xffffff, 0.5);
+  const frontLight = new DirectionalLight(0xffffff, 1.5);
+  const backLight = new DirectionalLight(0xffffff, 1.5);
   frontLight.position.set(0, 1, 1);
   backLight.position.set(0, 1, -1);
   scene.add(frontLight, backLight);

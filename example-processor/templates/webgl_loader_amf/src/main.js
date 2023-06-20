@@ -36,7 +36,7 @@ function init() {
   camera.up.set(0, 0, 1);
   camera.position.set(0, -9, 6);
 
-  camera.add(new PointLight(0xffffff, 0.8));
+  camera.add(new PointLight(0xffffff, 250));
 
   scene.add(camera);
 
@@ -47,6 +47,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   const loader = new AMFLoader();
@@ -57,7 +58,8 @@ function init() {
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render);
-  controls.target.set(0, 1.2, 2);
+  controls.target.set(0, 0, 2);
+  controls.enableZoom = false;
   controls.update();
 
   window.addEventListener("resize", onWindowResize);

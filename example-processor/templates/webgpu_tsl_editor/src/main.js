@@ -16,6 +16,7 @@ import * as Nodes from "three/nodes";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import WGSLNodeBuilder from "three/addons/renderers/webgpu/nodes/WGSLNodeBuilder.js";
+import GLSLNodeBuilder from "three/addons/renderers/webgl/nodes/GLSLNodeBuilder.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -68,6 +69,8 @@ function init() {
     const options = {
       shader: "fragment",
       outputColorSpace: LinearSRGBColorSpace,
+      output: "WGSL",
+      preview: true,
     };
 
     let timeout = null;
@@ -76,7 +79,7 @@ function init() {
     const editorDOM = document.getElementById("source");
     const resultDOM = document.getElementById("result");
 
-    const tslCode = `// Example: Desaturate texture
+    const tslCode = `// Simple example
 
 const { texture, uniform, vec4 } = TSL;
 
@@ -123,7 +126,10 @@ output = vec4( finalColor, opacity );
         mesh.material.outputNode = nodes.output;
         mesh.material.needsUpdate = true;
 
-        nodeBuilder = new WGSLNodeBuilder(mesh, renderer);
+        const NodeBuilder =
+          options.output === "WGSL" ? WGSLNodeBuilder : GLSLNodeBuilder;
+
+        nodeBuilder = new NodeBuilder(mesh, renderer);
         nodeBuilder.build();
 
         showCode();
@@ -153,6 +159,7 @@ output = vec4( finalColor, opacity );
 
     const gui = new GUI();
 
+    gui.add(options, "output", ["GLSL", "WGSL"]).onChange(build);
     gui.add(options, "shader", ["vertex", "fragment"]).onChange(showCode);
 
     gui
@@ -162,5 +169,9 @@ output = vec4( finalColor, opacity );
 
         build();
       });
+
+    gui.add(options, "preview").onChange((value) => {
+      rendererDOM.style.display = value ? "" : "none";
+    });
   });
 }

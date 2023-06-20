@@ -72,9 +72,9 @@ function init() {
 
   // LIGHTS
 
-  scene.add(new AmbientLight(0x666666));
+  scene.add(new AmbientLight(0x666666, 3));
 
-  const light = new DirectionalLight(0xffffff, 2.25);
+  const light = new DirectionalLight(0xffffff, 7);
   light.position.set(200, 450, 500);
 
   light.castShadow = true;
@@ -115,6 +115,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //

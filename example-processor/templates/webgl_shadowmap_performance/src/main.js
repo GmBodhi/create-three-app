@@ -7,7 +7,7 @@ import {
   Color,
   Fog,
   AmbientLight,
-  SpotLight,
+  DirectionalLight,
   WebGLRenderer,
   PCFSoftShadowMap,
   PlaneGeometry,
@@ -68,14 +68,16 @@ function init() {
 
   // LIGHTS
 
-  const ambient = new AmbientLight(0x8d8d8d);
+  const ambient = new AmbientLight(0xffffff);
   scene.add(ambient);
 
-  const light = new SpotLight(0xffffff, 1, 0, Math.PI / 5, 0.3);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0, 1500, 1000);
-  light.target.position.set(0, 0, 0);
-
   light.castShadow = true;
+  light.shadow.camera.top = 2000;
+  light.shadow.camera.bottom = -2000;
+  light.shadow.camera.left = -2000;
+  light.shadow.camera.right = 2000;
   light.shadow.camera.near = 1200;
   light.shadow.camera.far = 2500;
   light.shadow.bias = 0.0001;
@@ -89,9 +91,10 @@ function init() {
 
   // RENDERER
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   renderer.autoClear = false;

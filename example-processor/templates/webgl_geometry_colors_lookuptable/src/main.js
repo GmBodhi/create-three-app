@@ -78,11 +78,12 @@ function init() {
   };
   loadModel();
 
-  const pointLight = new PointLight(0xffffff, 1);
+  const pointLight = new PointLight(0xffffff, 3, 0, 0);
   perpCamera.add(pointLight);
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.autoClear = false;
+  renderer.useLegacyLights = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
   container.appendChild(renderer.domElement);

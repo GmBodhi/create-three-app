@@ -179,6 +179,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.useLegacyLights = false;
   renderer.autoClear = false;
 
   renderer.domElement.style.position = "relative";

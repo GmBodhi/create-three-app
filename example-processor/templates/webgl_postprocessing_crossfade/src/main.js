@@ -12,7 +12,7 @@ import {
   PerspectiveCamera,
   Scene,
   AmbientLight,
-  SpotLight,
+  DirectionalLight,
   MeshPhongMaterial,
   WebGLRenderTarget,
   HalfFloatType,
@@ -53,6 +53,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -155,10 +156,10 @@ function FXScene(geometry, rotationSpeed, clearColor) {
 
   // Setup scene
   const scene = new Scene();
-  scene.add(new AmbientLight(0xaaaaaa));
+  scene.add(new AmbientLight(0xaaaaaa, 3));
 
-  const light = new SpotLight(0xffffff, 1.5);
-  light.position.set(0, 5, 20);
+  const light = new DirectionalLight(0xffffff, 3);
+  light.position.set(0, 1, 4);
   scene.add(light);
 
   this.rotationSpeed = rotationSpeed;

@@ -7,7 +7,7 @@ import {
   PerspectiveCamera,
   Scene,
   AmbientLight,
-  SpotLight,
+  DirectionalLight,
   MeshPhongMaterial,
   WebGLRenderTarget,
   IntType,
@@ -58,9 +58,9 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xffffff);
 
-  scene.add(new AmbientLight(0x555555));
+  scene.add(new AmbientLight(0xcccccc));
 
-  const light = new SpotLight(0xffffff, 1.5);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0, 500, 2000);
   scene.add(light);
 
@@ -180,6 +180,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   controls = new TrackballControls(camera, renderer.domElement);
