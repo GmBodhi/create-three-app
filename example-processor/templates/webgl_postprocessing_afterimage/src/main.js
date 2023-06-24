@@ -91,11 +91,9 @@ function render() {
   mesh.rotation.x += 0.005;
   mesh.rotation.y += 0.01;
 
-  if (params.enable) {
-    composer.render();
-  } else {
-    renderer.render(scene, camera);
-  }
+  afterimagePass.enabled = params.enable;
+
+  composer.render();
 }
 
 function animate() {
