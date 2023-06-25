@@ -212,6 +212,7 @@ function init() {
     fragmentShader: VelocityShader.fragmentShader,
     side: DoubleSide,
   });
+  materialVelocity.displacementMap = displacementMap; // required for defines
   materialVelocity.uniforms.displacementMap.value = displacementMap;
   materialVelocity.uniforms.displacementScale.value = SCALE;
   materialVelocity.uniforms.displacementBias.value = BIAS;
