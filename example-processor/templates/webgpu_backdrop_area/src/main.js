@@ -6,9 +6,9 @@ import {
   Color,
   Clock,
   AnimationMixer,
+  DoubleSide,
   Mesh,
   BoxGeometry,
-  DoubleSide,
   LinearToneMapping,
 } from "three";
 import {
@@ -75,28 +75,44 @@ function init() {
 
   // volume
 
-  const depthAlphaNode = depthTexture()
-    .distance(depth)
+  const depthDistance = depthTexture().distance(depth);
+  const depthAlphaNode = depthDistance
     .oneMinus()
     .smoothstep(0.9, 2)
     .mul(20)
     .saturate();
+  const depthBlurred = viewportMipTexture().bicubic(
+    depthDistance
+      .smoothstep(0, 0.6)
+      .mul(40 * 5)
+      .clamp(0, 5)
+  );
+
+  const blurredBlur = new MeshBasicNodeMaterial();
+  blurredBlur.backdropNode = depthBlurred.add(
+    depthAlphaNode.mix(color(0x0066ff), 0)
+  );
+  blurredBlur.transparent = true;
+  blurredBlur.side = DoubleSide;
 
   const volumeMaterial = new MeshBasicNodeMaterial();
   volumeMaterial.colorNode = color(0x0066ff);
   volumeMaterial.backdropNode = viewportSharedTexture();
   volumeMaterial.backdropAlphaNode = depthAlphaNode;
   volumeMaterial.transparent = true;
+  volumeMaterial.side = DoubleSide;
 
   const depthMaterial = new MeshBasicNodeMaterial();
   depthMaterial.backdropNode = depthAlphaNode;
   depthMaterial.transparent = true;
+  depthMaterial.side = DoubleSide;
 
   const bicubicMaterial = new MeshBasicNodeMaterial();
   bicubicMaterial.backdropNode = viewportMipTexture().bicubic(5); // @TODO: Move to alpha value [ 0, 1 ]
   bicubicMaterial.backdropAlphaNode = checker(uv().mul(3).mul(modelScale.xy));
   bicubicMaterial.opacityNode = bicubicMaterial.backdropAlphaNode;
   bicubicMaterial.transparent = true;
+  bicubicMaterial.side = DoubleSide;
 
   const pixelMaterial = new MeshBasicNodeMaterial();
   pixelMaterial.backdropNode = viewportSharedTexture(
@@ -108,17 +124,7 @@ function init() {
 
   const box = new Mesh(new BoxGeometry(2, 2, 2), volumeMaterial);
   box.position.set(0, 1, 0);
-  //box.material.side = DoubleSide; // @TODO: Needed add support to material.forceSinglePass = false;
   scene.add(box);
-
-  const boxBack = new Mesh(
-    new BoxGeometry(2, 2, 2).scale(-1, -1, -1),
-    volumeMaterial
-  );
-  boxBack.position.set(0, 1, 0);
-  boxBack.renderOrder = -1;
-  boxBack.visible = false;
-  scene.add(boxBack);
 
   const floor = new Mesh(
     new BoxGeometry(1.99, 0.01, 1.99),
@@ -146,6 +152,7 @@ function init() {
   // gui
 
   const materials = {
+    blurred: blurredBlur,
     volume: volumeMaterial,
     depth: depthMaterial,
     bicubic: bicubicMaterial,
@@ -153,17 +160,14 @@ function init() {
   };
 
   const gui = new GUI();
-  const options = { material: "volume" };
+  const options = { material: "blurred" };
 
-  gui
-    .add(box.scale, "x", 0.1, 2, 0.01)
-    .onChange(() => boxBack.scale.copy(box.scale));
-  gui
-    .add(box.scale, "z", 0.1, 2, 0.01)
-    .onChange(() => boxBack.scale.copy(box.scale));
+  box.material = materials[options.material];
+
+  gui.add(box.scale, "x", 0.1, 2, 0.01);
+  gui.add(box.scale, "z", 0.1, 2, 0.01);
   gui.add(options, "material", Object.keys(materials)).onChange((name) => {
-    box.material = boxBack.material = materials[name];
-    boxBack.visible = name === "bicubic";
+    box.material = materials[name];
   });
 }
 
