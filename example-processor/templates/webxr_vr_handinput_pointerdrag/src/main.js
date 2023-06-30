@@ -225,9 +225,10 @@ class CalibrationSystem extends System {
       if (this.renderer.xr.getSession()) {
         const offset = entity.getComponent(OffsetFromCamera);
         const object = entity.getComponent(Object3D).object;
-        object.position.x = camera.position.x + offset.x;
-        object.position.y = camera.position.y + offset.y;
-        object.position.z = camera.position.z + offset.z;
+        const xrCamera = this.renderer.xr.getCamera();
+        object.position.x = xrCamera.position.x + offset.x;
+        object.position.y = xrCamera.position.y + offset.y;
+        object.position.z = xrCamera.position.z + offset.z;
         entity.removeComponent(NeedCalibration);
       }
     });
@@ -326,7 +327,8 @@ function init() {
   renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
-  renderer.xr.setUserCamera(camera);
+  renderer.xr.cameraAutoUpdate = false;
+
   container.appendChild(renderer.domElement);
 
   document.body.appendChild(VRButton.createButton(renderer));
@@ -496,6 +498,7 @@ function animate() {
 function render() {
   const delta = clock.getDelta();
   const elapsedTime = clock.elapsedTime;
+  renderer.xr.updateCamera(camera);
   world.execute(delta, elapsedTime);
   renderer.render(scene, camera);
 }

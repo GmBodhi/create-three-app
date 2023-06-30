@@ -4,17 +4,18 @@ import {
   Color,
   PerspectiveCamera,
   Scene,
-  HemisphereLight,
   IcosahedronGeometry,
   MeshStandardMaterial,
   InstancedMesh,
   Matrix4,
   WebGLRenderer,
+  PMREMGenerator,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
@@ -54,10 +55,6 @@ function init() {
 
   scene = new Scene();
 
-  const light = new HemisphereLight(0xffffff, 0x888888);
-  light.position.set(0, 1, 0);
-  scene.add(light);
-
   const geometry = new IcosahedronGeometry(0.5, 3);
 
   material = new MeshStandardMaterial({
@@ -93,7 +90,16 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
+
+  //
+
+  const environment = new RoomEnvironment(renderer);
+  const pmremGenerator = new PMREMGenerator(renderer);
+
+  scene.environment = pmremGenerator.fromScene(environment).texture;
+  environment.dispose();
 
   //
 
