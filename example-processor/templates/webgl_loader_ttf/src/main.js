@@ -7,7 +7,6 @@ import {
   Color,
   Fog,
   DirectionalLight,
-  PointLight,
   SRGBColorSpace,
   MeshPhongMaterial,
   Group,
@@ -72,14 +71,14 @@ function init() {
 
   // LIGHTS
 
-  const dirLight = new DirectionalLight(0xffffff, 0.125);
-  dirLight.position.set(0, 0, 1).normalize();
-  scene.add(dirLight);
+  const dirLight1 = new DirectionalLight(0xffffff, 0.4);
+  dirLight1.position.set(0, 0, 1).normalize();
+  scene.add(dirLight1);
 
-  const pointLight = new PointLight(0xffffff, 1.5);
-  pointLight.position.set(0, 100, 90);
-  pointLight.color.setHSL(Math.random(), 1, 0.5, SRGBColorSpace);
-  scene.add(pointLight);
+  const dirLight2 = new DirectionalLight(0xffffff, 2);
+  dirLight2.position.set(0, hover, 10).normalize();
+  dirLight2.color.setHSL(Math.random(), 1, 0.5, SRGBColorSpace);
+  scene.add(dirLight2);
 
   material = new MeshPhongMaterial({ color: 0xffffff, flatShading: true });
 
@@ -108,6 +107,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // EVENTS

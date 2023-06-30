@@ -47,10 +47,9 @@ async function init() {
   scene.background = new Color(0x666666);
 
   const hemiLight = new HemisphereLight();
-  hemiLight.intensity = 0.3;
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight();
+  const dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(5, 5, 5);
   dirLight.castShadow = true;
   dirLight.shadow.camera.zoom = 2;
@@ -119,6 +118,7 @@ async function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 

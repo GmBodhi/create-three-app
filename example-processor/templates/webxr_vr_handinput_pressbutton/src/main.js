@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  AudioListener,
   Audio,
   AudioLoader,
   Clock,
@@ -10,7 +11,6 @@ import {
   Scene,
   Color,
   PerspectiveCamera,
-  AudioListener,
   HemisphereLight,
   DirectionalLight,
   WebGLRenderer,
@@ -60,6 +60,11 @@ class ButtonSystem extends System {
   execute(/*delta, time*/) {
     let buttonPressSound, buttonReleaseSound;
     if (this.renderer.xr.getSession() && !this.soundAdded) {
+      const xrCamera = this.renderer.xr.getCamera();
+
+      const listener = new AudioListener();
+      xrCamera.add(listener);
+
       // create a global audio source
       buttonPressSound = new Audio(listener);
       buttonReleaseSound = new Audio(listener);
@@ -239,9 +244,10 @@ class CalibrationSystem extends System {
       if (this.renderer.xr.getSession()) {
         const offset = entity.getComponent(OffsetFromCamera);
         const object = entity.getComponent(Object3D).object;
-        object.position.x = camera.position.x + offset.x;
-        object.position.y = camera.position.y + offset.y;
-        object.position.z = camera.position.z + offset.z;
+        const xrCamera = this.renderer.xr.getCamera();
+        object.position.x = xrCamera.position.x + offset.x;
+        object.position.y = xrCamera.position.y + offset.y;
+        object.position.z = xrCamera.position.z + offset.z;
         entity.removeComponent(NeedCalibration);
       }
     });
@@ -256,9 +262,7 @@ CalibrationSystem.queries = {
 
 const world = new World();
 const clock = new Clock();
-
 let camera, scene, renderer;
-let listener;
 
 init();
 animate();
@@ -287,12 +291,9 @@ function init() {
   );
   camera.position.set(0, 1.2, 0.3);
 
-  listener = new AudioListener();
-  camera.add(listener);
+  scene.add(new HemisphereLight(0xcccccc, 0x999999, 3));
 
-  scene.add(new HemisphereLight(0xcccccc, 0x999999));
-
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0, 6, 0);
   light.castShadow = true;
   light.shadow.camera.top = 2;
@@ -305,9 +306,11 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
-  renderer.xr.setUserCamera(camera);
+  renderer.xr.cameraAutoUpdate = false;
+
   container.appendChild(renderer.domElement);
 
   document.body.appendChild(VRButton.createButton(renderer));
@@ -509,6 +512,7 @@ function animate() {
 function render() {
   const delta = clock.getDelta();
   const elapsedTime = clock.elapsedTime;
+  renderer.xr.updateCamera(camera);
   world.execute(delta, elapsedTime);
   renderer.render(scene, camera);
 }

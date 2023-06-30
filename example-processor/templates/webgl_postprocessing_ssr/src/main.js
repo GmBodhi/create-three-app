@@ -24,8 +24,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { SSRPass } from "three/addons/postprocessing/SSRPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { ReflectorForSSRPass } from "three/addons/objects/ReflectorForSSRPass.js";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
@@ -84,10 +83,11 @@ function init() {
   scene.add(plane);
 
   // Lights
-  const hemiLight = new HemisphereLight(0x8d7c7c, 0x494966);
+  const hemiLight = new HemisphereLight(0x8d7c7c, 0x494966, 3);
   scene.add(hemiLight);
 
   const spotLight = new SpotLight();
+  spotLight.intensity = 8;
   spotLight.angle = Math.PI / 16;
   spotLight.penumbra = 0.5;
   // spotLight.castShadow = true;
@@ -149,6 +149,7 @@ function init() {
   // renderer
   renderer = new WebGLRenderer({ antialias: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //
@@ -180,7 +181,7 @@ function init() {
   });
 
   composer.addPass(ssrPass);
-  composer.addPass(new ShaderPass(GammaCorrectionShader));
+  composer.addPass(new OutputPass());
 
   // GUI
 

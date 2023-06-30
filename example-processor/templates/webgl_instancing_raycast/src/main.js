@@ -45,7 +45,7 @@ function init() {
 
   scene = new Scene();
 
-  const light = new HemisphereLight(0xffffff, 0x888888);
+  const light = new HemisphereLight(0xffffff, 0x888888, 3);
   light.position.set(0, 1, 0);
   scene.add(light);
 
@@ -82,6 +82,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);

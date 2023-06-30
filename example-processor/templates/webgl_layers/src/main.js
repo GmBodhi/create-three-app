@@ -19,7 +19,7 @@ let container, stats;
 let camera, scene, renderer;
 
 let theta = 0;
-const radius = 100;
+const radius = 5;
 
 init();
 animate();
@@ -31,8 +31,8 @@ function init() {
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
-    1,
-    10000
+    0.1,
+    100
   );
   camera.layers.enable(0); // enabled by default
   camera.layers.enable(1);
@@ -41,7 +41,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xf0f0f0);
 
-  const light = new PointLight(0xffffff, 1);
+  const light = new PointLight(0xffffff, 3, 0, 0);
   light.layers.enable(0);
   light.layers.enable(1);
   light.layers.enable(2);
@@ -50,7 +50,7 @@ function init() {
   camera.add(light);
 
   const colors = [0xff0000, 0x00ff00, 0x0000ff];
-  const geometry = new BoxGeometry(20, 20, 20);
+  const geometry = new BoxGeometry();
 
   for (let i = 0; i < 300; i++) {
     const layer = i % 3;
@@ -60,9 +60,9 @@ function init() {
       new MeshLambertMaterial({ color: colors[layer] })
     );
 
-    object.position.x = Math.random() * 800 - 400;
-    object.position.y = Math.random() * 800 - 400;
-    object.position.z = Math.random() * 800 - 400;
+    object.position.x = Math.random() * 40 - 20;
+    object.position.y = Math.random() * 40 - 20;
+    object.position.z = Math.random() * 40 - 20;
 
     object.rotation.x = Math.random() * 2 * Math.PI;
     object.rotation.y = Math.random() * 2 * Math.PI;
@@ -77,9 +77,10 @@ function init() {
     scene.add(object);
   }
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();

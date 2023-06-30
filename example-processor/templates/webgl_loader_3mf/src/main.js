@@ -4,9 +4,9 @@ import {
   WebGLRenderer,
   Scene,
   Color,
-  AmbientLight,
   PerspectiveCamera,
-  PointLight,
+  AmbientLight,
+  DirectionalLight,
   LoadingManager,
   Box3,
   Vector3,
@@ -30,12 +30,11 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
   scene.background = new Color(0x333333);
-
-  scene.add(new AmbientLight(0xffffff, 0.2));
 
   camera = new PerspectiveCamera(
     35,
@@ -57,8 +56,11 @@ function init() {
   controls.enablePan = false;
   controls.update();
 
-  const pointLight = new PointLight(0xffffff, 0.8);
-  camera.add(pointLight);
+  scene.add(new AmbientLight(0xffffff, 0.6));
+
+  const light = new DirectionalLight(0xffffff, 2);
+  light.position.set(-1, -2.5, 1);
+  scene.add(light);
 
   const manager = new LoadingManager();
 

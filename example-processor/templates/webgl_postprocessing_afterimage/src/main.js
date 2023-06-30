@@ -15,8 +15,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { AfterimagePass } from "three/addons/postprocessing/AfterimagePass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, scene, renderer, composer;
 let mesh;
@@ -35,6 +34,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -61,7 +61,7 @@ function init() {
   afterimagePass = new AfterimagePass();
   composer.addPass(afterimagePass);
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   composer.addPass(outputPass);
 
   window.addEventListener("resize", onWindowResize);
@@ -91,11 +91,9 @@ function render() {
   mesh.rotation.x += 0.005;
   mesh.rotation.y += 0.01;
 
-  if (params.enable) {
-    composer.render();
-  } else {
-    renderer.render(scene, camera);
-  }
+  afterimagePass.enabled = params.enable;
+
+  composer.render();
 }
 
 function animate() {

@@ -11,11 +11,11 @@ import {
   SRGBColorSpace,
   MeshPhongMaterial,
   Vector2,
+  Mesh,
   WebGLRenderer,
   WebGLRenderTarget,
   HalfFloatType,
   DepthTexture,
-  Mesh,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -27,7 +27,7 @@ import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { BleachBypassShader } from "three/addons/shaders/BleachBypassShader.js";
 import { ColorCorrectionShader } from "three/addons/shaders/ColorCorrectionShader.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let container, stats, loader;
 
@@ -61,22 +61,22 @@ function init() {
     1,
     10000
   );
-  camera.position.z = 1200;
+  camera.position.z = 12;
 
   scene = new Scene();
   scene.background = new Color(0x494949);
 
   // LIGHTS
 
-  ambientLight = new AmbientLight(0x8d8d8d);
+  ambientLight = new AmbientLight(0xffffff);
   scene.add(ambientLight);
 
-  pointLight = new PointLight(0xffffff, 2, 1000);
-  pointLight.position.set(0, 0, 600);
+  pointLight = new PointLight(0xffffff, 30);
+  pointLight.position.set(0, 0, 6);
 
   scene.add(pointLight);
 
-  directionalLight = new DirectionalLight(0xffffff);
+  directionalLight = new DirectionalLight(0xffffff, 3);
   directionalLight.position.set(1, -0.5, -1);
   scene.add(directionalLight);
 
@@ -108,11 +108,18 @@ function init() {
 
   loader = new GLTFLoader();
   loader.load("models/gltf/LeePerrySmith/LeePerrySmith.glb", function (gltf) {
-    createScene(gltf.scene.children[0].geometry, 100, material);
+    const geometry = gltf.scene.children[0].geometry;
+
+    mesh = new Mesh(geometry, material);
+
+    mesh.position.y = -0.5;
+
+    scene.add(mesh);
   });
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //
@@ -128,7 +135,7 @@ function init() {
 
   const effectBleach = new ShaderPass(BleachBypassShader);
   const effectColor = new ShaderPass(ColorCorrectionShader);
-  const gammaCorrection = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   effectFXAA = new ShaderPass(FXAAShader);
 
   effectFXAA.uniforms["resolution"].value.set(
@@ -152,22 +159,13 @@ function init() {
   composer.addPass(renderModel);
   composer.addPass(effectBleach);
   composer.addPass(effectColor);
-  composer.addPass(gammaCorrection);
+  composer.addPass(outputPass);
   composer.addPass(effectFXAA);
 
   // EVENTS
 
   document.addEventListener("mousemove", onDocumentMouseMove);
   window.addEventListener("resize", onWindowResize);
-}
-
-function createScene(geometry, scale, material) {
-  mesh = new Mesh(geometry, material);
-
-  mesh.position.y = -50;
-  mesh.scale.x = mesh.scale.y = mesh.scale.z = scale;
-
-  scene.add(mesh);
 }
 
 //

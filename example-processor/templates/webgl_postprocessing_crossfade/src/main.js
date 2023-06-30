@@ -12,7 +12,7 @@ import {
   PerspectiveCamera,
   Scene,
   AmbientLight,
-  SpotLight,
+  DirectionalLight,
   MeshPhongMaterial,
   WebGLRenderTarget,
   HalfFloatType,
@@ -53,6 +53,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -115,19 +116,19 @@ function generateInstancedMesh(geometry, material, count) {
   const color = new Color();
 
   for (let i = 0; i < count; i++) {
-    dummy.position.x = Math.random() * 10000 - 5000;
-    dummy.position.y = Math.random() * 6000 - 3000;
-    dummy.position.z = Math.random() * 8000 - 4000;
+    dummy.position.x = Math.random() * 100 - 50;
+    dummy.position.y = Math.random() * 60 - 30;
+    dummy.position.z = Math.random() * 80 - 40;
 
     dummy.rotation.x = Math.random() * 2 * Math.PI;
     dummy.rotation.y = Math.random() * 2 * Math.PI;
     dummy.rotation.z = Math.random() * 2 * Math.PI;
 
-    dummy.scale.x = Math.random() * 200 + 100;
+    dummy.scale.x = Math.random() * 2 + 1;
 
     if (geometry.type === "BoxGeometry") {
-      dummy.scale.y = Math.random() * 200 + 100;
-      dummy.scale.z = Math.random() * 200 + 100;
+      dummy.scale.y = Math.random() * 2 + 1;
+      dummy.scale.z = Math.random() * 2 + 1;
     } else {
       dummy.scale.y = dummy.scale.x;
       dummy.scale.z = dummy.scale.x;
@@ -148,17 +149,17 @@ function FXScene(geometry, rotationSpeed, clearColor) {
   const camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
-    1,
-    10000
+    0.1,
+    100
   );
-  camera.position.z = 2000;
+  camera.position.z = 20;
 
   // Setup scene
   const scene = new Scene();
-  scene.add(new AmbientLight(0x555555));
+  scene.add(new AmbientLight(0xaaaaaa, 3));
 
-  const light = new SpotLight(0xffffff, 1.5);
-  light.position.set(0, 500, 2000);
+  const light = new DirectionalLight(0xffffff, 3);
+  light.position.set(0, 1, 4);
   scene.add(light);
 
   this.rotationSpeed = rotationSpeed;
@@ -278,7 +279,7 @@ function Transition(sceneA, sceneB) {
       "	}",
 
       "	#include <tonemapping_fragment>",
-      "	#include <encodings_fragment>",
+      "	#include <colorspace_fragment>",
 
       "}",
     ].join("\n"),

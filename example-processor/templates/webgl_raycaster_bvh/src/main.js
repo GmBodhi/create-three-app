@@ -76,13 +76,14 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xeeeeee);
 
-  const ambient = new HemisphereLight(0xffffff, 0x999999);
+  const ambient = new HemisphereLight(0xffffff, 0x999999, 3);
   scene.add(ambient);
 
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();

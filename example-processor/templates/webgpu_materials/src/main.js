@@ -14,6 +14,8 @@ import {
 import * as Nodes from "three/nodes";
 
 import {
+  tslFn,
+  wgslFn,
   attribute,
   positionLocal,
   positionWorld,
@@ -22,9 +24,8 @@ import {
   normalView,
   color,
   texture,
-  ShaderNode,
-  func,
   uv,
+  float,
   vec2,
   vec3,
   vec4,
@@ -160,27 +161,27 @@ function init() {
 
   // Custom ShaderNode ( desaturate filter )
 
-  const desaturateShaderNode = new ShaderNode((input) => {
+  const desaturateShaderNode = tslFn((input) => {
     return vec3(0.299, 0.587, 0.114).dot(input.color.xyz);
   });
 
   material = new MeshBasicNodeMaterial();
-  material.colorNode = desaturateShaderNode.call({ color: texture(uvTexture) });
+  material.colorNode = desaturateShaderNode({ color: texture(uvTexture) });
   materials.push(material);
 
   // Custom ShaderNode(no inputs) > Approach 2
 
-  const desaturateNoInputsShaderNode = new ShaderNode(() => {
+  const desaturateNoInputsShaderNode = tslFn(() => {
     return vec3(0.299, 0.587, 0.114).dot(texture(uvTexture).xyz);
   });
 
   material = new MeshBasicNodeMaterial();
-  material.colorNode = desaturateNoInputsShaderNode;
+  material.colorNode = desaturateNoInputsShaderNode();
   materials.push(material);
 
   // Custom WGSL ( desaturate filter )
 
-  const desaturateWGSLNode = func(`
+  const desaturateWGSLNode = wgslFn(`
 					fn desaturate( color:vec3<f32> ) -> vec3<f32> {
 
 						let lum = vec3<f32>( 0.299, 0.587, 0.114 );
@@ -191,12 +192,12 @@ function init() {
 				`);
 
   material = new MeshBasicNodeMaterial();
-  material.colorNode = desaturateWGSLNode.call({ color: texture(uvTexture) });
+  material.colorNode = desaturateWGSLNode({ color: texture(uvTexture) });
   materials.push(material);
 
   // Custom WGSL ( get texture from keywords )
 
-  const getWGSLTextureSample = func(`
+  const getWGSLTextureSample = wgslFn(`
 					fn getWGSLTextureSample( tex: texture_2d<f32>, tex_sampler: sampler, uv:vec2<f32> ) -> vec4<f32> {
 
 						return textureSample( tex, tex_sampler, uv ) * vec4<f32>( 0.0, 1.0, 0.0, 1.0 );
@@ -208,7 +209,7 @@ function init() {
   //getWGSLTextureSample.keywords = { tex: textureNode, tex_sampler: sampler( textureNode ) };
 
   material = new MeshBasicNodeMaterial();
-  material.colorNode = getWGSLTextureSample.call({
+  material.colorNode = getWGSLTextureSample({
     tex: textureNode,
     tex_sampler: textureNode,
     uv: uv(),
@@ -217,7 +218,12 @@ function init() {
 
   // Triplanar Texture Mapping
   material = new MeshBasicNodeMaterial();
-  material.colorNode = triplanarTexture(texture(uvTexture));
+  material.colorNode = triplanarTexture(
+    texture(uvTexture),
+    null,
+    null,
+    float(0.01)
+  );
   materials.push(material);
 
   // Screen Projection Texture

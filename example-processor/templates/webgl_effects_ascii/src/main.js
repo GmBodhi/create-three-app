@@ -38,11 +38,11 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0, 0, 0);
 
-  const pointLight1 = new PointLight(0xffffff);
+  const pointLight1 = new PointLight(0xffffff, 3, 0, 0);
   pointLight1.position.set(500, 500, 500);
   scene.add(pointLight1);
 
-  const pointLight2 = new PointLight(0xffffff, 0.25);
+  const pointLight2 = new PointLight(0xffffff, 1, 0, 0);
   pointLight2.position.set(-500, -500, -500);
   scene.add(pointLight2);
 
@@ -64,6 +64,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
 
   effect = new AsciiEffect(renderer, " .:-+*=%@#", { invert: true });
   effect.setSize(window.innerWidth, window.innerHeight);

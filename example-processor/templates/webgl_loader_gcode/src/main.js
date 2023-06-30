@@ -11,9 +11,6 @@ init();
 render();
 
 function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
   camera = new PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,
@@ -32,10 +29,11 @@ function init() {
     render();
   });
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+  renderer.useLegacyLights = false;
+  document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render); // use if there is no animation loop

@@ -40,10 +40,10 @@ function init() {
 
   //
 
-  const ambientLight = new AmbientLight(0xcccccc, 0.4);
+  const ambientLight = new AmbientLight(0xcccccc, 1.5);
   scene.add(ambientLight);
 
-  const pointLight = new PointLight(0xffffff, 0.8);
+  const pointLight = new PointLight(0xffffff, 2.5, 0, 0);
   camera.add(pointLight);
   scene.add(camera);
 
@@ -121,6 +121,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();

@@ -43,11 +43,11 @@ const camera = new PerspectiveCamera(
 );
 camera.rotation.order = "YXZ";
 
-const fillLight1 = new HemisphereLight(0x8dc1de, 0x00668d, 0.5);
+const fillLight1 = new HemisphereLight(0x8dc1de, 0x00668d, 1.5);
 fillLight1.position.set(2, 1, 1);
 scene.add(fillLight1);
 
-const directionalLight = new DirectionalLight(0xffffff, 0.8);
+const directionalLight = new DirectionalLight(0xffffff, 2.5);
 directionalLight.position.set(-5, 25, -1);
 directionalLight.castShadow = true;
 directionalLight.shadow.camera.near = 0.01;
@@ -70,6 +70,7 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = VSMShadowMap;
 renderer.toneMapping = ACESFilmicToneMapping;
+renderer.useLegacyLights = false;
 container.appendChild(renderer.domElement);
 
 const stats = new Stats();

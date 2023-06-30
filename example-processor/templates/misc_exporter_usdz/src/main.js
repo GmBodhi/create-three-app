@@ -29,6 +29,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 
@@ -45,7 +46,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xf0f0f0);
   scene.environment = pmremGenerator.fromScene(
-    new RoomEnvironment(),
+    new RoomEnvironment(renderer),
     0.04
   ).texture;
 

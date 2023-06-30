@@ -19,7 +19,7 @@ import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 
 import { RGBShiftShader } from "three/addons/shaders/RGBShiftShader.js";
 import { DotScreenShader } from "three/addons/shaders/DotScreenShader.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, renderer, composer;
 let object;
@@ -31,6 +31,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //
@@ -66,9 +67,9 @@ function init() {
     object.add(mesh);
   }
 
-  scene.add(new AmbientLight(0x666666));
+  scene.add(new AmbientLight(0xcccccc));
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(1, 1, 1);
   scene.add(light);
 
@@ -85,7 +86,7 @@ function init() {
   effect2.uniforms["amount"].value = 0.0015;
   composer.addPass(effect2);
 
-  const effect3 = new ShaderPass(GammaCorrectionShader);
+  const effect3 = new OutputPass();
   composer.addPass(effect3);
 
   //

@@ -6,7 +6,7 @@ import {
   Scene,
   Color,
   DirectionalLight,
-  HemisphereLight,
+  AmbientLight,
   Group,
   BoxGeometry,
   MeshLambertMaterial,
@@ -18,8 +18,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let container, stats;
 let camera, scene, renderer;
@@ -35,6 +34,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -48,8 +48,8 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xaaaaaa);
 
-  scene.add(new DirectionalLight());
-  scene.add(new HemisphereLight());
+  scene.add(new DirectionalLight(0xffffff, 4));
+  scene.add(new AmbientLight(0xffffff));
 
   group = new Group();
   scene.add(group);
@@ -85,7 +85,7 @@ function init() {
   ssaoPass.kernelRadius = 16;
   composer.addPass(ssaoPass);
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   composer.addPass(outputPass);
 
   // Init gui

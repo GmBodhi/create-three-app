@@ -13,7 +13,7 @@ import {
   LinearToneMapping,
 } from "three";
 import {
-  ShaderNode,
+  tslFn,
   color,
   lights,
   toneMapping,
@@ -91,9 +91,7 @@ function init() {
 
   // custom lighting model
 
-  const customLightingModel = new ShaderNode((inputs) => {
-    const { lightColor, reflectedLight } = inputs;
-
+  const customLightingModel = tslFn(({ lightColor, reflectedLight }) => {
     reflectedLight.directDiffuse.addAssign(lightColor);
   });
 

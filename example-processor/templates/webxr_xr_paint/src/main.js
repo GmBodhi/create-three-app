@@ -49,9 +49,9 @@ function init() {
   const grid = new GridHelper(4, 1, 0x111111, 0x111111);
   scene.add(grid);
 
-  scene.add(new HemisphereLight(0x888877, 0x777788));
+  scene.add(new HemisphereLight(0x888877, 0x777788, 3));
 
-  const light = new DirectionalLight(0xffffff, 0.5);
+  const light = new DirectionalLight(0xffffff, 1.5);
   light.position.set(0, 4, 0);
   scene.add(light);
 
@@ -68,6 +68,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 

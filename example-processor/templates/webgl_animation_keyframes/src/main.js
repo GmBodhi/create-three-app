@@ -29,6 +29,7 @@ container.appendChild(stats.dom);
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.useLegacyLights = false;
 container.appendChild(renderer.domElement);
 
 const pmremGenerator = new PMREMGenerator(renderer);
@@ -36,7 +37,7 @@ const pmremGenerator = new PMREMGenerator(renderer);
 const scene = new Scene();
 scene.background = new Color(0xbfe3dd);
 scene.environment = pmremGenerator.fromScene(
-  new RoomEnvironment(),
+  new RoomEnvironment(renderer),
   0.04
 ).texture;
 

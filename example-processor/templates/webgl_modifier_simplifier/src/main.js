@@ -29,6 +29,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -46,9 +47,9 @@ function init() {
   controls.enablePan = false;
   controls.enableZoom = false;
 
-  scene.add(new AmbientLight(0xffffff, 0.2));
+  scene.add(new AmbientLight(0xffffff, 0.6));
 
-  const light = new PointLight(0xffffff, 0.7);
+  const light = new PointLight(0xffffff, 400);
   camera.add(light);
   scene.add(camera);
 

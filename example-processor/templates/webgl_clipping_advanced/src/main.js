@@ -158,9 +158,9 @@ function init() {
 
   // Lights
 
-  scene.add(new AmbientLight(0xffffff, 0.3));
+  scene.add(new AmbientLight(0xffffff));
 
-  const spotLight = new SpotLight(0xffffff, 0.5);
+  const spotLight = new SpotLight(0xffffff, 60);
   spotLight.angle = Math.PI / 5;
   spotLight.penumbra = 0.2;
   spotLight.position.set(2, 3, 3);
@@ -171,7 +171,7 @@ function init() {
   spotLight.shadow.mapSize.height = 1024;
   scene.add(spotLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 0.5);
+  const dirLight = new DirectionalLight(0xffffff, 1.5);
   dirLight.position.set(0, 2, 0);
   dirLight.castShadow = true;
   dirLight.shadow.camera.near = 1;
@@ -264,6 +264,7 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   window.addEventListener("resize", onWindowResize);
   container.appendChild(renderer.domElement);
   // Clipping setup:

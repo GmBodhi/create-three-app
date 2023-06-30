@@ -2197,6 +2197,16 @@
         "/src"
       ]
     },
+    "webgl_materials_alphahash": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_materials_blending": {
       "files": {
         "index.html": "src",
@@ -3523,6 +3533,26 @@
         "/src"
       ]
     },
+    "webgpu_backdrop_area": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_clearcoat": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute": {
       "files": {
         "index.html": "src",
@@ -3663,6 +3693,16 @@
         "/src"
       ]
     },
+    "webgpu_loader_gltf_sheen": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials": {
       "files": {
         "index.html": "src",
@@ -3674,6 +3714,16 @@
       ]
     },
     "webgpu_materials_video": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_morphtargets": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3754,6 +3804,26 @@
       ]
     },
     "webgpu_sprites": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_editor": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_video_panorama": {
       "files": {
         "index.html": "src",
         "main.js": "src",

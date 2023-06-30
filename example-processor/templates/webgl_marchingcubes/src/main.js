@@ -72,15 +72,15 @@ function init() {
 
   // LIGHTS
 
-  light = new DirectionalLight(0xffffff);
+  light = new DirectionalLight(0xffffff, 3);
   light.position.set(0.5, 0.5, 1);
   scene.add(light);
 
-  pointLight = new PointLight(0xff7c00);
+  pointLight = new PointLight(0xff7c00, 3, 0, 0);
   pointLight.position.set(0, 0, 100);
   scene.add(pointLight);
 
-  ambientLight = new AmbientLight(0x323232);
+  ambientLight = new AmbientLight(0x323232, 3);
   scene.add(ambientLight);
 
   // MATERIALS
@@ -112,6 +112,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // CONTROLS

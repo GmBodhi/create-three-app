@@ -84,6 +84,7 @@ function init() {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setClearColor(0xdddddd);
   document.body.appendChild(renderer.domElement);

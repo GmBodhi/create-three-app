@@ -15,7 +15,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 import { VTKLoader } from "three/addons/loaders/VTKLoader.js";
 
-let container, stats;
+let stats;
 
 let camera, controls, scene, renderer;
 
@@ -27,7 +27,7 @@ function init() {
     60,
     window.innerWidth / window.innerHeight,
     0.01,
-    1e10
+    100
   );
   camera.position.z = 0.2;
 
@@ -37,10 +37,10 @@ function init() {
 
   // light
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x000000, 1);
+  const hemiLight = new HemisphereLight(0xffffff, 0x000000, 3);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 0.5);
+  const dirLight = new DirectionalLight(0xffffff, 1.5);
   dirLight.position.set(2, 2, 2);
   scene.add(dirLight);
 
@@ -100,13 +100,11 @@ function init() {
 
   // renderer
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  container.appendChild(renderer.domElement);
+  renderer.useLegacyLights = false;
+  document.body.appendChild(renderer.domElement);
 
   // controls
 
@@ -116,7 +114,7 @@ function init() {
   controls.rotateSpeed = 5.0;
 
   stats = new Stats();
-  container.appendChild(stats.dom);
+  document.body.appendChild(stats.dom);
 
   //
 

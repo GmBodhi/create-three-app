@@ -68,11 +68,11 @@ function init() {
   sceneRTT = new Scene();
   sceneScreen = new Scene();
 
-  let light = new DirectionalLight(0xffffff);
+  let light = new DirectionalLight(0xffffff, 3);
   light.position.set(0, 0, 1).normalize();
   sceneRTT.add(light);
 
-  light = new DirectionalLight(0xffd5d5, 1.5);
+  light = new DirectionalLight(0xffd5d5, 4.5);
   light.position.set(0, 0, -1).normalize();
   sceneRTT.add(light);
 
@@ -149,6 +149,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.autoClear = false;
 
   container.appendChild(renderer.domElement);

@@ -92,6 +92,7 @@ const blendshapesMap = {
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.useLegacyLights = false;
 renderer.toneMapping = ACESFilmicToneMapping;
 document.body.appendChild(renderer.domElement);
 
@@ -106,7 +107,7 @@ camera.position.z = 5;
 const scene = new Scene();
 scene.scale.x = -1;
 
-const environment = new RoomEnvironment();
+const environment = new RoomEnvironment(renderer);
 const pmremGenerator = new PMREMGenerator(renderer);
 
 scene.background = new Color(0x666666);

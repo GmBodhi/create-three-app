@@ -45,6 +45,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -59,7 +60,7 @@ function init() {
   controls.minZoom = 1;
   camera.position.set(0, 0, 4);
 
-  scene.add(new HemisphereLight(0xffffff, 0x444444));
+  scene.add(new HemisphereLight(0xffffff, 0x444444, 3));
 
   new OBJLoader().load(
     "three/examples/models/obj/cerberus/Cerberus.obj",

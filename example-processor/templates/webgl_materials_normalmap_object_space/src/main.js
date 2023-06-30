@@ -20,8 +20,9 @@ init();
 
 function init() {
   // renderer
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   // scene
@@ -45,10 +46,10 @@ function init() {
   controls.enablePan = false;
 
   // ambient
-  scene.add(new AmbientLight(0xffffff, 0.2));
+  scene.add(new AmbientLight(0xffffff, 0.6));
 
   // light
-  const light = new PointLight(0xffffff, 1.5);
+  const light = new PointLight(0xffffff, 4.5, 0, 0);
   camera.add(light);
 
   // model

@@ -11,6 +11,7 @@ import {
   Mesh,
   TextureLoader,
   RepeatWrapping,
+  AmbientLight,
   DirectionalLight,
   SphereGeometry,
   BoxGeometry,
@@ -78,9 +79,10 @@ function init() {
 function initGraphics() {
   container = document.getElementById("container");
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -143,7 +145,10 @@ function initGraphics() {
     groundMaterial.needsUpdate = true;
   });
 
-  const light = new DirectionalLight(0xffffff, 1);
+  const ambientLight = new AmbientLight(0xbbbbbb);
+  scene.add(ambientLight);
+
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(100, 100, 50);
   light.castShadow = true;
   const dLight = 200;

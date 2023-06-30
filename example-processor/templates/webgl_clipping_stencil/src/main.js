@@ -106,9 +106,9 @@ function init() {
   );
   camera.position.set(2, 2, 2);
 
-  scene.add(new AmbientLight(0xffffff, 0.5));
+  scene.add(new AmbientLight(0xffffff, 1.5));
 
-  const dirLight = new DirectionalLight(0xffffff, 1);
+  const dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(5, 10, 7.5);
   dirLight.castShadow = true;
   dirLight.shadow.camera.right = 2;
@@ -204,6 +204,7 @@ function init() {
   // Renderer
   renderer = new WebGLRenderer({ antialias: true });
   renderer.shadowMap.enabled = true;
+  renderer.useLegacyLights = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x263238);

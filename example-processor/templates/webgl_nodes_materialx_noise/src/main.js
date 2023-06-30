@@ -46,9 +46,9 @@ function init() {
     27,
     window.innerWidth / window.innerHeight,
     1,
-    10000
+    1000
   );
-  camera.position.z = 1000;
+  camera.position.z = 100;
 
   scene = new Scene();
 
@@ -60,7 +60,7 @@ function init() {
     .load(
       ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"],
       function (hdrTexture) {
-        const geometry = new SphereGeometry(80, 64, 32);
+        const geometry = new SphereGeometry(8, 64, 32);
 
         const offsetNode = timerLocal();
         const customUV = normalWorld.mul(10).add(offsetNode);
@@ -71,8 +71,8 @@ function init() {
         material.colorNode = mx_noise_vec3(customUV);
 
         let mesh = new Mesh(geometry, material);
-        mesh.position.x = -100;
-        mesh.position.y = 100;
+        mesh.position.x = -10;
+        mesh.position.y = 10;
         group.add(mesh);
 
         // right top
@@ -81,8 +81,8 @@ function init() {
         material.colorNode = mx_cell_noise_float(customUV);
 
         mesh = new Mesh(geometry, material);
-        mesh.position.x = 100;
-        mesh.position.y = 100;
+        mesh.position.x = 10;
+        mesh.position.y = 10;
         group.add(mesh);
 
         // left bottom
@@ -91,8 +91,8 @@ function init() {
         material.colorNode = mx_worley_noise_vec3(customUV);
 
         mesh = new Mesh(geometry, material);
-        mesh.position.x = -100;
-        mesh.position.y = -100;
+        mesh.position.x = -10;
+        mesh.position.y = -10;
         group.add(mesh);
 
         // right bottom
@@ -101,8 +101,8 @@ function init() {
         material.colorNode = mx_fractal_noise_vec3(customUV.mul(0.2));
 
         mesh = new Mesh(geometry, material);
-        mesh.position.x = 100;
-        mesh.position.y = -100;
+        mesh.position.x = 10;
+        mesh.position.y = -10;
         group.add(mesh);
 
         //
@@ -115,16 +115,17 @@ function init() {
   // LIGHTS
 
   particleLight = new Mesh(
-    new SphereGeometry(4, 8, 8),
+    new SphereGeometry(0.4, 8, 8),
     new MeshBasicMaterial({ color: 0xffffff })
   );
   scene.add(particleLight);
 
-  particleLight.add(new PointLight(0xffffff, 1));
+  particleLight.add(new PointLight(0xffffff, 1000));
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //
@@ -173,9 +174,9 @@ function animate() {
 function render() {
   const timer = Date.now() * 0.00025;
 
-  particleLight.position.x = Math.sin(timer * 7) * 300;
-  particleLight.position.y = Math.cos(timer * 5) * 400;
-  particleLight.position.z = Math.cos(timer * 3) * 300;
+  particleLight.position.x = Math.sin(timer * 7) * 30;
+  particleLight.position.y = Math.cos(timer * 5) * 40;
+  particleLight.position.z = Math.cos(timer * 3) * 30;
 
   for (let i = 0; i < group.children.length; i++) {
     const child = group.children[i];

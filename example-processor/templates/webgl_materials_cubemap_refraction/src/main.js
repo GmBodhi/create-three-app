@@ -6,12 +6,9 @@ import {
   CubeRefractionMapping,
   Scene,
   AmbientLight,
-  PointLight,
-  SphereGeometry,
-  Mesh,
-  MeshBasicMaterial,
   MeshPhongMaterial,
   WebGLRenderer,
+  Mesh,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -21,8 +18,6 @@ import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
 let container, stats;
 
 let camera, scene, renderer;
-
-let pointLight;
 
 let mouseX = 0,
   mouseY = 0;
@@ -66,19 +61,8 @@ function init() {
 
   // LIGHTS
 
-  const ambient = new AmbientLight(0xffffff);
+  const ambient = new AmbientLight(0xffffff, 3.5);
   scene.add(ambient);
-
-  pointLight = new PointLight(0xffffff, 2);
-  scene.add(pointLight);
-
-  // light representation
-
-  const sphere = new SphereGeometry(100, 16, 8);
-
-  const mesh = new Mesh(sphere, new MeshBasicMaterial({ color: 0xffffff }));
-  mesh.scale.set(0.05, 0.05, 0.05);
-  pointLight.add(mesh);
 
   // material samples
 
@@ -101,9 +85,10 @@ function init() {
 
   //
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -166,15 +151,10 @@ function animate() {
 }
 
 function render() {
-  const timer = -0.0002 * Date.now();
-
   camera.position.x += (mouseX - camera.position.x) * 0.05;
   camera.position.y += (-mouseY - camera.position.y) * 0.05;
 
   camera.lookAt(scene.position);
-
-  pointLight.position.x = 1500 * Math.cos(timer);
-  pointLight.position.z = 1500 * Math.sin(timer);
 
   renderer.render(scene, camera);
 }

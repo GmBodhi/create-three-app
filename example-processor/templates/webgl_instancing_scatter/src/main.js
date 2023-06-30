@@ -14,7 +14,7 @@ import {
   PerspectiveCamera,
   Scene,
   PointLight,
-  HemisphereLight,
+  AmbientLight,
   WebGLRenderer,
 } from "three";
 
@@ -124,11 +124,11 @@ function init() {
   scene = new Scene();
   scene.background = new Color(api.backgroundColor);
 
-  const pointLight = new PointLight(0xaa8899, 0.75);
+  const pointLight = new PointLight(0xaa8899, 2.5, 0, 0);
   pointLight.position.set(50, -25, 75);
   scene.add(pointLight);
 
-  scene.add(new HemisphereLight());
+  scene.add(new AmbientLight(0xffffff, 3));
 
   //
 
@@ -168,6 +168,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //

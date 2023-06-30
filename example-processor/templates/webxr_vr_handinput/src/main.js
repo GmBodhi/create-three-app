@@ -56,9 +56,9 @@ function init() {
   floor.receiveShadow = true;
   scene.add(floor);
 
-  scene.add(new HemisphereLight(0xbcbcbc, 0xa5a5a5));
+  scene.add(new HemisphereLight(0xbcbcbc, 0xa5a5a5, 3));
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0, 6, 0);
   light.castShadow = true;
   light.shadow.camera.top = 2;
@@ -73,6 +73,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
 

@@ -21,17 +21,17 @@ function init() {
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
-    1,
-    1000
+    0.1,
+    100
   );
-  camera.position.z = 400;
+  camera.position.z = 2;
 
   scene = new Scene();
 
   const texture = new TextureLoader().load("textures/crate.gif");
   texture.colorSpace = SRGBColorSpace;
 
-  const geometry = new BoxGeometry(200, 200, 200);
+  const geometry = new BoxGeometry();
   const material = new MeshBasicMaterial({ map: texture });
 
   mesh = new Mesh(geometry, material);
@@ -40,6 +40,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //

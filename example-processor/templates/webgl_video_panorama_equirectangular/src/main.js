@@ -24,7 +24,7 @@ let isUserInteracting = false,
   onPointerDownLon = 0,
   onPointerDownLat = 0;
 
-const distance = 50;
+const distance = 0.5;
 
 init();
 animate();
@@ -35,13 +35,13 @@ function init() {
   camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
-    1,
-    1100
+    0.25,
+    10
   );
 
   scene = new Scene();
 
-  const geometry = new SphereGeometry(500, 60, 40);
+  const geometry = new SphereGeometry(5, 60, 40);
   // invert the geometry on the x-axis so that all of the faces point inward
   geometry.scale(-1, 1, 1);
 
@@ -56,6 +56,7 @@ function init() {
   scene.add(mesh);
 
   renderer = new WebGLRenderer();
+  renderer.useLegacyLights = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

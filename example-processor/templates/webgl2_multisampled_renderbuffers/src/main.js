@@ -18,8 +18,7 @@ import {
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -55,7 +54,7 @@ function init() {
 
   //
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x222222, 1.5);
+  const hemiLight = new HemisphereLight(0xffffff, 0x222222, 5);
   hemiLight.position.set(1, 1, 1);
   scene.add(hemiLight);
 
@@ -94,9 +93,10 @@ function init() {
   //
 
   renderer = new WebGLRenderer();
-  renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(container.offsetWidth, container.offsetHeight);
+  renderer.autoClear = false;
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //
@@ -107,7 +107,7 @@ function init() {
   });
 
   const renderPass = new RenderPass(scene, camera);
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
 
   //
 

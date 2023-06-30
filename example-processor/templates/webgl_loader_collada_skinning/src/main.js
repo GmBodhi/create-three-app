@@ -7,7 +7,7 @@ import {
   AnimationMixer,
   GridHelper,
   AmbientLight,
-  PointLight,
+  DirectionalLight,
   WebGLRenderer,
 } from "three";
 
@@ -60,18 +60,19 @@ function init() {
 
   //
 
-  const ambientLight = new AmbientLight(0xffffff, 0.2);
+  const ambientLight = new AmbientLight(0xffffff, 0.6);
   scene.add(ambientLight);
 
-  const pointLight = new PointLight(0xffffff, 0.8);
-  scene.add(camera);
-  camera.add(pointLight);
+  const directionalLight = new DirectionalLight(0xffffff, 3);
+  directionalLight.position.set(1.5, 1, -1.5);
+  scene.add(directionalLight);
 
   //
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //

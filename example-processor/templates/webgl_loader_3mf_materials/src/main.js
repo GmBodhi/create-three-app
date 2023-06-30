@@ -39,11 +39,11 @@ function init() {
 
   //
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
+  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d, 3);
   hemiLight.position.set(0, 100, 0);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff);
+  const dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(-0, 40, 50);
   dirLight.castShadow = true;
   dirLight.shadow.camera.top = 50;
@@ -94,6 +94,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
   document.body.appendChild(renderer.domElement);

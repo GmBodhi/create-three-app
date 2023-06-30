@@ -80,12 +80,11 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(WIDTH, HEIGHT);
-
-  const container = document.getElementById("container");
-  container.appendChild(renderer.domElement);
+  renderer.useLegacyLights = false;
+  document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
-  container.appendChild(stats.dom);
+  document.body.appendChild(stats.dom);
 
   //
 

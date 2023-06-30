@@ -106,6 +106,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.autoClear = false; // To allow render overlay on top of sprited sphere
 
   document.body.appendChild(renderer.domElement);

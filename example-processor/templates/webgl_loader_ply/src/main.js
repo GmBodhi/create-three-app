@@ -107,16 +107,17 @@ function init() {
 
   // Lights
 
-  scene.add(new HemisphereLight(0x8d7c7c, 0x494966));
+  scene.add(new HemisphereLight(0x8d7c7c, 0x494966, 3));
 
-  addShadowedLight(1, 1, 1, 0xffffff, 1.35);
-  addShadowedLight(0.5, 1, -1, 0xffd500, 1);
+  addShadowedLight(1, 1, 1, 0xffffff, 3.5);
+  addShadowedLight(0.5, 1, -1, 0xffd500, 3);
 
   // renderer
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
 
   renderer.shadowMap.enabled = true;
 

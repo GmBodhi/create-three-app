@@ -56,9 +56,10 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
-  const environment = new RoomEnvironment();
+  const environment = new RoomEnvironment(renderer);
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.environment = pmremGenerator.fromScene(environment).texture;

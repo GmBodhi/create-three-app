@@ -60,15 +60,16 @@ function init() {
   camera.position.set(-600, 550, 1300);
 
   // LIGHTS
-  ambientLight = new AmbientLight(0x7c7c7c);
+  ambientLight = new AmbientLight(0x7c7c7c, 3.0);
 
-  light = new DirectionalLight(0xffffff, 1.0);
+  light = new DirectionalLight(0xffffff, 3.0);
   light.position.set(0.32, 0.39, 0.7);
 
   // RENDERER
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(canvasWidth, canvasHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // EVENTS

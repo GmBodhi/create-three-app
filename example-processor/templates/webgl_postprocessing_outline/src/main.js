@@ -30,7 +30,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { OutlinePass } from "three/addons/postprocessing/OutlinePass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
 
 let container, stats;
@@ -106,6 +106,7 @@ function init() {
   const height = window.innerHeight;
 
   renderer = new WebGLRenderer();
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   // todo - support pixelRatio in this demo
   renderer.setSize(width, height);
@@ -125,9 +126,9 @@ function init() {
 
   //
 
-  scene.add(new AmbientLight(0xaaaaaa, 0.2));
+  scene.add(new AmbientLight(0xaaaaaa, 0.6));
 
-  const light = new DirectionalLight(0xddffdd, 0.6);
+  const light = new DirectionalLight(0xddffdd, 2);
   light.position.set(1, 1, 1);
   light.castShadow = true;
   light.shadow.mapSize.width = 1024;
@@ -236,8 +237,8 @@ function init() {
     texture.wrapT = RepeatWrapping;
   });
 
-  const gammaPass = new ShaderPass(GammaCorrectionShader);
-  composer.addPass(gammaPass);
+  const outputPass = new OutputPass();
+  composer.addPass(outputPass);
 
   effectFXAA = new ShaderPass(FXAAShader);
   effectFXAA.uniforms["resolution"].value.set(

@@ -58,7 +58,7 @@ function init() {
     new SphereGeometry(4, 8, 8),
     new MeshBasicMaterial({ color: 0xc1c1c1 })
   );
-  pointLight1.add(new PointLight(0xc1c1c1, 7.0, 300));
+  pointLight1.add(new PointLight(0xc1c1c1, 4.0, 300, 0));
   scene.add(pointLight1);
   pointLight1.position.x = 0;
   pointLight1.position.y = -50;
@@ -68,7 +68,7 @@ function init() {
     new SphereGeometry(4, 8, 8),
     new MeshBasicMaterial({ color: 0xc1c100 })
   );
-  pointLight2.add(new PointLight(0xc1c100, 1.0, 500));
+  pointLight2.add(new PointLight(0xc1c100, 0.75, 500, 0));
   scene.add(pointLight2);
   pointLight2.position.x = -100;
   pointLight2.position.y = 20;
@@ -77,6 +77,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //

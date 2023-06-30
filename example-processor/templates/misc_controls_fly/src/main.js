@@ -27,8 +27,7 @@ import { FlyControls } from "three/addons/controls/FlyControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 const radius = 6371;
 const tilt = 0.41;
@@ -64,7 +63,7 @@ function init() {
   scene = new Scene();
   scene.fog = new FogExp2(0x000000, 0.00000025);
 
-  dirLight = new DirectionalLight(0xffffff);
+  dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(-1, 0, 1).normalize();
   scene.add(dirLight);
 
@@ -177,6 +176,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //
@@ -200,13 +200,13 @@ function init() {
 
   const renderModel = new RenderPass(scene, camera);
   const effectFilm = new FilmPass(0.35, 0.75, 2048, false);
-  const gammaCorrection = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
 
   composer = new EffectComposer(renderer);
 
   composer.addPass(renderModel);
   composer.addPass(effectFilm);
-  composer.addPass(gammaCorrection);
+  composer.addPass(outputPass);
 }
 
 function onWindowResize() {

@@ -42,10 +42,10 @@ function init() {
   camera = new PerspectiveCamera(
     27,
     window.innerWidth / window.innerHeight,
-    1,
-    10000
+    0.25,
+    50
   );
-  camera.position.z = 1000;
+  camera.position.z = 10;
 
   scene = new Scene();
 
@@ -57,7 +57,7 @@ function init() {
     .load(
       ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"],
       function (texture) {
-        const geometry = new SphereGeometry(80, 64, 32);
+        const geometry = new SphereGeometry(0.8, 64, 32);
 
         const textureLoader = new TextureLoader();
 
@@ -106,8 +106,8 @@ function init() {
         });
 
         let mesh = new Mesh(geometry, material);
-        mesh.position.x = -100;
-        mesh.position.y = 100;
+        mesh.position.x = -1;
+        mesh.position.y = 1;
         group.add(mesh);
 
         // fibers
@@ -120,8 +120,8 @@ function init() {
           normalMap: normalMap,
         });
         mesh = new Mesh(geometry, material);
-        mesh.position.x = 100;
-        mesh.position.y = 100;
+        mesh.position.x = 1;
+        mesh.position.y = 1;
         group.add(mesh);
 
         // golf
@@ -137,8 +137,8 @@ function init() {
           clearcoatNormalScale: new Vector2(2.0, -2.0),
         });
         mesh = new Mesh(geometry, material);
-        mesh.position.x = -100;
-        mesh.position.y = -100;
+        mesh.position.x = -1;
+        mesh.position.y = -1;
         group.add(mesh);
 
         // clearcoat + normalmap
@@ -155,8 +155,8 @@ function init() {
           clearcoatNormalScale: new Vector2(2.0, -2.0),
         });
         mesh = new Mesh(geometry, material);
-        mesh.position.x = 100;
-        mesh.position.y = -100;
+        mesh.position.x = 1;
+        mesh.position.y = -1;
         group.add(mesh);
 
         //
@@ -169,16 +169,17 @@ function init() {
   // LIGHTS
 
   particleLight = new Mesh(
-    new SphereGeometry(4, 8, 8),
+    new SphereGeometry(0.05, 8, 8),
     new MeshBasicMaterial({ color: 0xffffff })
   );
   scene.add(particleLight);
 
-  particleLight.add(new PointLight(0xffffff, 1));
+  particleLight.add(new PointLight(0xffffff, 30));
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //
@@ -195,7 +196,9 @@ function init() {
 
   // EVENTS
 
-  new OrbitControls(camera, renderer.domElement);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 3;
+  controls.maxDistance = 30;
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -225,9 +228,9 @@ function animate() {
 function render() {
   const timer = Date.now() * 0.00025;
 
-  particleLight.position.x = Math.sin(timer * 7) * 300;
-  particleLight.position.y = Math.cos(timer * 5) * 400;
-  particleLight.position.z = Math.cos(timer * 3) * 300;
+  particleLight.position.x = Math.sin(timer * 7) * 3;
+  particleLight.position.y = Math.cos(timer * 5) * 4;
+  particleLight.position.z = Math.cos(timer * 3) * 3;
 
   for (let i = 0; i < group.children.length; i++) {
     const child = group.children[i];

@@ -32,10 +32,10 @@ function init() {
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
-    1,
-    100000
+    0.1,
+    100
   );
-  camera.position.set(0, 0, 1000);
+  camera.position.set(0, 0, 2.5);
 
   // SCENE
 
@@ -65,7 +65,7 @@ function init() {
 
   //
 
-  const geometry = new IcosahedronGeometry(400, 15);
+  const geometry = new IcosahedronGeometry(1, 15);
   sphereMaterial = new MeshBasicMaterial({ envMap: textureCube });
   sphereMesh = new Mesh(geometry, sphereMaterial);
   scene.add(sphereMesh);
@@ -75,13 +75,14 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 500;
-  controls.maxDistance = 2500;
+  controls.minDistance = 1.5;
+  controls.maxDistance = 6;
 
   //
 

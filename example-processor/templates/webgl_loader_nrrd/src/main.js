@@ -21,7 +21,7 @@ import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 import { NRRDLoader } from "three/addons/loaders/NRRDLoader.js";
 import { VTKLoader } from "three/addons/loaders/VTKLoader.js";
 
-let container, stats, camera, controls, scene, renderer;
+let stats, camera, controls, scene, renderer;
 
 init();
 animate();
@@ -41,10 +41,10 @@ function init() {
 
   // light
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x000000, 1);
+  const hemiLight = new HemisphereLight(0xffffff, 0x000000, 3);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 0.5);
+  const dirLight = new DirectionalLight(0xffffff, 1.5);
   dirLight.position.set(200, 200, 200);
   scene.add(dirLight);
 
@@ -155,13 +155,11 @@ function init() {
   });
   // renderer
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  container = document.createElement("div");
-  document.body.appendChild(container);
-  container.appendChild(renderer.domElement);
+  renderer.useLegacyLights = false;
+  document.body.appendChild(renderer.domElement);
 
   controls = new TrackballControls(camera, renderer.domElement);
   controls.minDistance = 100;
@@ -171,7 +169,7 @@ function init() {
   controls.panSpeed = 2;
 
   stats = new Stats();
-  container.appendChild(stats.dom);
+  document.body.appendChild(stats.dom);
 
   const gui = new GUI();
 

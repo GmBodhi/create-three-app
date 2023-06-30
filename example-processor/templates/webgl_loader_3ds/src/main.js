@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  HemisphereLight,
+  AmbientLight,
   DirectionalLight,
   TextureLoader,
   WebGLRenderer,
@@ -31,9 +31,9 @@ function init() {
   camera.position.z = 2;
 
   scene = new Scene();
-  scene.add(new HemisphereLight());
+  scene.add(new AmbientLight(0xffffff, 3));
 
-  const directionalLight = new DirectionalLight(0xffeedd);
+  const directionalLight = new DirectionalLight(0xffeedd, 3);
   directionalLight.position.set(0, 0, 2);
   scene.add(directionalLight);
 
@@ -55,9 +55,10 @@ function init() {
     scene.add(object);
   });
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   controls = new TrackballControls(camera, renderer.domElement);

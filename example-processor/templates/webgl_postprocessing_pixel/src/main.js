@@ -27,8 +27,7 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPixelatedPass } from "three/addons/postprocessing/RenderPixelatedPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, composer, crystalMesh, clock;
@@ -53,13 +52,14 @@ function init() {
   renderer.shadowMap.enabled = true;
   //renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   composer = new EffectComposer(renderer);
   const renderPixelatedPass = new RenderPixelatedPass(6, scene, camera);
   composer.addPass(renderPixelatedPass);
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   composer.addPass(outputPass);
 
   window.addEventListener("resize", onWindowResize);
@@ -143,15 +143,15 @@ function init() {
 
   // lights
 
-  scene.add(new AmbientLight(0x757f8e));
+  scene.add(new AmbientLight(0x757f8e, 3));
 
-  const directionalLight = new DirectionalLight(0xfffecd, 0.5);
+  const directionalLight = new DirectionalLight(0xfffecd, 1.5);
   directionalLight.position.set(100, 100, 100);
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.set(2048, 2048);
   scene.add(directionalLight);
 
-  const spotLight = new SpotLight(0xffc100, 1, 10, Math.PI / 16, 0.02, 2);
+  const spotLight = new SpotLight(0xffc100, 10, 10, Math.PI / 16, 0.02, 2);
   spotLight.position.set(2, 2, 0);
   const target = spotLight.target;
   scene.add(target);

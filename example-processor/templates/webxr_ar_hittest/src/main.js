@@ -38,7 +38,7 @@ function init() {
     20
   );
 
-  const light = new HemisphereLight(0xffffff, 0xbbbbff, 1);
+  const light = new HemisphereLight(0xffffff, 0xbbbbff, 3);
   light.position.set(0.5, 1, 0.25);
   scene.add(light);
 
@@ -47,6 +47,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 

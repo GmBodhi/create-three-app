@@ -138,16 +138,17 @@ function init() {
   );
   scene.add(mesh);
 
-  const ambientLight = new AmbientLight(0xeeeeee);
+  const ambientLight = new AmbientLight(0xeeeeee, 3);
   scene.add(ambientLight);
 
-  const directionalLight = new DirectionalLight(0xffffff, 4);
+  const directionalLight = new DirectionalLight(0xffffff, 12);
   directionalLight.position.set(1, 1, 0.5).normalize();
   scene.add(directionalLight);
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   controls = new FirstPersonControls(camera, renderer.domElement);

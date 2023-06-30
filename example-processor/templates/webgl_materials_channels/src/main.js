@@ -84,6 +84,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //
@@ -126,17 +127,17 @@ function init() {
 
   // lights
 
-  const ambientLight = new AmbientLight(0xffffff, 0.1);
+  const ambientLight = new AmbientLight(0xffffff, 0.3);
   scene.add(ambientLight);
 
-  const pointLight = new PointLight(0xff0000, 0.5);
+  const pointLight = new PointLight(0xff0000, 1.5, 0, 0);
   pointLight.position.z = 2500;
   scene.add(pointLight);
 
-  const pointLight2 = new PointLight(0xff6666, 1);
+  const pointLight2 = new PointLight(0xff6666, 3, 0, 0);
   camera.add(pointLight2);
 
-  const pointLight3 = new PointLight(0x0000ff, 0.5);
+  const pointLight3 = new PointLight(0x0000ff, 1.5, 0, 0);
   pointLight3.position.x = -1000;
   pointLight3.position.z = 1000;
   scene.add(pointLight3);
@@ -211,6 +212,7 @@ function init() {
     fragmentShader: VelocityShader.fragmentShader,
     side: DoubleSide,
   });
+  materialVelocity.displacementMap = displacementMap; // required for defines
   materialVelocity.uniforms.displacementMap.value = displacementMap;
   materialVelocity.uniforms.displacementScale.value = SCALE;
   materialVelocity.uniforms.displacementBias.value = BIAS;

@@ -14,9 +14,8 @@ import {
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let container;
 
@@ -62,13 +61,14 @@ function init() {
 
   scene = new Scene();
 
-  const light = new DirectionalLight(0xffffff);
+  const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0.5, 1, 1).normalize();
   scene.add(light);
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   video = document.getElementById("video");
@@ -139,7 +139,7 @@ function init() {
 
   const renderPass = new RenderPass(scene, camera);
   const bloomPass = new BloomPass(1.3);
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
 
   composer = new EffectComposer(renderer);
 

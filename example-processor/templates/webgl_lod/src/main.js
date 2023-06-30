@@ -40,11 +40,11 @@ function init() {
   scene = new Scene();
   scene.fog = new Fog(0x000000, 1, 15000);
 
-  const pointLight = new PointLight(0xff2200);
+  const pointLight = new PointLight(0xff2200, 3, 0, 0);
   pointLight.position.set(0, 0, 0);
   scene.add(pointLight);
 
-  const dirLight = new DirectionalLight(0xffffff);
+  const dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(0, 0, 1).normalize();
   scene.add(dirLight);
 
@@ -83,6 +83,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //

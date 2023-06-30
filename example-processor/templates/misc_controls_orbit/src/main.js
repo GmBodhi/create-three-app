@@ -6,7 +6,7 @@ import {
   FogExp2,
   WebGLRenderer,
   PerspectiveCamera,
-  CylinderGeometry,
+  ConeGeometry,
   MeshPhongMaterial,
   Mesh,
   DirectionalLight,
@@ -29,6 +29,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -58,7 +59,7 @@ function init() {
 
   // world
 
-  const geometry = new CylinderGeometry(0, 10, 30, 4, 1);
+  const geometry = new ConeGeometry(10, 30, 4, 1);
   const material = new MeshPhongMaterial({
     color: 0xffffff,
     flatShading: true,
@@ -76,15 +77,15 @@ function init() {
 
   // lights
 
-  const dirLight1 = new DirectionalLight(0xffffff);
+  const dirLight1 = new DirectionalLight(0xffffff, 3);
   dirLight1.position.set(1, 1, 1);
   scene.add(dirLight1);
 
-  const dirLight2 = new DirectionalLight(0x002288);
+  const dirLight2 = new DirectionalLight(0x002288, 3);
   dirLight2.position.set(-1, -1, -1);
   scene.add(dirLight2);
 
-  const ambientLight = new AmbientLight(0x222222);
+  const ambientLight = new AmbientLight(0x555555);
   scene.add(ambientLight);
 
   //

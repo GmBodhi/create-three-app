@@ -11,7 +11,6 @@ import {
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
-  AmbientLight,
   Vector2,
   ShaderMaterial,
   ReinhardToneMapping,
@@ -37,7 +36,7 @@ bloomLayer.set(BLOOM_SCENE);
 
 const params = {
   threshold: 0,
-  strength: 3,
+  strength: 1,
   radius: 0.5,
   exposure: 1,
 };
@@ -48,6 +47,7 @@ const materials = {};
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.useLegacyLights = false;
 document.body.appendChild(renderer.domElement);
 
 const scene = new Scene();
@@ -66,8 +66,6 @@ controls.maxPolarAngle = Math.PI * 0.5;
 controls.minDistance = 1;
 controls.maxDistance = 100;
 controls.addEventListener("change", render);
-
-scene.add(new AmbientLight(0x898989));
 
 const renderScene = new RenderPass(scene, camera);
 
@@ -122,7 +120,7 @@ bloomFolder.add(params, "threshold", 0.0, 1.0).onChange(function (value) {
   render();
 });
 
-bloomFolder.add(params, "strength", 0.0, 10.0).onChange(function (value) {
+bloomFolder.add(params, "strength", 0.0, 3).onChange(function (value) {
   bloomPass.strength = Number(value);
   render();
 });

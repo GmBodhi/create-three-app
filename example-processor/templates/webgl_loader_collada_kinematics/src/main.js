@@ -4,11 +4,7 @@ import {
   PerspectiveCamera,
   Scene,
   GridHelper,
-  Mesh,
-  SphereGeometry,
-  MeshBasicMaterial,
   HemisphereLight,
-  PointLight,
   WebGLRenderer,
   MathUtils,
 } from "three";
@@ -21,7 +17,6 @@ import { ColladaLoader } from "three/addons/loaders/ColladaLoader.js";
 let container, stats;
 
 let camera, scene, renderer;
-let particleLight;
 let dae;
 
 let kinematics;
@@ -74,23 +69,15 @@ function init() {
 
   scene.add(dae);
 
-  particleLight = new Mesh(
-    new SphereGeometry(4, 8, 8),
-    new MeshBasicMaterial({ color: 0xffffff })
-  );
-  scene.add(particleLight);
-
   // Lights
 
-  const light = new HemisphereLight(0xfff7f7, 0x494966);
+  const light = new HemisphereLight(0xfff7f7, 0x494966, 3);
   scene.add(light);
 
-  const pointLight = new PointLight(0xffffff, 0.3);
-  particleLight.add(pointLight);
-
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -168,10 +155,6 @@ function render() {
   camera.position.z = Math.sin(timer) * 20;
 
   camera.lookAt(0, 5, 0);
-
-  particleLight.position.x = Math.sin(timer * 4) * 3009;
-  particleLight.position.y = Math.cos(timer * 5) * 4000;
-  particleLight.position.z = Math.cos(timer * 4) * 3009;
 
   renderer.render(scene, camera);
 }

@@ -45,9 +45,9 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
-
-  onWindowResize();
 
   window.addEventListener("resize", onWindowResize);
 }

@@ -44,10 +44,10 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xffffff);
 
-  const ambient = new AmbientLight(0xaaaaaa, 1);
+  const ambient = new AmbientLight(0xaaaaaa, 3);
   scene.add(ambient);
 
-  const directionalLight = new DirectionalLight(0xffffff, 1);
+  const directionalLight = new DirectionalLight(0xffffff, 3);
   directionalLight.position.set(-1, 1, 1).normalize();
   scene.add(directionalLight);
 
@@ -56,6 +56,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   effect = new OutlineEffect(renderer);

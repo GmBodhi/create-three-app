@@ -29,6 +29,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
   container.appendChild(renderer.domElement);
@@ -41,7 +42,7 @@ function init() {
   );
   camera.position.set(0, 100, 0);
 
-  const environment = new RoomEnvironment();
+  const environment = new RoomEnvironment(renderer);
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene = new Scene();

@@ -67,6 +67,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
@@ -76,7 +77,9 @@ function init() {
 
   scene = new Scene();
   scene.background = new Color(0xdeebed);
-  scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
+  scene.environment = pmremGenerator.fromScene(
+    new RoomEnvironment(renderer)
+  ).texture;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;

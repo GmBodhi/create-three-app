@@ -54,9 +54,10 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
-  const environment = new RoomEnvironment();
+  const environment = new RoomEnvironment(renderer);
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.background = new Color(0xbbbbbb);

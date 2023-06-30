@@ -47,11 +47,11 @@ function init() {
   scene.background = new Color(0xa0a0a0);
   scene.fog = new Fog(0xa0a0a0, 200, 1000);
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x444444, 1.5);
+  const hemiLight = new HemisphereLight(0xffffff, 0x444444, 5);
   hemiLight.position.set(0, 200, 0);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 1.5);
+  const dirLight = new DirectionalLight(0xffffff, 5);
   dirLight.position.set(0, 200, 100);
   dirLight.castShadow = true;
   dirLight.shadow.camera.top = 180;
@@ -97,6 +97,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 

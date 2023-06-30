@@ -35,6 +35,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   // camera
@@ -57,11 +58,11 @@ function init() {
 
   // ambient light
 
-  scene.add(new AmbientLight(0x222222));
+  scene.add(new AmbientLight(0x666666));
 
   // point light
 
-  const light = new PointLight(0xffffff, 1);
+  const light = new PointLight(0xffffff, 3, 0, 0);
   camera.add(light);
 
   // helper

@@ -45,7 +45,7 @@ function init() {
 
   raycaster = new Raycaster();
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x222222, 1.5);
+  const hemiLight = new HemisphereLight(0xffffff, 0x222222, 4);
   hemiLight.position.set(1, 1, 1);
   scene.add(hemiLight);
 
@@ -97,6 +97,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //

@@ -1,13 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  HemisphereLight,
-  DirectionalLight,
-  GridHelper,
-  WebGLRenderer,
-} from "three";
+import { PerspectiveCamera, Scene, GridHelper, WebGLRenderer } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -33,14 +26,6 @@ function init() {
 
   scene = new Scene();
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x444444);
-  hemiLight.position.set(0, 1, 0);
-  scene.add(hemiLight);
-
-  const dirLight = new DirectionalLight(0xffffff);
-  dirLight.position.set(0, 1, 0);
-  scene.add(dirLight);
-
   // grid
   const gridHelper = new GridHelper(28, 28, 0x303030, 0x303030);
   scene.add(gridHelper);
@@ -58,6 +43,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

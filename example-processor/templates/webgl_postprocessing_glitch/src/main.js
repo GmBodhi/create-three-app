@@ -16,8 +16,7 @@ import {
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { GlitchPass } from "three/addons/postprocessing/GlitchPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, scene, renderer, composer;
 let object, light;
@@ -42,6 +41,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //
@@ -78,9 +78,9 @@ function init() {
     object.add(mesh);
   }
 
-  scene.add(new AmbientLight(0x666666));
+  scene.add(new AmbientLight(0xcccccc));
 
-  light = new DirectionalLight(0xffffff);
+  light = new DirectionalLight(0xffffff, 3);
   light.position.set(1, 1, 1);
   scene.add(light);
 
@@ -92,7 +92,7 @@ function init() {
   glitchPass = new GlitchPass();
   composer.addPass(glitchPass);
 
-  const outputPass = new ShaderPass(GammaCorrectionShader);
+  const outputPass = new OutputPass();
   composer.addPass(outputPass);
 
   //

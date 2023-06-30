@@ -51,10 +51,10 @@ function init() {
 
   // lights
 
-  const ambientLight = new AmbientLight(0xcccccc, 0.4);
+  const ambientLight = new AmbientLight(0xcccccc);
   scene.add(ambientLight);
 
-  const directionalLight = new DirectionalLight(0xffffff, 0.7);
+  const directionalLight = new DirectionalLight(0xffffff, 2.5);
   directionalLight.position.set(0, 5, 5);
   scene.add(directionalLight);
 
@@ -124,10 +124,10 @@ function init() {
   //
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.shadowMap.enabled = true;
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.shadowMap.enabled = true;
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //

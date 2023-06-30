@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGLRenderer,
   Scene,
   Color,
   HemisphereLight,
@@ -14,7 +15,6 @@ import {
   DoubleSide,
   MeshPhongMaterial,
   CylinderGeometry,
-  WebGLRenderer,
 } from "three";
 
 import {
@@ -28,12 +28,22 @@ import { VRButton } from "three/addons/webxr/VRButton.js";
 
 let mesh, material, geometry;
 
+const renderer = new WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(window.devicePixelRatio);
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.useLegacyLights = false;
+renderer.xr.enabled = true;
+renderer.xr.setReferenceSpaceType("local");
+document.body.appendChild(renderer.domElement);
+
+document.body.appendChild(VRButton.createButton(renderer));
+
 //
 
 const scene = new Scene();
 scene.background = new Color(0xf0f0ff);
 
-const light = new HemisphereLight(0xfff0f0, 0x606066);
+const light = new HemisphereLight(0xfff0f0, 0x60606, 3);
 light.position.set(1, 1, 1);
 scene.add(light);
 
@@ -171,16 +181,6 @@ scene.add(mesh);
 funfairs.push(mesh);
 
 //
-
-const renderer = new WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.xr.enabled = true;
-renderer.xr.setReferenceSpaceType("local");
-renderer.xr.setUserCamera(camera);
-document.body.appendChild(renderer.domElement);
-
-document.body.appendChild(VRButton.createButton(renderer));
 
 window.addEventListener("resize", onWindowResize);
 

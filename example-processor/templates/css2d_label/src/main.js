@@ -66,7 +66,7 @@ function init() {
 
   scene = new Scene();
 
-  const dirLight = new DirectionalLight(0xffffff, 1);
+  const dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(0, 0, 1);
   dirLight.layers.enableAll();
   scene.add(dirLight);
@@ -153,6 +153,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   labelRenderer = new CSS2DRenderer();

@@ -80,6 +80,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   const width = window.innerWidth || 2;

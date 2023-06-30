@@ -123,10 +123,10 @@ function init() {
 
   // light
 
-  const ambientLight = new AmbientLight(0xe7e7e7, 0.4);
+  const ambientLight = new AmbientLight(0xe7e7e7, 1.2);
   scene.add(ambientLight);
 
-  const directionalLight = new DirectionalLight(0xffffff, 0.6);
+  const directionalLight = new DirectionalLight(0xffffff, 2);
   directionalLight.position.set(-1, 1, 1);
   scene.add(directionalLight);
 
@@ -135,6 +135,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   // gui

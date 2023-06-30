@@ -16,8 +16,6 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-const statsEnabled = true;
-
 let container, stats, loader;
 
 let camera, scene, renderer;
@@ -47,21 +45,20 @@ function init() {
   camera = new PerspectiveCamera(
     27,
     window.innerWidth / window.innerHeight,
-    1,
-    10000
+    0.1,
+    100
   );
-  camera.position.z = 1200;
+  camera.position.z = 12;
 
   scene = new Scene();
   scene.background = new Color(0x060708);
 
   // LIGHTS
 
-  scene.add(new HemisphereLight(0x8d7c7c, 0x494966));
+  scene.add(new HemisphereLight(0x8d7c7c, 0x494966, 3));
 
-  spotLight = new SpotLight(0xffffde, 2);
-  spotLight.position.set(0.5, 0, 1);
-  spotLight.position.multiplyScalar(700);
+  spotLight = new SpotLight(0xffffde, 200);
+  spotLight.position.set(3.5, 0, 7);
   scene.add(spotLight);
 
   spotLight.castShadow = true;
@@ -69,8 +66,8 @@ function init() {
   spotLight.shadow.mapSize.width = 2048;
   spotLight.shadow.mapSize.height = 2048;
 
-  spotLight.shadow.camera.near = 200;
-  spotLight.shadow.camera.far = 1500;
+  spotLight.shadow.camera.near = 2;
+  spotLight.shadow.camera.far = 15;
 
   spotLight.shadow.camera.fov = 40;
 
@@ -87,27 +84,26 @@ function init() {
     specular: 0x666666,
     shininess: 25,
     bumpMap: mapHeight,
-    bumpScale: 12,
+    bumpScale: 0.1,
   });
 
   loader = new GLTFLoader();
   loader.load("models/gltf/LeePerrySmith/LeePerrySmith.glb", function (gltf) {
-    createScene(gltf.scene.children[0].geometry, 100, material);
+    createScene(gltf.scene.children[0].geometry, 1, material);
   });
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
 
   //
 
-  if (statsEnabled) {
-    stats = new Stats();
-    container.appendChild(stats.dom);
-  }
+  stats = new Stats();
+  container.appendChild(stats.dom);
 
   // EVENTS
 
@@ -118,7 +114,7 @@ function init() {
 function createScene(geometry, scale, material) {
   mesh = new Mesh(geometry, material);
 
-  mesh.position.y = -50;
+  mesh.position.y = -0.5;
   mesh.scale.set(scale, scale, scale);
 
   mesh.castShadow = true;
@@ -147,7 +143,8 @@ function animate() {
   requestAnimationFrame(animate);
 
   render();
-  if (statsEnabled) stats.update();
+
+  stats.update();
 }
 
 function render() {

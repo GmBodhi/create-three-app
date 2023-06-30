@@ -30,16 +30,16 @@ function init() {
     45,
     window.innerWidth / window.innerHeight,
     0.1,
-    1000
+    100
   );
-  camera.position.set(0, 50, 250);
+  camera.position.set(0, 1, 5);
 
   scene = new Scene();
 
   //
 
   const loader = new TGALoader();
-  const geometry = new BoxGeometry(50, 50, 50);
+  const geometry = new BoxGeometry();
 
   // add box 1 - grey8 texture
 
@@ -48,7 +48,7 @@ function init() {
   const material1 = new MeshPhongMaterial({ color: 0xffffff, map: texture1 });
 
   const mesh1 = new Mesh(geometry, material1);
-  mesh1.position.x = -50;
+  mesh1.position.x = -1;
 
   scene.add(mesh1);
 
@@ -59,16 +59,16 @@ function init() {
   const material2 = new MeshPhongMaterial({ color: 0xffffff, map: texture2 });
 
   const mesh2 = new Mesh(geometry, material2);
-  mesh2.position.x = 50;
+  mesh2.position.x = 1;
 
   scene.add(mesh2);
 
   //
 
-  const ambientLight = new AmbientLight(0xffffff, 0.4);
+  const ambientLight = new AmbientLight(0xffffff, 1.5);
   scene.add(ambientLight);
 
-  const light = new DirectionalLight(0xffffff, 1);
+  const light = new DirectionalLight(0xffffff, 2.5);
   light.position.set(1, 1, 1);
   scene.add(light);
 
@@ -77,6 +77,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //

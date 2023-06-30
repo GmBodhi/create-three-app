@@ -109,8 +109,8 @@ function init() {
   );
   camera.position.set(0, 1.6, 3);
 
-  const hemLight = new HemisphereLight(0x808080, 0x606060);
-  const light = new DirectionalLight(0xffffff);
+  const hemLight = new HemisphereLight(0x808080, 0x606060, 3);
+  const light = new DirectionalLight(0xffffff, 3);
   scene.add(hemLight, light);
 
   //
@@ -120,6 +120,7 @@ function init() {
   renderer.setClearAlpha(1);
   renderer.setClearColor(new Color(0), 0);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.useLegacyLights = false;
   renderer.xr.enabled = true;
 
   document.body.appendChild(renderer.domElement);
