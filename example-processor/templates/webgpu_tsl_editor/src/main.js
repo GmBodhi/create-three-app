@@ -9,6 +9,7 @@ import {
   PlaneGeometry,
   Texture,
   TextureLoader,
+  RepeatWrapping,
   SRGBColorSpace,
 } from "three";
 import * as Nodes from "three/nodes";
@@ -79,15 +80,21 @@ function init() {
     const editorDOM = document.getElementById("source");
     const resultDOM = document.getElementById("result");
 
-    const tslCode = `// Simple example
+    const tslCode = `// Simple uv.x animation
 
-const { texture, uniform, vec4 } = TSL;
+const { texture, uniform, vec2, vec4, uv, oscSine, timerLocal } = TSL;
 
 //const samplerTexture = new Texture();
 const samplerTexture = new TextureLoader().load( 'three/examples/textures/uv_grid_opengl.jpg' );
+samplerTexture.wrapS = RepeatWrapping;
+//samplerTexture.wrapT = RepeatWrapping;
+
+const timer = timerLocal( .5 ); // .5 is speed
+const uv0 = uv();
+const animateUv = vec2( uv0.x.add( oscSine( timer ) ), uv0.y );
 
 // label is optional
-const myMap = texture( samplerTexture ).rgb.label( 'myTexture' );
+const myMap = texture( samplerTexture, animateUv ).rgb.label( 'myTexture' );
 const myColor = uniform( new Color( 0x0066ff ) ).label( 'myColor' );
 const opacity = .7;
 
