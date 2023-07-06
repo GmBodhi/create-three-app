@@ -9,11 +9,11 @@ import {
   Layers,
   MeshBasicMaterial,
   WebGLRenderer,
+  ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
   Vector2,
   ShaderMaterial,
-  ReinhardToneMapping,
   Raycaster,
   IcosahedronGeometry,
   Color,
@@ -48,6 +48,7 @@ const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.useLegacyLights = false;
+renderer.toneMapping = ReinhardToneMapping;
 document.body.appendChild(renderer.domElement);
 
 const scene = new Scene();
@@ -98,7 +99,7 @@ const mixPass = new ShaderPass(
 );
 mixPass.needsSwap = true;
 
-const outputPass = new OutputPass(ReinhardToneMapping);
+const outputPass = new OutputPass();
 
 const finalComposer = new EffectComposer(renderer);
 finalComposer.addPass(renderScene);
@@ -136,7 +137,7 @@ bloomFolder
 const toneMappingFolder = gui.addFolder("tone mapping");
 
 toneMappingFolder.add(params, "exposure", 0.1, 2).onChange(function (value) {
-  outputPass.toneMappingExposure = Math.pow(value, 4.0);
+  renderer.toneMappingExposure = Math.pow(value, 4.0);
   render();
 });
 
