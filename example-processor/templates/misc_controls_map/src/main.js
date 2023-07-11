@@ -98,6 +98,7 @@ function init() {
   window.addEventListener("resize", onWindowResize);
 
   const gui = new GUI();
+  gui.add(controls, "zoomToCursor");
   gui.add(controls, "screenSpacePanning");
 }
 
