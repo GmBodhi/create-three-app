@@ -36,7 +36,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animation);
-  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 

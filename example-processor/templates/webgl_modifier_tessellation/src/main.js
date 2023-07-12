@@ -120,7 +120,6 @@ function init(font) {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(WIDTH, HEIGHT);
-  renderer.useLegacyLights = false;
 
   const container = document.getElementById("container");
   container.appendChild(renderer.domElement);

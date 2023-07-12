@@ -37,7 +37,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   // Create camera (The volume renderer does not work very well with perspective yet)

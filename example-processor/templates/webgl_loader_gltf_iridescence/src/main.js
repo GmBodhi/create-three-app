@@ -24,7 +24,6 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();

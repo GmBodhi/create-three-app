@@ -148,7 +148,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   controls = new FirstPersonControls(camera, renderer.domElement);

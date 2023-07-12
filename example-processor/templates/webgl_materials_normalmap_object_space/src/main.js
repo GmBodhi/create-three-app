@@ -22,7 +22,6 @@ function init() {
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   // scene

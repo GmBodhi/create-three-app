@@ -111,7 +111,6 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   window.addEventListener("resize", onWindowResize);
   document.body.appendChild(renderer.domElement);
 

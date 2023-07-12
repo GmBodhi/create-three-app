@@ -31,7 +31,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
-  renderer.useLegacyLights = false;
 
   // tonemapping
   renderer.toneMapping = ACESFilmicToneMapping;

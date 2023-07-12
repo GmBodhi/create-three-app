@@ -206,7 +206,6 @@ function init() {
   scene.add(boxMesh3);
 
   renderer = new WebGLRenderer();
-  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = ReinhardToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);

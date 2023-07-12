@@ -73,7 +73,6 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   effect = new StereoEffect(renderer);

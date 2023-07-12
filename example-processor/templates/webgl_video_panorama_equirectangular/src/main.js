@@ -56,7 +56,6 @@ function init() {
   scene.add(mesh);
 
   renderer = new WebGLRenderer();
-  renderer.useLegacyLights = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

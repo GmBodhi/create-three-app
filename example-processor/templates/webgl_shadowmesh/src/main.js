@@ -60,7 +60,6 @@ animate();
 function init() {
   scene.background = new Color(0x0096ff);
 
-  renderer.useLegacyLights = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   document.getElementById("container").appendChild(renderer.domElement);

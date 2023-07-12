@@ -75,7 +75,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(devicePixelRatio);
   renderer.setSize(width, height);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();

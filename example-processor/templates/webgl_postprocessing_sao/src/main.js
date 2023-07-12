@@ -40,7 +40,6 @@ function init() {
   renderer.setClearColor(0x000000);
   renderer.setPixelRatio(devicePixelRatio);
   renderer.setSize(width, height);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(65, width / height, 3, 10);

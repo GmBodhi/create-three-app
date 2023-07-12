@@ -58,7 +58,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

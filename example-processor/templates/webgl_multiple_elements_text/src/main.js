@@ -44,7 +44,6 @@ function init() {
 
   renderer = new WebGLRenderer({ canvas: canvas, antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.useLegacyLights = false;
 
   views = document.querySelectorAll(".view");
 

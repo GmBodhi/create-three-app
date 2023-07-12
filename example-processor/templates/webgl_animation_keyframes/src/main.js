@@ -29,7 +29,6 @@ container.appendChild(stats.dom);
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.useLegacyLights = false;
 container.appendChild(renderer.domElement);
 
 const pmremGenerator = new PMREMGenerator(renderer);

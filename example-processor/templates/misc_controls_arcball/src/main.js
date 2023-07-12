@@ -80,7 +80,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   renderer.toneMapping = ReinhardToneMapping;
   renderer.toneMappingExposure = 3;
   renderer.domElement.style.background =

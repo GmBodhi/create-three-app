@@ -86,7 +86,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.getElementById("container").appendChild(renderer.domElement);
 
   labelRenderer = new CSS2DRenderer();

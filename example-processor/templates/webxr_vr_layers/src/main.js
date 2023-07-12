@@ -120,7 +120,6 @@ function init() {
   renderer.setClearAlpha(1);
   renderer.setClearColor(new Color(0), 0);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   renderer.xr.enabled = true;
 
   document.body.appendChild(renderer.domElement);

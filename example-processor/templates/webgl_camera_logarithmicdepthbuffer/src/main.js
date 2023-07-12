@@ -100,7 +100,6 @@ function initView(scene, name, logDepthBuf) {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH / 2, SCREEN_HEIGHT);
-  renderer.useLegacyLights = false;
   renderer.domElement.style.position = "relative";
   renderer.domElement.id = "renderer_" + name;
   framecontainer.appendChild(renderer.domElement);

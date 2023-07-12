@@ -135,7 +135,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
-  renderer.useLegacyLights = false;
   renderer.autoClear = false;
 
   //

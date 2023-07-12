@@ -57,7 +57,6 @@ function init(font) {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // Materials

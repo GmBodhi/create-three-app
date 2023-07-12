@@ -70,7 +70,6 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = VSMShadowMap;
 renderer.toneMapping = ACESFilmicToneMapping;
-renderer.useLegacyLights = false;
 container.appendChild(renderer.domElement);
 
 const stats = new Stats();

@@ -96,7 +96,6 @@ function init() {
   renderer.setClearColor(0xffffff);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   renderer.autoClear = false;

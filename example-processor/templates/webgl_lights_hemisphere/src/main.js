@@ -157,7 +157,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = true;
-  renderer.useLegacyLights = false;
 
   // STATS
 
