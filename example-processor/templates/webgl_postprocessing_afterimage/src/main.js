@@ -73,7 +73,7 @@ function init() {
 }
 
 function createGUI() {
-  const gui = new GUI({ name: "Damp setting" });
+  const gui = new GUI({ title: "Damp setting" });
   gui.add(afterimagePass.uniforms["damp"], "value", 0, 1).step(0.001);
   gui.add(params, "enable");
 }
