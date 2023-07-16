@@ -6,9 +6,9 @@ import {
   PerspectiveCamera,
   Scene,
   MeshDepthMaterial,
-  MeshBasicMaterial,
   SphereGeometry,
   Mesh,
+  MeshBasicMaterial,
   WebGLRenderer,
   OrthographicCamera,
   WebGLRenderTarget,
@@ -71,13 +71,10 @@ function init() {
 
   materialDepth = new MeshDepthMaterial();
 
-  const materialScene = new MeshBasicMaterial({ color: 0x000000 });
-
   // tree
 
   const loader = new OBJLoader();
   loader.load("models/obj/tree.obj", function (object) {
-    object.material = materialScene;
     object.position.set(0, -150, -150);
     object.scale.multiplyScalar(400);
     scene.add(object);
@@ -86,7 +83,7 @@ function init() {
   // sphere
 
   const geo = new SphereGeometry(1, 20, 10);
-  sphereMesh = new Mesh(geo, materialScene);
+  sphereMesh = new Mesh(geo, new MeshBasicMaterial({ color: 0x000000 }));
   sphereMesh.scale.multiplyScalar(20);
   scene.add(sphereMesh);
 
@@ -255,7 +252,7 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
 }
 
 function animate() {
-  requestAnimationFrame(animate, renderer.domElement);
+  requestAnimationFrame(animate);
 
   stats.begin();
   render();

@@ -165,7 +165,7 @@ function onWindowResize() {
   const aspect = width / height;
 
   cameraP.aspect = aspect;
-  cameraP.setViewOffset(width, height, params.viewOffset, 0, width, height);
+  cameraP.setViewOffset(width, height, params.viewOffsetX, 0, width, height);
   cameraO.updateProjectionMatrix();
 
   cameraO.left = -height * aspect;
