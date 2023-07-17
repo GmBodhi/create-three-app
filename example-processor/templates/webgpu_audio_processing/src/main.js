@@ -41,7 +41,7 @@ async function playAudioBuffer() {
   renderer.compute(computeNode);
 
   const waveArray = new Float32Array(
-    await renderer.getArrayBuffer(waveGPUBuffer)
+    await renderer.getArrayBufferAsync(waveGPUBuffer)
   );
 
   // play result
