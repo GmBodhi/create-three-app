@@ -2297,6 +2297,16 @@
         "/src"
       ]
     },
+    "webgl_materials_cubemap_render_to_mipmaps": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_materials_curvature": {
       "files": {
         "index.html": "src",
