@@ -38,7 +38,6 @@ function init() {
     100
   );
   camera.position.z = 3;
-  camera.focalLength = 3;
 
   const path = "textures/cube/pisa/";
   const format = ".png";
