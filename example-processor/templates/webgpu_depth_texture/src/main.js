@@ -8,6 +8,7 @@ import {
   Mesh,
   DepthTexture,
   FloatType,
+  RenderTarget,
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
@@ -15,7 +16,6 @@ import { texture, MeshBasicNodeMaterial } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import RenderTarget from "three/addons/renderers/common/RenderTarget.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 

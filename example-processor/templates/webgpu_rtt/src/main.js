@@ -8,6 +8,7 @@ import {
   TextureLoader,
   BoxGeometry,
   Mesh,
+  RenderTarget,
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
@@ -15,7 +16,6 @@ import { texture, uniform, vec2, MeshBasicNodeMaterial } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import RenderTarget from "three/addons/renderers/common/RenderTarget.js";
 
 let camera, scene, renderer;
 const mouse = new Vector2();
