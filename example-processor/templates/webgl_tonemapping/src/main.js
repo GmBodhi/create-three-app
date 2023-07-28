@@ -27,6 +27,7 @@ const params = {
   exposure: 1.0,
   toneMapping: "ACESFilmic",
   blurriness: 0.3,
+  intensity: 1.0,
 };
 
 const toneMappingOptions = {
@@ -46,7 +47,6 @@ async function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   renderer.toneMapping = toneMappingOptions[params.toneMapping];
@@ -112,18 +112,20 @@ async function init() {
   window.addEventListener("resize", onWindowResize);
 
   gui = new GUI();
+  const toneMappingFolder = gui.addFolder("tone mapping");
 
-  gui
+  toneMappingFolder
     .add(params, "toneMapping", Object.keys(toneMappingOptions))
 
     .onChange(function () {
-      updateGUI();
+      updateGUI(toneMappingFolder);
 
       renderer.toneMapping = toneMappingOptions[params.toneMapping];
       render();
     });
+  const backgroundFolder = gui.addFolder("background");
 
-  gui
+  backgroundFolder
     .add(params, "blurriness", 0, 1)
 
     .onChange(function (value) {
@@ -131,19 +133,27 @@ async function init() {
       render();
     });
 
-  updateGUI();
+  backgroundFolder
+    .add(params, "intensity", 0, 1)
+
+    .onChange(function (value) {
+      scene.backgroundIntensity = value;
+      render();
+    });
+
+  updateGUI(toneMappingFolder);
 
   gui.open();
 }
 
-function updateGUI() {
+function updateGUI(folder) {
   if (guiExposure !== null) {
     guiExposure.destroy();
     guiExposure = null;
   }
 
   if (params.toneMapping !== "None") {
-    guiExposure = gui
+    guiExposure = folder
       .add(params, "exposure", 0, 2)
 
       .onChange(function () {

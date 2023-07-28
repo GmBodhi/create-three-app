@@ -49,7 +49,7 @@ function init() {
   camera.position.z = 7;
 
   scene = new Scene();
-  scene.fogNode = rangeFog(color(0xff00ff), 3, 30);
+  scene.fogNode = rangeFog(color(0xff00ff), 8, 30);
 
   const sphereGeometry = new SphereGeometry(0.1, 16, 8);
 

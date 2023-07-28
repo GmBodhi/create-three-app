@@ -3,12 +3,12 @@ import "./style.css"; // For webpack support
 import {
   Clock,
   WebGLRenderer,
+  ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
   AmbientLight,
   PointLight,
   Vector2,
-  ReinhardToneMapping,
   AnimationMixer,
 } from "three";
 
@@ -45,7 +45,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
+  renderer.toneMapping = ReinhardToneMapping;
   container.appendChild(renderer.domElement);
 
   const scene = new Scene();
@@ -81,7 +81,7 @@ function init() {
   bloomPass.strength = params.strength;
   bloomPass.radius = params.radius;
 
-  const outputPass = new OutputPass(ReinhardToneMapping);
+  const outputPass = new OutputPass();
 
   composer = new EffectComposer(renderer);
   composer.addPass(renderScene);
@@ -122,7 +122,7 @@ function init() {
   const toneMappingFolder = gui.addFolder("tone mapping");
 
   toneMappingFolder.add(params, "exposure", 0.1, 2).onChange(function (value) {
-    outputPass.toneMappingExposure = Math.pow(value, 4.0);
+    renderer.toneMappingExposure = Math.pow(value, 4.0);
   });
 
   window.addEventListener("resize", onWindowResize);

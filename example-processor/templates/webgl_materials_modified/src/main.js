@@ -47,7 +47,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -88,7 +87,7 @@ function buildTwistMaterial(amount) {
   // Make sure WebGLRenderer doesnt reuse a single program
 
   material.customProgramCacheKey = function () {
-    return amount;
+    return amount.toFixed(1);
   };
 
   return material;

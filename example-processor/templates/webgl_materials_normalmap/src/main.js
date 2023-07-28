@@ -119,7 +119,6 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   //

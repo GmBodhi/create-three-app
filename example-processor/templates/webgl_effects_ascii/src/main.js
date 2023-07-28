@@ -64,7 +64,6 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
 
   effect = new AsciiEffect(renderer, " .:-+*=%@#", { invert: true });
   effect.setSize(window.innerWidth, window.innerHeight);

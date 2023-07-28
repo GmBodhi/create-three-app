@@ -129,7 +129,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   // camera

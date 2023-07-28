@@ -204,7 +204,6 @@ function init() {
   // Renderer
   renderer = new WebGLRenderer({ antialias: true });
   renderer.shadowMap.enabled = true;
-  renderer.useLegacyLights = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x263238);

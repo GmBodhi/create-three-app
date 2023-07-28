@@ -98,7 +98,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -179,14 +178,10 @@ function initWater() {
   material.lights = true;
 
   // Material attributes from MeshPhongMaterial
-  material.color = new Color(materialColor);
-  material.specular = new Color(0x111111);
-  material.shininess = 50;
-
   // Sets the uniforms with the material values
-  material.uniforms["diffuse"].value = material.color;
-  material.uniforms["specular"].value = material.specular;
-  material.uniforms["shininess"].value = Math.max(material.shininess, 1e-4);
+  material.uniforms["diffuse"].value = new Color(materialColor);
+  material.uniforms["specular"].value = new Color(0x111111);
+  material.uniforms["shininess"].value = Math.max(50, 1e-4);
   material.uniforms["opacity"].value = material.opacity;
 
   // Defines

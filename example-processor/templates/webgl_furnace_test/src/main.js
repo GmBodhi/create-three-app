@@ -25,7 +25,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

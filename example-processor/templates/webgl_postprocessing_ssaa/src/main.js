@@ -75,7 +75,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(devicePixelRatio);
   renderer.setSize(width, height);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -166,7 +165,7 @@ function onWindowResize() {
   const aspect = width / height;
 
   cameraP.aspect = aspect;
-  cameraP.setViewOffset(width, height, params.viewOffset, 0, width, height);
+  cameraP.setViewOffset(width, height, params.viewOffsetX, 0, width, height);
   cameraO.updateProjectionMatrix();
 
   cameraO.left = -height * aspect;

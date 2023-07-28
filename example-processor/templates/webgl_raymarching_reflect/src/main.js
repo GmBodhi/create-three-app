@@ -42,8 +42,7 @@ render();
 function init() {
   renderer = new WebGLRenderer({ canvas: canvas });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(config.resolution, config.resolution);
-  renderer.useLegacyLights = false;
+  renderer.setSize(parseInt(config.resolution), parseInt(config.resolution));
 
   window.addEventListener("resize", onWindowResize);
 
@@ -95,7 +94,7 @@ function onWindowResize() {
   if (config.resolution === "full") {
     renderer.setSize(window.innerWidth, window.innerHeight);
   } else {
-    renderer.setSize(config.resolution, config.resolution);
+    renderer.setSize(parseInt(config.resolution), parseInt(config.resolution));
   }
 
   camera.aspect = canvas.width / canvas.height;

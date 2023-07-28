@@ -226,7 +226,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   //
@@ -235,7 +234,6 @@ function init() {
 
   controls.movementSpeed = 70;
   controls.lookSpeed = 0.05;
-  controls.noFly = true;
   controls.lookVertical = false;
 
   //

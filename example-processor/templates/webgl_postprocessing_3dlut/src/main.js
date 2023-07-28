@@ -6,10 +6,6 @@ import {
   EquirectangularReflectionMapping,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  WebGLRenderTarget,
-  LinearFilter,
-  RGBAFormat,
-  SRGBColorSpace,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -17,11 +13,10 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { LUTPass } from "three/addons/postprocessing/LUTPass.js";
 import { LUTCubeLoader } from "three/addons/loaders/LUTCubeLoader.js";
 import { LUT3dlLoader } from "three/addons/loaders/LUT3dlLoader.js";
-import { GammaCorrectionShader } from "three/addons/shaders/GammaCorrectionShader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 const params = {
@@ -94,23 +89,14 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1;
   container.appendChild(renderer.domElement);
 
-  const target = new WebGLRenderTarget({
-    minFilter: LinearFilter,
-    magFilter: LinearFilter,
-    format: RGBAFormat,
-    colorSpace: SRGBColorSpace,
-  });
-
-  composer = new EffectComposer(renderer, target);
+  composer = new EffectComposer(renderer);
   composer.setPixelRatio(window.devicePixelRatio);
   composer.setSize(window.innerWidth, window.innerHeight);
   composer.addPass(new RenderPass(scene, camera));
-  composer.addPass(new ShaderPass(GammaCorrectionShader));
+  composer.addPass(new OutputPass());
 
   lutPass = new LUTPass();
   composer.addPass(lutPass);

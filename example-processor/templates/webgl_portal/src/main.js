@@ -47,7 +47,6 @@ function init() {
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
   renderer.localClippingEnabled = true;
 

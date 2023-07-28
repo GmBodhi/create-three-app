@@ -19,7 +19,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.useLegacyLights = false;
 
 const camera = new PerspectiveCamera(
   35,

@@ -106,7 +106,6 @@ function init() {
   const height = window.innerHeight;
 
   renderer = new WebGLRenderer();
-  renderer.useLegacyLights = false;
   renderer.shadowMap.enabled = true;
   // todo - support pixelRatio in this demo
   renderer.setSize(width, height);

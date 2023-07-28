@@ -4,6 +4,7 @@ import {
   PerspectiveCamera,
   Scene,
   VideoTexture,
+  SRGBColorSpace,
   PlaneGeometry,
   MeshBasicMaterial,
   Mesh,
@@ -31,6 +32,7 @@ function init() {
   video = document.getElementById("video");
 
   const texture = new VideoTexture(video);
+  texture.colorSpace = SRGBColorSpace;
 
   const geometry = new PlaneGeometry(16, 9);
   geometry.scale(0.5, 0.5, 0.5);
@@ -52,7 +54,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

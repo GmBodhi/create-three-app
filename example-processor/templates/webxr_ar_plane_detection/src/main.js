@@ -15,7 +15,6 @@ const renderer = new WebGLRenderer({ antialias: true, alpha: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setAnimationLoop(render);
-renderer.useLegacyLights = false;
 renderer.xr.enabled = true;
 document.body.appendChild(renderer.domElement);
 

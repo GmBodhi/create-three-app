@@ -69,8 +69,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  renderer.useLegacyLights = false;
-
   container.appendChild(renderer.domElement);
 
   //

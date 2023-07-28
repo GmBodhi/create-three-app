@@ -52,7 +52,6 @@ function init() {
   renderer.shadowMap.enabled = true;
   //renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   composer = new EffectComposer(renderer);

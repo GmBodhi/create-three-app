@@ -38,7 +38,6 @@ function init() {
     100
   );
   camera.position.z = 3;
-  camera.focalLength = 3;
 
   const path = "textures/cube/pisa/";
   const format = ".png";
@@ -80,7 +79,6 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.useLegacyLights = false;
   container.appendChild(renderer.domElement);
 
   const width = window.innerWidth || 2;

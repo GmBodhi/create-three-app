@@ -62,7 +62,6 @@ function init() {
   scene.background = new Color(0x000000);
 
   renderer = new WebGLRenderer();
-  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
 
   //

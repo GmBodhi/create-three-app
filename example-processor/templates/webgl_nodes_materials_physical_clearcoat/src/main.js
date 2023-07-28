@@ -189,7 +189,6 @@ function init() {
   particleLight.add(new PointLight(0xffffff, 30));
 
   renderer = new WebGLRenderer();
-  renderer.useLegacyLights = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

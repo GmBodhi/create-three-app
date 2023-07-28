@@ -49,7 +49,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -79,13 +78,7 @@ function init() {
 }
 
 function onWindowResize() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
-  postCamera.aspect = width / height;
-  postCamera.updateProjectionMatrix();
-
-  renderer.setSize(width, height);
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {

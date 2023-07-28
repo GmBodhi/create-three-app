@@ -31,7 +31,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -98,6 +97,7 @@ function init() {
   window.addEventListener("resize", onWindowResize);
 
   const gui = new GUI();
+  gui.add(controls, "zoomToCursor");
   gui.add(controls, "screenSpacePanning");
 }
 

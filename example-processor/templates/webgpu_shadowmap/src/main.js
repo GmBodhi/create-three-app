@@ -50,24 +50,25 @@ function init() {
 
   // lights
 
-  scene.add(new AmbientLight(0x444444));
+  scene.add(new AmbientLight(0x444444, 2));
 
-  spotLight = new SpotLight(0xff8888, 300);
+  spotLight = new SpotLight(0xff8888, 400);
   spotLight.angle = Math.PI / 5;
   spotLight.penumbra = 0.3;
   spotLight.position.set(8, 10, 5);
   spotLight.castShadow = true;
   spotLight.shadow.camera.near = 8;
-  spotLight.shadow.camera.far = 1000;
+  spotLight.shadow.camera.far = 200;
   spotLight.shadow.mapSize.width = 2048;
   spotLight.shadow.mapSize.height = 2048;
-  spotLight.shadow.bias = 0.01;
+  spotLight.shadow.bias = -0.002;
+  spotLight.shadow.radius = 4;
   scene.add(spotLight);
 
-  dirLight = new DirectionalLight(0x8888ff, 2);
-  dirLight.position.set(3, 20, 12);
+  dirLight = new DirectionalLight(0x8888ff, 3);
+  dirLight.position.set(3, 12, 17);
   dirLight.castShadow = true;
-  dirLight.shadow.camera.near = 8;
+  dirLight.shadow.camera.near = 0.1;
   dirLight.shadow.camera.far = 500;
   dirLight.shadow.camera.right = 17;
   dirLight.shadow.camera.left = -17;
@@ -75,7 +76,8 @@ function init() {
   dirLight.shadow.camera.bottom = -17;
   dirLight.shadow.mapSize.width = 2048;
   dirLight.shadow.mapSize.height = 2048;
-  dirLight.shadow.bias = 0.0001;
+  dirLight.shadow.radius = 4;
+  dirLight.shadow.bias = -0.0005;
 
   dirGroup = new Group();
   dirGroup.add(dirLight);
@@ -142,6 +144,8 @@ function init() {
   // Mouse control
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 2, 0);
+  controls.minDistance = 7;
+  controls.maxDistance = 40;
   controls.update();
 
   clock = new Clock();

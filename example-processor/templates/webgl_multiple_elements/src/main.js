@@ -93,7 +93,6 @@ function init() {
   renderer = new WebGLRenderer({ canvas: canvas, antialias: true });
   renderer.setClearColor(0xffffff, 1);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.useLegacyLights = false;
 }
 
 function updateSize() {

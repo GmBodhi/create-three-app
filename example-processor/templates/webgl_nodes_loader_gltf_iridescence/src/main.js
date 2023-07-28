@@ -32,7 +32,6 @@ async function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = false;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setAnimationLoop(render);
   document.body.appendChild(renderer.domElement);
@@ -48,7 +47,6 @@ async function init() {
   camera.position.set(0.35, 0.05, 0.35);
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render);
   controls.target.set(0, 0.2, 0);
   controls.update();
 

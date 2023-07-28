@@ -51,7 +51,6 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.useLegacyLights = true;
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
@@ -174,7 +173,7 @@ function init() {
 }
 
 function createGUI() {
-  const gui = new GUI({ name: "Accumulation Settings" });
+  const gui = new GUI({ title: "Accumulation Settings" });
   gui.add(params, "Enable");
   gui.add(params, "Blur Edges");
   gui.add(params, "Blend Window", 1, 500).step(1);
