@@ -118,10 +118,8 @@ function init() {
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
   controls.enableZoom = false;
   controls.enablePan = false;
-  controls.dampingFactor = 0.2;
 
   controls.addEventListener("change", () => (needsUpdate = true));
 
@@ -180,8 +178,6 @@ function onMaterialUpdate() {
 
 function animate() {
   requestAnimationFrame(animate);
-
-  controls.update();
 
   render();
 
