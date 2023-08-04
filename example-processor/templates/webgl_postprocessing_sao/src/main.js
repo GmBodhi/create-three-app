@@ -113,7 +113,7 @@ function init() {
       Normal: SAOPass.OUTPUT.Normal,
     })
     .onChange(function (value) {
-      saoPass.params.output = parseInt(value);
+      saoPass.params.output = value;
     });
   gui.add(saoPass.params, "saoBias", -1, 1);
   gui.add(saoPass.params, "saoIntensity", 0, 1);

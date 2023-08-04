@@ -100,7 +100,7 @@ function init() {
       Normal: SSAOPass.OUTPUT.Normal,
     })
     .onChange(function (value) {
-      ssaoPass.output = parseInt(value);
+      ssaoPass.output = value;
     });
   gui.add(ssaoPass, "kernelRadius").min(0).max(32);
   gui.add(ssaoPass, "minDistance").min(0.001).max(0.02);
