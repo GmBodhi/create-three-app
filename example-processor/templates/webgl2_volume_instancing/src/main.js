@@ -4,6 +4,7 @@ import {
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
+  Clock,
   BoxGeometry,
   RawShaderMaterial,
   GLSL3,
@@ -21,8 +22,7 @@ if (WebGL.isWebGL2Available() === false) {
   document.body.appendChild(WebGL.getWebGL2ErrorMessage());
 }
 
-let renderer, scene, camera;
-let controls;
+let renderer, scene, camera, controls, clock;
 
 init();
 animate();
@@ -47,6 +47,8 @@ function init() {
   controls.autoRotate = true;
   controls.autoRotateSpeed = -1.0;
   controls.enableDamping = true;
+
+  clock = new Clock();
 
   // Material
 
@@ -210,7 +212,8 @@ function onWindowResize() {
 function animate() {
   requestAnimationFrame(animate);
 
-  controls.update();
+  const delta = clock.getDelta();
+  controls.update(delta);
 
   renderer.render(scene, camera);
 }
