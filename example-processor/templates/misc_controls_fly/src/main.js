@@ -198,7 +198,7 @@ function init() {
   // postprocessing
 
   const renderModel = new RenderPass(scene, camera);
-  const effectFilm = new FilmPass(0.35, 0.75, 2048, false);
+  const effectFilm = new FilmPass(0.35);
   const outputPass = new OutputPass();
 
   composer = new EffectComposer(renderer);

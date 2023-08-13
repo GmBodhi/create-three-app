@@ -102,7 +102,7 @@ function init() {
 
   const renderModel = new RenderPass(scene, camera);
   const effectBloom = new BloomPass(0.75);
-  const effectFilm = new FilmPass(0.5, 0.5, 1448, false);
+  const effectFilm = new FilmPass();
 
   effectFocus = new ShaderPass(FocusShader);
 
