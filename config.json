@@ -3753,6 +3753,16 @@
         "/src"
       ]
     },
+    "webgpu_occlusion": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_particles": {
       "files": {
         "index.html": "src",
