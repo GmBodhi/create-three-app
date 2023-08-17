@@ -101,6 +101,8 @@ function init() {
   };
 
   const pmremGenerator = new PMREMGenerator(renderer);
+  const sceneEnv = new Scene();
+
   let renderTarget;
 
   function updateSun() {
@@ -114,7 +116,9 @@ function init() {
 
     if (renderTarget !== undefined) renderTarget.dispose();
 
-    renderTarget = pmremGenerator.fromScene(sky);
+    sceneEnv.add(sky);
+    renderTarget = pmremGenerator.fromScene(sceneEnv);
+    scene.add(sky);
 
     scene.environment = renderTarget.texture;
   }
