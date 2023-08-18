@@ -243,6 +243,7 @@ function shoot() {
     new DecalGeometry(mesh, position, orientation, size),
     material
   );
+  m.renderOrder = decals.length; // give decals a fixed render order
 
   decals.push(m);
   scene.add(m);

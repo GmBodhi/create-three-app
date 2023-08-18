@@ -17,6 +17,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { SSAOPass } from "three/addons/postprocessing/SSAOPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
@@ -80,8 +81,10 @@ function init() {
 
   composer = new EffectComposer(renderer);
 
+  const renderPass = new RenderPass(scene, camera);
+  composer.addPass(renderPass);
+
   const ssaoPass = new SSAOPass(scene, camera, width, height);
-  ssaoPass.kernelRadius = 16;
   composer.addPass(ssaoPass);
 
   const outputPass = new OutputPass();
@@ -95,7 +98,6 @@ function init() {
       Default: SSAOPass.OUTPUT.Default,
       "SSAO Only": SSAOPass.OUTPUT.SSAO,
       "SSAO Only + Blur": SSAOPass.OUTPUT.Blur,
-      Beauty: SSAOPass.OUTPUT.Beauty,
       Depth: SSAOPass.OUTPUT.Depth,
       Normal: SSAOPass.OUTPUT.Normal,
     })
@@ -105,6 +107,7 @@ function init() {
   gui.add(ssaoPass, "kernelRadius").min(0).max(32);
   gui.add(ssaoPass, "minDistance").min(0.001).max(0.02);
   gui.add(ssaoPass, "maxDistance").min(0.01).max(0.3);
+  gui.add(ssaoPass, "enabled");
 
   window.addEventListener("resize", onWindowResize);
 }
