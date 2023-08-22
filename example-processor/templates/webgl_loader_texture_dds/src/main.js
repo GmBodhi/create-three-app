@@ -30,7 +30,7 @@ function init() {
     0.1,
     100
   );
-  camera.position.z = 10;
+  camera.position.z = 15;
 
   scene = new Scene();
 
@@ -71,6 +71,26 @@ function init() {
   const map6 = loader.load("textures/compressed/disturb_argb_mip.dds");
   map6.anisotropy = 4;
   map6.colorSpace = SRGBColorSpace;
+
+  const map7 = loader.load(
+    "textures/compressed/disturb_dx10_bc6h_signed_nomip.dds"
+  );
+  map7.anisotropy = 4;
+
+  const map8 = loader.load(
+    "textures/compressed/disturb_dx10_bc6h_signed_mip.dds"
+  );
+  map8.anisotropy = 4;
+
+  const map9 = loader.load(
+    "textures/compressed/disturb_dx10_bc6h_unsigned_nomip.dds"
+  );
+  map9.anisotropy = 4;
+
+  const map10 = loader.load(
+    "textures/compressed/disturb_dx10_bc6h_unsigned_mip.dds"
+  );
+  map10.anisotropy = 4;
 
   const cubemap1 = loader.load(
     "textures/compressed/Mountains.dds",
@@ -123,51 +143,79 @@ function init() {
   const material6 = new MeshBasicMaterial({ envMap: cubemap3 });
   const material7 = new MeshBasicMaterial({ map: map5 });
   const material8 = new MeshBasicMaterial({ map: map6 });
+  const material9 = new MeshBasicMaterial({ map: map7 });
+  const material10 = new MeshBasicMaterial({ map: map8 });
+  const material11 = new MeshBasicMaterial({ map: map9 });
+  const material12 = new MeshBasicMaterial({ map: map10 });
 
   let mesh = new Mesh(new TorusGeometry(), material1);
-  mesh.position.x = -6;
+  mesh.position.x = -10;
   mesh.position.y = -2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material2);
-  mesh.position.x = -2;
+  mesh.position.x = -6;
   mesh.position.y = -2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material3);
-  mesh.position.x = -2;
-  mesh.position.y = 2;
-  scene.add(mesh);
-  meshes.push(mesh);
-
-  mesh = new Mesh(geometry, material4);
   mesh.position.x = -6;
   mesh.position.y = 2;
   scene.add(mesh);
   meshes.push(mesh);
 
+  mesh = new Mesh(geometry, material4);
+  mesh.position.x = -10;
+  mesh.position.y = 2;
+  scene.add(mesh);
+  meshes.push(mesh);
+
   mesh = new Mesh(geometry, material5);
-  mesh.position.x = 2;
+  mesh.position.x = -2;
   mesh.position.y = 2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material6);
-  mesh.position.x = 2;
+  mesh.position.x = -2;
   mesh.position.y = -2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material7);
-  mesh.position.x = 6;
+  mesh.position.x = 2;
   mesh.position.y = -2;
   scene.add(mesh);
   meshes.push(mesh);
 
   mesh = new Mesh(geometry, material8);
+  mesh.position.x = 2;
+  mesh.position.y = 2;
+  scene.add(mesh);
+  meshes.push(mesh);
+
+  mesh = new Mesh(geometry, material9);
   mesh.position.x = 6;
+  mesh.position.y = -2;
+  scene.add(mesh);
+  meshes.push(mesh);
+
+  mesh = new Mesh(geometry, material10);
+  mesh.position.x = 6;
+  mesh.position.y = 2;
+  scene.add(mesh);
+  meshes.push(mesh);
+
+  mesh = new Mesh(geometry, material11);
+  mesh.position.x = 10;
+  mesh.position.y = -2;
+  scene.add(mesh);
+  meshes.push(mesh);
+
+  mesh = new Mesh(geometry, material12);
+  mesh.position.x = 10;
   mesh.position.y = 2;
   scene.add(mesh);
   meshes.push(mesh);

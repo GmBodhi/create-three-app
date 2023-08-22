@@ -19,8 +19,13 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { USDZExporter } from "three/addons/exporters/USDZExporter.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
+
+const params = {
+  exportUSDZ: exportUSDZ,
+};
 
 init();
 render();
@@ -79,6 +84,15 @@ function init() {
   controls.update();
 
   window.addEventListener("resize", onWindowResize);
+
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  if (isIOS === false) {
+    const gui = new GUI();
+
+    gui.add(params, "exportUSDZ").name("Export USDZ");
+    gui.open();
+  }
 }
 
 function createSpotShadowMesh() {
@@ -123,6 +137,11 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   render();
+}
+
+function exportUSDZ() {
+  const link = document.getElementById("link");
+  link.click();
 }
 
 //
