@@ -11,7 +11,6 @@ import {
   MeshStandardMaterial,
   Mesh,
   WebGLRenderer,
-  Color,
 } from "three";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -91,7 +90,6 @@ function init() {
   //
 
   const renderPass = new RenderPass(scene, camera);
-  renderPass.clearColor = new Color(0, 0, 0);
   renderPass.clearAlpha = 0;
 
   //
