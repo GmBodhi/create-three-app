@@ -44,7 +44,7 @@ function init() {
 
   const rendererDOM = document.getElementById("renderer");
 
-  const renderer = new WebGPURenderer();
+  const renderer = new WebGPURenderer({ antialias: true });
   renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(200, 200);

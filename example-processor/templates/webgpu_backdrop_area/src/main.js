@@ -135,7 +135,7 @@ function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer(/*{ antialias: true }*/);
   renderer.stencil = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

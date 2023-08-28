@@ -87,7 +87,7 @@ function init() {
     scene.add(gltf.scene);
   });
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

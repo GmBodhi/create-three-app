@@ -9,7 +9,6 @@ import {
   PlaneGeometry,
 } from "three";
 import {
-  ShaderNode,
   texture,
   textureStore,
   wgslFn,
@@ -50,41 +49,34 @@ function init() {
 
   // create function
 
-  const computeShaderNode = new ShaderNode((stack) => {
-    // the first function will be the main one
+  const computeWGSL = wgslFn(`
+					fn computeWGSL( storageTex: texture_storage_2d<rgba8unorm, write>, index: u32 ) -> void {
 
-    const computeWGSL = wgslFn(`
-						fn computeWGSL( storageTex: texture_storage_2d<rgba8unorm, write>, index:u32 ) -> void {
+						let posX = index % ${width};
+						let posY = index / ${width};
+						let indexUV = vec2u( posX, posY );
+						let uv = getUV( posX, posY );
 
-							let posX = index % ${width};
-							let posY = index / ${width};
-							let indexUV = vec2<u32>( posX, posY );
-							let uv = getUV( posX, posY );
+						textureStore( storageTex, indexUV, vec4f( uv, 0, 1 ) );
 
-							textureStore( storageTex, indexUV, vec4f( uv, 0, 1 ) );
+					}
 
-						}
+					fn getUV( posX: u32, posY: u32 ) -> vec2f {
 
-						fn getUV( posX:u32, posY:u32 ) -> vec2<f32> {
+						let uv = vec2f( f32( posX ) / ${width}.0, f32( posY ) / ${height}.0 );
 
-							let uv = vec2<f32>( f32( posX ) / ${width}.0, f32( posY ) / ${height}.0 );
+						return uv;
 
-							return uv;
-
-						}
-					`);
-
-    stack.add(
-      computeWGSL({
-        storageTex: textureStore(storageTexture),
-        index: instanceIndex,
-      })
-    );
-  });
+					}
+				`);
 
   // compute
 
-  const computeNode = computeShaderNode.compute(width * height);
+  const computeWGSLCall = computeWGSL({
+    storageTex: textureStore(storageTexture),
+    index: instanceIndex,
+  });
+  const computeNode = computeWGSLCall.compute(width * height);
 
   const material = new MeshBasicNodeMaterial({ color: 0x00ff00 });
   material.colorNode = texture(storageTexture);
@@ -92,7 +84,7 @@ function init() {
   const plane = new Mesh(new PlaneGeometry(1, 1), material);
   scene.add(plane);
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);

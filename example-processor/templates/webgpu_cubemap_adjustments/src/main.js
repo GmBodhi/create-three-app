@@ -162,7 +162,7 @@ function init() {
 
   // renderer and controls
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);

@@ -63,7 +63,7 @@ function init() {
   const mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
