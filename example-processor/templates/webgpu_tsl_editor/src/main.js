@@ -18,6 +18,7 @@ import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import WGSLNodeBuilder from "three/addons/renderers/webgpu/nodes/WGSLNodeBuilder.js";
 import GLSLNodeBuilder from "three/addons/renderers/webgl/nodes/GLSLNodeBuilder.js";
+import GLSL1NodeBuilder from "three/addons/renderers/webgl-legacy/nodes/GLSL1NodeBuilder.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -88,6 +89,7 @@ const { texture, uniform, vec2, vec4, uv, oscSine, timerLocal } = TSL;
 const samplerTexture = new TextureLoader().load( 'three/examples/textures/uv_grid_opengl.jpg' );
 samplerTexture.wrapS = RepeatWrapping;
 //samplerTexture.wrapT = RepeatWrapping;
+//samplerTexture.colorSpace = SRGBColorSpace;
 
 const timer = timerLocal( .5 ); // .5 is speed
 const uv0 = uv();
@@ -133,8 +135,15 @@ output = vec4( finalColor, opacity );
         mesh.material.outputNode = nodes.output;
         mesh.material.needsUpdate = true;
 
-        const NodeBuilder =
-          options.output === "WGSL" ? WGSLNodeBuilder : GLSLNodeBuilder;
+        let NodeBuilder;
+
+        if (options.output === "WGSL") {
+          NodeBuilder = WGSLNodeBuilder;
+        } else if (options.output === "GLSL ES 3.0") {
+          NodeBuilder = GLSLNodeBuilder;
+        } else {
+          NodeBuilder = GLSL1NodeBuilder;
+        }
 
         nodeBuilder = new NodeBuilder(mesh, renderer);
         nodeBuilder.build();
@@ -166,7 +175,7 @@ output = vec4( finalColor, opacity );
 
     const gui = new GUI();
 
-    gui.add(options, "output", ["GLSL", "WGSL"]).onChange(build);
+    gui.add(options, "output", ["WGSL", "GLSL ES 3.0", "GLSL"]).onChange(build);
     gui.add(options, "shader", ["vertex", "fragment"]).onChange(showCode);
 
     gui

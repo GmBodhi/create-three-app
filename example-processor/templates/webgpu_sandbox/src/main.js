@@ -185,6 +185,7 @@ async function init() {
     new Vector3(0.5, -0.5, 0),
     new Vector3(0.5, 0.5, 0),
     new Vector3(-0.5, 0.5, 0),
+    new Vector3(-0.5, -0.5, 0),
   ]);
 
   geometryLine.setAttribute("color", geometryLine.getAttribute("position"));

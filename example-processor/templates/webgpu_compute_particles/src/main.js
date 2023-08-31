@@ -28,6 +28,7 @@ import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -41,7 +42,7 @@ const size = uniform(0.12);
 const clickPosition = uniform(new Vector3());
 
 let camera, scene, renderer;
-let controls;
+let controls, stats;
 let computeParticles;
 
 init();
@@ -161,8 +162,10 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(render);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
 
   //
 
@@ -245,7 +248,8 @@ function onWindowResize() {
   renderer.setSize(innerWidth, innerHeight);
 }
 
-function render() {
+function animate() {
+  stats.update();
   renderer.compute(computeParticles);
   renderer.render(scene, camera);
 }

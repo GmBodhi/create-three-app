@@ -3773,6 +3773,16 @@
         "/src"
       ]
     },
+    "webgpu_multiple_rendertargets": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_occlusion": {
       "files": {
         "index.html": "src",

@@ -8,7 +8,6 @@ import {
   RepeatWrapping,
   Mesh,
   PointLight,
-  ACESFilmicToneMapping,
 } from "three";
 import {
   rangeFog,
@@ -27,6 +26,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
+
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
@@ -34,10 +35,10 @@ let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
+  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw new Error("No WebGPU support");
+    throw new Error("No WebGPU or WebGL2 support");
   }
 
   camera = new PerspectiveCamera(
@@ -49,7 +50,7 @@ function init() {
   camera.position.z = 7;
 
   scene = new Scene();
-  scene.fogNode = rangeFog(color(0xff00ff), 8, 30);
+  scene.fogNode = rangeFog(color(0xff00ff), 12, 30);
 
   const sphereGeometry = new SphereGeometry(0.1, 16, 8);
 
@@ -142,8 +143,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.2;
 
   //controls
 

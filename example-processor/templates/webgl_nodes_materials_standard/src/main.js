@@ -27,7 +27,7 @@ import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl-legacy/nodes/WebGLNodes.js";
 
 let container, stats;
 

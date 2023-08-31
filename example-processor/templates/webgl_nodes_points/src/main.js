@@ -34,7 +34,7 @@ import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl-legacy/nodes/WebGLNodes.js";
 
 let camera, scene, renderer, stats;
 

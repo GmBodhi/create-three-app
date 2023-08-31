@@ -23,7 +23,7 @@ import {
   positionLocal,
   mix,
 } from "three/nodes";
-import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl-legacy/nodes/WebGLNodes.js";
 
 let container, stats;
 let camera, scene, renderer;
