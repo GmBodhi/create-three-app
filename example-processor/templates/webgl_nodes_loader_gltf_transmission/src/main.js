@@ -11,7 +11,7 @@ import {
 } from "three";
 import { NodeMaterial, float, texture } from "three/nodes";
 
-import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl-legacy/nodes/WebGLNodes.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";

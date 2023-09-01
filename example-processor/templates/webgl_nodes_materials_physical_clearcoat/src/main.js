@@ -25,7 +25,7 @@ import {
   MeshPhysicalNodeMaterial,
 } from "three/nodes";
 
-import { nodeFrame } from "three/addons/renderers/webgl/nodes/WebGLNodes.js";
+import { nodeFrame } from "three/addons/renderers/webgl-legacy/nodes/WebGLNodes.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 

@@ -65,7 +65,7 @@ async function init() {
 
   //
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -185,6 +185,7 @@ async function init() {
     new Vector3(0.5, -0.5, 0),
     new Vector3(0.5, 0.5, 0),
     new Vector3(-0.5, 0.5, 0),
+    new Vector3(-0.5, -0.5, 0),
   ]);
 
   geometryLine.setAttribute("color", geometryLine.getAttribute("position"));

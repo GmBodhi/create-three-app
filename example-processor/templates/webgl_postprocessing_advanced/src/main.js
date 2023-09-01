@@ -165,8 +165,8 @@ function init() {
   effectVignette.uniforms["darkness"].value = 1.6;
 
   const effectBloom = new BloomPass(0.5);
-  const effectFilm = new FilmPass(0.35, 0.025, 648, false);
-  const effectFilmBW = new FilmPass(0.35, 0.5, 2048, true);
+  const effectFilm = new FilmPass(0.35);
+  const effectFilmBW = new FilmPass(0.35, true);
   const effectDotScreen = new DotScreenPass(new Vector2(0, 0), 0.5, 0.8);
 
   const effectHBlur = new ShaderPass(HorizontalBlurShader);

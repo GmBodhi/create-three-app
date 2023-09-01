@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   Vector3,
-  Euler,
   Quaternion,
   BufferGeometryLoader,
   MeshNormalMaterial,
@@ -63,7 +62,6 @@ function clean() {
 
 const randomizeMatrix = (function () {
   const position = new Vector3();
-  const rotation = new Euler();
   const quaternion = new Quaternion();
   const scale = new Vector3();
 
@@ -72,11 +70,7 @@ const randomizeMatrix = (function () {
     position.y = Math.random() * 40 - 20;
     position.z = Math.random() * 40 - 20;
 
-    rotation.x = Math.random() * 2 * Math.PI;
-    rotation.y = Math.random() * 2 * Math.PI;
-    rotation.z = Math.random() * 2 * Math.PI;
-
-    quaternion.setFromEuler(rotation);
+    quaternion.random();
 
     scale.x = scale.y = scale.z = Math.random() * 1;
 

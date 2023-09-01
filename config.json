@@ -3573,6 +3573,26 @@
         "/src"
       ]
     },
+    "webgpu_compute_particles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_compute_texture": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_cubemap_adjustments": {
       "files": {
         "index.html": "src",
@@ -3744,6 +3764,26 @@
       ]
     },
     "webgpu_morphtargets": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_multiple_rendertargets": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_occlusion": {
       "files": {
         "index.html": "src",
         "main.js": "src",

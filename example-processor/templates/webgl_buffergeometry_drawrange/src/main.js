@@ -66,7 +66,7 @@ function initGUI() {
   gui
     .add(effectController, "particleCount", 0, maxParticleCount, 1)
     .onChange(function (value) {
-      particleCount = parseInt(value);
+      particleCount = value;
       particles.setDrawRange(0, particleCount);
     });
 }

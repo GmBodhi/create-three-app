@@ -22,7 +22,6 @@ import {
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
 import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
@@ -90,14 +89,12 @@ function init() {
 
   const renderModel = new RenderPass(scene, camera);
   const effectBloom = new BloomPass(1.25);
-  const effectFilm = new FilmPass(0.35, 0.95, 2048, false);
   const outputPass = new OutputPass();
 
   composer = new EffectComposer(renderer);
 
   composer.addPass(renderModel);
   composer.addPass(effectBloom);
-  composer.addPass(effectFilm);
   composer.addPass(outputPass);
 
   //

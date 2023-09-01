@@ -79,7 +79,6 @@ function init() {
   // Grid
 
   const helper = new GridHelper(1000, 40, 0x303030, 0x303030);
-  helper.material.colorNode = attribute("color");
   helper.position.y = -75;
   scene.add(helper);
 
@@ -376,7 +375,7 @@ function init() {
 
   //
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

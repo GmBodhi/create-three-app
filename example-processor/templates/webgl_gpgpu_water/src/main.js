@@ -143,7 +143,7 @@ function init() {
   gui
     .add(effectController, "viscosity", 0.9, 0.999, 0.001)
     .onChange(valuesChanger);
-  gui.add(effectController, "spheresEnabled", 0, 1, 1).onChange(valuesChanger);
+  gui.add(effectController, "spheresEnabled").onChange(valuesChanger);
   const buttonSmooth = {
     smoothWater: function () {
       smoothWater();

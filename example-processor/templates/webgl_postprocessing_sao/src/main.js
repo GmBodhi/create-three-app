@@ -32,13 +32,11 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  const width = window.innerWidth || 1;
-  const height = window.innerHeight || 1;
-  const devicePixelRatio = window.devicePixelRatio || 1;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.setClearColor(0x000000);
-  renderer.setPixelRatio(devicePixelRatio);
+  renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
   document.body.appendChild(renderer.domElement);
 
@@ -97,7 +95,7 @@ function init() {
   composer = new EffectComposer(renderer);
   renderPass = new RenderPass(scene, camera);
   composer.addPass(renderPass);
-  saoPass = new SAOPass(scene, camera, false, true);
+  saoPass = new SAOPass(scene, camera);
   composer.addPass(saoPass);
   const outputPass = new OutputPass();
   composer.addPass(outputPass);
@@ -106,14 +104,12 @@ function init() {
   const gui = new GUI();
   gui
     .add(saoPass.params, "output", {
-      Beauty: SAOPass.OUTPUT.Beauty,
-      "Beauty+SAO": SAOPass.OUTPUT.Default,
-      SAO: SAOPass.OUTPUT.SAO,
-      Depth: SAOPass.OUTPUT.Depth,
+      Default: SAOPass.OUTPUT.Default,
+      "SAO Only": SAOPass.OUTPUT.SAO,
       Normal: SAOPass.OUTPUT.Normal,
     })
     .onChange(function (value) {
-      saoPass.params.output = parseInt(value);
+      saoPass.params.output = value;
     });
   gui.add(saoPass.params, "saoBias", -1, 1);
   gui.add(saoPass.params, "saoIntensity", 0, 1);
@@ -124,6 +120,7 @@ function init() {
   gui.add(saoPass.params, "saoBlurRadius", 0, 200);
   gui.add(saoPass.params, "saoBlurStdDev", 0.5, 150);
   gui.add(saoPass.params, "saoBlurDepthCutoff", 0.0, 0.1);
+  gui.add(saoPass, "enabled");
 
   window.addEventListener("resize", onWindowResize);
 }

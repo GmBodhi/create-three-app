@@ -236,7 +236,7 @@ function init() {
       Metalness: SSRPass.OUTPUT.Metalness,
     })
     .onChange(function (value) {
-      ssrPass.output = parseInt(value);
+      ssrPass.output = value;
     });
   ssrPass.opacity = 1;
   groundReflector.opacity = ssrPass.opacity;
