@@ -1,0 +1,114 @@
+#info,
+#overlay,
+.container {
+  position: absolute;
+  width: 100%;
+}
+.container {
+  overflow: hidden;
+  height: 100%;
+}
+.slider {
+  position: absolute;
+  cursor: ew-resize;
+  width: 40px;
+  height: 40px;
+  background-color: #f32196;
+  opacity: 0.7;
+  border-radius: 50%;
+  top: calc(50% - 20px);
+  left: calc(50% - 20px);
+}
+.label {
+  position: fixed;
+  top: calc(50% - 1em);
+  height: 2em;
+  line-height: 2em;
+  background: rgba(0, 0, 0, 0.5);
+  margin: 0;
+  padding: 0.2em 0.5em;
+  border-radius: 4px;
+  font-size: 14px;
+}
+body {
+  margin: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: Monospace;
+  font-size: 13px;
+  line-height: 24px;
+  overscroll-behavior: none;
+}
+a {
+  color: #ff0;
+  text-decoration: none;
+  pointer-events: auto;
+}
+a:hover {
+  text-decoration: underline;
+}
+#overlay button,
+button {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+#info,
+#overlay {
+  top: 0;
+}
+#info,
+.label {
+  -webkit-user-select: none;
+  user-select: none;
+}
+#info {
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  pointer-events: none;
+  z-index: 1;
+}
+button,
+input,
+select {
+  pointer-events: auto;
+}
+.lil-gui {
+  z-index: 2 !important;
+}
+@media all and (max-width: 640px) {
+  .lil-gui.root {
+    right: auto;
+    top: auto;
+    max-height: 50%;
+    max-width: 80%;
+    bottom: 0;
+    left: 0;
+  }
+}
+#overlay {
+  font-size: 16px;
+  z-index: 2;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.7);
+}
+#overlay button {
+  background: 0 0;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  color: #fff;
+  padding: 12px 18px;
+}
+#notSupported {
+  width: 50%;
+  background-color: red;
+  margin: 20px auto auto;
+  padding: 10px;
+}
