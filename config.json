@@ -3713,6 +3713,16 @@
         "/src"
       ]
     },
+    "webgpu_lines_fat": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_loader_gltf": {
       "files": {
         "index.html": "src",
