@@ -1,13 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  OrthographicCamera,
-  Scene,
-  Texture,
-  LinearFilter,
-  Mesh,
-  PlaneGeometry,
-} from "three";
+import { OrthographicCamera, Scene, Mesh, PlaneGeometry } from "three";
 import {
   texture,
   textureStore,
@@ -18,6 +11,7 @@ import {
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import StorageTexture from "three/addons/renderers/common/StorageTexture.js";
 
 let camera, scene, renderer;
 
@@ -42,10 +36,7 @@ function init() {
   const width = 512,
     height = 512;
 
-  const storageTexture = new Texture();
-  storageTexture.image = { width, height };
-  storageTexture.magFilter = LinearFilter;
-  storageTexture.minFilter = LinearFilter;
+  const storageTexture = new StorageTexture(width, height);
 
   // create function
 
