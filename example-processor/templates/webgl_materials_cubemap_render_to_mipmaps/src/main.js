@@ -9,15 +9,16 @@ import {
   LinearSRGBColorSpace,
   WebGLCubeRenderTarget,
   CubeReflectionMapping,
-  PerspectiveCamera,
   BoxGeometry,
   ShaderMaterial,
   UniformsUtils,
   BackSide,
   NoBlending,
   Mesh,
+  CubeCamera,
   WebGLRenderer,
   Scene,
+  PerspectiveCamera,
   SphereGeometry,
   MeshBasicMaterial,
 } from "three";
@@ -105,28 +106,6 @@ function allocateCubemapRenderTarget(cubeMapSize) {
 }
 
 function renderToCubeTexture(cubeMapRenderTarget, sourceCubeTexture) {
-  const cameras = [];
-
-  for (let i = 0; i < 6; i++) {
-    // negative fov is not an error
-    cameras.push(new PerspectiveCamera(-90, 1, 1, 10));
-  }
-
-  cameras[0].up.set(0, 1, 0);
-  cameras[0].lookAt(1, 0, 0);
-  cameras[1].up.set(0, 1, 0);
-  cameras[1].lookAt(-1, 0, 0);
-  cameras[2].up.set(0, 0, -1);
-  cameras[2].lookAt(0, 1, 0);
-  cameras[3].up.set(0, 0, 1);
-  cameras[3].lookAt(0, -1, 0);
-  cameras[4].up.set(0, 1, 0);
-  cameras[4].lookAt(0, 0, 1);
-  cameras[5].up.set(0, 1, 0);
-  cameras[5].lookAt(0, 0, -1);
-
-  for (let i = 0; i < 6; i++) cameras[i].updateMatrixWorld();
-
   const geometry = new BoxGeometry(5, 5, 5);
 
   const material = new ShaderMaterial({
@@ -141,29 +120,25 @@ function renderToCubeTexture(cubeMapRenderTarget, sourceCubeTexture) {
   material.uniforms.cubeTexture.value = sourceCubeTexture;
 
   const mesh = new Mesh(geometry, material);
+  const cubeCamera = new CubeCamera(1, 10, cubeMapRenderTarget);
+  const mipmapCount = Math.floor(
+    Math.log2(Math.max(cubeMapRenderTarget.width, cubeMapRenderTarget.height))
+  );
 
-  const currentRenderTarget = renderer.getRenderTarget();
-  const currentXrEnabled = renderer.xr.enabled;
-  renderer.xr.enabled = false;
+  for (let mipmap = 0; mipmap < mipmapCount; mipmap++) {
+    material.uniforms.mipIndex.value = mipmap;
+    material.needsUpdate = true;
 
-  for (let faceIndex = 0; faceIndex < 6; faceIndex++) {
-    let mipIndex = 0;
-    let mipSize = cubeMapRenderTarget.width;
+    cubeMapRenderTarget.viewport.set(
+      0,
+      0,
+      cubeMapRenderTarget.width >> mipmap,
+      cubeMapRenderTarget.height >> mipmap
+    );
 
-    // Render to each texture mip level
-    while (mipSize >= 1) {
-      cubeMapRenderTarget.viewport.set(0, 0, mipSize, mipSize);
-      renderer.setRenderTarget(cubeMapRenderTarget, faceIndex, mipIndex);
-      material.uniforms.mipIndex.value = mipIndex;
-      material.needsUpdate = true;
-      renderer.render(mesh, cameras[faceIndex]);
-      mipSize >>= 1;
-      mipIndex++;
-    }
+    cubeCamera.activeMipmapLevel = mipmap;
+    cubeCamera.update(renderer, mesh);
   }
-
-  renderer.setRenderTarget(currentRenderTarget);
-  renderer.xr.enabled = currentXrEnabled;
 
   mesh.geometry.dispose();
   mesh.material.dispose();
