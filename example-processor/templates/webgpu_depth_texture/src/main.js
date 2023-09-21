@@ -15,6 +15,8 @@ import {
 import { texture, MeshBasicNodeMaterial } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
+
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -28,10 +30,10 @@ const dpr = window.devicePixelRatio;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
+  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw new Error("No WebGPU support");
+    throw new Error("No WebGPU or WebGL2 support");
   }
 
   camera = new PerspectiveCamera(
