@@ -10,7 +10,7 @@ import {
   Points,
 } from "three";
 import {
-  ShaderNode,
+  tslFn,
   uniform,
   storage,
   attribute,
@@ -65,7 +65,7 @@ function init() {
 
   // create function
 
-  const computeShaderNode = new ShaderNode((stack) => {
+  const computeShaderFn = tslFn((stack) => {
     const particle = particleBufferNode.element(instanceIndex);
     const velocity = velocityBufferNode.element(instanceIndex);
 
@@ -102,9 +102,9 @@ function init() {
 
   // compute
 
-  computeNode = computeShaderNode.compute(particleNum);
+  computeNode = computeShaderFn().compute(particleNum);
   computeNode.onInit = ({ renderer }) => {
-    const precomputeShaderNode = new ShaderNode((stack) => {
+    const precomputeShaderNode = tslFn((stack) => {
       const particleIndex = float(instanceIndex);
 
       const randomAngle = particleIndex.mul(0.005).mul(Math.PI * 2);
@@ -118,7 +118,7 @@ function init() {
       stack.assign(velocity.xy, vec2(velX, velY));
     });
 
-    renderer.compute(precomputeShaderNode.compute(particleNum));
+    renderer.compute(precomputeShaderNode().compute(particleNum));
   };
 
   // use a compute shader to animate the point cloud's vertex data.

@@ -14,7 +14,7 @@ import {
   Vector2,
 } from "three";
 import {
-  ShaderNode,
+  tslFn,
   uniform,
   texture,
   instanceIndex,
@@ -81,7 +81,7 @@ function init() {
 
   // compute
 
-  const computeInit = new ShaderNode((stack) => {
+  const computeInit = tslFn((stack) => {
     const position = positionBuffer.element(instanceIndex);
     const color = colorBuffer.element(instanceIndex);
 
@@ -94,11 +94,11 @@ function init() {
     stack.assign(position.z, randZ.mul(60).add(-30));
 
     stack.assign(color, vec3(randX, randY, randZ));
-  }).compute(particleCount);
+  })().compute(particleCount);
 
   //
 
-  const computeUpdate = new ShaderNode((stack) => {
+  const computeUpdate = tslFn((stack) => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 
@@ -120,7 +120,7 @@ function init() {
     });
   });
 
-  computeParticles = computeUpdate.compute(particleCount);
+  computeParticles = computeUpdate().compute(particleCount);
 
   // create nodes
 
@@ -173,7 +173,7 @@ function init() {
 
   // click event
 
-  const computeHit = new ShaderNode((stack) => {
+  const computeHit = tslFn((stack) => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 
@@ -185,7 +185,7 @@ function init() {
     const relativePower = power.mul(instanceIndex.hash().mul(0.5).add(0.5));
 
     stack.assign(velocity, velocity.add(direction.mul(relativePower)));
-  }).compute(particleCount);
+  })().compute(particleCount);
 
   //
 

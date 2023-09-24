@@ -16,7 +16,6 @@ import * as Nodes from "three/nodes";
 import {
   tslFn,
   wgslFn,
-  attribute,
   positionLocal,
   positionWorld,
   normalLocal,

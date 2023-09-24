@@ -8,7 +8,7 @@ import {
   Scene,
 } from "three";
 import {
-  ShaderNode,
+  tslFn,
   uniform,
   storage,
   instanceIndex,
@@ -122,7 +122,7 @@ async function init() {
 
   // compute (shader-node)
 
-  const computeShaderNode = new ShaderNode((stack) => {
+  const computeShaderFn = tslFn((stack) => {
     const index = float(instanceIndex);
 
     // pitch
@@ -151,7 +151,7 @@ async function init() {
 
   // compute
 
-  computeNode = computeShaderNode.compute(waveBuffer.length);
+  computeNode = computeShaderFn().compute(waveBuffer.length);
 
   // gui
 
