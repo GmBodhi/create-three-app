@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js - WebGPU - Compute</title>
+    <title>three.js - WebGPU - Audio Processing</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -8,15 +8,15 @@
     />
   </head>
   <body style="overflow: hidden">
-    <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      WebGPU - Compute
+    <div id="overlay">
+      <button id="startButton">Play</button>
     </div>
 
-    <script
-      async=""
-      src="https://unpkg.com/es-module-shims@1.8.0/dist/es-module-shims.js"
-    ></script>
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      WebGPU - Audio Processing <br />Click on screen to process the audio using
+      WebGPU.
+    </div>
 
     <script type="importmap">
       {

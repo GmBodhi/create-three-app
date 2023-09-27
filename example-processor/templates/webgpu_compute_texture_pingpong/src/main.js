@@ -1,8 +1,10 @@
 import "./style.css"; // For webpack support
 
 import {
+  Vector2,
   OrthographicCamera,
   Scene,
+  HalfFloatType,
   MeshBasicMaterial,
   Mesh,
   PlaneGeometry,
@@ -13,6 +15,7 @@ import {
   wgslFn,
   code,
   instanceIndex,
+  uniform,
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -20,10 +23,11 @@ import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import StorageTexture from "three/addons/renderers/common/StorageTexture.js";
 
 let camera, scene, renderer;
-let computeToPing, computeToPong;
+let computeInitNode, computeToPing, computeToPong;
 let pingTexture, pongTexture;
 let material;
 let phase = true;
+let seed = uniform(new Vector2());
 
 init();
 render();
@@ -43,11 +47,19 @@ function init() {
 
   // texture
 
+  const hdr = true;
   const width = 512,
     height = 512;
 
   pingTexture = new StorageTexture(width, height);
   pongTexture = new StorageTexture(width, height);
+
+  if (hdr) {
+    pingTexture.type = HalfFloatType;
+    pongTexture.type = HalfFloatType;
+  }
+
+  const wgslFormat = hdr ? "rgba16float" : "rgba8unorm";
 
   // compute init
 
@@ -57,19 +69,18 @@ function init() {
 						return fract( sin( dot( n, vec2f( 12.9898, 4.1414 ) ) ) * 43758.5453 );
 
 					}
-				`);
 
-  const computeInitWGSL = wgslFn(
-    `
-					fn computeInitWGSL( writeTex: texture_storage_2d<rgba8unorm, write>, index: u32 ) -> void {
+					fn blur( image : texture_2d<f32>, uv : vec2i ) -> vec4f {
 
-						let posX = index % ${width};
-						let posY = index / ${width};
-						let indexUV = vec2u( posX, posY );
-						let uv = getUV( posX, posY );
+						var color = vec4f( 0.0 );
 
-						textureStore( writeTex, indexUV, vec4f( vec3f( rand2( uv ) ), 1 ) );
+						color += textureLoad( image, uv + vec2i( - 1, 1 ), 0 );
+						color += textureLoad( image, uv + vec2i( - 1, - 1 ), 0 );
+						color += textureLoad( image, uv + vec2i( 0, 0 ), 0 );
+						color += textureLoad( image, uv + vec2i( 1, - 1 ), 0 );
+						color += textureLoad( image, uv + vec2i( 1, 1 ), 0 );
 
+						return color / 5.0; 
 					}
 
 					fn getUV( posX: u32, posY: u32 ) -> vec2f {
@@ -79,26 +90,41 @@ function init() {
 						return uv;
 
 					}
+				`);
+
+  const computeInitWGSL = wgslFn(
+    `
+					fn computeInitWGSL( writeTex: texture_storage_2d<${wgslFormat}, write>, index: u32, seed: vec2f ) -> void {
+
+						let posX = index % ${width};
+						let posY = index / ${width};
+						let indexUV = vec2u( posX, posY );
+						let uv = getUV( posX, posY );
+
+						textureStore( writeTex, indexUV, vec4f( vec3f( rand2( uv + seed ) ), 1 ) );
+
+					}
 				`,
     [rand2]
   );
 
-  const computeInitNode = computeInitWGSL({
+  computeInitNode = computeInitWGSL({
     writeTex: textureStore(pingTexture),
     index: instanceIndex,
+    seed,
   }).compute(width * height);
 
   // compute loop
 
   const computePingPongWGSL = wgslFn(
     `
-					fn computePingPongWGSL( readTex: texture_2d<f32>, writeTex: texture_storage_2d<rgba8unorm, write>, index: u32 ) -> void {
+					fn computePingPongWGSL( readTex: texture_2d<f32>, writeTex: texture_storage_2d<${wgslFormat}, write>, index: u32 ) -> void {
 
 						let posX = index % ${width};
 						let posY = index / ${width};
-						let indexUV = vec2u( posX, posY );
+						let indexUV = vec2i( i32( posX ), i32( posY ) );
 
-						let color = vec3f( rand2( textureLoad( readTex, indexUV, 0 ).xy ) );
+						let color = blur( readTex, indexUV ).rgb;
 
 						textureStore( writeTex, indexUV, vec4f( color, 1 ) );
 
@@ -106,6 +132,8 @@ function init() {
 				`,
     [rand2]
   );
+
+  //
 
   computeToPong = computePingPongWGSL({
     readTex: texture(pingTexture),
@@ -154,6 +182,14 @@ function onWindowResize() {
 }
 
 function render() {
+  // reset every 50 frames
+
+  if (renderer.info.render.frame % 50 === 0) {
+    seed.value.set(Math.random(), Math.random());
+
+    renderer.compute(computeInitNode);
+  }
+
   // compute step
 
   renderer.compute(phase ? computeToPong : computeToPing);

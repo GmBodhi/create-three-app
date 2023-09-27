@@ -3543,16 +3543,6 @@
         "/src"
       ]
     },
-    "webgpu_audio_processing": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgpu_backdrop": {
       "files": {
         "index.html": "src",
@@ -3583,7 +3573,7 @@
         "/src"
       ]
     },
-    "webgpu_compute": {
+    "webgpu_compute_audio": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3594,6 +3584,16 @@
       ]
     },
     "webgpu_compute_particles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_compute_points": {
       "files": {
         "index.html": "src",
         "main.js": "src",

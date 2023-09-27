@@ -59,14 +59,14 @@ const CubemapFilterShader = {
 
 					void main() {
 						vec3 cubeCoordinates = normalize(vWorldDirection);
-						
+
 						// Colorize mip levels
 						vec4 color = vec4(1.0, 0.0, 0.0, 1.0);
 						if (mipIndex == 0.0) color.rgb = vec3(1.0, 1.0, 1.0);
 						else if (mipIndex == 1.0) color.rgb = vec3(0.0, 0.0, 1.0);
 						else if (mipIndex == 2.0) color.rgb = vec3(0.0, 1.0, 1.0);
 						else if (mipIndex == 3.0) color.rgb = vec3(0.0, 1.0, 0.0);
-						else if (mipIndex == 4.0) color.rgb = vec3(1.0, 1.0, 0.0);						
+						else if (mipIndex == 4.0) color.rgb = vec3(1.0, 1.0, 0.0);
 
 						gl_FragColor = textureCube(cubeTexture, cubeCoordinates, 0.0) * color;
 					}

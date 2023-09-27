@@ -46,7 +46,7 @@ class InstanceUniformNode extends Node {
     this.uniformNode.value.copy(meshColor);
   }
 
-  construct(/*builder*/) {
+  setup(/*builder*/) {
     return this.uniformNode;
   }
 }
