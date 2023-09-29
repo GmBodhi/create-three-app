@@ -101,7 +101,11 @@ function init() {
 						let indexUV = vec2u( posX, posY );
 						let uv = getUV( posX, posY );
 
-						textureStore( writeTex, indexUV, vec4f( vec3f( rand2( uv + seed ) ), 1 ) );
+						let r = rand2( uv + seed * 100 ) - rand2( uv + seed * 300 );
+						let g = rand2( uv + seed * 200 ) - rand2( uv + seed * 300 );
+						let b = rand2( uv + seed * 200 ) - rand2( uv + seed * 100 );
+
+						textureStore( writeTex, indexUV, vec4( r, g, b, 1 ) );
 
 					}
 				`,
@@ -126,7 +130,7 @@ function init() {
 
 						let color = blur( readTex, indexUV ).rgb;
 
-						textureStore( writeTex, indexUV, vec4f( color, 1 ) );
+						textureStore( writeTex, indexUV, vec4f( color * 1.05, 1 ) );
 
 					}
 				`,
@@ -182,9 +186,9 @@ function onWindowResize() {
 }
 
 function render() {
-  // reset every 50 frames
+  // reset every 200 frames
 
-  if (renderer.info.render.frame % 50 === 0) {
+  if (renderer.info.render.frame % 200 === 0) {
     seed.value.set(Math.random(), Math.random());
 
     renderer.compute(computeInitNode);
