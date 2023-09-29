@@ -46,7 +46,7 @@ class OcclusionNode extends Node {
     );
   }
 
-  construct(/* builder */) {
+  setup(/* builder */) {
     return this.uniformNode;
   }
 }

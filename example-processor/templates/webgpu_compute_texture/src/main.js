@@ -1,13 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  OrthographicCamera,
-  Scene,
-  Texture,
-  LinearFilter,
-  Mesh,
-  PlaneGeometry,
-} from "three";
+import { OrthographicCamera, Scene, Mesh, PlaneGeometry } from "three";
 import {
   texture,
   textureStore,
@@ -18,6 +11,7 @@ import {
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import StorageTexture from "three/addons/renderers/common/StorageTexture.js";
 
 let camera, scene, renderer;
 
@@ -42,10 +36,7 @@ function init() {
   const width = 512,
     height = 512;
 
-  const storageTexture = new Texture();
-  storageTexture.image = { width, height };
-  storageTexture.magFilter = LinearFilter;
-  storageTexture.minFilter = LinearFilter;
+  const storageTexture = new StorageTexture(width, height);
 
   // create function
 
@@ -55,17 +46,25 @@ function init() {
 						let posX = index % ${width};
 						let posY = index / ${width};
 						let indexUV = vec2u( posX, posY );
-						let uv = getUV( posX, posY );
 
-						textureStore( storageTex, indexUV, vec4f( uv, 0, 1 ) );
+						// https://www.shadertoy.com/view/Xst3zN
 
-					}
+						let x = f32( posX ) / 50.0;
+						let y = f32( posY ) / 50.0;
 
-					fn getUV( posX: u32, posY: u32 ) -> vec2f {
+						let v1 = sin( x );
+						let v2 = sin( y );
+						let v3 = sin( x + y );
+						let v4 = sin( sqrt( x * x + y * y ) + 5.0 );
+						let v = v1 + v2 + v3 + v4;
 
-						let uv = vec2f( f32( posX ) / ${width}.0, f32( posY ) / ${height}.0 );
+						let PI = 3.14159265359;
 
-						return uv;
+						let r = sin( v );
+						let g = sin( v + PI );
+						let b = sin( v + PI - 0.5 );
+
+						textureStore( storageTex, indexUV, vec4f( r, g, b, 1 ) );
 
 					}
 				`);

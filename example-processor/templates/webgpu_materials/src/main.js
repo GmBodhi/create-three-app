@@ -16,7 +16,6 @@ import * as Nodes from "three/nodes";
 import {
   tslFn,
   wgslFn,
-  attribute,
   positionLocal,
   positionWorld,
   normalLocal,
@@ -180,7 +179,7 @@ function init() {
 
   // Custom WGSL ( desaturate filter )
 
-  const desaturateWGSLNode = wgslFn(`
+  const desaturateWGSLFn = wgslFn(`
 					fn desaturate( color:vec3<f32> ) -> vec3<f32> {
 
 						let lum = vec3<f32>( 0.299, 0.587, 0.114 );
@@ -190,8 +189,21 @@ function init() {
 					}
 				`);
 
+  // include example
+
+  const someWGSLFn = wgslFn(
+    `
+					fn someFn( color:vec3<f32> ) -> vec3<f32> {
+
+						return desaturate( color );
+
+					}
+				`,
+    [desaturateWGSLFn]
+  );
+
   material = new MeshBasicNodeMaterial();
-  material.colorNode = desaturateWGSLNode({ color: texture(uvTexture) });
+  material.colorNode = someWGSLFn({ color: texture(uvTexture) });
   materials.push(material);
 
   // Custom WGSL ( get texture from keywords )
