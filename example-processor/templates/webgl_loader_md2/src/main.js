@@ -145,7 +145,7 @@ function init() {
     character.setPlaybackRate(playbackConfig.speed);
   });
 
-  gui.add(playbackConfig, "wireframe", false).onChange(function () {
+  gui.add(playbackConfig, "wireframe").onChange(function () {
     character.setWireframe(playbackConfig.wireframe);
   });
 
