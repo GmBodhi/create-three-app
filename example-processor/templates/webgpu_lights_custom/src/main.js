@@ -29,8 +29,8 @@ import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 class CustomLightingModel extends LightingModel {
-  direct({ lightColor, reflectedLight }) {
-    reflectedLight.directDiffuse.addAssign(lightColor);
+  direct({ lightColor, reflectedLight }, stack) {
+    stack.addAssign(reflectedLight.directDiffuse, lightColor);
   }
 }
 
