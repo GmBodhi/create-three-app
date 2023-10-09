@@ -30,7 +30,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 class CustomLightingModel extends LightingModel {
   direct({ lightColor, reflectedLight }, stack) {
-    stack.addAssign(reflectedLight.directDiffuse, lightColor);
+    reflectedLight.directDiffuse.addAssign(lightColor);
   }
 }
 

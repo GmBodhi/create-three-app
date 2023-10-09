@@ -259,10 +259,10 @@ function init() {
     const topUV = uv().add(vec2(0, scaleI));
     const bottomUV = uv().add(vec2(0, scaleINeg));
 
-    stack.assign(output, output.add(texture(uvTexture, leftUV)));
-    stack.assign(output, output.add(texture(uvTexture, rightUV)));
-    stack.assign(output, output.add(texture(uvTexture, topUV)));
-    stack.assign(output, output.add(texture(uvTexture, bottomUV)));
+    output.assign(output.add(texture(uvTexture, leftUV)));
+    output.assign(output.add(texture(uvTexture, rightUV)));
+    output.assign(output.add(texture(uvTexture, topUV)));
+    output.assign(output.add(texture(uvTexture, bottomUV)));
 
     return output.div(loopCount * 4);
   });
