@@ -90,9 +90,9 @@ function init() {
     const randY = instanceIndex.add(2).hash();
     const randZ = instanceIndex.add(3).hash();
 
-    position.x.assign(randX.mul(60).add(-30));
-    position.y.assign(randY.mul(10));
-    position.z.assign(randZ.mul(60).add(-30));
+    position.x = randX.mul(60).add(-30);
+    position.y = randY.mul(10);
+    position.z = randZ.mul(60).add(-30);
 
     color.assign(vec3(randX, randY, randZ));
   })().compute(particleCount);
@@ -103,21 +103,21 @@ function init() {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 
-    velocity.assign(velocity.add(vec3(0.0, gravity, 0.0)));
-    position.assign(position, position.add(velocity));
+    velocity.addAssign(vec3(0.0, gravity, 0.0));
+    position.addAssign(velocity);
 
-    velocity.assign(velocity.mul(friction));
+    velocity.mulAssign(friction);
 
     // floor
 
     If(position.y.lessThan(0), () => {
-      position.y.assign(0);
-      velocity.y.assign(velocity.y.negate().mul(bounce));
+      position.y = 0;
+      velocity.y = velocity.y.negate().mul(bounce);
 
       // floor friction
 
-      velocity.x.assign(velocity.x.mul(0.9));
-      velocity.z.assign(velocity.z.mul(0.9));
+      velocity.x = velocity.x.mul(0.9);
+      velocity.z = velocity.z.mul(0.9);
     });
   });
 

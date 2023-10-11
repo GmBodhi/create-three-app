@@ -74,18 +74,14 @@ function init() {
 
     const position = particle.add(velocity).temp();
 
-    velocity.x.assign(
-      position.x
-        .abs()
-        .greaterThanEqual(limit.x)
-        .cond(velocity.x.negate(), velocity.x)
-    );
-    velocity.y.assign(
-      position.y
-        .abs()
-        .greaterThanEqual(limit.y)
-        .cond(velocity.y.negate(), velocity.y)
-    );
+    velocity.x = position.x
+      .abs()
+      .greaterThanEqual(limit.x)
+      .cond(velocity.x.negate(), velocity.x);
+    velocity.y = position.y
+      .abs()
+      .greaterThanEqual(limit.y)
+      .cond(velocity.y.negate(), velocity.y);
 
     position.assign(position.min(limit).max(limit.negate()));
 
@@ -112,7 +108,7 @@ function init() {
 
       const velocity = velocityBufferNode.element(instanceIndex);
 
-      velocity.xy.assign(vec2(velX, velY));
+      velocity.xy = vec2(velX, velY);
     });
 
     renderer.compute(precomputeShaderNode().compute(particleNum));
