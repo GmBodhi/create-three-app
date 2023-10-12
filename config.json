@@ -1163,6 +1163,16 @@
         "/src"
       ]
     },
+    "webgl_geometry_sdf": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_geometry_shapes": {
       "files": {
         "index.html": "src",
