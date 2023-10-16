@@ -46,9 +46,13 @@ function init() {
         "models/gltf/DamagedHelmet/glTF/"
       );
       loader.load("DamagedHelmet.gltf", async function (gltf) {
-        scene.add(gltf.scene);
+        const model = gltf.scene;
 
-        await renderer.compileAsync(scene, camera);
+        // wait until the model can be added to the scene without blocking due to shader compilation
+
+        await renderer.compileAsync(model, camera, scene);
+
+        scene.add(model);
 
         render();
       });
