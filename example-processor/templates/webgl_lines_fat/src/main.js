@@ -59,6 +59,7 @@ function init() {
   camera2.position.copy(camera.position);
 
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
   controls.minDistance = 10;
   controls.maxDistance = 500;
 
@@ -174,6 +175,8 @@ function animate() {
   renderer.setClearColor(0x000000, 0);
 
   renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
+
+  controls.update();
 
   // renderer will set this eventually
   matLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
