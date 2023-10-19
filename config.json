@@ -2603,6 +2603,16 @@
         "/src"
       ]
     },
+    "webgl_mesh_batch": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_mirror": {
       "files": {
         "index.html": "src",
