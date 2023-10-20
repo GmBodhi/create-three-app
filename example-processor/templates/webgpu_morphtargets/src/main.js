@@ -17,6 +17,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
+
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let container, camera, scene, renderer, mesh;
@@ -24,10 +26,10 @@ let container, camera, scene, renderer, mesh;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
+  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw new Error("No WebGPU support");
+    throw new Error("No WebGPU or WebGL2 support");
   }
 
   container = document.getElementById("container");

@@ -19,11 +19,11 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { FatPoints } from "three/addons/points/FatPoints.js";
-//import { FatPointsNodeMaterial } from 'three/addons/points/FatPointsNodeMaterial.js'; // why not this, instead?
-import { FatPointsGeometry } from "three/addons/points/FatPointsGeometry.js";
+import InstancedPoints from "three/addons/objects/InstancedPoints.js";
+//import InstancedPointsNodeMaterial from 'three/addons/materials/InstancedPointsNodeMaterial.js'; // why not this, instead?
+import InstancedPointsGeometry from "three/addons/geometries/InstancedPointsGeometry.js";
 
-import { color, FatPointsNodeMaterial } from "three/nodes";
+import { color, InstancedPointsNodeMaterial } from "three/nodes";
 
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
@@ -105,15 +105,15 @@ function init() {
     colors.push(pointColor.r, pointColor.g, pointColor.b);
   }
 
-  // Fat Points
+  // Instanced Points
 
-  const geometry = new FatPointsGeometry();
+  const geometry = new InstancedPointsGeometry();
   geometry.setPositions(positions);
   geometry.setColors(colors);
 
   geometry.instanceCount = positions.length / 3; // this should not be necessary
 
-  material = new FatPointsNodeMaterial({
+  material = new InstancedPointsNodeMaterial({
     color: 0xffffff,
     pointWidth: 10, // in pixel units
 
@@ -121,9 +121,9 @@ function init() {
     alphaToCoverage: true,
   });
 
-  const fatPoints = new FatPoints(geometry, material);
-  fatPoints.scale.set(1, 1, 1);
-  scene.add(fatPoints);
+  const instancedPoints = new InstancedPoints(geometry, material);
+  instancedPoints.scale.set(1, 1, 1);
+  scene.add(instancedPoints);
 
   //
 
