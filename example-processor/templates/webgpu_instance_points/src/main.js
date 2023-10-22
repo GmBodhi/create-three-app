@@ -20,7 +20,6 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import InstancedPoints from "three/addons/objects/InstancedPoints.js";
-//import InstancedPointsNodeMaterial from 'three/addons/materials/InstancedPointsNodeMaterial.js'; // why not this, instead?
 import InstancedPointsGeometry from "three/addons/geometries/InstancedPointsGeometry.js";
 
 import { color, InstancedPointsNodeMaterial } from "three/nodes";
