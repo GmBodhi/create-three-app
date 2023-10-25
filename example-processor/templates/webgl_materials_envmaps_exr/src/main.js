@@ -119,7 +119,7 @@ function init() {
   gui.add(params, "roughness", 0, 1, 0.01);
   gui.add(params, "metalness", 0, 1, 0.01);
   gui.add(params, "exposure", 0, 2, 0.01);
-  gui.add(params, "debug", false);
+  gui.add(params, "debug");
   gui.open();
 }
 
