@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Object3D,
+  Matrix4,
   Vector3,
   Euler,
   Quaternion,
@@ -11,7 +11,6 @@ import {
   MeshNormalMaterial,
   Group,
   Mesh,
-  Matrix4,
   PerspectiveCamera,
   WebGLRenderer,
   Scene,
@@ -28,7 +27,7 @@ let stats, gui, guiStatsEl;
 let camera, controls, scene, renderer;
 let geometries, mesh;
 const ids = [];
-const dummy = new Object3D();
+const matrix = new Matrix4();
 
 //
 
@@ -134,6 +133,7 @@ function initBatchedMesh() {
   const vertexCount = api.count * 512;
   const indexCount = api.count * 1024;
 
+  const euler = new Euler();
   const matrix = new Matrix4();
   mesh = new BatchedMesh(
     geometryCount,
@@ -147,7 +147,11 @@ function initBatchedMesh() {
   for (let i = 0; i < api.count; i++) {
     const id = mesh.applyGeometry(geometries[i % geometries.length]);
     mesh.setMatrixAt(id, randomizeMatrix(matrix));
-    mesh.userData.rotationSpeeds.push(randomizeRotationSpeed(new Euler()));
+
+    const rotationMatrix = new Matrix4();
+    rotationMatrix.makeRotationFromEuler(randomizeRotationSpeed(euler));
+    mesh.userData.rotationSpeeds.push(rotationMatrix);
+
     ids.push(id);
   }
 
@@ -229,18 +233,12 @@ function animateMeshes() {
 
   if (api.method === Method.BATCHED) {
     for (let i = 0; i < loopNum; i++) {
-      const rotationSpeed = mesh.userData.rotationSpeeds[i];
+      const rotationMatrix = mesh.userData.rotationSpeeds[i];
       const id = ids[i];
 
-      mesh.getMatrixAt(id, dummy.matrix);
-      dummy.matrix.decompose(dummy.position, dummy.quaternion, dummy.scale);
-      dummy.rotation.set(
-        dummy.rotation.x + rotationSpeed.x,
-        dummy.rotation.y + rotationSpeed.y,
-        dummy.rotation.z + rotationSpeed.z
-      );
-      dummy.updateMatrix();
-      mesh.setMatrixAt(id, dummy.matrix);
+      mesh.getMatrixAt(id, matrix);
+      matrix.multiply(rotationMatrix);
+      mesh.setMatrixAt(id, matrix);
     }
   } else {
     for (let i = 0; i < loopNum; i++) {

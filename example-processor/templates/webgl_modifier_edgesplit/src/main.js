@@ -101,7 +101,7 @@ function init() {
     }
   );
 
-  const gui = new GUI({ name: "Edge split modifier parameters" });
+  const gui = new GUI({ title: "Edge split modifier parameters" });
 
   gui.add(params, "showMap").onFinishChange(updateMesh);
   gui.add(params, "smoothShading").onFinishChange(updateMesh);
