@@ -85,7 +85,7 @@ function initGeometries() {
   geometries = [
     new ConeGeometry(1.0, 2.0),
     new BoxGeometry(2.0, 2.0, 2.0),
-    new SphereGeometry(1.0),
+    new SphereGeometry(1.0, 16, 8),
   ];
 }
 

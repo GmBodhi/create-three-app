@@ -205,7 +205,7 @@ function init() {
     fillPlane.material.opacity = state.plane.opacity;
   });
 
-  gui.add(state, "showWireframe", true).onChange(function () {
+  gui.add(state, "showWireframe").onChange(function () {
     if (state.showWireframe) {
       scene.add(cameraHelper);
     } else {
