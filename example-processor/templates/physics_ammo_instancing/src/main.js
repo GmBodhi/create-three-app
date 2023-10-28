@@ -61,8 +61,8 @@ async function init() {
   );
   floor.position.y = -2.5;
   floor.receiveShadow = true;
+  floor.userData.physics = { mass: 0 };
   scene.add(floor);
-  physics.addMesh(floor);
 
   //
 
@@ -78,6 +78,7 @@ async function init() {
   boxes.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
   boxes.castShadow = true;
   boxes.receiveShadow = true;
+  boxes.userData.physics = { mass: 1 };
   scene.add(boxes);
 
   for (let i = 0; i < boxes.count; i++) {
@@ -90,8 +91,6 @@ async function init() {
     boxes.setColorAt(i, color.setHex(0xffffff * Math.random()));
   }
 
-  physics.addMesh(boxes, 1);
-
   // Spheres
 
   const geometrySphere = new IcosahedronGeometry(0.05, 4);
@@ -99,6 +98,7 @@ async function init() {
   spheres.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
   spheres.castShadow = true;
   spheres.receiveShadow = true;
+  spheres.userData.physics = { mass: 1 };
   scene.add(spheres);
 
   for (let i = 0; i < spheres.count; i++) {
@@ -111,7 +111,7 @@ async function init() {
     spheres.setColorAt(i, color.setHex(0xffffff * Math.random()));
   }
 
-  physics.addMesh(spheres, 1);
+  physics.addScene(scene);
 
   //
 

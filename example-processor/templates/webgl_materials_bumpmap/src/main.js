@@ -84,7 +84,7 @@ function init() {
     specular: 0x666666,
     shininess: 25,
     bumpMap: mapHeight,
-    bumpScale: 0.1,
+    bumpScale: 10,
   });
 
   loader = new GLTFLoader();

@@ -12,17 +12,25 @@ import {
   Mesh,
   PlaneGeometry,
   MeshPhongMaterial,
-  AnimationMixer,
   WebGLRenderer,
+  AnimationMixer,
+  DetachedBindMode,
+  Matrix4,
 } from "three";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer;
-let clock;
+let camera, scene, renderer, clock;
+let model, animations;
 
-const mixers = [];
+const mixers = [],
+  objects = [];
+
+const params = {
+  sharedSkeleton: false,
+};
 
 init();
 animate();
@@ -72,30 +80,14 @@ function init() {
 
   const loader = new GLTFLoader();
   loader.load("models/gltf/Soldier.glb", function (gltf) {
-    gltf.scene.traverse(function (object) {
+    model = gltf.scene;
+    animations = gltf.animations;
+
+    model.traverse(function (object) {
       if (object.isMesh) object.castShadow = true;
     });
 
-    const model1 = SkeletonUtils.clone(gltf.scene);
-    const model2 = SkeletonUtils.clone(gltf.scene);
-    const model3 = SkeletonUtils.clone(gltf.scene);
-
-    const mixer1 = new AnimationMixer(model1);
-    const mixer2 = new AnimationMixer(model2);
-    const mixer3 = new AnimationMixer(model3);
-
-    mixer1.clipAction(gltf.animations[0]).play(); // idle
-    mixer2.clipAction(gltf.animations[1]).play(); // run
-    mixer3.clipAction(gltf.animations[3]).play(); // walk
-
-    model1.position.x = -2;
-    model2.position.x = 0;
-    model3.position.x = 2;
-
-    scene.add(model1, model2, model3);
-    mixers.push(mixer1, mixer2, mixer3);
-
-    animate();
+    setupDefaultScene();
   });
 
   renderer = new WebGLRenderer({ antialias: true });
@@ -105,6 +97,111 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
+
+  const gui = new GUI();
+
+  gui.add(params, "sharedSkeleton").onChange(function () {
+    clearScene();
+
+    if (params.sharedSkeleton === true) {
+      setupSharedSkeletonScene();
+    } else {
+      setupDefaultScene();
+    }
+  });
+  gui.open();
+}
+
+function clearScene() {
+  for (const mixer of mixers) {
+    mixer.stopAllAction();
+  }
+
+  mixers.length = 0;
+
+  //
+
+  for (const object of objects) {
+    scene.remove(object);
+
+    scene.traverse(function (child) {
+      if (child.isSkinnedMesh) child.skeleton.dispose();
+    });
+  }
+}
+
+function setupDefaultScene() {
+  // three cloned models with independent skeletons.
+  // each model can have its own animation state
+
+  const model1 = SkeletonUtils.clone(model);
+  const model2 = SkeletonUtils.clone(model);
+  const model3 = SkeletonUtils.clone(model);
+
+  model1.position.x = -2;
+  model2.position.x = 0;
+  model3.position.x = 2;
+
+  const mixer1 = new AnimationMixer(model1);
+  const mixer2 = new AnimationMixer(model2);
+  const mixer3 = new AnimationMixer(model3);
+
+  mixer1.clipAction(animations[0]).play(); // idle
+  mixer2.clipAction(animations[1]).play(); // run
+  mixer3.clipAction(animations[3]).play(); // walk
+
+  scene.add(model1, model2, model3);
+
+  objects.push(model1, model2, model3);
+  mixers.push(mixer1, mixer2, mixer3);
+}
+
+function setupSharedSkeletonScene() {
+  // three cloned models with a single shared skeleton.
+  // all models share the same animation state
+
+  const sharedModel = SkeletonUtils.clone(model);
+  const shareSkinnedMesh = sharedModel.getObjectByName("vanguard_Mesh");
+  const sharedSkeleton = shareSkinnedMesh.skeleton;
+  const sharedParentBone = sharedModel.getObjectByName("mixamorigHips");
+  scene.add(sharedParentBone); // the bones need to be in the scene for the animation to work
+
+  const model1 = shareSkinnedMesh.clone();
+  const model2 = shareSkinnedMesh.clone();
+  const model3 = shareSkinnedMesh.clone();
+
+  model1.bindMode = DetachedBindMode;
+  model2.bindMode = DetachedBindMode;
+  model3.bindMode = DetachedBindMode;
+
+  const identity = new Matrix4();
+
+  model1.bind(sharedSkeleton, identity);
+  model2.bind(sharedSkeleton, identity);
+  model3.bind(sharedSkeleton, identity);
+
+  model1.position.x = -2;
+  model2.position.x = 0;
+  model3.position.x = 2;
+
+  // apply transformation from the glTF asset
+
+  model1.scale.setScalar(0.01);
+  model1.rotation.x = -Math.PI * 0.5;
+  model2.scale.setScalar(0.01);
+  model2.rotation.x = -Math.PI * 0.5;
+  model3.scale.setScalar(0.01);
+  model3.rotation.x = -Math.PI * 0.5;
+
+  //
+
+  const mixer = new AnimationMixer(sharedParentBone);
+  mixer.clipAction(animations[1]).play();
+
+  scene.add(sharedParentBone, model1, model2, model3);
+
+  objects.push(sharedParentBone, model1, model2, model3);
+  mixers.push(mixer);
 }
 
 function onWindowResize() {

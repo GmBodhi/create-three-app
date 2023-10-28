@@ -38,6 +38,9 @@ import {
   RingGeometry,
   Vector2,
   LatheGeometry,
+  InstancedMesh,
+  Matrix4,
+  Color,
   WebGLRenderer,
   ACESFilmicToneMapping,
 } from "three";
@@ -424,6 +427,33 @@ function init() {
     model.position.set(200, -40, -200);
     scene1.add(model);
   });
+
+  // ---------------------------------------------------------------------
+  // Model requiring KHR_mesh_quantization
+  // ---------------------------------------------------------------------
+
+  material = new MeshBasicMaterial({
+    color: 0xffffff,
+  });
+  object = new InstancedMesh(
+    new BoxGeometry(10, 10, 10, 2, 2, 2),
+    material,
+    50
+  );
+  const matrix = new Matrix4();
+  const color = new Color();
+  for (let i = 0; i < 50; i++) {
+    matrix.setPosition(
+      Math.random() * 100 - 50,
+      Math.random() * 100 - 50,
+      Math.random() * 100 - 50
+    );
+    object.setMatrixAt(i, matrix);
+    object.setColorAt(i, color.setHSL(i / 50, 1, 0.5));
+  }
+
+  object.position.set(400, 0, 200);
+  scene1.add(object);
 
   // ---------------------------------------------------------------------
   // 2nd Scene

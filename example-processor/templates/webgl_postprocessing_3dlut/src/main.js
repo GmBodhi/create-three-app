@@ -17,6 +17,7 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { LUTPass } from "three/addons/postprocessing/LUTPass.js";
 import { LUTCubeLoader } from "three/addons/loaders/LUTCubeLoader.js";
 import { LUT3dlLoader } from "three/addons/loaders/LUT3dlLoader.js";
+import { LUTImageLoader } from "three/addons/loaders/LUTImageLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 const params = {
@@ -33,6 +34,9 @@ const lutMap = {
   "Cubicle 99.CUBE": null,
   "Remy 24.CUBE": null,
   "Presetpro-Cinematic.3dl": null,
+  NeutralLUT: null,
+  "B&WLUT": null,
+  NightLUT: null,
 };
 
 let gui;
@@ -77,6 +81,10 @@ function init() {
   Object.keys(lutMap).forEach((name) => {
     if (/\.CUBE$/i.test(name)) {
       new LUTCubeLoader().load("luts/" + name, function (result) {
+        lutMap[name] = result;
+      });
+    } else if (/\LUT$/i.test(name)) {
+      new LUTImageLoader().load(`luts/${name}.png`, function (result) {
         lutMap[name] = result;
       });
     } else {

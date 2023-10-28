@@ -1163,6 +1163,16 @@
         "/src"
       ]
     },
+    "webgl_geometry_sdf": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_geometry_shapes": {
       "files": {
         "index.html": "src",
@@ -2593,6 +2603,16 @@
         "/src"
       ]
     },
+    "webgl_mesh_batch": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_mirror": {
       "files": {
         "index.html": "src",
@@ -3593,6 +3613,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_particles_rain": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_points": {
       "files": {
         "index.html": "src",
@@ -3674,6 +3704,16 @@
       ]
     },
     "webgpu_instance_mesh": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_instance_points": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3863,6 +3903,19 @@
         "/src"
       ]
     },
+    "webgpu_shadertoy": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "example1.glsl": "src/shaders",
+        "example2.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgpu_shadowmap": {
       "files": {
         "index.html": "src",
@@ -3914,6 +3967,16 @@
       ]
     },
     "webgpu_tsl_editor": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_transpiler": {
       "files": {
         "index.html": "src",
         "main.js": "src",

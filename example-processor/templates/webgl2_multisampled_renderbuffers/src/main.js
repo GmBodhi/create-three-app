@@ -14,6 +14,7 @@ import {
   WebGLRenderer,
   Vector2,
   WebGLRenderTarget,
+  HalfFloatType,
 } from "three";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -103,6 +104,7 @@ function init() {
   const size = renderer.getDrawingBufferSize(new Vector2());
   const renderTarget = new WebGLRenderTarget(size.width, size.height, {
     samples: 4,
+    type: HalfFloatType,
   });
 
   const renderPass = new RenderPass(scene, camera);

@@ -28,6 +28,8 @@ let container;
 let camera, scene, renderer;
 
 const CubemapFilterShader = {
+  name: "CubemapFilterShader",
+
   uniforms: {
     cubeTexture: { value: null },
     mipIndex: { value: 0 },
@@ -109,7 +111,7 @@ function renderToCubeTexture(cubeMapRenderTarget, sourceCubeTexture) {
   const geometry = new BoxGeometry(5, 5, 5);
 
   const material = new ShaderMaterial({
-    name: "FilterCubemap",
+    name: CubemapFilterShader.name,
     uniforms: UniformsUtils.clone(CubemapFilterShader.uniforms),
     vertexShader: CubemapFilterShader.vertexShader,
     fragmentShader: CubemapFilterShader.fragmentShader,

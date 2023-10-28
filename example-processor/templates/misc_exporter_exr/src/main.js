@@ -56,12 +56,12 @@ function init() {
   //
 
   camera = new PerspectiveCamera(
-    80,
+    50,
     window.innerWidth / window.innerHeight,
     0.1,
     100
   );
-  camera.position.set(40, 0, 0);
+  camera.position.set(10, 0, 0);
 
   scene = new Scene();
 
@@ -88,7 +88,8 @@ function init() {
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.update();
+  controls.enableDamping = true;
+  controls.rotateSpeed = -0.25; // negative, to track mouse pointer
 
   //
 
@@ -164,12 +165,12 @@ function createDataTexture() {
 
 function swapScene() {
   if (params.target == "pmrem") {
-    camera.position.set(40, 0, 0);
+    camera.position.set(10, 0, 0);
     controls.enabled = true;
     scene.background = renderTarget.texture;
     mesh.visible = false;
   } else {
-    camera.position.set(0, 0, 40);
+    camera.position.set(0, 0, 70);
     controls.enabled = false;
     scene.background = new Color(0, 0, 0);
     mesh.visible = true;

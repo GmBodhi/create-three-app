@@ -20,6 +20,7 @@ import {
   spritesheetUV,
   pointUV,
   vec2,
+  vec3,
   texture,
   uniform,
   mix,
@@ -129,7 +130,7 @@ function init() {
     blending: AdditiveBlending,
   });
 
-  material.colorNode = fire;
+  material.colorNode = vec3(fire);
   material.sizeNode = particleSize;
   material.positionNode = positionNode;
 

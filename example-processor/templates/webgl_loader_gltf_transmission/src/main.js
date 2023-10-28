@@ -56,6 +56,7 @@ function init() {
         .load("IridescentDishWithOlives.glb", function (gltf) {
           mixer = new AnimationMixer(gltf.scene);
           mixer.clipAction(gltf.animations[0]).play();
+
           scene.add(gltf.scene);
         });
     });

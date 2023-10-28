@@ -65,37 +65,30 @@ function init() {
 
   // create function
 
-  const computeShaderFn = tslFn((stack) => {
+  const computeShaderFn = tslFn(() => {
     const particle = particleBufferNode.element(instanceIndex);
     const velocity = velocityBufferNode.element(instanceIndex);
 
     const pointer = uniform(pointerVector);
     const limit = uniform(scaleVector);
 
-    const position = particle.add(velocity);
+    const position = particle.add(velocity).temp();
 
-    stack.assign(
-      velocity.x,
-      position.x
-        .abs()
-        .greaterThanEqual(limit.x)
-        .cond(velocity.x.negate(), velocity.x)
-    );
-    stack.assign(
-      velocity.y,
-      position.y
-        .abs()
-        .greaterThanEqual(limit.y)
-        .cond(velocity.y.negate(), velocity.y)
-    );
+    velocity.x = position.x
+      .abs()
+      .greaterThanEqual(limit.x)
+      .cond(velocity.x.negate(), velocity.x);
+    velocity.y = position.y
+      .abs()
+      .greaterThanEqual(limit.y)
+      .cond(velocity.y.negate(), velocity.y);
 
-    stack.assign(position, position.min(limit).max(limit.negate()));
+    position.assign(position.min(limit).max(limit.negate()));
 
     const pointerSize = 0.1;
     const distanceFromPointer = pointer.sub(position).length();
 
-    stack.assign(
-      particle,
+    particle.assign(
       distanceFromPointer.lessThanEqual(pointerSize).cond(vec3(), position)
     );
   });
@@ -104,7 +97,7 @@ function init() {
 
   computeNode = computeShaderFn().compute(particleNum);
   computeNode.onInit = ({ renderer }) => {
-    const precomputeShaderNode = tslFn((stack) => {
+    const precomputeShaderNode = tslFn(() => {
       const particleIndex = float(instanceIndex);
 
       const randomAngle = particleIndex.mul(0.005).mul(Math.PI * 2);
@@ -115,7 +108,7 @@ function init() {
 
       const velocity = velocityBufferNode.element(instanceIndex);
 
-      stack.assign(velocity.xy, vec2(velX, velY));
+      velocity.xy = vec2(velX, velY);
     });
 
     renderer.compute(precomputeShaderNode().compute(particleNum));

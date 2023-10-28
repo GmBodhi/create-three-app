@@ -99,6 +99,7 @@ function init() {
     new Mesh(
       new TorusKnotGeometry(1, 0.3, 128, 32),
       new RawShaderMaterial({
+        name: "G-Buffer Shader",
         vertexShader: gbufferVert_,
         fragmentShader: gbufferFrag_,
         uniforms: {
@@ -119,6 +120,7 @@ function init() {
     new Mesh(
       new PlaneGeometry(2, 2),
       new RawShaderMaterial({
+        name: "Post-FX Shader",
         vertexShader: renderVert_,
         fragmentShader: renderFrag_,
         uniforms: {

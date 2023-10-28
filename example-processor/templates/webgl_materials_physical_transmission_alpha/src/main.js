@@ -56,7 +56,6 @@ const hdrEquirect = new RGBELoader()
 
             params.ior = mesh.material.ior;
             params.specularIntensity = mesh.material.specularIntensity;
-            params.emissiveIntensity = mesh.material.emissiveIntensity;
 
             params.transmission = mesh.material.transmission;
             params.thickness = mesh.material.thickness;

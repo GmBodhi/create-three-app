@@ -27,7 +27,7 @@ let computeInitNode, computeToPing, computeToPong;
 let pingTexture, pongTexture;
 let material;
 let phase = true;
-let seed = uniform(new Vector2());
+const seed = uniform(new Vector2());
 
 init();
 render();

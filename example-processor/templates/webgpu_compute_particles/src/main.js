@@ -22,6 +22,7 @@ import {
   vec3,
   storage,
   SpriteNodeMaterial,
+  If,
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -81,7 +82,7 @@ function init() {
 
   // compute
 
-  const computeInit = tslFn((stack) => {
+  const computeInit = tslFn(() => {
     const position = positionBuffer.element(instanceIndex);
     const color = colorBuffer.element(instanceIndex);
 
@@ -89,34 +90,34 @@ function init() {
     const randY = instanceIndex.add(2).hash();
     const randZ = instanceIndex.add(3).hash();
 
-    stack.assign(position.x, randX.mul(60).add(-30));
-    stack.assign(position.y, randY.mul(10));
-    stack.assign(position.z, randZ.mul(60).add(-30));
+    position.x = randX.mul(60).add(-30);
+    position.y = randY.mul(10);
+    position.z = randZ.mul(60).add(-30);
 
-    stack.assign(color, vec3(randX, randY, randZ));
+    color.assign(vec3(randX, randY, randZ));
   })().compute(particleCount);
 
   //
 
-  const computeUpdate = tslFn((stack) => {
+  const computeUpdate = tslFn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 
-    stack.assign(velocity, velocity.add(vec3(0.0, gravity, 0.0)));
-    stack.assign(position, position.add(velocity));
+    velocity.addAssign(vec3(0.0, gravity, 0.0));
+    position.addAssign(velocity);
 
-    stack.assign(velocity, velocity.mul(friction));
+    velocity.mulAssign(friction);
 
     // floor
 
-    stack.if(position.y.lessThan(0), (stack) => {
-      stack.assign(position.y, 0);
-      stack.assign(velocity.y, velocity.y.negate().mul(bounce));
+    If(position.y.lessThan(0), () => {
+      position.y = 0;
+      velocity.y = velocity.y.negate().mul(bounce);
 
       // floor friction
 
-      stack.assign(velocity.x, velocity.x.mul(0.9));
-      stack.assign(velocity.z, velocity.z.mul(0.9));
+      velocity.x = velocity.x.mul(0.9);
+      velocity.z = velocity.z.mul(0.9);
     });
   });
 
@@ -173,7 +174,7 @@ function init() {
 
   // click event
 
-  const computeHit = tslFn((stack) => {
+  const computeHit = tslFn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 
@@ -184,7 +185,7 @@ function init() {
     const power = distArea.mul(0.1);
     const relativePower = power.mul(instanceIndex.hash().mul(0.5).add(0.5));
 
-    stack.assign(velocity, velocity.add(direction.mul(relativePower)));
+    velocity.assign(velocity.add(direction.mul(relativePower)));
   })().compute(particleCount);
 
   //

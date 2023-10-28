@@ -16,7 +16,7 @@ import {
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { ColorCorrectionShader } from "three/addons/shaders/ColorCorrectionShader.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
 
 let camera, scene, renderer, clock, group, container;
@@ -43,11 +43,11 @@ function init() {
 
   //
 
-  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d, 3);
+  const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
   hemiLight.position.set(0, 1000, 0);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 2.5);
+  const dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(-3000, 1000, -1000);
   scene.add(dirLight);
 
@@ -96,11 +96,11 @@ function init() {
 
   fxaaPass = new ShaderPass(FXAAShader);
 
-  const colorCorrectionPass = new ShaderPass(ColorCorrectionShader);
+  const outputPass = new OutputPass();
 
   composer1 = new EffectComposer(renderer);
   composer1.addPass(renderPass);
-  composer1.addPass(colorCorrectionPass);
+  composer1.addPass(outputPass);
 
   //
 
@@ -113,9 +113,9 @@ function init() {
 
   composer2 = new EffectComposer(renderer);
   composer2.addPass(renderPass);
-  composer2.addPass(colorCorrectionPass);
+  composer2.addPass(outputPass);
 
-  // FXAA is engineered to be applied towards the end of engine post processing after conversion to low dynamic range and conversion to the sRGB color space for display.´
+  // FXAA is engineered to be applied towards the end of engine post processing after conversion to low dynamic range and conversion to the sRGB color space for display.
 
   composer2.addPass(fxaaPass);
 

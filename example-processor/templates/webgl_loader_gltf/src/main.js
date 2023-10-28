@@ -15,7 +15,6 @@ import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 let camera, scene, renderer;
 
 init();
-render();
 
 function init() {
   const container = document.createElement("div");
@@ -46,8 +45,14 @@ function init() {
       const loader = new GLTFLoader().setPath(
         "models/gltf/DamagedHelmet/glTF/"
       );
-      loader.load("DamagedHelmet.gltf", function (gltf) {
-        scene.add(gltf.scene);
+      loader.load("DamagedHelmet.gltf", async function (gltf) {
+        const model = gltf.scene;
+
+        // wait until the model can be added to the scene without blocking due to shader compilation
+
+        await renderer.compileAsync(model, camera, scene);
+
+        scene.add(model);
 
         render();
       });

@@ -122,7 +122,7 @@ async function init() {
 
   // compute (shader-node)
 
-  const computeShaderFn = tslFn((stack) => {
+  const computeShaderFn = tslFn(() => {
     const index = float(instanceIndex);
 
     // pitch
@@ -146,7 +146,7 @@ async function init() {
 
     const waveStorageElementNode = waveStorageNode.element(instanceIndex);
 
-    stack.assign(waveStorageElementNode, wave);
+    waveStorageElementNode.assign(wave);
   });
 
   // compute

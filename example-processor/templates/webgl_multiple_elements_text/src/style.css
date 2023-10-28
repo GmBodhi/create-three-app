@@ -35,29 +35,6 @@ a {
   background-color: #fff;
   z-index: -1;
 }
-.math {
-  text-align: center;
-}
-.math-frac {
-  display: inline-block;
-  vertical-align: middle;
-}
-.math-denom,
-.math-num {
-  display: block;
-}
-.math-denom {
-  border-top: 1px solid;
-}
-.math-sqrt {
-  display: inline-block;
-  transform: scale(1, 1.3);
-}
-.math-sqrt-stem {
-  display: inline-block;
-  border-top: 1px solid;
-  margin-top: 5px;
-}
 a:hover {
   text-decoration: underline;
 }

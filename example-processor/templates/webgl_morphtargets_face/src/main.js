@@ -78,7 +78,7 @@ function init() {
         gui
           .add(influences, value, 0, 1, 0.01)
           .name(key.replace("blendShape1.", ""))
-          .listen(influences);
+          .listen();
       }
     });
 

@@ -194,7 +194,10 @@ function loadMolecule(model) {
       start.multiplyScalar(75);
       end.multiplyScalar(75);
 
-      const object = new Mesh(boxGeometry, new MeshPhongMaterial(0xffffff));
+      const object = new Mesh(
+        boxGeometry,
+        new MeshPhongMaterial({ color: 0xffffff })
+      );
       object.position.copy(start);
       object.position.lerp(end, 0.5);
       object.scale.set(5, 5, start.distanceTo(end));

@@ -102,7 +102,7 @@ function init() {
     roughness: 0.8,
     color: 0xffffff,
     metalness: 0.2,
-    bumpScale: 0.0005,
+    bumpScale: 1,
   });
   const textureLoader = new TextureLoader();
   textureLoader.load("textures/hardwood2_diffuse.jpg", function (map) {
@@ -134,7 +134,7 @@ function init() {
   cubeMat = new MeshStandardMaterial({
     roughness: 0.7,
     color: 0xffffff,
-    bumpScale: 0.002,
+    bumpScale: 1,
     metalness: 0.2,
   });
   textureLoader.load("textures/brick_diffuse.jpg", function (map) {
