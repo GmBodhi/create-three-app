@@ -188,33 +188,38 @@ async function initPhysics() {
     // Floor
 
     const geometry = new BoxGeometry(6, 2, 6);
-    const material = new MeshNormalMaterial();
+    const material = new MeshNormalMaterial({ visible: false });
 
     const floor = new Mesh(geometry, material);
     floor.position.y = -1;
-    physics.addMesh(floor);
+    floor.userData.physics = { mass: 0 };
+    scene.add(floor);
 
     // Walls
 
     const wallPX = new Mesh(geometry, material);
     wallPX.position.set(4, 3, 0);
     wallPX.rotation.z = Math.PI / 2;
-    physics.addMesh(wallPX);
+    wallPX.userData.physics = { mass: 0 };
+    scene.add(wallPX);
 
     const wallNX = new Mesh(geometry, material);
     wallNX.position.set(-4, 3, 0);
     wallNX.rotation.z = Math.PI / 2;
-    physics.addMesh(wallNX);
+    wallNX.userData.physics = { mass: 0 };
+    scene.add(wallNX);
 
     const wallPZ = new Mesh(geometry, material);
     wallPZ.position.set(0, 3, 4);
     wallPZ.rotation.x = Math.PI / 2;
-    physics.addMesh(wallPZ);
+    wallPZ.userData.physics = { mass: 0 };
+    scene.add(wallPZ);
 
     const wallNZ = new Mesh(geometry, material);
     wallNZ.position.set(0, 3, -4);
     wallNZ.rotation.x = Math.PI / 2;
-    physics.addMesh(wallNZ);
+    wallNZ.userData.physics = { mass: 0 };
+    scene.add(wallNZ);
   }
 
   // Spheres
@@ -224,6 +229,7 @@ async function initPhysics() {
 
   spheres = new InstancedMesh(geometry, material, 800);
   spheres.instanceMatrix.setUsage(DynamicDrawUsage); // will be updated every frame
+  spheres.userData.physics = { mass: 1, restitution: 1.1 };
   scene.add(spheres);
 
   const matrix = new Matrix4();
@@ -239,7 +245,7 @@ async function initPhysics() {
     spheres.setColorAt(i, color.setHex(0xffffff * Math.random()));
   }
 
-  physics.addMesh(spheres, 1, 1.1);
+  physics.addScene(scene);
 }
 
 //
