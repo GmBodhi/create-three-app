@@ -70,7 +70,6 @@ function init() {
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 110);
-  camera.layers.enable(2); // @TODO: Fix .castShadow and remove it
   camera.position.set(40, 8, 0);
   camera.lookAt(0, 0, 0);
 
@@ -252,8 +251,6 @@ function init() {
   const rainParticles = new Mesh(new PlaneGeometry(0.1, 2), rainMaterial);
   rainParticles.isInstancedMesh = true;
   rainParticles.count = instanceCount;
-  rainParticles.layers.disableAll();
-  rainParticles.layers.enable(2);
   scene.add(rainParticles);
 
   // ripple
@@ -298,8 +295,6 @@ function init() {
   const rippleParticles = new Mesh(rippleGeometry, rippleMaterial);
   rippleParticles.isInstancedMesh = true;
   rippleParticles.count = instanceCount;
-  rippleParticles.layers.disableAll();
-  rippleParticles.layers.enable(2);
   scene.add(rippleParticles);
 
   // floor geometry
