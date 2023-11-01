@@ -145,7 +145,7 @@ function initBatchedMesh() {
   ids.length = 0;
 
   for (let i = 0; i < api.count; i++) {
-    const id = mesh.applyGeometry(geometries[i % geometries.length]);
+    const id = mesh.addGeometry(geometries[i % geometries.length]);
     mesh.setMatrixAt(id, randomizeMatrix(matrix));
 
     const rotationMatrix = new Matrix4();
