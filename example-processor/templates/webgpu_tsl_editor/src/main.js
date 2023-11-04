@@ -15,6 +15,8 @@ import {
 import * as Nodes from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
+
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import WGSLNodeBuilder from "three/addons/renderers/webgpu/nodes/WGSLNodeBuilder.js";
 import GLSLNodeBuilder from "three/addons/renderers/webgl/nodes/GLSLNodeBuilder.js";
@@ -25,10 +27,10 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
+  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw new Error("No WebGPU support");
+    throw new Error("No WebGPU or WebGL2 support");
   }
 
   // add the depedencies
@@ -112,6 +114,7 @@ output = vec4( finalColor, opacity );
       language: "javascript",
       theme: "vs-dark",
       automaticLayout: true,
+      minimap: { enabled: false },
     });
 
     const result = window.monaco.editor.create(resultDOM, {
@@ -120,6 +123,7 @@ output = vec4( finalColor, opacity );
       theme: "vs-dark",
       automaticLayout: true,
       readOnly: true,
+      minimap: { enabled: false },
     });
 
     const showCode = () => {
