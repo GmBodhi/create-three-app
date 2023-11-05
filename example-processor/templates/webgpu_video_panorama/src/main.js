@@ -29,7 +29,6 @@ let isUserInteracting = false,
 const distance = 0.5;
 
 init();
-animate();
 
 function init() {
   if (WebGPU.isAvailable() === false) {
@@ -66,6 +65,7 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   document.addEventListener("pointerdown", onPointerDown);
@@ -106,7 +106,6 @@ function onPointerUp() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   update();
 }
 

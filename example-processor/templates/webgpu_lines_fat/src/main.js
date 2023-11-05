@@ -42,7 +42,6 @@ let insetWidth;
 let insetHeight;
 
 init();
-animate();
 
 function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
@@ -55,6 +54,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setClearColor(0x000000, 0.0);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -173,8 +173,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.update();
 
   // main scene
