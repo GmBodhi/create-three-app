@@ -3059,6 +3059,16 @@
         "/src"
       ]
     },
+    "webgl_postprocessing_hbao": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_postprocessing_masking": {
       "files": {
         "index.html": "src",
