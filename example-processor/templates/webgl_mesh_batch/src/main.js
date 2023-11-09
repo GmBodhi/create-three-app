@@ -142,6 +142,10 @@ function initBatchedMesh() {
     createMaterial()
   );
   mesh.userData.rotationSpeeds = [];
+
+  // disable full-object frustum culling since all of the objects can be dynamic.
+  mesh.frustumCulled = false;
+
   ids.length = 0;
 
   for (let i = 0; i < api.count; i++) {
