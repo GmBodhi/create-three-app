@@ -3976,6 +3976,16 @@
         "/src"
       ]
     },
+    "webgpu_textures_2d-array": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_tsl_editor": {
       "files": {
         "index.html": "src",
