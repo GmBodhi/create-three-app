@@ -11,6 +11,7 @@ import {
   MeshNormalMaterial,
   Group,
   Mesh,
+  BatchedMesh,
   PerspectiveCamera,
   WebGLRenderer,
   Scene,
@@ -21,11 +22,10 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { BatchedMesh } from "three/addons/objects/BatchedMesh.js";
 
 let stats, gui, guiStatsEl;
 let camera, controls, scene, renderer;
-let geometries, mesh;
+let geometries, mesh, material;
 const ids = [];
 const matrix = new Matrix4();
 
@@ -49,6 +49,9 @@ const api = {
   method: Method.BATCHED,
   count: 256,
   dynamic: 16,
+
+  sortObjects: true,
+  opacity: 1,
 };
 
 init();
@@ -90,7 +93,12 @@ function initGeometries() {
 }
 
 function createMaterial() {
-  return new MeshNormalMaterial();
+  if (!material) {
+    material = new MeshNormalMaterial();
+    material.opacity = 0.1;
+  }
+
+  return material;
 }
 
 function cleanup() {
@@ -200,6 +208,19 @@ function init() {
   gui.add(api, "count", 1, MAX_GEOMETRY_COUNT).step(1).onChange(initMesh);
   gui.add(api, "dynamic", 0, MAX_GEOMETRY_COUNT).step(1);
   gui.add(api, "method", Method).onChange(initMesh);
+  gui.add(api, "opacity", 0, 1).onChange((v) => {
+    if (v < 1) {
+      material.transparent = true;
+      material.depthWrite = false;
+    } else {
+      material.transparent = false;
+      material.depthWrite = true;
+    }
+
+    material.opacity = v;
+    material.needsUpdate = true;
+  });
+  gui.add(api, "sortObjects");
 
   guiStatsEl = document.createElement("li");
   guiStatsEl.classList.add("gui-stats");
@@ -259,5 +280,9 @@ function animateMeshes() {
 }
 
 function render() {
+  if (mesh.isBatchedMesh) {
+    mesh.sortObjects = api.sortObjects;
+  }
+
   renderer.render(scene, camera);
 }
