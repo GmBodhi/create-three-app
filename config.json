@@ -1717,6 +1717,16 @@
         "/src"
       ]
     },
+    "webgl_loader_gainmap": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_gcode": {
       "files": {
         "index.html": "src",
@@ -3854,6 +3864,16 @@
       ]
     },
     "webgpu_morphtargets": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_morphtargets_face": {
       "files": {
         "index.html": "src",
         "main.js": "src",

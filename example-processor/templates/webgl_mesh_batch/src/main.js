@@ -38,7 +38,7 @@ const scale = new Vector3();
 
 //
 
-const MAX_GEOMETRY_COUNT = 8192;
+const MAX_GEOMETRY_COUNT = 20000;
 
 const Method = {
   BATCHED: "BATCHED",
@@ -51,6 +51,7 @@ const api = {
   dynamic: 16,
 
   sortObjects: true,
+  perObjectFrustumCulled: true,
   opacity: 1,
 };
 
@@ -221,6 +222,7 @@ function init() {
     material.needsUpdate = true;
   });
   gui.add(api, "sortObjects");
+  gui.add(api, "perObjectFrustumCulled");
 
   guiStatsEl = document.createElement("li");
   guiStatsEl.classList.add("gui-stats");
@@ -282,6 +284,7 @@ function animateMeshes() {
 function render() {
   if (mesh.isBatchedMesh) {
     mesh.sortObjects = api.sortObjects;
+    mesh.perObjectFrustumCulled = api.perObjectFrustumCulled;
   }
 
   renderer.render(scene, camera);
