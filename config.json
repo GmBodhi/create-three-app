@@ -1717,16 +1717,6 @@
         "/src"
       ]
     },
-    "webgl_loader_gainmap": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_gcode": {
       "files": {
         "index.html": "src",
@@ -2048,6 +2038,16 @@
       ]
     },
     "webgl_loader_texture_hdr": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_loader_texture_hdrjpg": {
       "files": {
         "index.html": "src",
         "main.js": "src",
