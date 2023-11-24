@@ -101,11 +101,11 @@ function init() {
       resolutions["HDR JPG"] = hdrJpg.width + "x" + hdrJpg.height;
       displayStats("HDR JPG");
 
+      hdrJpgEquirectangularMap = hdrJpg.renderTarget.texture;
       hdrJpgPMREMRenderTarget = pmremGenerator.fromEquirectangular(
-        hdrJpg.renderTarget.texture
+        hdrJpgEquirectangularMap
       );
 
-      hdrJpgEquirectangularMap = hdrJpg.toDataTexture();
       hdrJpgEquirectangularMap.mapping = EquirectangularReflectionMapping;
       hdrJpgEquirectangularMap.minFilter = LinearFilter;
       hdrJpgEquirectangularMap.magFilter = LinearFilter;
@@ -128,11 +128,10 @@ function init() {
       resolutions["Webp Gain map (separate)"] =
         gainMap.width + "x" + gainMap.height;
 
-      gainMapPMREMRenderTarget = pmremGenerator.fromEquirectangular(
-        gainMap.renderTarget.texture
-      );
+      gainMapBackground = hdrJpg.renderTarget.texture;
+      gainMapPMREMRenderTarget =
+        pmremGenerator.fromEquirectangular(gainMapBackground);
 
-      gainMapBackground = gainMap.toDataTexture();
       gainMapBackground.mapping = EquirectangularReflectionMapping;
       gainMapBackground.minFilter = LinearFilter;
       gainMapBackground.magFilter = LinearFilter;
@@ -252,12 +251,11 @@ function render() {
   switch (params.envMap) {
     case "HDR JPG":
       pmremRenderTarget = hdrJpgPMREMRenderTarget;
-      equirectangularMap =
-        hdrJpgEquirectangularMap || hdrJpg.renderTarget.texture;
+      equirectangularMap = hdrJpgEquirectangularMap;
       break;
     case "Webp Gain map (separate)":
       pmremRenderTarget = gainMapPMREMRenderTarget;
-      equirectangularMap = gainMapBackground || gainMap.renderTarget.texture;
+      equirectangularMap = gainMapBackground;
       break;
     case "HDR":
       pmremRenderTarget = hdrPMREMRenderTarget;
@@ -268,9 +266,6 @@ function render() {
   const newEnvMap = pmremRenderTarget ? pmremRenderTarget.texture : null;
 
   if (newEnvMap && newEnvMap !== torusMesh.material.envMap) {
-    torusMesh.material.envMap = newEnvMap;
-    torusMesh.material.needsUpdate = true;
-
     planeMesh.material.map = newEnvMap;
     planeMesh.material.needsUpdate = true;
   }
@@ -278,6 +273,7 @@ function render() {
   torusMesh.rotation.y += 0.005;
   planeMesh.visible = params.debug;
 
+  scene.environment = equirectangularMap;
   scene.background = equirectangularMap;
   renderer.toneMappingExposure = params.exposure;
 

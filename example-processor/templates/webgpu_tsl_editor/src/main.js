@@ -54,7 +54,7 @@ function init() {
   rendererDOM.appendChild(renderer.domElement);
 
   const material = new Nodes.NodeMaterial();
-  material.outputNode = Nodes.vec4(0, 0, 0, 1);
+  material.fragmentNode = Nodes.vec4(0, 0, 0, 1);
 
   const mesh = new Mesh(new PlaneGeometry(1, 1), material);
   scene.add(mesh);
@@ -136,7 +136,7 @@ output = vec4( finalColor, opacity );
         const tslCode = `let output = null;\n${editor.getValue()}\nreturn { output };`;
         const nodes = new Function("THREE", "TSL", tslCode)(THREE, Nodes);
 
-        mesh.material.outputNode = nodes.output;
+        mesh.material.fragmentNode = nodes.output;
         mesh.material.needsUpdate = true;
 
         let NodeBuilder;

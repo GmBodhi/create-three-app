@@ -243,6 +243,7 @@ function init() {
     flatShading: true,
   });
   material.map = gradientTexture;
+  material.bumpMap = mapGrid;
   sphere = new Mesh(new SphereGeometry(70, 10, 10), material);
   sphere.position.set(0, 0, 0);
   sphere.name = "Sphere";
