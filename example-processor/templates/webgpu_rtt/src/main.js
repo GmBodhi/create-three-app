@@ -12,7 +12,7 @@ import {
   OrthographicCamera,
   PlaneGeometry,
 } from "three";
-import { texture, uniform, vec2, MeshBasicNodeMaterial } from "three/nodes";
+import { texture, uniform, MeshBasicNodeMaterial } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
@@ -43,10 +43,10 @@ function init() {
     0.1,
     10
   );
-  camera.position.z = 4;
+  camera.position.z = 3;
 
   scene = new Scene();
-  scene.background = new Color(0x222222);
+  scene.background = new Color(0x0066ff);
 
   // textured mesh
 
@@ -87,18 +87,20 @@ function init() {
 
   // modulate the final color based on the mouse position
 
-  const screenFXNode = uniform(mouse).add(vec2(0.5, 0.5));
+  const screenFXNode = uniform(mouse);
 
   const materialFX = new MeshBasicNodeMaterial();
-  materialFX.colorNode = texture(renderTarget.texture).mul(screenFXNode);
+  materialFX.colorNode = texture(renderTarget.texture)
+    .rgb.saturation(screenFXNode.x.oneMinus())
+    .hue(screenFXNode.y);
 
   const quad = new Mesh(geometryFX, materialFX);
   sceneFX.add(quad);
 }
 
 function onWindowMouseMove(e) {
-  mouse.x = e.offsetX / screen.width;
-  mouse.y = e.offsetY / screen.height;
+  mouse.x = e.offsetX / window.innerWidth;
+  mouse.y = e.offsetY / window.innerHeight;
 }
 
 function onWindowResize() {
