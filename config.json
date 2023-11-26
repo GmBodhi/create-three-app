@@ -3603,6 +3603,16 @@
         "/src"
       ]
     },
+    "webgpu_camera_logarithmicdepthbuffer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_clearcoat": {
       "files": {
         "index.html": "src",

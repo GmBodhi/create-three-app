@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>three.js webgpu - cameras - logarithmic depth buffer</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body style="overflow: hidden">
+    <div id="container">
+      <div id="container_normal">
+        <h2 class="renderer_label">normal z-buffer</h2>
+      </div>
+      <div id="container_logzbuf">
+        <h2 class="renderer_label">logarithmic z-buffer</h2>
+      </div>
+      <div id="renderer_border"></div>
+    </div>
+
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      - cameras - logarithmic depth buffer<br />
+      mousewheel to dolly out
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.module.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>
