@@ -18,7 +18,6 @@ import {
   color,
   positionLocal,
   timerLocal,
-  attribute,
   SpriteNodeMaterial,
 } from "three/nodes";
 
