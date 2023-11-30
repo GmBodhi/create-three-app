@@ -107,11 +107,9 @@ function init() {
       );
 
       hdrJpgEquirectangularMap.mapping = EquirectangularReflectionMapping;
-      hdrJpgEquirectangularMap.minFilter = LinearFilter;
-      hdrJpgEquirectangularMap.magFilter = LinearFilter;
-      hdrJpgEquirectangularMap.generateMipmaps = false;
-
       hdrJpgEquirectangularMap.needsUpdate = true;
+
+      hdrJpg.dispose();
     },
     function (progress) {
       fileSizes["HDR JPG"] = humanFileSize(progress.total);
@@ -133,11 +131,9 @@ function init() {
         pmremGenerator.fromEquirectangular(gainMapBackground);
 
       gainMapBackground.mapping = EquirectangularReflectionMapping;
-      gainMapBackground.minFilter = LinearFilter;
-      gainMapBackground.magFilter = LinearFilter;
-      gainMapBackground.generateMipmaps = false;
-
       gainMapBackground.needsUpdate = true;
+
+      gainMap.dispose();
     },
     function (progress) {
       fileSizes["Webp Gain map (separate)"] = humanFileSize(progress.total);
