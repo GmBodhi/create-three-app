@@ -38,6 +38,7 @@ float V_GGX_SmithCorrelated( const in float alpha, const in float dotNL, const i
       language: "glsl",
       theme: "vs-dark",
       automaticLayout: true,
+      minimap: { enabled: false },
     });
 
     const result = window.monaco.editor.create(resultDOM, {
@@ -46,6 +47,7 @@ float V_GGX_SmithCorrelated( const in float alpha, const in float dotNL, const i
       theme: "vs-dark",
       automaticLayout: true,
       readOnly: true,
+      minimap: { enabled: false },
     });
 
     const showCode = (code) => {

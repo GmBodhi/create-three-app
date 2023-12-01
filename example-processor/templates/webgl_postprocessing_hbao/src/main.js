@@ -35,6 +35,7 @@ const stats = new Stats();
 container.appendChild(stats.dom);
 
 const renderer = new WebGLRenderer({ antialias: true });
+// renderer.setPixelRatio( window.devicePixelRatio );
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
 

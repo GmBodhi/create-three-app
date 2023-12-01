@@ -17,6 +17,7 @@ import {
   MeshStandardMaterial,
   BufferGeometryLoader,
   Clock,
+  Vector3,
 } from "three";
 import {
   tslFn,
@@ -57,6 +58,7 @@ let monkey;
 let clock;
 
 let collisionBox, collisionCamera, collisionPosRT, collisionPosMaterial;
+let collisionBoxPos;
 
 init();
 
@@ -77,14 +79,14 @@ function init() {
 
   const dirLight = new DirectionalLight(0xffffff, 0.5);
   dirLight.castShadow = true;
-  dirLight.position.set(3, 12, 17);
+  dirLight.position.set(3, 17, 17);
   dirLight.castShadow = true;
-  dirLight.shadow.camera.near = 5;
+  dirLight.shadow.camera.near = 1;
   dirLight.shadow.camera.far = 50;
-  dirLight.shadow.camera.right = 10;
-  dirLight.shadow.camera.left = -10;
-  dirLight.shadow.camera.top = 10;
-  dirLight.shadow.camera.bottom = -10;
+  dirLight.shadow.camera.right = 25;
+  dirLight.shadow.camera.left = -25;
+  dirLight.shadow.camera.top = 25;
+  dirLight.shadow.camera.bottom = -25;
   dirLight.shadow.mapSize.width = 2048;
   dirLight.shadow.mapSize.height = 2048;
   dirLight.shadow.bias = -0.01;
@@ -147,7 +149,7 @@ function init() {
   //
 
   const computeUpdate = tslFn(() => {
-    const getCoord = (pos) => pos.add(50).div(100);
+    const getCoord = (pos) => pos.add(50).div(100).mul(vec2(1, -1));
 
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
@@ -373,7 +375,10 @@ function init() {
 
   const gui = new GUI();
 
-  gui.add(collisionBox.position, "z", -50, 50, 0.001).name("position");
+  // use lerp to smooth the movement
+  collisionBoxPos = new Vector3().copy(collisionBox.position);
+
+  gui.add(collisionBoxPos, "z", -50, 50, 0.001).name("position");
   gui.add(collisionBox.scale, "x", 0.1, 3.5, 0.01).name("scale");
   gui
     .add(rainParticles, "count", 200, maxParticleCount, 1)
@@ -393,9 +398,13 @@ function onWindowResize() {
 function animate() {
   stats.update();
 
+  const delta = clock.getDelta();
+
   if (monkey) {
-    monkey.rotation.y += clock.getDelta();
+    monkey.rotation.y += delta;
   }
+
+  collisionBox.position.lerp(collisionBoxPos, 10 * delta);
 
   // position
 

@@ -3,11 +3,9 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Color,
   WebGLRenderer,
   ACESFilmicToneMapping,
   TorusKnotGeometry,
-  SphereGeometry,
   MeshStandardMaterial,
   Mesh,
   PlaneGeometry,
@@ -29,7 +27,7 @@ import { GainMapLoader, HDRJPGLoader } from "@monogrid/gainmap-js";
 const params = {
   envMap: "HDR JPG",
   roughness: 0.0,
-  metalness: 0.0,
+  metalness: 1.0,
   exposure: 1.0,
   debug: false,
 };
@@ -54,23 +52,21 @@ function init() {
   document.body.appendChild(container);
 
   camera = new PerspectiveCamera(
-    40,
+    50,
     window.innerWidth / window.innerHeight,
     1,
-    1000
+    500
   );
-  camera.position.set(0, 0, 120);
+  camera.position.set(0, 0, -120);
 
   scene = new Scene();
-  scene.background = new Color(0x000000);
 
   renderer = new WebGLRenderer();
   renderer.toneMapping = ACESFilmicToneMapping;
 
   //
 
-  let geometry = new TorusKnotGeometry(18, 8, 150, 20);
-  // let geometry = new SphereGeometry( 26, 64, 32 );
+  let geometry = new TorusKnotGeometry(18, 8, 200, 40, 1, 3);
   let material = new MeshStandardMaterial({
     color: 0xffffff,
     metalness: params.metalness,
