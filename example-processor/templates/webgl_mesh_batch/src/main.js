@@ -11,6 +11,7 @@ import {
   MeshNormalMaterial,
   Group,
   Mesh,
+  BatchedMesh,
   PerspectiveCamera,
   WebGLRenderer,
   Scene,
@@ -21,11 +22,11 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { BatchedMesh } from "three/addons/objects/BatchedMesh.js";
+import { radixSort } from "three/addons/utils/SortUtils.js";
 
 let stats, gui, guiStatsEl;
 let camera, controls, scene, renderer;
-let geometries, mesh;
+let geometries, mesh, material;
 const ids = [];
 const matrix = new Matrix4();
 
@@ -38,7 +39,7 @@ const scale = new Vector3();
 
 //
 
-const MAX_GEOMETRY_COUNT = 8192;
+const MAX_GEOMETRY_COUNT = 20000;
 
 const Method = {
   BATCHED: "BATCHED",
@@ -49,6 +50,11 @@ const api = {
   method: Method.BATCHED,
   count: 256,
   dynamic: 16,
+
+  sortObjects: true,
+  perObjectFrustumCulled: true,
+  opacity: 1,
+  useCustomSort: true,
 };
 
 init();
@@ -90,7 +96,11 @@ function initGeometries() {
 }
 
 function createMaterial() {
-  return new MeshNormalMaterial();
+  if (!material) {
+    material = new MeshNormalMaterial();
+  }
+
+  return material;
 }
 
 function cleanup() {
@@ -142,10 +152,14 @@ function initBatchedMesh() {
     createMaterial()
   );
   mesh.userData.rotationSpeeds = [];
+
+  // disable full-object frustum culling since all of the objects can be dynamic.
+  mesh.frustumCulled = false;
+
   ids.length = 0;
 
   for (let i = 0; i < api.count; i++) {
-    const id = mesh.applyGeometry(geometries[i % geometries.length]);
+    const id = mesh.addGeometry(geometries[i % geometries.length]);
     mesh.setMatrixAt(id, randomizeMatrix(matrix));
 
     const rotationMatrix = new Matrix4();
@@ -196,6 +210,21 @@ function init() {
   gui.add(api, "count", 1, MAX_GEOMETRY_COUNT).step(1).onChange(initMesh);
   gui.add(api, "dynamic", 0, MAX_GEOMETRY_COUNT).step(1);
   gui.add(api, "method", Method).onChange(initMesh);
+  gui.add(api, "opacity", 0, 1).onChange((v) => {
+    if (v < 1) {
+      material.transparent = true;
+      material.depthWrite = false;
+    } else {
+      material.transparent = false;
+      material.depthWrite = true;
+    }
+
+    material.opacity = v;
+    material.needsUpdate = true;
+  });
+  gui.add(api, "sortObjects");
+  gui.add(api, "perObjectFrustumCulled");
+  gui.add(api, "useCustomSort");
 
   guiStatsEl = document.createElement("li");
   guiStatsEl.classList.add("gui-stats");
@@ -206,6 +235,26 @@ function init() {
 }
 
 //
+
+function sortFunction(list, camera) {
+  // initialize options
+  this._options = this._options || {
+    get: (el) => el.z,
+    aux: new Array(this.maxGeometryCount),
+  };
+
+  const options = this._options;
+  options.reversed = this.material.transparent;
+
+  // convert depth to unsigned 32 bit range
+  const factor = (2 ** 32 - 1) / camera.far; // UINT32_MAX / max_depth
+  for (let i = 0, l = list.length; i < l; i++) {
+    list[i].z *= factor;
+  }
+
+  // perform a fast-sort using the hybrid radix sort function
+  radixSort(list, options);
+}
 
 function onWindowResize() {
   const width = window.innerWidth;
@@ -255,5 +304,11 @@ function animateMeshes() {
 }
 
 function render() {
+  if (mesh.isBatchedMesh) {
+    mesh.sortObjects = api.sortObjects;
+    mesh.perObjectFrustumCulled = api.perObjectFrustumCulled;
+    mesh.setCustomSort(api.useCustomSort ? sortFunction : null);
+  }
+
   renderer.render(scene, camera);
 }

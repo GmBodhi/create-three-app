@@ -18,7 +18,6 @@ import {
   color,
   positionLocal,
   timerLocal,
-  attribute,
   SpriteNodeMaterial,
 } from "three/nodes";
 
@@ -132,7 +131,6 @@ function init() {
   //
 
   const helper = new GridHelper(3000, 40, 0x303030, 0x303030);
-  helper.material.colorNode = attribute("color");
   helper.position.y = -75;
   scene.add(helper);
 

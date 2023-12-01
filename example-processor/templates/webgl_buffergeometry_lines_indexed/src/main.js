@@ -51,8 +51,6 @@ function init() {
   const rangle = (60 * Math.PI) / 180.0;
 
   function add_vertex(v) {
-    if (next_positions_index == 0xffff) console.error("Too many points.");
-
     positions.push(v.x, v.y, v.z);
     colors.push(Math.random() * 0.5 + 0.5, Math.random() * 0.5 + 0.5, 1);
 

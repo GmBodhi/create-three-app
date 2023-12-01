@@ -113,8 +113,10 @@ const SimpleGI = function (renderer, scene) {
       currentVertex++;
     }
 
-    attributes.color.updateRange.offset = startVertex * 3;
-    attributes.color.updateRange.count = (currentVertex - startVertex) * 3;
+    attributes.color.addUpdateRange(
+      startVertex * 3,
+      (currentVertex - startVertex) * 3
+    );
     attributes.color.needsUpdate = true;
 
     if (currentVertex >= totalVertex) {

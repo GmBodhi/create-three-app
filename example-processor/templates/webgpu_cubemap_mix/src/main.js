@@ -12,7 +12,7 @@ import {
   oscSine,
   timerLocal,
   cubeTexture,
-  float,
+  maxMipLevel,
   toneMapping,
 } from "three/nodes";
 
@@ -81,7 +81,7 @@ function init() {
   );
 
   scene.backgroundNode = scene.environmentNode.context({
-    getSamplerLevelNode: () => float(1),
+    getTextureLevel: (textureNode) => maxMipLevel(textureNode),
   });
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");

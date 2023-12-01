@@ -17,7 +17,18 @@ initJank();
 
 // offscreen
 
-if ("transferControlToOffscreen" in canvas2) {
+const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+let supportOffScreenWebGL = "transferControlToOffscreen" in canvas2;
+
+// If it's Safari, then check the version because Safari < 17 doesn't support OffscreenCanvas with a WebGL context.
+if (isSafari) {
+  var versionMatch = navigator.userAgent.match(/version\/(\d+)/i);
+  var safariVersion = versionMatch ? parseInt(versionMatch[1]) : 0;
+
+  supportOffScreenWebGL = safariVersion >= 17;
+}
+
+if (supportOffScreenWebGL) {
   const offscreen = canvas2.transferControlToOffscreen();
   const worker = new Worker("jsm/offscreen/offscreen.js", { type: "module" });
   worker.postMessage(

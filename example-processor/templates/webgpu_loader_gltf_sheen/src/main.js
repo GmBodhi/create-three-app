@@ -21,7 +21,6 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 let camera, scene, renderer, controls;
 
 init();
-animate();
 
 function init() {
   if (WebGPU.isAvailable() === false) {
@@ -62,6 +61,7 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
   container.appendChild(renderer.domElement);
@@ -98,8 +98,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update(); // required if damping enabled
 
   render();

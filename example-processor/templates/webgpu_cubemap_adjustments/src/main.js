@@ -22,6 +22,7 @@ import {
   positionWorldDirection,
   reflectVector,
   toneMapping,
+  maxMipLevel,
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -135,7 +136,7 @@ function init() {
     positionWorldDirection,
     positionLocal
   ).context({
-    getSamplerLevelNode: () => blurNode,
+    getTextureLevel: (textureNode) => blurNode.mul(maxMipLevel(textureNode)),
   });
 
   // scene objects

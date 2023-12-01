@@ -1,13 +1,13 @@
 import "./style.css"; // For webpack support
 
 import {
-  LinearSRGBColorSpace,
   WebGLMultipleRenderTargets,
   NearestFilter,
   Scene,
   Color,
   PerspectiveCamera,
   TextureLoader,
+  SRGBColorSpace,
   RepeatWrapping,
   Mesh,
   TorusKnotGeometry,
@@ -20,7 +20,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import {
   NodeMaterial,
-  MeshBasicNodeMaterial,
   mix,
   modelNormalMatrix,
   normalGeometry,
@@ -57,11 +56,14 @@ let postScene, postCamera;
 
 			*/
 
-class WriteGBufferMaterial extends MeshBasicNodeMaterial {
+class WriteGBufferMaterial extends NodeMaterial {
   constructor(diffuseTexture) {
     super();
 
     this.lights = false;
+    this.fog = false;
+    this.colorSpaced = false;
+
     this.diffuseTexture = diffuseTexture;
 
     const vUv = varying(uv());
@@ -74,7 +76,7 @@ class WriteGBufferMaterial extends MeshBasicNodeMaterial {
     const gColor = texture(this.diffuseTexture, vUv.mul(repeat));
     const gNormal = vec4(normalize(vNormal), 1.0);
 
-    this.outputNode = outputStruct(gColor, gNormal);
+    this.fragmentNode = outputStruct(gColor, gNormal);
   }
 }
 
@@ -82,13 +84,15 @@ class ReadGBufferMaterial extends NodeMaterial {
   constructor(tDiffuse, tNormal) {
     super();
 
+    this.lights = false;
+    this.fog = false;
+
     const vUv = varying(uv());
 
     const diffuse = texture(tDiffuse, vUv);
     const normal = texture(tNormal, vUv);
 
-    this.colorNode = mix(diffuse, normal, step(0.5, vUv.x));
-    this.lights = false;
+    this.fragmentNode = mix(diffuse, normal, step(0.5, vUv.x));
   }
 }
 
@@ -105,7 +109,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   document.body.appendChild(renderer.domElement);
 
   // Create a multi render target with Float buffers
@@ -114,11 +117,7 @@ function init() {
     window.innerWidth * window.devicePixelRatio,
     window.innerHeight * window.devicePixelRatio,
     2,
-    {
-      minFilter: NearestFilter,
-      magFilter: NearestFilter,
-      colorSpace: LinearSRGBColorSpace,
-    }
+    { minFilter: NearestFilter, magFilter: NearestFilter }
   );
 
   // Name our G-Buffer attachments for debugging
@@ -142,6 +141,7 @@ function init() {
   const loader = new TextureLoader();
 
   const diffuse = loader.load("textures/hardwood2_diffuse.jpg", render);
+  diffuse.colorSpace = SRGBColorSpace;
   diffuse.wrapS = RepeatWrapping;
   diffuse.wrapT = RepeatWrapping;
 
@@ -179,8 +179,6 @@ function onWindowResize() {
 
   const dpr = renderer.getPixelRatio();
   renderTarget.setSize(window.innerWidth * dpr, window.innerHeight * dpr);
-
-  render();
 }
 
 function render(time) {

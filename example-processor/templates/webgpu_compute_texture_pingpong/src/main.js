@@ -27,6 +27,8 @@ let computeInitNode, computeToPing, computeToPong;
 let pingTexture, pongTexture;
 let material;
 let phase = true;
+let lastUpdate = -1;
+
 const seed = uniform(new Vector2());
 
 init();
@@ -186,12 +188,17 @@ function onWindowResize() {
 }
 
 function render() {
-  // reset every 200 frames
+  const time = performance.now();
+  const seconds = Math.floor(time / 1000);
 
-  if (renderer.info.render.frame % 200 === 0) {
+  // reset every second
+
+  if (phase && seconds !== lastUpdate) {
     seed.value.set(Math.random(), Math.random());
 
     renderer.compute(computeInitNode);
+
+    lastUpdate = seconds;
   }
 
   // compute step
