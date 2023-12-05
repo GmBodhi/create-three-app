@@ -540,6 +540,19 @@
         "/src/shaders"
       ]
     },
+    "webgl2_ubo_arrays": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "fragmentShader.glsl": "src/shaders",
+        "vertexShader.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgl2_volume_cloud": {
       "files": {
         "index.html": "src",
