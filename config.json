@@ -3082,7 +3082,7 @@
         "/src"
       ]
     },
-    "webgl_postprocessing_hbao": {
+    "webgl_postprocessing_gtao": {
       "files": {
         "index.html": "src",
         "main.js": "src",
