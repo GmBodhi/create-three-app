@@ -152,7 +152,7 @@ function init() {
   // controls
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.enabledPan = false;
+  controls.enablePan = false;
 
   // stats
 
