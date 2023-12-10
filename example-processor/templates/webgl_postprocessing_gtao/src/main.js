@@ -123,7 +123,6 @@ function init() {
     radius: 0.25,
     distanceExponent: 1,
     thickness: 1,
-    bias: 0.001,
     scale: 1,
     samples: 16,
     distanceFallOff: true,
@@ -161,12 +160,6 @@ function init() {
     .min(0.01)
     .max(10)
     .step(0.01)
-    .onChange(() => gtaoPass.updateGtaoMaterial(aoParameters));
-  gui
-    .add(aoParameters, "bias")
-    .min(0)
-    .max(0.1)
-    .step(0.0001)
     .onChange(() => gtaoPass.updateGtaoMaterial(aoParameters));
   gui
     .add(aoParameters, "scale")
