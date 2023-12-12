@@ -26,6 +26,7 @@ let renderer, scene, camera, orthoCamera, controls, csm, csmHelper;
 const params = {
   orthographic: false,
   fade: false,
+  shadows: true,
   far: 1000,
   mode: "practical",
   lightX: -1,
@@ -71,7 +72,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
-  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.enabled = params.shadows;
   renderer.shadowMap.type = PCFSoftShadowMap;
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -151,6 +152,16 @@ function init() {
   gui.add(params, "fade").onChange(function (value) {
     csm.fade = value;
     csm.updateFrustums();
+  });
+
+  gui.add(params, "shadows").onChange(function (value) {
+    renderer.shadowMap.enabled = value;
+
+    scene.traverse(function (child) {
+      if (child.material) {
+        child.material.needsUpdate = true;
+      }
+    });
   });
 
   gui
