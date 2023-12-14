@@ -125,10 +125,7 @@ function init() {
     thickness: 1,
     scale: 1,
     samples: 16,
-    distanceFallOff: true,
-    clipRangeCheck: true,
-    depthRelativeBias: false,
-    nvAlignedSamples: false,
+    distanceFallOff: 1,
     screenSpaceRadius: false,
   };
   const pdParameters = {
@@ -159,6 +156,12 @@ function init() {
     .add(aoParameters, "thickness")
     .min(0.01)
     .max(10)
+    .step(0.01)
+    .onChange(() => gtaoPass.updateGtaoMaterial(aoParameters));
+  gui
+    .add(aoParameters, "distanceFallOff")
+    .min(0)
+    .max(1)
     .step(0.01)
     .onChange(() => gtaoPass.updateGtaoMaterial(aoParameters));
   gui
