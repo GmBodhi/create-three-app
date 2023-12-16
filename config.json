@@ -439,6 +439,19 @@
         "/src/shaders"
       ]
     },
+    "webgl2_clipculldistance": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "fragmentShader.glsl": "src/shaders",
+        "vertexShader.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgl2_materials_texture2darray": {
       "files": {
         "index.html": "src",
@@ -3947,6 +3960,16 @@
       ]
     },
     "webgpu_particles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_portal": {
       "files": {
         "index.html": "src",
         "main.js": "src",

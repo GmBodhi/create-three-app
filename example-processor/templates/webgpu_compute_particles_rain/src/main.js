@@ -58,7 +58,7 @@ let monkey;
 let clock;
 
 let collisionBox, collisionCamera, collisionPosRT, collisionPosMaterial;
-let collisionBoxPos;
+let collisionBoxPos, collisionBoxPosUI;
 
 init();
 
@@ -149,7 +149,7 @@ function init() {
   //
 
   const computeUpdate = tslFn(() => {
-    const getCoord = (pos) => pos.add(50).div(100).mul(vec2(1, -1));
+    const getCoord = (pos) => pos.add(50).div(100);
 
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
@@ -376,9 +376,10 @@ function init() {
   const gui = new GUI();
 
   // use lerp to smooth the movement
-  collisionBoxPos = new Vector3().copy(collisionBox.position);
+  collisionBoxPosUI = new Vector3().copy(collisionBox.position);
+  collisionBoxPos = new Vector3();
 
-  gui.add(collisionBoxPos, "z", -50, 50, 0.001).name("position");
+  gui.add(collisionBoxPosUI, "z", -50, 50, 0.001).name("position");
   gui.add(collisionBox.scale, "x", 0.1, 3.5, 0.01).name("scale");
   gui
     .add(rainParticles, "count", 200, maxParticleCount, 1)
@@ -403,6 +404,12 @@ function animate() {
   if (monkey) {
     monkey.rotation.y += delta;
   }
+
+  collisionBoxPos.set(
+    collisionBoxPosUI.x,
+    collisionBoxPosUI.y,
+    -collisionBoxPosUI.z
+  );
 
   collisionBox.position.lerp(collisionBoxPos, 10 * delta);
 
