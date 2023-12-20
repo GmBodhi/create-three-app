@@ -6,6 +6,7 @@ import {
   ReinhardToneMapping,
   CineonToneMapping,
   ACESFilmicToneMapping,
+  AgXToneMapping,
   CustomToneMapping,
   WebGLRenderer,
   ShaderChunk,
@@ -36,6 +37,7 @@ const toneMappingOptions = {
   Reinhard: ReinhardToneMapping,
   Cineon: CineonToneMapping,
   ACESFilmic: ACESFilmicToneMapping,
+  AgX: AgXToneMapping,
   Custom: CustomToneMapping,
 };
 

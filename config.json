@@ -3629,6 +3629,16 @@
         "/src"
       ]
     },
+    "webgpu_backdrop_water": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_camera_logarithmicdepthbuffer": {
       "files": {
         "index.html": "src",
@@ -3670,6 +3680,16 @@
       ]
     },
     "webgpu_compute_particles_rain": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_compute_particles_snow": {
       "files": {
         "index.html": "src",
         "main.js": "src",
