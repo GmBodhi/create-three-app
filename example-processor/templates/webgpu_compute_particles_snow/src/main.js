@@ -50,7 +50,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 
-const maxParticleCount = 300000;
+const maxParticleCount = 100000;
 
 let camera, scene, renderer;
 let controls, stats;
@@ -140,7 +140,7 @@ function init() {
     const randZ = instanceIndex.add(randUint()).hash();
 
     position.x = randX.mul(100).add(-50);
-    position.y = randY.mul(1000).add(3);
+    position.y = randY.mul(500).add(3);
     position.z = randZ.mul(100).add(-50);
 
     scale.xyz = instanceIndex.add(Math.random()).hash().mul(0.8).add(0.2);
@@ -305,6 +305,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
+
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
