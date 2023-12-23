@@ -26,7 +26,7 @@ let gui,
 
 const params = {
   exposure: 1.0,
-  toneMapping: "ACESFilmic",
+  toneMapping: "AgX",
   blurriness: 0.3,
   intensity: 1.0,
 };

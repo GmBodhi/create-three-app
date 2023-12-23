@@ -11,10 +11,11 @@ import {
   TextureLoader,
   RepeatWrapping,
   NoColorSpace,
-  TorusKnotGeometry,
+  IcosahedronGeometry,
   Group,
   Mesh,
   BoxGeometry,
+  CylinderGeometry,
   Vector3,
 } from "three";
 import {
@@ -112,18 +113,15 @@ function init() {
   // objects
 
   const textureLoader = new TextureLoader();
-  const brick_diffuse = textureLoader.load(
-    "three/examples/textures/brick_diffuse.jpg"
-  );
-  brick_diffuse.wrapS = RepeatWrapping;
-  brick_diffuse.wrapT = RepeatWrapping;
-  brick_diffuse.colorSpace = NoColorSpace;
+  const iceDiffuse = textureLoader.load("three/examples/textures/water.jpg");
+  iceDiffuse.wrapS = RepeatWrapping;
+  iceDiffuse.wrapT = RepeatWrapping;
+  iceDiffuse.colorSpace = NoColorSpace;
 
-  const brick = triplanarTexture(texture(brick_diffuse));
+  const iceColorNode = triplanarTexture(texture(iceDiffuse));
 
-  const geometry = new TorusKnotGeometry(0.6, 0.3, 128, 64);
-  const material = new MeshStandardNodeMaterial();
-  material.colorNode = brick;
+  const geometry = new IcosahedronGeometry(1, 3);
+  const material = new MeshStandardNodeMaterial({ colorNode: iceColorNode });
 
   const count = 100;
   const scale = 3.5;
@@ -172,15 +170,15 @@ function init() {
   waterMaterial.backdropAlphaNode = depthEffect.oneMinus();
   waterMaterial.transparent = true;
 
-  const water = new Mesh(new BoxGeometry(100, 0.001, 100), waterMaterial);
+  const water = new Mesh(new BoxGeometry(50, 0.001, 50), waterMaterial);
   water.position.set(0, 0.8, 0);
   scene.add(water);
 
   // floor
 
   floor = new Mesh(
-    new BoxGeometry(1.7, 10, 1.7),
-    new MeshStandardNodeMaterial({ colorNode: brick })
+    new CylinderGeometry(1.1, 1.1, 10),
+    new MeshStandardNodeMaterial({ colorNode: iceColorNode })
   );
   floor.position.set(0, -5, 0);
   scene.add(floor);

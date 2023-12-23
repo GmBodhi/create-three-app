@@ -33,7 +33,7 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-const particleCount = 100000;
+const particleCount = 1000000;
 
 const gravity = uniform(-0.0098);
 const bounce = uniform(0.8);
@@ -58,7 +58,7 @@ function init() {
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 1000);
-  camera.position.set(40, 15, 40);
+  camera.position.set(15, 30, 15);
 
   scene = new Scene();
 
@@ -90,9 +90,9 @@ function init() {
     const randY = instanceIndex.add(2).hash();
     const randZ = instanceIndex.add(3).hash();
 
-    position.x = randX.mul(60).add(-30);
-    position.y = randY.mul(10);
-    position.z = randZ.mul(60).add(-30);
+    position.x = randX.mul(100).add(-50);
+    position.y = 0; // randY.mul( 10 );
+    position.z = randZ.mul(100).add(-50);
 
     color.assign(vec3(randX, randY, randZ));
   })().compute(particleCount);
@@ -142,6 +142,7 @@ function init() {
   const particles = new Mesh(new PlaneGeometry(1, 1), particleMaterial);
   particles.isInstancedMesh = true;
   particles.count = particleCount;
+  particles.frustumCulled = false;
   scene.add(particles);
 
   //
@@ -165,6 +166,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
+
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
@@ -180,9 +182,9 @@ function init() {
 
     const dist = position.distance(clickPosition);
     const direction = position.sub(clickPosition).normalize();
-    const distArea = float(7).sub(dist).max(0);
+    const distArea = float(6).sub(dist).max(0);
 
-    const power = distArea.mul(0.1);
+    const power = distArea.mul(0.01);
     const relativePower = power.mul(instanceIndex.hash().mul(0.5).add(0.5));
 
     velocity.assign(velocity.add(direction.mul(relativePower)));
@@ -190,7 +192,7 @@ function init() {
 
   //
 
-  function onHit(event) {
+  function onMove(event) {
     pointer.set(
       (event.clientX / window.innerWidth) * 2 - 1,
       -(event.clientY / window.innerHeight) * 2 + 1
@@ -216,14 +218,14 @@ function init() {
 
   // events
 
-  renderer.domElement.addEventListener("pointerdown", onHit);
+  renderer.domElement.addEventListener("pointermove", onMove);
 
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 5;
-  controls.maxDistance = 70;
-  controls.target.set(0, -1, 0);
+  controls.maxDistance = 200;
+  controls.target.set(0, 0, 0);
   controls.update();
 
   //

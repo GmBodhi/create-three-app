@@ -250,7 +250,7 @@ function init() {
 
   // tree
 
-  function tree(count = 10) {
+  function tree(count = 8) {
     const coneMaterial = new MeshStandardNodeMaterial({
       color: 0x0d492c,
       roughness: 0.6,
@@ -262,11 +262,11 @@ function init() {
     for (let i = 0; i < count; i++) {
       const radius = 1 + i;
 
-      const coneGeometry = new ConeGeometry(radius, radius, 64);
+      const coneGeometry = new ConeGeometry(radius * 0.95, radius * 1.25, 32);
 
       const cone = new Mesh(coneGeometry, coneMaterial);
       cone.castShadow = true;
-      cone.position.y = (count - i) * 1.3 + count * 0.5;
+      cone.position.y = (count - i) * 1.5 + count * 0.6;
       object.add(cone);
     }
 
@@ -279,13 +279,13 @@ function init() {
   }
 
   const teapotTree = new Mesh(
-    new TeapotGeometry(0.8, 18),
+    new TeapotGeometry(0.5, 18),
     new MeshBasicNodeMaterial({
       color: 0xfcfb9e,
     })
   );
 
-  teapotTree.position.y = 19.5;
+  teapotTree.position.y = 18;
 
   scene.add(tree());
   scene.add(teapotTree);
@@ -345,7 +345,7 @@ function init() {
   controls.maxDistance = 35;
   controls.maxPolarAngle = Math.PI / 1.7;
   controls.autoRotate = true;
-  controls.autoRotateSpeed = -1;
+  controls.autoRotateSpeed = -0.7;
   controls.update();
 
   //
