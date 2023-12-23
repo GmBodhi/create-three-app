@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
   PointLight,
   AmbientLight,
   PointsMaterial,
@@ -14,8 +13,9 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { Timer } from "three/addons/misc/Timer.js";
 
-let camera, scene, renderer, clock;
+let camera, scene, renderer, timer;
 
 let mesh;
 
@@ -38,7 +38,7 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
 
   const light1 = new PointLight(0xff2200, 50000);
   light1.position.set(100, 100, 100);
@@ -91,8 +91,6 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
-
-  document.addEventListener("visibilitychange", onVisibilityChange);
 }
 
 function onWindowResize() {
@@ -102,21 +100,14 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onVisibilityChange() {
-  if (document.hidden === true) {
-    clock.stop();
-  } else {
-    clock.start();
-  }
-}
-
 function animate() {
   requestAnimationFrame(animate);
+  timer.update();
   render();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   if (mesh !== undefined) {
     const step = delta * speed;

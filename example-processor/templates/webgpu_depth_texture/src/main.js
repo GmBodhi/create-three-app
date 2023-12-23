@@ -9,8 +9,6 @@ import {
   DepthTexture,
   FloatType,
   RenderTarget,
-  OrthographicCamera,
-  PlaneGeometry,
 } from "three";
 import { texture, MeshBasicNodeMaterial } from "three/nodes";
 
@@ -19,11 +17,13 @@ import WebGL from "three/addons/capabilities/WebGL.js";
 
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
+import QuadMesh from "three/addons/objects/QuadMesh.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, controls, renderer;
 
-let cameraFX, sceneFX, renderTarget;
+let quad, renderTarget;
 
 const dpr = window.devicePixelRatio;
 
@@ -87,18 +87,10 @@ function init() {
 
   // FX
 
-  cameraFX = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
-  sceneFX = new Scene();
-
-  const geometryFX = new PlaneGeometry(2, 2);
-
-  //
-
   const materialFX = new MeshBasicNodeMaterial();
   materialFX.colorNode = texture(depthTexture);
 
-  const quad = new Mesh(geometryFX, materialFX);
-  sceneFX.add(quad);
+  quad = new QuadMesh(materialFX);
 
   //
 
@@ -119,5 +111,5 @@ function animate() {
   renderer.render(scene, camera);
 
   renderer.setRenderTarget(null);
-  renderer.render(sceneFX, cameraFX);
+  quad.render(renderer);
 }

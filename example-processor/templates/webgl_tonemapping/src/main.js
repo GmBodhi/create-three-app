@@ -6,6 +6,7 @@ import {
   ReinhardToneMapping,
   CineonToneMapping,
   ACESFilmicToneMapping,
+  AgXToneMapping,
   CustomToneMapping,
   WebGLRenderer,
   ShaderChunk,
@@ -25,7 +26,7 @@ let gui,
 
 const params = {
   exposure: 1.0,
-  toneMapping: "ACESFilmic",
+  toneMapping: "AgX",
   blurriness: 0.3,
   intensity: 1.0,
 };
@@ -36,6 +37,7 @@ const toneMappingOptions = {
   Reinhard: ReinhardToneMapping,
   Cineon: CineonToneMapping,
   ACESFilmic: ACESFilmicToneMapping,
+  AgX: AgXToneMapping,
   Custom: CustomToneMapping,
 };
 

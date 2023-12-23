@@ -5,19 +5,21 @@ import {
   Scene,
   Clock,
   PointLight,
+  PlaneGeometry,
+  Mesh,
+  MeshBasicMaterial,
   AnimationMixer,
   Object3D,
   Color,
   InstancedBufferAttribute,
-  LinearToneMapping,
 } from "three";
 import {
+  pass,
   mix,
   range,
   color,
   oscSine,
   timerLocal,
-  toneMapping,
   MeshStandardNodeMaterial,
 } from "three/nodes";
 
@@ -27,8 +29,10 @@ import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
 
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
 
 let camera, scene, renderer;
+let postProcessing;
 
 let mixer, clock;
 
@@ -45,7 +49,7 @@ function init() {
     50,
     window.innerWidth / window.innerHeight,
     0.01,
-    100
+    40
   );
   camera.position.set(1, 2, 3);
 
@@ -54,18 +58,27 @@ function init() {
 
   clock = new Clock();
 
-  //lights
+  // lights
 
   const centerLight = new PointLight(0xff9900, 1, 100);
   centerLight.position.y = 4.5;
   centerLight.position.z = -2;
-  centerLight.power = 1700;
+  centerLight.power = 400;
   scene.add(centerLight);
 
   const cameraLight = new PointLight(0x0099ff, 1, 100);
-  cameraLight.power = 1700;
+  cameraLight.power = 400;
   camera.add(cameraLight);
   scene.add(camera);
+
+  const geometry = new PlaneGeometry(1000, 1000);
+  geometry.rotateX(-Math.PI / 2);
+
+  const plane = new Mesh(
+    geometry,
+    new MeshBasicMaterial({ color: 0x000000, visible: true })
+  );
+  scene.add(plane);
 
   const loader = new GLTFLoader();
   loader.load("models/gltf/Michelle.glb", function (gltf) {
@@ -115,14 +128,29 @@ function init() {
     scene.add(object);
   });
 
-  //renderer
+  // renderer
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.17);
   document.body.appendChild(renderer.domElement);
+
+  // post processing ( just for WebGPUBackend for now )
+
+  if (renderer.backend.isWebGPUBackend) {
+    const scenePass = pass(scene, camera);
+    const scenePassColor = scenePass.getTextureNode();
+    const scenePassDepth = scenePass.getDepthNode().remapClamp(0.15, 0.3);
+
+    const scenePassColorBlurred = scenePassColor.gaussianBlur();
+    scenePassColorBlurred.directionNode = scenePassDepth;
+
+    postProcessing = new PostProcessing(renderer);
+    postProcessing.outputNode = scenePassColorBlurred;
+  }
+
+  // events
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -139,5 +167,9 @@ function animate() {
 
   if (mixer) mixer.update(delta);
 
-  renderer.render(scene, camera);
+  if (renderer.backend.isWebGPUBackend) {
+    postProcessing.render();
+  } else {
+    renderer.render(scene, camera);
+  }
 }

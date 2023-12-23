@@ -9,8 +9,6 @@ import {
   BoxGeometry,
   Mesh,
   RenderTarget,
-  OrthographicCamera,
-  PlaneGeometry,
 } from "three";
 import { texture, uniform, MeshBasicNodeMaterial } from "three/nodes";
 
@@ -19,10 +17,12 @@ import WebGL from "three/addons/capabilities/WebGL.js";
 
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
+import QuadMesh from "three/addons/objects/QuadMesh.js";
+
 let camera, scene, renderer;
 const mouse = new Vector2();
 
-let cameraFX, sceneFX, renderTarget;
+let quadMesh, renderTarget;
 
 let box;
 
@@ -80,11 +80,6 @@ function init() {
 
   // FX
 
-  cameraFX = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
-  sceneFX = new Scene();
-
-  const geometryFX = new PlaneGeometry(2, 2);
-
   // modulate the final color based on the mouse position
 
   const screenFXNode = uniform(mouse);
@@ -94,8 +89,7 @@ function init() {
     .rgb.saturation(screenFXNode.x.oneMinus())
     .hue(screenFXNode.y);
 
-  const quad = new Mesh(geometryFX, materialFX);
-  sceneFX.add(quad);
+  quadMesh = new QuadMesh(materialFX);
 }
 
 function onWindowMouseMove(e) {
@@ -119,5 +113,5 @@ function animate() {
   renderer.render(scene, camera);
 
   renderer.setRenderTarget(null);
-  renderer.render(sceneFX, cameraFX);
+  quadMesh.render(renderer);
 }

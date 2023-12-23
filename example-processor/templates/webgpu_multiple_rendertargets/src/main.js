@@ -11,8 +11,6 @@ import {
   RepeatWrapping,
   Mesh,
   TorusKnotGeometry,
-  OrthographicCamera,
-  PlaneGeometry,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -38,9 +36,10 @@ import WebGL from "three/addons/capabilities/WebGL.js";
 
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
+import QuadMesh from "three/addons/objects/QuadMesh.js";
+
 let camera, scene, renderer, torus;
-let renderTarget;
-let postScene, postCamera;
+let quadMesh, renderTarget;
 
 /*
 
@@ -154,14 +153,8 @@ function init() {
 
   // PostProcessing setup
 
-  postScene = new Scene();
-  postCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);
-
-  postScene.add(
-    new Mesh(
-      new PlaneGeometry(2, 2),
-      new ReadGBufferMaterial(renderTarget.texture[0], renderTarget.texture[1])
-    )
+  quadMesh = new QuadMesh(
+    new ReadGBufferMaterial(renderTarget.texture[0], renderTarget.texture[1])
   );
 
   // Controls
@@ -208,5 +201,5 @@ function render(time) {
 
   // render post FX
   renderer.setRenderTarget(null);
-  renderer.render(postScene, postCamera);
+  quadMesh.render(renderer);
 }

@@ -1,6 +1,12 @@
 import "./style.css"; // For webpack support
 
-import { OrthographicCamera, Scene, Mesh, PlaneGeometry } from "three";
+import {
+  OrthographicCamera,
+  Scene,
+  LinearMipMapLinearFilter,
+  Mesh,
+  PlaneGeometry,
+} from "three";
 import {
   texture,
   textureStore,
@@ -37,6 +43,7 @@ function init() {
     height = 512;
 
   const storageTexture = new StorageTexture(width, height);
+  //storageTexture.minFilter = LinearMipMapLinearFilter;
 
   // create function
 

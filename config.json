@@ -439,6 +439,19 @@
         "/src/shaders"
       ]
     },
+    "webgl2_clipculldistance": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "fragmentShader.glsl": "src/shaders",
+        "vertexShader.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgl2_materials_texture2darray": {
       "files": {
         "index.html": "src",
@@ -533,6 +546,19 @@
         "fragmentShader2.glsl": "src/shaders",
         "vertexShader1.glsl": "src/shaders",
         "vertexShader2.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
+    "webgl2_ubo_arrays": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "fragmentShader.glsl": "src/shaders",
+        "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
       "dirs": [
@@ -3069,7 +3095,7 @@
         "/src"
       ]
     },
-    "webgl_postprocessing_hbao": {
+    "webgl_postprocessing_gtao": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3603,6 +3629,16 @@
         "/src"
       ]
     },
+    "webgpu_backdrop_water": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_camera_logarithmicdepthbuffer": {
       "files": {
         "index.html": "src",
@@ -3644,6 +3680,16 @@
       ]
     },
     "webgpu_compute_particles_rain": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_compute_particles_snow": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3853,6 +3899,16 @@
         "/src"
       ]
     },
+    "webgpu_loader_materialx": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials": {
       "files": {
         "index.html": "src",
@@ -3864,6 +3920,16 @@
       ]
     },
     "webgpu_materials_video": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materialx_noise": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3914,6 +3980,16 @@
       ]
     },
     "webgpu_particles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_portal": {
       "files": {
         "index.html": "src",
         "main.js": "src",
