@@ -118,7 +118,9 @@ function init() {
   iceDiffuse.wrapT = RepeatWrapping;
   iceDiffuse.colorSpace = NoColorSpace;
 
-  const iceColorNode = triplanarTexture(texture(iceDiffuse));
+  const iceColorNode = triplanarTexture(texture(iceDiffuse)).add(
+    color(0x0066ff)
+  );
 
   const geometry = new IcosahedronGeometry(1, 3);
   const material = new MeshStandardNodeMaterial({ colorNode: iceColorNode });
