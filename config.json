@@ -3115,6 +3115,16 @@
         "/src"
       ]
     },
+    "webgl_postprocessing_material_ao": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_postprocessing_outline": {
       "files": {
         "index.html": "src",
