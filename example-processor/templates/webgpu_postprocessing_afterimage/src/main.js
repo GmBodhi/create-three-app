@@ -11,7 +11,6 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
 import { pass } from "three/nodes";
@@ -28,12 +27,6 @@ createGUI();
 animate();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -86,11 +79,7 @@ function render() {
   mesh.rotation.x += 0.0075;
   mesh.rotation.y += 0.015;
 
-  if (renderer.backend.isWebGPUBackend) {
-    postProcessing.render();
-  } else {
-    renderer.render(scene, camera);
-  }
+  postProcessing.render();
 }
 
 function animate() {

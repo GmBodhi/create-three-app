@@ -56,6 +56,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.setAnimationLoop(animate);
 
   container.appendChild(renderer.domElement);
 
@@ -110,7 +111,7 @@ function init() {
   const stats = new Stats();
   container.appendChild(stats.dom);
 
-  renderer.setAnimationLoop(() => {
+  function animate() {
     const delta = clock.getDelta();
 
     if (mixer) {
@@ -122,7 +123,7 @@ function init() {
     controls.update();
 
     stats.update();
-  });
+  }
 
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;

@@ -138,17 +138,15 @@ function init() {
 
   // post processing ( just for WebGPUBackend for now )
 
-  if (renderer.backend.isWebGPUBackend) {
-    const scenePass = pass(scene, camera);
-    const scenePassColor = scenePass.getTextureNode();
-    const scenePassDepth = scenePass.getDepthNode().remapClamp(0.15, 0.3);
+  const scenePass = pass(scene, camera);
+  const scenePassColor = scenePass.getTextureNode();
+  const scenePassDepth = scenePass.getDepthNode().remapClamp(0.15, 0.3);
 
-    const scenePassColorBlurred = scenePassColor.gaussianBlur();
-    scenePassColorBlurred.directionNode = scenePassDepth;
+  const scenePassColorBlurred = scenePassColor.gaussianBlur();
+  scenePassColorBlurred.directionNode = scenePassDepth;
 
-    postProcessing = new PostProcessing(renderer);
-    postProcessing.outputNode = scenePassColorBlurred;
-  }
+  postProcessing = new PostProcessing(renderer);
+  postProcessing.outputNode = scenePassColorBlurred;
 
   // events
 
@@ -167,9 +165,5 @@ function animate() {
 
   if (mixer) mixer.update(delta);
 
-  if (renderer.backend.isWebGPUBackend) {
-    postProcessing.render();
-  } else {
-    renderer.render(scene, camera);
-  }
+  postProcessing.render();
 }

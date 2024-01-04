@@ -3929,6 +3929,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_sss": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_video": {
       "files": {
         "index.html": "src",
@@ -3970,6 +3980,16 @@
       ]
     },
     "webgpu_multiple_rendertargets": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_multisampled_renderbuffers": {
       "files": {
         "index.html": "src",
         "main.js": "src",
