@@ -100,7 +100,7 @@ function initMaterial() {
   const thicknessTexture = loader.load("models/fbx/bunny_thickness.jpg");
   imgTexture.wrapS = imgTexture.wrapT = RepeatWrapping;
 
-  const material = new Nodes.MeshSSSPhysicalNodeMaterial();
+  const material = new Nodes.MeshSSSNodeMaterial();
   material.color = new Color(1.0, 0.2, 0.2);
   material.roughness = 0.3;
   material.thicknessColorNode = Nodes.texture(thicknessTexture).mul(
