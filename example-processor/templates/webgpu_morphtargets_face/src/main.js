@@ -27,7 +27,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -60,9 +60,9 @@ function init() {
 
   container.appendChild(renderer.domElement);
 
-  const ktx2Loader = new KTX2Loader()
+  const ktx2Loader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+    .detectSupportAsync(renderer);
 
   new GLTFLoader()
     .setKTX2Loader(ktx2Loader)

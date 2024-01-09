@@ -88,9 +88,9 @@ async function init() {
   textureDisplace.wrapS = RepeatWrapping;
   textureDisplace.wrapT = RepeatWrapping;
 
-  const ktxLoader = new KTX2Loader()
+  const ktxLoader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+    .detectSupportAsync(renderer);
 
   const ktxTexture = await ktxLoader.loadAsync(
     "three/examples/textures/compressed/sample_uastc_zstd.ktx2"
