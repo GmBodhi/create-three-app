@@ -14,7 +14,6 @@ import {
   Node,
   nodeObject,
   uniform,
-  attribute,
   cubeTexture,
 } from "three/nodes";
 

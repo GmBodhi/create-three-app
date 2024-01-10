@@ -16,6 +16,7 @@ import {
   MathUtils,
 } from "three";
 
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GroundedSkybox } from "three/addons/objects/GroundedSkybox.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -25,6 +26,7 @@ import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 const params = {
   height: 15,
   radius: 100,
+  enabled: true,
 };
 
 let camera, scene, renderer, skybox;
@@ -137,6 +139,24 @@ async function init() {
 
   document.body.appendChild(renderer.domElement);
   window.addEventListener("resize", onWindowResize);
+
+  const gui = new GUI();
+
+  gui
+    .add(params, "enabled")
+    .name("Grounded")
+    .onChange(function (value) {
+      if (value) {
+        scene.add(skybox);
+        scene.background = null;
+      } else {
+        scene.remove(skybox);
+        scene.background = scene.environment;
+      }
+
+      render();
+    });
+  gui.open();
 }
 
 function onWindowResize() {

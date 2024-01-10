@@ -4,7 +4,6 @@ import {
   Vector2,
   OrthographicCamera,
   Scene,
-  InstancedBufferAttribute,
   BufferGeometry,
   BufferAttribute,
   Points,
@@ -25,7 +24,10 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
+
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
 
 let camera, scene, renderer;
 let computeNode;
@@ -36,10 +38,10 @@ const scaleVector = new Vector2(1, 1);
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
+  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw new Error("No WebGPU support");
+    throw new Error("No WebGPU or WebGL2 support");
   }
 
   camera = new OrthographicCamera(-1.0, 1.0, 1.0, -1.0, 0, 1);
@@ -52,13 +54,19 @@ function init() {
   const particleNum = 300000;
   const particleSize = 2; // vec2
 
-  const particleArray = new Float32Array(particleNum * particleSize);
-  const velocityArray = new Float32Array(particleNum * particleSize);
+  //				const particleArray = new Float32Array( particleNum * particleSize );
+  //				const velocityArray = new Float32Array( particleNum * particleSize );
 
   // create buffers
 
-  const particleBuffer = new InstancedBufferAttribute(particleArray, 2);
-  const velocityBuffer = new InstancedBufferAttribute(velocityArray, 2);
+  const particleBuffer = StorageBufferAttribute.create(
+    particleNum,
+    particleSize
+  );
+  const velocityBuffer = StorageBufferAttribute.create(
+    particleNum,
+    particleSize
+  );
 
   const particleBufferNode = storage(particleBuffer, "vec2", particleNum);
   const velocityBufferNode = storage(velocityBuffer, "vec2", particleNum);

@@ -5,7 +5,6 @@ import {
   PerspectiveCamera,
   Scene,
   TextureLoader,
-  InstancedBufferAttribute,
   Mesh,
   PlaneGeometry,
   GridHelper,
@@ -26,7 +25,9 @@ import {
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Stats from "three/addons/libs/stats.module.js";
@@ -49,10 +50,10 @@ let computeParticles;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
+  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw new Error("No WebGPU support");
+    throw new Error("No WebGPU or WebGL2 support");
   }
 
   const { innerWidth, innerHeight } = window;
@@ -71,7 +72,7 @@ function init() {
 
   const createBuffer = () =>
     storage(
-      new InstancedBufferAttribute(new Float32Array(particleCount * 4), 4),
+      StorageBufferAttribute.create(particleCount, 3),
       "vec3",
       particleCount
     );
