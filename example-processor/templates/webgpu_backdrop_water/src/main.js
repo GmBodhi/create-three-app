@@ -21,10 +21,15 @@ import {
 import {
   color,
   depth,
+  vec2,
+  pass,
   depthTexture,
   normalWorld,
   triplanarTexture,
   texture,
+  objectPosition,
+  viewportTopLeft,
+  viewportDepthTexture,
   viewportSharedTexture,
   mx_worley_noise_float,
   positionWorld,
@@ -39,6 +44,7 @@ import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
 
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -49,6 +55,8 @@ import Stats from "three/addons/libs/stats.module.js";
 let camera, scene, renderer;
 let mixer, objects, clock;
 let model, floor, floorPosition;
+let postProcessing;
+let controls;
 let stats;
 
 init();
@@ -66,25 +74,25 @@ function init() {
     0.25,
     30
   );
-  camera.position.set(3, 3, 4);
+  camera.position.set(3, 2, 4);
 
   scene = new Scene();
-  scene.fog = new Fog(0x74ccf4, 7, 25);
-  scene.backgroundNode = normalWorld.y.mix(color(0x74ccf4), color(0x0066ff));
+  scene.fog = new Fog(0x0487e2, 7, 25);
+  scene.backgroundNode = normalWorld.y.mix(color(0x0487e2), color(0x0066ff));
   camera.lookAt(0, 1, 0);
 
   const sunLight = new DirectionalLight(0xffe499, 5);
   sunLight.castShadow = true;
   sunLight.shadow.camera.near = 0.1;
-  sunLight.shadow.camera.far = 3;
+  sunLight.shadow.camera.far = 5;
   sunLight.shadow.camera.right = 2;
   sunLight.shadow.camera.left = -2;
-  sunLight.shadow.camera.top = 2;
+  sunLight.shadow.camera.top = 1;
   sunLight.shadow.camera.bottom = -2;
   sunLight.shadow.mapSize.width = 2048;
   sunLight.shadow.mapSize.height = 2048;
   sunLight.shadow.bias = -0.001;
-  sunLight.position.set(1, 3, 1);
+  sunLight.position.set(0.5, 3, 0.5);
 
   const waterAmbientLight = new HemisphereLight(0x333366, 0x74ccf4, 5);
   const skyAmbientLight = new HemisphereLight(0x74ccf4, 0, 1);
@@ -118,9 +126,9 @@ function init() {
   iceDiffuse.wrapT = RepeatWrapping;
   iceDiffuse.colorSpace = NoColorSpace;
 
-  const iceColorNode = triplanarTexture(texture(iceDiffuse)).add(
-    color(0x0066ff)
-  );
+  const iceColorNode = triplanarTexture(texture(iceDiffuse))
+    .add(color(0x0066ff))
+    .mul(0.8);
 
   const geometry = new IcosahedronGeometry(1, 3);
   const material = new MeshStandardNodeMaterial({ colorNode: iceColorNode });
@@ -143,7 +151,7 @@ function init() {
 
   objects.position.set(
     (column - 1) * scale * -0.5,
-    -0.3,
+    -1,
     (count / column) * scale * -0.5
   );
 
@@ -151,29 +159,45 @@ function init() {
 
   // water
 
-  const depthEffect = depthTexture().distance(depth).remapClamp(0, 0.05);
-
   const timer = timerLocal(0.8);
   const floorUV = positionWorld.xzy;
 
   const waterLayer0 = mx_worley_noise_float(floorUV.mul(4).add(timer));
   const waterLayer1 = mx_worley_noise_float(floorUV.mul(2).add(timer));
 
-  const waterIntensity = waterLayer0.mul(waterLayer1).mul(1.4);
-  const waterColor = waterIntensity.mix(color(0x0f5e9c), color(0x74ccf4));
-  const viewportTexture = viewportSharedTexture();
+  const waterIntensity = waterLayer0.mul(waterLayer1);
+  const waterColor = waterIntensity
+    .mul(1.4)
+    .mix(color(0x0487e2), color(0x74ccf4));
+
+  const depthWater = depthTexture(viewportDepthTexture()).sub(depth);
+  const depthEffect = depthWater.remapClamp(-0.002, 0.04);
+
+  const refractionUV = viewportTopLeft.add(vec2(0, waterIntensity.mul(0.1)));
+
+  const depthTestForRefraction = depthTexture(
+    viewportDepthTexture(refractionUV)
+  ).sub(depth);
+
+  const depthRefraction = depthTestForRefraction.remapClamp(0, 0.1);
+
+  const finalUV = depthTestForRefraction
+    .lessThan(0)
+    .cond(viewportTopLeft, refractionUV);
+
+  const viewportTexture = viewportSharedTexture(finalUV);
 
   const waterMaterial = new MeshBasicNodeMaterial();
   waterMaterial.colorNode = waterColor;
-  waterMaterial.backdropNode = depthEffect
-    .mul(3)
-    .min(1.4)
-    .mix(viewportTexture, viewportTexture.mul(color(0x74ccf4)));
-  waterMaterial.backdropAlphaNode = depthEffect.oneMinus();
+  waterMaterial.backdropNode = depthEffect.mix(
+    viewportSharedTexture(),
+    viewportTexture.mul(depthRefraction.mix(1, waterColor))
+  );
+  waterMaterial.backdropAlphaNode = depthRefraction.oneMinus();
   waterMaterial.transparent = true;
 
   const water = new Mesh(new BoxGeometry(50, 0.001, 50), waterMaterial);
-  water.position.set(0, 0.8, 0);
+  water.position.set(0, 0, 0);
   scene.add(water);
 
   // floor
@@ -215,20 +239,44 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 1;
   controls.maxDistance = 10;
   controls.maxPolarAngle = Math.PI * 0.9;
-  controls.target.set(0, 1, 0);
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 1;
+  controls.target.set(0, 0.2, 0);
   controls.update();
 
   // gui
 
   const gui = new GUI();
 
-  floorPosition = new Vector3(0, 1, 0);
+  floorPosition = new Vector3(0, 0.2, 0);
 
-  gui.add(floorPosition, "y", 0, 2, 0.001).name("position");
+  gui.add(floorPosition, "y", -1, 1, 0.001).name("position");
+
+  // post processing
+
+  const scenePass = pass(scene, camera);
+  const scenePassColor = scenePass.getTextureNode();
+  const scenePassDepth = scenePass.getDepthNode().remapClamp(0.3, 0.5);
+
+  const waterMask = objectPosition(camera).y.greaterThan(0);
+
+  const scenePassColorBlurred = scenePassColor.gaussianBlur();
+  scenePassColorBlurred.directionNode = waterMask.cond(
+    scenePassDepth,
+    scenePass.getDepthNode().mul(5)
+  );
+
+  const vignet = viewportTopLeft.distance(0.5).mul(1.35).clamp().oneMinus();
+
+  postProcessing = new PostProcessing(renderer);
+  postProcessing.outputNode = waterMask.cond(
+    scenePassColorBlurred,
+    scenePassColorBlurred.mul(color(0x74ccf4)).mul(vignet)
+  );
 
   //
 
@@ -245,6 +293,8 @@ function onWindowResize() {
 function animate() {
   stats.update();
 
+  controls.update();
+
   const delta = clock.getDelta();
 
   floor.position.y = floorPosition.y - 5;
@@ -260,5 +310,5 @@ function animate() {
     object.rotation.y += delta * 0.3;
   }
 
-  renderer.render(scene, camera);
+  postProcessing.render();
 }
