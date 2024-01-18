@@ -118,15 +118,16 @@ function init() {
     const modelMain = createModel();
     const modelPortal = createModel(colorNode);
 
-    //
+    // model portal
 
     sceneMain.add(modelMain);
     scenePortal.add(modelPortal);
   });
 
-  //
+  // portal
 
   const geometry = new PlaneGeometry(1.7, 2);
+
   const material = new MeshBasicNodeMaterial();
   material.colorNode = pass(scenePortal, camera).context({
     getUV: () => viewportTopLeft,
