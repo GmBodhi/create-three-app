@@ -9,7 +9,7 @@ import {
   HemisphereLight,
   Group,
   SphereGeometry,
-  MeshLambertMaterial,
+  MeshPhongMaterial,
   Color,
   SRGBColorSpace,
   DoubleSide,
@@ -27,6 +27,7 @@ const params = {
   clipIntersection: true,
   planeConstant: 0,
   showHelpers: false,
+  alphaToCoverage: true,
 };
 
 const clipPlanes = [
@@ -73,11 +74,12 @@ function init() {
   for (let i = 1; i <= 30; i += 2) {
     const geometry = new SphereGeometry(i / 30, 48, 24);
 
-    const material = new MeshLambertMaterial({
+    const material = new MeshPhongMaterial({
       color: new Color().setHSL(Math.random(), 0.5, 0.5, SRGBColorSpace),
       side: DoubleSide,
       clippingPlanes: clipPlanes,
       clipIntersection: params.clipIntersection,
+      alphaToCoverage: true,
     });
 
     group.add(new Mesh(geometry, material));
@@ -97,6 +99,15 @@ function init() {
   // gui
 
   const gui = new GUI();
+
+  gui.add(params, "alphaToCoverage").onChange(function (value) {
+    group.children.forEach((c) => {
+      c.material.alphaToCoverage = Boolean(value);
+      c.material.needsUpdate = true;
+    });
+
+    render();
+  });
 
   gui
     .add(params, "clipIntersection")

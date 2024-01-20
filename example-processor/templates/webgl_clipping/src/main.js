@@ -83,6 +83,8 @@ function init() {
     // ***** Clipping setup (material): *****
     clippingPlanes: [localPlane],
     clipShadows: true,
+
+    alphaToCoverage: true,
   });
 
   const geometry = new TorusKnotGeometry(0.4, 0.08, 95, 20);
@@ -107,7 +109,7 @@ function init() {
 
   // Renderer
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -129,6 +131,9 @@ function init() {
   // GUI
 
   const gui = new GUI(),
+    props = {
+      alphaToCoverage: true,
+    },
     folderLocal = gui.addFolder("Local Clipping"),
     propsLocal = {
       get Enabled() {
@@ -169,6 +174,13 @@ function init() {
       },
     };
 
+  gui.add(props, "alphaToCoverage").onChange(function (value) {
+    ground.material.alphaToCoverage = value;
+    ground.material.needsUpdate = true;
+
+    material.alphaToCoverage = value;
+    material.needsUpdate = true;
+  });
   folderLocal.add(propsLocal, "Enabled");
   folderLocal.add(propsLocal, "Shadows");
   folderLocal.add(propsLocal, "Plane", 0.3, 1.25);
