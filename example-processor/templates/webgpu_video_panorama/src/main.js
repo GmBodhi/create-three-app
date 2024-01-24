@@ -11,7 +11,6 @@ import {
   MathUtils,
 } from "three";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer;
@@ -31,12 +30,6 @@ const distance = 0.5;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   const container = document.getElementById("container");
 
   camera = new PerspectiveCamera(

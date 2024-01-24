@@ -10,7 +10,6 @@ import {
   Mesh,
 } from "three";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let container;
@@ -38,12 +37,6 @@ startButton.addEventListener("click", function () {
 });
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   const overlay = document.getElementById("overlay");
   overlay.remove();
 

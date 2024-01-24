@@ -3949,6 +3949,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_texture_anisotropy": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_video": {
       "files": {
         "index.html": "src",
@@ -3960,6 +3970,16 @@
       ]
     },
     "webgpu_materialx_noise": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_mirror": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4040,6 +4060,16 @@
       ]
     },
     "webgpu_postprocessing_afterimage": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_reflection": {
       "files": {
         "index.html": "src",
         "main.js": "src",
