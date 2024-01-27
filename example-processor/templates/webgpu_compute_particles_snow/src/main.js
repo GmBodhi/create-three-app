@@ -115,7 +115,7 @@ function init() {
 
   const createBuffer = (type = "vec3") =>
     storage(
-      StorageBufferAttribute.create(maxParticleCount, type === "vec4" ? 4 : 3),
+      new StorageBufferAttribute(maxParticleCount, type === "vec4" ? 4 : 3),
       type,
       maxParticleCount
     );

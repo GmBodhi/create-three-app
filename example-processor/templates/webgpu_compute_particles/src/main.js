@@ -74,7 +74,7 @@ function init() {
 
   const createBuffer = () =>
     storage(
-      StorageBufferAttribute.create(particleCount, 3),
+      new StorageBufferAttribute(particleCount, 3),
       "vec3",
       particleCount
     );
@@ -268,8 +268,8 @@ async function animate() {
     if (renderer.info.render.calls % 5 === 0) {
       timestamps.innerHTML = `
 
-										Compute ${renderer.info.compute.computeCalls} pass in ${renderer.info.timestamp.compute}ms<br>
-										Draw ${renderer.info.render.drawCalls} pass in ${renderer.info.timestamp.render}ms`;
+							Compute ${renderer.info.compute.computeCalls} pass in ${renderer.info.timestamp.compute}ms<br>
+							Draw ${renderer.info.render.drawCalls} pass in ${renderer.info.timestamp.render}ms`;
     }
   } else {
     timestamps.innerHTML = "Timestamp queries not supported";

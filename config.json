@@ -4069,6 +4069,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_anamorphic": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_reflection": {
       "files": {
         "index.html": "src",
