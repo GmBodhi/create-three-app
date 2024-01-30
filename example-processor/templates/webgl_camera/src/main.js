@@ -128,6 +128,7 @@ function init() {
   container.appendChild(renderer.domElement);
 
   renderer.autoClear = false;
+  renderer.setScissorTest(true);
 
   //
 
@@ -220,14 +221,24 @@ function render() {
 
   cameraRig.lookAt(mesh.position);
 
-  renderer.clear();
+  //
 
   activeHelper.visible = false;
+
+  renderer.setClearColor(0x000000, 1);
+  renderer.setScissor(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+  renderer.clear();
 
   renderer.setViewport(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
   renderer.render(scene, activeCamera);
 
+  //
+
   activeHelper.visible = true;
+
+  renderer.setClearColor(0x111111, 1);
+  renderer.setScissor(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
+  renderer.clear();
 
   renderer.setViewport(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
   renderer.render(scene, camera);
