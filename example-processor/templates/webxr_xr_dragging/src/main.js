@@ -131,7 +131,9 @@ function init() {
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
-  document.body.appendChild(XRButton.createButton(renderer));
+  document.body.appendChild(
+    XRButton.createButton(renderer, { optionalFeatures: ["depth-sensing"] })
+  );
 
   // controllers
 
