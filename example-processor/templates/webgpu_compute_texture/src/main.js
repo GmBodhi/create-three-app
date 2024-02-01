@@ -10,8 +10,11 @@ import {
 import {
   texture,
   textureStore,
-  wgslFn,
+  tslFn,
   instanceIndex,
+  float,
+  uvec2,
+  vec4,
   MeshBasicNodeMaterial,
 } from "three/nodes";
 
@@ -47,42 +50,34 @@ function init() {
 
   // create function
 
-  const computeWGSL = wgslFn(`
-					fn computeWGSL( storageTex: texture_storage_2d<rgba8unorm, write>, index: u32 ) -> void {
+  const computeTexture = tslFn(({ storageTexture }) => {
+    const posX = instanceIndex.remainder(width);
+    const posY = instanceIndex.div(width);
+    const indexUV = uvec2(posX, posY);
 
-						let posX = index % ${width};
-						let posY = index / ${width};
-						let indexUV = vec2u( posX, posY );
+    // https://www.shadertoy.com/view/Xst3zN
 
-						// https://www.shadertoy.com/view/Xst3zN
+    const x = float(posX).div(50.0);
+    const y = float(posY).div(50.0);
 
-						let x = f32( posX ) / 50.0;
-						let y = f32( posY ) / 50.0;
+    const v1 = x.sin();
+    const v2 = y.sin();
+    const v3 = x.add(y).sin();
+    const v4 = x.mul(x).add(y.mul(y)).sqrt().add(5.0).sin();
+    const v = v1.add(v2, v3, v4);
 
-						let v1 = sin( x );
-						let v2 = sin( y );
-						let v3 = sin( x + y );
-						let v4 = sin( sqrt( x * x + y * y ) + 5.0 );
-						let v = v1 + v2 + v3 + v4;
+    const r = v.sin();
+    const g = v.add(Math.PI).sin();
+    const b = v.add(Math.PI).sub(0.5).sin();
 
-						let PI = 3.14159265359;
-
-						let r = sin( v );
-						let g = sin( v + PI );
-						let b = sin( v + PI - 0.5 );
-
-						textureStore( storageTex, indexUV, vec4f( r, g, b, 1 ) );
-
-					}
-				`);
+    textureStore(storageTexture, indexUV, vec4(r, g, b, 1));
+  });
 
   // compute
 
-  const computeWGSLCall = computeWGSL({
-    storageTex: textureStore(storageTexture),
-    index: instanceIndex,
-  });
-  const computeNode = computeWGSLCall.compute(width * height);
+  const computeNode = computeTexture({ storageTexture }).compute(
+    width * height
+  );
 
   const material = new MeshBasicNodeMaterial({ color: 0x00ff00 });
   material.colorNode = texture(storageTexture);

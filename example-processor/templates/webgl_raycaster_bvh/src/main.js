@@ -24,7 +24,7 @@ import {
   computeBoundsTree,
   disposeBoundsTree,
   acceleratedRaycast,
-  MeshBVHVisualizer,
+  MeshBVHHelper,
 } from "three-mesh-bvh";
 import Stats from "three/addons/libs/stats.module.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
@@ -131,7 +131,7 @@ function init() {
     scene.add(mesh);
     mesh.scale.setScalar(0.0075);
 
-    helper = new MeshBVHVisualizer(mesh);
+    helper = new MeshBVHHelper(mesh);
     helper.color.set(0xe91e63);
     scene.add(helper);
   });

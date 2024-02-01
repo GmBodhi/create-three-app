@@ -1,12 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  InstancedBufferAttribute,
-  PerspectiveCamera,
-  DataTexture,
-  RedFormat,
-  Scene,
-} from "three";
+import { PerspectiveCamera, DataTexture, RedFormat, Scene } from "three";
 import {
   tslFn,
   uniform,
@@ -22,6 +16,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
 
 let camera, scene, renderer;
 let computeNode;
@@ -102,14 +97,14 @@ async function init() {
 
   // create webgpu buffers
 
-  waveGPUBuffer = new InstancedBufferAttribute(waveBuffer, 1);
+  waveGPUBuffer = new StorageBufferAttribute(waveBuffer, 1);
 
   const waveStorageNode = storage(waveGPUBuffer, "float", waveBuffer.length);
 
   // read-only buffer
 
   const waveNode = storage(
-    new InstancedBufferAttribute(waveBuffer, 1),
+    new StorageBufferAttribute(waveBuffer, 1),
     "float",
     waveBuffer.length
   );

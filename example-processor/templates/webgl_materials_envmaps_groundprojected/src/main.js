@@ -18,14 +18,15 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GroundProjectedSkybox } from "three/addons/objects/GroundProjectedSkybox.js";
+import { GroundedSkybox } from "three/addons/objects/GroundedSkybox.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 const params = {
-  height: 20,
-  radius: 440,
+  height: 15,
+  radius: 100,
+  enabled: true,
 };
 
 let camera, scene, renderer, skybox;
@@ -50,8 +51,8 @@ async function init() {
   );
   envMap.mapping = EquirectangularReflectionMapping;
 
-  skybox = new GroundProjectedSkybox(envMap);
-  skybox.scale.setScalar(100);
+  skybox = new GroundedSkybox(envMap, params.height, params.radius);
+  skybox.position.y = params.height - 0.01;
   scene.add(skybox);
 
   scene.environment = envMap;
@@ -111,7 +112,6 @@ async function init() {
       })
     );
     mesh.rotation.x = -Math.PI / 2;
-    mesh.renderOrder = 2;
     carModel.add(mesh);
 
     scene.add(carModel);
@@ -137,17 +137,26 @@ async function init() {
   controls.enablePan = false;
   controls.update();
 
-  const gui = new GUI();
-  gui.add(params, "height", 20, 50, 0.1).name("Skybox height").onChange(render);
-  gui
-    .add(params, "radius", 200, 600, 0.1)
-    .name("Skybox radius")
-    .onChange(render);
-
-  //
-
   document.body.appendChild(renderer.domElement);
   window.addEventListener("resize", onWindowResize);
+
+  const gui = new GUI();
+
+  gui
+    .add(params, "enabled")
+    .name("Grounded")
+    .onChange(function (value) {
+      if (value) {
+        scene.add(skybox);
+        scene.background = null;
+      } else {
+        scene.remove(skybox);
+        scene.background = scene.environment;
+      }
+
+      render();
+    });
+  gui.open();
 }
 
 function onWindowResize() {
@@ -161,7 +170,4 @@ function onWindowResize() {
 
 function render() {
   renderer.render(scene, camera);
-
-  skybox.radius = params.radius;
-  skybox.height = params.height;
 }

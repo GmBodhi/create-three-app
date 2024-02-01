@@ -14,7 +14,6 @@ import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer;
@@ -22,12 +21,6 @@ let camera, scene, renderer;
 init();
 
 async function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
@@ -61,9 +54,9 @@ async function init() {
   controls.maxDistance = 6;
   controls.update();
 
-  const ktx2Loader = new KTX2Loader()
+  const ktx2Loader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+    .detectSupportAsync(renderer);
 
   const loader = new GLTFLoader();
   loader.setKTX2Loader(ktx2Loader);

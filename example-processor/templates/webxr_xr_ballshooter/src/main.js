@@ -87,7 +87,9 @@ function init() {
   controls.target.y = 1.6;
   controls.update();
 
-  document.body.appendChild(XRButton.createButton(renderer));
+  document.body.appendChild(
+    XRButton.createButton(renderer, { optionalFeatures: ["depth-sensing"] })
+  );
 
   // controllers
 

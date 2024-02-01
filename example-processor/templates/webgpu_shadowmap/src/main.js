@@ -10,10 +10,10 @@ import {
   DirectionalLight,
   Group,
   TorusKnotGeometry,
-  MeshPhongMaterial,
   Mesh,
   CylinderGeometry,
   PlaneGeometry,
+  MeshPhongMaterial,
   ACESFilmicToneMapping,
   Clock,
 } from "three";
@@ -24,7 +24,7 @@ import WebGL from "three/addons/capabilities/WebGL.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
+import { vec4, tslFn, vertexIndex, MeshPhongNodeMaterial } from "three/nodes";
 let camera, scene, renderer, clock;
 let dirLight, spotLight;
 let torusKnot, dirGroup;
@@ -87,14 +87,33 @@ function init() {
 
   // geometry
 
-  const geometry = new TorusKnotGeometry(25, 8, 75, 20);
-  const material = new MeshPhongMaterial({
+  const geometry = new TorusKnotGeometry(25, 8, 75, 80);
+  const material = new MeshPhongNodeMaterial({
     color: 0x999999,
     shininess: 0,
     specular: 0x222222,
   });
 
-  torusKnot = new Mesh(geometry, material);
+  const materialCustomShadow = material.clone();
+  materialCustomShadow.transparent = true;
+
+  const materialColor = vec4(1, 0, 1, 0.5);
+
+  const discardNode = vertexIndex.hash().greaterThan(0.5);
+
+  materialCustomShadow.colorNode = tslFn(() => {
+    discardNode.discard();
+
+    return materialColor;
+  })();
+
+  materialCustomShadow.shadowNode = tslFn(() => {
+    discardNode.discard();
+
+    return materialColor;
+  })();
+
+  torusKnot = new Mesh(geometry, materialCustomShadow);
   torusKnot.scale.multiplyScalar(1 / 18);
   torusKnot.position.y = 3;
   torusKnot.castShadow = true;

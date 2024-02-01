@@ -5,7 +5,6 @@ import {
   PerspectiveCamera,
   Scene,
   TextureLoader,
-  InstancedBufferAttribute,
   Mesh,
   PlaneGeometry,
   GridHelper,
@@ -26,7 +25,9 @@ import {
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
+import WebGL from "three/addons/capabilities/WebGL.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Stats from "three/addons/libs/stats.module.js";
@@ -46,13 +47,15 @@ let camera, scene, renderer;
 let controls, stats;
 let computeParticles;
 
+const timestamps = document.getElementById("timestamps");
+
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
+  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw new Error("No WebGPU support");
+    throw new Error("No WebGPU or WebGL2 support");
   }
 
   const { innerWidth, innerHeight } = window;
@@ -71,7 +74,7 @@ function init() {
 
   const createBuffer = () =>
     storage(
-      new InstancedBufferAttribute(new Float32Array(particleCount * 4), 4),
+      new StorageBufferAttribute(particleCount, 3),
       "vec3",
       particleCount
     );
@@ -161,7 +164,7 @@ function init() {
 
   //
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true, trackTimestamp: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -171,6 +174,8 @@ function init() {
   document.body.appendChild(stats.dom);
 
   //
+
+  renderer.info.autoReset = false;
 
   renderer.compute(computeInit);
 
@@ -219,7 +224,6 @@ function init() {
   // events
 
   renderer.domElement.addEventListener("pointermove", onMove);
-
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -251,8 +255,26 @@ function onWindowResize() {
   renderer.setSize(innerWidth, innerHeight);
 }
 
-function animate() {
+async function animate() {
   stats.update();
-  renderer.compute(computeParticles);
-  renderer.render(scene, camera);
+
+  await renderer.computeAsync(computeParticles);
+
+  await renderer.renderAsync(scene, camera);
+
+  // throttle the logging
+
+  if (renderer.hasFeature("timestamp-query")) {
+    if (renderer.info.render.calls % 5 === 0) {
+      timestamps.innerHTML = `
+
+							Compute ${renderer.info.compute.computeCalls} pass in ${renderer.info.timestamp.compute}ms<br>
+							Draw ${renderer.info.render.drawCalls} pass in ${renderer.info.timestamp.render}ms`;
+    }
+  } else {
+    timestamps.innerHTML = "Timestamp queries not supported";
+  }
+
+  renderer.info.resetCompute();
+  renderer.info.reset();
 }

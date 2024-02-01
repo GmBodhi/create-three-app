@@ -27,7 +27,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -56,12 +56,13 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.setAnimationLoop(animate);
 
   container.appendChild(renderer.domElement);
 
-  const ktx2Loader = new KTX2Loader()
+  const ktx2Loader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+    .detectSupportAsync(renderer);
 
   new GLTFLoader()
     .setKTX2Loader(ktx2Loader)
@@ -110,7 +111,7 @@ function init() {
   const stats = new Stats();
   container.appendChild(stats.dom);
 
-  renderer.setAnimationLoop(() => {
+  function animate() {
     const delta = clock.getDelta();
 
     if (mixer) {
@@ -122,7 +123,7 @@ function init() {
     controls.update();
 
     stats.update();
-  });
+  }
 
   window.addEventListener("resize", () => {
     camera.aspect = window.innerWidth / window.innerHeight;

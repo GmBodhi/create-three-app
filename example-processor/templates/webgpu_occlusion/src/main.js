@@ -54,9 +54,8 @@ class OcclusionNode extends Node {
 }
 
 init();
-render();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -114,6 +113,11 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+
+  // ensure shaders/pipelines are all complete before rendering
+
+  await renderer.compileAsync(scene, camera);
+
   renderer.setAnimationLoop(render);
   document.body.appendChild(renderer.domElement);
 

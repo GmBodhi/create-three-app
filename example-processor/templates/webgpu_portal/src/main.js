@@ -29,8 +29,6 @@ import {
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -43,12 +41,6 @@ const mixers = [];
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   //
 
   sceneMain = new Scene();
@@ -126,15 +118,16 @@ function init() {
     const modelMain = createModel();
     const modelPortal = createModel(colorNode);
 
-    //
+    // model portal
 
     sceneMain.add(modelMain);
     scenePortal.add(modelPortal);
   });
 
-  //
+  // portal
 
   const geometry = new PlaneGeometry(1.7, 2);
+
   const material = new MeshBasicNodeMaterial();
   material.colorNode = pass(scenePortal, camera).context({
     getUV: () => viewportTopLeft,
