@@ -5,6 +5,7 @@ import {
   tslFn,
   uniform,
   storage,
+  storageObject,
   instanceIndex,
   float,
   texture,
@@ -14,7 +15,6 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
 
@@ -33,7 +33,7 @@ async function playAudioBuffer() {
 
   // compute audio
 
-  renderer.compute(computeNode);
+  await renderer.computeAsync(computeNode);
 
   const waveArray = new Float32Array(
     await renderer.getArrayBufferAsync(waveGPUBuffer)
@@ -66,18 +66,13 @@ async function playAudioBuffer() {
 }
 
 async function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
+  // if ( WebGPU.isAvailable() === false ) {
 
-    throw new Error("No WebGPU support");
-  }
+  // 	document.body.appendChild( WebGPU.getErrorMessage() );
 
-  document.onclick = () => {
-    const overlay = document.getElementById("overlay");
-    if (overlay !== null) overlay.remove();
+  // 	throw new Error( 'No WebGPU support' );
 
-    playAudioBuffer();
-  };
+  // }
 
   // audio buffer
 
@@ -103,7 +98,7 @@ async function init() {
 
   // read-only buffer
 
-  const waveNode = storage(
+  const waveNode = storageObject(
     new StorageBufferAttribute(waveBuffer, 1),
     "float",
     waveBuffer.length
@@ -196,6 +191,13 @@ async function init() {
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
+
+  document.onclick = () => {
+    const overlay = document.getElementById("overlay");
+    if (overlay !== null) overlay.remove();
+
+    playAudioBuffer();
+  };
 }
 
 function onWindowResize() {

@@ -4182,6 +4182,16 @@
         "/src"
       ]
     },
+    "webgpu_storage_buffer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_textures_2d-array": {
       "files": {
         "index.html": "src",
