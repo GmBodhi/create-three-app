@@ -9,7 +9,7 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  WebGLMultipleRenderTargets,
+  WebGLRenderTarget,
   NearestFilter,
   Scene,
   Color,
@@ -59,21 +59,20 @@ function init() {
 
   // Create a multi render target with Float buffers
 
-  renderTarget = new WebGLMultipleRenderTargets(
+  renderTarget = new WebGLRenderTarget(
     window.innerWidth * window.devicePixelRatio,
     window.innerHeight * window.devicePixelRatio,
-    2
+    {
+      count: 2,
+      minFilter: NearestFilter,
+      magFilter: NearestFilter,
+    }
   );
-
-  for (let i = 0, il = renderTarget.texture.length; i < il; i++) {
-    renderTarget.texture[i].minFilter = NearestFilter;
-    renderTarget.texture[i].magFilter = NearestFilter;
-  }
 
   // Name our G-Buffer attachments for debugging
 
-  renderTarget.texture[0].name = "diffuse";
-  renderTarget.texture[1].name = "normal";
+  renderTarget.textures[0].name = "diffuse";
+  renderTarget.textures[1].name = "normal";
 
   // Scene setup
 
@@ -124,8 +123,8 @@ function init() {
         vertexShader: renderVert_,
         fragmentShader: renderFrag_,
         uniforms: {
-          tDiffuse: { value: renderTarget.texture[0] },
-          tNormal: { value: renderTarget.texture[1] },
+          tDiffuse: { value: renderTarget.textures[0] },
+          tNormal: { value: renderTarget.textures[1] },
         },
         glslVersion: GLSL3,
       })

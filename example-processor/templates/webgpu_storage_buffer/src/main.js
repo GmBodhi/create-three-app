@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import { OrthographicCamera, Scene, Mesh, PlaneGeometry, Color } from "three";
 import {
   storageObject,
+  If,
   vec3,
   uv,
   uint,
@@ -30,29 +31,37 @@ function init(forceWebGL = false) {
 
   // texture
 
-  const typeSize = 1; // 1:'float', 2:'vec2', 4:'vec4' -> use power of 2
-  const size = 1024;
+  const size = 1024; // non power of two buffer size is not well supported in WebGPU
 
-  const array = new Array(size * typeSize).fill(0);
+  const type = ["float", "vec2", "vec3", "vec4"];
 
-  const type = ["float", "vec2", "vec3", "vec4"][typeSize - 1];
+  const arrayBufferNodes = [];
 
-  const arrayBuffer = new StorageBufferAttribute(
-    new Float32Array(array),
-    typeSize
-  );
+  for (let i = 0; i < type.length; i++) {
+    const typeSize = i + 1;
+    const array = new Array(size * typeSize).fill(0);
 
-  const arrayBufferNode = storageObject(arrayBuffer, type, size);
+    const arrayBuffer = new StorageBufferAttribute(
+      new Float32Array(array),
+      typeSize
+    );
+
+    arrayBufferNodes.push(storageObject(arrayBuffer, type[i], size));
+  }
 
   const computeInitOrder = tslFn(() => {
-    arrayBufferNode
-      .element(instanceIndex)
-      .assign(uint(instanceIndex.div(typeSize)));
+    for (let i = 0; i < type.length; i++) {
+      arrayBufferNodes[i].element(instanceIndex).assign(instanceIndex);
+    }
   });
 
   const computeInvertOrder = tslFn(() => {
-    const invertIndex = arrayBufferNode.element(float(size).sub(instanceIndex));
-    arrayBufferNode.element(instanceIndex).assign(invertIndex);
+    for (let i = 0; i < type.length; i++) {
+      const invertIndex = arrayBufferNodes[i].element(
+        uint(size).sub(instanceIndex)
+      );
+      arrayBufferNodes[i].element(instanceIndex).assign(invertIndex);
+    }
   });
 
   // compute
@@ -64,12 +73,44 @@ function init(forceWebGL = false) {
   const material = new MeshBasicNodeMaterial({ color: 0x00ff00 });
 
   material.colorNode = tslFn(() => {
-    const index = uint(uv().x.mul(float(size)));
-    const indexValue = arrayBufferNode.element(index).toVar();
-    const value = float(indexValue).div(float(size)).mul(20).floor().div(20);
+    const index = uint(uv().x.mul(size).floor()).toVar();
 
-    return vec3(value, value, value);
+    If(index.greaterThanEqual(size), () => index.assign(uint(size).sub(1)));
+
+    const color = vec3(0, 0, 0).toVar();
+
+    If(uv().y.greaterThan(0.0), () => {
+      const indexValue = arrayBufferNodes[0].element(index).toVar();
+      const value = float(indexValue).div(float(size)).mul(20).floor().div(20);
+
+      color.assign(vec3(value, 0, 0));
+    });
+
+    If(uv().y.greaterThan(0.25), () => {
+      const indexValue = arrayBufferNodes[1].element(index).toVar();
+      const value = float(indexValue).div(float(size)).mul(20).floor().div(20);
+
+      color.assign(vec3(0, value, 0));
+    });
+
+    If(uv().y.greaterThan(0.5), () => {
+      const indexValue = arrayBufferNodes[2].element(index).toVar();
+      const value = float(indexValue).div(float(size)).mul(20).floor().div(20);
+
+      color.assign(vec3(0, 0, value));
+    });
+
+    If(uv().y.greaterThan(0.75), () => {
+      const indexValue = arrayBufferNodes[3].element(index).toVar();
+      const value = float(indexValue).div(float(size)).mul(20).floor().div(20);
+
+      color.assign(vec3(value, value, value));
+    });
+
+    return color;
   })();
+
+  // TODO: Add toAttribute() test
 
   //
 
