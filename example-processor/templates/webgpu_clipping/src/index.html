@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - drag controls</title>
+    <title>three.js webgpu - clipping planes</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,17 +10,14 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      webgl - drag controls<br />
-      Use "Shift+Click" to add/remove objects to/from a group.<br />
-      Use "M" to toggle between rotate and translate mode.<br />
-      Grouped objects can be transformed as a union.
+      webgpu - clipping
     </div>
-
     <script type="importmap">
       {
         "imports": {
           "three": "../build/three.module.js",
-          "three/addons/": "./jsm/"
+          "three/addons/": "./jsm/",
+          "three/nodes": "./jsm/nodes/Nodes.js"
         }
       }
     </script>

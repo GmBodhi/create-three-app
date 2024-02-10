@@ -85,7 +85,7 @@ function init() {
   container.appendChild(renderer.domElement);
 
   const sessionInit = {
-    optionalFeatures: ["hand-tracking"],
+    requiredFeatures: ["hand-tracking"],
   };
 
   document.body.appendChild(VRButton.createButton(renderer, sessionInit));
