@@ -154,7 +154,7 @@ function init() {
     spotLight.intensity = val;
   });
 
-  gui.add(params, "distance", 50, 200).onChange(function (val) {
+  gui.add(params, "distance", 0, 20).onChange(function (val) {
     spotLight.distance = val;
   });
 
