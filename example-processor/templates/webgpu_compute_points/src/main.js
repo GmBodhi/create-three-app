@@ -27,7 +27,7 @@ import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
 
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
+import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 
 let camera, scene, renderer;
 let computeNode;
@@ -56,8 +56,14 @@ function init() {
 
   // create buffers
 
-  const particleBuffer = new StorageBufferAttribute(particleNum, particleSize);
-  const velocityBuffer = new StorageBufferAttribute(particleNum, particleSize);
+  const particleBuffer = new StorageInstancedBufferAttribute(
+    particleNum,
+    particleSize
+  );
+  const velocityBuffer = new StorageInstancedBufferAttribute(
+    particleNum,
+    particleSize
+  );
 
   const particleBufferNode = storage(particleBuffer, "vec2", particleNum);
   const velocityBufferNode = storage(velocityBuffer, "vec2", particleNum);

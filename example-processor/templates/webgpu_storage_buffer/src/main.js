@@ -14,7 +14,7 @@ import {
 } from "three/nodes";
 
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
+import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 
 // WebGPU Backend
 init();
@@ -41,7 +41,7 @@ function init(forceWebGL = false) {
     const typeSize = i + 1;
     const array = new Array(size * typeSize).fill(0);
 
-    const arrayBuffer = new StorageBufferAttribute(
+    const arrayBuffer = new StorageInstancedBufferAttribute(
       new Float32Array(array),
       typeSize
     );
@@ -75,7 +75,9 @@ function init(forceWebGL = false) {
   material.colorNode = tslFn(() => {
     const index = uint(uv().x.mul(size).floor()).toVar();
 
-    If(index.greaterThanEqual(size), () => index.assign(uint(size).sub(1)));
+    If(index.greaterThanEqual(size), () => {
+      index.assign(uint(size).sub(1));
+    });
 
     const color = vec3(0, 0, 0).toVar();
 

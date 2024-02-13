@@ -16,7 +16,7 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
+import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 
 let camera, scene, renderer;
 let computeNode;
@@ -92,14 +92,14 @@ async function init() {
 
   // create webgpu buffers
 
-  waveGPUBuffer = new StorageBufferAttribute(waveBuffer, 1);
+  waveGPUBuffer = new StorageInstancedBufferAttribute(waveBuffer, 1);
 
   const waveStorageNode = storage(waveGPUBuffer, "float", waveBuffer.length);
 
   // read-only buffer
 
   const waveNode = storageObject(
-    new StorageBufferAttribute(waveBuffer, 1),
+    new StorageInstancedBufferAttribute(waveBuffer, 1),
     "float",
     waveBuffer.length
   );

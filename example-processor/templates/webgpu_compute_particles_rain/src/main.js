@@ -40,7 +40,7 @@ import {
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
+import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Stats from "three/addons/libs/stats.module.js";
@@ -113,7 +113,7 @@ function init() {
 
   const createBuffer = (type = "vec3") =>
     storage(
-      new StorageBufferAttribute(maxParticleCount, 3),
+      new StorageInstancedBufferAttribute(maxParticleCount, 3),
       type,
       maxParticleCount
     );
