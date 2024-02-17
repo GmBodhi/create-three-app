@@ -243,7 +243,8 @@ function init() {
     guiLayer.needsUpdate = true;
   }
 
-  const group = new InteractiveGroup(renderer, camera);
+  const group = new InteractiveGroup();
+  group.listenToXRControllerEvents(renderer);
   scene.add(group);
 
   guiMesh = new HTMLMesh(gui.domElement);
