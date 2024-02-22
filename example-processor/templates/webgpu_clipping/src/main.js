@@ -101,7 +101,6 @@ function init() {
     clipIntersection: true,
   });
 
-  material.isClipping = true;
   const geometry = new TorusKnotGeometry(0.4, 0.08, 95, 20);
 
   object = new Mesh(geometry, material);

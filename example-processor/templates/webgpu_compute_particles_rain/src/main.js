@@ -179,9 +179,8 @@ function init() {
     If(position.y.add(ripplePivotOffsetY).lessThan(floorPosition), () => {
       position.y = 25;
 
-      ripplePosition.x = position.x;
+      ripplePosition.xz = position.xz;
       ripplePosition.y = floorPosition;
-      ripplePosition.z = position.z;
 
       // reset hit time: x = time
 
