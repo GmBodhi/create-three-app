@@ -244,7 +244,8 @@ function init() {
   }
 
   const group = new InteractiveGroup();
-  group.listenToXRControllerEvents(renderer);
+  group.listenToXRControllerEvents(controllers[0]);
+  group.listenToXRControllerEvents(controllers[1]);
   scene.add(group);
 
   guiMesh = new HTMLMesh(gui.domElement);

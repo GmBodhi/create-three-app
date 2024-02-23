@@ -192,7 +192,8 @@ function init() {
 
   const group = new InteractiveGroup();
   group.listenToPointerEvents(renderer, camera);
-  group.listenToXRControllerEvents(renderer);
+  group.listenToXRControllerEvents(controller1);
+  group.listenToXRControllerEvents(controller2);
   scene.add(group);
 
   const mesh = new HTMLMesh(gui.domElement);

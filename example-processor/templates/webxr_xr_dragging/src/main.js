@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  Matrix4,
   Scene,
   Color,
   PerspectiveCamera,
@@ -36,7 +35,6 @@ let controllerGrip1, controllerGrip2;
 let raycaster;
 
 const intersected = [];
-const tempMatrix = new Matrix4();
 
 let controls, group;
 
@@ -222,10 +220,7 @@ function onSelectEnd(event) {
 function getIntersections(controller) {
   controller.updateMatrixWorld();
 
-  tempMatrix.identity().extractRotation(controller.matrixWorld);
-
-  raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-  raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+  raycaster.setFromXRController(controller);
 
   return raycaster.intersectObjects(group.children, false);
 }
