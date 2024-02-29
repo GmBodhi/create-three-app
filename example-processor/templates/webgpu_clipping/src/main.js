@@ -29,7 +29,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let camera, scene, renderer, startTime, object, stats;
 
 init();
-animate();
 
 function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
@@ -127,6 +126,7 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   window.addEventListener("resize", onWindowResize);
   document.body.appendChild(renderer.domElement);
 
@@ -226,8 +226,6 @@ function onWindowResize() {
 
 function animate(currentTime) {
   const time = (currentTime - startTime) / 1000;
-
-  requestAnimationFrame(animate);
 
   object.position.y = 0.8;
   object.rotation.x = time * 0.5;

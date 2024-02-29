@@ -24,12 +24,12 @@ const params = {
 
 init();
 createGUI();
-animate();
 
 function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -83,6 +83,5 @@ function render() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   render();
 }

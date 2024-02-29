@@ -70,7 +70,6 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
-  await renderer.init();
 
   // textures
 
