@@ -30,6 +30,7 @@ const assets = [
   "extrusion2",
   "extrusion3",
   "lines",
+  "linesTransparent",
   "meshWithLines",
   "meshWithTexture",
   "pixelTexture",

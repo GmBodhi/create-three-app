@@ -44,13 +44,22 @@ function init() {
   const loader = new Rhino3dmLoader();
   //generally, use this for the Library Path: https://cdn.jsdelivr.net/npm/rhino3dm@8.0.1
   loader.setLibraryPath("jsm/libs/rhino3dm/");
-  loader.load("models/3dm/Rhino_Logo.3dm", function (object) {
-    scene.add(object);
-    initGUI(object.userData.layers);
+  loader.load(
+    "models/3dm/Rhino_Logo.3dm",
+    function (object) {
+      scene.add(object);
+      initGUI(object.userData.layers);
 
-    // hide spinner
-    document.getElementById("loader").style.display = "none";
-  });
+      // hide spinner
+      document.getElementById("loader").style.display = "none";
+    },
+    function (progress) {
+      console.log((progress.loaded / progress.total) * 100 + "%");
+    },
+    function (error) {
+      console.log(error);
+    }
+  );
 
   controls = new OrbitControls(camera, renderer.domElement);
 

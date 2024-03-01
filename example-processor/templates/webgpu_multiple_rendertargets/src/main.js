@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  WebGLMultipleRenderTargets,
+  RenderTarget,
   NearestFilter,
   Scene,
   Color,
@@ -112,17 +112,16 @@ function init() {
 
   // Create a multi render target with Float buffers
 
-  renderTarget = new WebGLMultipleRenderTargets(
+  renderTarget = new RenderTarget(
     window.innerWidth * window.devicePixelRatio,
     window.innerHeight * window.devicePixelRatio,
-    2,
-    { minFilter: NearestFilter, magFilter: NearestFilter }
+    { count: 2, minFilter: NearestFilter, magFilter: NearestFilter }
   );
 
   // Name our G-Buffer attachments for debugging
 
-  renderTarget.texture[0].name = "diffuse";
-  renderTarget.texture[1].name = "normal";
+  renderTarget.textures[0].name = "diffuse";
+  renderTarget.textures[1].name = "normal";
 
   // Scene setup
 
@@ -154,7 +153,7 @@ function init() {
   // PostProcessing setup
 
   quadMesh = new QuadMesh(
-    new ReadGBufferMaterial(renderTarget.texture[0], renderTarget.texture[1])
+    new ReadGBufferMaterial(renderTarget.textures[0], renderTarget.textures[1])
   );
 
   // Controls

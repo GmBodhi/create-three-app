@@ -251,7 +251,11 @@ function init() {
 
   container.appendChild(renderer.domElement);
 
-  document.body.appendChild(VRButton.createButton(renderer));
+  const sessionInit = {
+    requiredFeatures: ["hand-tracking"],
+  };
+
+  document.body.appendChild(VRButton.createButton(renderer, sessionInit));
 
   // controllers
   const controller1 = renderer.xr.getController(0);

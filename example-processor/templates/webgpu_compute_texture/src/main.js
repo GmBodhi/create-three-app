@@ -112,5 +112,5 @@ function onWindowResize() {
 }
 
 function render() {
-  renderer.render(scene, camera);
+  renderer.renderAsync(scene, camera);
 }

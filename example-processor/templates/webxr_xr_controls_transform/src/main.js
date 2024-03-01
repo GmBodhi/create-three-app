@@ -23,18 +23,16 @@ import {
   Line,
   Raycaster,
 } from "three";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 
 let container;
 let camera, scene, renderer;
-let controller1, controller2;
+let controller1, controller2, line;
 let controllerGrip1, controllerGrip2;
 
 let raycaster;
-
-const intersected = [];
 
 let controls, group;
 
@@ -54,11 +52,7 @@ function init() {
     0.1,
     10
   );
-  camera.position.set(0, 1.6, 3);
-
-  controls = new OrbitControls(camera, container);
-  controls.target.set(0, 1.6, 0);
-  controls.update();
+  camera.position.set(0, 1.6, 0);
 
   const floorGeometry = new PlaneGeometry(6, 6);
   const floorMaterial = new ShadowMaterial({
@@ -88,13 +82,13 @@ function init() {
 
   const geometries = [
     new BoxGeometry(0.2, 0.2, 0.2),
-    new ConeGeometry(0.2, 0.2, 64),
+    new ConeGeometry(0.2, 0.4, 64),
     new CylinderGeometry(0.2, 0.2, 0.2, 64),
     new IcosahedronGeometry(0.2, 8),
     new TorusGeometry(0.2, 0.04, 64, 32),
   ];
 
-  for (let i = 0; i < 50; i++) {
+  for (let i = 0; i < 16; i++) {
     const geometry = geometries[Math.floor(Math.random() * geometries.length)];
     const material = new MeshStandardMaterial({
       color: Math.random() * 0xffffff,
@@ -104,9 +98,9 @@ function init() {
 
     const object = new Mesh(geometry, material);
 
-    object.position.x = Math.random() * 4 - 2;
-    object.position.y = Math.random() * 2;
-    object.position.z = Math.random() * 4 - 2;
+    object.position.x = Math.random() - 0.5;
+    object.position.y = Math.random() * 2 + 0.5;
+    object.position.z = Math.random() - 2.5;
 
     object.rotation.x = Math.random() * 2 * Math.PI;
     object.rotation.y = Math.random() * 2 * Math.PI;
@@ -129,20 +123,24 @@ function init() {
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
-  document.body.appendChild(
-    XRButton.createButton(renderer, { optionalFeatures: ["depth-sensing"] })
-  );
+  document.body.appendChild(XRButton.createButton(renderer));
 
   // controllers
 
   controller1 = renderer.xr.getController(0);
-  controller1.addEventListener("selectstart", onSelectStart);
-  controller1.addEventListener("selectend", onSelectEnd);
+  controller1.addEventListener("select", onSelect);
+  controller1.addEventListener("selectstart", onControllerEvent);
+  controller1.addEventListener("selectend", onControllerEvent);
+  controller1.addEventListener("move", onControllerEvent);
+  controller1.userData.active = false;
   scene.add(controller1);
 
   controller2 = renderer.xr.getController(1);
-  controller2.addEventListener("selectstart", onSelectStart);
-  controller2.addEventListener("selectend", onSelectEnd);
+  controller2.addEventListener("select", onSelect);
+  controller2.addEventListener("selectstart", onControllerEvent);
+  controller2.addEventListener("selectend", onControllerEvent);
+  controller2.addEventListener("move", onControllerEvent);
+  controller2.userData.active = true;
   scene.add(controller2);
 
   const controllerModelFactory = new XRControllerModelFactory();
@@ -166,18 +164,69 @@ function init() {
     new Vector3(0, 0, -1),
   ]);
 
-  const line = new Line(geometry);
+  line = new Line(geometry);
   line.name = "line";
   line.scale.z = 5;
 
-  controller1.add(line.clone());
-  controller2.add(line.clone());
-
   raycaster = new Raycaster();
+
+  // controls
+
+  controls = new TransformControls(camera, renderer.domElement);
+  controls.attach(group.children[0]);
+  scene.add(controls);
 
   //
 
   window.addEventListener("resize", onWindowResize);
+}
+
+function onSelect(event) {
+  const controller = event.target;
+
+  controller1.userData.active = false;
+  controller2.userData.active = false;
+
+  if (controller === controller1) {
+    controller1.userData.active = true;
+    controller1.add(line);
+  }
+
+  if (controller === controller2) {
+    controller2.userData.active = true;
+    controller2.add(line);
+  }
+
+  raycaster.setFromXRController(controller);
+
+  const intersects = raycaster.intersectObjects(group.children);
+
+  if (intersects.length > 0) {
+    controls.attach(intersects[0].object);
+  }
+}
+
+function onControllerEvent(event) {
+  const controller = event.target;
+
+  if (controller.userData.active === false) return;
+
+  controls.getRaycaster().setFromXRController(controller);
+
+  switch (event.type) {
+    case "selectstart":
+      controls.pointerDown(null);
+      break;
+
+    case "selectend":
+      controls.pointerUp(null);
+      break;
+
+    case "move":
+      controls.pointerHover(null);
+      controls.pointerMove(null);
+      break;
+  }
 }
 
 function onWindowResize() {
@@ -187,76 +236,6 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onSelectStart(event) {
-  const controller = event.target;
-
-  const intersections = getIntersections(controller);
-
-  if (intersections.length > 0) {
-    const intersection = intersections[0];
-
-    const object = intersection.object;
-    object.material.emissive.b = 1;
-    controller.attach(object);
-
-    controller.userData.selected = object;
-  }
-
-  controller.userData.targetRayMode = event.data.targetRayMode;
-}
-
-function onSelectEnd(event) {
-  const controller = event.target;
-
-  if (controller.userData.selected !== undefined) {
-    const object = controller.userData.selected;
-    object.material.emissive.b = 0;
-    group.attach(object);
-
-    controller.userData.selected = undefined;
-  }
-}
-
-function getIntersections(controller) {
-  controller.updateMatrixWorld();
-
-  raycaster.setFromXRController(controller);
-
-  return raycaster.intersectObjects(group.children, false);
-}
-
-function intersectObjects(controller) {
-  // Do not highlight in mobile-ar
-
-  if (controller.userData.targetRayMode === "screen") return;
-
-  // Do not highlight when already selected
-
-  if (controller.userData.selected !== undefined) return;
-
-  const line = controller.getObjectByName("line");
-  const intersections = getIntersections(controller);
-
-  if (intersections.length > 0) {
-    const intersection = intersections[0];
-
-    const object = intersection.object;
-    object.material.emissive.r = 1;
-    intersected.push(object);
-
-    line.scale.z = intersection.distance;
-  } else {
-    line.scale.z = 5;
-  }
-}
-
-function cleanIntersected() {
-  while (intersected.length) {
-    const object = intersected.pop();
-    object.material.emissive.r = 0;
-  }
-}
-
 //
 
 function animate() {
@@ -264,10 +243,5 @@ function animate() {
 }
 
 function render() {
-  cleanIntersected();
-
-  intersectObjects(controller1);
-  intersectObjects(controller2);
-
   renderer.render(scene, camera);
 }

@@ -5,6 +5,7 @@ import {
   tslFn,
   uniform,
   storage,
+  storageObject,
   instanceIndex,
   float,
   texture,
@@ -14,9 +15,8 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
+import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 
 let camera, scene, renderer;
 let computeNode;
@@ -33,7 +33,7 @@ async function playAudioBuffer() {
 
   // compute audio
 
-  renderer.compute(computeNode);
+  await renderer.computeAsync(computeNode);
 
   const waveArray = new Float32Array(
     await renderer.getArrayBufferAsync(waveGPUBuffer)
@@ -66,18 +66,13 @@ async function playAudioBuffer() {
 }
 
 async function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
+  // if ( WebGPU.isAvailable() === false ) {
 
-    throw new Error("No WebGPU support");
-  }
+  // 	document.body.appendChild( WebGPU.getErrorMessage() );
 
-  document.onclick = () => {
-    const overlay = document.getElementById("overlay");
-    if (overlay !== null) overlay.remove();
+  // 	throw new Error( 'No WebGPU support' );
 
-    playAudioBuffer();
-  };
+  // }
 
   // audio buffer
 
@@ -97,14 +92,14 @@ async function init() {
 
   // create webgpu buffers
 
-  waveGPUBuffer = new StorageBufferAttribute(waveBuffer, 1);
+  waveGPUBuffer = new StorageInstancedBufferAttribute(waveBuffer, 1);
 
   const waveStorageNode = storage(waveGPUBuffer, "float", waveBuffer.length);
 
   // read-only buffer
 
-  const waveNode = storage(
-    new StorageBufferAttribute(waveBuffer, 1),
+  const waveNode = storageObject(
+    new StorageInstancedBufferAttribute(waveBuffer, 1),
     "float",
     waveBuffer.length
   );
@@ -196,6 +191,13 @@ async function init() {
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
+
+  document.onclick = () => {
+    const overlay = document.getElementById("overlay");
+    if (overlay !== null) overlay.remove();
+
+    playAudioBuffer();
+  };
 }
 
 function onWindowResize() {

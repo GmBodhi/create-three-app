@@ -88,20 +88,21 @@ function init() {
   renderer.setClearColor(0xdddddd);
   document.body.appendChild(renderer.domElement);
 
-  // initialize the pathtracer
-  pathTracer = new PathTracingRenderer(renderer);
-  pathTracer.alpha = true;
-  pathTracer.tiles.set(params.tiles, params.tiles);
-  pathTracer.material = new PhysicalPathTracingMaterial();
-  pathTracer.material.setDefine("FEATURE_MIS", 1);
-
   const gradientMap = new GradientEquirectTexture();
   gradientMap.topColor.set(0xeeeeee);
   gradientMap.bottomColor.set(0xeaeaea);
   gradientMap.update();
 
-  pathTracer.material.backgroundMap = gradientMap;
+  // initialize the pathtracer
+  pathTracer = new PathTracingRenderer(renderer);
   pathTracer.camera = camera;
+  pathTracer.alpha = true;
+  pathTracer.tiles.set(params.tiles, params.tiles);
+  pathTracer.material = new PhysicalPathTracingMaterial({
+    filterGlossyFactor: 0.5,
+    backgroundMap: gradientMap,
+  });
+  pathTracer.material.setDefine("FEATURE_MIS", 1);
 
   fsQuad = new FullScreenQuad(
     new MeshBasicMaterial({
@@ -246,12 +247,12 @@ async function loadModel() {
 
   // add the model to the scene
   sceneInfo = result;
-  sceneInfo.scene.traverse((c) => {
+  model.traverse((c) => {
     if (c.isLineSegments) {
       c.visible = false;
     }
   });
-  scene.add(sceneInfo.scene);
+  scene.add(model);
 
   // update the material
   const { bvh, textures, materials } = result;

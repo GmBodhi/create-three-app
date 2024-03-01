@@ -99,6 +99,7 @@ function init() {
   container.appendChild(renderer.domElement);
 
   controls = new DragControls([...objects], camera, renderer.domElement);
+  controls.rotateSpeed = 2;
   controls.addEventListener("drag", render);
 
   //
@@ -123,6 +124,10 @@ function onWindowResize() {
 
 function onKeyDown(event) {
   enableSelection = event.keyCode === 16 ? true : false;
+
+  if (event.keyCode === 77) {
+    controls.mode = controls.mode === "translate" ? "rotate" : "translate";
+  }
 }
 
 function onKeyUp() {

@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   Clock,
-  Matrix4,
   Scene,
   Color,
   PerspectiveCamera,
@@ -38,7 +37,6 @@ let room;
 
 let controller, controllerGrip;
 let INTERSECTED;
-const tempMatrix = new Matrix4();
 
 init();
 animate();
@@ -204,10 +202,7 @@ function render() {
 
   // find intersections
 
-  tempMatrix.identity().extractRotation(controller.matrixWorld);
-
-  raycaster.ray.origin.setFromMatrixPosition(controller.matrixWorld);
-  raycaster.ray.direction.set(0, 0, -1).applyMatrix4(tempMatrix);
+  raycaster.setFromXRController(controller);
 
   const intersects = raycaster.intersectObjects(room.children, false);
 

@@ -7,6 +7,7 @@ import {
   Scene,
   PMREMGenerator,
   Color,
+  MathUtils,
   MeshNormalMaterial,
   VideoTexture,
   SRGBColorSpace,
@@ -116,6 +117,9 @@ const controls = new OrbitControls(camera, renderer.domElement);
 
 // Face
 
+let face, eyeL, eyeR;
+const eyeRotationLimit = MathUtils.degToRad(30);
+
 const ktx2Loader = new KTX2Loader()
   .setTranscoderPath("jsm/libs/basis/")
   .detectSupport(renderer);
@@ -129,6 +133,10 @@ new GLTFLoader()
 
     const head = mesh.getObjectByName("mesh_2");
     head.material = new MeshNormalMaterial();
+
+    face = mesh.getObjectByName("mesh_2");
+    eyeL = mesh.getObjectByName("eyeLeft");
+    eyeR = mesh.getObjectByName("eyeRight");
 
     // GUI
 
@@ -218,9 +226,15 @@ function animation() {
     }
 
     if (results.faceBlendshapes.length > 0) {
-      const face = scene.getObjectByName("mesh_2");
-
       const faceBlendshapes = results.faceBlendshapes[0].categories;
+
+      // Morph values does not exist on the eye meshes, so we map the eyes blendshape score into rotation values
+      const eyeScore = {
+        leftHorizontal: 0,
+        rightHorizontal: 0,
+        leftVertical: 0,
+        rightVertical: 0,
+      };
 
       for (const blendshape of faceBlendshapes) {
         const categoryName = blendshape.categoryName;
@@ -231,7 +245,41 @@ function animation() {
         if (index !== undefined) {
           face.morphTargetInfluences[index] = score;
         }
+
+        // There are two blendshape for movement on each axis (up/down , in/out)
+        // Add one and subtract the other to get the final score in -1 to 1 range
+        switch (categoryName) {
+          case "eyeLookInLeft":
+            eyeScore.leftHorizontal += score;
+            break;
+          case "eyeLookOutLeft":
+            eyeScore.leftHorizontal -= score;
+            break;
+          case "eyeLookInRight":
+            eyeScore.rightHorizontal -= score;
+            break;
+          case "eyeLookOutRight":
+            eyeScore.rightHorizontal += score;
+            break;
+          case "eyeLookUpLeft":
+            eyeScore.leftVertical -= score;
+            break;
+          case "eyeLookDownLeft":
+            eyeScore.leftVertical += score;
+            break;
+          case "eyeLookUpRight":
+            eyeScore.rightVertical -= score;
+            break;
+          case "eyeLookDownRight":
+            eyeScore.rightVertical += score;
+            break;
+        }
       }
+
+      eyeL.rotation.z = eyeScore.leftHorizontal * eyeRotationLimit;
+      eyeR.rotation.z = eyeScore.rightHorizontal * eyeRotationLimit;
+      eyeL.rotation.x = eyeScore.leftVertical * eyeRotationLimit;
+      eyeR.rotation.x = eyeScore.rightVertical * eyeRotationLimit;
     }
   }
 

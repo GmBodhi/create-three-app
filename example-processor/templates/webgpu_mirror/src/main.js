@@ -34,7 +34,6 @@ let cameraControls;
 let sphereGroup, smallSphere;
 
 init();
-animate();
 
 function init() {
   // scene

@@ -1357,6 +1357,16 @@
         "/src"
       ]
     },
+    "webgl_instancing_morph": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_instancing_performance": {
       "files": {
         "index.html": "src",
@@ -3669,6 +3679,16 @@
         "/src"
       ]
     },
+    "webgpu_clipping": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_audio": {
       "files": {
         "index.html": "src",
@@ -4039,6 +4059,16 @@
         "/src"
       ]
     },
+    "webgpu_parallax_uv": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_particles": {
       "files": {
         "index.html": "src",
@@ -4163,6 +4193,16 @@
       ]
     },
     "webgpu_sprites": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_storage_buffer": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4383,6 +4423,16 @@
       ]
     },
     "webxr_xr_ballshooter": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_xr_controls_transform": {
       "files": {
         "index.html": "src",
         "main.js": "src",

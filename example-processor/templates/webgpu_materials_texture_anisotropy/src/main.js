@@ -25,9 +25,9 @@ let camera, scene1, scene2, renderer;
 let mouseX = 0,
   mouseY = 0;
 
-init().then(() => animate());
+init();
 
-async function init() {
+function init() {
   const SCREEN_WIDTH = window.innerWidth;
   const SCREEN_HEIGHT = window.innerHeight;
 
@@ -36,11 +36,11 @@ async function init() {
 
   renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
 
-  await renderer.init();
   // RENDERER
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
 
   renderer.domElement.style.position = "relative";
@@ -139,8 +139,6 @@ function onDocumentMouseMove(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }
