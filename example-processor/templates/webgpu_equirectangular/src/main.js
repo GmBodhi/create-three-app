@@ -36,7 +36,6 @@ function init() {
   const equirectTexture = new TextureLoader().load(
     "textures/2294472375_24a3b8ef46_o.jpg"
   );
-  equirectTexture.flipY = false;
 
   scene = new Scene();
   scene.backgroundNode = texture(equirectTexture, equirectUV(), 0);

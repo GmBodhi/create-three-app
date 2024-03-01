@@ -13,9 +13,8 @@ import {
   Audio,
   AudioLoader,
   AudioAnalyser,
-  RedFormat,
-  LuminanceFormat,
   DataTexture,
+  RedFormat,
   ShaderMaterial,
   PlaneGeometry,
   Mesh,
@@ -71,11 +70,9 @@ function init() {
 
   //
 
-  const format = renderer.capabilities.isWebGL2 ? RedFormat : LuminanceFormat;
-
   uniforms = {
     tAudioData: {
-      value: new DataTexture(analyser.data, fftSize / 2, 1, format),
+      value: new DataTexture(analyser.data, fftSize / 2, 1, RedFormat),
     },
   };
 

@@ -11,8 +11,8 @@ import {
   mix,
   oscSine,
   timerLocal,
-  cubeTexture,
-  maxMipLevel,
+  pmremTexture,
+  float,
   toneMapping,
 } from "three/nodes";
 
@@ -75,13 +75,13 @@ function init() {
   cube2Texture.minFilter = LinearMipmapLinearFilter;
 
   scene.environmentNode = mix(
-    cubeTexture(cube2Texture),
-    cubeTexture(cube1Texture),
+    pmremTexture(cube2Texture),
+    pmremTexture(cube1Texture),
     oscSine(timerLocal(0.1))
   );
 
   scene.backgroundNode = scene.environmentNode.context({
-    getTextureLevel: (textureNode) => maxMipLevel(textureNode),
+    getTextureLevel: () => float(0.5),
   });
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");

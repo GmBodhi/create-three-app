@@ -141,14 +141,6 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);
 
-  if (
-    renderer.capabilities.isWebGL2 === false &&
-    renderer.extensions.has("ANGLE_instanced_arrays") === false
-  ) {
-    document.getElementById("notSupported").style.display = "";
-    return;
-  }
-
   //
 
   const gui = new GUI({ width: 350 });

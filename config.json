@@ -4079,6 +4079,36 @@
         "/src"
       ]
     },
+    "webgpu_pmrem_cubemap": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_pmrem_equirectangular": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_pmrem_scene": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_portal": {
       "files": {
         "index.html": "src",
@@ -4423,6 +4453,16 @@
       ]
     },
     "webxr_xr_ballshooter": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_xr_controls_transform": {
       "files": {
         "index.html": "src",
         "main.js": "src",

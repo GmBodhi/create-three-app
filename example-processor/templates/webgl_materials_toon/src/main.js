@@ -5,10 +5,9 @@ import {
   Scene,
   Color,
   WebGLRenderer,
-  RedFormat,
-  LuminanceFormat,
   SphereGeometry,
   DataTexture,
+  RedFormat,
   MeshToonMaterial,
   Mesh,
   MeshBasicMaterial,
@@ -65,7 +64,6 @@ function init(font) {
   const numberOfSphersPerSide = 5;
   const sphereRadius = (cubeWidth / numberOfSphersPerSide) * 0.8 * 0.5;
   const stepSize = 1.0 / numberOfSphersPerSide;
-  const format = renderer.capabilities.isWebGL2 ? RedFormat : LuminanceFormat;
 
   const geometry = new SphereGeometry(sphereRadius, 32, 16);
 
@@ -80,7 +78,7 @@ function init(font) {
       colors[c] = (c / colors.length) * 256;
     }
 
-    const gradientMap = new DataTexture(colors, colors.length, 1, format);
+    const gradientMap = new DataTexture(colors, colors.length, 1, RedFormat);
     gradientMap.needsUpdate = true;
 
     for (let beta = 0; beta <= 1.0; beta += stepSize) {

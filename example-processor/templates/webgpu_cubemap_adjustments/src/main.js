@@ -14,7 +14,7 @@ import {
 import {
   uniform,
   mix,
-  cubeTexture,
+  pmremTexture,
   reference,
   positionLocal,
   positionWorld,
@@ -22,7 +22,6 @@ import {
   positionWorldDirection,
   reflectVector,
   toneMapping,
-  maxMipLevel,
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -116,8 +115,8 @@ function init() {
     const custom1UV = reflectNode.xyz.mul(uniform(rotateY1Matrix));
     const custom2UV = reflectNode.xyz.mul(uniform(rotateY2Matrix));
     const mixCubeMaps = mix(
-      cubeTexture(cube1Texture, custom1UV),
-      cubeTexture(cube2Texture, custom2UV),
+      pmremTexture(cube1Texture, custom1UV),
+      pmremTexture(cube2Texture, custom2UV),
       positionNode.y.add(mixNode).clamp()
     );
 
@@ -136,7 +135,7 @@ function init() {
     positionWorldDirection,
     positionLocal
   ).context({
-    getTextureLevel: (textureNode) => blurNode.mul(maxMipLevel(textureNode)),
+    getTextureLevel: () => blurNode,
   });
 
   // scene objects

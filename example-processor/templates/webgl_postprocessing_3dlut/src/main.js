@@ -120,12 +120,7 @@ function init() {
   gui.add(params, "enabled");
   gui.add(params, "lut", Object.keys(lutMap));
   gui.add(params, "intensity").min(0).max(1);
-
-  if (renderer.capabilities.isWebGL2) {
-    gui.add(params, "use2DLut");
-  } else {
-    params.use2DLut = true;
-  }
+  gui.add(params, "use2DLut");
 
   window.addEventListener("resize", onWindowResize);
 }
