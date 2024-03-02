@@ -123,7 +123,6 @@ function initMaterial() {
     fragmentShader: shader.fragmentShader,
     lights: true,
   });
-  material.extensions.derivatives = true;
 
   // LOADER
 

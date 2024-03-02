@@ -186,8 +186,6 @@ function initProtoplanets() {
     fragmentShader: particleFragmentShader_,
   });
 
-  material.extensions.drawBuffers = true;
-
   const particles = new Points(geometry, material);
   particles.matrixAutoUpdate = false;
   particles.updateMatrix();
