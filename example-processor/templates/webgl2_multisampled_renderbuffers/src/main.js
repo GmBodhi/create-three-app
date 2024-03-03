@@ -20,7 +20,6 @@ import {
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, renderer, group, container;
@@ -34,11 +33,6 @@ const params = {
 init();
 
 function init() {
-  if (WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGL.getWebGL2ErrorMessage());
-    return;
-  }
-
   container = document.getElementById("container");
 
   camera = new PerspectiveCamera(

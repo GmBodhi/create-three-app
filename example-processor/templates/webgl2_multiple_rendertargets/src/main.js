@@ -26,7 +26,6 @@ import {
   PlaneGeometry,
 } from "three";
 
-import WebGL from "three/addons/capabilities/WebGL.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -47,11 +46,6 @@ gui.onChange(render);
 init();
 
 function init() {
-  if (WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGL.getWebGL2ErrorMessage());
-    return;
-  }
-
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

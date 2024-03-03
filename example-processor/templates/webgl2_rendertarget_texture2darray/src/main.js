@@ -26,12 +26,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { unzipSync } from "three/addons/libs/fflate.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-if (WebGL.isWebGL2Available() === false) {
-  document.body.appendChild(WebGL.getWebGL2ErrorMessage());
-}
-
 const DIMENSIONS = {
   width: 256,
   height: 256,

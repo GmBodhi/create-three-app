@@ -20,12 +20,6 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-if (WebGL.isWebGL2Available() === false) {
-  document.body.appendChild(WebGL.getWebGL2ErrorMessage());
-}
-
 let camera, scene, mesh, renderer, stats, clock;
 
 const planeWidth = 50;

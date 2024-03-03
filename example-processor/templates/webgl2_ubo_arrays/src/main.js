@@ -21,7 +21,6 @@ import {
   WebGLRenderer,
 } from "three";
 
-import WebGL from "three/addons/capabilities/WebGL.js";
 import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -42,11 +41,6 @@ init();
 animate();
 
 function init() {
-  if (WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGL.getWebGL2ErrorMessage());
-    return;
-  }
-
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
