@@ -65,7 +65,7 @@ function init() {
   const roughnessTexture = loader.load(
     "textures/ambientcg/Ice002_1K-JPG_Roughness.jpg"
   );
-  roughnessTexture.colorSpace = SRGBColorSpace;
+  roughnessTexture.colorSpace = NoColorSpace;
 
   const normalTexture = loader.load(
     "textures/ambientcg/Ice002_1K-JPG_NormalGL.jpg"
@@ -75,7 +75,7 @@ function init() {
   const displaceTexture = loader.load(
     "textures/ambientcg/Ice002_1K-JPG_Displacement.jpg"
   );
-  displaceTexture.colorSpace = SRGBColorSpace;
+  displaceTexture.colorSpace = NoColorSpace;
 
   //
 

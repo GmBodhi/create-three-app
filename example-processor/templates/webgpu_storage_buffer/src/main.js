@@ -16,6 +16,11 @@ import {
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 
+const timestamps = {
+  webgpu: document.getElementById("timestamps"),
+  webgl: document.getElementById("timestamps_webgl"),
+};
+
 // WebGPU Backend
 init();
 
@@ -122,6 +127,7 @@ function init(forceWebGL = false) {
   const renderer = new WebGPURenderer({
     antialias: false,
     forceWebGL: forceWebGL,
+    trackTimestamp: true,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
@@ -147,6 +153,15 @@ function init(forceWebGL = false) {
   const stepAnimation = async function () {
     await renderer.computeAsync(compute);
     await renderer.renderAsync(scene, camera);
+
+    timestamps[forceWebGL ? "webgl" : "webgpu"].innerHTML = `
+
+							Compute ${
+                renderer.info.compute.computeCalls
+              } pass in ${renderer.info.timestamp.compute.toFixed(6)}ms<br>
+							Draw ${
+                renderer.info.render.drawCalls
+              } pass in ${renderer.info.timestamp.render.toFixed(6)}ms`;
 
     setTimeout(stepAnimation, 1000);
   };
