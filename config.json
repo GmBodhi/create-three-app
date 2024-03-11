@@ -3979,6 +3979,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_texture_partialupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_video": {
       "files": {
         "index.html": "src",
