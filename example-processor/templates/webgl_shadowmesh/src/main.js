@@ -29,7 +29,7 @@ let SCREEN_HEIGHT = window.innerHeight;
 const scene = new Scene();
 const camera = new PerspectiveCamera(55, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 3000);
 const clock = new Clock();
-const renderer = new WebGLRenderer();
+const renderer = new WebGLRenderer({ stencil: true });
 
 const sunLight = new DirectionalLight("rgb(255,255,255)", 3);
 let useDirectionalLight = true;
