@@ -175,8 +175,6 @@ function init() {
 
   //
 
-  renderer.info.autoReset = false;
-
   renderer.compute(computeInit);
 
   // click event
@@ -270,15 +268,12 @@ async function animate() {
 
 							Compute ${
                 renderer.info.compute.computeCalls
-              } pass in ${renderer.info.timestamp.compute.toFixed(6)}ms<br>
+              } pass in ${renderer.info.compute.timestamp.toFixed(6)}ms<br>
 							Draw ${
                 renderer.info.render.drawCalls
-              } pass in ${renderer.info.timestamp.render.toFixed(6)}ms`;
+              } pass in ${renderer.info.render.timestamp.toFixed(6)}ms`;
     }
   } else {
     timestamps.innerHTML = "Timestamp queries not supported";
   }
-
-  renderer.info.resetCompute();
-  renderer.info.reset();
 }
