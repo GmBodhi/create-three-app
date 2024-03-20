@@ -24,7 +24,6 @@ const params = {
   enabled: true,
   lut: "Bourbon 64.CUBE",
   intensity: 1,
-  use2DLut: false,
 };
 
 const lutMap = {
@@ -144,7 +143,7 @@ function render() {
   lutPass.intensity = params.intensity;
   if (lutMap[params.lut]) {
     const lut = lutMap[params.lut];
-    lutPass.lut = params.use2DLut ? lut.texture : lut.texture3D;
+    lutPass.lut = lut.texture3D;
   }
 
   composer.render();

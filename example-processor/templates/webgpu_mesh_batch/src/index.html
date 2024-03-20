@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>three.js webgpu - mesh - batch</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      webgpu - mesh - batch
+    </div>
+
+    <div
+      id="backend"
+      style="
+        position: absolute;
+        top: 200px;
+        left: 0;
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.75);
+        padding: 5px;
+      "
+    >
+      Active Backend: WebGPU
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.module.js",
+          "three/addons/": "./jsm/",
+          "three/nodes": "./jsm/nodes/Nodes.js",
+          "stats-gl": "https://www.unpkg.com/stats-gl@2.2.7/dist/main.js"
+        }
+      }
+    </script>
+  </body>
+</html>

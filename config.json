@@ -4029,6 +4029,16 @@
         "/src"
       ]
     },
+    "webgpu_mesh_batch": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_mirror": {
       "files": {
         "index.html": "src",
