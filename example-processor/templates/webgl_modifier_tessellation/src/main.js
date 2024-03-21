@@ -51,7 +51,7 @@ function init(font) {
     font: font,
 
     size: 40,
-    height: 5,
+    depth: 5,
     curveSegments: 3,
 
     bevelThickness: 2,

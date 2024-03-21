@@ -109,7 +109,7 @@ function init(font) {
       font: font,
 
       size: 20,
-      height: 1,
+      depth: 1,
       curveSegments: 1,
     });
 

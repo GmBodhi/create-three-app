@@ -30,7 +30,7 @@ let camera, scene, renderer;
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -67,9 +67,9 @@ function init() {
     "dark-s_pz.jpg",
     "dark-s_nz.jpg",
   ];
-  const cube2Texture = new CubeTextureLoader()
+  const cube2Texture = await new CubeTextureLoader()
     .setPath("three/examples/textures/cube/MilkyWay/")
-    .load(cube2Urls);
+    .loadAsync(cube2Urls);
 
   cube2Texture.generateMipmaps = true;
   cube2Texture.minFilter = LinearMipmapLinearFilter;
@@ -85,9 +85,9 @@ function init() {
   });
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
-  loader.load("DamagedHelmet.gltf", function (gltf) {
-    scene.add(gltf.scene);
-  });
+  const gltf = await loader.loadAsync("DamagedHelmet.gltf");
+
+  scene.add(gltf.scene);
 
   renderer = new WebGPURenderer({ antialias: true });
 

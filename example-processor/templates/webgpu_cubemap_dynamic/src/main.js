@@ -38,7 +38,7 @@ let controls;
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -72,10 +72,10 @@ function init() {
   );
 
   const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  const texture = new RGBMLoader()
+  const texture = await new RGBMLoader()
     .setMaxRange(16)
     .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemap(rgbmUrls);
+    .loadCubemapAsync(rgbmUrls);
 
   texture.name = "pisaRGBM16";
   texture.minFilter = LinearMipmapLinearFilter;
@@ -138,6 +138,7 @@ function onWindowResized() {
 function animation(msTime) {
   const time = msTime / 1000;
 
+  if (!cube) return;
   cube.position.x = Math.cos(time) * 30;
   cube.position.y = Math.sin(time) * 30;
   cube.position.z = Math.sin(time) * 30;

@@ -26,7 +26,7 @@ let group, textMesh1, textMesh2, textGeo, material;
 let firstLetter = true;
 
 let text = "three.js";
-const height = 20,
+const depth = 20,
   size = 70,
   hover = 30,
   curveSegments = 4,
@@ -169,7 +169,7 @@ function createText() {
     font: font,
 
     size: size,
-    height: height,
+    depth: depth,
     curveSegments: curveSegments,
 
     bevelThickness: bevelThickness,
@@ -199,7 +199,7 @@ function createText() {
 
     textMesh2.position.x = centerOffset;
     textMesh2.position.y = -hover;
-    textMesh2.position.z = height;
+    textMesh2.position.z = depth;
 
     textMesh2.rotation.x = Math.PI;
     textMesh2.rotation.y = Math.PI * 2;

@@ -160,7 +160,7 @@ function createScene() {
       font: font,
 
       size: 200,
-      height: 50,
+      depth: 50,
       curveSegments: 12,
 
       bevelThickness: 2,
