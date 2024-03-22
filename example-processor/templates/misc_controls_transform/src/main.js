@@ -33,14 +33,16 @@ function init() {
 
   const aspect = window.innerWidth / window.innerHeight;
 
-  cameraPersp = new PerspectiveCamera(50, aspect, 0.01, 30000);
+  const frustumSize = 5;
+
+  cameraPersp = new PerspectiveCamera(50, aspect, 0.1, 100);
   cameraOrtho = new OrthographicCamera(
-    -600 * aspect,
-    600 * aspect,
-    600,
-    -600,
-    0.01,
-    30000
+    -frustumSize * aspect,
+    frustumSize * aspect,
+    frustumSize,
+    -frustumSize,
+    0.1,
+    100
   );
   currentCamera = cameraPersp;
 
@@ -89,7 +91,7 @@ function init() {
         break;
 
       case 16: // Shift
-        control.setTranslationSnap(100);
+        control.setTranslationSnap(1);
         control.setRotationSnap(MathUtils.degToRad(15));
         control.setScaleSnap(0.25);
         break;
