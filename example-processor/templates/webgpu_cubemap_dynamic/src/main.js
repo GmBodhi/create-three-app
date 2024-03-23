@@ -12,7 +12,6 @@ import {
   CubeCamera,
   Mesh,
   IcosahedronGeometry,
-  MeshStandardMaterial,
   BoxGeometry,
   TorusKnotGeometry,
 } from "three";
@@ -102,21 +101,23 @@ async function init() {
     metalness: 1,
   });
 
-  const gui = new GUI();
-  gui.add(material, "roughness", 0, 1);
-  gui.add(material, "metalness", 0, 1);
-  gui.add(renderer, "toneMappingExposure", 0, 2).name("exposure");
-
   sphere = new Mesh(new IcosahedronGeometry(15, 8), material);
   scene.add(sphere);
 
-  const material2 = new MeshStandardMaterial({
+  const material1 = new Nodes.MeshStandardNodeMaterial({
     map: uvTexture,
     roughness: 0.1,
     metalness: 0,
   });
 
-  cube = new Mesh(new BoxGeometry(15, 15, 15), material2);
+  const material2 = new Nodes.MeshStandardNodeMaterial({
+    map: uvTexture,
+    roughness: 0.1,
+    metalness: 0,
+    envMap: texture,
+  });
+
+  cube = new Mesh(new BoxGeometry(15, 15, 15), material1);
   scene.add(cube);
 
   torus = new Mesh(new TorusKnotGeometry(8, 3, 128, 16), material2);
@@ -126,6 +127,13 @@ async function init() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.autoRotate = true;
+
+  const gui = new GUI();
+  gui.add(material, "roughness", 0, 1);
+  gui.add(material, "metalness", 0, 1);
+  gui.add(renderer, "toneMappingExposure", 0, 2).name("exposure");
+  gui.add(scene, "environmentIntensity", 0, 1);
+  gui.add(material2, "envMapIntensity", 0, 1);
 }
 
 function onWindowResized() {

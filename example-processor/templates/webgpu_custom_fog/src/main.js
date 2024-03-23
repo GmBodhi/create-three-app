@@ -20,7 +20,7 @@ import {
   triNoise3D,
   positionView,
   normalWorld,
-  timerLocal,
+  uniform,
   MeshPhongNodeMaterial,
 } from "three/nodes";
 
@@ -71,7 +71,8 @@ function init() {
     .saturate()
     .mul(alpha);
 
-  const timer = timerLocal(1);
+  // a alternative way to create a TimerNode
+  const timer = uniform(0).onFrameUpdate((frame) => frame.time);
 
   const fogNoiseA = triNoise3D(positionWorld.mul(0.005), 0.2, timer);
   const fogNoiseB = triNoise3D(positionWorld.mul(0.01), 0.2, timer.mul(1.2));

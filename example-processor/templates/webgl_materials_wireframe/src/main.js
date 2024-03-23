@@ -80,7 +80,6 @@ function init() {
         side: DoubleSide,
         alphaToCoverage: true, // only works when WebGLRenderer's "antialias" is set to "true"
       });
-      material2.extensions.derivatives = true;
 
       mesh2 = new Mesh(geometry, material2);
       mesh2.position.set(40, 0, 0);
