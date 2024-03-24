@@ -204,7 +204,7 @@ function init(forceWebGL = false) {
   // gui
 
   gui = new GUI();
-  gui.add(api, "webgpu", true).onChange(() => {
+  gui.add(api, "webgpu").onChange(() => {
     init(!api.webgpu);
   });
   gui.add(api, "count", 1, MAX_GEOMETRY_COUNT).step(1).onChange(initMesh);
@@ -231,18 +231,13 @@ function init(forceWebGL = false) {
   window.addEventListener("resize", onWindowResize);
 
   function onWindowResize() {
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    const width = window.innerWidth;
+    const height = window.innerHeight;
 
-    const aspect = window.innerWidth / window.innerHeight;
-
-    camera.aspect = aspect;
-
-    const frustumHeight = camera.top - camera.bottom;
-
-    camera.left = (-frustumHeight * aspect) / 2;
-    camera.right = (frustumHeight * aspect) / 2;
-
+    camera.aspect = width / height;
     camera.updateProjectionMatrix();
+
+    renderer.setSize(width, height);
   }
 
   async function animate() {
