@@ -27,7 +27,7 @@ init();
 // WebGL Backend
 init(true);
 
-function init(forceWebGL = false) {
+async function init(forceWebGL = false) {
   const aspect = window.innerWidth / 2 / window.innerHeight;
   const camera = new OrthographicCamera(-aspect, aspect, 1, -1, 0, 2);
   camera.position.z = 1;
@@ -117,8 +117,6 @@ function init(forceWebGL = false) {
     return color;
   })();
 
-  // TODO: Add toAttribute() test
-
   //
 
   const plane = new Mesh(new PlaneGeometry(1, 1), material);
@@ -147,10 +145,15 @@ function init(forceWebGL = false) {
     scene.background = new Color(0x313131);
   }
 
-  // Init Positions
-  renderer.compute(computeInit);
+  await renderer.computeAsync(computeInit);
+
+  //
+
+  renderer.info.autoReset = false;
 
   const stepAnimation = async function () {
+    renderer.info.reset();
+
     await renderer.computeAsync(compute);
     await renderer.renderAsync(scene, camera);
 
@@ -158,10 +161,10 @@ function init(forceWebGL = false) {
 
 							Compute ${
                 renderer.info.compute.computeCalls
-              } pass in ${renderer.info.timestamp.compute.toFixed(6)}ms<br>
+              } pass in ${renderer.info.compute.timestamp.toFixed(6)}ms<br>
 							Draw ${
                 renderer.info.render.drawCalls
-              } pass in ${renderer.info.timestamp.render.toFixed(6)}ms`;
+              } pass in ${renderer.info.render.timestamp.toFixed(6)}ms`;
 
     setTimeout(stepAnimation, 1000);
   };

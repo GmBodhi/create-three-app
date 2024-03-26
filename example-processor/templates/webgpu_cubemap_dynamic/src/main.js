@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ACESFilmicToneMapping,
   PerspectiveCamera,
   Scene,
   TextureLoader,
@@ -14,6 +13,7 @@ import {
   IcosahedronGeometry,
   BoxGeometry,
   TorusKnotGeometry,
+  ACESFilmicToneMapping,
 } from "three";
 import * as Nodes from "three/nodes";
 
@@ -43,15 +43,6 @@ async function init() {
 
     throw new Error("No WebGPU or WebGL2 support");
   }
-
-  renderer = new WebGPURenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animation);
-  renderer.toneMapping = ACESFilmicToneMapping;
-  document.body.appendChild(renderer.domElement);
-
-  window.addEventListener("resize", onWindowResized);
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
@@ -125,6 +116,15 @@ async function init() {
 
   //
 
+  renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animation);
+  renderer.toneMapping = ACESFilmicToneMapping;
+  document.body.appendChild(renderer.domElement);
+
+  window.addEventListener("resize", onWindowResized);
+
   controls = new OrbitControls(camera, renderer.domElement);
   controls.autoRotate = true;
 
@@ -146,7 +146,6 @@ function onWindowResized() {
 function animation(msTime) {
   const time = msTime / 1000;
 
-  if (!cube) return;
   cube.position.x = Math.cos(time) * 30;
   cube.position.y = Math.sin(time) * 30;
   cube.position.z = Math.sin(time) * 30;
