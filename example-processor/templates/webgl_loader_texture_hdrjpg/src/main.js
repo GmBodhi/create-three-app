@@ -122,7 +122,7 @@ function init() {
       resolutions["Webp Gain map (separate)"] =
         gainMap.width + "x" + gainMap.height;
 
-      gainMapBackground = hdrJpg.renderTarget.texture;
+      gainMapBackground = gainMap.renderTarget.texture;
       gainMapPMREMRenderTarget =
         pmremGenerator.fromEquirectangular(gainMapBackground);
 

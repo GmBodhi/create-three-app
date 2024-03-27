@@ -55,7 +55,7 @@ async function init() {
   //Setup IFC Loader
   const ifcLoader = new IFCLoader();
   await ifcLoader.ifcManager.setWasmPath(
-    "https://unpkg.com/web-ifc@0.0.36/",
+    "https://cdn.jsdelivr.net/npm/web-ifc@0.0.36/",
     true
   );
 
