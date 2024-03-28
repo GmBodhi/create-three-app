@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Color,
   Fog,
   AmbientLight,
   SpotLight,
@@ -24,7 +23,13 @@ import WebGL from "three/addons/capabilities/WebGL.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { vec4, tslFn, vertexIndex, MeshPhongNodeMaterial } from "three/nodes";
+import {
+  vec4,
+  tslFn,
+  color,
+  vertexIndex,
+  MeshPhongNodeMaterial,
+} from "three/nodes";
 let camera, scene, renderer, clock;
 let dirLight, spotLight;
 let torusKnot, dirGroup;
@@ -47,7 +52,7 @@ function init() {
   camera.position.set(0, 10, 20);
 
   scene = new Scene();
-  scene.background = new Color(0x222244);
+  scene.backgroundNode = color(0x222244);
   scene.fog = new Fog(0x222244, 50, 100);
 
   // lights

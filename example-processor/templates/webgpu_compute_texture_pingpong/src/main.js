@@ -32,7 +32,6 @@ let lastUpdate = -1;
 const seed = uniform(new Vector2());
 
 init();
-render();
 
 function init() {
   if (WebGPU.isAvailable() === false) {
@@ -169,7 +168,7 @@ function init() {
 
   // compute init
 
-  renderer.compute(computeInitNode);
+  renderer.computeAsync(computeInitNode);
 }
 
 function onWindowResize() {
@@ -183,8 +182,6 @@ function onWindowResize() {
   camera.right = (frustumHeight * aspect) / 2;
 
   camera.updateProjectionMatrix();
-
-  render();
 }
 
 function render() {
