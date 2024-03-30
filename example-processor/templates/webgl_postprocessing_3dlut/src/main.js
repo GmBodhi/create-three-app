@@ -24,7 +24,6 @@ const params = {
   enabled: true,
   lut: "Bourbon 64.CUBE",
   intensity: 1,
-  use2DLut: false,
 };
 
 const lutMap = {
@@ -120,12 +119,7 @@ function init() {
   gui.add(params, "enabled");
   gui.add(params, "lut", Object.keys(lutMap));
   gui.add(params, "intensity").min(0).max(1);
-
-  if (renderer.capabilities.isWebGL2) {
-    gui.add(params, "use2DLut");
-  } else {
-    params.use2DLut = true;
-  }
+  gui.add(params, "use2DLut");
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -149,7 +143,7 @@ function render() {
   lutPass.intensity = params.intensity;
   if (lutMap[params.lut]) {
     const lut = lutMap[params.lut];
-    lutPass.lut = params.use2DLut ? lut.texture : lut.texture3D;
+    lutPass.lut = lut.texture3D;
   }
 
   composer.render();

@@ -6,7 +6,6 @@ import fshader_ from "./shaders/fshader.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  WebGLRenderer,
   PerspectiveCamera,
   Scene,
   CircleGeometry,
@@ -15,6 +14,7 @@ import {
   RawShaderMaterial,
   TextureLoader,
   Mesh,
+  WebGLRenderer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -25,16 +25,6 @@ let camera, scene, renderer;
 let geometry, material, mesh;
 
 function init() {
-  renderer = new WebGLRenderer();
-
-  if (
-    renderer.capabilities.isWebGL2 === false &&
-    renderer.extensions.has("ANGLE_instanced_arrays") === false
-  ) {
-    document.getElementById("notSupported").style.display = "";
-    return false;
-  }
-
   container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -84,6 +74,7 @@ function init() {
   mesh.scale.set(500, 500, 500);
   scene.add(mesh);
 
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   container.appendChild(renderer.domElement);

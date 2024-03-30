@@ -11,7 +11,6 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
-  HalfFloatType,
   BufferGeometry,
   BufferAttribute,
   ShaderMaterial,
@@ -98,10 +97,6 @@ function init() {
 
 function initComputeRenderer() {
   gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
-
-  if (renderer.capabilities.isWebGL2 === false) {
-    gpuCompute.setDataType(HalfFloatType);
-  }
 
   const dtPosition = gpuCompute.createTexture();
   const dtVelocity = gpuCompute.createTexture();
@@ -190,8 +185,6 @@ function initProtoplanets() {
     vertexShader: particleVertexShader_,
     fragmentShader: particleFragmentShader_,
   });
-
-  material.extensions.drawBuffers = true;
 
   const particles = new Points(geometry, material);
   particles.matrixAutoUpdate = false;

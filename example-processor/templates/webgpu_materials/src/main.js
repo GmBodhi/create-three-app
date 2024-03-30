@@ -247,7 +247,7 @@ function init() {
   materials.push(material);
 
   const loopCount = 10;
-  material.colorNode = loop(loopCount, ({ i }, stack) => {
+  material.colorNode = loop(loopCount, ({ i }) => {
     const output = vec4().temp();
     const scale = oscSine().mul(0.09); // just a value to test
 

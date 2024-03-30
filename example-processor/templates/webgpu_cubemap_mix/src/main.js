@@ -11,8 +11,8 @@ import {
   mix,
   oscSine,
   timerLocal,
-  cubeTexture,
-  maxMipLevel,
+  pmremTexture,
+  float,
   toneMapping,
 } from "three/nodes";
 
@@ -30,7 +30,7 @@ let camera, scene, renderer;
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -67,27 +67,27 @@ function init() {
     "dark-s_pz.jpg",
     "dark-s_nz.jpg",
   ];
-  const cube2Texture = new CubeTextureLoader()
+  const cube2Texture = await new CubeTextureLoader()
     .setPath("three/examples/textures/cube/MilkyWay/")
-    .load(cube2Urls);
+    .loadAsync(cube2Urls);
 
   cube2Texture.generateMipmaps = true;
   cube2Texture.minFilter = LinearMipmapLinearFilter;
 
   scene.environmentNode = mix(
-    cubeTexture(cube2Texture),
-    cubeTexture(cube1Texture),
+    pmremTexture(cube2Texture),
+    pmremTexture(cube1Texture),
     oscSine(timerLocal(0.1))
   );
 
   scene.backgroundNode = scene.environmentNode.context({
-    getTextureLevel: (textureNode) => maxMipLevel(textureNode),
+    getTextureLevel: () => float(0.5),
   });
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
-  loader.load("DamagedHelmet.gltf", function (gltf) {
-    scene.add(gltf.scene);
-  });
+  const gltf = await loader.loadAsync("DamagedHelmet.gltf");
+
+  scene.add(gltf.scene);
 
   renderer = new WebGPURenderer({ antialias: true });
 

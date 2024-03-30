@@ -112,7 +112,7 @@ function init() {
     const geometry = new TextGeometry("Hello three.js!", {
       font: font,
       size: 0.2,
-      height: 0.05,
+      depth: 0.05,
       curveSegments: 12,
       bevelEnabled: true,
       bevelThickness: 0.02,

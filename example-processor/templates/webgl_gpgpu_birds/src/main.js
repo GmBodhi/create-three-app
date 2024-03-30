@@ -15,7 +15,6 @@ import {
   Scene,
   Fog,
   WebGLRenderer,
-  HalfFloatType,
   Vector3,
   RepeatWrapping,
   ShaderMaterial,
@@ -190,10 +189,6 @@ function init() {
 
 function initComputeRenderer() {
   gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
-
-  if (renderer.capabilities.isWebGL2 === false) {
-    gpuCompute.setDataType(HalfFloatType);
-  }
 
   const dtPosition = gpuCompute.createTexture();
   const dtVelocity = gpuCompute.createTexture();

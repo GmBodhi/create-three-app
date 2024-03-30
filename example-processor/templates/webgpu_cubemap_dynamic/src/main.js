@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  ACESFilmicToneMapping,
   PerspectiveCamera,
   Scene,
   TextureLoader,
@@ -12,9 +11,9 @@ import {
   CubeCamera,
   Mesh,
   IcosahedronGeometry,
-  MeshStandardMaterial,
   BoxGeometry,
   TorusKnotGeometry,
+  ACESFilmicToneMapping,
 } from "three";
 import * as Nodes from "three/nodes";
 
@@ -38,21 +37,12 @@ let controls;
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
     throw new Error("No WebGPU or WebGL2 support");
   }
-
-  renderer = new WebGPURenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animation);
-  renderer.toneMapping = ACESFilmicToneMapping;
-  document.body.appendChild(renderer.domElement);
-
-  window.addEventListener("resize", onWindowResized);
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
@@ -72,10 +62,10 @@ function init() {
   );
 
   const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  const texture = new RGBMLoader()
+  const texture = await new RGBMLoader()
     .setMaxRange(16)
     .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemap(rgbmUrls);
+    .loadCubemapAsync(rgbmUrls);
 
   texture.name = "pisaRGBM16";
   texture.minFilter = LinearMipmapLinearFilter;
@@ -102,21 +92,23 @@ function init() {
     metalness: 1,
   });
 
-  const gui = new GUI();
-  gui.add(material, "roughness", 0, 1);
-  gui.add(material, "metalness", 0, 1);
-  gui.add(renderer, "toneMappingExposure", 0, 2).name("exposure");
-
   sphere = new Mesh(new IcosahedronGeometry(15, 8), material);
   scene.add(sphere);
 
-  const material2 = new MeshStandardMaterial({
+  const material1 = new Nodes.MeshStandardNodeMaterial({
     map: uvTexture,
     roughness: 0.1,
     metalness: 0,
   });
 
-  cube = new Mesh(new BoxGeometry(15, 15, 15), material2);
+  const material2 = new Nodes.MeshStandardNodeMaterial({
+    map: uvTexture,
+    roughness: 0.1,
+    metalness: 0,
+    envMap: texture,
+  });
+
+  cube = new Mesh(new BoxGeometry(15, 15, 15), material1);
   scene.add(cube);
 
   torus = new Mesh(new TorusKnotGeometry(8, 3, 128, 16), material2);
@@ -124,8 +116,24 @@ function init() {
 
   //
 
+  renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animation);
+  renderer.toneMapping = ACESFilmicToneMapping;
+  document.body.appendChild(renderer.domElement);
+
+  window.addEventListener("resize", onWindowResized);
+
   controls = new OrbitControls(camera, renderer.domElement);
   controls.autoRotate = true;
+
+  const gui = new GUI();
+  gui.add(material, "roughness", 0, 1);
+  gui.add(material, "metalness", 0, 1);
+  gui.add(renderer, "toneMappingExposure", 0, 2).name("exposure");
+  gui.add(scene, "environmentIntensity", 0, 1);
+  gui.add(material2, "envMapIntensity", 0, 1);
 }
 
 function onWindowResized() {

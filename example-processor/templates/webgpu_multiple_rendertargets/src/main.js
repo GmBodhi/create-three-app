@@ -51,7 +51,6 @@ let quadMesh, renderTarget;
 			const gui = new GUI();
 			gui.add( parameters, 'samples', 0, 4 ).step( 1 );
 			gui.add( parameters, 'wireframe' );
-			gui.onChange( render );
 
 			*/
 
@@ -138,7 +137,7 @@ function init() {
 
   const loader = new TextureLoader();
 
-  const diffuse = loader.load("textures/hardwood2_diffuse.jpg", render);
+  const diffuse = loader.load("textures/hardwood2_diffuse.jpg");
   diffuse.colorSpace = SRGBColorSpace;
   diffuse.wrapS = RepeatWrapping;
   diffuse.wrapT = RepeatWrapping;

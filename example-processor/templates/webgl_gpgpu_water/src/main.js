@@ -24,7 +24,6 @@ import {
   Color,
   Mesh,
   MeshBasicMaterial,
-  HalfFloatType,
   WebGLRenderTarget,
   ClampToEdgeWrapping,
   NearestFilter,
@@ -211,10 +210,6 @@ function initWater() {
   // Creates the gpu computation class and sets it up
 
   gpuCompute = new GPUComputationRenderer(WIDTH, WIDTH, renderer);
-
-  if (renderer.capabilities.isWebGL2 === false) {
-    gpuCompute.setDataType(HalfFloatType);
-  }
 
   const heightmap0 = gpuCompute.createTexture();
 

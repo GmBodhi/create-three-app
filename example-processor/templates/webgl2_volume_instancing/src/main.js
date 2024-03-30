@@ -16,12 +16,6 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { VOXLoader, VOXData3DTexture } from "three/addons/loaders/VOXLoader.js";
 
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-if (WebGL.isWebGL2Available() === false) {
-  document.body.appendChild(WebGL.getWebGL2ErrorMessage());
-}
-
 let renderer, scene, camera, controls, clock;
 
 init();

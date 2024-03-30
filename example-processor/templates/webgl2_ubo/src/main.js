@@ -25,19 +25,12 @@ import {
   WebGLRenderer,
 } from "three";
 
-import WebGL from "three/addons/capabilities/WebGL.js";
-
 let camera, scene, renderer, clock;
 
 init();
 animate();
 
 function init() {
-  if (WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGL.getWebGL2ErrorMessage());
-    return;
-  }
-
   const container = document.getElementById("container");
 
   camera = new PerspectiveCamera(

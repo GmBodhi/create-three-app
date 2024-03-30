@@ -2,6 +2,7 @@ import "./style.css"; // For webpack support
 
 import { PerspectiveCamera, TextureLoader, Scene } from "three";
 import { texture, equirectUV } from "three/nodes";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";
@@ -36,7 +37,6 @@ function init() {
   const equirectTexture = new TextureLoader().load(
     "textures/2294472375_24a3b8ef46_o.jpg"
   );
-  equirectTexture.flipY = false;
 
   scene = new Scene();
   scene.backgroundNode = texture(equirectTexture, equirectUV(), 0);
@@ -67,3 +67,13 @@ function render() {
 
   renderer.render(scene, camera);
 }
+
+const gui = new GUI();
+
+const params = {
+  intensity: 1.0,
+};
+gui.add(params, "intensity", 0, 1).onChange(function (value) {
+  scene.backgroundIntensity = value;
+  render();
+});

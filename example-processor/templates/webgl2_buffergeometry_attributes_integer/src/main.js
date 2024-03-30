@@ -22,12 +22,6 @@ import {
   WebGLRenderer,
 } from "three";
 
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-if (WebGL.isWebGL2Available() === false) {
-  document.body.appendChild(WebGL.getWebGL2ErrorMessage());
-}
-
 let camera, scene, renderer, mesh;
 
 init();

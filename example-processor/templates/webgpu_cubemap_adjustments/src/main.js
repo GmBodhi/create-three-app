@@ -14,7 +14,7 @@ import {
 import {
   uniform,
   mix,
-  cubeTexture,
+  pmremTexture,
   reference,
   positionLocal,
   positionWorld,
@@ -22,7 +22,6 @@ import {
   positionWorldDirection,
   reflectVector,
   toneMapping,
-  maxMipLevel,
 } from "three/nodes";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -41,7 +40,7 @@ let camera, scene, renderer;
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -70,10 +69,10 @@ function init() {
   // cube textures
 
   const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  const cube1Texture = new RGBMLoader()
+  const cube1Texture = await new RGBMLoader()
     .setMaxRange(16)
     .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemap(rgbmUrls);
+    .loadCubemapAsync(rgbmUrls);
 
   cube1Texture.generateMipmaps = true;
   cube1Texture.minFilter = LinearMipmapLinearFilter;
@@ -86,9 +85,9 @@ function init() {
     "posz.jpg",
     "negz.jpg",
   ];
-  const cube2Texture = new CubeTextureLoader()
+  const cube2Texture = await new CubeTextureLoader()
     .setPath("three/examples/textures/cube/Park2/")
-    .load(cube2Urls);
+    .loadAsync(cube2Urls);
 
   cube2Texture.generateMipmaps = true;
   cube2Texture.minFilter = LinearMipmapLinearFilter;
@@ -116,8 +115,8 @@ function init() {
     const custom1UV = reflectNode.xyz.mul(uniform(rotateY1Matrix));
     const custom2UV = reflectNode.xyz.mul(uniform(rotateY2Matrix));
     const mixCubeMaps = mix(
-      cubeTexture(cube1Texture, custom1UV),
-      cubeTexture(cube2Texture, custom2UV),
+      pmremTexture(cube1Texture, custom1UV),
+      pmremTexture(cube2Texture, custom2UV),
       positionNode.y.add(mixNode).clamp()
     );
 
@@ -136,15 +135,15 @@ function init() {
     positionWorldDirection,
     positionLocal
   ).context({
-    getTextureLevel: (textureNode) => blurNode.mul(maxMipLevel(textureNode)),
+    getTextureLevel: () => blurNode,
   });
 
   // scene objects
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
-  loader.load("DamagedHelmet.gltf", function (gltf) {
-    scene.add(gltf.scene);
-  });
+  const gltf = await loader.loadAsync("DamagedHelmet.gltf");
+
+  scene.add(gltf.scene);
 
   const sphereGeometry = new SphereGeometry(0.5, 64, 32);
 

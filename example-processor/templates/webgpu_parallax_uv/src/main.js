@@ -24,7 +24,7 @@ let controls;
 
 init();
 
-function init() {
+async function init() {
   // scene
 
   scene = new Scene();
@@ -41,9 +41,9 @@ function init() {
 
   // environment
 
-  const environmentTexture = new CubeTextureLoader()
+  const environmentTexture = await new CubeTextureLoader()
     .setPath("three/examples/textures/cube/Park2/")
-    .load([
+    .loadAsync([
       "posx.jpg",
       "negx.jpg",
       "posy.jpg",
@@ -59,27 +59,29 @@ function init() {
 
   const loader = new TextureLoader();
 
-  const topTexture = loader.load("textures/ambientcg/Ice002_1K-JPG_Color.jpg");
+  const topTexture = await loader.loadAsync(
+    "textures/ambientcg/Ice002_1K-JPG_Color.jpg"
+  );
   topTexture.colorSpace = SRGBColorSpace;
 
-  const roughnessTexture = loader.load(
+  const roughnessTexture = await loader.loadAsync(
     "textures/ambientcg/Ice002_1K-JPG_Roughness.jpg"
   );
-  roughnessTexture.colorSpace = SRGBColorSpace;
+  roughnessTexture.colorSpace = NoColorSpace;
 
-  const normalTexture = loader.load(
+  const normalTexture = await loader.loadAsync(
     "textures/ambientcg/Ice002_1K-JPG_NormalGL.jpg"
   );
   normalTexture.colorSpace = NoColorSpace;
 
-  const displaceTexture = loader.load(
+  const displaceTexture = await loader.loadAsync(
     "textures/ambientcg/Ice002_1K-JPG_Displacement.jpg"
   );
-  displaceTexture.colorSpace = SRGBColorSpace;
+  displaceTexture.colorSpace = NoColorSpace;
 
   //
 
-  const bottomTexture = loader.load(
+  const bottomTexture = await loader.loadAsync(
     "textures/ambientcg/Ice003_1K-JPG_Color.jpg"
   );
   bottomTexture.colorSpace = SRGBColorSpace;

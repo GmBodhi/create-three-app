@@ -22,7 +22,7 @@ let postProcessing;
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -43,10 +43,10 @@ function init() {
   scene = new Scene();
 
   const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  const cube1Texture = new RGBMLoader()
+  const cube1Texture = await new RGBMLoader()
     .setMaxRange(16)
     .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemap(rgbmUrls);
+    .loadCubemapAsync(rgbmUrls);
 
   scene.environment = cube1Texture;
   scene.backgroundNode = cubeTexture(cube1Texture)

@@ -3799,6 +3799,16 @@
         "/src"
       ]
     },
+    "webgpu_custom_fog_background": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_depth_texture": {
       "files": {
         "index.html": "src",
@@ -3840,6 +3850,16 @@
       ]
     },
     "webgpu_instance_uniform": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_instancing_morph": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3979,6 +3999,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_texture_partialupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_video": {
       "files": {
         "index.html": "src",
@@ -3990,6 +4020,16 @@
       ]
     },
     "webgpu_materialx_noise": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_mesh_batch": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4070,6 +4110,36 @@
       ]
     },
     "webgpu_particles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_pmrem_cubemap": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_pmrem_equirectangular": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_pmrem_scene": {
       "files": {
         "index.html": "src",
         "main.js": "src",

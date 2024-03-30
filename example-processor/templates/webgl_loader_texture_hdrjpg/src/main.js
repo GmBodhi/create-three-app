@@ -22,7 +22,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-import { GainMapLoader, HDRJPGLoader } from "@monogrid/gainmap-js";
+import { HDRJPGLoader } from "@monogrid/gainmap-js";
 
 const params = {
   envMap: "HDR JPG",
@@ -36,7 +36,6 @@ let container, stats;
 let camera, scene, renderer, controls;
 let torusMesh, planeMesh;
 let hdrJpg, hdrJpgPMREMRenderTarget, hdrJpgEquirectangularMap;
-let gainMap, gainMapPMREMRenderTarget, gainMapBackground;
 let hdrPMREMRenderTarget, hdrEquirectangularMap;
 
 const fileSizes = {};
@@ -92,9 +91,10 @@ function init() {
   };
 
   hdrJpg = new HDRJPGLoader(renderer).load(
-    "textures/gainmap/spruit_sunrise_4k.jpg",
+    "textures/equirectangular/spruit_sunrise_4k.hdr.jpg",
     function () {
       resolutions["HDR JPG"] = hdrJpg.width + "x" + hdrJpg.height;
+
       displayStats("HDR JPG");
 
       hdrJpgEquirectangularMap = hdrJpg.renderTarget.texture;
@@ -112,32 +112,8 @@ function init() {
     }
   );
 
-  gainMap = new GainMapLoader(renderer).load(
-    [
-      "textures/gainmap/spruit_sunrise_4k.webp",
-      "textures/gainmap/spruit_sunrise_4k-gainmap.webp",
-      "textures/gainmap/spruit_sunrise_4k.json",
-    ],
-    function () {
-      resolutions["Webp Gain map (separate)"] =
-        gainMap.width + "x" + gainMap.height;
-
-      gainMapBackground = hdrJpg.renderTarget.texture;
-      gainMapPMREMRenderTarget =
-        pmremGenerator.fromEquirectangular(gainMapBackground);
-
-      gainMapBackground.mapping = EquirectangularReflectionMapping;
-      gainMapBackground.needsUpdate = true;
-
-      gainMap.dispose();
-    },
-    function (progress) {
-      fileSizes["Webp Gain map (separate)"] = humanFileSize(progress.total);
-    }
-  );
-
   hdrEquirectangularMap = new RGBELoader().load(
-    "textures/gainmap/spruit_sunrise_1k.hdr",
+    "textures/equirectangular/spruit_sunrise_1k.hdr",
     function () {
       resolutions["HDR"] =
         hdrEquirectangularMap.image.width +
@@ -173,9 +149,7 @@ function init() {
 
   const gui = new GUI();
 
-  gui
-    .add(params, "envMap", ["HDR JPG", "Webp Gain map (separate)", "HDR"])
-    .onChange(displayStats);
+  gui.add(params, "envMap", ["HDR JPG", "HDR"]).onChange(displayStats);
   gui.add(params, "roughness", 0, 1, 0.01);
   gui.add(params, "metalness", 0, 1, 0.01);
   gui.add(params, "exposure", 0, 2, 0.01);
@@ -244,10 +218,6 @@ function render() {
     case "HDR JPG":
       pmremRenderTarget = hdrJpgPMREMRenderTarget;
       equirectangularMap = hdrJpgEquirectangularMap;
-      break;
-    case "Webp Gain map (separate)":
-      pmremRenderTarget = gainMapPMREMRenderTarget;
-      equirectangularMap = gainMapBackground;
       break;
     case "HDR":
       pmremRenderTarget = hdrPMREMRenderTarget;
