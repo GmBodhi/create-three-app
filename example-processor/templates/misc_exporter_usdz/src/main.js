@@ -69,7 +69,7 @@ function init() {
     // USDZ
 
     const exporter = new USDZExporter();
-    const arraybuffer = await exporter.parse(gltf.scene);
+    const arraybuffer = await exporter.parseAsync(gltf.scene);
     const blob = new Blob([arraybuffer], { type: "application/octet-stream" });
 
     const link = document.getElementById("link");
