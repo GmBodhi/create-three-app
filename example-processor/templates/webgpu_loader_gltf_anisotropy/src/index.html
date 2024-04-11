@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <title>three.js webgpu - GLTFloader + Anisotropy</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener"
+        >three.js webgpu</a
+      >
+      - GLTFLoader +
+      <a
+        href="https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_anisotropy"
+        target="_blank"
+        rel="noopener"
+        >KHR_materials_anisotropy</a
+      ><br />
+      Anisotropy Barn Lamp from
+      <a
+        href="https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/AnisotropyBarnLamp"
+        target="_blank"
+        rel="noopener"
+        >glTF-Sample-Models</a
+      ><br />
+      <a
+        href="https://hdrihaven.com/hdri/?h=royal_esplanade"
+        target="_blank"
+        rel="noopener"
+        >Royal Esplanade</a
+      >
+      from
+      <a href="https://hdrihaven.com/" target="_blank" rel="noopener"
+        >HDRI Haven</a
+      >
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.module.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

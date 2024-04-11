@@ -3949,6 +3949,16 @@
         "/src"
       ]
     },
+    "webgpu_loader_gltf_anisotropy": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_loader_gltf_compressed": {
       "files": {
         "index.html": "src",
