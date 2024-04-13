@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Color,
   Clock,
   SpotLight,
   AnimationMixer,
@@ -60,7 +59,10 @@ function init() {
   camera.position.set(1, 2, 3);
 
   scene = new Scene();
-  scene.background = new Color("lightblue");
+  scene.backgroundNode = viewportTopLeft.y.mix(
+    color(0x66bbff),
+    color(0x4466ff)
+  );
   camera.lookAt(0, 1, 0);
 
   clock = new Clock();
@@ -143,7 +145,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.15);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.3);
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

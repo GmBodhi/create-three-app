@@ -59,7 +59,7 @@ function init() {
   const textureNode = texture(map);
 
   const material = new SpriteNodeMaterial();
-  material.colorNode = textureNode.mul(uv()).mul(2);
+  material.colorNode = textureNode.mul(uv()).mul(2).saturate();
   material.opacityNode = textureNode.a;
   material.rotationNode = userData("rotation", "float"); // get value of: sprite.userData.rotation
   material.transparent = true;

@@ -3989,6 +3989,16 @@
         "/src"
       ]
     },
+    "webgpu_loader_gltf_transmission": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_loader_materialx": {
       "files": {
         "index.html": "src",
@@ -4030,6 +4040,16 @@
       ]
     },
     "webgpu_materials_texture_partialupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materials_transmission": {
       "files": {
         "index.html": "src",
         "main.js": "src",

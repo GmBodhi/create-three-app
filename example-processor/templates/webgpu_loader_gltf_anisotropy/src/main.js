@@ -21,6 +21,7 @@ async function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.35;
   document.body.appendChild(renderer.domElement);
@@ -62,8 +63,6 @@ async function init() {
 
   scene.add(gltf.scene);
 
-  render();
-
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -73,8 +72,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
 function render() {
