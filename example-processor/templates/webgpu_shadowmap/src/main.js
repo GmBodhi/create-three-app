@@ -24,6 +24,8 @@ import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
+  mx_fractal_noise_vec3,
+  positionWorld,
   vec4,
   tslFn,
   color,
@@ -130,7 +132,6 @@ function init() {
   const pillar1 = new Mesh(cylinderGeometry, material);
   pillar1.position.set(8, 3.5, 8);
   pillar1.castShadow = true;
-  pillar1.receiveShadow = true;
 
   const pillar2 = pillar1.clone();
   pillar2.position.set(8, 3.5, -8);
@@ -150,6 +151,21 @@ function init() {
     shininess: 0,
     specular: 0x111111,
   });
+
+  planeMaterial.shadowPositionNode = tslFn(() => {
+    const pos = positionWorld.toVar();
+    pos.xz.addAssign(mx_fractal_noise_vec3(positionWorld.mul(2)).saturate().xz);
+    return pos;
+  })();
+
+  planeMaterial.colorNode = tslFn(() => {
+    const pos = positionWorld.toVar();
+    pos.xz.addAssign(mx_fractal_noise_vec3(positionWorld.mul(2)).saturate().xz);
+    return mx_fractal_noise_vec3(positionWorld.mul(2))
+      .saturate()
+      .zzz.mul(0.2)
+      .add(0.5);
+  })();
 
   const ground = new Mesh(planeGeometry, planeMaterial);
   ground.rotation.x = -Math.PI / 2;

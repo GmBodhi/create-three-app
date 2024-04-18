@@ -136,6 +136,8 @@ function init() {
   floorMaterial.colorNode = texture(floorColor, floorUV).add(reflection);
 
   const floor = new Mesh(new BoxGeometry(50, 0.001, 50), floorMaterial);
+  floor.receiveShadow = true;
+
   floor.position.set(0, 0, 0);
   scene.add(floor);
 
