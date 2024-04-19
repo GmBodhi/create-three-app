@@ -340,6 +340,16 @@
         "/src"
       ]
     },
+    "physics_jolt_instancing": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "physics_rapier_instancing": {
       "files": {
         "index.html": "src",
