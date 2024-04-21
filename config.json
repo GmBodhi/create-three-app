@@ -2456,16 +2456,6 @@
         "/src"
       ]
     },
-    "webgl_materials_lightmap": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_materials_matcap": {
       "files": {
         "index.html": "src",
@@ -2833,96 +2823,6 @@
       ]
     },
     "webgl_multiple_views": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_loader_gltf_iridescence": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_loader_gltf_sheen": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_loader_gltf_transmission": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_loader_materialx": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_materials_instance_uniform": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_materials_physical_clearcoat": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_materials_standard": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_materialx_noise": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_points": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4020,6 +3920,16 @@
       ]
     },
     "webgpu_materials": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materials_lightmap": {
       "files": {
         "index.html": "src",
         "main.js": "src",
