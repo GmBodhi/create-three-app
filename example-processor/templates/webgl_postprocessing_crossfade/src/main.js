@@ -16,16 +16,14 @@ import {
   MeshPhongMaterial,
   WebGLRenderTarget,
   HalfFloatType,
-  OrthographicCamera,
   TextureLoader,
   ShaderMaterial,
-  PlaneGeometry,
-  Mesh,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import TWEEN from "three/addons/libs/tween.module.js";
+import { FullScreenQuad } from "three/addons/postprocessing/Pass.js";
 
 let container, stats;
 let renderer;
@@ -64,6 +62,14 @@ function init() {
   const sceneB = new FXScene(geometryB, new Vector3(0, 0.2, 0.1), 0x000000);
 
   transition = new Transition(sceneA, sceneB);
+
+  window.addEventListener("resize", onWindowResize);
+
+  function onWindowResize() {
+    sceneA.resize();
+    sceneB.resize();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  }
 }
 
 function animate() {
@@ -188,23 +194,15 @@ function FXScene(geometry, rotationSpeed, clearColor) {
       renderer.render(scene, camera);
     }
   };
+
+  this.resize = function () {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    this.fbo.setSize(window.innerWidth, window.innerHeight);
+  };
 }
 
 function Transition(sceneA, sceneB) {
-  const scene = new Scene();
-
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
-  const camera = new OrthographicCamera(
-    width / -2,
-    width / 2,
-    height / 2,
-    height / -2,
-    -10,
-    10
-  );
-
   const textures = [];
 
   const loader = new TextureLoader();
@@ -284,9 +282,7 @@ function Transition(sceneA, sceneB) {
     ].join("\n"),
   });
 
-  const geometry = new PlaneGeometry(window.innerWidth, window.innerHeight);
-  const mesh = new Mesh(geometry, material);
-  scene.add(mesh);
+  const fsQuad = new FullScreenQuad(material);
 
   material.uniforms.tDiffuse1.value = sceneA.fbo.texture;
   material.uniforms.tDiffuse2.value = sceneB.fbo.texture;
@@ -353,7 +349,7 @@ function Transition(sceneA, sceneB) {
 
       renderer.setRenderTarget(null);
       renderer.clear();
-      renderer.render(scene, camera);
+      fsQuad.render(renderer);
     }
   };
 }
