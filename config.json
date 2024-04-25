@@ -2965,16 +2965,6 @@
         "/src"
       ]
     },
-    "webgl_postprocessing_crossfade": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_postprocessing_dof": {
       "files": {
         "index.html": "src",
@@ -3161,6 +3151,16 @@
       ]
     },
     "webgl_postprocessing_taa": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_postprocessing_transition": {
       "files": {
         "index.html": "src",
         "main.js": "src",
