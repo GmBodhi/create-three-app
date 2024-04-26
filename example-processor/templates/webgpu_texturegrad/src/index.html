@@ -1,0 +1,29 @@
+<html>
+  <head>
+    <title>three.js - WebGPU - Texture Gradient</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      <br />This example demonstrate texture gradient <br />
+      Left canvas is using WebGPU Backend, right canvas is WebGL Backend. <br />
+      The bottom half of the texture benefits from the gradient to achieve
+      better blur quality.
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.module.js",
+          "three/addons/": "./jsm/",
+          "three/nodes": "./jsm/nodes/Nodes.js"
+        }
+      }
+    </script>
+  </body>
+</html>

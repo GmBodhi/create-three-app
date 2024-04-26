@@ -10,7 +10,6 @@ import {
   Mesh,
   CylinderGeometry,
   MeshStandardMaterial,
-  TextureLoader,
   PlaneGeometry,
   BoxGeometry,
   MeshPhongMaterial,
@@ -22,7 +21,6 @@ import {
 } from "three";
 
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
-import { Lensflare, LensflareElement } from "three/addons/objects/Lensflare.js";
 import { Reflector } from "three/addons/objects/Reflector.js";
 import { VRButton } from "three/addons/webxr/VRButton.js";
 
@@ -91,20 +89,6 @@ function init() {
   const cylinder = new Mesh(cylinderGeometry, cylinderMaterial);
   cylinder.position.z = -2;
   scene.add(cylinder);
-
-  // lensflare
-  const loader = new TextureLoader();
-  const texture0 = loader.load("textures/lensflare/lensflare0.png");
-  const texture3 = loader.load("textures/lensflare/lensflare3.png");
-
-  const lensflare = new Lensflare();
-  lensflare.position.set(0, 5, -5);
-  lensflare.addElement(new LensflareElement(texture0, 700, 0));
-  lensflare.addElement(new LensflareElement(texture3, 60, 0.6));
-  lensflare.addElement(new LensflareElement(texture3, 70, 0.7));
-  lensflare.addElement(new LensflareElement(texture3, 120, 0.9));
-  lensflare.addElement(new LensflareElement(texture3, 70, 1));
-  scene.add(lensflare);
 
   //
 

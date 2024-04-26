@@ -57,7 +57,7 @@ function init() {
   camera.position.set(3, 2, 3);
 
   scene = new Scene();
-  scene.background = new Color(0x333333);
+  scene.background = new Color(0x777777);
   camera.lookAt(0, 1, 0);
 
   clock = new Clock();
@@ -141,7 +141,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.15);
+  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.2);
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

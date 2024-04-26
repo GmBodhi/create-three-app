@@ -20,7 +20,6 @@ import WebGL from "three/addons/capabilities/WebGL.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import WGSLNodeBuilder from "three/addons/renderers/webgpu/nodes/WGSLNodeBuilder.js";
 import GLSLNodeBuilder from "three/addons/renderers/webgl/nodes/GLSLNodeBuilder.js";
-import GLSL1NodeBuilder from "three/addons/renderers/webgl-legacy/nodes/GLSL1NodeBuilder.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -66,7 +65,7 @@ function init() {
   // editor
 
   window.require.config({
-    paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs" },
+    paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.48.0/min/vs" },
   });
 
   require(["vs/editor/editor.main"], () => {
@@ -145,8 +144,6 @@ output = vec4( finalColor, opacity );
           NodeBuilder = WGSLNodeBuilder;
         } else if (options.output === "GLSL ES 3.0") {
           NodeBuilder = GLSLNodeBuilder;
-        } else {
-          NodeBuilder = GLSL1NodeBuilder;
         }
 
         nodeBuilder = new NodeBuilder(mesh, renderer);
@@ -179,7 +176,7 @@ output = vec4( finalColor, opacity );
 
     const gui = new GUI();
 
-    gui.add(options, "output", ["WGSL", "GLSL ES 3.0", "GLSL"]).onChange(build);
+    gui.add(options, "output", ["WGSL", "GLSL ES 3.0"]).onChange(build);
     gui.add(options, "shader", ["vertex", "fragment"]).onChange(showCode);
 
     gui

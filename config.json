@@ -340,6 +340,16 @@
         "/src"
       ]
     },
+    "physics_jolt_instancing": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "physics_rapier_instancing": {
       "files": {
         "index.html": "src",
@@ -1803,6 +1813,16 @@
         "/src"
       ]
     },
+    "webgl_loader_gltf_dispersion": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_gltf_instancing": {
       "files": {
         "index.html": "src",
@@ -2436,16 +2456,6 @@
         "/src"
       ]
     },
-    "webgl_materials_lightmap": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_materials_matcap": {
       "files": {
         "index.html": "src",
@@ -2822,96 +2832,6 @@
         "/src"
       ]
     },
-    "webgl_nodes_loader_gltf_iridescence": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_loader_gltf_sheen": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_loader_gltf_transmission": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_loader_materialx": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_materials_instance_uniform": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_materials_physical_clearcoat": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_materials_standard": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_materialx_noise": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_nodes_points": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_panorama_cube": {
       "files": {
         "index.html": "src",
@@ -3036,16 +2956,6 @@
       ]
     },
     "webgl_postprocessing_backgrounds": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_postprocessing_crossfade": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3241,6 +3151,16 @@
       ]
     },
     "webgl_postprocessing_taa": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_postprocessing_transition": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3699,6 +3619,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_geometry": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_particles": {
       "files": {
         "index.html": "src",
@@ -3929,6 +3859,16 @@
         "/src"
       ]
     },
+    "webgpu_loader_gltf_anisotropy": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_loader_gltf_compressed": {
       "files": {
         "index.html": "src",
@@ -3959,6 +3899,16 @@
         "/src"
       ]
     },
+    "webgpu_loader_gltf_transmission": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_loader_materialx": {
       "files": {
         "index.html": "src",
@@ -3970,6 +3920,16 @@
       ]
     },
     "webgpu_materials": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materials_lightmap": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4000,6 +3960,16 @@
       ]
     },
     "webgpu_materials_texture_partialupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materials_transmission": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4070,6 +4040,16 @@
       ]
     },
     "webgpu_multiple_rendertargets": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_multiple_rendertargets_readback": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4273,6 +4253,16 @@
       ]
     },
     "webgpu_storage_buffer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_texturegrad": {
       "files": {
         "index.html": "src",
         "main.js": "src",
