@@ -193,16 +193,18 @@ function onWindowResize() {
 }
 
 async function render(time) {
+  const selection = options.selection;
+
   torus.rotation.y = (time / 1000) * 0.4;
 
   // render scene into target
-  renderer.setRenderTarget(renderTarget);
+  renderer.setRenderTarget(selection === "mrt" ? renderTarget : readbackTarget);
   renderer.render(scene, camera);
 
   // render post FX
   renderer.setRenderTarget(null);
 
-  if (options.selection === "mrt") {
+  if (selection === "mrt") {
     quadMesh.material = material;
   } else {
     quadMesh.material = readbackMaterial;
@@ -214,10 +216,6 @@ async function render(time) {
 }
 
 async function readback() {
-  renderer.setRenderTarget(readbackTarget);
-  renderer.render(scene, camera);
-  renderer.setRenderTarget(null);
-
   const width = readbackTarget.width;
   const height = readbackTarget.height;
 
