@@ -27,7 +27,6 @@ let camera, scene, renderer;
 let mesh;
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -167,6 +166,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -189,17 +189,12 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   const time = Date.now() * 0.001;
 
   mesh.rotation.x = time * 0.25;
   mesh.rotation.y = time * 0.5;
 
   renderer.render(scene, camera);
+
+  stats.update();
 }

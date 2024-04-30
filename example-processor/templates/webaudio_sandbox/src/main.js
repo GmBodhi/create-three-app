@@ -226,6 +226,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -239,8 +240,6 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
-
-  animate();
 }
 
 function onWindowResize() {
@@ -253,11 +252,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-  render();
-}
-
-function render() {
   const delta = clock.getDelta();
 
   controls.update(delta);

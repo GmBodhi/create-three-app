@@ -118,7 +118,7 @@ function init() {
       objects.push(ball);
     }
 
-    animate();
+    renderer.setAnimationLoop(animate);
   });
 
   //
@@ -148,12 +148,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   const time = clock.getElapsedTime();
 
   for (let i = 0; i < objects.length; i++) {

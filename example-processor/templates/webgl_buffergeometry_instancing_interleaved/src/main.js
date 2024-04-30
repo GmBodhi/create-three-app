@@ -32,7 +32,6 @@ const tmpM = new Matrix4();
 const currentM = new Matrix4();
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -138,6 +137,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -156,13 +156,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   const time = performance.now();
 
   mesh.rotation.y = time * 0.00005;
@@ -183,4 +176,6 @@ function render() {
   lastTime = time;
 
   renderer.render(scene, camera);
+
+  stats.update();
 }

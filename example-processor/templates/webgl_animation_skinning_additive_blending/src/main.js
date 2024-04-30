@@ -122,7 +122,7 @@ function init() {
 
     createPanel();
 
-    animate();
+    renderer.setAnimationLoop(animate);
   });
 
   renderer = new WebGLRenderer({ antialias: true });
@@ -315,8 +315,6 @@ function onWindowResize() {
 function animate() {
   // Render loop
 
-  requestAnimationFrame(animate);
-
   for (let i = 0; i !== numAnimations; ++i) {
     const action = allActions[i];
     const clip = action.getClip();
@@ -332,7 +330,7 @@ function animate() {
 
   mixer.update(mixerUpdateDelta);
 
-  stats.update();
-
   renderer.render(scene, camera);
+
+  stats.update();
 }

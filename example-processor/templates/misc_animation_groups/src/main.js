@@ -25,7 +25,6 @@ let stats, clock;
 let scene, camera, renderer, mixer;
 
 init();
-animate();
 
 function init() {
   scene = new Scene();
@@ -121,6 +120,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -145,12 +145,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   const delta = clock.getDelta();
 
   if (mixer) {

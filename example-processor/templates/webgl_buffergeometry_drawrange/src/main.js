@@ -49,7 +49,6 @@ const effectController = {
 };
 
 init();
-animate();
 
 function initGUI() {
   const gui = new GUI();
@@ -174,7 +173,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -275,10 +274,9 @@ function animate() {
 
   pointCloud.geometry.attributes.position.needsUpdate = true;
 
-  requestAnimationFrame(animate);
+  render();
 
   stats.update();
-  render();
 }
 
 function render() {

@@ -114,7 +114,7 @@ function init() {
 
     activateAllActions();
 
-    animate();
+    renderer.setAnimationLoop(animate);
   });
 
   renderer = new WebGLRenderer({ antialias: true });
@@ -374,10 +374,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  // Render loop
-
-  requestAnimationFrame(animate);
-
   idleWeight = idleAction.getEffectiveWeight();
   walkWeight = walkAction.getEffectiveWeight();
   runWeight = runAction.getEffectiveWeight();
@@ -405,7 +401,7 @@ function animate() {
 
   mixer.update(mixerUpdateDelta);
 
-  stats.update();
-
   renderer.render(scene, camera);
+
+  stats.update();
 }

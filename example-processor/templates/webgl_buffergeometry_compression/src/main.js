@@ -7,7 +7,6 @@ import {
   TextureLoader,
   RepeatWrapping,
   SRGBColorSpace,
-  WebGLRenderer,
   Scene,
   PerspectiveCamera,
   AmbientLight,
@@ -19,6 +18,7 @@ import {
   IcosahedronGeometry,
   CylinderGeometry,
   TorusKnotGeometry,
+  WebGLRenderer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -27,8 +27,6 @@ import * as GeometryCompressionUtils from "three/addons/utils/GeometryCompressio
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-const statsEnabled = true;
 
 let container, stats, gui;
 
@@ -73,18 +71,12 @@ texture.colorSpace = SRGBColorSpace;
 
 //
 init();
-animate();
 
 function init() {
   //
 
   container = document.createElement("div");
   document.body.appendChild(container);
-
-  renderer = new WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
 
   //
 
@@ -97,10 +89,6 @@ function init() {
     1000
   );
   camera.position.setScalar(2 * radius);
-
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.enablePan = false;
-  controls.enableZoom = false;
 
   //
 
@@ -221,10 +209,22 @@ function init() {
 
   //
 
-  if (statsEnabled) {
-    stats = new Stats();
-    container.appendChild(stats.dom);
-  }
+  renderer = new WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  container.appendChild(renderer.domElement);
+
+  //
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
+  controls.enableZoom = false;
+
+  //
+
+  stats = new Stats();
+  container.appendChild(stats.dom);
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -242,11 +242,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   renderer.render(scene, camera);
 
-  if (statsEnabled) stats.update();
+  stats.update();
 }
 
 //

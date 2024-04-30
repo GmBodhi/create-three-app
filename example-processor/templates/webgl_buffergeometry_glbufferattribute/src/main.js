@@ -34,9 +34,10 @@ function init() {
 
   //
 
-  renderer = new WebGLRenderer({ antialias: false });
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   container.appendChild(renderer.domElement);
 
@@ -123,9 +124,7 @@ function init() {
 
   points = new Points(geometry, material);
 
-  // Choose one:
-  // geometry.boundingSphere = ( new Sphere() ).set( new Vector3(), Infinity );
-  points.frustumCulled = false;
+  geometry.boundingSphere = new Sphere().set(new Vector3(), 500);
 
   scene.add(points);
 
@@ -149,13 +148,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   drawCount =
     (Math.max(5000, drawCount) + Math.floor(500 * Math.random())) % particles;
   points.geometry.setDrawRange(0, drawCount);
@@ -166,4 +158,6 @@ function render() {
   points.rotation.y = time * 0.2;
 
   renderer.render(scene, camera);
+
+  stats.update();
 }

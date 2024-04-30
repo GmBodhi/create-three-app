@@ -6,9 +6,9 @@ import fragmentshader_ from "./shaders/fragmentshader.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  WebGLRenderer,
   Scene,
   PerspectiveCamera,
+  WebGLRenderer,
   BufferGeometry,
   Color,
   BufferAttribute,
@@ -25,14 +25,8 @@ const numLng = 200;
 let numLinesCulled = 0;
 
 init();
-animate();
 
 function init() {
-  renderer = new WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
-
   scene = new Scene();
 
   camera = new PerspectiveCamera(
@@ -55,6 +49,12 @@ function init() {
 
   const showAllLinesButton = document.getElementById("showAllLines");
   showAllLinesButton.addEventListener("click", showAllLines);
+
+  renderer = new WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  document.body.appendChild(renderer.domElement);
 }
 
 function addLines(radius) {
@@ -163,13 +163,12 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const time = Date.now() * 0.001;
 
   mesh.rotation.x = time * 0.25;
   mesh.rotation.y = time * 0.5;
 
-  stats.update();
   renderer.render(scene, camera);
+
+  stats.update();
 }

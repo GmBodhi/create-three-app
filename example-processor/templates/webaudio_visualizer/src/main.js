@@ -6,7 +6,6 @@ import fragmentShader_ from "./shaders/fragmentShader.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  WebGLRenderer,
   Scene,
   Camera,
   AudioListener,
@@ -18,6 +17,7 @@ import {
   ShaderMaterial,
   PlaneGeometry,
   Mesh,
+  WebGLRenderer,
 } from "three";
 
 let scene, camera, renderer, analyser, uniforms;
@@ -36,11 +36,6 @@ function init() {
   //
 
   const container = document.getElementById("container");
-
-  renderer = new WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
 
   scene = new Scene();
 
@@ -89,9 +84,15 @@ function init() {
 
   //
 
-  window.addEventListener("resize", onWindowResize);
+  renderer = new WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  container.appendChild(renderer.domElement);
 
-  animate();
+  //
+
+  window.addEventListener("resize", onWindowResize);
 }
 
 function onWindowResize() {
@@ -99,12 +100,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   analyser.getFrequencyData();
 
   uniforms.tAudioData.value.needsUpdate = true;

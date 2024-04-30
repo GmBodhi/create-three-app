@@ -24,6 +24,8 @@ let container, stats;
 let camera, scene, renderer;
 let geometry, material, mesh;
 
+init();
+
 function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
@@ -77,6 +79,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -95,13 +98,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   const time = performance.now() * 0.0005;
 
   material.uniforms["time"].value = time;
@@ -110,8 +106,6 @@ function render() {
   mesh.rotation.y = time * 0.4;
 
   renderer.render(scene, camera);
-}
 
-if (init()) {
-  animate();
+  stats.update();
 }
