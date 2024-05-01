@@ -23,7 +23,6 @@ const count = Math.pow(amount, 3);
 const dummy = new Object3D();
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -61,6 +60,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -83,8 +83,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
 
   stats.update();

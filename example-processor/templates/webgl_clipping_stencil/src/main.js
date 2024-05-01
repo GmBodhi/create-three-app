@@ -54,7 +54,6 @@ const params = {
 };
 
 init();
-animate();
 
 function createPlaneStencilGroup(geometry, plane, renderOrder) {
   const group = new Group();
@@ -197,20 +196,23 @@ function init() {
   ground.receiveShadow = true;
   scene.add(ground);
 
+  // Renderer
+  renderer = new WebGLRenderer({ antialias: true, stencil: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x263238);
+  renderer.setAnimationLoop(animate);
+  renderer.shadowMap.enabled = true;
+  renderer.localClippingEnabled = true;
+  document.body.appendChild(renderer.domElement);
+
   // Stats
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
-  // Renderer
-  renderer = new WebGLRenderer({ antialias: true, stencil: true });
-  renderer.shadowMap.enabled = true;
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x263238);
-  window.addEventListener("resize", onWindowResize);
-  document.body.appendChild(renderer.domElement);
+  //
 
-  renderer.localClippingEnabled = true;
+  window.addEventListener("resize", onWindowResize);
 
   // Controls
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -277,8 +279,6 @@ function onWindowResize() {
 
 function animate() {
   const delta = clock.getDelta();
-
-  requestAnimationFrame(animate);
 
   if (params.animate) {
     object.rotation.x += delta * 0.5;

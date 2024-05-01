@@ -16,7 +16,6 @@ let camera, scene, renderer, clock;
 let points;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -53,6 +52,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -68,8 +68,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   if (points) {

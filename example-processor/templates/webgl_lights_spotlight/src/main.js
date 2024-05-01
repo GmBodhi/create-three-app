@@ -32,6 +32,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
@@ -39,8 +40,6 @@ function init() {
 
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
-
-  renderer.setAnimationLoop(render);
 
   scene = new Scene();
 
@@ -194,7 +193,7 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function render() {
+function animate() {
   const time = performance.now() / 3000;
 
   spotLight.position.x = Math.cos(time) * 2.5;

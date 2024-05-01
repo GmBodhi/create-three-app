@@ -32,12 +32,12 @@ let camera, scene, renderer;
 const meshes = [];
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   const formats = {
@@ -141,8 +141,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const time = Date.now() * 0.001;
 
   for (let i = 0; i < meshes.length; i++) {

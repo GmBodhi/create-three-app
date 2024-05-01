@@ -261,15 +261,17 @@ function init() {
   const container = document.body;
 
   renderer = new WebGLRenderer();
-  renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  window.addEventListener("resize", onWindowResize);
+  renderer.setAnimationLoop(animate);
+  renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
   // Clipping setup:
   globalClippingPlanes = createPlanes(GlobalClippingPlanes.length);
   renderer.clippingPlanes = Empty;
   renderer.localClippingEnabled = true;
+
+  window.addEventListener("resize", onWindowResize);
 
   // Stats
 
@@ -356,8 +358,6 @@ function animate() {
   const currentTime = Date.now(),
     time = (currentTime - startTime) / 1000;
 
-  requestAnimationFrame(animate);
-
   object.position.y = 1;
   object.rotation.x = time * 0.5;
   object.rotation.y = time * 0.2;
@@ -391,4 +391,3 @@ function animate() {
 }
 
 init();
-animate();

@@ -31,7 +31,6 @@ const color = new Color();
 const white = new Color().setHex(0xffffff);
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -82,6 +81,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -111,8 +111,6 @@ function onMouseMove(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update();
 
   raycaster.setFromCamera(mouse, camera);
@@ -131,11 +129,7 @@ function animate() {
     }
   }
 
-  render();
+  renderer.render(scene, camera);
 
   stats.update();
-}
-
-function render() {
-  renderer.render(scene, camera);
 }

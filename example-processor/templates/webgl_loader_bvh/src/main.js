@@ -20,7 +20,6 @@ let camera, controls, scene, renderer;
 let mixer;
 
 init();
-animate();
 
 const loader = new BVHLoader();
 loader.load("models/bvh/pirouette.bvh", function (result) {
@@ -52,6 +51,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -69,8 +69,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   if (mixer) mixer.update(delta);

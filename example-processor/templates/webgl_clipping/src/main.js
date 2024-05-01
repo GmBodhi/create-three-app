@@ -24,7 +24,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let camera, scene, renderer, startTime, object, stats;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -102,25 +101,27 @@ function init() {
   ground.receiveShadow = true;
   scene.add(ground);
 
-  // Stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   // Renderer
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  window.addEventListener("resize", onWindowResize);
+  renderer.setAnimationLoop(animate);
+  renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
+
+  window.addEventListener("resize", onWindowResize);
 
   // ***** Clipping setup (renderer): *****
   const globalPlanes = [globalPlane],
     Empty = Object.freeze([]);
   renderer.clippingPlanes = Empty; // GUI sets it to globalPlanes
   renderer.localClippingEnabled = true;
+
+  // Stats
+
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
 
   // Controls
 
@@ -203,8 +204,6 @@ function onWindowResize() {
 function animate() {
   const currentTime = Date.now();
   const time = (currentTime - startTime) / 1000;
-
-  requestAnimationFrame(animate);
 
   object.position.y = 0.8;
   object.rotation.x = time * 0.5;

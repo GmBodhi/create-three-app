@@ -34,7 +34,6 @@ for (let i = 0; i < 1024; i++) {
 const clock = new Clock(true);
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -124,6 +123,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = VSMShadowMap;
@@ -147,8 +147,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
 
   stats.update();

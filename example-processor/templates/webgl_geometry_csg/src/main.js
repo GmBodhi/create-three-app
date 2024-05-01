@@ -41,7 +41,6 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   // environment
@@ -72,6 +71,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
   document.body.appendChild(renderer.domElement);
@@ -175,8 +175,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   // update the transforms
   const t = window.performance.now() + 9000;
   baseBrush.rotation.x = t * 0.0001;

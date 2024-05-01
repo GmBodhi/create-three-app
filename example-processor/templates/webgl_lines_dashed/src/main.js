@@ -26,7 +26,6 @@ const WIDTH = window.innerWidth,
   HEIGHT = window.innerHeight;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(60, WIDTH / HEIGHT, 1, 200);
@@ -80,6 +79,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(WIDTH, HEIGHT);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -195,8 +195,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

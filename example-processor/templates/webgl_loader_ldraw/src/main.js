@@ -48,7 +48,6 @@ const modelFileList = {
 };
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -67,6 +66,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
@@ -281,7 +281,6 @@ function createGUI() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
   controls.update();
   render();
 }

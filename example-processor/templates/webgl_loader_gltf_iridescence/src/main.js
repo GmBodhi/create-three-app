@@ -20,7 +20,7 @@ init().catch(function (err) {
 
 async function init() {
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.setAnimationLoop(render);
+  renderer.setAnimationLoop(animate);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
@@ -62,8 +62,6 @@ async function init() {
 
   scene.add(gltf.scene);
 
-  render();
-
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -73,11 +71,9 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
-function render() {
+function animate() {
   controls.update();
   renderer.render(scene, camera);
 }

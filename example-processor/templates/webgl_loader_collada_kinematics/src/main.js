@@ -42,7 +42,6 @@ loader.load(
     kinematics = collada.kinematics;
 
     init();
-    animate();
   }
 );
 
@@ -77,6 +76,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -139,11 +139,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
+  TWEEN.update();
   render();
   stats.update();
-  TWEEN.update();
 }
 
 function render() {

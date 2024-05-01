@@ -23,7 +23,6 @@ import { ParametricGeometries } from "three/addons/geometries/ParametricGeometri
 let camera, scene, renderer, stats;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -121,6 +120,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -137,8 +137,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

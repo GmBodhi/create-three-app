@@ -55,7 +55,6 @@ const loader = new PDBLoader();
 const offset = new Vector3();
 
 init();
-animate();
 
 function init() {
   scene = new Scene();
@@ -86,6 +85,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.getElementById("container").appendChild(renderer.domElement);
 
   labelRenderer = new CSS2DRenderer();
@@ -204,8 +204,6 @@ function loadMolecule(model) {
       object.lookAt(end);
       root.add(object);
     }
-
-    render();
   });
 }
 
@@ -217,12 +215,9 @@ function onWindowResize() {
 
   renderer.setSize(window.innerWidth, window.innerHeight);
   labelRenderer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   controls.update();
 
   const time = Date.now() * 0.0004;

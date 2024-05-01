@@ -30,13 +30,13 @@ let insetWidth;
 let insetHeight;
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 0.0);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0.0);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -111,10 +111,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  stats.update();
-
   // main scene
 
   renderer.setClearColor(0x000000, 0);
@@ -147,6 +143,8 @@ function animate() {
   renderer.render(scene, camera2);
 
   renderer.setScissorTest(false);
+
+  stats.update();
 }
 
 //

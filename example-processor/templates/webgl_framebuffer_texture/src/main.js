@@ -35,7 +35,6 @@ const vector = new Vector2();
 const color = new Color();
 
 init();
-animate();
 
 function init() {
   //
@@ -99,6 +98,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
   document.body.appendChild(renderer.domElement);
 
@@ -146,8 +146,6 @@ function updateSpritePosition() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const colorAttribute = line.geometry.getAttribute("color");
   updateColors(colorAttribute);
 

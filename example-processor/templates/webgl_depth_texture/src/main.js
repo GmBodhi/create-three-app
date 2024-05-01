@@ -33,7 +33,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let camera, scene, renderer, controls, stats;
 let target;
 let postScene, postCamera, postMaterial;
-const supportsExtension = true;
 
 const params = {
   format: DepthFormat,
@@ -51,12 +50,12 @@ const types = {
 };
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -161,10 +160,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  if (!supportsExtension) return;
-
-  requestAnimationFrame(animate);
-
   // render scene into target
   renderer.setRenderTarget(target);
   renderer.render(scene, camera);

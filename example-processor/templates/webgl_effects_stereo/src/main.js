@@ -26,7 +26,6 @@ let windowHalfY = window.innerHeight / 2;
 document.addEventListener("mousemove", onDocumentMouseMove);
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -73,6 +72,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   effect = new StereoEffect(renderer);
@@ -101,12 +101,6 @@ function onDocumentMouseMove(event) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   const timer = 0.0001 * Date.now();
 
   camera.position.x += (mouseX - camera.position.x) * 0.05;

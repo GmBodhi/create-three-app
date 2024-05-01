@@ -22,7 +22,6 @@ import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 let camera, scene, renderer, controls;
 
 init();
-animate();
 
 function init() {
   const info = document.createElement("div");
@@ -39,6 +38,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -176,8 +176,6 @@ function init() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update();
   renderer.render(scene, camera);
 }

@@ -28,7 +28,6 @@ const worldWidth = 128,
   worldDepth = 128;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -69,6 +68,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   controls = new FirstPersonControls(camera, renderer.domElement);
@@ -96,8 +96,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

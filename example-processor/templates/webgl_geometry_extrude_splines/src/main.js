@@ -159,7 +159,6 @@ function animateCamera() {
 }
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -221,6 +220,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   // stats
@@ -290,8 +290,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

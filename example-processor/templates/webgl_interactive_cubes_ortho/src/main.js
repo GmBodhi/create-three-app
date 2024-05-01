@@ -27,7 +27,6 @@ const radius = 25;
 const frustumSize = 50;
 
 init();
-animate();
 
 function init() {
   const aspect = window.innerWidth / window.innerHeight;
@@ -75,6 +74,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -108,8 +108,6 @@ function onPointerMove(event) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

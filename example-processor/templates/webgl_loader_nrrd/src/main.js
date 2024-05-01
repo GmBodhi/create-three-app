@@ -24,7 +24,6 @@ import { VTKLoader } from "three/addons/loaders/VTKLoader.js";
 let stats, camera, controls, scene, renderer;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -158,6 +157,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   controls = new TrackballControls(camera, renderer.domElement);
@@ -185,8 +185,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update();
 
   renderer.render(scene, camera);

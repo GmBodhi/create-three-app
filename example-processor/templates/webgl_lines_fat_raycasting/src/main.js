@@ -79,15 +79,15 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   clock = new Clock();
 
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 0.0);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0.0);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -214,10 +214,6 @@ function onPointerMove(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  stats.update();
-
   const delta = clock.getDelta();
 
   const obj = line.visible ? line : segments;
@@ -261,6 +257,8 @@ function animate() {
   gpuPanel.startQuery();
   renderer.render(scene, camera);
   gpuPanel.endQuery();
+
+  stats.update();
 }
 
 //

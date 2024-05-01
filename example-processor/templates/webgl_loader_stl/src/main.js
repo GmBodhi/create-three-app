@@ -23,7 +23,6 @@ let container, stats;
 let camera, cameraTarget, scene, renderer;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -156,6 +155,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   renderer.shadowMap.enabled = true;
 
@@ -198,8 +198,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

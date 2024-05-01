@@ -19,7 +19,6 @@ let camera, scene, renderer;
 let group, cubes;
 
 init();
-animate();
 
 function addImageBitmap() {
   new ImageBitmapLoader().load(
@@ -113,6 +112,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   // TESTS
@@ -140,6 +140,4 @@ function animate() {
   group.rotation.y = performance.now() / 3000;
 
   renderer.render(scene, camera);
-
-  requestAnimationFrame(animate);
 }

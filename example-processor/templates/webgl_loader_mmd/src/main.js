@@ -30,7 +30,6 @@ Ammo().then(function (AmmoLib) {
   Ammo = AmmoLib;
 
   init();
-  animate();
 });
 
 function init() {
@@ -66,6 +65,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   effect = new OutlineEffect(renderer);
@@ -175,8 +175,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

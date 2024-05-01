@@ -106,7 +106,6 @@ loader.load("three/examples/models/gltf/Flower/Flower.glb", function (gltf) {
   resample();
 
   init();
-  animate();
 });
 
 function init() {
@@ -168,6 +167,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -273,8 +273,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
 
   stats.update();

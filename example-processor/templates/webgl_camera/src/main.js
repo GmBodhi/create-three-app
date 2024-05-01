@@ -31,7 +31,6 @@ let cameraPerspectiveHelper, cameraOrthoHelper;
 const frustumSize = 600;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -125,6 +124,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   renderer.setScissorTest(true);
@@ -183,8 +183,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }
