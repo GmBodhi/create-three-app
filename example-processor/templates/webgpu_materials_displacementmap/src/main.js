@@ -1,14 +1,12 @@
 import "./style.css"; // For webpack support
 
 import {
-  WebGLRenderer,
   Scene,
   OrthographicCamera,
   AmbientLight,
   PointLight,
   CubeTextureLoader,
   TextureLoader,
-  MeshStandardMaterial,
   Vector2,
   DoubleSide,
   Mesh,
@@ -16,9 +14,13 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 
+import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
+
+import { MeshStandardNodeMaterial } from "three/nodes";
 
 let stats;
 let camera, scene, renderer, controls;
@@ -47,7 +49,7 @@ initGui();
 // Init gui
 function initGui() {
   const gui = new GUI();
-  //let gui = gui.addFolder( "Material" );
+
   gui
     .add(settings, "metalness")
     .min(0)
@@ -109,10 +111,10 @@ function init() {
   const container = document.createElement("div");
   document.body.appendChild(container);
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGPURenderer();
+  renderer.setAnimationLoop(animate);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -178,7 +180,7 @@ function init() {
 
   // material
 
-  material = new MeshStandardMaterial({
+  material = new MeshStandardNodeMaterial({
     color: 0xc1c1c1,
     roughness: settings.roughness,
     metalness: settings.metalness,

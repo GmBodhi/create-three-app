@@ -16,7 +16,6 @@ const drawStartPos = new Vector2();
 
 init();
 setupCanvasDrawing();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -37,6 +36,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
@@ -101,8 +101,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   mesh.rotation.x += 0.01;
   mesh.rotation.y += 0.01;
 

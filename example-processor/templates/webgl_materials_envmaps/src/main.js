@@ -24,7 +24,6 @@ let textureEquirec, textureCube;
 let sphereMesh, sphereMaterial, params;
 
 init();
-animate();
 
 function init() {
   // CAMERAS
@@ -75,6 +74,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -138,12 +138,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   if (params.backgroundRotationX) {
     scene.backgroundRotation.x += 0.001;
   }

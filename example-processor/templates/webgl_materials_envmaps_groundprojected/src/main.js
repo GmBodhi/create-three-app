@@ -156,6 +156,7 @@ async function init() {
 
       render();
     });
+
   gui.open();
 }
 

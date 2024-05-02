@@ -16,7 +16,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let camera, scene, renderer, video;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -54,6 +53,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -93,6 +93,5 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   renderer.render(scene, camera);
 }

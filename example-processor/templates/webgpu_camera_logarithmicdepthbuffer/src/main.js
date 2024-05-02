@@ -59,9 +59,9 @@ const labeldata = [
   { size: 1e19, scale: 1.0, label: "mind boggling (1000 light years)" },
 ];
 
-init();
+init().then(animate);
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -71,13 +71,13 @@ function init() {
   container = document.getElementById("container");
 
   const loader = new FontLoader();
-  loader.load("fonts/helvetiker_regular.typeface.json", function (font) {
-    const scene = initScene(font);
+  const font = await loader.loadAsync("fonts/helvetiker_regular.typeface.json");
 
-    // Initialize two copies of the same scene, one with normal z-buffer and one with logarithmic z-buffer
-    objects.normal = initView(scene, "normal", false);
-    objects.logzbuf = initView(scene, "logzbuf", true);
-  });
+  const scene = initScene(font);
+
+  // Initialize two copies of the same scene, one with normal z-buffer and one with logarithmic z-buffer
+  objects.normal = await initView(scene, "normal", false);
+  objects.logzbuf = await initView(scene, "logzbuf", true);
 
   stats = new Stats();
   container.appendChild(stats.dom);
@@ -91,7 +91,7 @@ function init() {
   window.addEventListener("wheel", onMouseWheel);
 }
 
-function initView(scene, name, logDepthBuf) {
+async function initView(scene, name, logDepthBuf) {
   const framecontainer = document.getElementById("container_" + name);
 
   const camera = new PerspectiveCamera(
@@ -108,10 +108,11 @@ function initView(scene, name, logDepthBuf) {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH / 2, SCREEN_HEIGHT);
-  renderer.setAnimationLoop(render);
   renderer.domElement.style.position = "relative";
   renderer.domElement.id = "renderer_" + name;
   framecontainer.appendChild(renderer.domElement);
+
+  await renderer.init();
 
   return {
     container: framecontainer,
@@ -217,7 +218,9 @@ function updateRendererSizes() {
   border.style.left = screensplit * 100 + "%";
 }
 
-function render() {
+function animate() {
+  requestAnimationFrame(animate);
+
   // Put some limits on zooming
   const minzoom = labeldata[0].size * labeldata[0].scale * 1;
   const maxzoom =

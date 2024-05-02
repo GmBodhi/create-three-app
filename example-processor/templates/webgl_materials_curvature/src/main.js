@@ -24,7 +24,6 @@ let camera, scene, renderer;
 let ninjaMeshRaw, curvatureAttribute, bufferGeo;
 
 init();
-animate();
 
 //returns average of elements in a dictionary
 function average(dict) {
@@ -83,6 +82,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
   document.body.appendChild(renderer.domElement);
 
@@ -289,11 +289,5 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   renderer.render(scene, camera);
 }

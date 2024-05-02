@@ -77,7 +77,6 @@ const CubemapFilterShader = {
 };
 
 init();
-animate();
 
 async function loadCubeTexture(urls) {
   return new Promise(function (resolve) {
@@ -154,6 +153,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -219,6 +219,5 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   renderer.render(scene, camera);
 }

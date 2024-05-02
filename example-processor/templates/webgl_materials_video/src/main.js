@@ -41,7 +41,6 @@ const meshes = [],
 const startButton = document.getElementById("startButton");
 startButton.addEventListener("click", function () {
   init();
-  animate();
 });
 
 function init() {
@@ -68,6 +67,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   video = document.getElementById("video");
@@ -178,16 +178,10 @@ function onDocumentMouseMove(event) {
 
 //
 
-function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
 let h,
   counter = 1;
 
-function render() {
+function animate() {
   const time = Date.now() * 0.00005;
 
   camera.position.x += (mouseX - camera.position.x) * 0.05;

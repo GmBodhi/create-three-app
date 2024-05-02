@@ -25,7 +25,6 @@ let isUserInteracting = false,
   theta = 0;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -56,6 +55,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   container.style.touchAction = "none";
@@ -143,11 +143,6 @@ function onDocumentMouseWheel(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-  update();
-}
-
-function update() {
   if (isUserInteracting === false) {
     lon += 0.1;
   }

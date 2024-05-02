@@ -38,7 +38,6 @@ let pngCubeRenderTarget, exrCubeRenderTarget;
 let pngBackground, exrBackground;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -57,6 +56,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   container.appendChild(renderer.domElement);
 
@@ -134,8 +134,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

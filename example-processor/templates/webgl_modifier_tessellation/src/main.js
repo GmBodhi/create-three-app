@@ -35,7 +35,6 @@ const HEIGHT = window.innerHeight;
 const loader = new FontLoader();
 loader.load("fonts/helvetiker_bold.typeface.json", function (font) {
   init(font);
-  animate();
 });
 
 function init(font) {
@@ -120,6 +119,7 @@ function init(font) {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(WIDTH, HEIGHT);
+  renderer.setAnimationLoop(animate);
 
   const container = document.getElementById("container");
   container.appendChild(renderer.domElement);
@@ -142,8 +142,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
 
   stats.update();

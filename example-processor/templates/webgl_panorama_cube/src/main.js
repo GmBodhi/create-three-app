@@ -19,7 +19,6 @@ let renderer;
 let scene;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -27,6 +26,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -107,8 +107,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update(); // required when damping is enabled
 
   renderer.render(scene, camera);

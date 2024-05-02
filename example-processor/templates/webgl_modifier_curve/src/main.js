@@ -38,7 +38,6 @@ let scene,
   action = ACTION_NONE;
 
 init();
-animate();
 
 function init() {
   scene = new Scene();
@@ -126,6 +125,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   renderer.domElement.addEventListener("pointerdown", onPointerDown);
@@ -160,8 +160,6 @@ function onPointerDown(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   if (action === ACTION_SELECT) {
     rayCaster.setFromCamera(mouse, camera);
     action = ACTION_NONE;

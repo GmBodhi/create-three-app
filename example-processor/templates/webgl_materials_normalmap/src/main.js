@@ -49,7 +49,6 @@ const windowHalfY = window.innerHeight / 2;
 let composer, effectFXAA;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -119,6 +118,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -190,8 +190,6 @@ function onDocumentMouseMove(event) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
 
   stats.update();

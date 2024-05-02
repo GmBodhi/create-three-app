@@ -60,22 +60,6 @@ const SCALE = 2.436143; // from original model
 const BIAS = -0.428408; // from original model
 
 init();
-animate();
-initGui();
-
-// Init gui
-function initGui() {
-  const gui = new GUI();
-  gui.add(params, "material", [
-    "standard",
-    "normal",
-    "velocity",
-    "depthBasic",
-    "depthRGBA",
-  ]);
-  gui.add(params, "camera", ["perspective", "ortho"]);
-  gui.add(params, "side", ["front", "back", "double"]);
-}
 
 function init() {
   const container = document.createElement("div");
@@ -84,6 +68,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -236,6 +221,19 @@ function init() {
 
   //
 
+  const gui = new GUI();
+  gui.add(params, "material", [
+    "standard",
+    "normal",
+    "velocity",
+    "depthBasic",
+    "depthRGBA",
+  ]);
+  gui.add(params, "camera", ["perspective", "ortho"]);
+  gui.add(params, "side", ["front", "back", "double"]);
+
+  //
+
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -259,8 +257,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

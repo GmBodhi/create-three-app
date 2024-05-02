@@ -24,7 +24,6 @@ let mapBg;
 const textureLoader = new TextureLoader();
 
 init();
-animate();
 
 function init() {
   // CAMERA
@@ -125,6 +124,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   // EVENTS
@@ -166,8 +166,6 @@ function generateLabelMaterial(text) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const time = Date.now() * 0.00025;
   const ox = (time * -0.01 * mapBg.repeat.x) % 1;
   const oy = (time * -0.01 * mapBg.repeat.y) % 1;

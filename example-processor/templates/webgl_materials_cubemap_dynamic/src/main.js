@@ -35,7 +35,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animation);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 
@@ -111,7 +111,7 @@ function onWindowResized() {
   camera.updateProjectionMatrix();
 }
 
-function animation(msTime) {
+function animate(msTime) {
   const time = msTime / 1000;
 
   cube.position.x = Math.cos(time) * 30;

@@ -27,7 +27,6 @@ let sphereGroup, smallSphere;
 let groundMirror, verticalMirror;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -36,6 +35,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   // scene
@@ -211,8 +211,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const timer = Date.now() * 0.01;
 
   sphereGroup.rotation.y -= 0.002;

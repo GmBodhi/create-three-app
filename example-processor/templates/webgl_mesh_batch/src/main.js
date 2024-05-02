@@ -60,7 +60,6 @@ const api = {
 init();
 initGeometries();
 initMesh();
-animate();
 
 //
 
@@ -186,6 +185,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   // scene
@@ -267,8 +267,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   animateMeshes();
 
   controls.update();

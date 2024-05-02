@@ -33,7 +33,6 @@ const windowHalfX = window.innerWidth / 2;
 const windowHalfY = window.innerHeight / 2;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -167,6 +166,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
 
   renderer.domElement.style.position = "relative";
@@ -181,12 +181,6 @@ function onDocumentMouseMove(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   camera.position.x += (mouseX - camera.position.x) * 0.05;
   camera.position.y += (-(mouseY - 200) - camera.position.y) * 0.05;
 

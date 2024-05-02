@@ -37,18 +37,18 @@ let portalCamera,
   topLeftCorner;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
 
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
+  renderer.setAnimationLoop(animate);
   renderer.localClippingEnabled = true;
+  renderer.toneMapping = ACESFilmicToneMapping;
+  container.appendChild(renderer.domElement);
 
   // scene
   scene = new Scene();
@@ -229,8 +229,6 @@ function renderPortal(thisPortalMesh, otherPortalMesh, thisPortalTexture) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   // move the bouncing sphere(s)
   const timerOne = Date.now() * 0.01;
   const timerTwo = timerOne + Math.PI * 10.0;

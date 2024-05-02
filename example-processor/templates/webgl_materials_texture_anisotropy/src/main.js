@@ -33,7 +33,6 @@ const windowHalfX = window.innerWidth / 2;
 const windowHalfY = window.innerHeight / 2;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -114,6 +113,7 @@ function init() {
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
 
   renderer.domElement.style.position = "relative";
@@ -133,8 +133,6 @@ function onDocumentMouseMove(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }
