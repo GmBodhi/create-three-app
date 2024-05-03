@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   Clock,
-  WebGLRenderer,
   Scene,
   PerspectiveCamera,
   PlaneGeometry,
@@ -12,6 +11,7 @@ import {
   MeshPhongMaterial,
   Mesh,
   PointLight,
+  WebGLRenderer,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -24,16 +24,10 @@ let refractor, smallSphere;
 
 init();
 
-function init() {
+async function init() {
   const container = document.getElementById("container");
 
   clock = new Clock();
-
-  // renderer
-  renderer = new WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.appendChild(renderer.domElement);
 
   // scene
   scene = new Scene();
@@ -46,12 +40,6 @@ function init() {
     500
   );
   camera.position.set(0, 75, 160);
-
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 40, 0);
-  controls.maxDistance = 400;
-  controls.minDistance = 10;
-  controls.update();
 
   // refractor
 
@@ -70,12 +58,8 @@ function init() {
 
   // load dudv map for distortion effect
 
-  const dudvMap = new TextureLoader().load(
-    "textures/waterdudv.jpg",
-    function () {
-      animate();
-    }
-  );
+  const loader = new TextureLoader();
+  const dudvMap = await loader.loadAsync("textures/waterdudv.jpg");
 
   dudvMap.wrapS = dudvMap.wrapT = RepeatWrapping;
   refractor.material.uniforms.tDudv.value = dudvMap;
@@ -152,6 +136,20 @@ function init() {
   blueLight.position.set(0, 50, 550);
   scene.add(blueLight);
 
+  // renderer
+  renderer = new WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  container.appendChild(renderer.domElement);
+
+  // controls
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 40, 0);
+  controls.maxDistance = 400;
+  controls.minDistance = 10;
+  controls.update();
+
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -163,8 +161,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const time = clock.getElapsedTime();
 
   refractor.material.uniforms.time.value = time;

@@ -49,7 +49,6 @@ const morphs = [],
 const clock = new Clock();
 
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -94,6 +93,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   renderer.autoClear = false;
@@ -301,8 +301,6 @@ function createScene() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

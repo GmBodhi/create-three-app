@@ -26,7 +26,6 @@ let geometry, mesh, material;
 let mouse, center;
 
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -110,6 +109,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   mouse = new Vector3(0, 0, 1);
@@ -134,12 +134,6 @@ function onDocumentMouseMove(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   camera.position.x += (mouse.x - camera.position.x) * 0.05;
   camera.position.y += (-mouse.y - camera.position.y) * 0.05;
   camera.lookAt(center);

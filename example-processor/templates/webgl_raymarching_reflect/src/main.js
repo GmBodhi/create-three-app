@@ -37,12 +37,12 @@ const config = {
 };
 
 init();
-render();
 
 function init() {
   renderer = new WebGLRenderer({ canvas: canvas });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(parseInt(config.resolution), parseInt(config.resolution));
+  renderer.setAnimationLoop(animate);
 
   window.addEventListener("resize", onWindowResize);
 
@@ -106,7 +106,7 @@ function onWindowResize() {
   );
 }
 
-function render() {
+function animate() {
   stats.begin();
 
   const elapsedTime = clock.getElapsedTime();
@@ -116,5 +116,4 @@ function render() {
   renderer.render(scene, camera);
 
   stats.end();
-  requestAnimationFrame(render);
 }

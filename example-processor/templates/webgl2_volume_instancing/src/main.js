@@ -19,12 +19,12 @@ import { VOXLoader, VOXData3DTexture } from "three/addons/loaders/VOXLoader.js";
 let renderer, scene, camera, controls, clock;
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -204,8 +204,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
   controls.update(delta);
 

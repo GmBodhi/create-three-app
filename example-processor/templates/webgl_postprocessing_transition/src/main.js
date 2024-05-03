@@ -60,6 +60,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   composer = new EffectComposer(renderer);
@@ -78,8 +79,6 @@ function init() {
 
   const outputPass = new OutputPass();
   composer.addPass(outputPass);
-
-  renderer.setAnimationLoop(animate);
 }
 
 window.addEventListener("resize", onWindowResize);
@@ -110,15 +109,15 @@ new TWEEN.Tween(params)
   .start();
 
 function animate() {
+  // Transition animation
+  if (params.transitionAnimate) TWEEN.update();
+
   const delta = clock.getDelta();
   fxSceneA.render(delta);
   fxSceneB.render(delta);
 
   render();
   stats.update();
-
-  // Transition animation
-  if (params.transitionAnimate) TWEEN.update();
 }
 
 function initTextures() {

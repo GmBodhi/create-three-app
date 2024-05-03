@@ -28,7 +28,6 @@ import {
 let camera, scene, renderer, clock;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -145,6 +144,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize, false);
@@ -160,8 +160,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   scene.traverse(function (child) {

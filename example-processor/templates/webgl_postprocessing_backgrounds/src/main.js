@@ -45,7 +45,6 @@ const params = {
 };
 
 init();
-animate();
 
 clearGui();
 
@@ -80,6 +79,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -184,8 +184,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
 
   cameraP.updateMatrixWorld(true);

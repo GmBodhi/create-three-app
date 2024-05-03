@@ -25,7 +25,6 @@ import {
 let camera, scene, renderer, mesh;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -130,12 +129,11 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const time = Date.now() * 0.001;
 
   mesh.rotation.x = time * 0.25;

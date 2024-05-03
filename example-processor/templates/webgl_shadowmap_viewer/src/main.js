@@ -27,7 +27,6 @@ let torusKnot, cube;
 let dirLightShadowMapViewer, spotLightShadowMapViewer;
 
 init();
-animate();
 
 function init() {
   initScene();
@@ -129,6 +128,7 @@ function initMisc() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = BasicShadowMap;
 
@@ -169,7 +169,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   render();
 
   stats.update();

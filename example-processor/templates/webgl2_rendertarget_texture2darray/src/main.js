@@ -144,7 +144,7 @@ function init() {
 
       postProcessMaterial.uniforms.uTexture.value = texture;
 
-      animate();
+      renderer.setAnimationLoop(animate);
     });
 }
 
@@ -156,8 +156,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   let value = mesh.material.uniforms["depth"].value;
 
   value += depthStep;
@@ -172,6 +170,8 @@ function animate() {
   mesh.material.uniforms["depth"].value = value;
 
   render();
+
+  stats.update();
 }
 
 /**

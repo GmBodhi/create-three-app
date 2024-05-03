@@ -90,6 +90,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(container.offsetWidth, container.offsetHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
   container.appendChild(renderer.domElement);
 
@@ -124,8 +125,6 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
-
-  animate();
 }
 
 function onWindowResize() {
@@ -138,8 +137,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const halfWidth = container.offsetWidth / 2;
 
   if (params.animate) {

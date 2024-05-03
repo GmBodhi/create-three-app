@@ -35,7 +35,6 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   // scene
@@ -135,6 +134,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   // gui
@@ -182,12 +182,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   const delta = clock.getDelta();
 
   torusKnot.rotation.x += delta;

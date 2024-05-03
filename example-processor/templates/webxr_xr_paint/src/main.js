@@ -25,7 +25,6 @@ const cursor = new Vector3();
 let controls;
 
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -68,6 +67,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -168,10 +168,6 @@ function handleController(controller) {
 }
 
 function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
   handleController(controller1);
   handleController(controller2);
 

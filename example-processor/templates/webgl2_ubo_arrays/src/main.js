@@ -38,7 +38,6 @@ const api = {
 };
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -139,6 +138,7 @@ function init() {
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize, false);
@@ -173,10 +173,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  stats.update();
-
   const elapsedTime = clock.getElapsedTime();
 
   const lights = lightingUniformsGroup.uniforms[0];
@@ -200,4 +196,6 @@ function animate() {
   }
 
   renderer.render(scene, camera);
+
+  stats.update();
 }

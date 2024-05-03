@@ -43,7 +43,6 @@ let camera, scene, renderer;
 let composer, lutPass;
 
 init();
-render();
 
 function init() {
   const container = document.createElement("div");
@@ -96,6 +95,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
@@ -119,7 +119,6 @@ function init() {
   gui.add(params, "enabled");
   gui.add(params, "lut", Object.keys(lutMap));
   gui.add(params, "intensity").min(0).max(1);
-  gui.add(params, "use2DLut");
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -130,15 +129,11 @@ function onWindowResize() {
 
   renderer.setSize(window.innerWidth, window.innerHeight);
   composer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
 //
 
-function render() {
-  requestAnimationFrame(render);
-
+function animate() {
   lutPass.enabled = params.enabled && Boolean(lutMap[params.lut]);
   lutPass.intensity = params.intensity;
   if (lutMap[params.lut]) {

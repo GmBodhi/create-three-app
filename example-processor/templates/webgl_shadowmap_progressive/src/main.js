@@ -44,13 +44,13 @@ const params = {
 };
 init();
 createGUI();
-animate();
 
 function init() {
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
@@ -146,12 +146,6 @@ function init() {
     }
 
     object.add(lightTarget);
-
-    if (typeof TESTING !== "undefined") {
-      for (let i = 0; i < 300; i++) {
-        render();
-      }
-    }
   }
 
   const manager = new LoadingManager(loadModel);
@@ -169,6 +163,7 @@ function init() {
   controls.maxDistance = 500;
   controls.maxPolarAngle = Math.PI / 1.5;
   controls.target.set(0, 100, 0);
+
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -188,7 +183,7 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function render() {
+function animate() {
   // Update the inertia on the orbit controls
   controls.update();
 
@@ -231,9 +226,4 @@ function render() {
 
   // Render Scene
   renderer.render(scene, camera);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-  render();
 }

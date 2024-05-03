@@ -42,7 +42,6 @@ const scaling = {
 const spheres = [];
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -87,6 +86,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
 
@@ -250,10 +250,6 @@ function onPinchEndRight(event) {
 //
 
 function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
   if (scaling.active) {
     const indexTip1Pos = hand1.joints["index-finger-tip"].position;
     const indexTip2Pos = hand2.joints["index-finger-tip"].position;

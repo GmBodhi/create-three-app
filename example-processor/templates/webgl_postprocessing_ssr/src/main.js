@@ -53,7 +53,6 @@ dracoLoader.setDecoderPath("jsm/libs/draco/");
 dracoLoader.setDecoderConfig({ type: "js" });
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -149,6 +148,7 @@ function init() {
   // renderer
   renderer = new WebGLRenderer({ antialias: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -265,8 +265,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

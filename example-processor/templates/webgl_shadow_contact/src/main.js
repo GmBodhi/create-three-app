@@ -58,7 +58,6 @@ let shadowGroup,
 let plane, blurPlane, fillPlane;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -218,6 +217,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -256,10 +256,6 @@ function blurShadow(amount) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  //
-
   meshes.forEach((mesh) => {
     mesh.rotation.x += 0.01;
     mesh.rotation.y += 0.02;

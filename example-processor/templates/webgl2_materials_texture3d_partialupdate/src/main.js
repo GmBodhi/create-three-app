@@ -33,7 +33,6 @@ let prevTime = performance.now();
 let cloudTexture = null;
 
 init();
-animate();
 
 function generateCloudTexture(size, scaleFactor = 1.0) {
   const data = new Uint8Array(size * size * size);
@@ -70,6 +69,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -326,8 +326,6 @@ const perElementPaddedSize = (INITIAL_CLOUD_SIZE - margins) / countPerRow;
 const perElementSize = Math.floor((INITIAL_CLOUD_SIZE - 1) / countPerRow);
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const time = performance.now();
   if (time - prevTime > 1500.0 && curr < totalCount) {
     const position = new Vector3(

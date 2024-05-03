@@ -227,7 +227,8 @@ async function loadModel() {
   updateProgressBar(0);
 
   pathTracer.setScene(scene, camera);
-  render();
+
+  renderer.setAnimationLoop(animate);
 }
 
 function onWindowResize() {
@@ -293,9 +294,7 @@ function createGUI() {
 
 //
 
-function render() {
-  requestAnimationFrame(render);
-
+function animate() {
   renderer.toneMapping = params.toneMapping
     ? ACESFilmicToneMapping
     : NoToneMapping;

@@ -28,12 +28,12 @@ let renderer, scene, camera;
 let mesh;
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -300,8 +300,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   mesh.material.uniforms.cameraPos.value.copy(camera.position);
   mesh.rotation.y = -performance.now() / 7500;
 

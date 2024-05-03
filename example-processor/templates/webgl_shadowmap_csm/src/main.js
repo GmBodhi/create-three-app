@@ -42,7 +42,6 @@ const params = {
 };
 
 init();
-animate();
 
 function updateOrthoCamera() {
   const size = controls.target.distanceTo(camera.position);
@@ -71,6 +70,7 @@ function init() {
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = params.shadows;
   renderer.shadowMap.type = PCFSoftShadowMap;
@@ -263,8 +263,6 @@ function init() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   camera.updateMatrixWorld();
   csm.update();
   controls.update();

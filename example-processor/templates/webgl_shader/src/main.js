@@ -19,7 +19,6 @@ let camera, scene, renderer;
 let uniforms;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -46,6 +45,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
@@ -58,8 +58,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   uniforms["time"].value = performance.now() / 1000;
 
   renderer.render(scene, camera);

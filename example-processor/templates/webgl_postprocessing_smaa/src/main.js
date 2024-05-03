@@ -27,7 +27,6 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -35,6 +34,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -106,8 +106,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
 
   if (params.autoRotate === true) {

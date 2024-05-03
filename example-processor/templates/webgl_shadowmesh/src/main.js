@@ -55,14 +55,15 @@ let frameTime = 0;
 const TWO_PI = Math.PI * 2;
 
 init();
-animate();
 
 function init() {
   scene.background = new Color(0x0096ff);
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setAnimationLoop(animate);
   document.getElementById("container").appendChild(renderer.domElement);
+
   window.addEventListener("resize", onWindowResize);
 
   camera.position.set(0, 2.5, 10);
@@ -211,8 +212,6 @@ function init() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   frameTime = clock.getDelta();
 
   cube.rotation.x += 1.0 * frameTime;

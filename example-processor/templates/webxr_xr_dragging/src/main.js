@@ -39,7 +39,6 @@ const intersected = [];
 let controls, group;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -125,6 +124,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
@@ -260,10 +260,6 @@ function cleanIntersected() {
 //
 
 function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
   cleanIntersected();
 
   intersectObjects(controller1);

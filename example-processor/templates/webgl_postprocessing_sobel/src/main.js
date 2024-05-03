@@ -31,7 +31,6 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   //
@@ -69,6 +68,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   // postprocessing
@@ -123,8 +123,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   if (params.enable === true) {
     composer.render();
   } else {

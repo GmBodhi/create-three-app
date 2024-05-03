@@ -39,7 +39,6 @@ let controller, controllerGrip;
 let INTERSECTED;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -102,6 +101,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -182,10 +182,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
   const delta = clock.getDelta() * 60;
 
   if (controller.userData.isSelecting === true) {

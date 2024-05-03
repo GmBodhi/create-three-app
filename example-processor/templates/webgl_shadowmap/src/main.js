@@ -51,7 +51,6 @@ const clock = new Clock();
 let showHUD = false;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -97,6 +96,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   renderer.autoClear = false;
@@ -305,8 +305,6 @@ function createScene() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

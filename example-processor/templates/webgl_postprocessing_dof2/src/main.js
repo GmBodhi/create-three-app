@@ -54,7 +54,6 @@ const planes = [];
 const leaves = 100;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -76,6 +75,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
   container.appendChild(renderer.domElement);
 
@@ -376,8 +376,6 @@ function shaderUpdate() {
 }
 
 function animate() {
-  requestAnimationFrame(animate, renderer.domElement);
-
   render();
   stats.update();
 }

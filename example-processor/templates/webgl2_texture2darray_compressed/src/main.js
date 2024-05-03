@@ -28,7 +28,6 @@ const planeHeight = 25;
 let depthStep = 1;
 
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -50,6 +49,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -91,8 +91,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   if (mesh) {
     const delta = clock.getDelta() * 10;
 

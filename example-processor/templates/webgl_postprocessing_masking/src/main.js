@@ -26,7 +26,6 @@ let camera, composer, renderer;
 let box, torus;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -50,6 +49,7 @@ function init() {
   renderer.setClearColor(0xe0e0e0);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
   document.body.appendChild(renderer.domElement);
 
@@ -112,8 +112,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const time = performance.now() * 0.001 + 6000;
 
   box.position.x = Math.cos(time / 1.5) * 2;

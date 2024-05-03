@@ -30,7 +30,6 @@ const planeHeight = 50;
 let depthStep = 0.4;
 
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -81,6 +80,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -97,8 +97,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   if (mesh) {
     let value = mesh.material.uniforms["depth"].value;
 

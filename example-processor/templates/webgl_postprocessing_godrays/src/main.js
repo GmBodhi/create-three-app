@@ -49,7 +49,6 @@ const sunColor = 0xffee00;
 const godrayRenderTargetResolutionMultiplier = 1.0 / 4.0;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -93,6 +92,7 @@ function init() {
   renderer.setClearColor(0xffffff);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   renderer.autoClear = false;
@@ -252,8 +252,6 @@ function initPostprocessing(renderTargetWidth, renderTargetHeight) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

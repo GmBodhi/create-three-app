@@ -27,7 +27,6 @@ let composer;
 let group;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -35,6 +34,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -124,8 +124,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

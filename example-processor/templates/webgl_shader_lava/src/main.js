@@ -30,7 +30,6 @@ let camera, renderer, composer, clock;
 let uniforms, mesh;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -80,8 +79,10 @@ function init() {
 
   //
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
   container.appendChild(renderer.domElement);
 
@@ -99,8 +100,6 @@ function init() {
 
   //
 
-  onWindowResize();
-
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -115,12 +114,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   const delta = 5 * clock.getDelta();
 
   uniforms["time"].value += 0.2 * delta;
