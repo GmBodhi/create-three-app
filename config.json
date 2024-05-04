@@ -3949,6 +3949,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_matcap": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_sss": {
       "files": {
         "index.html": "src",
@@ -3970,6 +3980,16 @@
       ]
     },
     "webgpu_materials_texture_partialupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materials_toon": {
       "files": {
         "index.html": "src",
         "main.js": "src",
