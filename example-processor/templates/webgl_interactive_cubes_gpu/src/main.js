@@ -237,19 +237,21 @@ function pick() {
   const pixelBuffer = new Int32Array(4);
 
   // read the pixel
-  renderer.readRenderTargetPixels(pickingTexture, 0, 0, 1, 1, pixelBuffer);
-
-  const id = pixelBuffer[0];
-  if (id !== -1) {
-    // move our highlightBox so that it surrounds the picked object
-    const data = pickingData[id];
-    highlightBox.position.copy(data.position);
-    highlightBox.rotation.copy(data.rotation);
-    highlightBox.scale.copy(data.scale).add(offset);
-    highlightBox.visible = true;
-  } else {
-    highlightBox.visible = false;
-  }
+  renderer
+    .readRenderTargetPixelsAsync(pickingTexture, 0, 0, 1, 1, pixelBuffer)
+    .then(() => {
+      const id = pixelBuffer[0];
+      if (id !== -1) {
+        // move our highlightBox so that it surrounds the picked object
+        const data = pickingData[id];
+        highlightBox.position.copy(data.position);
+        highlightBox.rotation.copy(data.rotation);
+        highlightBox.scale.copy(data.scale).add(offset);
+        highlightBox.visible = true;
+      } else {
+        highlightBox.visible = false;
+      }
+    });
 }
 
 function render() {

@@ -95,7 +95,7 @@ function animate() {
 
     // perform copy from src to dest texture to a random position
 
-    renderer.copyTextureToTexture(position, dataTexture, diffuseMap);
+    renderer.copyTextureToTexture(dataTexture, diffuseMap, null, position);
   }
 
   renderer.render(scene, camera);
