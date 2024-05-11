@@ -159,7 +159,7 @@ function animate() {
   vector.x = (window.innerWidth * dpr) / 2 - textureSize / 2;
   vector.y = (window.innerHeight * dpr) / 2 - textureSize / 2;
 
-  renderer.copyFramebufferToTexture(vector, texture);
+  renderer.copyFramebufferToTexture(texture, vector);
 
   renderer.clearDepth();
   renderer.render(sceneOrtho, cameraOrtho);
