@@ -51,7 +51,6 @@ const matLine = new LineMaterial({
   worldUnits: true,
   vertexColors: true,
 
-  //resolution:  // to be set by renderer, eventually
   alphaToCoverage: true,
 });
 
@@ -64,7 +63,6 @@ const matThresholdLine = new LineMaterial({
   opacity: 0.2,
   depthTest: false,
   visible: false,
-  //resolution:  // to be set by renderer, eventually
 });
 
 const params = {
@@ -202,10 +200,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  // renderer will set this eventually
-  matLine.resolution.set(window.innerWidth, window.innerHeight);
-  matThresholdLine.resolution.set(window.innerWidth, window.innerHeight);
 }
 
 function onPointerMove(event) {

@@ -65,7 +65,6 @@ function init() {
   matLine = new LineMaterial({
     color: 0x4080ff,
     linewidth: 5, // in pixels
-    //resolution:  // to be set by renderer, eventually
     dashed: false,
   });
 
@@ -117,9 +116,6 @@ function animate() {
 
   renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
 
-  // renderer will set this eventually
-  matLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
-
   renderer.render(scene, camera);
 
   // inset scene
@@ -136,9 +132,6 @@ function animate() {
 
   camera2.position.copy(camera.position);
   camera2.quaternion.copy(camera.quaternion);
-
-  // renderer will set this eventually
-  matLine.resolution.set(insetWidth, insetHeight); // resolution of the inset viewport
 
   renderer.render(scene, camera2);
 

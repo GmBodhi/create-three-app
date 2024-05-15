@@ -108,7 +108,6 @@ function init() {
     linewidth: 5, // in world units with size attenuation, pixels otherwise
     vertexColors: true,
 
-    //resolution:  // to be set by renderer, eventually
     dashed: false,
     alphaToCoverage: true,
   });
@@ -174,9 +173,6 @@ function animate() {
 
   controls.update();
 
-  // renderer will set this eventually
-  matLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
-
   gpuPanel.startQuery();
   renderer.render(scene, camera);
   gpuPanel.endQuery();
@@ -195,9 +191,6 @@ function animate() {
 
   camera2.position.copy(camera.position);
   camera2.quaternion.copy(camera.quaternion);
-
-  // renderer will set this eventually
-  matLine.resolution.set(insetWidth, insetHeight); // resolution of the inset viewport
 
   renderer.render(scene, camera2);
 
