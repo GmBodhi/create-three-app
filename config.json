@@ -4352,6 +4352,26 @@
         "/src"
       ]
     },
+    "webgpu_volume_cloud": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_volume_perlin": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webxr_ar_cones": {
       "files": {
         "index.html": "src",
