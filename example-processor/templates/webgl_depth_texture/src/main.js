@@ -10,7 +10,7 @@ import {
   UnsignedShortType,
   DepthStencilFormat,
   UnsignedIntType,
-  UnsignedInt248Type,
+  FloatType,
   WebGLRenderer,
   PerspectiveCamera,
   WebGLRenderTarget,
@@ -37,6 +37,7 @@ let postScene, postCamera, postMaterial;
 const params = {
   format: DepthFormat,
   type: UnsignedShortType,
+  samples: 0,
 };
 
 const formats = {
@@ -46,7 +47,7 @@ const formats = {
 const types = {
   UnsignedShortType: UnsignedShortType,
   UnsignedIntType: UnsignedIntType,
-  UnsignedInt248Type: UnsignedInt248Type,
+  FloatType: FloatType,
 };
 
 init();
@@ -91,19 +92,27 @@ function init() {
 
   gui.add(params, "format", formats).onChange(setupRenderTarget);
   gui.add(params, "type", types).onChange(setupRenderTarget);
+  gui.add(params, "samples", 0, 16, 1).onChange(setupRenderTarget);
   gui.open();
 }
 
 function setupRenderTarget() {
   if (target) target.dispose();
 
-  const format = parseFloat(params.format);
-  const type = parseFloat(params.type);
+  const format = parseInt(params.format);
+  const type = parseInt(params.type);
+  const samples = parseInt(params.samples);
 
-  target = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
+  const dpr = renderer.getPixelRatio();
+  target = new WebGLRenderTarget(
+    window.innerWidth * dpr,
+    window.innerHeight * dpr
+  );
   target.texture.minFilter = NearestFilter;
   target.texture.magFilter = NearestFilter;
   target.stencilBuffer = format === DepthStencilFormat ? true : false;
+  target.samples = samples;
+
   target.depthTexture = new DepthTexture();
   target.depthTexture.format = format;
   target.depthTexture.type = type;
