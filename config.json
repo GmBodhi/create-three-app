@@ -4209,6 +4209,16 @@
         "/src"
       ]
     },
+    "webgpu_renderbundle": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_rtt": {
       "files": {
         "index.html": "src",
