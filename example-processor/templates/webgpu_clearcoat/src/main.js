@@ -17,7 +17,6 @@ import {
   ACESFilmicToneMapping,
 } from "three";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -37,12 +36,6 @@ let group;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   container = document.createElement("div");
   document.body.appendChild(container);
 
