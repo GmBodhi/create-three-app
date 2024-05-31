@@ -130,7 +130,13 @@ function init() {
   container.appendChild(renderer.domElement);
 
   document.body.appendChild(
-    XRButton.createButton(renderer, { optionalFeatures: ["depth-sensing"] })
+    XRButton.createButton(renderer, {
+      optionalFeatures: ["depth-sensing"],
+      depthSensing: {
+        usagePreference: ["gpu-optimized"],
+        dataFormatPreference: [],
+      },
+    })
   );
 
   // controllers
