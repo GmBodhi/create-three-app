@@ -101,7 +101,7 @@ function init() {
   for (let i = 0; i < 50; i++) {
     const geometry = geometries[Math.floor(Math.random() * geometries.length)];
     const material = new ShaderMaterial({
-      vertexShader: `
+      vertexShader: /* glsl */ `
 							varying vec3 vNormal;
 							varying vec2 vUv;
 							void main() {
@@ -111,7 +111,7 @@ function init() {
 							}
 						`,
 
-      fragmentShader: `
+      fragmentShader: /* glsl */ `
 							uniform vec3 diffuseColor;
 							uniform float roughness;
 							uniform float metalness;
@@ -412,7 +412,6 @@ function render() {
       child.material.uniforms.depthColor.value = renderer.xr.getDepthTexture();
       child.material.uniforms.depthWidth.value = 1680;
       child.material.uniforms.depthHeight.value = 1760;
-      child.material.uniforms.NeedUpdate = true;
 
       isDepthSupplied = true;
     });
@@ -420,7 +419,6 @@ function render() {
     group.children.forEach((child) => {
       child.material.uniforms.depthWidth.value = 0;
       child.material.uniforms.depthHeight.value = 0;
-      child.material.uniforms.NeedUpdate = true;
 
       isDepthSupplied = false;
     });
