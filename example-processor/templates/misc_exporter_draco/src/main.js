@@ -26,7 +26,6 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -87,6 +86,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
@@ -114,7 +114,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   renderer.render(scene, camera);
 }
 

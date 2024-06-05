@@ -18,12 +18,12 @@ let renderer;
 let scene;
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.xr.enabled = true;
   renderer.xr.setReferenceSpaceType("local");
   document.body.appendChild(renderer.domElement);
@@ -118,9 +118,5 @@ function onWindowResize() {
 }
 
 function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
   renderer.render(scene, camera);
 }

@@ -65,7 +65,6 @@ const shader = /* glsl */ `
 			`;
 
 init();
-animate();
 
 function init() {
   const w = window.innerWidth;
@@ -81,6 +80,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -173,8 +173,6 @@ function render() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update();
 
   if (settings.autoRotate) {

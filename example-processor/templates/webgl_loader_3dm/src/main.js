@@ -17,7 +17,6 @@ let camera, scene, renderer;
 let controls, gui;
 
 init();
-animate();
 
 function init() {
   Object3D.DEFAULT_UP.set(0, 0, 1);
@@ -25,6 +24,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -79,8 +79,6 @@ function resize() {
 function animate() {
   controls.update();
   renderer.render(scene, camera);
-
-  requestAnimationFrame(animate);
 }
 
 function initGUI(layers) {

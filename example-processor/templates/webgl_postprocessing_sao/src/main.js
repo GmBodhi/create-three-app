@@ -26,7 +26,6 @@ let composer, renderPass, saoPass;
 let group;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -35,9 +34,10 @@ function init() {
   const width = window.innerWidth;
   const height = window.innerHeight;
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(65, width / height, 3, 10);
@@ -137,8 +137,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

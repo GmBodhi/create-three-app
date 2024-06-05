@@ -96,7 +96,6 @@ snellenConfig.quadHeight =
   (0.5 * snellenConfig.heightMeters) / snellenConfig.cropY;
 
 init();
-animate();
 
 function init() {
   scene = new Scene();
@@ -117,9 +116,10 @@ function init() {
 
   renderer = new WebGLRenderer({ antialias: false });
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.setClearAlpha(1);
   renderer.setClearColor(new Color(0), 0);
-  renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.xr.enabled = true;
 
   document.body.appendChild(renderer.domElement);
@@ -291,11 +291,7 @@ function onWindowResize() {
 }
 //
 
-function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render(t, frame) {
+function animate(t, frame) {
   const xr = renderer.xr;
   const session = xr.getSession();
   const gl = renderer.getContext();

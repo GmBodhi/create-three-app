@@ -13,23 +13,28 @@ import {
   PlaneGeometry,
   MeshPhongMaterial,
   GridHelper,
-  AnimationMixer,
   WebGLRenderer,
+  AnimationMixer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, stats;
-
+let camera, scene, renderer, stats, object, loader, guiMorphsFolder;
 const clock = new Clock();
 
 let mixer;
 
+const params = {
+  asset: "Samba Dancing",
+};
+
+const assets = ["Samba Dancing", "morph_test"];
+
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -76,27 +81,13 @@ function init() {
   grid.material.transparent = true;
   scene.add(grid);
 
-  // model
-  const loader = new FBXLoader();
-  loader.load("models/fbx/Samba Dancing.fbx", function (object) {
-    mixer = new AnimationMixer(object);
-
-    const action = mixer.clipAction(object.animations[0]);
-    action.play();
-
-    object.traverse(function (child) {
-      if (child.isMesh) {
-        child.castShadow = true;
-        child.receiveShadow = true;
-      }
-    });
-
-    scene.add(object);
-  });
+  loader = new FBXLoader();
+  loadAsset(params.asset);
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -109,6 +100,68 @@ function init() {
   // stats
   stats = new Stats();
   container.appendChild(stats.dom);
+
+  const gui = new GUI();
+  gui.add(params, "asset", assets).onChange(function (value) {
+    loadAsset(value);
+  });
+
+  guiMorphsFolder = gui.addFolder("Morphs").hide();
+}
+
+function loadAsset(asset) {
+  loader.load("models/fbx/" + asset + ".fbx", function (group) {
+    if (object) {
+      object.traverse(function (child) {
+        if (child.material) child.material.dispose();
+        if (child.material && child.material.map) child.material.map.dispose();
+        if (child.geometry) child.geometry.dispose();
+      });
+
+      scene.remove(object);
+    }
+
+    //
+
+    object = group;
+
+    if (object.animations && object.animations.length) {
+      mixer = new AnimationMixer(object);
+
+      const action = mixer.clipAction(object.animations[0]);
+      action.play();
+    } else {
+      mixer = null;
+    }
+
+    guiMorphsFolder.children.forEach((child) => child.destroy());
+    guiMorphsFolder.hide();
+
+    object.traverse(function (child) {
+      if (child.isMesh) {
+        child.castShadow = true;
+        child.receiveShadow = true;
+
+        if (child.morphTargetDictionary) {
+          guiMorphsFolder.show();
+          const meshFolder = guiMorphsFolder.addFolder(
+            child.name || child.uuid
+          );
+          Object.keys(child.morphTargetDictionary).forEach((key) => {
+            meshFolder.add(
+              child.morphTargetInfluences,
+              child.morphTargetDictionary[key],
+              0,
+              1,
+              0.01
+            );
+          });
+        }
+      }
+    });
+
+    scene.add(object);
+  });
 }
 
 function onWindowResize() {
@@ -121,8 +174,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   if (mixer) mixer.update(delta);

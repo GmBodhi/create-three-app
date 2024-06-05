@@ -35,7 +35,6 @@ let audioCtx = null;
 const musicScale = [0, 3, 5, 7, 10];
 
 init();
-animate();
 
 function initAudio() {
   if (audioCtx !== null) {
@@ -132,6 +131,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
@@ -195,10 +195,6 @@ function onWindowResize() {
 }
 
 //
-
-function animate() {
-  renderer.setAnimationLoop(render);
-}
 
 function handleCollisions() {
   for (let i = 0; i < group.children.length; i++) {
@@ -264,7 +260,7 @@ function handleCollisions() {
   }
 }
 
-function render() {
+function animate() {
   handleCollisions();
 
   renderer.render(scene, camera);

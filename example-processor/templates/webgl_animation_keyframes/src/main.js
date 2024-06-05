@@ -70,7 +70,7 @@ loader.load(
     mixer = new AnimationMixer(model);
     mixer.clipAction(gltf.animations[0]).play();
 
-    animate();
+    renderer.setAnimationLoop(animate);
   },
   undefined,
   function (e) {
@@ -86,8 +86,6 @@ window.onresize = function () {
 };
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   mixer.update(delta);

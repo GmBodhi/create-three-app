@@ -14,7 +14,7 @@ import { XRPlanes } from "three/addons/webxr/XRPlanes.js";
 const renderer = new WebGLRenderer({ antialias: true, alpha: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setAnimationLoop(render);
+renderer.setAnimationLoop(animate);
 renderer.xr.enabled = true;
 document.body.appendChild(renderer.domElement);
 
@@ -53,6 +53,6 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function render() {
+function animate() {
   renderer.render(scene, camera);
 }

@@ -25,7 +25,7 @@ const color = new Color();
 
 init();
 
-function init() {
+async function init() {
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,
@@ -39,9 +39,8 @@ function init() {
   clock = new Clock();
 
   const loader = new TextureLoader();
-  diffuseMap = loader.load(
-    "textures/floors/FloorsCheckerboard_S_Diffuse.jpg",
-    animate
+  diffuseMap = await loader.loadAsync(
+    "textures/floors/FloorsCheckerboard_S_Diffuse.jpg"
   );
   diffuseMap.colorSpace = SRGBColorSpace;
   diffuseMap.minFilter = LinearFilter;
@@ -66,6 +65,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -81,8 +81,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const elapsedTime = clock.getElapsedTime();
 
   if (elapsedTime - last > 0.1) {
@@ -97,7 +95,7 @@ function animate() {
 
     // perform copy from src to dest texture to a random position
 
-    renderer.copyTextureToTexture(position, dataTexture, diffuseMap);
+    renderer.copyTextureToTexture(dataTexture, diffuseMap, null, position);
   }
 
   renderer.render(scene, camera);

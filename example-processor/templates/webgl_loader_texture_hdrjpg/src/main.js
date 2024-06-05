@@ -42,7 +42,6 @@ const fileSizes = {};
 const resolutions = {};
 
 init();
-animate();
 
 function init() {
   const lbl = document.getElementById("lbl_left");
@@ -136,6 +135,7 @@ function init() {
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -201,8 +201,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

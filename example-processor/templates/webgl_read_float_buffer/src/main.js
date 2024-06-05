@@ -41,7 +41,6 @@ let delta = 0.01;
 let valueNode;
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -126,6 +125,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
 
   container.appendChild(renderer.domElement);
@@ -146,8 +146,6 @@ function onDocumentMouseMove(event) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

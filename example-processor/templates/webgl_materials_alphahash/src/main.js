@@ -41,7 +41,6 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -90,6 +89,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -177,8 +177,6 @@ function onMaterialUpdate() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
 
   stats.update();

@@ -29,7 +29,6 @@ const startButton = document.getElementById("startButton");
 startButton.addEventListener("click", function () {
   Ammo().then(function () {
     init();
-    animate();
   });
 });
 
@@ -70,6 +69,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   effect = new OutlineEffect(renderer);
@@ -149,11 +149,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-  render();
-}
-
-function render() {
   if (ready) {
     helper.update(clock.getDelta());
   }

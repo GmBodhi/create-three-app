@@ -62,7 +62,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animation);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
@@ -80,6 +80,6 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function animation() {
+function animate() {
   renderer.render(scene, camera);
 }

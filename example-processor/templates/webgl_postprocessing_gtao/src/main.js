@@ -24,7 +24,6 @@ import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 let camera, scene, renderer, composer, controls, clock, stats, mixer;
 
 init();
-animate();
 
 function init() {
   const dracoLoader = new DRACOLoader();
@@ -43,6 +42,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   const pmremGenerator = new PMREMGenerator(renderer);
@@ -237,8 +237,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   if (mixer) {

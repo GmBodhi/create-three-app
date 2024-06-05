@@ -10,8 +10,7 @@ import {
   PlaneGeometry,
 } from "three";
 import {
-  texture,
-  textureStore,
+  storageTexture,
   wgslFn,
   code,
   instanceIndex,
@@ -62,6 +61,11 @@ function init() {
 
   const wgslFormat = hdr ? "rgba16float" : "rgba8unorm";
 
+  const readPing = storageTexture(pingTexture).setAccess("read-only");
+  const writePing = storageTexture(pingTexture).setAccess("write-only");
+  const readPong = storageTexture(pongTexture).setAccess("read-only");
+  const writePong = storageTexture(pongTexture).setAccess("write-only");
+
   // compute init
 
   const rand2 = code(`
@@ -71,15 +75,15 @@ function init() {
 
 					}
 
-					fn blur( image : texture_2d<f32>, uv : vec2i ) -> vec4f {
+					fn blur( image : texture_storage_2d<${wgslFormat}, read>, uv : vec2i ) -> vec4f {
 
 						var color = vec4f( 0.0 );
 
-						color += textureLoad( image, uv + vec2i( - 1, 1 ), 0 );
-						color += textureLoad( image, uv + vec2i( - 1, - 1 ), 0 );
-						color += textureLoad( image, uv + vec2i( 0, 0 ), 0 );
-						color += textureLoad( image, uv + vec2i( 1, - 1 ), 0 );
-						color += textureLoad( image, uv + vec2i( 1, 1 ), 0 );
+						color += textureLoad( image, uv + vec2i( - 1, 1 ));
+						color += textureLoad( image, uv + vec2i( - 1, - 1 ));
+						color += textureLoad( image, uv + vec2i( 0, 0 ));
+						color += textureLoad( image, uv + vec2i( 1, - 1 ));
+						color += textureLoad( image, uv + vec2i( 1, 1 ));
 
 						return color / 5.0; 
 					}
@@ -114,7 +118,7 @@ function init() {
   );
 
   computeInitNode = computeInitWGSL({
-    writeTex: textureStore(pingTexture),
+    writeTex: storageTexture(pingTexture),
     index: instanceIndex,
     seed,
   }).compute(width * height);
@@ -123,7 +127,7 @@ function init() {
 
   const computePingPongWGSL = wgslFn(
     `
-					fn computePingPongWGSL( readTex: texture_2d<f32>, writeTex: texture_storage_2d<${wgslFormat}, write>, index: u32 ) -> void {
+					fn computePingPongWGSL( readTex: texture_storage_2d<${wgslFormat}, read>, writeTex: texture_storage_2d<${wgslFormat}, write>, index: u32 ) -> void {
 
 						let posX = index % ${width};
 						let posY = index / ${width};
@@ -141,13 +145,13 @@ function init() {
   //
 
   computeToPong = computePingPongWGSL({
-    readTex: texture(pingTexture),
-    writeTex: textureStore(pongTexture),
+    readTex: readPing,
+    writeTex: writePong,
     index: instanceIndex,
   }).compute(width * height);
   computeToPing = computePingPongWGSL({
-    readTex: texture(pongTexture),
-    writeTex: textureStore(pingTexture),
+    readTex: readPong,
+    writeTex: writePing,
     index: instanceIndex,
   }).compute(width * height);
 

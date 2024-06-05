@@ -27,7 +27,6 @@ let isUserInteracting = false,
 const distance = 0.5;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -58,6 +57,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   document.addEventListener("pointerdown", onPointerDown);
@@ -98,11 +98,6 @@ function onPointerUp() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-  update();
-}
-
-function update() {
   lat = Math.max(-85, Math.min(85, lat));
   phi = MathUtils.degToRad(90 - lat);
   theta = MathUtils.degToRad(lon);

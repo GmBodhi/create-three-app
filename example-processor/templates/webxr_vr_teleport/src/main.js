@@ -37,7 +37,6 @@ let INTERSECTION;
 const tempMatrix = new Matrix4();
 
 init();
-animate();
 
 function init() {
   scene = new Scene();
@@ -80,6 +79,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   renderer.xr.addEventListener(
     "sessionstart",
@@ -200,10 +200,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
   INTERSECTION = undefined;
 
   if (controller1.userData.isSelecting === true) {

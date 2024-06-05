@@ -27,7 +27,6 @@ import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js"
 let group, camera, scene, renderer;
 
 init();
-animate();
 
 function init() {
   scene = new Scene();
@@ -35,6 +34,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   // camera
@@ -137,13 +137,7 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   group.rotation.y += 0.005;
 
-  render();
-}
-
-function render() {
   renderer.render(scene, camera);
 }

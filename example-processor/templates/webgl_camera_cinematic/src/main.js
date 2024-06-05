@@ -27,7 +27,6 @@ const radius = 100;
 let theta = 0;
 
 init();
-animate();
 
 function init() {
   camera = new CinematicCamera(
@@ -68,6 +67,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -149,8 +149,6 @@ function onDocumentMouseMove(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate, renderer.domElement);
-
   render();
   stats.update();
 }

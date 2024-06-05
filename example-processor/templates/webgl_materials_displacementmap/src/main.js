@@ -42,7 +42,6 @@ const height = 500; // of camera frustum
 let r = 0.0;
 
 init();
-animate();
 initGui();
 
 // Init gui
@@ -113,6 +112,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -237,8 +237,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update();
 
   stats.begin();

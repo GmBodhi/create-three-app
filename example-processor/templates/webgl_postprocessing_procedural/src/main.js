@@ -30,18 +30,6 @@ let stats;
 const params = { procedure: "noiseRandom3D" };
 
 init();
-animate();
-initGui();
-
-// Init gui
-function initGui() {
-  const gui = new GUI();
-  gui.add(params, "procedure", [
-    "noiseRandom1D",
-    "noiseRandom2D",
-    "noiseRandom3D",
-  ]);
-}
 
 function init() {
   const container = document.getElementById("container");
@@ -49,6 +37,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -75,6 +64,15 @@ function init() {
   postScene.add(postQuad);
 
   window.addEventListener("resize", onWindowResize);
+
+  //
+
+  const gui = new GUI();
+  gui.add(params, "procedure", [
+    "noiseRandom1D",
+    "noiseRandom2D",
+    "noiseRandom3D",
+  ]);
 }
 
 function onWindowResize() {
@@ -82,8 +80,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   switch (params.procedure) {
     case "noiseRandom1D":
       postMaterial = noiseRandom1DMaterial;

@@ -32,7 +32,6 @@ import Stats from "three/addons/libs/stats.module.js";
 let camera, scene, renderer, stats;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -128,6 +127,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -148,8 +148,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

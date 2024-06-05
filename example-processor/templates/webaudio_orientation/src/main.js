@@ -119,7 +119,8 @@ function init() {
 
     boomBox.add(positionalAudio);
     scene.add(boomBox);
-    animate();
+
+    renderer.setAnimationLoop(animate);
   });
 
   // sound is damped behind this wall
@@ -165,6 +166,5 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   renderer.render(scene, camera);
 }

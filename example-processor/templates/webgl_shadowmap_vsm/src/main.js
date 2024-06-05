@@ -29,7 +29,6 @@ let dirLight, spotLight;
 let torusKnot, dirGroup;
 
 init();
-animate();
 
 function init() {
   initScene();
@@ -187,6 +186,7 @@ function initMisc() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = VSMShadowMap;
 
@@ -209,8 +209,6 @@ function onWindowResize() {
 }
 
 function animate(time) {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   torusKnot.rotation.x += 0.25 * delta;

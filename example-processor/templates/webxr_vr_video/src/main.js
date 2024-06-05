@@ -16,7 +16,6 @@ import { VRButton } from "three/addons/webxr/VRButton.js";
 let camera, scene, renderer;
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -86,6 +85,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.xr.enabled = true;
   renderer.xr.setReferenceSpaceType("local");
   container.appendChild(renderer.domElement);
@@ -105,9 +105,5 @@ function onWindowResize() {
 }
 
 function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
   renderer.render(scene, camera);
 }

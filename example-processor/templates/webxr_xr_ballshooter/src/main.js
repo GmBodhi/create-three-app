@@ -37,9 +37,8 @@ let camera, scene, renderer;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
 
-let room, spheres;
-let physics,
-  velocity = new Vector3();
+let room, spheres, physics;
+const velocity = new Vector3();
 
 let count = 0;
 
@@ -76,7 +75,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(render);
+  renderer.setAnimationLoop(animate);
   renderer.xr.enabled = true;
   document.body.appendChild(renderer.domElement);
 
@@ -88,7 +87,13 @@ function init() {
   controls.update();
 
   document.body.appendChild(
-    XRButton.createButton(renderer, { optionalFeatures: ["depth-sensing"] })
+    XRButton.createButton(renderer, {
+      optionalFeatures: ["depth-sensing"],
+      depthSensing: {
+        usagePreference: ["gpu-optimized"],
+        dataFormatPreference: [],
+      },
+    })
   );
 
   // controllers
@@ -267,7 +272,7 @@ function handleController(controller) {
   }
 }
 
-function render() {
+function animate() {
   handleController(controller1);
   handleController(controller2);
 

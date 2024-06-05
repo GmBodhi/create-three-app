@@ -31,6 +31,7 @@ let mesh, material, geometry;
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
 renderer.xr.enabled = true;
 renderer.xr.setReferenceSpaceType("local");
 document.body.appendChild(renderer.domElement);
@@ -202,7 +203,7 @@ let progress = 0;
 
 let prevTime = performance.now();
 
-function render() {
+function animate() {
   const time = performance.now();
   const delta = time - prevTime;
 
@@ -233,5 +234,3 @@ function render() {
 
   prevTime = time;
 }
-
-renderer.setAnimationLoop(render);

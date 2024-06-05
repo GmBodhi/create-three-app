@@ -46,7 +46,6 @@ const aoParameters = {
 };
 
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -57,6 +56,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = sceneParameters.shadow;
 
@@ -331,8 +331,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update();
   stats.begin();
   composer.render();

@@ -28,7 +28,6 @@ let particleSystem, uniforms, geometry;
 const particles = 100000;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -94,6 +93,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   const container = document.getElementById("container");
   container.appendChild(renderer.domElement);
@@ -114,13 +114,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   const time = Date.now() * 0.005;
 
   particleSystem.rotation.z = 0.01 * time;
@@ -134,4 +127,6 @@ function render() {
   geometry.attributes.size.needsUpdate = true;
 
   renderer.render(scene, camera);
+
+  stats.update();
 }

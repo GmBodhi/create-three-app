@@ -23,7 +23,6 @@ let sphere, plane;
 const start = Date.now();
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -64,6 +63,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   effect = new AsciiEffect(renderer, " .:-+*=%@#", { invert: true });
   effect.setSize(window.innerWidth, window.innerHeight);
@@ -93,12 +93,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   const timer = Date.now() - start;
 
   sphere.position.y = Math.abs(Math.sin(timer * 0.002)) * 150;

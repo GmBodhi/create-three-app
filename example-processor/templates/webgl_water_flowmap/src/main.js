@@ -19,7 +19,6 @@ import { Water } from "three/addons/objects/Water2.js";
 let scene, camera, renderer, water;
 
 init();
-animate();
 
 function init() {
   // scene
@@ -90,6 +89,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -116,11 +116,5 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   renderer.render(scene, camera);
 }

@@ -170,7 +170,6 @@ const mouse = new Vector2();
 const onClickPosition = new Vector2();
 
 init();
-render();
 
 function init() {
   container = document.getElementById("container");
@@ -187,6 +186,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   // A cube, in the middle.
@@ -317,9 +317,7 @@ function getIntersects(point, objects) {
   return raycaster.intersectObjects(objects, false);
 }
 
-function render() {
-  requestAnimationFrame(render);
-
+function animate() {
   // update texture parameters
 
   circleTexture.offset.x = params.offsetX;

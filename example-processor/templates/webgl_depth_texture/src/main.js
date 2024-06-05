@@ -10,7 +10,7 @@ import {
   UnsignedShortType,
   DepthStencilFormat,
   UnsignedIntType,
-  UnsignedInt248Type,
+  FloatType,
   WebGLRenderer,
   PerspectiveCamera,
   WebGLRenderTarget,
@@ -33,11 +33,11 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let camera, scene, renderer, controls, stats;
 let target;
 let postScene, postCamera, postMaterial;
-const supportsExtension = true;
 
 const params = {
   format: DepthFormat,
   type: UnsignedShortType,
+  samples: 0,
 };
 
 const formats = {
@@ -47,16 +47,16 @@ const formats = {
 const types = {
   UnsignedShortType: UnsignedShortType,
   UnsignedIntType: UnsignedIntType,
-  UnsignedInt248Type: UnsignedInt248Type,
+  FloatType: FloatType,
 };
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -92,19 +92,27 @@ function init() {
 
   gui.add(params, "format", formats).onChange(setupRenderTarget);
   gui.add(params, "type", types).onChange(setupRenderTarget);
+  gui.add(params, "samples", 0, 16, 1).onChange(setupRenderTarget);
   gui.open();
 }
 
 function setupRenderTarget() {
   if (target) target.dispose();
 
-  const format = parseFloat(params.format);
-  const type = parseFloat(params.type);
+  const format = parseInt(params.format);
+  const type = parseInt(params.type);
+  const samples = parseInt(params.samples);
 
-  target = new WebGLRenderTarget(window.innerWidth, window.innerHeight);
+  const dpr = renderer.getPixelRatio();
+  target = new WebGLRenderTarget(
+    window.innerWidth * dpr,
+    window.innerHeight * dpr
+  );
   target.texture.minFilter = NearestFilter;
   target.texture.magFilter = NearestFilter;
   target.stencilBuffer = format === DepthStencilFormat ? true : false;
+  target.samples = samples;
+
   target.depthTexture = new DepthTexture();
   target.depthTexture.format = format;
   target.depthTexture.type = type;
@@ -161,10 +169,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  if (!supportsExtension) return;
-
-  requestAnimationFrame(animate);
-
   // render scene into target
   renderer.setRenderTarget(target);
   renderer.render(scene, camera);

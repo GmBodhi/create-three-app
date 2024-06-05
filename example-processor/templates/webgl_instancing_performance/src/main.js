@@ -40,7 +40,6 @@ const api = {
 
 init();
 initMesh();
-animate();
 
 //
 
@@ -192,6 +191,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.setAnimationLoop(animate);
   container = document.getElementById("container");
   container.appendChild(renderer.domElement);
 
@@ -244,16 +244,11 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update();
-  stats.update();
 
-  render();
-}
-
-function render() {
   renderer.render(scene, camera);
+
+  stats.update();
 }
 
 //

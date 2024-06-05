@@ -44,7 +44,6 @@ let generatedCubeRenderTarget,
 let ldrCubeMap, hdrCubeMap, rgbmCubeMap;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -122,6 +121,7 @@ function init() {
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //renderer.toneMapping = ReinhardToneMapping;
@@ -156,8 +156,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

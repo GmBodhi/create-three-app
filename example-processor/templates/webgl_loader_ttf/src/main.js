@@ -45,7 +45,6 @@ let pointerXOnPointerDown = 0;
 let windowHalfX = window.innerWidth / 2;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -107,6 +106,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   // EVENTS
@@ -246,8 +246,6 @@ function onPointerUp() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   group.rotation.y += (targetRotation - group.rotation.y) * 0.05;
 
   camera.lookAt(cameraTarget);

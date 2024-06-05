@@ -24,7 +24,6 @@ let camera, scene, renderer, clock, group, container;
 let composer1, composer2, fxaaPass;
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -84,6 +83,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(container.offsetWidth, container.offsetHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
   container.appendChild(renderer.domElement);
 
@@ -141,8 +141,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const halfWidth = container.offsetWidth / 2;
 
   group.rotation.y += clock.getDelta() * 0.1;

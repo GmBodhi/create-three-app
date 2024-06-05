@@ -27,7 +27,6 @@ let index = 0;
 const param = { TAAEnabled: "1", TAASampleLevel: 0 };
 
 init();
-animate();
 
 clearGui();
 
@@ -72,6 +71,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -139,8 +139,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   index++;
 
   if (Math.round(index / 200) % 2 === 0) {

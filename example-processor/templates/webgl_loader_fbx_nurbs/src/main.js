@@ -10,7 +10,6 @@ import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 let camera, scene, renderer, stats;
 
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -43,6 +42,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -62,8 +62,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   renderer.render(scene, camera);
 
   stats.update();

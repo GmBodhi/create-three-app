@@ -51,7 +51,6 @@ const matLine = new LineMaterial({
   worldUnits: true,
   vertexColors: true,
 
-  //resolution:  // to be set by renderer, eventually
   alphaToCoverage: true,
 });
 
@@ -64,7 +63,6 @@ const matThresholdLine = new LineMaterial({
   opacity: 0.2,
   depthTest: false,
   visible: false,
-  //resolution:  // to be set by renderer, eventually
 });
 
 const params = {
@@ -79,15 +77,15 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   clock = new Clock();
 
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 0.0);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0.0);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -202,10 +200,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  // renderer will set this eventually
-  matLine.resolution.set(window.innerWidth, window.innerHeight);
-  matThresholdLine.resolution.set(window.innerWidth, window.innerHeight);
 }
 
 function onPointerMove(event) {
@@ -214,10 +208,6 @@ function onPointerMove(event) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  stats.update();
-
   const delta = clock.getDelta();
 
   const obj = line.visible ? line : segments;
@@ -261,6 +251,8 @@ function animate() {
   gpuPanel.startQuery();
   renderer.render(scene, camera);
   gpuPanel.endQuery();
+
+  stats.update();
 }
 
 //

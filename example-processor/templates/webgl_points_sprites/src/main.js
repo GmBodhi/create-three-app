@@ -28,7 +28,6 @@ let windowHalfY = window.innerHeight / 2;
 const materials = [];
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -118,6 +117,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -170,8 +170,6 @@ function onPointerMove(event) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

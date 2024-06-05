@@ -18,8 +18,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let camera, controls, scene, renderer;
 
 init();
-//render(); // remove when using next line for animation loop (requestAnimationFrame)
-animate();
+//render(); // remove when using animation loop
 
 function init() {
   scene = new Scene();
@@ -29,6 +28,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -100,8 +100,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update(); // only required if controls.enableDamping = true, or if controls.autoRotate = true
 
   render();

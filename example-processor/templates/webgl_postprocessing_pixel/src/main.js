@@ -34,7 +34,6 @@ let camera, scene, renderer, composer, crystalMesh, clock;
 let gui, params;
 
 init();
-animate();
 
 function init() {
   const aspectRatio = window.innerWidth / window.innerHeight;
@@ -52,6 +51,7 @@ function init() {
   renderer.shadowMap.enabled = true;
   //renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   composer = new EffectComposer(renderer);
@@ -170,8 +170,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const t = clock.getElapsedTime();
 
   crystalMesh.material.emissiveIntensity = Math.sin(t * 3) * 0.5 + 0.5;

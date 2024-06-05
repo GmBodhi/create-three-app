@@ -50,7 +50,6 @@ let time = 0;
 const clock = new Clock();
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -112,6 +111,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   // CONTROLS
@@ -349,8 +349,6 @@ function updateCubes(object, time, numblobs, floor, wallx, wallz) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

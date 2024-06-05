@@ -52,7 +52,6 @@ Ammo().then(function (AmmoLib) {
   Ammo = AmmoLib;
 
   init();
-  animate();
 });
 
 function init() {
@@ -83,6 +82,7 @@ function initGraphics() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -413,8 +413,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

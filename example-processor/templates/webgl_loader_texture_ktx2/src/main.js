@@ -75,7 +75,7 @@ const params = {
   sample: Object.values(SAMPLES)[0],
 };
 
-init().then(animate);
+init();
 
 async function init() {
   const width = window.innerWidth;
@@ -117,11 +117,11 @@ async function init() {
   gui.add(params, "sample", SAMPLES).onChange(loadTexture);
 
   await loadTexture(params.sample);
+
+  renderer.setAnimationLoop(animate);
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   controls.update();
 
   renderer.render(scene, camera);

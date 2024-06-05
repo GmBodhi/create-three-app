@@ -62,9 +62,9 @@ function init() {
     });
 
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.setAnimationLoop(render);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
   container.appendChild(renderer.domElement);
@@ -90,7 +90,7 @@ function onWindowResize() {
 
 //
 
-function render() {
+function animate() {
   if (mixer) mixer.update(clock.getDelta());
 
   controls.update();

@@ -48,8 +48,8 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.setScissorTest(true);
-  renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
   if (isP3Context && window.matchMedia("( color-gamut: p3 )").matches) {
@@ -147,7 +147,7 @@ function containTexture(aspect, target) {
   return target;
 }
 
-function render() {
+function animate() {
   renderer.setScissor(0, 0, sliderPos, window.innerHeight);
   renderer.render(sceneL, camera);
 

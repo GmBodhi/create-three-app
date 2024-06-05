@@ -28,7 +28,6 @@ let sphere, uniforms;
 let displacement, noise;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -78,6 +77,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   const container = document.getElementById("container");
   container.appendChild(renderer.domElement);
@@ -98,8 +98,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

@@ -23,13 +23,13 @@ const raycaster = new Raycaster();
 const pointer = new Vector2();
 
 init();
-animate();
 
 function init() {
   // init renderer
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   // init scene
@@ -88,7 +88,6 @@ function init() {
 
 function animate() {
   renderer.render(scene, camera);
-  requestAnimationFrame(animate);
 }
 
 function onWindowResize() {

@@ -23,7 +23,6 @@ let hitTestSource = null;
 let hitTestSourceRequested = false;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -47,6 +46,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -98,11 +98,7 @@ function onWindowResize() {
 
 //
 
-function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render(timestamp, frame) {
+function animate(timestamp, frame) {
   if (frame) {
     const referenceSpace = renderer.xr.getReferenceSpace();
     const session = renderer.xr.getSession();

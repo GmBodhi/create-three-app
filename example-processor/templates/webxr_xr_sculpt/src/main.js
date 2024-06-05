@@ -29,7 +29,6 @@ let points = [];
 
 init();
 initBlob();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -64,6 +63,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
@@ -152,10 +152,6 @@ function onWindowResize() {
 
 //
 
-function animate() {
-  renderer.setAnimationLoop(render);
-}
-
 function transformPoint(vector) {
   vector.x = (vector.x + 1.0) / 2.0;
   vector.y = vector.y / 2.0;
@@ -203,7 +199,7 @@ function updateBlob() {
   blob.update();
 }
 
-function render() {
+function animate() {
   handleController(controller1);
   handleController(controller2);
 

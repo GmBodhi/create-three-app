@@ -23,17 +23,17 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
+let camera, scene, renderer, stats, mixer, clock, controls;
+
 init();
 
 function init() {
-  let mixer;
-
-  const clock = new Clock();
+  clock = new Clock();
 
   const container = document.createElement("div");
   document.body.appendChild(container);
 
-  const camera = new PerspectiveCamera(
+  camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
     1,
@@ -41,11 +41,12 @@ function init() {
   );
   camera.position.set(-1.8, 0.8, 3);
 
-  const scene = new Scene();
+  scene = new Scene();
 
-  const renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
 
   container.appendChild(renderer.domElement);
@@ -88,7 +89,7 @@ function init() {
   scene.background = new Color(0x666666);
   scene.environment = pmremGenerator.fromScene(environment).texture;
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
   controls.minDistance = 2.5;
   controls.maxDistance = 5;
@@ -97,27 +98,29 @@ function init() {
   controls.maxPolarAngle = Math.PI / 1.8;
   controls.target.set(0, 0.15, -0.2);
 
-  const stats = new Stats();
+  stats = new Stats();
   container.appendChild(stats.dom);
 
-  renderer.setAnimationLoop(() => {
-    const delta = clock.getDelta();
+  window.addEventListener("resize", onWindowResize);
+}
 
-    if (mixer) {
-      mixer.update(delta);
-    }
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
 
-    renderer.render(scene, camera);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
 
-    controls.update();
+function animate() {
+  const delta = clock.getDelta();
 
-    stats.update();
-  });
+  if (mixer) {
+    mixer.update(delta);
+  }
 
-  window.addEventListener("resize", () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
+  renderer.render(scene, camera);
 
-    renderer.setSize(window.innerWidth, window.innerHeight);
-  });
+  controls.update();
+
+  stats.update();
 }

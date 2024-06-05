@@ -62,7 +62,6 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -206,10 +205,11 @@ function init() {
   scene.add(boxMesh3);
 
   renderer = new WebGLRenderer();
-  renderer.shadowMap.enabled = true;
-  renderer.toneMapping = ReinhardToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  renderer.shadowMap.enabled = true;
+  renderer.toneMapping = ReinhardToneMapping;
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -237,12 +237,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   renderer.toneMappingExposure = Math.pow(params.exposure, 5.0); // to allow for very bright scenes.
   renderer.shadowMap.enabled = params.shadows;
   bulbLight.castShadow = params.shadows;

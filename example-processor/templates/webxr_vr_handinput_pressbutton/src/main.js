@@ -265,7 +265,6 @@ const clock = new Clock();
 let camera, scene, renderer;
 
 init();
-animate();
 
 function makeButtonMesh(x, y, z, color) {
   const geometry = new BoxGeometry(x, y, z);
@@ -306,6 +305,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   renderer.xr.cameraAutoUpdate = false;
@@ -509,10 +509,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
   const delta = clock.getDelta();
   const elapsedTime = clock.elapsedTime;
   renderer.xr.updateCamera(camera);

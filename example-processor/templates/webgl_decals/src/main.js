@@ -78,12 +78,12 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -265,8 +265,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   renderer.render(scene, camera);
 
   stats.update();

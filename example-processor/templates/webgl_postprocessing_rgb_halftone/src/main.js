@@ -29,12 +29,12 @@ const rotationSpeed = Math.PI / 64;
 let composer, group;
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   clock = new Clock();
 
@@ -205,8 +205,6 @@ function init() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
   stats.update();
   group.rotation.y += delta * rotationSpeed;

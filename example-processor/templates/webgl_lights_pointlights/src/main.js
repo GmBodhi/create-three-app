@@ -20,7 +20,6 @@ let camera, scene, renderer, light1, light2, light3, light4, object, stats;
 const clock = new Clock();
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -68,6 +67,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //stats
@@ -86,8 +86,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

@@ -46,7 +46,6 @@ const controls = {
 const clock = new Clock();
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -115,6 +114,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -297,7 +297,6 @@ function onKeyUp(event) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
   render();
 
   stats.update();

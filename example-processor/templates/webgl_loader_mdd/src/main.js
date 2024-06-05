@@ -49,8 +49,6 @@ function init() {
 
     mixer = new AnimationMixer(mesh);
     mixer.clipAction(clip).play(); // use clip
-
-    animate();
   });
 
   //
@@ -58,6 +56,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
@@ -71,8 +70,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   if (mixer) mixer.update(delta);

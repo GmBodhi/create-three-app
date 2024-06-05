@@ -28,7 +28,6 @@ let camera, scene, renderer;
 let controls, water, sun, mesh;
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -38,6 +37,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   container.appendChild(renderer.domElement);
@@ -178,7 +178,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   render();
   stats.update();
 }

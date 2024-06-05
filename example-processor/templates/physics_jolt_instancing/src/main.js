@@ -118,6 +118,7 @@ async function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
@@ -129,8 +130,6 @@ async function init() {
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.y = 0.5;
   controls.update();
-
-  animate();
 
   setInterval(() => {
     let index = Math.floor(Math.random() * boxes.count);
@@ -148,8 +147,6 @@ async function init() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   renderer.render(scene, camera);
 
   stats.update();

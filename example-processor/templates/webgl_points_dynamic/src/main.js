@@ -41,7 +41,6 @@ const clock = new Clock();
 let stats;
 
 init();
-animate();
 
 function init() {
   const container = document.querySelector("#container");
@@ -84,6 +83,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
   container.appendChild(renderer.domElement);
 
@@ -216,7 +216,6 @@ function createMesh(positions, scene, scale, x, y, z, color) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   render();
   stats.update();
 }

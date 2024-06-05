@@ -31,7 +31,6 @@ let particleLight;
 const loader = new FontLoader();
 loader.load("fonts/gentilis_regular.typeface.json", function (font) {
   init(font);
-  animate();
 });
 
 function init(font) {
@@ -56,6 +55,7 @@ function init(font) {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   // Materials
@@ -164,8 +164,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

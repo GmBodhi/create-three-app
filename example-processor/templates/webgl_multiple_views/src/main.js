@@ -76,7 +76,6 @@ const views = [
 ];
 
 init();
-animate();
 
 function init() {
   const container = document.getElementById("container");
@@ -224,6 +223,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -249,8 +249,6 @@ function updateSize() {
 function animate() {
   render();
   stats.update();
-
-  requestAnimationFrame(animate);
 }
 
 function render() {

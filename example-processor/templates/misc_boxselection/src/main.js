@@ -22,7 +22,6 @@ let container, stats;
 let camera, scene, renderer;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -82,6 +81,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFShadowMap;
 
@@ -103,14 +103,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   renderer.render(scene, camera);
+
+  stats.update();
 }
 
 const selectionBox = new SelectionBox(camera, scene);

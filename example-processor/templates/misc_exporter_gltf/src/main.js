@@ -118,7 +118,6 @@ const params = {
 };
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -471,6 +470,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
 
@@ -561,12 +561,6 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   const timer = Date.now() * 0.0001;
 
   camera.position.x = Math.cos(timer) * 800;

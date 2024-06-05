@@ -3,9 +3,9 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  EquirectangularReflectionMapping,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  EquirectangularReflectionMapping,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -15,7 +15,6 @@ import { USDZLoader } from "three/addons/loaders/USDZLoader.js";
 let camera, scene, renderer;
 
 init();
-animate();
 
 async function init() {
   camera = new PerspectiveCamera(
@@ -27,19 +26,6 @@ async function init() {
   camera.position.set(0, 0.75, -1.5);
 
   scene = new Scene();
-
-  renderer = new WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 2.0;
-  document.body.appendChild(renderer.domElement);
-
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 1;
-  controls.maxDistance = 8;
-  // controls.target.y = 15;
-  // controls.update();
 
   const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");
 
@@ -64,6 +50,22 @@ async function init() {
   model.position.z = -0.25;
   scene.add(model);
 
+  // renderer
+
+  renderer = new WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 2.0;
+  document.body.appendChild(renderer.domElement);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 1;
+  controls.maxDistance = 8;
+  // controls.target.y = 15;
+  // controls.update();
+
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -75,7 +77,5 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   renderer.render(scene, camera);
 }

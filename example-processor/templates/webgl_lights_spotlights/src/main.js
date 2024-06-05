@@ -19,6 +19,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
 
 const camera = new PerspectiveCamera(
   35,
@@ -129,15 +130,15 @@ function tween(light) {
     .start();
 }
 
-function animate() {
+function updateTweens() {
   tween(spotLight1);
   tween(spotLight2);
   tween(spotLight3);
 
-  setTimeout(animate, 5000);
+  setTimeout(updateTweens, 5000);
 }
 
-function render() {
+function animate() {
   TWEEN.update();
 
   if (lightHelper1) lightHelper1.update();
@@ -145,10 +146,7 @@ function render() {
   if (lightHelper3) lightHelper3.update();
 
   renderer.render(scene, camera);
-
-  requestAnimationFrame(render);
 }
 
 init();
-render();
-animate();
+updateTweens();

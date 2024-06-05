@@ -44,6 +44,7 @@ function init() {
 
   renderer = new WebGLRenderer({ canvas: canvas, antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setAnimationLoop(animate);
 
   views = document.querySelectorAll(".view");
 
@@ -129,11 +130,6 @@ function updateSize() {
 }
 
 function animate() {
-  render();
-  requestAnimationFrame(animate);
-}
-
-function render() {
   updateSize();
 
   renderer.setClearColor(0xffffff);

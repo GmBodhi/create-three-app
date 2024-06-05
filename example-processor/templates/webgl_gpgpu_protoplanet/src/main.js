@@ -40,7 +40,6 @@ let particleUniforms;
 let effectController;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -60,6 +59,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -302,8 +302,6 @@ function getCameraConstant(camera) {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

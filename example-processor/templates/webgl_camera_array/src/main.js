@@ -19,7 +19,6 @@ let mesh;
 const AMOUNT = 6;
 
 init();
-animate();
 
 function init() {
   const ASPECT_RATIO = window.innerWidth / window.innerHeight;
@@ -80,6 +79,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
@@ -120,6 +120,4 @@ function animate() {
   mesh.rotation.z += 0.01;
 
   renderer.render(scene, camera);
-
-  requestAnimationFrame(animate);
 }

@@ -43,7 +43,6 @@ const materials = [],
 const postprocessing = {};
 
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -57,6 +56,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   const path = "textures/cube/SwedishRoyalCastle/";
@@ -197,8 +197,6 @@ function initPostprocessing() {
 }
 
 function animate() {
-  requestAnimationFrame(animate, renderer.domElement);
-
   stats.begin();
   render();
   stats.end();

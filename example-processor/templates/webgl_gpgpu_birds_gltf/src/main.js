@@ -166,7 +166,6 @@ new GLTFLoader().load(gltfs[selectModel], function (gltf) {
   BirdGeometry.setIndex(indices);
 
   init();
-  animate();
 });
 
 let container, stats;
@@ -221,6 +220,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   initComputeRenderer();
@@ -457,8 +457,6 @@ function onPointerMove(event) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

@@ -21,7 +21,6 @@ let camera, scene, renderer;
 let parent_node;
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -176,6 +175,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   container.appendChild(renderer.domElement);
 
@@ -199,16 +199,11 @@ function onWindowResize() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-  stats.update();
-}
-
-function render() {
   const time = Date.now() * 0.001;
 
   parent_node.rotation.z = time * 0.5;
 
   renderer.render(scene, camera);
+
+  stats.update();
 }

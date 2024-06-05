@@ -23,7 +23,6 @@ let canvas, renderer;
 const scenes = [];
 
 init();
-animate();
 
 function init() {
   canvas = document.getElementById("c");
@@ -93,6 +92,7 @@ function init() {
   renderer = new WebGLRenderer({ canvas: canvas, antialias: true });
   renderer.setClearColor(0xffffff, 1);
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setAnimationLoop(animate);
 }
 
 function updateSize() {
@@ -105,11 +105,6 @@ function updateSize() {
 }
 
 function animate() {
-  render();
-  requestAnimationFrame(animate);
-}
-
-function render() {
   updateSize();
 
   canvas.style.transform = `translateY(${window.scrollY}px)`;

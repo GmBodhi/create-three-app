@@ -20,7 +20,6 @@ let camera, scene, renderer, effect;
 let group;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -79,6 +78,7 @@ function init() {
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   effect = new PeppersGhostEffect(renderer);
@@ -96,8 +96,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   group.rotation.y += 0.01;
 
   effect.render(scene, camera);

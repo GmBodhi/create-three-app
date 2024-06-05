@@ -2,14 +2,14 @@ import "./style.css"; // For webpack support
 
 import {
   Clock,
-  WebGLRenderer,
-  ReinhardToneMapping,
   Scene,
   PerspectiveCamera,
   AmbientLight,
   PointLight,
-  Vector2,
   AnimationMixer,
+  WebGLRenderer,
+  ReinhardToneMapping,
+  Vector2,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -34,19 +34,10 @@ const params = {
 
 init();
 
-function init() {
+async function init() {
   const container = document.getElementById("container");
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
   clock = new Clock();
-
-  renderer = new WebGLRenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = ReinhardToneMapping;
-  container.appendChild(renderer.domElement);
 
   const scene = new Scene();
 
@@ -59,15 +50,31 @@ function init() {
   camera.position.set(-5, 2.5, -3.5);
   scene.add(camera);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.maxPolarAngle = Math.PI * 0.5;
-  controls.minDistance = 3;
-  controls.maxDistance = 8;
-
   scene.add(new AmbientLight(0xcccccc));
 
   const pointLight = new PointLight(0xffffff, 100);
   camera.add(pointLight);
+
+  const loader = new GLTFLoader();
+  const gltf = await loader.loadAsync("models/gltf/PrimaryIonDrive.glb");
+
+  const model = gltf.scene;
+  scene.add(model);
+
+  mixer = new AnimationMixer(model);
+  const clip = gltf.animations[0];
+  mixer.clipAction(clip.optimize()).play();
+
+  //
+
+  renderer = new WebGLRenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  renderer.toneMapping = ReinhardToneMapping;
+  container.appendChild(renderer.domElement);
+
+  //
 
   const renderScene = new RenderPass(scene, camera);
 
@@ -88,17 +95,19 @@ function init() {
   composer.addPass(bloomPass);
   composer.addPass(outputPass);
 
-  new GLTFLoader().load("models/gltf/PrimaryIonDrive.glb", function (gltf) {
-    const model = gltf.scene;
+  //
 
-    scene.add(model);
+  stats = new Stats();
+  container.appendChild(stats.dom);
 
-    mixer = new AnimationMixer(model);
-    const clip = gltf.animations[0];
-    mixer.clipAction(clip.optimize()).play();
+  //
 
-    animate();
-  });
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.maxPolarAngle = Math.PI * 0.5;
+  controls.minDistance = 3;
+  controls.maxDistance = 8;
+
+  //
 
   const gui = new GUI();
 
@@ -140,8 +149,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   const delta = clock.getDelta();
 
   mixer.update(delta);

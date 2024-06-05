@@ -30,13 +30,13 @@ let insetWidth;
 let insetHeight;
 
 init();
-animate();
 
 function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 0.0);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0.0);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -65,7 +65,6 @@ function init() {
   matLine = new LineMaterial({
     color: 0x4080ff,
     linewidth: 5, // in pixels
-    //resolution:  // to be set by renderer, eventually
     dashed: false,
   });
 
@@ -111,18 +110,11 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  stats.update();
-
   // main scene
 
   renderer.setClearColor(0x000000, 0);
 
   renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
-
-  // renderer will set this eventually
-  matLine.resolution.set(window.innerWidth, window.innerHeight); // resolution of the viewport
 
   renderer.render(scene, camera);
 
@@ -141,12 +133,11 @@ function animate() {
   camera2.position.copy(camera.position);
   camera2.quaternion.copy(camera.quaternion);
 
-  // renderer will set this eventually
-  matLine.resolution.set(insetWidth, insetHeight); // resolution of the inset viewport
-
   renderer.render(scene, camera2);
 
   renderer.setScissorTest(false);
+
+  stats.update();
 }
 
 //

@@ -27,13 +27,12 @@ const params = {
 };
 
 init();
-createGUI();
-animate();
 
 function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -65,14 +64,6 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 
-  if (typeof TESTING !== "undefined") {
-    for (let i = 0; i < 45; i++) {
-      render();
-    }
-  }
-}
-
-function createGUI() {
   const gui = new GUI({ title: "Damp setting" });
   gui.add(afterimagePass.uniforms["damp"], "value", 0, 1).step(0.001);
   gui.add(params, "enable");
@@ -86,16 +77,11 @@ function onWindowResize() {
   composer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function render() {
+function animate() {
   mesh.rotation.x += 0.005;
   mesh.rotation.y += 0.01;
 
   afterimagePass.enabled = params.enable;
 
   composer.render();
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-  render();
 }

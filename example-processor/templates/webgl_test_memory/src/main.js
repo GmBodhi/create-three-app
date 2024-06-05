@@ -14,7 +14,6 @@ import {
 let camera, scene, renderer;
 
 init();
-animate();
 
 function init() {
   const container = document.createElement("div");
@@ -34,6 +33,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 }
 
@@ -59,12 +59,6 @@ function createImage() {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
-  render();
-}
-
-function render() {
   const geometry = new SphereGeometry(
     50,
     Math.random() * 64,

@@ -152,7 +152,7 @@ new GLTFLoader()
         .listen(influences);
     }
 
-    renderer.setAnimationLoop(animation);
+    renderer.setAnimationLoop(animate);
   });
 
 // Video Texture
@@ -199,7 +199,7 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
 
 const transform = new Object3D();
 
-function animation() {
+function animate() {
   if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
     const results = faceLandmarker.detectForVideo(video, Date.now());
 

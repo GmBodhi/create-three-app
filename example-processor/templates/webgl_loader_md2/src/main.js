@@ -46,7 +46,6 @@ const clock = new Clock();
 let stats;
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -116,6 +115,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+  renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
   //
@@ -286,7 +286,6 @@ function setupGUIAnimations(character) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
   render();
 
   stats.update();

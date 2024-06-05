@@ -34,7 +34,6 @@ const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(45, WIDTH / HEIGHT, 1, 10000);
@@ -130,6 +129,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(WIDTH, HEIGHT);
+  renderer.setAnimationLoop(animate);
 
   const container = document.getElementById("container");
   container.appendChild(renderer.domElement);
@@ -203,8 +203,6 @@ function sortPoints() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   render();
   stats.update();
 }

@@ -4,11 +4,8 @@ import {
   PerspectiveCamera,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  MeshBasicMaterial,
-  CustomBlending,
   Scene,
   MeshPhysicalMaterial,
-  Group,
   Box3,
   Vector3,
   Mesh,
@@ -29,21 +26,16 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { LDrawLoader } from "three/addons/loaders/LDrawLoader.js";
 import { LDrawUtils } from "three/addons/utils/LDrawUtils.js";
-import { FullScreenQuad } from "three/addons/postprocessing/Pass.js";
 
 import {
-  PhysicalPathTracingMaterial,
-  PathTracingRenderer,
-  MaterialReducer,
+  WebGLPathTracer,
   BlurredEnvMapGenerator,
-  PathTracingSceneGenerator,
   GradientEquirectTexture,
 } from "three-gpu-pathtracer";
 
 let progressBarDiv, samplesEl;
 let camera, scene, renderer, controls, gui;
-let pathTracer, sceneInfo, fsQuad, floor;
-let delaySamples = 0;
+let pathTracer, floor, gradientMap;
 
 const params = {
   enable: true,
@@ -65,7 +57,6 @@ const params = {
 };
 
 init();
-render();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -79,45 +70,34 @@ function init() {
   // initialize the renderer
   renderer = new WebGLRenderer({
     antialias: true,
+    alpha: true,
     preserveDrawingBuffer: true,
     premultipliedAlpha: false,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.setClearColor(0xdddddd);
   document.body.appendChild(renderer.domElement);
 
-  const gradientMap = new GradientEquirectTexture();
+  gradientMap = new GradientEquirectTexture();
   gradientMap.topColor.set(0xeeeeee);
   gradientMap.bottomColor.set(0xeaeaea);
   gradientMap.update();
 
   // initialize the pathtracer
-  pathTracer = new PathTracingRenderer(renderer);
-  pathTracer.camera = camera;
-  pathTracer.alpha = true;
+  pathTracer = new WebGLPathTracer(renderer);
+  pathTracer.filterGlossyFactor = 1;
+  pathTracer.minSamples = 3;
+  pathTracer.renderScale = params.resolutionScale;
   pathTracer.tiles.set(params.tiles, params.tiles);
-  pathTracer.material = new PhysicalPathTracingMaterial({
-    filterGlossyFactor: 0.5,
-    backgroundMap: gradientMap,
-  });
-  pathTracer.material.setDefine("FEATURE_MIS", 1);
-
-  fsQuad = new FullScreenQuad(
-    new MeshBasicMaterial({
-      map: pathTracer.target.texture,
-      blending: CustomBlending,
-    })
-  );
 
   // scene
   scene = new Scene();
+  scene.background = gradientMap;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", () => {
-    delaySamples = 5;
-    pathTracer.reset();
+    pathTracer.updateCamera();
   });
 
   window.addEventListener("resize", onWindowResize);
@@ -143,7 +123,7 @@ async function loadModel() {
   progressBarDiv.innerText = "Loading...";
 
   let model = null;
-  let envMap = null;
+  let environment = null;
 
   updateProgressBar(0);
   showProgressBar();
@@ -153,11 +133,19 @@ async function loadModel() {
     .setPath("models/ldraw/officialLibrary/")
     .loadAsync("models/7140-1-X-wingFighter.mpd_Packed.mpd", onProgress)
     .then(function (legoGroup) {
+      // Convert from LDraw coordinates: rotate 180 degrees around OX
       legoGroup = LDrawUtils.mergeObject(legoGroup);
       legoGroup.rotation.x = Math.PI;
+      legoGroup.updateMatrixWorld();
+      model = legoGroup;
 
-      // adjust the materials to use transmission, be a bit shinier
       legoGroup.traverse((c) => {
+        // hide the line segments
+        if (c.isLineSegments) {
+          c.visible = false;
+        }
+
+        // adjust the materials to use transmission, be a bit shinier
         if (c.material) {
           c.material.roughness *= 0.25;
 
@@ -167,6 +155,7 @@ async function loadModel() {
 
             newMaterial.opacity = 1.0;
             newMaterial.transmission = 1.0;
+            newMaterial.thickness = 1.0;
             newMaterial.ior = 1.4;
             newMaterial.roughness = oldMaterial.roughness;
             newMaterial.metalness = 0.0;
@@ -180,12 +169,6 @@ async function loadModel() {
           }
         }
       });
-
-      model = new Group();
-      model.add(legoGroup);
-
-      // Convert from LDraw coordinates: rotate 180 degrees around OX
-      model.updateMatrixWorld();
     })
     .catch(onError);
 
@@ -196,14 +179,17 @@ async function loadModel() {
       const envMapGenerator = new BlurredEnvMapGenerator(renderer);
       const blurredEnvMap = envMapGenerator.generate(tex, 0);
 
-      scene.environment = blurredEnvMap;
-      envMap = blurredEnvMap;
-    });
+      environment = blurredEnvMap;
+    })
+    .catch(onError);
 
   await Promise.all([envMapPromise, ldrawPromise]);
 
   hideProgressBar();
   document.body.classList.add("checkerboard");
+
+  // set environment map
+  scene.environment = environment;
 
   // Adjust camera
   const bbox = new Box3().setFromObject(model);
@@ -217,13 +203,16 @@ async function loadModel() {
     .add(controls.target0);
   controls.reset();
 
+  // add the model
+  scene.add(model);
+
   // add floor
   floor = new Mesh(
     new PlaneGeometry(),
     new MeshStandardMaterial({
       side: DoubleSide,
-      roughness: 0.01,
-      metalness: 1,
+      roughness: params.roughness,
+      metalness: params.metalness,
       map: generateRadialFloorTexture(1024),
       transparent: true,
     })
@@ -231,63 +220,30 @@ async function loadModel() {
   floor.scale.setScalar(2500);
   floor.rotation.x = -Math.PI / 2;
   floor.position.y = bbox.min.y;
-  model.add(floor);
-  model.updateMatrixWorld();
-
-  // de-duplicate and reduce the number of materials used in place
-  const reducer = new MaterialReducer();
-  reducer.process(model);
+  scene.add(floor);
 
   // reset the progress bar to display bvh generation
   progressBarDiv.innerText = "Generating BVH...";
   updateProgressBar(0);
 
-  const generator = new PathTracingSceneGenerator();
-  const result = generator.generate(model);
+  pathTracer.setScene(scene, camera);
 
-  // add the model to the scene
-  sceneInfo = result;
-  model.traverse((c) => {
-    if (c.isLineSegments) {
-      c.visible = false;
-    }
-  });
-  scene.add(model);
-
-  // update the material
-  const { bvh, textures, materials } = result;
-  const geometry = bvh.geometry;
-  const material = pathTracer.material;
-
-  material.bvh.updateFrom(bvh);
-  material.attributesArray.updateFrom(
-    geometry.attributes.normal,
-    geometry.attributes.tangent,
-    geometry.attributes.uv,
-    geometry.attributes.color
-  );
-  material.materialIndexAttribute.updateFrom(geometry.attributes.materialIndex);
-  material.textures.setTextures(renderer, 2048, 2048, textures);
-  material.materials.updateFrom(materials, textures);
-  pathTracer.material.envMapInfo.updateFrom(envMap);
-  pathTracer.reset();
+  renderer.setAnimationLoop(animate);
 }
 
 function onWindowResize() {
   const w = window.innerWidth;
   const h = window.innerHeight;
-  const scale = params.resolutionScale;
   const dpr = window.devicePixelRatio;
 
-  pathTracer.setSize(w * scale * dpr, h * scale * dpr);
-  pathTracer.reset();
-
   renderer.setSize(w, h);
-  renderer.setPixelRatio(window.devicePixelRatio * scale);
+  renderer.setPixelRatio(dpr);
 
   const aspect = w / h;
   camera.aspect = aspect;
   camera.updateProjectionMatrix();
+
+  pathTracer.updateCamera();
 }
 
 function createGUI() {
@@ -300,25 +256,29 @@ function createGUI() {
   gui.add(params, "pause");
   gui.add(params, "toneMapping");
   gui.add(params, "transparentBackground").onChange((v) => {
-    pathTracer.material.backgroundAlpha = v ? 0 : 1;
-    renderer.setClearAlpha(v ? 0 : 1);
+    scene.background = v ? null : gradientMap;
+    pathTracer.updateEnvironment();
+  });
+  gui.add(params, "resolutionScale", 0.1, 1.0, 0.1).onChange((v) => {
+    pathTracer.renderScale = v;
     pathTracer.reset();
   });
-  gui.add(params, "resolutionScale", 0.1, 1.0, 0.1).onChange(onWindowResize);
-  gui.add(params, "tiles", 1, 3, 1).onChange((v) => {
+  gui.add(params, "tiles", 1, 6, 1).onChange((v) => {
     pathTracer.tiles.set(v, v);
   });
   gui
     .add(params, "roughness", 0, 1)
     .name("floor roughness")
-    .onChange(() => {
-      pathTracer.reset();
+    .onChange((v) => {
+      floor.material.roughness = v;
+      pathTracer.updateMaterials();
     });
   gui
     .add(params, "metalness", 0, 1)
     .name("floor metalness")
-    .onChange(() => {
-      pathTracer.reset();
+    .onChange((v) => {
+      floor.material.metalness = v;
+      pathTracer.updateMaterials();
     });
   gui.add(params, "download").name("download image");
 
@@ -334,47 +294,17 @@ function createGUI() {
 
 //
 
-function render() {
-  requestAnimationFrame(render);
-
-  if (!sceneInfo) {
-    return;
-  }
-
+function animate() {
   renderer.toneMapping = params.toneMapping
     ? ACESFilmicToneMapping
     : NoToneMapping;
 
-  if (pathTracer.samples < 1.0 || !params.enable) {
-    renderer.render(scene, camera);
-  }
+  const samples = Math.floor(pathTracer.samples);
+  samplesEl.innerText = `samples: ${samples}`;
 
-  if (params.enable && delaySamples === 0) {
-    const samples = Math.floor(pathTracer.samples);
-    samplesEl.innerText = `samples: ${samples}`;
-
-    floor.material.roughness = params.roughness;
-    floor.material.metalness = params.metalness;
-
-    pathTracer.material.materials.updateFrom(
-      sceneInfo.materials,
-      sceneInfo.textures
-    );
-    pathTracer.material.filterGlossyFactor = 1;
-    pathTracer.material.physicalCamera.updateFrom(camera);
-
-    camera.updateMatrixWorld();
-
-    if (!params.pause || pathTracer.samples < 1) {
-      pathTracer.update();
-    }
-
-    renderer.autoClear = false;
-    fsQuad.render(renderer);
-    renderer.autoClear = true;
-  } else if (delaySamples > 0) {
-    delaySamples--;
-  }
+  pathTracer.enablePathTracing = params.enable;
+  pathTracer.pausePathTracing = params.pause;
+  pathTracer.renderSample();
 
   samplesEl.innerText = `samples: ${Math.floor(pathTracer.samples)}`;
 }

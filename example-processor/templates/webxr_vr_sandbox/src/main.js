@@ -46,7 +46,6 @@ const parameters = {
 };
 
 init();
-animate();
 
 function init() {
   scene = new Scene();
@@ -114,6 +113,7 @@ function init() {
   renderer.autoClear = false;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.xr.enabled = true;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
@@ -210,10 +210,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  renderer.setAnimationLoop(render);
-}
-
-function render() {
   const time = performance.now() * 0.0002;
   const torus = scene.getObjectByName("torus");
   torus.rotation.x = time * 0.4;

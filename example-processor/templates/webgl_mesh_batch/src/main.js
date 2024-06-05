@@ -60,7 +60,6 @@ const api = {
 init();
 initGeometries();
 initMesh();
-animate();
 
 //
 
@@ -186,6 +185,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   // scene
@@ -236,7 +236,7 @@ function init() {
 
 //
 
-function sortFunction(list, camera) {
+function sortFunction(list) {
   // initialize options
   this._options = this._options || {
     get: (el) => el.z,
@@ -246,9 +246,19 @@ function sortFunction(list, camera) {
   const options = this._options;
   options.reversed = this.material.transparent;
 
-  // convert depth to unsigned 32 bit range
-  const factor = (2 ** 32 - 1) / camera.far; // UINT32_MAX / max_depth
+  let minZ = Infinity;
+  let maxZ = -Infinity;
   for (let i = 0, l = list.length; i < l; i++) {
+    const z = list[i].z;
+    if (z > maxZ) maxZ = z;
+    if (z < minZ) minZ = z;
+  }
+
+  // convert depth to unsigned 32 bit range
+  const depthDelta = maxZ - minZ;
+  const factor = (2 ** 32 - 1) / depthDelta; // UINT32_MAX / z range
+  for (let i = 0, l = list.length; i < l; i++) {
+    list[i].z -= minZ;
     list[i].z *= factor;
   }
 
@@ -267,8 +277,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   animateMeshes();
 
   controls.update();

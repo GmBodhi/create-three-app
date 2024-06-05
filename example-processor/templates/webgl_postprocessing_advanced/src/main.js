@@ -65,7 +65,6 @@ let quadBG, quadMask, renderScene;
 const delta = 0.01;
 
 init();
-animate();
 
 function init() {
   container = document.getElementById("container");
@@ -135,6 +134,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
 
   //
@@ -335,8 +335,6 @@ function createMesh(geometry, scene, scale) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
   render();
   stats.end();

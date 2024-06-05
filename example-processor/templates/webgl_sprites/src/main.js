@@ -23,7 +23,6 @@ let mapC;
 let group;
 
 init();
-animate();
 
 function init() {
   const width = window.innerWidth;
@@ -106,6 +105,7 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.autoClear = false; // To allow render overlay on top of sprited sphere
 
   document.body.appendChild(renderer.domElement);
@@ -181,11 +181,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-  render();
-}
-
-function render() {
   const time = Date.now() / 1000;
 
   for (let i = 0, l = group.children.length; i < l; i++) {

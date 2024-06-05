@@ -25,7 +25,6 @@ let windowHalfY = window.innerHeight / 2;
 let camera, scene, renderer;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -41,6 +40,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -211,11 +211,6 @@ function onPointerMove(event) {
 //
 
 function animate() {
-  requestAnimationFrame(animate);
-  render();
-}
-
-function render() {
   camera.position.x += (mouseX - camera.position.x) * 0.05;
   camera.position.y += (-mouseY + 200 - camera.position.y) * 0.05;
 

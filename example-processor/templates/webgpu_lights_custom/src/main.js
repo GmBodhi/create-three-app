@@ -10,7 +10,7 @@ import {
   Vector3,
   BufferGeometry,
   Points,
-  LinearToneMapping,
+  NeutralToneMapping,
 } from "three";
 import {
   color,
@@ -53,23 +53,23 @@ function init() {
     0.1,
     10
   );
-  camera.position.z = 2;
+  camera.position.z = 1.5;
 
   scene = new Scene();
   scene.background = new Color(0x222222);
 
   // lights
 
-  const sphereGeometry = new SphereGeometry(0.02, 16, 8);
+  const sphereGeometry = new SphereGeometry(0.01, 16, 8);
 
-  const addLight = (hexColor, intensity = 2, distance = 1) => {
+  const addLight = (hexColor) => {
     const material = new MeshStandardNodeMaterial();
     material.colorNode = color(hexColor);
     material.lightsNode = lights(); // ignore scene lights
 
     const mesh = new Mesh(sphereGeometry, material);
 
-    const light = new PointLight(hexColor, intensity, distance);
+    const light = new PointLight(hexColor, 0.1, 0.8);
     light.add(mesh);
 
     scene.add(light);
@@ -89,7 +89,7 @@ function init() {
 
   const points = [];
 
-  for (let i = 0; i < 3000; i++) {
+  for (let i = 0; i < 1_000_000; i++) {
     const point = new Vector3().random().subScalar(0.5).multiplyScalar(2);
     points.push(point);
   }
@@ -115,7 +115,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
+  renderer.toneMappingNode = toneMapping(NeutralToneMapping, 1);
   document.body.appendChild(renderer.domElement);
 
   // controls
@@ -151,6 +151,8 @@ function animate() {
   light3.position.x = Math.sin(time * 0.7) * scale;
   light3.position.y = Math.cos(time * 0.3) * scale;
   light3.position.z = Math.sin(time * 0.5) * scale;
+
+  scene.rotation.y = time * 0.6;
 
   renderer.render(scene, camera);
 }

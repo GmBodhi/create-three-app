@@ -27,7 +27,6 @@ let camera, scene, renderer, stats;
 let pointLight, pointLight2;
 
 init();
-animate();
 
 function init() {
   camera = new PerspectiveCamera(
@@ -103,6 +102,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = BasicShadowMap;
   document.body.appendChild(renderer.domElement);
@@ -139,11 +139,6 @@ function generateTexture() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-  render();
-}
-
-function render() {
   let time = performance.now() * 0.001;
 
   pointLight.position.x = Math.sin(time * 0.6) * 9;

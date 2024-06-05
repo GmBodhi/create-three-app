@@ -96,7 +96,6 @@ gui.addColor(conf, "hiddenEdgeColor").onChange(function (value) {
 });
 
 init();
-animate();
 
 function init() {
   container = document.createElement("div");
@@ -109,6 +108,7 @@ function init() {
   renderer.shadowMap.enabled = true;
   // todo - support pixelRatio in this demo
   renderer.setSize(width, height);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -297,8 +297,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
-
   stats.begin();
 
   const timer = performance.now();
