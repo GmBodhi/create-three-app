@@ -113,8 +113,8 @@ function animate() {
   if (params.transitionAnimate) TWEEN.update();
 
   const delta = clock.getDelta();
-  fxSceneA.render(delta);
-  fxSceneB.render(delta);
+  fxSceneA.update(delta);
+  fxSceneB.update(delta);
 
   render();
   stats.update();
@@ -208,7 +208,7 @@ function FXScene(geometry, rotationSpeed, backgroundColor) {
   this.camera = camera;
   this.mesh = mesh;
 
-  this.render = function (delta) {
+  this.update = function (delta) {
     if (params.sceneAnimate) {
       mesh.rotation.x += this.rotationSpeed.x * delta;
       mesh.rotation.y += this.rotationSpeed.y * delta;
