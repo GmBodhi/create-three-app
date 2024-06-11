@@ -136,7 +136,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
-  // post processing ( just for WebGPUBackend for now )
+  // post processing
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
