@@ -3829,6 +3829,16 @@
         "/src"
       ]
     },
+    "webgpu_lights_rectarealight": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lights_selective": {
       "files": {
         "index.html": "src",
@@ -4333,6 +4343,16 @@
       ]
     },
     "webgpu_tsl_editor": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_interoperability": {
       "files": {
         "index.html": "src",
         "main.js": "src",
