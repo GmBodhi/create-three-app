@@ -1,3 +1,5 @@
+# DEPRECATED
+
 <div align="center">
   <h1>create-three-app</h1>
   <p>
