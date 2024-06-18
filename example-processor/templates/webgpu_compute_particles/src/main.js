@@ -143,7 +143,6 @@ function init() {
   particleMaterial.transparent = true;
 
   const particles = new Mesh(new PlaneGeometry(1, 1), particleMaterial);
-  particles.isInstancedMesh = true;
   particles.count = particleCount;
   particles.frustumCulled = false;
   scene.add(particles);

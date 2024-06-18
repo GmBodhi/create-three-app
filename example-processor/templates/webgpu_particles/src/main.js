@@ -99,7 +99,6 @@ function init() {
     smokeNodeMaterial
   );
   smokeInstancedSprite.scale.setScalar(400);
-  smokeInstancedSprite.isInstancedMesh = true;
   smokeInstancedSprite.count = 2000;
   scene.add(smokeInstancedSprite);
 
@@ -122,7 +121,6 @@ function init() {
     fireNodeMaterial
   );
   fireInstancedSprite.scale.setScalar(400);
-  fireInstancedSprite.isInstancedMesh = true;
   fireInstancedSprite.count = 100;
   fireInstancedSprite.position.y = -100;
   fireInstancedSprite.renderOrder = 1;

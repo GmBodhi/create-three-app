@@ -15,6 +15,7 @@ import WebGL from "three/addons/capabilities/WebGL.js";
 import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import {
   tslFn,
+  sampler,
   attribute,
   varyingProperty,
   timerLocal,
@@ -102,12 +103,12 @@ function init() {
 							crtHeight
 						);
 						// Coordinate for each cell in the pixel map
-						var coord = pixel / cellSize;
+						let coord = pixel / cellSize;
 						// Three color values for each cell (r, g, b)
-						var subcoord = coord * vec2f( 3.0, 1.0 );
-						var offset = vec2<f32>( 0, fract( floor( coord.x ) * cellOffset ) );
+						let subcoord = coord * vec2f( 3.0, 1.0 );
+						let offset = vec2<f32>( 0, fract( floor( coord.x ) * cellOffset ) );
 
-						var maskCoord = floor( coord + offset ) * cellSize;
+						let maskCoord = floor( coord + offset ) * cellSize;
 
 						var samplePoint = maskCoord / vec2<f32>(crtWidth, crtHeight);
 						samplePoint.x += fract( time * speed / 20 );
@@ -120,7 +121,7 @@ function init() {
 
 						// Current implementation does not give an even amount of space to each r, g, b unit of a cell
 						// Fix/hack this by multiplying subCoord.x by cellSize at cellSizes below 6
-						var ind = floor( subcoord.x ) % 3;
+						let ind = floor( subcoord.x ) % 3;
 
 						var maskColor = vec3<f32>(
 							f32( ind == 0.0 ), 
@@ -128,7 +129,7 @@ function init() {
 							f32( ind == 2.0 )
 						) * 3.0;
 
-						var cellUV = fract( subcoord + offset ) * 2.0 - 1.0;
+						let cellUV = fract( subcoord + offset ) * 2.0 - 1.0;
 						var border: vec2<f32> = 1.0 - cellUV * cellUV * borderMask;
 
 						maskColor *= vec3f( clamp( border.x, 0.0, 1.0 ) * clamp( border.y, 0.0, 1.0) );
@@ -175,7 +176,7 @@ function init() {
   wgslShaderMaterial.fragmentNode = wgslFragmentShader({
     vUv: vUv,
     tex: texture(planetTexture),
-    texSampler: texture(planetTexture),
+    texSampler: sampler(planetTexture),
     crtWidth: crtWidthUniform,
     crtHeight: crtHeightUniform,
     cellOffset: cellOffsetUniform,

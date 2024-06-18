@@ -214,7 +214,6 @@ async function init() {
       .add(posBuffer.toAttribute());
 
     const rainParticles = new Mesh(geometry, staticMaterial);
-    rainParticles.isInstancedMesh = true;
     rainParticles.count = maxParticleCount;
     rainParticles.castShadow = true;
     rainParticles.layers.disableAll();
