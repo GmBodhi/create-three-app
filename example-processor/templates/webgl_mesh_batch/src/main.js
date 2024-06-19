@@ -246,7 +246,7 @@ function sortFunction(list) {
   // initialize options
   this._options = this._options || {
     get: (el) => el.z,
-    aux: new Array(this.maxGeometryCount),
+    aux: new Array(this.maxInstanceCount),
   };
 
   const options = this._options;
