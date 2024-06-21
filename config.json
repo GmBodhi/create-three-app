@@ -3408,6 +3408,19 @@
         "/src/shaders"
       ]
     },
+    "webgl_texture2darray_layerupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "fs.glsl": "src/shaders",
+        "vs.glsl": "src/shaders",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src",
+        "/src/shaders"
+      ]
+    },
     "webgl_texture3d": {
       "files": {
         "index.html": "src",

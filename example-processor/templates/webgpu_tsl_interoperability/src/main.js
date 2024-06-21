@@ -45,8 +45,6 @@ const crtHeightUniform = uniform(1608);
 const canvas = document.getElementById("c");
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
@@ -86,7 +84,7 @@ function init() {
 						vUv: vec2f,
 						tex: texture_2d<f32>,
 						texSampler: sampler,
-						crtWidth: f32, 
+						crtWidth: f32,
 						crtHeight: f32,
 						cellOffset: f32,
 						cellSize: f32,
@@ -99,7 +97,7 @@ function init() {
 					) -> vec3<f32> {
 						// Convert uv into map of pixels
 						var pixel = ( vUv * 0.5 + 0.5 ) * vec2<f32>(
-							crtWidth, 
+							crtWidth,
 							crtHeight
 						);
 						// Coordinate for each cell in the pixel map
@@ -124,8 +122,8 @@ function init() {
 						let ind = floor( subcoord.x ) % 3;
 
 						var maskColor = vec3<f32>(
-							f32( ind == 0.0 ), 
-							f32( ind == 1.0 ), 
+							f32( ind == 0.0 ),
+							f32( ind == 1.0 ),
 							f32( ind == 2.0 )
 						) * 3.0;
 
