@@ -9,6 +9,7 @@ import {
   OrthographicCamera,
   RenderTarget,
   HalfFloatType,
+  NearestFilter,
   SphereGeometry,
   Mesh,
   PlaneGeometry,
@@ -105,6 +106,8 @@ async function init() {
 
   collisionPosRT = new RenderTarget(1024, 1024);
   collisionPosRT.texture.type = HalfFloatType;
+  collisionPosRT.texture.magFilter = NearestFilter;
+  collisionPosRT.texture.minFilter = NearestFilter;
 
   collisionPosMaterial = new MeshBasicNodeMaterial();
   collisionPosMaterial.fog = false;

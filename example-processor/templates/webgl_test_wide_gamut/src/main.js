@@ -9,6 +9,7 @@ import {
   TextureLoader,
   WebGLRenderer,
   SRGBColorSpace,
+  TextureUtils,
 } from "three";
 
 import WebGL from "three/addons/capabilities/WebGL.js";
@@ -71,13 +72,13 @@ async function initTextures() {
   textureL.colorSpace = SRGBColorSpace;
   textureR.colorSpace = DisplayP3ColorSpace;
 
-  sceneL.background = containTexture(
-    window.innerWidth / window.innerHeight,
-    textureL
+  sceneL.background = TextureUtils.contain(
+    textureL,
+    window.innerWidth / window.innerHeight
   );
-  sceneR.background = containTexture(
-    window.innerWidth / window.innerHeight,
-    textureR
+  sceneR.background = TextureUtils.contain(
+    textureR,
+    window.innerWidth / window.innerHeight
   );
 }
 
@@ -114,8 +115,14 @@ function onWindowResize() {
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  containTexture(window.innerWidth / window.innerHeight, sceneL.background);
-  containTexture(window.innerWidth / window.innerHeight, sceneR.background);
+  TextureUtils.contain(
+    sceneL.background,
+    window.innerWidth / window.innerHeight
+  );
+  TextureUtils.contain(
+    sceneR.background,
+    window.innerWidth / window.innerHeight
+  );
 }
 
 function onGamutChange({ matches }) {
@@ -124,27 +131,6 @@ function onGamutChange({ matches }) {
 
   textureL.needsUpdate = true;
   textureR.needsUpdate = true;
-}
-
-function containTexture(aspect, target) {
-  // Sets the matrix uv transform so the texture image is contained in a region having the specified aspect ratio,
-  // and does so without distortion. Akin to CSS object-fit: contain.
-  // Source: https://github.com/mrdoob/three.js/pull/17199
-
-  var imageAspect =
-    target.image && target.image.width
-      ? target.image.width / target.image.height
-      : 1;
-
-  if (aspect > imageAspect) {
-    target.matrix.setUvTransform(0, 0, aspect / imageAspect, 1, 0, 0.5, 0.5);
-  } else {
-    target.matrix.setUvTransform(0, 0, 1, imageAspect / aspect, 0, 0.5, 0.5);
-  }
-
-  target.matrixAutoUpdate = false;
-
-  return target;
 }
 
 function animate() {
