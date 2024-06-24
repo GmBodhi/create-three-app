@@ -10,7 +10,7 @@ import {
   MeshDepthMaterial,
   MeshNormalMaterial,
 } from "three";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SDFGeometryGenerator } from "three/addons/geometries/SDFGeometryGenerator.js";
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

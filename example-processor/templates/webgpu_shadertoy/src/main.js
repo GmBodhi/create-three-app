@@ -14,9 +14,9 @@ import {
 } from "three";
 import * as Nodes from "three/nodes";
 
-import Transpiler from "three/examples/jsm/transpiler/Transpiler.js";
-import ShaderToyDecoder from "three/examples/jsm/transpiler/ShaderToyDecoder.js";
-import TSLEncoder from "three/examples/jsm/transpiler/TSLEncoder.js";
+import Transpiler from "three/addons/transpiler/Transpiler.js";
+import ShaderToyDecoder from "three/addons/transpiler/ShaderToyDecoder.js";
+import TSLEncoder from "three/addons/transpiler/TSLEncoder.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import WebGL from "three/addons/capabilities/WebGL.js";

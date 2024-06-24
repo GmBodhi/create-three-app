@@ -20,7 +20,7 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import {
   CCDIKSolver,
   CCDIKHelper,
-} from "three/examples/jsm/animation/CCDIKSolver.js";
+} from "three/addons/animation/CCDIKSolver.js";
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
