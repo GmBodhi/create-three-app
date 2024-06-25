@@ -13,9 +13,9 @@ import {
 } from "three";
 import {
   color,
-  depth,
-  depthTexture,
+  linearDepth,
   toneMapping,
+  viewportLinearDepth,
   viewportSharedTexture,
   viewportMipTexture,
   viewportTopLeft,
@@ -77,11 +77,15 @@ function init() {
 
   // volume
 
-  const depthDistance = depthTexture().distance(depth);
+  // compare depth from viewportLinearDepth with linearDepth() to create a distance field
+  // viewportLinearDepth return the linear depth of the scene
+  // linearDepth() returns the linear depth of the mesh
+  const depthDistance = viewportLinearDepth.distance(linearDepth());
+
   const depthAlphaNode = depthDistance
     .oneMinus()
     .smoothstep(0.9, 2)
-    .mul(20)
+    .mul(10)
     .saturate();
   const depthBlurred = viewportMipTexture().bicubic(
     depthDistance

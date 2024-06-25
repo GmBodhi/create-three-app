@@ -165,7 +165,7 @@ function init() {
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
-  const scenePassDepth = scenePass.getDepthNode().remapClamp(0.3, 0.5);
+  const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(0.3, 0.5);
 
   const scenePassColorBlurred = scenePassColor.gaussianBlur();
   scenePassColorBlurred.directionNode = scenePassDepth;

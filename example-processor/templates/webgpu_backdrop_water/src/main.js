@@ -20,15 +20,15 @@ import {
 } from "three";
 import {
   color,
-  depth,
   vec2,
   pass,
-  depthTexture,
+  linearDepth,
   normalWorld,
   triplanarTexture,
   texture,
   objectPosition,
   viewportTopLeft,
+  viewportLinearDepth,
   viewportDepthTexture,
   viewportSharedTexture,
   mx_worley_noise_float,
@@ -170,12 +170,15 @@ function init() {
     .mul(1.4)
     .mix(color(0x0487e2), color(0x74ccf4));
 
-  const depthWater = depthTexture(viewportDepthTexture()).sub(depth);
+  // linearDepth() returns the linear depth of the mesh
+  const depth = linearDepth();
+  const depthWater = viewportLinearDepth.sub(depth);
   const depthEffect = depthWater.remapClamp(-0.002, 0.04);
 
   const refractionUV = viewportTopLeft.add(vec2(0, waterIntensity.mul(0.1)));
 
-  const depthTestForRefraction = depthTexture(
+  // linearDepth( viewportDepthTexture( uv ) ) return the linear depth of the scene
+  const depthTestForRefraction = linearDepth(
     viewportDepthTexture(refractionUV)
   ).sub(depth);
 
@@ -259,14 +262,14 @@ function init() {
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
-  const scenePassDepth = scenePass.getDepthNode().remapClamp(0.3, 0.5);
+  const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(0.3, 0.5);
 
   const waterMask = objectPosition(camera).y.greaterThan(0);
 
   const scenePassColorBlurred = scenePassColor.gaussianBlur();
   scenePassColorBlurred.directionNode = waterMask.cond(
     scenePassDepth,
-    scenePass.getDepthNode().mul(5)
+    scenePass.getLinearDepthNode().mul(5)
   );
 
   const vignet = viewportTopLeft.distance(0.5).mul(1.35).clamp().oneMinus();
