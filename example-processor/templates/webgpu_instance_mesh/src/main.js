@@ -129,8 +129,6 @@ async function render() {
         }
       }
     }
-
-    mesh.instanceMatrix.needsUpdate = true;
   }
 
   await renderer.render(scene, camera);

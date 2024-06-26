@@ -70,7 +70,7 @@ function init() {
     const g = v.add(Math.PI).sin();
     const b = v.add(Math.PI).sub(0.5).sin();
 
-    textureStore(storageTexture, indexUV, vec4(r, g, b, 1));
+    textureStore(storageTexture, indexUV, vec4(r, g, b, 1)).toWriteOnly();
   });
 
   // compute
