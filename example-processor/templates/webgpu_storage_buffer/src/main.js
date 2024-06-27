@@ -177,7 +177,7 @@ async function init(forceWebGL = false) {
     timestamps[forceWebGL ? "webgl" : "webgpu"].innerHTML = `
 
 							Compute ${
-                renderer.info.compute.computeCalls
+                renderer.info.compute.frameCalls
               } pass in ${renderer.info.compute.timestamp.toFixed(6)}ms<br>
 							Draw ${
                 renderer.info.render.drawCalls
