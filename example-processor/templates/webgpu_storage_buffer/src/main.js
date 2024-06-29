@@ -36,7 +36,8 @@ async function init(forceWebGL = false) {
 
   // texture
 
-  const size = 1024; // non power of two buffer size is not well supported in WebGPU
+  const size = 32; // non power of two buffer size is not well supported in WebGPU
+  const barCount = 32;
 
   const type = ["float", "vec2", "vec3", "vec4"];
 
@@ -63,7 +64,7 @@ async function init(forceWebGL = false) {
   const computeInvertOrder = tslFn(() => {
     for (let i = 0; i < type.length; i++) {
       const invertIndex = arrayBufferNodes[i].element(
-        uint(size).sub(instanceIndex)
+        uint(size - 1).sub(instanceIndex)
       );
       arrayBufferNodes[i].element(instanceIndex).assign(invertIndex);
     }
@@ -88,28 +89,44 @@ async function init(forceWebGL = false) {
 
     If(uv().y.greaterThan(0.0), () => {
       const indexValue = arrayBufferNodes[0].element(index).toVar();
-      const value = float(indexValue).div(float(size)).mul(20).floor().div(20);
+      const value = float(indexValue)
+        .div(float(size))
+        .mul(barCount)
+        .floor()
+        .div(barCount);
 
       color.assign(vec3(value, 0, 0));
     });
 
     If(uv().y.greaterThan(0.25), () => {
       const indexValue = arrayBufferNodes[1].element(index).toVar();
-      const value = float(indexValue).div(float(size)).mul(20).floor().div(20);
+      const value = float(indexValue)
+        .div(float(size))
+        .mul(barCount)
+        .floor()
+        .div(barCount);
 
       color.assign(vec3(0, value, 0));
     });
 
     If(uv().y.greaterThan(0.5), () => {
       const indexValue = arrayBufferNodes[2].element(index).toVar();
-      const value = float(indexValue).div(float(size)).mul(20).floor().div(20);
+      const value = float(indexValue)
+        .div(float(size))
+        .mul(barCount)
+        .floor()
+        .div(barCount);
 
       color.assign(vec3(0, 0, value));
     });
 
     If(uv().y.greaterThan(0.75), () => {
       const indexValue = arrayBufferNodes[3].element(index).toVar();
-      const value = float(indexValue).div(float(size)).mul(20).floor().div(20);
+      const value = float(indexValue)
+        .div(float(size))
+        .mul(barCount)
+        .floor()
+        .div(barCount);
 
       color.assign(vec3(value, value, value));
     });
@@ -160,7 +177,7 @@ async function init(forceWebGL = false) {
     timestamps[forceWebGL ? "webgl" : "webgpu"].innerHTML = `
 
 							Compute ${
-                renderer.info.compute.computeCalls
+                renderer.info.compute.frameCalls
               } pass in ${renderer.info.compute.timestamp.toFixed(6)}ms<br>
 							Draw ${
                 renderer.info.render.drawCalls

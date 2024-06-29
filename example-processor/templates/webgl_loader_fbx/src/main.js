@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  LoadingManager,
   Clock,
   PerspectiveCamera,
   Scene,
@@ -23,10 +24,12 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, stats, object, loader, guiMorphsFolder;
-const clock = new Clock();
+const manager = new LoadingManager();
 
+let camera, scene, renderer, stats, object, loader, guiMorphsFolder;
 let mixer;
+
+const clock = new Clock();
 
 const params = {
   asset: "Samba Dancing",
@@ -81,7 +84,7 @@ function init() {
   grid.material.transparent = true;
   scene.add(grid);
 
-  loader = new FBXLoader();
+  loader = new FBXLoader(manager);
   loadAsset(params.asset);
 
   renderer = new WebGLRenderer({ antialias: true });
@@ -113,8 +116,16 @@ function loadAsset(asset) {
   loader.load("models/fbx/" + asset + ".fbx", function (group) {
     if (object) {
       object.traverse(function (child) {
-        if (child.material) child.material.dispose();
-        if (child.material && child.material.map) child.material.map.dispose();
+        if (child.material) {
+          const materials = Array.isArray(child.material)
+            ? child.material
+            : [child.material];
+          materials.forEach((material) => {
+            if (material.map) material.map.dispose();
+            material.dispose();
+          });
+        }
+
         if (child.geometry) child.geometry.dispose();
       });
 

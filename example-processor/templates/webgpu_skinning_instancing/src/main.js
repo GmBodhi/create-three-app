@@ -136,11 +136,11 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
-  // post processing ( just for WebGPUBackend for now )
+  // post processing
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
-  const scenePassDepth = scenePass.getDepthNode().remapClamp(0.15, 0.3);
+  const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(0.15, 0.3);
 
   const scenePassColorBlurred = scenePassColor.gaussianBlur();
   scenePassColorBlurred.directionNode = scenePassDepth;

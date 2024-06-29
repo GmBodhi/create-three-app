@@ -16,9 +16,9 @@ import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import IESSpotLight from "three/addons/lights/IESSpotLight.js";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { IESLoader } from "three/examples/jsm/loaders/IESLoader.js";
+import { IESLoader } from "three/addons/loaders/IESLoader.js";
 
 let renderer, scene, camera;
 let lights;

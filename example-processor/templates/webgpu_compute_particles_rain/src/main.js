@@ -8,6 +8,7 @@ import {
   OrthographicCamera,
   RenderTarget,
   HalfFloatType,
+  NearestFilter,
   DoubleSide,
   Mesh,
   PlaneGeometry,
@@ -105,6 +106,8 @@ function init() {
 
   collisionPosRT = new RenderTarget(1024, 1024);
   collisionPosRT.texture.type = HalfFloatType;
+  collisionPosRT.texture.magFilter = NearestFilter;
+  collisionPosRT.texture.minFilter = NearestFilter;
 
   collisionPosMaterial = new MeshBasicNodeMaterial();
   collisionPosMaterial.colorNode = positionWorld;
@@ -251,7 +254,6 @@ function init() {
   rainMaterial.transparent = true;
 
   const rainParticles = new Mesh(new PlaneGeometry(0.1, 2), rainMaterial);
-  rainParticles.isInstancedMesh = true;
   rainParticles.count = instanceCount;
   scene.add(rainParticles);
 
@@ -295,7 +297,6 @@ function init() {
   ]);
 
   const rippleParticles = new Mesh(rippleGeometry, rippleMaterial);
-  rippleParticles.isInstancedMesh = true;
   rippleParticles.count = instanceCount;
   scene.add(rippleParticles);
 

@@ -136,7 +136,6 @@ function init() {
   pointsMaterial.positionNode = particleNode;
 
   const mesh = new Points(pointsGeometry, pointsMaterial);
-  mesh.isInstancedMesh = true;
   mesh.count = particleNum;
   scene.add(mesh);
 

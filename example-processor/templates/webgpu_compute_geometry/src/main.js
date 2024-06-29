@@ -71,12 +71,12 @@ function init() {
           positionBaseAttribute,
           "vec3",
           positionBaseAttribute.count
-        );
+        ).toReadOnly();
         const normalAttribute = storage(
           normalBaseAttribute,
           "vec3",
           normalBaseAttribute.count
-        );
+        ).toReadOnly();
 
         const positionStorageAttribute = storage(
           positionStorageBufferAttribute,

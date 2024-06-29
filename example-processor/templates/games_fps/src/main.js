@@ -194,7 +194,9 @@ function playerCollisions() {
       );
     }
 
-    playerCollider.translate(result.normal.multiplyScalar(result.depth));
+    if (result.depth >= 1e-10) {
+      playerCollider.translate(result.normal.multiplyScalar(result.depth));
+    }
   }
 }
 

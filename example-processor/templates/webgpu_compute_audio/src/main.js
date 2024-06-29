@@ -5,7 +5,6 @@ import {
   tslFn,
   uniform,
   storage,
-  storageObject,
   instanceIndex,
   float,
   texture,
@@ -98,11 +97,11 @@ async function init() {
 
   // read-only buffer
 
-  const waveNode = storageObject(
+  const waveNode = storage(
     new StorageInstancedBufferAttribute(waveBuffer, 1),
     "float",
     waveBuffer.length
-  );
+  ).toReadOnly();
 
   // params
 

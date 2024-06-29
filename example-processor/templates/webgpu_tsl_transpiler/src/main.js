@@ -1,8 +1,8 @@
 import "./style.css"; // For webpack support
 
-import Transpiler from "three/examples/jsm/transpiler/Transpiler.js";
-import GLSLDecoder from "three/examples/jsm/transpiler/GLSLDecoder.js";
-import TSLEncoder from "three/examples/jsm/transpiler/TSLEncoder.js";
+import Transpiler from "three/addons/transpiler/Transpiler.js";
+import GLSLDecoder from "three/addons/transpiler/GLSLDecoder.js";
+import TSLEncoder from "three/addons/transpiler/TSLEncoder.js";
 
 init();
 
