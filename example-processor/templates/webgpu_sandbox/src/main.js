@@ -4,15 +4,19 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
+  WebGPURenderer,
   TextureLoader,
   RepeatWrapping,
   BoxGeometry,
+  MeshBasicNodeMaterial,
   Mesh,
   SphereGeometry,
   PlaneGeometry,
   Vector3,
   BufferGeometry,
+  PointsNodeMaterial,
   Points,
+  LineBasicNodeMaterial,
   Line,
   DataTexture,
   RGBAFormat,
@@ -29,15 +33,9 @@ import {
   color,
   oscSine,
   attribute,
-  MeshBasicNodeMaterial,
-  PointsNodeMaterial,
-  LineBasicNodeMaterial,
-} from "three/nodes";
+} from "three/tsl";
 
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer;
 
@@ -46,12 +44,6 @@ let box;
 init();
 
 async function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,

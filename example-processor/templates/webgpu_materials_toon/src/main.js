@@ -4,21 +4,17 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
+  WebGPURenderer,
   SphereGeometry,
   DataTexture,
   RedFormat,
+  MeshToonNodeMaterial,
   Mesh,
+  MeshBasicNodeMaterial,
   Vector3,
   AmbientLight,
   PointLight,
 } from "three";
-
-import { MeshBasicNodeMaterial, MeshToonNodeMaterial } from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -37,12 +33,6 @@ loader.load("fonts/gentilis_regular.typeface.json", function (font) {
 });
 
 function init(font) {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   container = document.createElement("div");
   document.body.appendChild(container);
 

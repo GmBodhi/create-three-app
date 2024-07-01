@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   PerspectiveCamera,
   Scene,
   Fog,
@@ -10,11 +11,9 @@ import {
   Mesh,
   AmbientLight,
   DirectionalLight,
+  PostProcessing,
 } from "three";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
-import { pass } from "three/nodes";
+import { pass } from "three/tsl";
 
 let camera, renderer, postProcessing;
 let object;

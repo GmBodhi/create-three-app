@@ -6,13 +6,14 @@ import {
   GridHelper,
   TextureLoader,
   RepeatWrapping,
+  MeshBasicNodeMaterial,
   MeshNormalMaterial,
   Vector3,
   Group,
+  WebGPURenderer,
   Mesh,
+  NodeObjectLoader,
 } from "three";
-import * as Nodes from "three/nodes";
-
 import {
   tslFn,
   wgslFn,
@@ -35,12 +36,7 @@ import {
   string,
   global,
   loop,
-  MeshBasicNodeMaterial,
-  NodeObjectLoader,
-} from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+} from "three/tsl";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
@@ -56,12 +52,6 @@ const objects = [],
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   const container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -270,7 +260,7 @@ function init() {
   // Scriptable
 
   global.set("THREE", THREE);
-  global.set("TSL", Nodes);
+  global.set("TSL", THREE);
 
   const asyncNode = js(`
 

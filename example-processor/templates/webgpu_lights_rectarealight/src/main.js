@@ -1,6 +1,8 @@
 import "./style.css"; // For webpack support
 
 import {
+  RectAreaLightNode,
+  WebGPURenderer,
   PerspectiveCamera,
   Scene,
   RectAreaLight,
@@ -14,9 +16,7 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
-import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import { RectAreaLightTexturesLib } from "three/addons/lights/RectAreaLightTexturesLib.js";
 
 let renderer, scene, camera;
 let stats, meshKnot;
@@ -24,7 +24,7 @@ let stats, meshKnot;
 init();
 
 function init() {
-  RectAreaLightUniformsLib.init();
+  RectAreaLightNode.setLTC(RectAreaLightTexturesLib.init());
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);

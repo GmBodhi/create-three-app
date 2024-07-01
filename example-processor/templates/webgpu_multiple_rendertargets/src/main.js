@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   RenderTarget,
   NearestFilter,
   Scene,
@@ -11,11 +12,8 @@ import {
   RepeatWrapping,
   Mesh,
   TorusKnotGeometry,
+  QuadMesh,
 } from "three";
-
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-//import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
-
 import {
   NodeMaterial,
   mix,
@@ -30,13 +28,10 @@ import {
   varying,
   vec2,
   vec4,
-} from "three/nodes";
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
+} from "three/tsl";
 
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
-import QuadMesh from "three/addons/objects/QuadMesh.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+//import { GUI } from 'three/addons/libs/lil-gui.module.min.js';
 
 let camera, scene, renderer, torus;
 let quadMesh, renderTarget;
@@ -97,12 +92,6 @@ class ReadGBufferMaterial extends NodeMaterial {
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

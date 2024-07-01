@@ -8,10 +8,9 @@ import {
   SRGBColorSpace,
   MeshBasicMaterial,
   Mesh,
+  WebGPURenderer,
   MathUtils,
 } from "three";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer;
 

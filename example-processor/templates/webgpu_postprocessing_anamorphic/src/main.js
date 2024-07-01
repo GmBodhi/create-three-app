@@ -1,14 +1,14 @@
 import "./style.css"; // For webpack support
 
-import { PerspectiveCamera, Scene, LinearToneMapping, Vector2 } from "three";
-import { pass, cubeTexture, viewportTopLeft, uniform } from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
-import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
+import {
+  PerspectiveCamera,
+  Scene,
+  WebGPURenderer,
+  LinearToneMapping,
+  Vector2,
+  PostProcessing,
+} from "three";
+import { pass, cubeTexture, viewportTopLeft, uniform } from "three/tsl";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
 
@@ -23,12 +23,6 @@ let postProcessing;
 init();
 
 async function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   const container = document.createElement("div");
   document.body.appendChild(container);
 

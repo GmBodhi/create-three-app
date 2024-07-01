@@ -4,9 +4,12 @@ import {
   Vector2,
   OrthographicCamera,
   Scene,
+  StorageInstancedBufferAttribute,
   BufferGeometry,
   BufferAttribute,
+  PointsNodeMaterial,
   Points,
+  WebGPURenderer,
 } from "three";
 import {
   tslFn,
@@ -18,16 +21,9 @@ import {
   vec3,
   color,
   instanceIndex,
-  PointsNodeMaterial,
-} from "three/nodes";
+} from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 
 let camera, scene, renderer;
 let computeNode;
@@ -38,12 +34,6 @@ const scaleVector = new Vector2(1, 1);
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new OrthographicCamera(-1.0, 1.0, 1.0, -1.0, 0, 1);
   camera.position.z = 1;
 

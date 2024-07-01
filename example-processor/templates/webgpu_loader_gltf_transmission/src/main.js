@@ -6,6 +6,7 @@ import {
   Scene,
   EquirectangularReflectionMapping,
   AnimationMixer,
+  WebGPURenderer,
   ACESFilmicToneMapping,
 } from "three";
 
@@ -14,8 +15,6 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer, controls, clock, mixer;
 

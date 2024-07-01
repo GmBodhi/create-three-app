@@ -8,23 +8,16 @@ import {
   Scene,
   Color,
   BoxGeometry,
-  InstancedMesh,
-  RenderTarget,
-} from "three";
-import {
-  texture,
-  MeshBasicNodeMaterial,
   MeshPhongNodeMaterial,
-} from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
+  InstancedMesh,
+  WebGPURenderer,
+  RenderTarget,
+  MeshBasicNodeMaterial,
+  QuadMesh,
+} from "three";
+import { texture } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
-import QuadMesh from "three/addons/objects/QuadMesh.js";
 
 let camera, scene, renderer;
 const mouse = new Vector2();
@@ -68,12 +61,6 @@ function initGUI() {
 }
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,

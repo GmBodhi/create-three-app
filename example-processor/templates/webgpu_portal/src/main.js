@@ -9,8 +9,10 @@ import {
   HemisphereLight,
   AnimationMixer,
   PlaneGeometry,
+  MeshBasicNodeMaterial,
   DoubleSide,
   Mesh,
+  WebGPURenderer,
   LinearToneMapping,
 } from "three";
 import {
@@ -24,12 +26,9 @@ import {
   normalWorld,
   mx_fractal_noise_vec3,
   toneMapping,
-  MeshBasicNodeMaterial,
-} from "three/nodes";
+} from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 

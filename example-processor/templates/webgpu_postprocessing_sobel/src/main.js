@@ -8,14 +8,13 @@ import {
   TorusKnotGeometry,
   MeshPhongMaterial,
   Mesh,
+  WebGPURenderer,
   LinearSRGBColorSpace,
+  PostProcessing,
 } from "three";
+import { pass } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
-import { pass } from "three/nodes";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 

@@ -1,29 +1,21 @@
 import "./style.css"; // For webpack support
 
 import {
+  LightingModel,
   PerspectiveCamera,
   Scene,
   Color,
   SphereGeometry,
+  MeshStandardNodeMaterial,
   Mesh,
   PointLight,
   Vector3,
   BufferGeometry,
-  Points,
-} from "three";
-import {
-  color,
-  lights,
-  toneMapping,
-  MeshStandardNodeMaterial,
   PointsNodeMaterial,
-  LightingModel,
-} from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+  Points,
+  WebGPURenderer,
+} from "three";
+import { color, lights } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -40,12 +32,6 @@ let light1, light2, light3;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,

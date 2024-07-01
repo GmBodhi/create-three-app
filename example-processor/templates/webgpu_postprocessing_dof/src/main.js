@@ -5,22 +5,22 @@ import {
   Scene,
   CubeTextureLoader,
   SphereGeometry,
+  MeshBasicNodeMaterial,
   InstancedMesh,
   Matrix4,
+  WebGPURenderer,
+  PostProcessing,
 } from "three";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
 import {
-  MeshBasicNodeMaterial,
   cubeTexture,
   positionWorld,
   oscSine,
   timerGlobal,
-} from "three/nodes";
-import { pass } from "three/nodes";
+  pass,
+} from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
 import Stats from "three/addons/libs/stats.module.js";
 
 //

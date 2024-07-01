@@ -3,21 +3,17 @@ import "./style.css"; // For webpack support
 import {
   Scene,
   PerspectiveCamera,
-  Object3D,
-  CylinderGeometry,
+  IcosahedronGeometry,
   MeshPhongMaterial,
   Mesh,
-  SphereGeometry,
-  IcosahedronGeometry,
   TextureLoader,
   RepeatWrapping,
-  SRGBColorSpace,
   PlaneGeometry,
-  MeshPhongNodeMaterial,
+  MeshBasicNodeMaterial,
   PointLight,
   WebGPURenderer,
 } from "three";
-import { reflector, uv, texture, color } from "three/tsl";
+import { viewportSharedTexture, texture, uv } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -25,7 +21,7 @@ let camera, scene, renderer;
 
 let cameraControls;
 
-let sphereGroup, smallSphere;
+let smallSphere;
 
 init();
 
@@ -44,44 +40,8 @@ function init() {
 
   //
 
-  let geometry, material;
-
-  //
-
-  sphereGroup = new Object3D();
-  scene.add(sphereGroup);
-
-  geometry = new CylinderGeometry(
-    0.1,
-    15 * Math.cos((Math.PI / 180) * 30),
-    0.1,
-    24,
-    1
-  );
-  material = new MeshPhongMaterial({ color: 0xffffff, emissive: 0x8d8d8d });
-  const sphereCap = new Mesh(geometry, material);
-  sphereCap.position.y = -15 * Math.sin((Math.PI / 180) * 30) - 0.05;
-  sphereCap.rotateX(-Math.PI);
-
-  geometry = new SphereGeometry(
-    15,
-    24,
-    24,
-    Math.PI / 2,
-    Math.PI * 2,
-    0,
-    (Math.PI / 180) * 120
-  );
-  const halfSphere = new Mesh(geometry, material);
-  halfSphere.add(sphereCap);
-  halfSphere.rotateX((-Math.PI / 180) * 135);
-  halfSphere.rotateZ((-Math.PI / 180) * 20);
-  halfSphere.position.y = 7.5 + 15 * Math.sin((Math.PI / 180) * 30);
-
-  sphereGroup.add(halfSphere);
-
-  geometry = new IcosahedronGeometry(5, 0);
-  material = new MeshPhongMaterial({
+  const geometry = new IcosahedronGeometry(5, 0);
+  const material = new MeshPhongMaterial({
     color: 0xffffff,
     emissive: 0x7b7b7b,
     flatShading: true,
@@ -91,73 +51,38 @@ function init() {
 
   // textures
 
-  const textureLoader = new TextureLoader();
+  const loader = new TextureLoader();
 
-  const floorNormal = textureLoader.load(
+  const floorNormal = loader.load(
     "textures/floors/FloorsCheckerboard_S_Normal.jpg"
   );
   floorNormal.wrapS = RepeatWrapping;
   floorNormal.wrapT = RepeatWrapping;
 
-  const decalDiffuse = textureLoader.load("textures/decal/decal-diffuse.png");
-  decalDiffuse.colorSpace = SRGBColorSpace;
+  // refractor
 
-  const decalNormal = textureLoader.load("textures/decal/decal-normal.jpg");
+  const verticalRefractor = viewportSharedTexture();
 
-  // reflectors / mirrors
-
-  const groundReflector = reflector();
-  const verticalReflector = reflector();
-
-  const groundNormalScale = -0.08;
   const verticalNormalScale = 0.1;
-
-  const groundUVOffset = texture(decalNormal)
-    .xy.mul(2)
-    .sub(1)
-    .mul(groundNormalScale);
   const verticalUVOffset = texture(floorNormal, uv().mul(5))
     .xy.mul(2)
     .sub(1)
     .mul(verticalNormalScale);
-
-  groundReflector.uvNode = groundReflector.uvNode.add(groundUVOffset);
-  verticalReflector.uvNode = verticalReflector.uvNode.add(verticalUVOffset);
-
-  const groundNode = texture(decalDiffuse).a.mix(
-    color(0xffffff),
-    groundReflector
-  );
-  const verticalNode = color(0x0000ff).mul(0.1).add(verticalReflector);
-
-  // walls
+  verticalRefractor.uvNode = verticalRefractor.uvNode.add(verticalUVOffset);
 
   const planeGeo = new PlaneGeometry(100.1, 100.1);
 
-  //
-
-  const planeBottom = new Mesh(
+  const planeRefractor = new Mesh(
     planeGeo,
-    new MeshPhongNodeMaterial({
-      colorNode: groundNode,
+    new MeshBasicNodeMaterial({
+      backdropNode: verticalRefractor,
     })
   );
-  planeBottom.rotateX(-Math.PI / 2);
-  planeBottom.add(groundReflector.target);
-  scene.add(planeBottom);
+  planeRefractor.material.transparent = true;
+  planeRefractor.position.y = 50;
+  scene.add(planeRefractor);
 
-  const planeBack = new Mesh(
-    planeGeo,
-    new MeshPhongNodeMaterial({
-      colorNode: verticalNode,
-    })
-  );
-  planeBack.position.z = -50;
-  planeBack.position.y = 50;
-  planeBack.add(verticalReflector.target);
-  scene.add(planeBack);
-
-  //
+  // walls
 
   const planeTop = new Mesh(
     planeGeo,
@@ -167,14 +92,20 @@ function init() {
   planeTop.rotateX(Math.PI / 2);
   scene.add(planeTop);
 
-  const planeFront = new Mesh(
+  const planeBottom = new Mesh(
+    planeGeo,
+    new MeshPhongMaterial({ color: 0xffffff })
+  );
+  planeBottom.rotateX(-Math.PI / 2);
+  scene.add(planeBottom);
+
+  const planeBack = new Mesh(
     planeGeo,
     new MeshPhongMaterial({ color: 0x7f7fff })
   );
-  planeFront.position.z = 50;
-  planeFront.position.y = 50;
-  planeFront.rotateY(Math.PI);
-  scene.add(planeFront);
+  planeBack.position.z = -50;
+  planeBack.position.y = 50;
+  scene.add(planeBack);
 
   const planeRight = new Mesh(
     planeGeo,
@@ -240,8 +171,6 @@ function onWindowResize() {
 
 function animate() {
   const timer = Date.now() * 0.01;
-
-  sphereGroup.rotation.y -= 0.002;
 
   smallSphere.position.set(
     Math.cos(timer * 0.1) * 30,

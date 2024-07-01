@@ -14,10 +14,9 @@ import {
   Mesh,
   MeshBasicMaterial,
   PointLight,
+  WebGPURenderer,
   ACESFilmicToneMapping,
 } from "three";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 

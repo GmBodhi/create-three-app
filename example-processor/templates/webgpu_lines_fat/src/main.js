@@ -1,33 +1,27 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   Scene,
   PerspectiveCamera,
   Color,
   Vector3,
   CatmullRomCurve3,
   SRGBColorSpace,
+  Line2NodeMaterial,
   BufferGeometry,
   Float32BufferAttribute,
+  LineBasicNodeMaterial,
+  LineDashedNodeMaterial,
   Line,
 } from "three";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import { color } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import {
-  Line2NodeMaterial,
-  LineDashedNodeMaterial,
-  LineBasicNodeMaterial,
-  color,
-} from "three/nodes";
-import { Line2 } from "three/addons/lines/Line2.js";
+import { Line2 } from "three/addons/lines/webgpu/Line2.js";
 import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
@@ -44,12 +38,6 @@ let insetHeight;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setClearColor(0x000000, 0.0);

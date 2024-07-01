@@ -8,17 +8,13 @@ import {
   DirectionalLight,
   Plane,
   Vector3,
+  MeshPhongNodeMaterial,
   DoubleSide,
   TorusKnotGeometry,
   Mesh,
   PlaneGeometry,
+  WebGPURenderer,
 } from "three";
-import { MeshPhongNodeMaterial } from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -31,12 +27,6 @@ let camera, scene, renderer, startTime, object, stats;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     36,
     window.innerWidth / window.innerHeight,

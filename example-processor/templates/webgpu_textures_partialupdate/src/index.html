@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - texture - webgpu partial update</title>
+    <title>three.js webgl - webgpu partial texture update</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -12,16 +12,16 @@
       <a href="https://threejs.org" target="_blank" rel="noopener noreferrer"
         >three.js</a
       >
-      - partial webgpu texture update <br />
+      - partial webgpu texture update<br />
       replace parts of an existing texture with all data of another texture
     </div>
 
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
-          "three/addons/": "./jsm/",
-          "three/nodes": "./jsm/nodes/Nodes.js"
+          "three": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.webgpu.js",
+          "three/addons/": "./jsm/"
         }
       }
     </script>

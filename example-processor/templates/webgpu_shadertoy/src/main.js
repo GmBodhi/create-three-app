@@ -6,24 +6,22 @@ import example2_ from "./shaders/example2.glsl";
 import "./style.css"; // For webpack support
 
 import {
+  Node,
   OrthographicCamera,
   Scene,
   PlaneGeometry,
+  MeshBasicNodeMaterial,
   Mesh,
+  WebGPURenderer,
   LinearSRGBColorSpace,
 } from "three";
-import * as Nodes from "three/nodes";
+import { oscSine, timerLocal } from "three/tsl";
 
 import Transpiler from "three/addons/transpiler/Transpiler.js";
 import ShaderToyDecoder from "three/addons/transpiler/ShaderToyDecoder.js";
 import TSLEncoder from "three/addons/transpiler/TSLEncoder.js";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
-class ShaderToyNode extends Nodes.Node {
+class ShaderToyNode extends Node {
   constructor() {
     super("vec4");
 
@@ -45,7 +43,7 @@ class ShaderToyNode extends Nodes.Node {
   parse(glsl) {
     const jsCode = this.transpile(glsl, true);
 
-    const { mainImage } = eval(jsCode)(Nodes);
+    const { mainImage } = eval(jsCode)(THREE);
 
     this.mainImage = mainImage;
   }
@@ -75,14 +73,6 @@ const dpr = window.devicePixelRatio;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
-  //
-
   const example1Code = example1_;
   const example2Code = example2_;
 
@@ -99,8 +89,8 @@ function init() {
 
   const geometry = new PlaneGeometry(2, 2);
 
-  const material = new Nodes.MeshBasicNodeMaterial();
-  material.colorNode = Nodes.oscSine(Nodes.timerLocal(0.3)).mix(
+  const material = new MeshBasicNodeMaterial();
+  material.colorNode = oscSine(timerLocal(0.3)).mix(
     shaderToy1Node,
     shaderToy2Node
   );

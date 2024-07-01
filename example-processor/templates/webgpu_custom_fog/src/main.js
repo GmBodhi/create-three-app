@@ -4,6 +4,7 @@ import {
   PerspectiveCamera,
   Scene,
   BoxGeometry,
+  MeshPhongNodeMaterial,
   InstancedMesh,
   Object3D,
   Vector3,
@@ -11,6 +12,7 @@ import {
   PlaneGeometry,
   MeshPhongMaterial,
   Mesh,
+  WebGPURenderer,
 } from "three";
 import {
   color,
@@ -21,13 +23,7 @@ import {
   positionView,
   normalWorld,
   uniform,
-  MeshPhongNodeMaterial,
-} from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+} from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -37,12 +33,6 @@ let controls;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,

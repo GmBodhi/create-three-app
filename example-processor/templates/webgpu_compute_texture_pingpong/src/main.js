@@ -4,10 +4,12 @@ import {
   Vector2,
   OrthographicCamera,
   Scene,
+  StorageTexture,
   HalfFloatType,
   MeshBasicMaterial,
   Mesh,
   PlaneGeometry,
+  WebGPURenderer,
 } from "three";
 import {
   storageTexture,
@@ -15,11 +17,9 @@ import {
   code,
   instanceIndex,
   uniform,
-} from "three/nodes";
+} from "three/tsl";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageTexture from "three/addons/renderers/common/StorageTexture.js";
 
 let camera, scene, renderer;
 let computeInitNode, computeToPing, computeToPong;

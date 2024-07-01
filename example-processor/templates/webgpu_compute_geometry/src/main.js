@@ -1,6 +1,13 @@
 import "./style.css"; // For webpack support
 
-import { PerspectiveCamera, Scene, Color, MeshNormalMaterial } from "three";
+import {
+  PerspectiveCamera,
+  Scene,
+  Color,
+  MeshNormalMaterial,
+  StorageBufferAttribute,
+  WebGPURenderer,
+} from "three";
 import {
   vec3,
   cos,
@@ -10,15 +17,11 @@ import {
   tslFn,
   instanceIndex,
   timerLocal,
-} from "three/nodes";
+} from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-import StorageBufferAttribute from "three/addons/renderers/common/StorageBufferAttribute.js";
 
 let camera, scene, renderer;
 let computeUpdate;

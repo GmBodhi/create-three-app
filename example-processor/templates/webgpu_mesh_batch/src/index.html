@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgpu - mesh - batch</title>
+    <title>three.js webgpu - batch mesh</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,7 +10,7 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      webgpu - mesh - batch
+      webgpu - batch mesh
     </div>
 
     <div
@@ -30,9 +30,9 @@
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
+          "three": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.webgpu.js",
           "three/addons/": "./jsm/",
-          "three/nodes": "./jsm/nodes/Nodes.js",
           "stats-gl": "https://cdn.jsdelivr.net/npm/stats-gl@2.2.7/dist/main.js"
         }
       }

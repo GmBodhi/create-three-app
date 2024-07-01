@@ -1,22 +1,17 @@
 import "./style.css"; // For webpack support
 
 import {
-  Scene,
   UnsignedByteType,
+  Scene,
+  IESSpotLight,
   MeshPhongMaterial,
   PlaneGeometry,
   Mesh,
+  WebGPURenderer,
   PerspectiveCamera,
 } from "three";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
-import IESSpotLight from "three/addons/lights/IESSpotLight.js";
-
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { IESLoader } from "three/addons/loaders/IESLoader.js";
 
@@ -24,18 +19,6 @@ let renderer, scene, camera;
 let lights;
 
 async function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
-  //
-
-  scene = new Scene();
-
-  //
-
   const iesLoader = new IESLoader().setPath("three/examples/ies/");
   //iesLoader.type = UnsignedByteType; // LDR
 
@@ -46,6 +29,10 @@ async function init() {
       iesLoader.loadAsync("02a7562c650498ebb301153dbbf59207.ies"),
       iesLoader.loadAsync("1a936937a49c63374e6d4fbed9252b29.ies"),
     ]);
+
+  //
+
+  scene = new Scene();
 
   //
 

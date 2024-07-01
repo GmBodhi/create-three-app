@@ -8,13 +8,13 @@ import {
   SRGBColorSpace,
   NoColorSpace,
   RepeatWrapping,
+  MeshStandardNodeMaterial,
   BoxGeometry,
   Mesh,
+  WebGPURenderer,
   ReinhardToneMapping,
 } from "three";
-import { MeshStandardNodeMaterial, texture, parallaxUV, uv } from "three/nodes";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import { texture, parallaxUV, uv } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 

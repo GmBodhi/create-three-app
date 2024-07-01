@@ -9,16 +9,13 @@ import {
   BufferGeometryLoader,
   InstancedMesh,
   DynamicDrawUsage,
+  WebGPURenderer,
 } from "three";
-import { mix, range, normalWorld, oscSine, timerLocal } from "three/nodes";
+import { mix, range, normalWorld, oscSine, timerLocal } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
+
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer, stats;
 
@@ -30,12 +27,6 @@ const dummy = new Object3D();
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,

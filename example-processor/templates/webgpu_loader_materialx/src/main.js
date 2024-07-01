@@ -3,16 +3,17 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  WebGPURenderer,
   LinearToneMapping,
   EquirectangularReflectionMapping,
 } from "three";
 
-import { MaterialXLoader } from "three/addons/loaders/MaterialXLoader.js";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+
+import { MaterialXLoader } from "three/examples/jsm/loaders/MaterialXLoader.js";
 
 const SAMPLE_PATH =
   "https://raw.githubusercontent.com/materialx/MaterialX/main/resources/Materials/Examples/StandardSurface/";

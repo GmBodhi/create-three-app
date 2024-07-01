@@ -5,6 +5,8 @@ import {
   Scene,
   Color,
   LinearSRGBColorSpace,
+  NodeMaterial,
+  vec4,
   Mesh,
   PlaneGeometry,
   Texture,
@@ -12,26 +14,16 @@ import {
   RepeatWrapping,
   SRGBColorSpace,
 } from "three";
-import * as Nodes from "three/nodes";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import WGSLNodeBuilder from "three/addons/renderers/webgpu/nodes/WGSLNodeBuilder.js";
-import GLSLNodeBuilder from "three/addons/renderers/webgl/nodes/GLSLNodeBuilder.js";
+import WebGPURenderer from ".three/examples/src/renderers/webgpu/WebGPURenderer.js";
+import WGSLNodeBuilder from ".three/examples/src/renderers/webgpu/nodes/WGSLNodeBuilder.js";
+import GLSLNodeBuilder from ".three/examples/src/renderers/webgl-fallback/nodes/GLSLNodeBuilder.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   // add the depedencies
 
   const width = 200;
@@ -52,8 +44,8 @@ function init() {
   renderer.setSize(200, 200);
   rendererDOM.appendChild(renderer.domElement);
 
-  const material = new Nodes.NodeMaterial();
-  material.fragmentNode = Nodes.vec4(0, 0, 0, 1);
+  const material = new NodeMaterial();
+  material.fragmentNode = vec4(0, 0, 0, 1);
 
   const mesh = new Mesh(new PlaneGeometry(1, 1), material);
   scene.add(mesh);
@@ -84,7 +76,7 @@ function init() {
 
     const tslCode = `// Simple uv.x animation
 
-const { texture, uniform, vec2, vec4, uv, oscSine, timerLocal } = TSL;
+const { texture, uniform, vec2, vec4, uv, oscSine, timerLocal } = THREE;
 
 //const samplerTexture = new Texture();
 const samplerTexture = new TextureLoader().load( 'three/examples/textures/uv_grid_opengl.jpg' );
@@ -133,7 +125,7 @@ output = vec4( finalColor, opacity );
     const build = () => {
       try {
         const tslCode = `let output = null;\n${editor.getValue()}\nreturn { output };`;
-        const nodes = new Function("THREE", "TSL", tslCode)(THREE, Nodes);
+        const nodes = new Function("THREE", tslCode)(THREE);
 
         mesh.material.fragmentNode = nodes.output;
         mesh.material.needsUpdate = true;

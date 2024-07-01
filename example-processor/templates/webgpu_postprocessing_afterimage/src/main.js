@@ -1,19 +1,18 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   PerspectiveCamera,
   Scene,
   Fog,
   TorusKnotGeometry,
   MeshNormalMaterial,
   Mesh,
+  PostProcessing,
 } from "three";
+import { pass } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
-import { pass } from "three/nodes";
 
 let camera, scene, renderer;
 let mesh, postProcessing, combinedPass;

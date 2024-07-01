@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   PerspectiveCamera,
   Scene,
   Fog,
@@ -16,7 +17,6 @@ import {
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let container, stats;
 

@@ -9,6 +9,7 @@ import {
   SphereGeometry,
   Mesh,
   MeshStandardMaterial,
+  WebGPURenderer,
   LinearToneMapping,
 } from "three";
 import {
@@ -22,12 +23,7 @@ import {
   positionWorldDirection,
   reflectVector,
   toneMapping,
-} from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+} from "three/tsl";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
 
@@ -41,12 +37,6 @@ let camera, scene, renderer;
 init();
 
 async function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   const container = document.createElement("div");
   document.body.appendChild(container);
 

@@ -9,20 +9,15 @@ import {
   DirectionalLight,
   Group,
   TorusKnotGeometry,
+  MeshPhongNodeMaterial,
   Mesh,
   CylinderGeometry,
   PlaneGeometry,
   MeshPhongMaterial,
+  WebGPURenderer,
   ACESFilmicToneMapping,
   Clock,
 } from "three";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import {
   mx_fractal_noise_vec3,
   positionWorld,
@@ -30,8 +25,10 @@ import {
   tslFn,
   color,
   vertexIndex,
-  MeshPhongNodeMaterial,
-} from "three/nodes";
+} from "three/tsl";
+
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 let camera, scene, renderer, clock;
 let dirLight, spotLight;
 let torusKnot, dirGroup;
@@ -39,12 +36,6 @@ let torusKnot, dirGroup;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,

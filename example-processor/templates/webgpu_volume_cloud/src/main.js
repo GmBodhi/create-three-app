@@ -1,37 +1,36 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   Scene,
   PerspectiveCamera,
   CanvasTexture,
   SRGBColorSpace,
   Mesh,
   SphereGeometry,
+  MeshBasicNodeMaterial,
   BackSide,
   Vector3,
   Data3DTexture,
   RedFormat,
   LinearFilter,
   BoxGeometry,
+  VolumeNodeMaterial,
   Color,
 } from "three";
 import {
-  MeshBasicNodeMaterial,
-  VolumeNodeMaterial,
   vec3,
   materialReference,
   smoothstep,
   If,
   Break,
   tslFn,
-} from "three/nodes";
+} from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let renderer, scene, camera;
 let mesh;

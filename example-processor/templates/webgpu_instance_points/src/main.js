@@ -1,18 +1,16 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   Scene,
   PerspectiveCamera,
   Color,
   Vector3,
   CatmullRomCurve3,
   SRGBColorSpace,
+  InstancedPointsNodeMaterial,
 } from "three";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import { color } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -21,8 +19,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import InstancedPoints from "three/addons/objects/InstancedPoints.js";
 import InstancedPointsGeometry from "three/addons/geometries/InstancedPointsGeometry.js";
-
-import { color, InstancedPointsNodeMaterial } from "three/nodes";
 
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
@@ -38,12 +34,6 @@ let insetHeight;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

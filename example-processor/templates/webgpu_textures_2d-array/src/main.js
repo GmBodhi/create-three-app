@@ -6,30 +6,15 @@ import {
   FileLoader,
   DataArrayTexture,
   RedFormat,
+  MeshBasicNodeMaterial,
   PlaneGeometry,
   Mesh,
+  WebGPURenderer,
 } from "three";
-import {
-  MeshBasicNodeMaterial,
-  texture,
-  uv,
-  oscTriangle,
-  timerLocal,
-} from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import { texture, uv, oscTriangle, timerLocal } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { unzipSync } from "three/addons/libs/fflate.module.js";
-
-if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-  document.body.appendChild(WebGPU.getErrorMessage());
-
-  throw new Error("No WebGPU or WebGL2 support");
-}
 
 let camera, scene, mesh, renderer, stats;
 

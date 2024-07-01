@@ -18,16 +18,13 @@ import {
   Float32BufferAttribute,
   PointsMaterial,
   Points,
-  WebGLRenderer,
+  WebGPURenderer,
+  PostProcessing,
 } from "three";
+import { pass } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
-
 import { FlyControls } from "three/addons/controls/FlyControls.js";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { FilmPass } from "three/addons/postprocessing/FilmPass.js";
-import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 const radius = 6371;
 const tilt = 0.41;
@@ -44,7 +41,7 @@ let camera, controls, scene, renderer, stats;
 let geometry, meshPlanet, meshClouds, meshMoon;
 let dirLight;
 
-let composer;
+let postProcessing;
 
 const textureLoader = new TextureLoader();
 
@@ -150,16 +147,13 @@ function init() {
   );
 
   const starsMaterials = [
-    new PointsMaterial({ color: 0x9c9c9c, size: 2, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x9c9c9c, size: 1, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x7c7c7c, size: 2, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x838383, size: 1, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x5a5a5a, size: 2, sizeAttenuation: false }),
-    new PointsMaterial({ color: 0x5a5a5a, size: 1, sizeAttenuation: false }),
+    new PointsMaterial({ color: 0x9c9c9c }),
+    new PointsMaterial({ color: 0x838383 }),
+    new PointsMaterial({ color: 0x5a5a5a }),
   ];
 
   for (let i = 10; i < 30; i++) {
-    const stars = new Points(starsGeometry[i % 2], starsMaterials[i % 6]);
+    const stars = new Points(starsGeometry[i % 2], starsMaterials[i % 3]);
 
     stars.rotation.x = Math.random() * 6;
     stars.rotation.y = Math.random() * 6;
@@ -172,7 +166,7 @@ function init() {
     scene.add(stars);
   }
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.setAnimationLoop(animate);
@@ -197,15 +191,12 @@ function init() {
 
   // postprocessing
 
-  const renderModel = new RenderPass(scene, camera);
-  const effectFilm = new FilmPass(0.35);
-  const outputPass = new OutputPass();
+  postProcessing = new PostProcessing(renderer);
 
-  composer = new EffectComposer(renderer);
+  const scenePass = pass(scene, camera);
+  const scenePassColor = scenePass.getTextureNode();
 
-  composer.addPass(renderModel);
-  composer.addPass(effectFilm);
-  composer.addPass(outputPass);
+  postProcessing.outputNode = scenePassColor.film();
 }
 
 function onWindowResize() {
@@ -216,7 +207,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  composer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
 
 function animate() {
@@ -248,5 +238,5 @@ function render() {
   controls.movementSpeed = 0.33 * d;
   controls.update(delta);
 
-  composer.render(delta);
+  postProcessing.render();
 }

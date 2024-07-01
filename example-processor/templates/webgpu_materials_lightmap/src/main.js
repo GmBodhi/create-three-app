@@ -5,25 +5,18 @@ import {
   Scene,
   DirectionalLight,
   Color,
+  MeshBasicNodeMaterial,
   BackSide,
   Mesh,
   SphereGeometry,
   ObjectLoader,
+  WebGPURenderer,
 } from "three";
+import { vec4, color, positionLocal, mix } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-import {
-  MeshBasicNodeMaterial,
-  vec4,
-  color,
-  positionLocal,
-  mix,
-} from "three/nodes";
 
 let container, stats;
 let camera, scene, renderer;
