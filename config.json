@@ -4202,6 +4202,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_3dlut": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_afterimage": {
       "files": {
         "index.html": "src",
@@ -4233,6 +4243,16 @@
       ]
     },
     "webgpu_postprocessing_sobel": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_procedural_texture": {
       "files": {
         "index.html": "src",
         "main.js": "src",
