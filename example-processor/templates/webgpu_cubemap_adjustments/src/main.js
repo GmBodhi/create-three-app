@@ -22,7 +22,6 @@ import {
   normalWorld,
   positionWorldDirection,
   reflectVector,
-  toneMapping,
 } from "three/tsl";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
@@ -157,7 +156,7 @@ async function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
+  renderer.toneMapping = LinearToneMapping;
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 

@@ -25,7 +25,6 @@ import {
   uv,
   normalWorld,
   mx_fractal_noise_vec3,
-  toneMapping,
 } from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -145,7 +144,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.15);
+  renderer.toneMapping = LinearToneMapping;
+  renderer.toneMappingExposure = 0.15;
   document.body.appendChild(renderer.domElement);
 
   //

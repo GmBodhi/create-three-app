@@ -10,7 +10,7 @@ import {
   WebGPURenderer,
   LinearToneMapping,
 } from "three";
-import { toneMapping, color, viewportTopLeft } from "three/tsl";
+import { color, viewportTopLeft } from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -65,7 +65,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.4);
+  renderer.toneMapping = LinearToneMapping;
+  renderer.toneMappingExposure = 0.4;
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

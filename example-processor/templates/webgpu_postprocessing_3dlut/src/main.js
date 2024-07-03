@@ -5,12 +5,10 @@ import {
   Scene,
   EquirectangularReflectionMapping,
   WebGPURenderer,
-  NoToneMapping,
-  LinearSRGBColorSpace,
-  PostProcessing,
   ACESFilmicToneMapping,
+  PostProcessing,
 } from "three";
-import { pass, texture3D, uniform } from "three/tsl";
+import { pass, texture3D, uniform, renderOutput } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -100,20 +98,22 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMapping = NoToneMapping;
-  renderer.outputColorSpace = LinearSRGBColorSpace;
+  renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
-  // postprocessing
+  // post processing
 
   postProcessing = new PostProcessing(renderer);
 
-  const scenePass = pass(scene, camera);
-  const scenePassColor = scenePass.getTextureNode();
+  // ignore default output color transform ( toneMapping and outputColorSpace )
+  // use renderOutput() for control the sequence
 
-  const outputPass = scenePassColor
-    .toneMapping(ACESFilmicToneMapping)
-    .linearTosRGB();
+  postProcessing.outputColorTransform = false;
+
+  // scene pass
+
+  const scenePass = pass(scene, camera);
+  const outputPass = renderOutput(scenePass);
 
   lutPass = outputPass.lut3D();
   lutPass.lutNode = texture3D(lutMap[params.lut]);

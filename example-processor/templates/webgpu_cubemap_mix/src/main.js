@@ -8,14 +8,7 @@ import {
   WebGPURenderer,
   LinearToneMapping,
 } from "three";
-import {
-  mix,
-  oscSine,
-  timerLocal,
-  pmremTexture,
-  float,
-  toneMapping,
-} from "three/tsl";
+import { mix, oscSine, timerLocal, pmremTexture, float } from "three/tsl";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
 
@@ -83,7 +76,7 @@ async function init() {
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 1);
+  renderer.toneMapping = LinearToneMapping;
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 

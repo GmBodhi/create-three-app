@@ -15,7 +15,7 @@ import {
   WebGPURenderer,
   LinearSRGBColorSpace,
 } from "three";
-import { oscSine, timerLocal } from "three/tsl";
+import * as TSL from "three/tsl";
 
 import Transpiler from "three/addons/transpiler/Transpiler.js";
 import ShaderToyDecoder from "three/addons/transpiler/ShaderToyDecoder.js";
@@ -43,7 +43,7 @@ class ShaderToyNode extends Node {
   parse(glsl) {
     const jsCode = this.transpile(glsl, true);
 
-    const { mainImage } = eval(jsCode)(THREE);
+    const { mainImage } = eval(jsCode)(TSL);
 
     this.mainImage = mainImage;
   }
@@ -90,7 +90,7 @@ function init() {
   const geometry = new PlaneGeometry(2, 2);
 
   const material = new MeshBasicNodeMaterial();
-  material.colorNode = oscSine(timerLocal(0.3)).mix(
+  material.colorNode = TSL.oscSine(TSL.timerLocal(0.3)).mix(
     shaderToy1Node,
     shaderToy2Node
   );

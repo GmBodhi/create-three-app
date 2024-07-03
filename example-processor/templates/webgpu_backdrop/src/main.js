@@ -18,7 +18,6 @@ import {
   float,
   vec3,
   color,
-  toneMapping,
   viewportSharedTexture,
   viewportTopLeft,
   checker,
@@ -135,7 +134,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.3);
+  renderer.toneMapping = LinearToneMapping;
+  renderer.toneMappingExposure = 0.3;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

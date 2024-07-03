@@ -16,7 +16,6 @@ import {
 import {
   color,
   linearDepth,
-  toneMapping,
   viewportLinearDepth,
   viewportSharedTexture,
   viewportMipTexture,
@@ -135,7 +134,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.2);
+  renderer.toneMapping = LinearToneMapping;
+  renderer.toneMappingExposure = 0.2;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
