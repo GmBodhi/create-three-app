@@ -327,7 +327,7 @@ async function init() {
   const vignet = viewportTopLeft.distance(0.5).mul(1.35).clamp().oneMinus();
 
   const teapotTreePass = pass(teapotTree, camera).getTextureNode();
-  const teapotTreePassBlurred = teapotTreePass.gaussianBlur(3);
+  const teapotTreePassBlurred = teapotTreePass.gaussianBlur(vec2(1), 3);
   teapotTreePassBlurred.resolution = new Vector2(0.2, 0.2);
 
   const scenePassColorBlurred = scenePassColor.gaussianBlur();

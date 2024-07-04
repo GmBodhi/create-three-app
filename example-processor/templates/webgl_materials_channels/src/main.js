@@ -16,6 +16,8 @@ import {
   MeshDepthMaterial,
   BasicDepthPacking,
   RGBADepthPacking,
+  RGBDepthPacking,
+  RGDepthPacking,
   MeshNormalMaterial,
   ShaderMaterial,
   UniformsUtils,
@@ -53,6 +55,8 @@ let mesh,
   materialStandard,
   materialDepthBasic,
   materialDepthRGBA,
+  materialDepthRGB,
+  materialDepthRG,
   materialNormal,
   materialVelocity;
 
@@ -100,13 +104,11 @@ function init() {
   );
   controlsPerspective.minDistance = 1000;
   controlsPerspective.maxDistance = 2400;
-  controlsPerspective.enablePan = false;
   controlsPerspective.enableDamping = true;
 
   controlsOrtho = new OrbitControls(cameraOrtho, renderer.domElement);
   controlsOrtho.minZoom = 0.5;
   controlsOrtho.maxZoom = 1.5;
-  controlsOrtho.enablePan = false;
   controlsOrtho.enableDamping = true;
 
   // lights
@@ -177,6 +179,26 @@ function init() {
     side: DoubleSide,
   });
 
+  materialDepthRGB = new MeshDepthMaterial({
+    depthPacking: RGBDepthPacking,
+
+    displacementMap: displacementMap,
+    displacementScale: SCALE,
+    displacementBias: BIAS,
+
+    side: DoubleSide,
+  });
+
+  materialDepthRG = new MeshDepthMaterial({
+    depthPacking: RGDepthPacking,
+
+    displacementMap: displacementMap,
+    displacementScale: SCALE,
+    displacementBias: BIAS,
+
+    side: DoubleSide,
+  });
+
   materialNormal = new MeshNormalMaterial({
     displacementMap: displacementMap,
     displacementScale: SCALE,
@@ -228,6 +250,8 @@ function init() {
     "velocity",
     "depthBasic",
     "depthRGBA",
+    "depthRGB",
+    "depthRG",
   ]);
   gui.add(params, "camera", ["perspective", "ortho"]);
   gui.add(params, "side", ["front", "back", "double"]);
@@ -275,6 +299,12 @@ function render() {
         break;
       case "depthRGBA":
         material = materialDepthRGBA;
+        break;
+      case "depthRGB":
+        material = materialDepthRGB;
+        break;
+      case "depthRG":
+        material = materialDepthRG;
         break;
       case "normal":
         material = materialNormal;
