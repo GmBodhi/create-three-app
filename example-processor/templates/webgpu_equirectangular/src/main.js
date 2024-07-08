@@ -1,6 +1,12 @@
 import "./style.css"; // For webpack support
 
-import { PerspectiveCamera, TextureLoader, Scene, WebGPURenderer } from "three";
+import {
+  PerspectiveCamera,
+  TextureLoader,
+  SRGBColorSpace,
+  Scene,
+  WebGPURenderer,
+} from "three";
 import { texture, equirectUV } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -27,6 +33,7 @@ function init() {
   const equirectTexture = new TextureLoader().load(
     "textures/2294472375_24a3b8ef46_o.jpg"
   );
+  equirectTexture.colorSpace = SRGBColorSpace;
 
   scene = new Scene();
   scene.backgroundNode = texture(equirectTexture, equirectUV(), 0);
