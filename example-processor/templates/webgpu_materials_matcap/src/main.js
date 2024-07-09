@@ -82,7 +82,7 @@ function init() {
       mesh.position.y = -0.25;
 
       mesh.material = new MeshMatcapNodeMaterial({
-        color: new Color().setHex(API.color).convertSRGBToLinear(),
+        color: new Color().setHex(API.color),
         matcap: matcap,
         normalMap: normalmap,
       });
@@ -98,7 +98,7 @@ function init() {
     .addColor(API, "color")
     .listen()
     .onChange(function () {
-      mesh.material.color.set(API.color).convertSRGBToLinear();
+      mesh.material.color.set(API.color);
       render();
     });
 
