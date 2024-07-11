@@ -13,26 +13,17 @@ import {
   Mesh,
   WebGPURenderer,
   NeutralToneMapping,
+  PostProcessing,
 } from "three";
-import {
-  float,
-  vec3,
-  color,
-  viewportSharedTexture,
-  viewportTopLeft,
-  checker,
-  uv,
-  timerLocal,
-  oscSine,
-  output,
-} from "three/tsl";
+import { color, viewportTopLeft, mrt, output, pass, vec4 } from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, renderer;
-let portals,
+let postProcessing;
+let spheres,
   rotate = true;
 let mixer, clock;
 
@@ -48,15 +39,14 @@ function init() {
   camera.position.set(1, 2, 3);
 
   scene = new Scene();
-  scene.backgroundNode = viewportTopLeft.y.mix(
-    color(0x66bbff),
-    color(0x4466ff)
-  );
+  scene.backgroundNode = viewportTopLeft.y
+    .mix(color(0x66bbff), color(0x4466ff))
+    .mul(0.05);
   camera.lookAt(0, 1, 0);
 
   clock = new Clock();
 
-  //lights
+  // lights
 
   const light = new SpotLight(0xffffff, 1);
   light.power = 2000;
@@ -70,13 +60,8 @@ function init() {
 
     const material = object.children[0].children[0].material;
 
-    // output material effect ( better using hsv )
-    // ignore output.sRGBToLinear().linearTosRGB() for now
-
-    material.outputNode = oscSine(timerLocal(0.1)).mix(
-      output,
-      output.add(0.1).posterize(4).mul(2)
-    );
+    // add glow effect
+    material.mrtNode = mrt({ mask: output.add(1) });
 
     const action = mixer.clipAction(gltf.animations[0]);
     action.play();
@@ -84,24 +69,20 @@ function init() {
     scene.add(object);
   });
 
-  // portals
+  // spheres
 
   const geometry = new SphereGeometry(0.3, 32, 16);
 
-  portals = new Group();
-  scene.add(portals);
+  spheres = new Group();
+  scene.add(spheres);
 
-  function addBackdropSphere(backdropNode, backdropAlphaNode = null) {
+  function addSphere(color, mrtNode = null) {
     const distance = 1;
-    const id = portals.children.length;
-    const rotation = MathUtils.degToRad(id * 45);
+    const id = spheres.children.length;
+    const rotation = MathUtils.degToRad(id * 90);
 
-    const material = new MeshStandardNodeMaterial({ color: 0x0066ff });
-    material.roughnessNode = float(0.2);
-    material.metalnessNode = float(0);
-    material.backdropNode = backdropNode;
-    material.backdropAlphaNode = backdropAlphaNode;
-    material.transparent = true;
+    const material = new MeshStandardNodeMaterial({ color });
+    material.mrtNode = mrtNode;
 
     const mesh = new Mesh(geometry, material);
     mesh.position.set(
@@ -110,33 +91,44 @@ function init() {
       Math.sin(rotation) * distance
     );
 
-    portals.add(mesh);
+    spheres.add(mesh);
   }
 
-  addBackdropSphere(viewportSharedTexture().bgr.hue(oscSine().mul(Math.PI)));
-  addBackdropSphere(viewportSharedTexture().rgb.oneMinus());
-  addBackdropSphere(viewportSharedTexture().rgb.saturation(0));
-  addBackdropSphere(viewportSharedTexture().rgb.saturation(10), oscSine());
-  addBackdropSphere(viewportSharedTexture().rgb.overlay(checker(uv().mul(10))));
-  addBackdropSphere(
-    viewportSharedTexture(viewportTopLeft.mul(40).floor().div(40))
-  );
-  addBackdropSphere(
-    viewportSharedTexture(viewportTopLeft.mul(80).floor().div(80)).add(
-      color(0x0033ff)
-    )
-  );
-  addBackdropSphere(vec3(0, 0, viewportSharedTexture().b));
+  addSphere(0x0000ff, mrt({ mask: output }));
+  addSphere(0x00ff00);
+  addSphere(0xff0000);
+  addSphere(0x00ffff);
 
-  //renderer
+  // renderer
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = NeutralToneMapping;
-  renderer.toneMappingExposure = 0.3;
+  renderer.toneMappingExposure = 0.4;
   document.body.appendChild(renderer.domElement);
+
+  // post processing
+
+  const scenePass = pass(scene, camera);
+  scenePass.setMRT(
+    mrt({
+      output: output.renderOutput(),
+      mask: vec4(0), // empty as default, custom materials can set this
+    })
+  );
+
+  const colorPass = scenePass.getTextureNode();
+  const maskPass = scenePass.getTextureNode("mask");
+
+  postProcessing = new PostProcessing(renderer);
+  postProcessing.outputColorTransform = false;
+  postProcessing.outputNode = colorPass
+    .add(maskPass.gaussianBlur(1, 10).mul(0.3))
+    .renderOutput();
+
+  // controls
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 1, 0);
@@ -159,7 +151,7 @@ function animate() {
 
   if (mixer) mixer.update(delta);
 
-  if (rotate) portals.rotation.y += delta * 0.5;
+  if (rotate) spheres.rotation.y += delta * 0.5;
 
-  renderer.render(scene, camera);
+  postProcessing.render();
 }
