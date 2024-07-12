@@ -4262,6 +4262,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_ao": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_dof": {
       "files": {
         "index.html": "src",
