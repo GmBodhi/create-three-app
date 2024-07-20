@@ -4282,6 +4282,26 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_bloom_emissive": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_bloom_selective": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_dof": {
       "files": {
         "index.html": "src",
@@ -4313,6 +4333,16 @@
       ]
     },
     "webgpu_postprocessing_sobel": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_transition": {
       "files": {
         "index.html": "src",
         "main.js": "src",
