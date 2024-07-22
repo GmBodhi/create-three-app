@@ -115,9 +115,12 @@ async function init() {
   const scenePass = pass(scene, camera);
   const outputPass = renderOutput(scenePass);
 
-  lutPass = outputPass.lut3D();
-  lutPass.lutNode = texture3D(lutMap[params.lut]);
-  lutPass.intensityNode = uniform(1);
+  const lut = lutMap[params.lut];
+  lutPass = outputPass.lut3D(
+    texture3D(lut.texture3D),
+    lut.texture3D.image.width,
+    uniform(1)
+  );
 
   postProcessing.outputNode = lutPass;
 
@@ -130,7 +133,6 @@ async function init() {
   controls.update();
 
   gui = new GUI();
-  gui.width = 350;
   gui.add(params, "lut", Object.keys(lutMap));
   gui.add(params, "intensity").min(0).max(1);
 
