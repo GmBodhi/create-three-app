@@ -5,6 +5,8 @@ import {
   Scene,
   Color,
   Clock,
+  PointLight,
+  AmbientLight,
   AnimationMixer,
   MeshBasicNodeMaterial,
   DoubleSide,
@@ -50,6 +52,13 @@ function init() {
   camera.lookAt(0, 1, 0);
 
   clock = new Clock();
+
+  const light = new PointLight(0xffffff, 50);
+  camera.add(light);
+  scene.add(camera);
+
+  const ambient = new AmbientLight(0x4466ff, 1);
+  scene.add(ambient);
 
   // model
 

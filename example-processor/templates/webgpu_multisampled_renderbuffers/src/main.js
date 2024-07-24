@@ -8,11 +8,10 @@ import {
   Scene,
   Color,
   BoxGeometry,
-  MeshPhongNodeMaterial,
+  MeshBasicNodeMaterial,
   InstancedMesh,
   WebGPURenderer,
   RenderTarget,
-  MeshBasicNodeMaterial,
   QuadMesh,
 } from "three";
 import { texture } from "three/tsl";
@@ -75,8 +74,8 @@ function init() {
   // textured mesh
 
   const geometryBox = new BoxGeometry(7, 7, 7, 12, 12, 12);
-  const materialBox = new MeshPhongNodeMaterial();
-  const materialBoxInner = new MeshPhongNodeMaterial({ color: 0xff0000 });
+  const materialBox = new MeshBasicNodeMaterial();
+  const materialBoxInner = new MeshBasicNodeMaterial({ color: 0xff0000 });
 
   materialBox.wireframe = true;
 

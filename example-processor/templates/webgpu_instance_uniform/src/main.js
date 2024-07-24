@@ -8,7 +8,7 @@ import {
   Scene,
   GridHelper,
   CubeTextureLoader,
-  MeshStandardNodeMaterial,
+  MeshBasicNodeMaterial,
   WebGPURenderer,
   Mesh,
 } from "three";
@@ -91,7 +91,7 @@ function init() {
   const instanceUniform = nodeObject(new InstanceUniformNode());
   const cubeTextureNode = cubeTexture(cTexture);
 
-  const material = new MeshStandardNodeMaterial();
+  const material = new MeshBasicNodeMaterial();
   material.colorNode = instanceUniform.add(cubeTextureNode);
   material.emissiveNode = instanceUniform.mul(cubeTextureNode);
 

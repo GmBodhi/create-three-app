@@ -15,6 +15,7 @@ import {
   DirectionalLight,
   SpotLight,
   WebGPURenderer,
+  BasicShadowMap,
   PostProcessing,
   Vector2,
   NearestFilter,
@@ -65,7 +66,7 @@ function init() {
       boxMaterial
     );
     mesh.castShadow = true;
-    //mesh.receiveShadow = true;
+    mesh.receiveShadow = true;
     mesh.rotation.y = rotation;
     mesh.position.y = boxSideLength / 2;
     mesh.position.set(x, boxSideLength / 2 + 0.0001, z);
@@ -96,7 +97,7 @@ function init() {
       specular: 0xffffff,
     })
   );
-  //crystalMesh.receiveShadow = true;
+  crystalMesh.receiveShadow = true;
   crystalMesh.castShadow = true;
   scene.add(crystalMesh);
 
@@ -108,6 +109,7 @@ function init() {
   directionalLight.position.set(100, 100, 100);
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.set(2048, 2048);
+  directionalLight.shadow.bias = -0.0001;
   scene.add(directionalLight);
 
   const spotLight = new SpotLight(0xffc100, 10, 10, Math.PI / 16, 0.02, 2);
@@ -116,11 +118,12 @@ function init() {
   scene.add(target);
   target.position.set(0, 0, 0);
   spotLight.castShadow = true;
+  spotLight.shadow.bias = -0.001;
   scene.add(spotLight);
 
-  renderer = new WebGPURenderer({ antialias: false });
+  renderer = new WebGPURenderer();
   renderer.shadowMap.enabled = true;
-  //renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.shadowMap.type = BasicShadowMap;
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
