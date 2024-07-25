@@ -4525,6 +4525,16 @@
         "/src"
       ]
     },
+    "webgpu_tsl_galaxy": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_tsl_interoperability": {
       "files": {
         "index.html": "src",
