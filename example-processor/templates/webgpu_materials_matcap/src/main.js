@@ -1,11 +1,13 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
   LoadingManager,
   TextureLoader,
+  MeshMatcapNodeMaterial,
   Color,
   Texture,
   SRGBColorSpace,
@@ -15,14 +17,10 @@ import {
   LinearFilter,
 } from "three";
 
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { EXRLoader } from "three/addons/loaders/EXRLoader.js";
-
-import { MeshMatcapNodeMaterial } from "three/nodes";
 
 let mesh, renderer, scene, camera;
 
@@ -84,7 +82,7 @@ function init() {
       mesh.position.y = -0.25;
 
       mesh.material = new MeshMatcapNodeMaterial({
-        color: new Color().setHex(API.color).convertSRGBToLinear(),
+        color: new Color().setHex(API.color),
         matcap: matcap,
         normalMap: normalmap,
       });
@@ -100,7 +98,7 @@ function init() {
     .addColor(API, "color")
     .listen()
     .onChange(function () {
-      mesh.material.color.set(API.color).convertSRGBToLinear();
+      mesh.material.color.set(API.color);
       render();
     });
 

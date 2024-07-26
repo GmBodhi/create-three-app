@@ -1959,16 +1959,6 @@
         "/src"
       ]
     },
-    "webgl_loader_texture_hdrjpg": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_texture_ktx": {
       "files": {
         "index.html": "src",
@@ -2040,6 +2030,16 @@
       ]
     },
     "webgl_loader_texture_tiff": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_loader_texture_ultrahdr": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3962,6 +3962,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_basic": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_displacementmap": {
       "files": {
         "index.html": "src",
@@ -4073,6 +4083,26 @@
       ]
     },
     "webgpu_morphtargets_face": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_mrt": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_mrt_mask": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4202,6 +4232,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_3dlut": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_afterimage": {
       "files": {
         "index.html": "src",
@@ -4222,7 +4262,67 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_ao": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_bloom": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_bloom_emissive": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_bloom_selective": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_dof": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_fxaa": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_pixel": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4242,7 +4342,37 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_transition": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_procedural_texture": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_reflection": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_refraction": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4386,6 +4516,16 @@
       ]
     },
     "webgpu_tsl_editor": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_galaxy": {
       "files": {
         "index.html": "src",
         "main.js": "src",

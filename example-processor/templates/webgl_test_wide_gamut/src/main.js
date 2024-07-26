@@ -19,6 +19,8 @@ let sceneL, sceneR, textureL, textureR;
 
 let sliderPos = window.innerWidth / 2;
 
+const slider = document.querySelector(".slider");
+
 const isP3Context = WebGL.isColorSpaceAvailable(DisplayP3ColorSpace);
 
 if (isP3Context) {
@@ -83,8 +85,6 @@ async function initTextures() {
 }
 
 function initSlider() {
-  const slider = document.querySelector(".slider");
-
   function onPointerDown() {
     if (event.isPrimary === false) return;
 
@@ -100,13 +100,19 @@ function initSlider() {
   function onPointerMove(e) {
     if (event.isPrimary === false) return;
 
-    sliderPos = Math.max(0, Math.min(window.innerWidth, e.pageX));
-
-    slider.style.left = sliderPos - slider.offsetWidth / 2 + "px";
+    updateSlider(e.pageX);
   }
+
+  updateSlider(sliderPos);
 
   slider.style.touchAction = "none"; // disable touch scroll
   slider.addEventListener("pointerdown", onPointerDown);
+}
+
+function updateSlider(offset) {
+  sliderPos = Math.max(10, Math.min(window.innerWidth - 10, offset));
+
+  slider.style.left = sliderPos - slider.offsetWidth / 2 + "px";
 }
 
 function onWindowResize() {
@@ -123,6 +129,8 @@ function onWindowResize() {
     sceneR.background,
     window.innerWidth / window.innerHeight
   );
+
+  updateSlider(sliderPos);
 }
 
 function onGamutChange({ matches }) {

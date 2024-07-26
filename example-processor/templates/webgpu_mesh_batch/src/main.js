@@ -8,19 +8,20 @@ import {
   ConeGeometry,
   BoxGeometry,
   SphereGeometry,
+  MeshNormalNodeMaterial,
   BatchedMesh,
   PerspectiveCamera,
+  WebGPURenderer,
   Scene,
   Color,
 } from "three";
 
 import Stats from "stats-gl";
+
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { radixSort } from "three/addons/utils/SortUtils.js";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import { MeshNormalNodeMaterial } from "three/nodes";
 
 let camera, scene, renderer;
 let controls, stats;

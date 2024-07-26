@@ -9,18 +9,14 @@ import {
   WebGLCubeRenderTarget,
   HalfFloatType,
   CubeCamera,
+  MeshStandardNodeMaterial,
   Mesh,
   IcosahedronGeometry,
   BoxGeometry,
   TorusKnotGeometry,
+  WebGPURenderer,
   ACESFilmicToneMapping,
 } from "three";
-import * as Nodes from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
@@ -38,12 +34,6 @@ let controls;
 init();
 
 async function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
@@ -86,7 +76,7 @@ async function init() {
 
   //
 
-  material = new Nodes.MeshStandardNodeMaterial({
+  material = new MeshStandardNodeMaterial({
     envMap: cubeRenderTarget.texture,
     roughness: 0.05,
     metalness: 1,
@@ -95,13 +85,13 @@ async function init() {
   sphere = new Mesh(new IcosahedronGeometry(15, 8), material);
   scene.add(sphere);
 
-  const material1 = new Nodes.MeshStandardNodeMaterial({
+  const material1 = new MeshStandardNodeMaterial({
     map: uvTexture,
     roughness: 0.1,
     metalness: 0,
   });
 
-  const material2 = new Nodes.MeshStandardNodeMaterial({
+  const material2 = new MeshStandardNodeMaterial({
     map: uvTexture,
     roughness: 0.1,
     metalness: 0,

@@ -3,25 +3,23 @@ import "./style.css"; // For webpack support
 import {
   TextureLoader,
   RepeatWrapping,
+  MeshBasicNodeMaterial,
   OrthographicCamera,
   Scene,
   PlaneGeometry,
   Mesh,
+  WebGPURenderer,
   LinearSRGBColorSpace,
 } from "three";
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 import {
   tslFn,
-  sampler,
   attribute,
   varyingProperty,
   timerLocal,
   uniform,
   wgslFn,
   texture,
+  sampler,
   uv,
   clamp,
   float,
@@ -29,10 +27,11 @@ import {
   vec3,
   fract,
   floor,
-  MeshBasicNodeMaterial,
   positionGeometry,
   sin,
-} from "three/nodes";
+} from "three/tsl";
+
+import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -53,10 +52,10 @@ function animate() {
 }
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
+  if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
-    throw new Error("No WebGPU or WebGL2 support");
+    throw new Error("No WebGPU support");
   }
 
   const vUv = varyingProperty("vec2", "vUv");

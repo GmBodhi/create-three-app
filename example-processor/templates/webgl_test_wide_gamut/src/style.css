@@ -10,14 +10,32 @@
 }
 .slider {
   position: absolute;
-  cursor: ew-resize;
-  width: 40px;
-  height: 40px;
-  background-color: #f32196;
-  opacity: 0.7;
-  border-radius: 50%;
-  top: calc(50% - 20px);
-  left: calc(50% - 20px);
+  width: 200px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.slider:after,
+.slider:before {
+  position: absolute;
+  left: 50%;
+  content: "";
+  background: #fff;
+  cursor: grab;
+}
+.slider:before {
+  top: 0;
+  transform: translateX(-50%);
+  width: 1px;
+  height: 100%;
+}
+.slider:after {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 5px;
+  height: 33%;
+  border-radius: 5px;
 }
 .label {
   position: fixed;

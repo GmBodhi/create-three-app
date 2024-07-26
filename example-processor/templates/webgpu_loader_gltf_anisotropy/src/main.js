@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
@@ -10,8 +11,6 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let renderer, scene, camera, controls;
 

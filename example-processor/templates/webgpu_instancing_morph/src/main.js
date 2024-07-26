@@ -12,15 +12,14 @@ import {
   PlaneGeometry,
   MeshStandardMaterial,
   InstancedMesh,
+  MeshStandardNodeMaterial,
   AnimationMixer,
+  WebGPURenderer,
 } from "three";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import Stats from "three/addons/libs/stats.module.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import { MeshStandardNodeMaterial } from "three/nodes";
 
 let camera, scene, renderer, stats, mesh, mixer, dummy;
 
@@ -135,7 +134,6 @@ function init() {
   // renderer
 
   renderer = new WebGPURenderer({ antialias: true });
-
   renderer.setAnimationLoop(animate);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

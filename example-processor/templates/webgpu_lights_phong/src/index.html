@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js - WebGPU - Lights Phong</title>
+    <title>three.js webgpu - phong lighting model</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,7 +10,7 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - WebGPU - Phong Model Lighting<br />
+      webgpu - phong lighting model<br />
       <b style="color: red">Left: Red lights</b> - <b>Center: All lights</b> -
       <b style="color: blue">Right: blue light</b>
     </div>
@@ -18,9 +18,9 @@
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
-          "three/addons/": "./jsm/",
-          "three/nodes": "./jsm/nodes/Nodes.js"
+          "three": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.webgpu.js",
+          "three/addons/": "./jsm/"
         }
       }
     </script>

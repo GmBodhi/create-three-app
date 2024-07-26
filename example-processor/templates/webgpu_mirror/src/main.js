@@ -13,17 +13,11 @@ import {
   RepeatWrapping,
   SRGBColorSpace,
   PlaneGeometry,
-  PointLight,
-} from "three";
-import {
   MeshPhongNodeMaterial,
-  reflector,
-  uv,
-  texture,
-  color,
-} from "three/nodes";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+  PointLight,
+  WebGPURenderer,
+} from "three";
+import { reflector, uv, texture, color } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 

@@ -1,21 +1,26 @@
 import "./style.css"; // For webpack support
 
-import { PerspectiveCamera, DataTexture, RedFormat, Scene } from "three";
+import {
+  StorageInstancedBufferAttribute,
+  PerspectiveCamera,
+  DataTexture,
+  RedFormat,
+  Scene,
+  WebGPURenderer,
+} from "three";
 import {
   tslFn,
   uniform,
   storage,
+  storageObject,
   instanceIndex,
   float,
   texture,
   viewportTopLeft,
   color,
-} from "three/nodes";
+} from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
 
 let camera, scene, renderer;
 let computeNode;
@@ -65,14 +70,6 @@ async function playAudioBuffer() {
 }
 
 async function init() {
-  // if ( WebGPU.isAvailable() === false ) {
-
-  // 	document.body.appendChild( WebGPU.getErrorMessage() );
-
-  // 	throw new Error( 'No WebGPU support' );
-
-  // }
-
   // audio buffer
 
   const soundBuffer = await fetch("sounds/webgpu-audio-processing.mp3").then(
@@ -97,7 +94,7 @@ async function init() {
 
   // read-only buffer
 
-  const waveNode = storage(
+  const waveNode = storageObject(
     new StorageInstancedBufferAttribute(waveBuffer, 1),
     "float",
     waveBuffer.length

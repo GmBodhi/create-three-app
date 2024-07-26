@@ -9,14 +9,15 @@ import {
   SphereGeometry,
   Group,
   MathUtils,
+  MeshStandardNodeMaterial,
   Mesh,
-  LinearToneMapping,
+  WebGPURenderer,
+  NeutralToneMapping,
 } from "three";
 import {
   float,
   vec3,
   color,
-  toneMapping,
   viewportSharedTexture,
   viewportTopLeft,
   checker,
@@ -24,15 +25,9 @@ import {
   timerLocal,
   oscSine,
   output,
-  MeshStandardNodeMaterial,
-} from "three/nodes";
+} from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -44,12 +39,6 @@ let mixer, clock;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
@@ -145,7 +134,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.3);
+  renderer.toneMapping = NeutralToneMapping;
+  renderer.toneMappingExposure = 0.3;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

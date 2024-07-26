@@ -5,10 +5,12 @@ import {
   Scene,
   TextureLoader,
   Vector3,
+  SpriteNodeMaterial,
   Mesh,
   PlaneGeometry,
   AdditiveBlending,
   GridHelper,
+  WebGPURenderer,
 } from "three";
 import {
   range,
@@ -18,15 +20,9 @@ import {
   color,
   positionLocal,
   timerLocal,
-  SpriteNodeMaterial,
-} from "three/nodes";
+} from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -36,12 +32,6 @@ let controls;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(60, innerWidth / innerHeight, 1, 5000);

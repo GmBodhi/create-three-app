@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgpu - GLTFloader + Anisotropy</title>
+    <title>three.js webgpu - glTF + anisotropy</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -13,7 +13,7 @@
       <a href="https://threejs.org" target="_blank" rel="noopener"
         >three.js webgpu</a
       >
-      - GLTFLoader +
+      - glTF +
       <a
         href="https://github.com/KhronosGroup/glTF/tree/master/extensions/2.0/Khronos/KHR_materials_anisotropy"
         target="_blank"
@@ -42,7 +42,8 @@
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
+          "three": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.webgpu.js",
           "three/addons/": "./jsm/"
         }
       }

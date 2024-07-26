@@ -20,19 +20,21 @@ import {
   TorusGeometry,
   TorusKnotGeometry,
   Group,
+  MeshToonNodeMaterial,
   Color,
   DoubleSide,
   Mesh,
   PerspectiveCamera,
+  WebGPURenderer,
   Scene,
   DirectionalLight,
 } from "three";
 
 import Stats from "stats-gl";
+
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import { MeshToonNodeMaterial } from "three/nodes";
 
 let camera, scene, renderer;
 let controls, stats;

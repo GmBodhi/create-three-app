@@ -1,26 +1,18 @@
 import "./style.css"; // For webpack support
 
 import {
+  Node,
+  NodeUpdateType,
   Color,
   PerspectiveCamera,
   Scene,
   GridHelper,
   CubeTextureLoader,
+  MeshBasicNodeMaterial,
+  WebGPURenderer,
   Mesh,
 } from "three";
-import {
-  MeshStandardNodeMaterial,
-  NodeUpdateType,
-  Node,
-  nodeObject,
-  uniform,
-  cubeTexture,
-} from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import { nodeObject, uniform, cubeTexture } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -60,12 +52,6 @@ const objects = [];
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   const container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -105,7 +91,7 @@ function init() {
   const instanceUniform = nodeObject(new InstanceUniformNode());
   const cubeTextureNode = cubeTexture(cTexture);
 
-  const material = new MeshStandardNodeMaterial();
+  const material = new MeshBasicNodeMaterial();
   material.colorNode = instanceUniform.add(cubeTextureNode);
   material.emissiveNode = instanceUniform.mul(cubeTextureNode);
 

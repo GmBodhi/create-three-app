@@ -3,12 +3,11 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  WebGPURenderer,
   ReinhardToneMapping,
   NeutralToneMapping,
   EquirectangularReflectionMapping,
 } from "three";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";

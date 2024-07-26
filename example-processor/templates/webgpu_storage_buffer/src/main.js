@@ -1,6 +1,15 @@
 import "./style.css"; // For webpack support
 
-import { OrthographicCamera, Scene, Mesh, PlaneGeometry, Color } from "three";
+import {
+  OrthographicCamera,
+  Scene,
+  StorageInstancedBufferAttribute,
+  MeshBasicNodeMaterial,
+  Mesh,
+  PlaneGeometry,
+  WebGPURenderer,
+  Color,
+} from "three";
 import {
   storageObject,
   If,
@@ -10,11 +19,7 @@ import {
   float,
   tslFn,
   instanceIndex,
-  MeshBasicNodeMaterial,
-} from "three/nodes";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
+} from "three/tsl";
 
 const timestamps = {
   webgpu: document.getElementById("timestamps"),

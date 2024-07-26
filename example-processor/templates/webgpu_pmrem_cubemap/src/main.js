@@ -3,11 +3,12 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  WebGPURenderer,
   ACESFilmicToneMapping,
   Mesh,
   SphereGeometry,
+  MeshBasicNodeMaterial,
 } from "three";
-
 import {
   normalWorld,
   uniform,
@@ -15,10 +16,7 @@ import {
   positionViewDirection,
   cameraViewMatrix,
   pmremTexture,
-  MeshBasicNodeMaterial,
-} from "three/nodes";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+} from "three/tsl";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
 

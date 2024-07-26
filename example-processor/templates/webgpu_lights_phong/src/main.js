@@ -6,8 +6,10 @@ import {
   SphereGeometry,
   TextureLoader,
   RepeatWrapping,
+  MeshPhongNodeMaterial,
   Mesh,
   PointLight,
+  WebGPURenderer,
 } from "three";
 import {
   color,
@@ -18,30 +20,18 @@ import {
   texture,
   lights,
   normalMap,
-  MeshPhongNodeMaterial,
-} from "three/nodes";
+} from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
 let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
 
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,

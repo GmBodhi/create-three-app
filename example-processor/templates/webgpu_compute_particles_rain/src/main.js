@@ -9,6 +9,8 @@ import {
   RenderTarget,
   HalfFloatType,
   NearestFilter,
+  MeshBasicNodeMaterial,
+  StorageInstancedBufferAttribute,
   DoubleSide,
   Mesh,
   PlaneGeometry,
@@ -17,6 +19,7 @@ import {
   MeshStandardMaterial,
   BufferGeometryLoader,
   Clock,
+  WebGPURenderer,
   Vector3,
 } from "three";
 import {
@@ -34,16 +37,11 @@ import {
   instanceIndex,
   positionGeometry,
   storage,
-  MeshBasicNodeMaterial,
   If,
-} from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
+} from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -65,12 +63,6 @@ let collisionBoxPos, collisionBoxPosUI;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 110);

@@ -2,6 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   EquirectangularReflectionMapping,
+  WebGPURenderer,
   ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
@@ -17,8 +18,6 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 const params = {
   color: 0xffffff,

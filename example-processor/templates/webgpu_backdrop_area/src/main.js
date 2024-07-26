@@ -5,16 +5,19 @@ import {
   Scene,
   Color,
   Clock,
+  PointLight,
+  AmbientLight,
   AnimationMixer,
+  MeshBasicNodeMaterial,
   DoubleSide,
   Mesh,
   BoxGeometry,
+  WebGPURenderer,
   LinearToneMapping,
 } from "three";
 import {
   color,
   linearDepth,
-  toneMapping,
   viewportLinearDepth,
   viewportSharedTexture,
   viewportMipTexture,
@@ -22,17 +25,11 @@ import {
   checker,
   uv,
   modelScale,
-  MeshBasicNodeMaterial,
-} from "three/nodes";
+} from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -42,12 +39,6 @@ let mixer, clock;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
@@ -61,6 +52,13 @@ function init() {
   camera.lookAt(0, 1, 0);
 
   clock = new Clock();
+
+  const light = new PointLight(0xffffff, 50);
+  camera.add(light);
+  scene.add(camera);
+
+  const ambient = new AmbientLight(0x4466ff, 1);
+  scene.add(ambient);
 
   // model
 
@@ -145,7 +143,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMappingNode = toneMapping(LinearToneMapping, 0.2);
+  renderer.toneMapping = LinearToneMapping;
+  renderer.toneMappingExposure = 0.2;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

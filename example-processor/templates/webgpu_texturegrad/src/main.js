@@ -3,9 +3,11 @@ import "./style.css"; // For webpack support
 import {
   OrthographicCamera,
   Scene,
+  MeshBasicNodeMaterial,
   TextureLoader,
   Mesh,
   PlaneGeometry,
+  WebGPURenderer,
   Color,
 } from "three";
 import {
@@ -19,10 +21,7 @@ import {
   uv,
   texture,
   tslFn,
-  MeshBasicNodeMaterial,
-} from "three/nodes";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+} from "three/tsl";
 
 // WebGPU Backend
 init();

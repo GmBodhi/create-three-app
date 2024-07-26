@@ -5,12 +5,15 @@ import {
   PerspectiveCamera,
   Scene,
   TextureLoader,
+  StorageInstancedBufferAttribute,
+  SpriteNodeMaterial,
   Mesh,
   PlaneGeometry,
   GridHelper,
   MeshBasicMaterial,
   Raycaster,
   Vector2,
+  WebGPURenderer,
 } from "three";
 import {
   tslFn,
@@ -20,14 +23,8 @@ import {
   float,
   vec3,
   storage,
-  SpriteNodeMaterial,
   If,
-} from "three/nodes";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
+} from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Stats from "three/addons/libs/stats.module.js";
@@ -52,12 +49,6 @@ const timestamps = document.getElementById("timestamps");
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 1000);

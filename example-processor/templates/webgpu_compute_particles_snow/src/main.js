@@ -10,15 +10,20 @@ import {
   RenderTarget,
   HalfFloatType,
   NearestFilter,
+  MeshBasicNodeMaterial,
+  StorageInstancedBufferAttribute,
   SphereGeometry,
+  MeshStandardNodeMaterial,
   Mesh,
   PlaneGeometry,
   MeshStandardMaterial,
   Group,
   ConeGeometry,
   CylinderGeometry,
+  WebGPURenderer,
   ACESFilmicToneMapping,
   Vector2,
+  PostProcessing,
 } from "three";
 import {
   tslFn,
@@ -32,21 +37,12 @@ import {
   positionLocal,
   timerLocal,
   vec2,
-  MeshStandardNodeMaterial,
   instanceIndex,
   storage,
-  MeshBasicNodeMaterial,
   If,
-} from "three/nodes";
+} from "three/tsl";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-import StorageInstancedBufferAttribute from "three/addons/renderers/common/StorageInstancedBufferAttribute.js";
-
-import PostProcessing from "three/addons/renderers/common/PostProcessing.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -64,12 +60,6 @@ let collisionCamera, collisionPosRT, collisionPosMaterial;
 init();
 
 async function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 100);
@@ -337,7 +327,7 @@ async function init() {
   const vignet = viewportTopLeft.distance(0.5).mul(1.35).clamp().oneMinus();
 
   const teapotTreePass = pass(teapotTree, camera).getTextureNode();
-  const teapotTreePassBlurred = teapotTreePass.gaussianBlur(3);
+  const teapotTreePassBlurred = teapotTreePass.gaussianBlur(vec2(1), 3);
   teapotTreePassBlurred.resolution = new Vector2(0.2, 0.2);
 
   const scenePassColorBlurred = scenePassColor.gaussianBlur();

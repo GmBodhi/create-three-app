@@ -1,13 +1,15 @@
 import "./style.css"; // For webpack support
 
-import { PerspectiveCamera, TextureLoader, Scene } from "three";
-import { texture, equirectUV } from "three/nodes";
+import {
+  PerspectiveCamera,
+  TextureLoader,
+  SRGBColorSpace,
+  Scene,
+  WebGPURenderer,
+} from "three";
+import { texture, equirectUV } from "three/tsl";
+
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -17,12 +19,6 @@ let controls;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   const container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -37,6 +33,7 @@ function init() {
   const equirectTexture = new TextureLoader().load(
     "textures/2294472375_24a3b8ef46_o.jpg"
   );
+  equirectTexture.colorSpace = SRGBColorSpace;
 
   scene = new Scene();
   scene.backgroundNode = texture(equirectTexture, equirectUV(), 0);

@@ -1,6 +1,8 @@
 import "./style.css"; // For webpack support
 
 import {
+  Node,
+  NodeUpdateType,
   Color,
   PerspectiveCamera,
   Scene,
@@ -9,21 +11,12 @@ import {
   PlaneGeometry,
   SphereGeometry,
   Mesh,
-} from "three";
-import {
-  nodeObject,
-  uniform,
-  Node,
-  NodeUpdateType,
   MeshPhongNodeMaterial,
-} from "three/nodes";
+  WebGPURenderer,
+} from "three";
+import { nodeObject, uniform } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer, controls;
 
@@ -56,12 +49,6 @@ class OcclusionNode extends Node {
 init();
 
 async function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,

@@ -5,17 +5,14 @@ import {
   Scene,
   Clock,
   AnimationMixer,
+  PointsNodeMaterial,
   Color,
   Points,
+  WebGPURenderer,
 } from "three";
-import { uniform, skinning, PointsNodeMaterial } from "three/nodes";
+import { uniform, skinning } from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let camera, scene, renderer;
 
@@ -24,12 +21,6 @@ let mixer, clock;
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,

@@ -1,49 +1,43 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   RenderTarget,
   NearestFilter,
   DataTexture,
   UnsignedByteType,
   RGBAFormat,
+  MeshBasicNodeMaterial,
   Scene,
   Color,
   PerspectiveCamera,
   TextureLoader,
   SRGBColorSpace,
   RepeatWrapping,
+  NodeMaterial,
   Mesh,
   TorusKnotGeometry,
+  QuadMesh,
 } from "three";
-
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
 import {
-  MeshBasicNodeMaterial,
-  NodeMaterial,
   mix,
-  modelNormalMatrix,
-  normalGeometry,
-  normalize,
-  outputStruct,
   step,
   texture,
-  uniform,
+  viewportTopLeft,
+  mrt,
+  output,
+  transformedNormalWorld,
   uv,
-  varying,
   vec2,
-  vec4,
-} from "three/nodes";
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-import WebGL from "three/addons/capabilities/WebGL.js";
+} from "three/tsl";
 
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import QuadMesh from "three/addons/objects/QuadMesh.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, torus;
 let quadMesh,
+  sceneMRT,
   renderTarget,
   readbackTarget,
   material,
@@ -59,55 +53,9 @@ const options = {
 
 gui.add(options, "selection", ["mrt", "diffuse", "normal"]);
 
-class WriteGBufferMaterial extends NodeMaterial {
-  constructor(diffuseTexture) {
-    super();
-
-    this.lights = false;
-    this.fog = false;
-    this.colorSpaced = false;
-
-    this.diffuseTexture = diffuseTexture;
-
-    const vUv = varying(uv());
-
-    const transformedNormal = modelNormalMatrix.mul(normalGeometry);
-    const vNormal = varying(normalize(transformedNormal));
-
-    const repeat = uniform(vec2(5, 0.5));
-
-    const gColor = texture(this.diffuseTexture, vUv.mul(repeat));
-    const gNormal = vec4(normalize(vNormal), 1.0);
-
-    this.fragmentNode = outputStruct(gColor, gNormal);
-  }
-}
-
-class ReadGBufferMaterial extends NodeMaterial {
-  constructor(tDiffuse, tNormal) {
-    super();
-
-    this.lights = false;
-    this.fog = false;
-
-    const vUv = varying(uv());
-
-    const diffuse = texture(tDiffuse, vUv);
-    const normal = texture(tNormal, vUv);
-
-    this.fragmentNode = mix(diffuse, normal, step(0.5, vUv.x));
-  }
-}
-
 init();
 
 function init() {
-  if (WebGPU.isAvailable() === false && WebGL.isWebGL2Available() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU or WebGL2 support");
-  }
-
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -124,7 +72,7 @@ function init() {
 
   // Name our G-Buffer attachments for debugging
 
-  renderTarget.textures[0].name = "diffuse";
+  renderTarget.textures[0].name = "output";
   renderTarget.textures[1].name = "normal";
 
   // Init readback render target, readback data texture, readback material
@@ -142,7 +90,14 @@ function init() {
   readbackMaterial = new MeshBasicNodeMaterial();
   readbackMaterial.colorNode = texture(pixelBufferTexture);
 
-  // Scene setup
+  // MRT
+
+  sceneMRT = mrt({
+    output: output,
+    normal: transformedNormalWorld,
+  });
+
+  // Scene
 
   scene = new Scene();
   scene.background = new Color(0x222222);
@@ -162,17 +117,21 @@ function init() {
   diffuse.wrapS = RepeatWrapping;
   diffuse.wrapT = RepeatWrapping;
 
-  torus = new Mesh(
-    new TorusKnotGeometry(1, 0.3, 128, 32),
-    new WriteGBufferMaterial(diffuse)
-  );
+  const torusMaterial = new NodeMaterial();
+  torusMaterial.colorNode = texture(diffuse, uv().mul(vec2(10, 4)));
 
+  torus = new Mesh(new TorusKnotGeometry(1, 0.3, 128, 32), torusMaterial);
   scene.add(torus);
 
-  material = new ReadGBufferMaterial(
-    renderTarget.textures[0],
-    renderTarget.textures[1]
+  // Output
+
+  material = new NodeMaterial();
+  material.colorNode = mix(
+    texture(renderTarget.textures[0]),
+    texture(renderTarget.textures[1]),
+    step(0.5, viewportTopLeft.x)
   );
+
   quadMesh = new QuadMesh(material);
 
   // Controls
@@ -197,14 +156,18 @@ async function render(time) {
 
   torus.rotation.y = (time / 1000) * 0.4;
 
+  const isMRT = selection === "mrt";
+
   // render scene into target
-  renderer.setRenderTarget(selection === "mrt" ? renderTarget : readbackTarget);
+  renderer.setMRT(isMRT ? sceneMRT : null);
+  renderer.setRenderTarget(isMRT ? renderTarget : readbackTarget);
   renderer.render(scene, camera);
 
   // render post FX
+  renderer.setMRT(null);
   renderer.setRenderTarget(null);
 
-  if (selection === "mrt") {
+  if (isMRT) {
     quadMesh.material = material;
   } else {
     quadMesh.material = readbackMaterial;

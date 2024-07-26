@@ -1,12 +1,14 @@
 import "./style.css"; // For webpack support
 
 import {
+  WebGPURenderer,
   Scene,
   OrthographicCamera,
   AmbientLight,
   PointLight,
   CubeTextureLoader,
   TextureLoader,
+  MeshStandardNodeMaterial,
   Vector2,
   DoubleSide,
   Mesh,
@@ -14,13 +16,9 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
-
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-
-import { MeshStandardNodeMaterial } from "three/nodes";
 
 let stats;
 let camera, scene, renderer, controls;

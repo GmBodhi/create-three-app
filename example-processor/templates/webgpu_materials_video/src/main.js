@@ -4,13 +4,12 @@ import {
   PerspectiveCamera,
   Scene,
   DirectionalLight,
+  WebGPURenderer,
   VideoTexture,
   BoxGeometry,
   MeshPhongMaterial,
   Mesh,
 } from "three";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
 
 let container;
 

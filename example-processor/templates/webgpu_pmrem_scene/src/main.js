@@ -3,22 +3,15 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  WebGPURenderer,
   Color,
   Mesh,
   SphereGeometry,
   MeshBasicMaterial,
-} from "three";
-
-import {
-  normalWorld,
-  uniform,
-  pmremTexture,
+  PMREMGenerator,
   MeshBasicNodeMaterial,
-} from "three/nodes";
-
-import PMREMGenerator from "three/addons/renderers/common/extras/PMREMGenerator.js";
-
-import WebGPURenderer from "three/addons/renderers/webgpu/WebGPURenderer.js";
+} from "three";
+import { normalWorld, uniform, pmremTexture } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
