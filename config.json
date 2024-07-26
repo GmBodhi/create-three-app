@@ -4555,6 +4555,16 @@
         "/src"
       ]
     },
+    "webgpu_tsl_vfx_flames": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_video_panorama": {
       "files": {
         "index.html": "src",
