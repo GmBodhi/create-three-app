@@ -4425,6 +4425,16 @@
         "/src"
       ]
     },
+    "webgpu_shadowmap_opacity": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_skinning": {
       "files": {
         "index.html": "src",
@@ -4506,6 +4516,26 @@
       ]
     },
     "webgpu_textures_partialupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_coffee_smoke": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_compute_attractors_particles": {
       "files": {
         "index.html": "src",
         "main.js": "src",

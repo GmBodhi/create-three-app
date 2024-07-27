@@ -15,7 +15,7 @@ import {
 } from "three";
 import {
   PI2,
-  dot,
+  spherizeUV,
   sin,
   step,
   texture,
@@ -56,16 +56,6 @@ function init() {
   const perlinTexture = textureLoader.load(
     "three/examples/textures/noises/perlin/rgb-256x256.png"
   );
-
-  // TSL functions
-
-  const spherizeUv = tslFn(([input, center, strength, offset]) => {
-    const delta = input.sub(center);
-    const delta2 = dot(delta, delta);
-    const delta4 = delta2.mul(delta2);
-    const deltaOffset = delta4.mul(strength);
-    return input.add(delta.mul(deltaOffset)).add(offset);
-  });
 
   // gradient canvas
 
@@ -119,7 +109,7 @@ function init() {
 
     // main UV
     const mainUv = uv().toVar();
-    mainUv.assign(spherizeUv(mainUv, vec2(0.5), 10, vec2(0)).mul(0.6).add(0.2)); // spherize
+    mainUv.assign(spherizeUV(mainUv, 10).mul(0.6).add(0.2)); // spherize
     mainUv.assign(mainUv.pow(vec2(1, 2))); // stretch
     mainUv.assign(mainUv.mul(2, 1).sub(vec2(0.5, 0))); // scale
 
@@ -167,7 +157,7 @@ function init() {
 
     // main UV
     const mainUv = uv().toVar();
-    mainUv.assign(spherizeUv(mainUv, vec2(0.5), 10, vec2(0)).mul(0.6).add(0.2)); // spherize
+    mainUv.assign(spherizeUV(mainUv, 10).mul(0.6).add(0.2)); // spherize
     mainUv.assign(mainUv.pow(vec2(1, 3))); // stretch
     mainUv.assign(mainUv.mul(2, 1).sub(vec2(0.5, 0))); // scale
 
