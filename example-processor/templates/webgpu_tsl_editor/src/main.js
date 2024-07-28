@@ -4,6 +4,7 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
+  WebGPURenderer,
   LinearSRGBColorSpace,
   NodeMaterial,
   vec4,
@@ -14,10 +15,6 @@ import {
   RepeatWrapping,
   SRGBColorSpace,
 } from "three";
-
-import WebGPURenderer from ".three/examples/src/renderers/webgpu/WebGPURenderer.js";
-import WGSLNodeBuilder from ".three/examples/src/renderers/webgpu/nodes/WGSLNodeBuilder.js";
-import GLSLNodeBuilder from ".three/examples/src/renderers/webgl-fallback/nodes/GLSLNodeBuilder.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -50,7 +47,13 @@ function init() {
   const mesh = new Mesh(new PlaneGeometry(1, 1), material);
   scene.add(mesh);
 
+  //
+
+  let compiling = false;
+
   renderer.setAnimationLoop(() => {
+    if (compiling) return;
+
     renderer.render(scene, camera);
   });
 
@@ -69,7 +72,7 @@ function init() {
     };
 
     let timeout = null;
-    let nodeBuilder = null;
+    let rawShader = null;
 
     const editorDOM = document.getElementById("source");
     const resultDOM = document.getElementById("result");
@@ -118,11 +121,13 @@ output = vec4( finalColor, opacity );
     });
 
     const showCode = () => {
-      result.setValue(nodeBuilder[options.shader + "Shader"]);
+      result.setValue(rawShader[options.shader + "Shader"]);
       result.revealLine(1);
     };
 
-    const build = () => {
+    const webGLRenderer = new WebGPURenderer({ forceWebGL: true });
+
+    const build = async () => {
       try {
         const tslCode = `let output = null;\n${editor.getValue()}\nreturn { output };`;
         const nodes = new Function("THREE", tslCode)(THREE);
@@ -130,16 +135,23 @@ output = vec4( finalColor, opacity );
         mesh.material.fragmentNode = nodes.output;
         mesh.material.needsUpdate = true;
 
-        let NodeBuilder;
+        compiling = true;
 
         if (options.output === "WGSL") {
-          NodeBuilder = WGSLNodeBuilder;
+          rawShader = await renderer.debug.getRawShaderAsync(
+            scene,
+            camera,
+            mesh
+          );
         } else if (options.output === "GLSL ES 3.0") {
-          NodeBuilder = GLSLNodeBuilder;
+          rawShader = await webGLRenderer.debug.getRawShaderAsync(
+            scene,
+            camera,
+            mesh
+          );
         }
 
-        nodeBuilder = new NodeBuilder(mesh, renderer);
-        nodeBuilder.build();
+        compiling = false;
 
         showCode();
 
@@ -148,9 +160,9 @@ output = vec4( finalColor, opacity );
         /*const style = 'background-color: #333; color: white; font-style: italic; border: 2px solid #777; font-size: 22px;';
 
 							console.log( '%c  [ WGSL ] Vertex Shader      ', style );
-							console.log( nodeBuilder.vertexShader );
+							console.log( rawShader.vertexShader );
 							console.log( '%c  [ WGSL ] Fragment Shader    ', style );
-							console.log( nodeBuilder.fragmentShader );*/
+							console.log( rawShader.fragmentShader );/**/
       } catch (e) {
         result.setValue("Error: " + e.message);
       }
