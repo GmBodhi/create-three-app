@@ -16,7 +16,7 @@ import {
   Color,
 } from "three";
 
-import Stats from "stats-gl";
+import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -158,8 +158,6 @@ function init(forceWebGL = false) {
     document.body.removeChild(renderer.domElement);
   }
 
-  document.getElementById("backend").innerText =
-    "Active Backend: " + (forceWebGL ? "WebGL" : "WebGPU");
   // camera
 
   const aspect = window.innerWidth / window.innerHeight;
@@ -199,13 +197,8 @@ function init(forceWebGL = false) {
 
   // stats
 
-  stats = new Stats({
-    precision: 3,
-    horizontal: false,
-  });
-  stats.init(renderer);
+  stats = new Stats();
   document.body.appendChild(stats.dom);
-  stats.dom.style.position = "absolute";
 
   // gui
 

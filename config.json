@@ -4545,6 +4545,16 @@
         "/src"
       ]
     },
+    "webgpu_tsl_earth": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_tsl_editor": {
       "files": {
         "index.html": "src",
@@ -4576,6 +4586,16 @@
       ]
     },
     "webgpu_tsl_interoperability": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_raging_sea": {
       "files": {
         "index.html": "src",
         "main.js": "src",
