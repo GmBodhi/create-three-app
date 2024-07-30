@@ -138,13 +138,9 @@ output = vec4( finalColor, opacity );
         compiling = true;
 
         if (options.output === "WGSL") {
-          rawShader = await renderer.debug.getRawShaderAsync(
-            scene,
-            camera,
-            mesh
-          );
+          rawShader = await renderer.debug.getShaderAsync(scene, camera, mesh);
         } else if (options.output === "GLSL ES 3.0") {
-          rawShader = await webGLRenderer.debug.getRawShaderAsync(
+          rawShader = await webGLRenderer.debug.getShaderAsync(
             scene,
             camera,
             mesh

@@ -4322,6 +4322,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_masking": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_pixel": {
       "files": {
         "index.html": "src",
@@ -4465,6 +4475,16 @@
         "/src"
       ]
     },
+    "webgpu_sky": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_sprites": {
       "files": {
         "index.html": "src",
@@ -4516,6 +4536,16 @@
       ]
     },
     "webgpu_textures_partialupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_angular_slicing": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4586,6 +4616,16 @@
       ]
     },
     "webgpu_tsl_interoperability": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_procedural_terrain": {
       "files": {
         "index.html": "src",
         "main.js": "src",

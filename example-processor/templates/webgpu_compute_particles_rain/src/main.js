@@ -28,11 +28,9 @@ import {
   uv,
   uint,
   positionWorld,
-  modelWorldMatrix,
-  cameraViewMatrix,
+  billboarding,
   timerLocal,
   timerDelta,
-  cameraProjectionMatrix,
   vec2,
   instanceIndex,
   positionGeometry,
@@ -207,29 +205,6 @@ function init() {
 
   // rain
 
-  const billboarding = tslFn(() => {
-    const particlePosition = positionBuffer.toAttribute();
-
-    const worldMatrix = modelWorldMatrix.toVar();
-    worldMatrix[3][0] = particlePosition.x;
-    worldMatrix[3][1] = particlePosition.y;
-    worldMatrix[3][2] = particlePosition.z;
-
-    const modelViewMatrix = cameraViewMatrix.mul(worldMatrix);
-    modelViewMatrix[0][0] = 1;
-    modelViewMatrix[0][1] = 0;
-    modelViewMatrix[0][2] = 0;
-
-    //modelViewMatrix[ 0 ][ 0 ] = modelWorldMatrix[ 0 ].length();
-    //modelViewMatrix[ 1 ][ 1 ] = modelWorldMatrix[ 1 ].length();
-
-    modelViewMatrix[2][0] = 0;
-    modelViewMatrix[2][1] = 0;
-    modelViewMatrix[2][2] = 1;
-
-    return cameraProjectionMatrix.mul(modelViewMatrix).mul(positionGeometry);
-  });
-
   const rainMaterial = new MeshBasicNodeMaterial();
   rainMaterial.colorNode = uv()
     .distance(vec2(0.5, 0))
@@ -237,7 +212,9 @@ function init() {
     .mul(3)
     .exp()
     .mul(0.1);
-  rainMaterial.vertexNode = billboarding();
+  rainMaterial.vertexNode = billboarding({
+    position: positionBuffer.toAttribute(),
+  });
   rainMaterial.opacity = 0.2;
   rainMaterial.side = DoubleSide;
   rainMaterial.forceSinglePass = true;

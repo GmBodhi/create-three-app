@@ -7,10 +7,9 @@ import {
   TextureLoader,
   CanvasTexture,
   SRGBColorSpace,
-  MeshBasicNodeMaterial,
+  SpriteNodeMaterial,
   DoubleSide,
-  PlaneGeometry,
-  Mesh,
+  Sprite,
   WebGPURenderer,
 } from "three";
 import {
@@ -26,6 +25,7 @@ import {
   vec3,
   vec4,
   mix,
+  billboarding,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -99,7 +99,7 @@ function init() {
 
   // flame 1 material
 
-  const flame1Material = new MeshBasicNodeMaterial({
+  const flame1Material = new SpriteNodeMaterial({
     transparent: true,
     side: DoubleSide,
   });
@@ -147,7 +147,7 @@ function init() {
 
   // flame 2 material
 
-  const flame2Material = new MeshBasicNodeMaterial({
+  const flame2Material = new SpriteNodeMaterial({
     transparent: true,
     side: DoubleSide,
   });
@@ -209,17 +209,21 @@ function init() {
     return vec4(vec3(1), shape);
   })();
 
-  // geometry
+  // billboarding - follow the camera rotation only horizontally
 
-  const geometry = new PlaneGeometry(1, 1, 64, 64);
+  flame1Material.vertexNode = billboarding();
+  flame2Material.vertexNode = billboarding();
 
   // meshes
 
-  const flame1 = new Mesh(geometry, flame1Material);
+  const flame1 = new Sprite(flame1Material);
+  flame1.center.set(0.5, 0);
+  flame1.scale.x = 0.5; // optional
   flame1.position.x = -0.5;
   scene.add(flame1);
 
-  const flame2 = new Mesh(geometry, flame2Material);
+  const flame2 = new Sprite(flame2Material);
+  flame2.center.set(0.5, 0);
   flame2.position.x = 0.5;
   scene.add(flame2);
 

@@ -36,6 +36,7 @@ import {
   string,
   global,
   loop,
+  cameraProjectionMatrix,
 } from "three/tsl";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
@@ -135,6 +136,11 @@ function init() {
   material.colorNode = texture(uvTexture);
   material.opacityNode = texture(opacityTexture);
   material.alphaTestNode = 0.5;
+  materials.push(material);
+
+  // camera
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = cameraProjectionMatrix.mul(positionLocal);
   materials.push(material);
 
   // Normal
