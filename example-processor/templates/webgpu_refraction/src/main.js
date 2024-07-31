@@ -13,7 +13,13 @@ import {
   PointLight,
   WebGPURenderer,
 } from "three";
-import { viewportSharedTexture, texture, uv } from "three/tsl";
+import {
+  viewportSafeUV,
+  viewportSharedTexture,
+  viewportTopLeft,
+  texture,
+  uv,
+} from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -61,14 +67,14 @@ function init() {
 
   // refractor
 
-  const verticalRefractor = viewportSharedTexture();
-
   const verticalNormalScale = 0.1;
   const verticalUVOffset = texture(floorNormal, uv().mul(5))
     .xy.mul(2)
     .sub(1)
     .mul(verticalNormalScale);
-  verticalRefractor.uvNode = verticalRefractor.uvNode.add(verticalUVOffset);
+
+  const refractorUV = viewportTopLeft.add(verticalUVOffset);
+  const verticalRefractor = viewportSharedTexture(viewportSafeUV(refractorUV));
 
   const planeGeo = new PlaneGeometry(100.1, 100.1);
 
@@ -145,7 +151,7 @@ function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer(/*{ antialias: true }*/);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

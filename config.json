@@ -4152,6 +4152,16 @@
         "/src"
       ]
     },
+    "webgpu_ocean": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_parallax_uv": {
       "files": {
         "index.html": "src",
@@ -4656,6 +4666,16 @@
       ]
     },
     "webgpu_tsl_vfx_flames": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_vfx_tornado": {
       "files": {
         "index.html": "src",
         "main.js": "src",
