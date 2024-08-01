@@ -11,7 +11,7 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Sky } from "three/addons/objects/SkyGPU.js";
+import { SkyMesh } from "three/addons/objects/SkyMesh.js";
 
 let camera, scene, renderer;
 
@@ -21,7 +21,7 @@ init();
 
 function initSky() {
   // Add Sky
-  sky = new Sky();
+  sky = new SkyMesh();
   sky.scale.setScalar(450000);
   scene.add(sky);
 
