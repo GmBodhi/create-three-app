@@ -4,17 +4,18 @@ import {
   Clock,
   PerspectiveCamera,
   Scene,
-  HemisphereLight,
   WebGPURenderer,
   ACESFilmicToneMapping,
-  AnimationMixer,
+  PMREMGenerator,
   Color,
+  AnimationMixer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
@@ -28,9 +29,6 @@ async function init() {
 
   const clock = new Clock();
 
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
   const camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -40,15 +38,21 @@ async function init() {
   camera.position.set(-1.8, 0.8, 3);
 
   const scene = new Scene();
-  scene.add(new HemisphereLight(0xffffff, 0x443333, 2));
 
   const renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setAnimationLoop(animate);
+  renderer.toneMapping = ACESFilmicToneMapping;
+  document.body.appendChild(renderer.domElement);
 
-  container.appendChild(renderer.domElement);
+  await renderer.init();
+
+  const environment = new RoomEnvironment();
+  const pmremGenerator = new PMREMGenerator(renderer);
+
+  scene.background = new Color(0x666666);
+  scene.environment = pmremGenerator.fromScene(environment).texture;
 
   const ktx2Loader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
@@ -70,11 +74,6 @@ async function init() {
 
       const head = mesh.getObjectByName("mesh_2");
       const influences = head.morphTargetInfluences;
-
-      //head.morphTargetInfluences = null;
-
-      // WebGPURenderer: Unsupported texture format. 33776
-      head.material.map = null;
 
       const gui = new GUI();
       gui.close();
@@ -99,7 +98,7 @@ async function init() {
   controls.target.set(0, 0.15, -0.2);
 
   const stats = new Stats();
-  container.appendChild(stats.dom);
+  document.body.appendChild(stats.dom);
 
   function animate() {
     const delta = clock.getDelta();

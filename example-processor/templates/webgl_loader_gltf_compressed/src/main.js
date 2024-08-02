@@ -41,7 +41,7 @@ function init() {
   );
   camera.position.set(0, 100, 0);
 
-  const environment = new RoomEnvironment(renderer);
+  const environment = new RoomEnvironment();
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene = new Scene();

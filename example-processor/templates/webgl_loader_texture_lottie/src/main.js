@@ -58,7 +58,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
-  const environment = new RoomEnvironment(renderer);
+  const environment = new RoomEnvironment();
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.environment = pmremGenerator.fromScene(environment).texture;

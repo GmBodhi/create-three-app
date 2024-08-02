@@ -94,7 +94,7 @@ function init() {
 
   //
 
-  const environment = new RoomEnvironment(renderer);
+  const environment = new RoomEnvironment();
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.environment = pmremGenerator.fromScene(environment).texture;

@@ -37,7 +37,7 @@ async function init() {
   renderer.toneMappingExposure = 1;
   container.appendChild(renderer.domElement);
 
-  const environment = new RoomEnvironment(renderer);
+  const environment = new RoomEnvironment();
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene = new Scene();

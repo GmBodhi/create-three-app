@@ -107,7 +107,7 @@ camera.position.z = 5;
 const scene = new Scene();
 scene.scale.x = -1;
 
-const environment = new RoomEnvironment(renderer);
+const environment = new RoomEnvironment();
 const pmremGenerator = new PMREMGenerator(renderer);
 
 scene.background = new Color(0x666666);
