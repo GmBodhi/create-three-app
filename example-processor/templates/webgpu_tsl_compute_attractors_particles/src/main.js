@@ -28,12 +28,12 @@ import {
   color,
   cos,
   instanceIndex,
-  loop,
+  Loop,
   mix,
   mod,
   sin,
   storage,
-  tslFn,
+  Fn,
   uint,
   uniform,
   uniformArray,
@@ -193,7 +193,7 @@ function init() {
     count
   );
 
-  const sphericalToVec3 = tslFn(([phi, theta]) => {
+  const sphericalToVec3 = Fn(([phi, theta]) => {
     const sinPhiRadius = sin(phi);
 
     return vec3(
@@ -205,7 +205,7 @@ function init() {
 
   // init compute
 
-  const init = tslFn(() => {
+  const init = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 
@@ -248,7 +248,7 @@ function init() {
     .toVar();
   const particleMass = particleMassMultiplier.mul(particleGlobalMass).toVar();
 
-  const update = tslFn(() => {
+  const update = Fn(() => {
     // const delta = timerDelta().mul( timeScale ).min( 1 / 30 ).toVar();
     const delta = float(1 / 60)
       .mul(timeScale)
@@ -260,7 +260,7 @@ function init() {
 
     const force = vec3(0).toVar();
 
-    loop(attractorsLength, ({ i }) => {
+    Loop(attractorsLength, ({ i }) => {
       const attractorPosition = attractorsPositions.element(i);
       const attractorRotationAxis = attractorsRotationAxes.element(i);
       const toAttractor = attractorPosition.sub(position);
@@ -310,7 +310,7 @@ function init() {
 
   material.positionNode = positionBuffer.toAttribute();
 
-  material.colorNode = tslFn(() => {
+  material.colorNode = Fn(() => {
     const velocity = velocityBuffer.toAttribute();
     const speed = velocity.length();
     const colorMix = speed.div(maxSpeed).smoothstep(0, 0.5);

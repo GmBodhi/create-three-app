@@ -28,12 +28,12 @@ import {
   positionLocal,
   sign,
   step,
-  tslFn,
+  Fn,
   uniform,
   varying,
   vec2,
   vec3,
-  loop,
+  Loop,
 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -111,7 +111,7 @@ function init() {
   const vNormal = varying(vec3());
   const vPosition = varying(vec3());
 
-  const terrainElevation = tslFn(([position]) => {
+  const terrainElevation = Fn(([position]) => {
     const warpedPosition = position.add(offset).toVar();
     warpedPosition.addAssign(
       mx_noise_float(
@@ -122,7 +122,7 @@ function init() {
     );
 
     const elevation = float(0).toVar();
-    loop(
+    Loop(
       {
         type: "float",
         start: float(1),
@@ -145,7 +145,7 @@ function init() {
     return elevation;
   });
 
-  material.positionNode = tslFn(() => {
+  material.positionNode = Fn(() => {
     // neighbours positions
 
     const neighbourA = positionLocal.xyz
@@ -179,7 +179,7 @@ function init() {
 
   material.normalNode = modelNormalMatrix.mul(vNormal);
 
-  material.colorNode = tslFn(() => {
+  material.colorNode = Fn(() => {
     const finalColor = colorSand.toVar();
 
     // grass

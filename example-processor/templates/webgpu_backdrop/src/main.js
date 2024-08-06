@@ -19,6 +19,7 @@ import {
   vec3,
   color,
   viewportSharedTexture,
+  viewportSafeUV,
   viewportTopLeft,
   checker,
   uv,
@@ -119,18 +120,20 @@ function init() {
   addBackdropSphere(viewportSharedTexture().rgb.saturation(10), oscSine());
   addBackdropSphere(viewportSharedTexture().rgb.overlay(checker(uv().mul(10))));
   addBackdropSphere(
-    viewportSharedTexture(viewportTopLeft.mul(40).floor().div(40))
+    viewportSharedTexture(
+      viewportSafeUV(viewportTopLeft.mul(40).floor().div(40))
+    )
   );
   addBackdropSphere(
-    viewportSharedTexture(viewportTopLeft.mul(80).floor().div(80)).add(
-      color(0x0033ff)
-    )
+    viewportSharedTexture(
+      viewportSafeUV(viewportTopLeft.mul(80).floor().div(80))
+    ).add(color(0x0033ff))
   );
   addBackdropSphere(vec3(0, 0, viewportSharedTexture().b));
 
   //renderer
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: false });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

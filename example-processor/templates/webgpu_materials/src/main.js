@@ -15,7 +15,7 @@ import {
   NodeObjectLoader,
 } from "three";
 import {
-  tslFn,
+  Fn,
   wgslFn,
   positionLocal,
   positionWorld,
@@ -35,7 +35,7 @@ import {
   js,
   string,
   global,
-  loop,
+  Loop,
   cameraProjectionMatrix,
 } from "three/tsl";
 
@@ -155,7 +155,7 @@ function init() {
 
   // Custom ShaderNode ( desaturate filter )
 
-  const desaturateShaderNode = tslFn((input) => {
+  const desaturateShaderNode = Fn((input) => {
     return vec3(0.299, 0.587, 0.114).dot(input.color.xyz);
   });
 
@@ -165,7 +165,7 @@ function init() {
 
   // Custom ShaderNode(no inputs) > Approach 2
 
-  const desaturateNoInputsShaderNode = tslFn(() => {
+  const desaturateNoInputsShaderNode = Fn(() => {
     return vec3(0.299, 0.587, 0.114).dot(texture(uvTexture).xyz);
   });
 
@@ -243,7 +243,7 @@ function init() {
   materials.push(material);
 
   const loopCount = 10;
-  material.colorNode = loop(loopCount, ({ i }) => {
+  material.colorNode = Loop(loopCount, ({ i }) => {
     const output = vec4().temp();
     const scale = oscSine().mul(0.09); // just a value to test
 

@@ -30,7 +30,7 @@ import {
   positionLocal,
   sin,
   texture,
-  tslFn,
+  Fn,
   uv,
   vec2,
   vec3,
@@ -66,7 +66,7 @@ function init() {
 
   // TSL functions
 
-  const toRadialUv = tslFn(([uv, multiplier, rotation, offset]) => {
+  const toRadialUv = Fn(([uv, multiplier, rotation, offset]) => {
     const centeredUv = uv.sub(0.5).toVar();
     const distanceToCenter = centeredUv.length();
     const angle = atan2(centeredUv.y, centeredUv.x);
@@ -78,11 +78,11 @@ function init() {
     return radialUv;
   });
 
-  const toSkewedUv = tslFn(([uv, skew]) => {
+  const toSkewedUv = Fn(([uv, skew]) => {
     return vec2(uv.x.add(uv.y.mul(skew.x)), uv.y.add(uv.x.mul(skew.y)));
   });
 
-  const twistedCylinder = tslFn(
+  const twistedCylinder = Fn(
     ([position, parabolStrength, parabolOffset, parabolAmplitude, time]) => {
       const angle = atan2(position.z, position.x).toVar();
       const elevation = position.y;
@@ -124,7 +124,7 @@ function init() {
     wireframe: false,
   });
 
-  floorMaterial.outputNode = tslFn(() => {
+  floorMaterial.outputNode = Fn(() => {
     const time = timerLocal().mul(timeScale);
 
     // noise 1
@@ -181,7 +181,7 @@ function init() {
     timerLocal().mul(timeScale)
   );
 
-  emissiveMaterial.outputNode = tslFn(() => {
+  emissiveMaterial.outputNode = Fn(() => {
     const time = timerLocal().mul(timeScale);
 
     // noise 1
@@ -233,7 +233,7 @@ function init() {
     timerLocal().mul(timeScale)
   );
 
-  darkMaterial.outputNode = tslFn(() => {
+  darkMaterial.outputNode = Fn(() => {
     const time = timerLocal().mul(timeScale).add(123.4);
 
     // noise 1

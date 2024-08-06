@@ -26,7 +26,7 @@ import {
   PostProcessing,
 } from "three";
 import {
-  tslFn,
+  Fn,
   texture,
   vec3,
   pass,
@@ -127,7 +127,7 @@ async function init() {
 
   const randUint = () => uint(Math.random() * 0xffffff);
 
-  const computeInit = tslFn(() => {
+  const computeInit = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const scale = scaleBuffer.element(instanceIndex);
     const particleData = dataBuffer.element(instanceIndex);
@@ -156,7 +156,7 @@ async function init() {
   const surfaceOffset = 0.2;
   const speed = 0.4;
 
-  const computeUpdate = tslFn(() => {
+  const computeUpdate = Fn(() => {
     const getCoord = (pos) => pos.add(50).div(100);
 
     const position = positionBuffer.element(instanceIndex);
@@ -181,7 +181,7 @@ async function init() {
       );
 
       position.y = position.y.add(velocity);
-    }).else(() => {
+    }).Else(() => {
       staticPositionBuffer.element(instanceIndex).assign(position);
     });
   });

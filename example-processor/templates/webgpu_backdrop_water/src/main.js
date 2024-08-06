@@ -176,7 +176,7 @@ function init() {
 
   const finalUV = depthTestForRefraction
     .lessThan(0)
-    .cond(viewportTopLeft, refractionUV);
+    .select(viewportTopLeft, refractionUV);
 
   const viewportTexture = viewportSharedTexture(finalUV);
 
@@ -209,7 +209,7 @@ function init() {
   let transition = waterPosY.add(0.1).saturate().oneMinus();
   transition = waterPosY
     .lessThan(0)
-    .cond(transition, normalWorld.y.mix(transition, 0))
+    .select(transition, normalWorld.y.mix(transition, 0))
     .toVar();
 
   const colorNode = transition.mix(
@@ -257,7 +257,7 @@ function init() {
   const waterMask = objectPosition(camera).y.greaterThan(0);
 
   const scenePassColorBlurred = scenePassColor.gaussianBlur();
-  scenePassColorBlurred.directionNode = waterMask.cond(
+  scenePassColorBlurred.directionNode = waterMask.select(
     scenePassDepth,
     scenePass.getLinearDepthNode().mul(5)
   );
@@ -265,7 +265,7 @@ function init() {
   const vignet = viewportTopLeft.distance(0.5).mul(1.35).clamp().oneMinus();
 
   postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = waterMask.cond(
+  postProcessing.outputNode = waterMask.select(
     scenePassColorBlurred,
     scenePassColorBlurred.mul(color(0x74ccf4)).mul(vignet)
   );

@@ -14,7 +14,7 @@ import {
   Color,
   Mesh,
 } from "three";
-import { Break, If, vec3, materialReference, tslFn } from "three/tsl";
+import { Break, If, vec3, materialReference, Fn } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
@@ -87,7 +87,7 @@ function init() {
 
   const threshold = materialReference("threshold", "float");
 
-  material.testNode = tslFn(({ map, mapValue, probe, finalColor }) => {
+  material.testNode = Fn(({ map, mapValue, probe, finalColor }) => {
     If(mapValue.greaterThan(threshold), () => {
       const p = vec3().temp().assign(probe).addAssign(0.5);
 

@@ -12,7 +12,7 @@ import {
   WebGPURenderer,
 } from "three";
 import {
-  tslFn,
+  Fn,
   uniform,
   storage,
   attribute,
@@ -60,7 +60,7 @@ function init() {
 
   // create function
 
-  const computeShaderFn = tslFn(() => {
+  const computeShaderFn = Fn(() => {
     const particle = particleBufferNode.element(instanceIndex);
     const velocity = velocityBufferNode.element(instanceIndex);
 
@@ -72,11 +72,11 @@ function init() {
     velocity.x = position.x
       .abs()
       .greaterThanEqual(limit.x)
-      .cond(velocity.x.negate(), velocity.x);
+      .select(velocity.x.negate(), velocity.x);
     velocity.y = position.y
       .abs()
       .greaterThanEqual(limit.y)
-      .cond(velocity.y.negate(), velocity.y);
+      .select(velocity.y.negate(), velocity.y);
 
     position.assign(position.min(limit).max(limit.negate()));
 
@@ -84,7 +84,7 @@ function init() {
     const distanceFromPointer = pointer.sub(position).length();
 
     particle.assign(
-      distanceFromPointer.lessThanEqual(pointerSize).cond(vec3(), position)
+      distanceFromPointer.lessThanEqual(pointerSize).select(vec3(), position)
     );
   });
 
@@ -92,7 +92,7 @@ function init() {
 
   computeNode = computeShaderFn().compute(particleNum);
   computeNode.onInit = ({ renderer }) => {
-    const precomputeShaderNode = tslFn(() => {
+    const precomputeShaderNode = Fn(() => {
       const particleIndex = float(instanceIndex);
 
       const randomAngle = particleIndex.mul(0.005).mul(Math.PI * 2);

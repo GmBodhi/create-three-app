@@ -16,7 +16,7 @@ import {
   WebGPURenderer,
 } from "three";
 import {
-  tslFn,
+  Fn,
   uniform,
   texture,
   instanceIndex,
@@ -76,7 +76,7 @@ function init() {
 
   // compute
 
-  const computeInit = tslFn(() => {
+  const computeInit = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const color = colorBuffer.element(instanceIndex);
 
@@ -93,7 +93,7 @@ function init() {
 
   //
 
-  const computeUpdate = tslFn(() => {
+  const computeUpdate = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 
@@ -169,7 +169,7 @@ function init() {
 
   // click event
 
-  const computeHit = tslFn(() => {
+  const computeHit = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 

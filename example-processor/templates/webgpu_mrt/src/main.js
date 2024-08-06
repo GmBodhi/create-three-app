@@ -20,7 +20,7 @@ import {
   viewportTopLeft,
   mix,
   mrt,
-  tslFn,
+  Fn,
 } from "three/tsl";
 
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
@@ -106,7 +106,7 @@ function init() {
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputColorTransform = false;
-  postProcessing.outputNode = tslFn(() => {
+  postProcessing.outputNode = Fn(() => {
     const output = scenePass.getTextureNode("output"); // output name is optional here
     const normal = scenePass.getTextureNode("normal");
     const diffuse = scenePass.getTextureNode("diffuse");

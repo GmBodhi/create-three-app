@@ -22,7 +22,7 @@ import {
   mx_fractal_noise_vec3,
   positionWorld,
   vec4,
-  tslFn,
+  Fn,
   color,
   vertexIndex,
 } from "three/tsl";
@@ -99,13 +99,13 @@ function init() {
 
   const discardNode = vertexIndex.hash().greaterThan(0.5);
 
-  materialCustomShadow.colorNode = tslFn(() => {
+  materialCustomShadow.colorNode = Fn(() => {
     discardNode.discard();
 
     return materialColor;
   })();
 
-  materialCustomShadow.shadowNode = tslFn(() => {
+  materialCustomShadow.shadowNode = Fn(() => {
     discardNode.discard();
 
     return materialColor;
@@ -143,13 +143,13 @@ function init() {
     specular: 0x111111,
   });
 
-  planeMaterial.shadowPositionNode = tslFn(() => {
+  planeMaterial.shadowPositionNode = Fn(() => {
     const pos = positionWorld.toVar();
     pos.xz.addAssign(mx_fractal_noise_vec3(positionWorld.mul(2)).saturate().xz);
     return pos;
   })();
 
-  planeMaterial.colorNode = tslFn(() => {
+  planeMaterial.colorNode = Fn(() => {
     const pos = positionWorld.toVar();
     pos.xz.addAssign(mx_fractal_noise_vec3(positionWorld.mul(2)).saturate().xz);
     return mx_fractal_noise_vec3(positionWorld.mul(2))

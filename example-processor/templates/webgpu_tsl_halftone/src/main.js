@@ -19,7 +19,7 @@ import {
   mix,
   normalWorld,
   output,
-  tslFn,
+  Fn,
   uniform,
   vec4,
   viewportCoordinate,
@@ -137,7 +137,7 @@ function init() {
 
   // halftone functions
 
-  const halftone = tslFn(
+  const halftone = Fn(
     ([count, color, direction, start, end, radius, mixLow, mixHigh]) => {
       // grid pattern
 
@@ -165,7 +165,7 @@ function init() {
     }
   );
 
-  const halftones = tslFn(([input]) => {
+  const halftones = Fn(([input]) => {
     const halftonesOutput = input;
 
     for (const settings of halftoneSettings) {

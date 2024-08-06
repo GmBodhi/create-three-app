@@ -9,7 +9,7 @@ import {
   WebGPURenderer,
 } from "three";
 import {
-  tslFn,
+  Fn,
   uniform,
   storage,
   storageObject,
@@ -108,7 +108,7 @@ async function init() {
 
   // compute (shader-node)
 
-  const computeShaderFn = tslFn(() => {
+  const computeShaderFn = Fn(() => {
     const index = float(instanceIndex);
 
     // pitch

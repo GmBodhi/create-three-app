@@ -23,7 +23,7 @@ import {
   frontFacing,
   output,
   positionLocal,
-  tslFn,
+  Fn,
   uniform,
   vec4,
 } from "three/tsl";
@@ -81,7 +81,7 @@ function init() {
 
   // TSL functions
 
-  const inAngle = tslFn(([position, angleStart, angleArc]) => {
+  const inAngle = Fn(([position, angleStart, angleArc]) => {
     const angle = atan2(position.y, position.x)
       .sub(angleStart)
       .mod(PI2)
@@ -122,7 +122,7 @@ function init() {
 
   // output
 
-  slicedMaterial.outputNode = tslFn(() => {
+  slicedMaterial.outputNode = Fn(() => {
     // discard
 
     inAngle(positionLocal.xy, sliceStart, sliceArc).discard();
@@ -139,7 +139,7 @@ function init() {
 
   // shadow
 
-  slicedMaterial.shadowNode = tslFn(() => {
+  slicedMaterial.shadowNode = Fn(() => {
     // discard
 
     inAngle(positionLocal.xy, sliceStart, sliceArc).discard();

@@ -13,7 +13,7 @@ import {
 import {
   float,
   mx_noise_float,
-  loop,
+  Loop,
   color,
   positionLocal,
   sin,
@@ -22,7 +22,7 @@ import {
   mul,
   timerLocal,
   uniform,
-  tslFn,
+  Fn,
   modelNormalMatrix,
 } from "three/tsl";
 
@@ -72,7 +72,7 @@ function init() {
 
   // TSL functions
 
-  const wavesElevation = tslFn(([position]) => {
+  const wavesElevation = Fn(([position]) => {
     const time = timerLocal();
 
     // large waves
@@ -83,7 +83,7 @@ function init() {
       largeWavesMultiplier
     ).toVar();
 
-    loop({ start: float(1), end: smallWavesIterations.add(1) }, ({ i }) => {
+    Loop({ start: float(1), end: smallWavesIterations.add(1) }, ({ i }) => {
       const noiseInput = vec3(
         position.xz
           .add(2) // avoids a-hole pattern

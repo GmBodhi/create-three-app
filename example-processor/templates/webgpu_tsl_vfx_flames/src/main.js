@@ -19,7 +19,7 @@ import {
   step,
   texture,
   timerLocal,
-  tslFn,
+  Fn,
   uv,
   vec2,
   vec3,
@@ -104,7 +104,7 @@ function init() {
     side: DoubleSide,
   });
 
-  flame1Material.colorNode = tslFn(() => {
+  flame1Material.colorNode = Fn(() => {
     const time = timerLocal();
 
     // main UV
@@ -152,7 +152,7 @@ function init() {
     side: DoubleSide,
   });
 
-  flame2Material.colorNode = tslFn(() => {
+  flame2Material.colorNode = Fn(() => {
     const time = timerLocal();
 
     // main UV

@@ -18,7 +18,7 @@ import {
   smoothstep,
   texture,
   timerLocal,
-  tslFn,
+  Fn,
   uv,
   vec2,
   vec3,
@@ -80,7 +80,7 @@ function init() {
 
   // position
 
-  smokeMaterial.positionNode = tslFn(() => {
+  smokeMaterial.positionNode = Fn(() => {
     // twist
 
     const twistNoiseUv = vec2(0.5, uv().y.mul(0.2).sub(time.mul(0.005)).mod(1));
@@ -100,7 +100,7 @@ function init() {
 
   // color
 
-  smokeMaterial.colorNode = tslFn(() => {
+  smokeMaterial.colorNode = Fn(() => {
     // alpha
 
     const alphaNoiseUv = uv()

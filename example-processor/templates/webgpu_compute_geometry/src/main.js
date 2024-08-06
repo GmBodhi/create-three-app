@@ -14,7 +14,7 @@ import {
   sin,
   mat3,
   storage,
-  tslFn,
+  Fn,
   instanceIndex,
   timerLocal,
 } from "three/tsl";
@@ -69,7 +69,7 @@ function init() {
 
       // compute shader
 
-      const computeFn = tslFn(() => {
+      const computeFn = Fn(() => {
         const positionAttribute = storage(
           positionBaseAttribute,
           "vec3",

@@ -23,7 +23,7 @@ import {
   Vector3,
 } from "three";
 import {
-  tslFn,
+  Fn,
   texture,
   uv,
   uint,
@@ -122,7 +122,7 @@ function init() {
 
   const randUint = () => uint(Math.random() * 0xffffff);
 
-  const computeInit = tslFn(() => {
+  const computeInit = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
     const rippleTime = rippleTimeBuffer.element(instanceIndex);
@@ -142,7 +142,7 @@ function init() {
 
   //
 
-  const computeUpdate = tslFn(() => {
+  const computeUpdate = Fn(() => {
     const getCoord = (pos) => pos.add(50).div(100);
 
     const position = positionBuffer.element(instanceIndex);
@@ -230,7 +230,7 @@ function init() {
 
   const rippleTime = rippleTimeBuffer.element(instanceIndex).x;
 
-  const rippleEffect = tslFn(() => {
+  const rippleEffect = Fn(() => {
     const center = uv().add(vec2(-0.5)).length().mul(7);
     const distance = rippleTime.sub(center);
 
