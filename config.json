@@ -3812,6 +3812,16 @@
         "/src"
       ]
     },
+    "webgpu_lightprobe": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lights_custom": {
       "files": {
         "index.html": "src",
@@ -4303,6 +4313,16 @@
       ]
     },
     "webgpu_postprocessing_bloom_selective": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_difference": {
       "files": {
         "index.html": "src",
         "main.js": "src",
