@@ -2733,6 +2733,16 @@
         "/src"
       ]
     },
+    "webgl_performance": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_pmrem_test": {
       "files": {
         "index.html": "src",
@@ -3992,6 +4002,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_envmaps": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_lightmap": {
       "files": {
         "index.html": "src",
@@ -4183,6 +4203,16 @@
       ]
     },
     "webgpu_particles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_performance": {
       "files": {
         "index.html": "src",
         "main.js": "src",
