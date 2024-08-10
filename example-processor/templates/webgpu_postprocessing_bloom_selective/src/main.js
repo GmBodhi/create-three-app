@@ -105,7 +105,7 @@ window.addEventListener("pointerdown", (event) => {
   if (intersects.length > 0) {
     const material = intersects[0].object.material;
 
-    const bloomIntensity = material.mrtNode.getNode("bloomIntensity");
+    const bloomIntensity = material.mrtNode.get("bloomIntensity");
     bloomIntensity.value = bloomIntensity.value === 0 ? 1 : 0;
   }
 });

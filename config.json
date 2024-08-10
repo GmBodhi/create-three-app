@@ -4392,6 +4392,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_motion_blur": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_pixel": {
       "files": {
         "index.html": "src",
