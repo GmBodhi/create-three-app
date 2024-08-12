@@ -51,7 +51,7 @@ function init() {
   // create function
 
   const computeTexture = Fn(({ storageTexture }) => {
-    const posX = instanceIndex.remainder(width);
+    const posX = instanceIndex.modInt(width);
     const posY = instanceIndex.div(width);
     const indexUV = uvec2(posX, posY);
 

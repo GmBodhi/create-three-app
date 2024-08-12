@@ -59,6 +59,10 @@ async function init() {
   dirLight.shadow.mapSize.height = 2048;
   dirLight.shadow.radius = 4;
   dirLight.shadow.bias = -0.0005;
+
+  dirLight.shadow.autoUpdate = false;
+  dirLight.shadow.needsUpdate = true;
+
   scene.add(dirLight);
 
   //
