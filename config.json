@@ -4422,6 +4422,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_ssaa": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_transition": {
       "files": {
         "index.html": "src",
