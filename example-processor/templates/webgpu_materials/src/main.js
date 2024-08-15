@@ -202,7 +202,7 @@ function init() {
   material.colorNode = someWGSLFn({ color: texture(uvTexture) });
   materials.push(material);
 
-  // Custom WGSL ( get texture from keywords )
+  // Custom WGSL
 
   const getWGSLTextureSample = wgslFn(`
 					fn getWGSLTextureSample( tex: texture_2d<f32>, tex_sampler: sampler, uv:vec2<f32> ) -> vec4<f32> {
@@ -213,7 +213,6 @@ function init() {
 				`);
 
   const textureNode = texture(uvTexture);
-  //getWGSLTextureSample.keywords = { tex: textureNode, tex_sampler: sampler( textureNode ) };
 
   material = new MeshBasicNodeMaterial();
   material.colorNode = getWGSLTextureSample({

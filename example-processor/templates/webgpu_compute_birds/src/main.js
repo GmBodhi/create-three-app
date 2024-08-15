@@ -231,7 +231,6 @@ function init() {
 
   const birdGeometry = new BirdGeometry();
   const birdMaterial = new NodeMaterial();
-  birdMaterial.normals = false;
 
   // Declare varyings
 
