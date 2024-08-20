@@ -2239,19 +2239,6 @@
         "/src"
       ]
     },
-    "webgl_materials_curvature": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "fragmentShaderRaw.glsl": "src/shaders",
-        "vertexShaderRaw.glsl": "src/shaders",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
-    },
     "webgl_materials_displacementmap": {
       "files": {
         "index.html": "src",
@@ -3763,6 +3750,16 @@
       ]
     },
     "webgpu_depth_texture": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_display_stereo": {
       "files": {
         "index.html": "src",
         "main.js": "src",
