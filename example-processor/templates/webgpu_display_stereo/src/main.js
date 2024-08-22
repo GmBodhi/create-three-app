@@ -6,7 +6,6 @@ import {
   Scene,
   CubeTextureLoader,
   SphereGeometry,
-  CubeRefractionMapping,
   MeshBasicMaterial,
   InstancedMesh,
   DynamicDrawUsage,
@@ -15,19 +14,28 @@ import {
   PostProcessing,
 } from "three";
 
-import { stereoPass } from "three/tsl";
+import { stereoPass, anaglyphPass, parallaxBarrierPass } from "three/tsl";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Timer } from "three/addons/misc/Timer.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, postProcessing;
 
-let mesh, dummy;
+let stereo, anaglyph, parallaxBarrier;
 
-let mouseX = 0,
-  mouseY = 0;
-
-let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2;
+let mesh, dummy, timer;
 
 const position = new Vector3();
+
+const params = {
+  effect: "stereo",
+};
+
+const effects = {
+  Stereo: "stereo",
+  Anaglyph: "anaglyph",
+  ParallaxBarrier: "parallaxBarrier",
+};
 
 init();
 
@@ -45,17 +53,17 @@ function init() {
     .setPath("textures/cube/Park3Med/")
     .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
 
+  timer = new Timer();
+
   const geometry = new SphereGeometry(0.1, 32, 16);
 
   const textureCube = new CubeTextureLoader()
     .setPath("textures/cube/Park3Med/")
     .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
-  textureCube.mapping = CubeRefractionMapping;
 
   const material = new MeshBasicMaterial({
     color: 0xffffff,
     envMap: textureCube,
-    refractionRatio: 0.95,
   });
 
   mesh = new InstancedMesh(geometry, material, 500);
@@ -85,27 +93,43 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   postProcessing = new PostProcessing(renderer);
-  const pass = stereoPass(scene, camera);
-  postProcessing.outputNode = pass;
+  stereo = stereoPass(scene, camera);
+  anaglyph = anaglyphPass(scene, camera);
+  parallaxBarrier = parallaxBarrierPass(scene, camera);
+
+  postProcessing.outputNode = stereo;
+
+  //
+
+  const gui = new GUI();
+  gui.add(params, "effect", effects).onChange(update);
 
   //
 
   window.addEventListener("resize", onWindowResize);
 
-  document.addEventListener("mousemove", onDocumentMouseMove);
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 1;
+  controls.maxDistance = 25;
+}
+
+function update(value) {
+  if (value === "stereo") {
+    postProcessing.outputNode = stereo;
+  } else if (value === "anaglyph") {
+    postProcessing.outputNode = anaglyph;
+  } else if (value === "parallaxBarrier") {
+    postProcessing.outputNode = parallaxBarrier;
+  }
+
+  postProcessing.needsUpdate = true;
 }
 
 function onWindowResize() {
-  windowHalfX = window.innerWidth / 2;
-  windowHalfY = window.innerHeight / 2;
-
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-}
 
-function onDocumentMouseMove(event) {
-  mouseX = (event.clientX - windowHalfX) * 0.01;
-  mouseY = (event.clientY - windowHalfY) * 0.01;
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function extractPosition(matrix, position) {
@@ -117,19 +141,17 @@ function extractPosition(matrix, position) {
 //
 
 function animate() {
-  const timer = 0.0001 * Date.now();
+  timer.update();
 
-  camera.position.x += (mouseX - camera.position.x) * 0.05;
-  camera.position.y += (-mouseY - camera.position.y) * 0.05;
-  camera.lookAt(scene.position);
+  const elapsedTime = timer.getElapsed() * 0.1;
 
   for (let i = 0; i < mesh.count; i++) {
     mesh.getMatrixAt(i, dummy.matrix);
 
     extractPosition(dummy.matrix, position);
 
-    position.x = 5 * Math.cos(timer + i);
-    position.y = 5 * Math.sin(timer + i * 1.1);
+    position.x = 5 * Math.cos(elapsedTime + i);
+    position.y = 5 * Math.sin(elapsedTime + i * 1.1);
 
     dummy.matrix.setPosition(position);
 
