@@ -23,7 +23,7 @@ import {
   mix,
   step,
   texture,
-  viewportTopLeft,
+  viewportUV,
   mrt,
   output,
   transformedNormalWorld,
@@ -129,7 +129,7 @@ function init() {
   material.colorNode = mix(
     texture(renderTarget.textures[0]),
     texture(renderTarget.textures[1]),
-    step(0.5, viewportTopLeft.x)
+    step(0.5, viewportUV.x)
   );
 
   quadMesh = new QuadMesh(material);

@@ -20,7 +20,7 @@ import {
   color,
   mx_worley_noise_float,
   timerLocal,
-  viewportTopLeft,
+  viewportUV,
   vec2,
   uv,
   normalWorld,
@@ -128,7 +128,7 @@ function init() {
 
   const material = new MeshBasicNodeMaterial();
   material.colorNode = pass(scenePortal, camera).context({
-    getUV: () => viewportTopLeft,
+    getUV: () => viewportUV,
   });
   material.opacityNode = uv().distance(0.5).remapClamp(0.3, 0.5).oneMinus();
   material.side = DoubleSide;

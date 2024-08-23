@@ -8,7 +8,7 @@ import {
   Vector2,
   PostProcessing,
 } from "three";
-import { pass, cubeTexture, viewportTopLeft, uniform } from "three/tsl";
+import { pass, cubeTexture, viewportUV, uniform } from "three/tsl";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
 
@@ -44,7 +44,7 @@ async function init() {
 
   scene.environment = cube1Texture;
   scene.backgroundNode = cubeTexture(cube1Texture)
-    .mul(viewportTopLeft.distance(0.5).oneMinus().remapClamp(0.1, 4))
+    .mul(viewportUV.distance(0.5).oneMinus().remapClamp(0.1, 4))
     .saturation(0);
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");

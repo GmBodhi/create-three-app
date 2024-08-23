@@ -20,7 +20,7 @@ import {
   color,
   viewportSharedTexture,
   viewportSafeUV,
-  viewportTopLeft,
+  viewportUV,
   checker,
   uv,
   timerLocal,
@@ -49,10 +49,7 @@ function init() {
   camera.position.set(1, 2, 3);
 
   scene = new Scene();
-  scene.backgroundNode = viewportTopLeft.y.mix(
-    color(0x66bbff),
-    color(0x4466ff)
-  );
+  scene.backgroundNode = viewportUV.y.mix(color(0x66bbff), color(0x4466ff));
   camera.lookAt(0, 1, 0);
 
   clock = new Clock();
@@ -120,13 +117,11 @@ function init() {
   addBackdropSphere(viewportSharedTexture().rgb.saturation(10), oscSine());
   addBackdropSphere(viewportSharedTexture().rgb.overlay(checker(uv().mul(10))));
   addBackdropSphere(
-    viewportSharedTexture(
-      viewportSafeUV(viewportTopLeft.mul(40).floor().div(40))
-    )
+    viewportSharedTexture(viewportSafeUV(viewportUV.mul(40).floor().div(40)))
   );
   addBackdropSphere(
     viewportSharedTexture(
-      viewportSafeUV(viewportTopLeft.mul(80).floor().div(80))
+      viewportSafeUV(viewportUV.mul(80).floor().div(80))
     ).add(color(0x0033ff))
   );
   addBackdropSphere(vec3(0, 0, viewportSharedTexture().b));

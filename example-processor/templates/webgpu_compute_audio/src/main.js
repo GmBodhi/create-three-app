@@ -16,7 +16,7 @@ import {
   instanceIndex,
   float,
   texture,
-  viewportTopLeft,
+  viewportUV,
   color,
 } from "three/tsl";
 
@@ -168,9 +168,7 @@ async function init() {
     RedFormat
   );
 
-  const spectrum = texture(analyserTexture, viewportTopLeft.x).x.mul(
-    viewportTopLeft.y
-  );
+  const spectrum = texture(analyserTexture, viewportUV.x).x.mul(viewportUV.y);
   const backgroundNode = color(0x0000ff).mul(spectrum);
 
   // scene

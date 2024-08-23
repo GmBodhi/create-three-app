@@ -16,7 +16,7 @@ import {
 import {
   viewportSafeUV,
   viewportSharedTexture,
-  viewportTopLeft,
+  viewportUV,
   texture,
   uv,
 } from "three/tsl";
@@ -73,7 +73,7 @@ function init() {
     .sub(1)
     .mul(verticalNormalScale);
 
-  const refractorUV = viewportTopLeft.add(verticalUVOffset);
+  const refractorUV = viewportUV.add(verticalUVOffset);
   const verticalRefractor = viewportSharedTexture(viewportSafeUV(refractorUV));
 
   const planeGeo = new PlaneGeometry(100.1, 100.1);

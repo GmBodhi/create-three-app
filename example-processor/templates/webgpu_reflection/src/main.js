@@ -24,7 +24,7 @@ import {
   normalWorld,
   texture,
   uv,
-  viewportTopLeft,
+  viewportUV,
 } from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -160,7 +160,7 @@ function init() {
   const scenePassColorBlurred = scenePassColor.gaussianBlur();
   scenePassColorBlurred.directionNode = scenePassDepth;
 
-  const vignet = viewportTopLeft.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignet = viewportUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = scenePassColorBlurred.mul(vignet);

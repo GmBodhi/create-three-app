@@ -31,7 +31,7 @@ import {
   triplanarTexture,
   texture,
   objectPosition,
-  viewportTopLeft,
+  viewportUV,
   viewportLinearDepth,
   viewportDepthTexture,
   viewportSharedTexture,
@@ -165,7 +165,7 @@ function init() {
   const depthWater = viewportLinearDepth.sub(depth);
   const depthEffect = depthWater.remapClamp(-0.002, 0.04);
 
-  const refractionUV = viewportTopLeft.add(vec2(0, waterIntensity.mul(0.1)));
+  const refractionUV = viewportUV.add(vec2(0, waterIntensity.mul(0.1)));
 
   // linearDepth( viewportDepthTexture( uv ) ) return the linear depth of the scene
   const depthTestForRefraction = linearDepth(
@@ -176,7 +176,7 @@ function init() {
 
   const finalUV = depthTestForRefraction
     .lessThan(0)
-    .select(viewportTopLeft, refractionUV);
+    .select(viewportUV, refractionUV);
 
   const viewportTexture = viewportSharedTexture(finalUV);
 
@@ -262,7 +262,7 @@ function init() {
     scenePass.getLinearDepthNode().mul(5)
   );
 
-  const vignet = viewportTopLeft.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignet = viewportUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = waterMask.select(

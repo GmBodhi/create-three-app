@@ -30,7 +30,7 @@ import {
   mix,
   velocity,
   uv,
-  viewportTopLeft,
+  viewportUV,
 } from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -204,7 +204,7 @@ function init() {
 
   const mBlur = motionBlur(beauty, vel);
 
-  const vignet = viewportTopLeft
+  const vignet = viewportUV
     .distance(0.5)
     .remap(0.6, 1)
     .mul(2)

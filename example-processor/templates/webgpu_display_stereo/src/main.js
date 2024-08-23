@@ -29,6 +29,7 @@ const position = new Vector3();
 
 const params = {
   effect: "stereo",
+  eyeSep: 0.064,
 };
 
 const effects = {
@@ -99,12 +100,14 @@ function init() {
 
   postProcessing.outputNode = stereo;
 
-  //
-
   const gui = new GUI();
   gui.add(params, "effect", effects).onChange(update);
+  gui.add(params, "eyeSep", 0.001, 0.15, 0.001).onChange(function (value) {
+    stereo.stereo.eyeSep = value;
 
-  //
+    anaglyph.stereo.eyeSep = value;
+    parallaxBarrier.stereo.eyeSep = value;
+  });
 
   window.addEventListener("resize", onWindowResize);
 
@@ -137,8 +140,6 @@ function extractPosition(matrix, position) {
   position.y = matrix.elements[13];
   position.z = matrix.elements[14];
 }
-
-//
 
 function animate() {
   timer.update();

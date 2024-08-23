@@ -21,7 +21,7 @@ import {
   step,
   texture,
   uv,
-  viewportTopLeft,
+  viewportUV,
   normalWorld,
   output,
   mrt,
@@ -95,7 +95,7 @@ function init() {
   postProcessing.outputNode = mix(
     texture(renderTarget.textures[0]),
     texture(renderTarget.textures[1]),
-    step(0.5, viewportTopLeft.x)
+    step(0.5, viewportUV.x)
   );
 
   // Controls
