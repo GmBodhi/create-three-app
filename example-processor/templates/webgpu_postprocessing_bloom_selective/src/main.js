@@ -65,11 +65,7 @@ document.body.appendChild(renderer.domElement);
 
 // post processing
 
-const postProcessing = new PostProcessing(renderer);
-postProcessing.outputColorTransform = false;
-
 const scenePass = pass(scene, camera);
-
 scenePass.setMRT(
   mrt({
     output,
@@ -78,11 +74,12 @@ scenePass.setMRT(
 );
 
 const outputPass = scenePass.getTextureNode();
-
 const bloomIntensityPass = scenePass.getTextureNode("bloomIntensity");
 
 const bloomPass = outputPass.mul(bloomIntensityPass).bloom();
 
+const postProcessing = new PostProcessing(renderer);
+postProcessing.outputColorTransform = false;
 postProcessing.outputNode = outputPass.add(bloomPass).renderOutput();
 
 // controls

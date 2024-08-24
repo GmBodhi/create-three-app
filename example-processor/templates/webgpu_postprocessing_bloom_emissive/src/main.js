@@ -81,8 +81,7 @@ function init() {
   const bloomPass = emissivePass.bloom(2.5, 0.5);
 
   postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = false;
-  postProcessing.outputNode = outputPass.add(bloomPass).renderOutput();
+  postProcessing.outputNode = outputPass.add(bloomPass);
 
   //
 

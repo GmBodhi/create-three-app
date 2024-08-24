@@ -74,15 +74,13 @@ async function init() {
   //
 
   postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = false;
 
   const scenePass = pass(scene, camera);
+  const scenePassColor = scenePass.getTextureNode("output");
 
-  const outputPass = scenePass.getTextureNode();
+  const bloomPass = bloom(scenePassColor);
 
-  const bloomPass = outputPass.bloom();
-
-  postProcessing.outputNode = outputPass.add(bloomPass).renderOutput();
+  postProcessing.outputNode = scenePassColor.add(bloomPass);
 
   //
 
