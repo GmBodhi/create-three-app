@@ -31,7 +31,7 @@ import {
   vec4,
   oscSine,
   triplanarTexture,
-  viewportBottomLeft,
+  viewportUV,
   js,
   string,
   global,
@@ -234,7 +234,7 @@ function init() {
 
   // Screen Projection Texture
   material = new MeshBasicNodeMaterial();
-  material.colorNode = texture(uvTexture, viewportBottomLeft);
+  material.colorNode = texture(uvTexture, viewportUV.flipY());
   materials.push(material);
 
   // Loop
