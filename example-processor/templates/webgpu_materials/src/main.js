@@ -14,10 +14,13 @@ import {
   Mesh,
   NodeObjectLoader,
 } from "three";
+import * as TSL from "three/tsl";
+
 import {
   Fn,
   wgslFn,
   positionLocal,
+  scriptable,
   positionWorld,
   normalLocal,
   normalWorld,
@@ -265,9 +268,10 @@ function init() {
   // Scriptable
 
   global.set("THREE", THREE);
-  global.set("TSL", THREE);
+  global.set("TSL", TSL);
 
-  const asyncNode = js(`
+  const asyncNode = scriptable(
+    js(`
 
 					layout = {
 						outputType: 'node'
@@ -299,9 +303,11 @@ function init() {
 
 					}
 
-				`).scriptable();
+				`)
+  );
 
-  const scriptableNode = js(`
+  const scriptableNode = scriptable(
+    js(`
 
 					layout = {
 						outputType: 'node',
@@ -351,7 +357,8 @@ function init() {
 
 					output = { helloWorld };
 
-				`).scriptable();
+				`)
+  );
 
   scriptableNode.setParameter("source", texture(uvTexture).xyz);
   scriptableNode.setParameter("contrast", asyncNode);

@@ -16,7 +16,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer;
 
-init().then(render);
+init();
 
 async function init() {
   const container = document.createElement("div");

@@ -79,7 +79,7 @@ function init() {
 
     const tslCode = `// Simple uv.x animation
 
-const { texture, uniform, vec2, vec4, uv, oscSine, timerLocal } = THREE;
+const { texture, uniform, vec2, vec4, uv, oscSine, timerLocal, grayscale } = THREE;
 
 //const samplerTexture = new Texture();
 const samplerTexture = new TextureLoader().load( 'three/examples/textures/uv_grid_opengl.jpg' );
@@ -96,7 +96,7 @@ const myMap = texture( samplerTexture, animateUv ).rgb.label( 'myTexture' );
 const myColor = uniform( new Color( 0x0066ff ) ).label( 'myColor' );
 const opacity = .7;
 
-const desaturatedMap = myMap.rgb.saturation( 0 ); // try add .temp( 'myVar' ) after saturation()
+const desaturatedMap = grayscale( myMap.rgb );
 
 const finalColor = desaturatedMap.add( myColor );
 

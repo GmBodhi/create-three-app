@@ -21,7 +21,7 @@ import {
   WebGPURenderer,
   PostProcessing,
 } from "three";
-import { pass } from "three/tsl";
+import { pass, film } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { FlyControls } from "three/addons/controls/FlyControls.js";
@@ -196,7 +196,7 @@ function init() {
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
 
-  postProcessing.outputNode = scenePassColor.film();
+  postProcessing.outputNode = film(scenePassColor);
 }
 
 function onWindowResize() {

@@ -15,7 +15,7 @@ import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
 let camera, scene, renderer;
 
-init().then(render);
+init();
 
 async function init() {
   const container = document.createElement("div");

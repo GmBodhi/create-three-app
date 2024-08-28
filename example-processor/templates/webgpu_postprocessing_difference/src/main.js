@@ -14,7 +14,7 @@ import {
   Mesh,
   PostProcessing,
 } from "three";
-import { pass, luminance } from "three/tsl";
+import { pass, luminance, saturation } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Timer } from "three/addons/misc/Timer.js";
@@ -76,7 +76,7 @@ function init() {
 
   const saturationAmount = luminance(frameDiff).mul(1000).clamp(0, 3);
 
-  postProcessing.outputNode = currentTexture.saturation(saturationAmount);
+  postProcessing.outputNode = saturation(currentTexture, saturationAmount);
 
   //
 

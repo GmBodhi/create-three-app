@@ -8,7 +8,7 @@ import {
   ACESFilmicToneMapping,
   PostProcessing,
 } from "three";
-import { pass, texture3D, uniform, renderOutput } from "three/tsl";
+import { pass, texture3D, uniform, lut3D, renderOutput } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -116,7 +116,8 @@ async function init() {
   const outputPass = renderOutput(scenePass);
 
   const lut = lutMap[params.lut];
-  lutPass = outputPass.lut3D(
+  lutPass = lut3D(
+    outputPass,
     texture3D(lut.texture3D),
     lut.texture3D.image.width,
     uniform(1)

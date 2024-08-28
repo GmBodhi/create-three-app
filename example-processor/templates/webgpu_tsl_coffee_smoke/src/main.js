@@ -18,6 +18,7 @@ import {
   smoothstep,
   texture,
   timerLocal,
+  rotateUV,
   Fn,
   uv,
   vec2,
@@ -85,7 +86,7 @@ function init() {
 
     const twistNoiseUv = vec2(0.5, uv().y.mul(0.2).sub(time.mul(0.005)).mod(1));
     const twist = texture(noiseTexture, twistNoiseUv).r.mul(10);
-    positionLocal.xz.assign(positionLocal.xz.rotateUV(twist, vec2(0)));
+    positionLocal.xz.assign(rotateUV(positionLocal.xz, twist, vec2(0)));
 
     // wind
 

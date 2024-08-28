@@ -8,7 +8,7 @@ import {
   ACESFilmicToneMapping,
   PostProcessing,
 } from "three";
-import { pass, mrt, output, emissive } from "three/tsl";
+import { pass, mrt, output, bloom, emissive } from "three/tsl";
 
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
@@ -78,7 +78,7 @@ function init() {
   const outputPass = scenePass.getTextureNode();
   const emissivePass = scenePass.getTextureNode("emissive");
 
-  const bloomPass = emissivePass.bloom(2.5, 0.5);
+  const bloomPass = bloom(emissivePass, 2.5, 0.5);
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = outputPass.add(bloomPass);

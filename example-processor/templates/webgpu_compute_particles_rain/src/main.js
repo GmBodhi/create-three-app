@@ -30,6 +30,7 @@ import {
   positionWorld,
   billboarding,
   timerLocal,
+  hash,
   timerDelta,
   vec2,
   instanceIndex,
@@ -127,9 +128,9 @@ function init() {
     const velocity = velocityBuffer.element(instanceIndex);
     const rippleTime = rippleTimeBuffer.element(instanceIndex);
 
-    const randX = instanceIndex.hash();
-    const randY = instanceIndex.add(randUint()).hash();
-    const randZ = instanceIndex.add(randUint()).hash();
+    const randX = hash(instanceIndex);
+    const randY = hash(instanceIndex.add(randUint()));
+    const randZ = hash(instanceIndex.add(randUint()));
 
     position.x = randX.mul(100).add(-50);
     position.y = randY.mul(25);
@@ -181,10 +182,8 @@ function init() {
 
       // next drops will not fall in the same place
 
-      position.x = instanceIndex.add(timer).hash().mul(100).add(-50);
-      position.z = instanceIndex
-        .add(timer.add(randUint()))
-        .hash()
+      position.x = hash(instanceIndex.add(timer)).mul(100).add(-50);
+      position.z = hash(instanceIndex.add(timer.add(randUint())))
         .mul(100)
         .add(-50);
     });

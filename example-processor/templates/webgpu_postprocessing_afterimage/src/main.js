@@ -10,7 +10,7 @@ import {
   Mesh,
   PostProcessing,
 } from "three";
-import { pass } from "three/tsl";
+import { pass, afterImage } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -55,7 +55,7 @@ function init() {
   const scenePassColor = scenePass.getTextureNode();
 
   combinedPass = scenePassColor;
-  combinedPass = combinedPass.afterImage(params.damp);
+  combinedPass = afterImage(combinedPass, params.damp);
 
   postProcessing.outputNode = combinedPass;
 

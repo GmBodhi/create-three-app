@@ -17,6 +17,7 @@ import {
   oscSine,
   timerGlobal,
   pass,
+  dof,
   uniform,
 } from "three/tsl";
 
@@ -118,7 +119,8 @@ function init() {
   const scenePassColor = scenePass.getTextureNode();
   const scenePassViewZ = scenePass.getViewZNode();
 
-  const dofPass = scenePassColor.dof(
+  const dofPass = dof(
+    scenePassColor,
     scenePassViewZ,
     effectController.focus,
     effectController.aperture.mul(0.00001),
@@ -169,7 +171,7 @@ function onWindowResize() {
 
 function animate() {
   render();
-  stats.update();
+  //stats.update();
 }
 
 function render() {

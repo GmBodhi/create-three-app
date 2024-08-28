@@ -23,6 +23,7 @@ import {
   vec4,
   normalize,
   positionWorld,
+  bumpMap,
   cameraPosition,
   color,
   uniform,
@@ -143,7 +144,7 @@ function init() {
     texture(bumpRoughnessCloudsTexture).r,
     cloudsStrength
   );
-  globeMaterial.normalNode = bumpElevation.bumpMap();
+  globeMaterial.normalNode = bumpMap(bumpElevation);
 
   const sphereGeometry = new SphereGeometry(1, 64, 64);
   globe = new Mesh(sphereGeometry, globeMaterial);

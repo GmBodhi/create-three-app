@@ -37,6 +37,7 @@ import {
   uint,
   uniform,
   uniformArray,
+  hash,
   vec3,
   vec4,
 } from "three/tsl";
@@ -210,23 +211,20 @@ function init() {
     const velocity = velocityBuffer.element(instanceIndex);
 
     const basePosition = vec3(
-      instanceIndex.add(uint(Math.random() * 0xffffff)).hash(),
-      instanceIndex.add(uint(Math.random() * 0xffffff)).hash(),
-      instanceIndex.add(uint(Math.random() * 0xffffff)).hash()
+      hash(instanceIndex.add(uint(Math.random() * 0xffffff))),
+      hash(instanceIndex.add(uint(Math.random() * 0xffffff))),
+      hash(instanceIndex.add(uint(Math.random() * 0xffffff)))
     )
       .sub(0.5)
       .mul(vec3(5, 0.2, 5));
     position.assign(basePosition);
 
-    const phi = instanceIndex
-      .add(uint(Math.random() * 0xffffff))
-      .hash()
+    const phi = hash(instanceIndex.add(uint(Math.random() * 0xffffff)))
       .mul(PI)
       .mul(2);
-    const theta = instanceIndex
-      .add(uint(Math.random() * 0xffffff))
-      .hash()
-      .mul(PI);
+    const theta = hash(instanceIndex.add(uint(Math.random() * 0xffffff))).mul(
+      PI
+    );
     const baseVelocity = sphericalToVec3(phi, theta).mul(0.05);
     velocity.assign(baseVelocity);
   });
@@ -241,9 +239,9 @@ function init() {
 
   // update compute
 
-  const particleMassMultiplier = instanceIndex
-    .add(uint(Math.random() * 0xffffff))
-    .hash()
+  const particleMassMultiplier = hash(
+    instanceIndex.add(uint(Math.random() * 0xffffff))
+  )
     .remap(0.25, 1)
     .toVar();
   const particleMass = particleMassMultiplier.mul(particleGlobalMass).toVar();

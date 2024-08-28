@@ -12,7 +12,7 @@ import {
   LinearSRGBColorSpace,
   PostProcessing,
 } from "three";
-import { pass } from "three/tsl";
+import { pass, sobel } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -77,7 +77,7 @@ function init() {
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
 
-  postProcessing.outputNode = scenePassColor.sobel();
+  postProcessing.outputNode = sobel(scenePassColor);
 
   //
 

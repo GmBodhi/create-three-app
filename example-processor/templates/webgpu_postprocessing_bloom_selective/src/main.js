@@ -13,7 +13,7 @@ import {
   Raycaster,
   Vector2,
 } from "three";
-import { pass, mrt, output, float, uniform } from "three/tsl";
+import { pass, mrt, output, float, bloom, uniform } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -76,7 +76,7 @@ scenePass.setMRT(
 const outputPass = scenePass.getTextureNode();
 const bloomIntensityPass = scenePass.getTextureNode("bloomIntensity");
 
-const bloomPass = outputPass.mul(bloomIntensityPass).bloom();
+const bloomPass = bloom(outputPass.mul(bloomIntensityPass));
 
 const postProcessing = new PostProcessing(renderer);
 postProcessing.outputColorTransform = false;

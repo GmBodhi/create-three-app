@@ -25,6 +25,7 @@ import {
   Fn,
   color,
   vertexIndex,
+  hash,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -97,7 +98,7 @@ function init() {
 
   const materialColor = vec4(1, 0, 1, 0.5);
 
-  const discardNode = vertexIndex.hash().greaterThan(0.5);
+  const discardNode = hash(vertexIndex).greaterThan(0.5);
 
   materialCustomShadow.colorNode = Fn(() => {
     discardNode.discard();

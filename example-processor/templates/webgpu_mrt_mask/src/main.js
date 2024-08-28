@@ -15,7 +15,15 @@ import {
   NeutralToneMapping,
   PostProcessing,
 } from "three";
-import { color, viewportUV, mrt, output, pass, vec4 } from "three/tsl";
+import {
+  color,
+  viewportUV,
+  mrt,
+  output,
+  gaussianBlur,
+  pass,
+  vec4,
+} from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -125,7 +133,7 @@ function init() {
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputColorTransform = false;
   postProcessing.outputNode = colorPass
-    .add(maskPass.gaussianBlur(1, 10).mul(0.3))
+    .add(gaussianBlur(maskPass, 1, 10).mul(0.3))
     .renderOutput();
 
   // controls

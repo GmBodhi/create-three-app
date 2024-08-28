@@ -14,7 +14,7 @@ import {
   WebGPURenderer,
   PostProcessing,
 } from "three";
-import { pass, renderOutput } from "three/tsl";
+import { pass, fxaa, renderOutput } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -102,7 +102,7 @@ async function init() {
 
   // FXAA must be computed in sRGB color space (so after tone mapping and color space conversion)
 
-  const fxaaPass = outputPass.fxaa();
+  const fxaaPass = fxaa(outputPass);
   postProcessing.outputNode = fxaaPass;
 
   //

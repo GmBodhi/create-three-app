@@ -19,6 +19,11 @@ import {
   vec3,
   color,
   viewportSharedTexture,
+  hue,
+  overlay,
+  posterize,
+  grayscale,
+  saturation,
   viewportSafeUV,
   viewportUV,
   checker,
@@ -54,7 +59,7 @@ function init() {
 
   clock = new Clock();
 
-  //lights
+  // lights
 
   const light = new SpotLight(0xffffff, 1);
   light.power = 2000;
@@ -67,13 +72,9 @@ function init() {
     mixer = new AnimationMixer(object);
 
     const material = object.children[0].children[0].material;
-
-    // output material effect ( better using hsv )
-    // ignore output.sRGBToLinear().linearTosRGB() for now
-
     material.outputNode = oscSine(timerLocal(0.1)).mix(
       output,
-      output.add(0.1).posterize(4).mul(2)
+      posterize(output.add(0.1), 4).mul(2)
     );
 
     const action = mixer.clipAction(gltf.animations[0]);
@@ -111,11 +112,13 @@ function init() {
     portals.add(mesh);
   }
 
-  addBackdropSphere(viewportSharedTexture().bgr.hue(oscSine().mul(Math.PI)));
+  addBackdropSphere(hue(viewportSharedTexture().bgr, oscSine().mul(Math.PI)));
   addBackdropSphere(viewportSharedTexture().rgb.oneMinus());
-  addBackdropSphere(viewportSharedTexture().rgb.saturation(0));
-  addBackdropSphere(viewportSharedTexture().rgb.saturation(10), oscSine());
-  addBackdropSphere(viewportSharedTexture().rgb.overlay(checker(uv().mul(10))));
+  addBackdropSphere(grayscale(viewportSharedTexture().rgb));
+  addBackdropSphere(saturation(viewportSharedTexture().rgb, 10), oscSine());
+  addBackdropSphere(
+    overlay(viewportSharedTexture().rgb, checker(uv().mul(10)))
+  );
   addBackdropSphere(
     viewportSharedTexture(viewportSafeUV(viewportUV.mul(40).floor().div(40)))
   );
@@ -126,7 +129,7 @@ function init() {
   );
   addBackdropSphere(vec3(0, 0, viewportSharedTexture().b));
 
-  //renderer
+  // renderer
 
   renderer = new WebGPURenderer({ antialias: false });
   renderer.setPixelRatio(window.devicePixelRatio);

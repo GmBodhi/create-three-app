@@ -18,6 +18,7 @@ import {
   mix,
   uv,
   color,
+  rotateUV,
   positionLocal,
   timerLocal,
 } from "three/tsl";
@@ -60,7 +61,7 @@ function init() {
 
   const fakeLightEffect = positionLocal.y.oneMinus().max(0.2);
 
-  const textureNode = texture(map, uv().rotateUV(timer.mul(rotateRange)));
+  const textureNode = texture(map, rotateUV(uv(), timer.mul(rotateRange)));
 
   const opacityNode = textureNode.a.mul(life.oneMinus());
 

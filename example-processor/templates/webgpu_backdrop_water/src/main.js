@@ -28,6 +28,7 @@ import {
   pass,
   linearDepth,
   normalWorld,
+  gaussianBlur,
   triplanarTexture,
   texture,
   objectPosition,
@@ -256,7 +257,7 @@ function init() {
 
   const waterMask = objectPosition(camera).y.greaterThan(0);
 
-  const scenePassColorBlurred = scenePassColor.gaussianBlur();
+  const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = waterMask.select(
     scenePassDepth,
     scenePass.getLinearDepthNode().mul(5)

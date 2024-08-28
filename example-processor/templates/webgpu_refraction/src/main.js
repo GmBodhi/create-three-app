@@ -42,7 +42,7 @@ function init() {
     1,
     500
   );
-  camera.position.set(0, 75, 160);
+  camera.position.set(0, 50, 160);
 
   //
 
@@ -160,7 +160,7 @@ function init() {
   // controls
 
   cameraControls = new OrbitControls(camera, renderer.domElement);
-  cameraControls.target.set(0, 40, 0);
+  cameraControls.target.set(0, 50, 0);
   cameraControls.maxDistance = 400;
   cameraControls.minDistance = 10;
   cameraControls.update();

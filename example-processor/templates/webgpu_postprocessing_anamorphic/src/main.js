@@ -8,7 +8,14 @@ import {
   Vector2,
   PostProcessing,
 } from "three";
-import { pass, cubeTexture, viewportUV, uniform } from "three/tsl";
+import {
+  pass,
+  cubeTexture,
+  viewportUV,
+  grayscale,
+  uniform,
+  anamorphic,
+} from "three/tsl";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
 
@@ -43,9 +50,11 @@ async function init() {
     .loadCubemapAsync(rgbmUrls);
 
   scene.environment = cube1Texture;
-  scene.backgroundNode = cubeTexture(cube1Texture)
-    .mul(viewportUV.distance(0.5).oneMinus().remapClamp(0.1, 4))
-    .saturation(0);
+  scene.backgroundNode = grayscale(
+    cubeTexture(cube1Texture).mul(
+      viewportUV.distance(0.5).oneMinus().remapClamp(0.1, 4)
+    )
+  );
 
   const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
   loader.load("DamagedHelmet.gltf", function (gltf) {
@@ -74,9 +83,12 @@ async function init() {
   const intensity = uniform(1);
   const samples = 64;
 
-  const anamorphicPass = scenePass
-    .getTextureNode()
-    .anamorphic(threshold, scaleNode, samples);
+  const anamorphicPass = anamorphic(
+    scenePass.getTextureNode(),
+    threshold,
+    scaleNode,
+    samples
+  );
   anamorphicPass.resolution = new Vector2(0.2, 0.2); // 1 = full resolution
 
   postProcessing = new PostProcessing(renderer);

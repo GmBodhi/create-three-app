@@ -22,6 +22,7 @@ import {
   Fn,
   uniform,
   vec4,
+  rotate,
   viewportCoordinate,
   viewportResolution,
 } from "three/tsl";
@@ -141,11 +142,8 @@ function init() {
     ([count, color, direction, start, end, radius, mixLow, mixHigh]) => {
       // grid pattern
 
-      const gridUv = viewportCoordinate.xy
-        .div(viewportResolution.yy)
-        .mul(count)
-        .rotate(Math.PI * 0.25)
-        .mod(1);
+      let gridUv = viewportCoordinate.xy.div(viewportResolution.yy).mul(count);
+      gridUv = rotate(gridUv, Math.PI * 0.25).mod(1);
 
       // orientation strength
 
