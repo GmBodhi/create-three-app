@@ -178,13 +178,15 @@ function animate() {
 
   // inset scene
 
+  const posY = window.innerHeight - insetHeight - 20;
+
   renderer.clearDepth(); // important!
 
   renderer.setScissorTest(true);
 
-  renderer.setScissor(20, 20, insetWidth, insetHeight);
+  renderer.setScissor(20, posY, insetWidth, insetHeight);
 
-  renderer.setViewport(20, 20, insetWidth, insetHeight);
+  renderer.setViewport(20, posY, insetWidth, insetHeight);
 
   camera2.position.copy(camera.position);
   camera2.quaternion.copy(camera.quaternion);
