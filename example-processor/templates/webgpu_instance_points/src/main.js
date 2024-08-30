@@ -8,9 +8,22 @@ import {
   Vector3,
   CatmullRomCurve3,
   SRGBColorSpace,
+  StorageInstancedBufferAttribute,
   InstancedPointsNodeMaterial,
 } from "three";
-import { color } from "three/tsl";
+import {
+  color,
+  storage,
+  Fn,
+  instanceIndex,
+  sin,
+  timerLocal,
+  float,
+  uniform,
+  attribute,
+  mix,
+  vec3,
+} from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -26,10 +39,14 @@ let renderer, scene, camera, camera2, controls, backgroundNode;
 let material;
 let stats;
 let gui;
+let effectController;
 
 // viewport
 let insetWidth;
 let insetHeight;
+
+// compute
+let computeSize;
 
 init();
 
@@ -60,10 +77,14 @@ function init() {
 
   backgroundNode = color(0x222222);
 
-  // Position and Color Data
+  effectController = {
+    pulseSpeed: uniform(6),
+    minWidth: uniform(6),
+    maxWidth: uniform(12),
+    alphaToCoverage: true,
+  };
 
-  const positions = [];
-  const colors = [];
+  // Position and Color Data
 
   const points = GeometryUtils.hilbert3D(
     new Vector3(0, 0, 0),
@@ -84,6 +105,10 @@ function init() {
   const point = new Vector3();
   const pointColor = new Color();
 
+  const positions = [];
+  const colors = [];
+  const sizes = new Float32Array(divisions);
+
   for (let i = 0, l = divisions; i < l; i++) {
     const t = i / l;
 
@@ -92,6 +117,8 @@ function init() {
 
     pointColor.setHSL(t, 1.0, 0.5, SRGBColorSpace);
     colors.push(pointColor.r, pointColor.g, pointColor.b);
+
+    sizes[i] = 10.0;
   }
 
   // Instanced Points
@@ -100,21 +127,50 @@ function init() {
   geometry.setPositions(positions);
   geometry.setColors(colors);
 
+  const instanceSizeBufferAttribute = new StorageInstancedBufferAttribute(
+    sizes,
+    1
+  );
+  geometry.setAttribute("instanceSize", instanceSizeBufferAttribute);
+  const instanceSizeStorage = storage(
+    instanceSizeBufferAttribute,
+    "float",
+    instanceSizeBufferAttribute.count
+  );
+
+  computeSize = Fn(() => {
+    const { pulseSpeed, minWidth, maxWidth } = effectController;
+
+    const time = timerLocal().add(float(instanceIndex));
+
+    const sizeFactor = sin(time.mul(pulseSpeed)).add(1).div(2);
+
+    instanceSizeStorage
+      .element(instanceIndex)
+      .assign(sizeFactor.mul(maxWidth.sub(minWidth)).add(minWidth));
+  })().compute(divisions);
+
   geometry.instanceCount = positions.length / 3; // this should not be necessary
 
   material = new InstancedPointsNodeMaterial({
     color: 0xffffff,
     pointWidth: 10, // in pixel units
-
     vertexColors: true,
     alphaToCoverage: true,
   });
 
+  const attributeRange = attribute("instanceSize").sub(1);
+
+  material.pointWidthNode = attribute("instanceSize");
+  material.pointColorNode = mix(
+    vec3(0.0),
+    attribute("instanceColor"),
+    attributeRange.div(float(effectController.maxWidth.sub(1)))
+  );
+
   const instancedPoints = new InstancedPoints(geometry, material);
   instancedPoints.scale.set(1, 1, 1);
   scene.add(instancedPoints);
-
-  //
 
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
@@ -122,7 +178,15 @@ function init() {
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
-  initGui();
+  gui = new GUI();
+
+  gui.add(effectController, "alphaToCoverage").onChange(function (val) {
+    material.alphaToCoverage = val;
+  });
+
+  gui.add(effectController.minWidth, "value", 1, 20, 1).name("minWidth");
+  gui.add(effectController.maxWidth, "value", 2, 20, 1).name("maxWidth");
+  gui.add(effectController.pulseSpeed, "value", 1, 20, 0.1).name("pulseSpeed");
 }
 
 function onWindowResize() {
@@ -140,6 +204,9 @@ function onWindowResize() {
 
 function animate() {
   stats.update();
+
+  // compute
+  renderer.compute(computeSize);
 
   // main scene
 
@@ -179,20 +246,3 @@ function animate() {
 }
 
 //
-
-function initGui() {
-  gui = new GUI();
-
-  const param = {
-    width: 10,
-    alphaToCoverage: true,
-  };
-
-  gui.add(param, "width", 1, 20, 1).onChange(function (val) {
-    material.pointWidth = val;
-  });
-
-  gui.add(param, "alphaToCoverage").onChange(function (val) {
-    material.alphaToCoverage = val;
-  });
-}
