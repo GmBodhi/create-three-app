@@ -14,6 +14,7 @@ import {
 } from "three";
 import {
   PI2,
+  oneMinus,
   spherizeUV,
   sin,
   step,
@@ -169,7 +170,7 @@ function init() {
     // gradients
     const gradient1 = sin(time.mul(10).sub(mainUv.y.mul(PI2).mul(2)));
     const gradient2 = mainUv.y.smoothstep(0, 1);
-    const gradient3 = mainUv.y.smoothstep(1, 0.7);
+    const gradient3 = oneMinus(mainUv.y).smoothstep(0, 0.3);
     mainUv.x.addAssign(gradient1.mul(gradient2).mul(0.2));
 
     // displaced perlin noise

@@ -28,6 +28,7 @@ import {
   PI2,
   color,
   positionLocal,
+  oneMinus,
   sin,
   texture,
   Fn,
@@ -142,7 +143,7 @@ function init() {
     // outer fade
     const distanceToCenter = uv().sub(0.5).toVar();
     const outerFade = min(
-      distanceToCenter.length().smoothstep(0.5, 0.1),
+      oneMinus(distanceToCenter.length()).smoothstep(0.5, 0.9),
       distanceToCenter.length().smoothstep(0, 0.2)
     );
 
@@ -199,7 +200,10 @@ function init() {
     const noise2 = texture(perlinTexture, noise2Uv, 1).g.remap(0.45, 0.7);
 
     // outer fade
-    const outerFade = min(uv().y.smoothstep(0, 0.1), uv().y.smoothstep(1, 0.6));
+    const outerFade = min(
+      uv().y.smoothstep(0, 0.1),
+      oneMinus(uv().y).smoothstep(0, 0.4)
+    );
 
     // effect
     const effect = noise1.mul(noise2).mul(outerFade);
@@ -251,7 +255,10 @@ function init() {
     const noise2 = texture(perlinTexture, noise2Uv, 1).b.remap(0.45, 0.7);
 
     // outer fade
-    const outerFade = min(uv().y.smoothstep(0, 0.2), uv().y.smoothstep(1, 0.6));
+    const outerFade = min(
+      uv().y.smoothstep(0, 0.2),
+      oneMinus(uv().y).smoothstep(0, 0.4)
+    );
 
     // effect
     const effect = noise1.mul(noise2).mul(outerFade);

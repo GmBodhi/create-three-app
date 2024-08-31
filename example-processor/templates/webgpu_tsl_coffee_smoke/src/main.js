@@ -14,6 +14,7 @@ import {
 import {
   mix,
   mul,
+  oneMinus,
   positionLocal,
   smoothstep,
   texture,
@@ -113,9 +114,9 @@ function init() {
 
       // edges fade
       smoothstep(0, 0.1, uv().x),
-      smoothstep(1, 0.9, uv().x),
+      smoothstep(0, 0.1, oneMinus(uv().x)),
       smoothstep(0, 0.1, uv().y),
-      smoothstep(1, 0.9, uv().y)
+      smoothstep(0, 0.1, oneMinus(uv().y))
     );
 
     // color

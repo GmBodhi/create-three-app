@@ -19,6 +19,7 @@ import {
   TetrahedronGeometry,
   TorusGeometry,
   TorusKnotGeometry,
+  BundleGroup,
   Group,
   MeshToonNodeMaterial,
   Color,
@@ -127,8 +128,7 @@ function initMesh(count) {
 }
 
 function initRegularMesh(count) {
-  group = new Group();
-  group.static = api.renderBundle;
+  group = api.renderBundle ? new BundleGroup() : new Group();
 
   for (let i = 0; i < count; i++) {
     const material = new MeshToonNodeMaterial({
