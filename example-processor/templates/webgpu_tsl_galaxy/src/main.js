@@ -23,9 +23,7 @@ import {
   uv,
   vec3,
   vec4,
-  PI,
   PI2,
-  tslFn,
 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -69,20 +67,10 @@ function init() {
 
   const position = vec3(cos(angle), 0, sin(angle)).mul(radius);
 
-  const sphericalToVec3 = tslFn(([phi, theta]) => {
-    const sinPhiRadius = sin(phi);
-
-    return vec3(
-      sinPhiRadius.mul(sin(theta)),
-      cos(phi),
-      sinPhiRadius.mul(cos(theta))
-    );
-  });
-
-  const phi = range(0, PI2);
-  const theta = range(0, PI);
-  const offsetRadius = range(0, 1).pow(2).mul(radiusRatio).mul(1.25);
-  const randomOffset = sphericalToVec3(phi, theta).mul(offsetRadius);
+  const randomOffset = range(vec3(-1), vec3(1))
+    .pow(3)
+    .mul(radiusRatio)
+    .add(0.2);
 
   material.positionNode = position.add(randomOffset);
 

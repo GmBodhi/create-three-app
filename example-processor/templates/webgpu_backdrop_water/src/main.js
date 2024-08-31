@@ -28,10 +28,11 @@ import {
   pass,
   linearDepth,
   normalWorld,
+  gaussianBlur,
   triplanarTexture,
   texture,
   objectPosition,
-  viewportTopLeft,
+  viewportUV,
   viewportLinearDepth,
   viewportDepthTexture,
   viewportSharedTexture,
@@ -165,7 +166,7 @@ function init() {
   const depthWater = viewportLinearDepth.sub(depth);
   const depthEffect = depthWater.remapClamp(-0.002, 0.04);
 
-  const refractionUV = viewportTopLeft.add(vec2(0, waterIntensity.mul(0.1)));
+  const refractionUV = viewportUV.add(vec2(0, waterIntensity.mul(0.1)));
 
   // linearDepth( viewportDepthTexture( uv ) ) return the linear depth of the scene
   const depthTestForRefraction = linearDepth(
@@ -176,7 +177,7 @@ function init() {
 
   const finalUV = depthTestForRefraction
     .lessThan(0)
-    .cond(viewportTopLeft, refractionUV);
+    .select(viewportUV, refractionUV);
 
   const viewportTexture = viewportSharedTexture(finalUV);
 
@@ -209,7 +210,7 @@ function init() {
   let transition = waterPosY.add(0.1).saturate().oneMinus();
   transition = waterPosY
     .lessThan(0)
-    .cond(transition, normalWorld.y.mix(transition, 0))
+    .select(transition, normalWorld.y.mix(transition, 0))
     .toVar();
 
   const colorNode = transition.mix(
@@ -256,16 +257,16 @@ function init() {
 
   const waterMask = objectPosition(camera).y.greaterThan(0);
 
-  const scenePassColorBlurred = scenePassColor.gaussianBlur();
-  scenePassColorBlurred.directionNode = waterMask.cond(
+  const scenePassColorBlurred = gaussianBlur(scenePassColor);
+  scenePassColorBlurred.directionNode = waterMask.select(
     scenePassDepth,
     scenePass.getLinearDepthNode().mul(5)
   );
 
-  const vignet = viewportTopLeft.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignet = viewportUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = waterMask.cond(
+  postProcessing.outputNode = waterMask.select(
     scenePassColorBlurred,
     scenePassColorBlurred.mul(color(0x74ccf4)).mul(vignet)
   );

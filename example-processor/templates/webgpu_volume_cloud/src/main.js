@@ -18,14 +18,7 @@ import {
   VolumeNodeMaterial,
   Color,
 } from "three";
-import {
-  vec3,
-  materialReference,
-  smoothstep,
-  If,
-  Break,
-  tslFn,
-} from "three/tsl";
+import { vec3, materialReference, smoothstep, If, Break, Fn } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
@@ -135,7 +128,7 @@ function init() {
   const threshold = materialReference("threshold", "float");
   const opacity = materialReference("opacity", "float");
 
-  material.testNode = tslFn(({ map, mapValue, probe, finalColor }) => {
+  material.testNode = Fn(({ map, mapValue, probe, finalColor }) => {
     mapValue.assign(
       smoothstep(threshold.sub(range), threshold.add(range), mapValue).mul(
         opacity

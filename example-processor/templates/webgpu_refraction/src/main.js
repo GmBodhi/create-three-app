@@ -13,7 +13,13 @@ import {
   PointLight,
   WebGPURenderer,
 } from "three";
-import { viewportSharedTexture, texture, uv } from "three/tsl";
+import {
+  viewportSafeUV,
+  viewportSharedTexture,
+  viewportUV,
+  texture,
+  uv,
+} from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -36,7 +42,7 @@ function init() {
     1,
     500
   );
-  camera.position.set(0, 75, 160);
+  camera.position.set(0, 50, 160);
 
   //
 
@@ -61,14 +67,14 @@ function init() {
 
   // refractor
 
-  const verticalRefractor = viewportSharedTexture();
-
   const verticalNormalScale = 0.1;
   const verticalUVOffset = texture(floorNormal, uv().mul(5))
     .xy.mul(2)
     .sub(1)
     .mul(verticalNormalScale);
-  verticalRefractor.uvNode = verticalRefractor.uvNode.add(verticalUVOffset);
+
+  const refractorUV = viewportUV.add(verticalUVOffset);
+  const verticalRefractor = viewportSharedTexture(viewportSafeUV(refractorUV));
 
   const planeGeo = new PlaneGeometry(100.1, 100.1);
 
@@ -145,7 +151,7 @@ function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer(/*{ antialias: true }*/);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -154,7 +160,7 @@ function init() {
   // controls
 
   cameraControls = new OrbitControls(camera, renderer.domElement);
-  cameraControls.target.set(0, 40, 0);
+  cameraControls.target.set(0, 50, 0);
   cameraControls.maxDistance = 400;
   cameraControls.minDistance = 10;
   cameraControls.update();

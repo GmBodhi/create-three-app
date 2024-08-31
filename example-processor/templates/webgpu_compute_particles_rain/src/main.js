@@ -23,16 +23,15 @@ import {
   Vector3,
 } from "three";
 import {
-  tslFn,
+  Fn,
   texture,
   uv,
   uint,
   positionWorld,
-  modelWorldMatrix,
-  cameraViewMatrix,
+  billboarding,
   timerLocal,
+  hash,
   timerDelta,
-  cameraProjectionMatrix,
   vec2,
   instanceIndex,
   positionGeometry,
@@ -124,14 +123,14 @@ function init() {
 
   const randUint = () => uint(Math.random() * 0xffffff);
 
-  const computeInit = tslFn(() => {
+  const computeInit = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
     const rippleTime = rippleTimeBuffer.element(instanceIndex);
 
-    const randX = instanceIndex.hash();
-    const randY = instanceIndex.add(randUint()).hash();
-    const randZ = instanceIndex.add(randUint()).hash();
+    const randX = hash(instanceIndex);
+    const randY = hash(instanceIndex.add(randUint()));
+    const randZ = hash(instanceIndex.add(randUint()));
 
     position.x = randX.mul(100).add(-50);
     position.y = randY.mul(25);
@@ -144,7 +143,7 @@ function init() {
 
   //
 
-  const computeUpdate = tslFn(() => {
+  const computeUpdate = Fn(() => {
     const getCoord = (pos) => pos.add(50).div(100);
 
     const position = positionBuffer.element(instanceIndex);
@@ -183,10 +182,8 @@ function init() {
 
       // next drops will not fall in the same place
 
-      position.x = instanceIndex.add(timer).hash().mul(100).add(-50);
-      position.z = instanceIndex
-        .add(timer.add(randUint()))
-        .hash()
+      position.x = hash(instanceIndex.add(timer)).mul(100).add(-50);
+      position.z = hash(instanceIndex.add(timer.add(randUint())))
         .mul(100)
         .add(-50);
     });
@@ -207,29 +204,6 @@ function init() {
 
   // rain
 
-  const billboarding = tslFn(() => {
-    const particlePosition = positionBuffer.toAttribute();
-
-    const worldMatrix = modelWorldMatrix.toVar();
-    worldMatrix[3][0] = particlePosition.x;
-    worldMatrix[3][1] = particlePosition.y;
-    worldMatrix[3][2] = particlePosition.z;
-
-    const modelViewMatrix = cameraViewMatrix.mul(worldMatrix);
-    modelViewMatrix[0][0] = 1;
-    modelViewMatrix[0][1] = 0;
-    modelViewMatrix[0][2] = 0;
-
-    //modelViewMatrix[ 0 ][ 0 ] = modelWorldMatrix[ 0 ].length();
-    //modelViewMatrix[ 1 ][ 1 ] = modelWorldMatrix[ 1 ].length();
-
-    modelViewMatrix[2][0] = 0;
-    modelViewMatrix[2][1] = 0;
-    modelViewMatrix[2][2] = 1;
-
-    return cameraProjectionMatrix.mul(modelViewMatrix).mul(positionGeometry);
-  });
-
   const rainMaterial = new MeshBasicNodeMaterial();
   rainMaterial.colorNode = uv()
     .distance(vec2(0.5, 0))
@@ -237,7 +211,9 @@ function init() {
     .mul(3)
     .exp()
     .mul(0.1);
-  rainMaterial.vertexNode = billboarding();
+  rainMaterial.vertexNode = billboarding({
+    position: positionBuffer.toAttribute(),
+  });
   rainMaterial.opacity = 0.2;
   rainMaterial.side = DoubleSide;
   rainMaterial.forceSinglePass = true;
@@ -253,7 +229,7 @@ function init() {
 
   const rippleTime = rippleTimeBuffer.element(instanceIndex).x;
 
-  const rippleEffect = tslFn(() => {
+  const rippleEffect = Fn(() => {
     const center = uv().add(vec2(-0.5)).length().mul(7);
     const distance = rippleTime.sub(center);
 

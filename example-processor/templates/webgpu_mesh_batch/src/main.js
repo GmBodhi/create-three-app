@@ -8,20 +8,26 @@ import {
   ConeGeometry,
   BoxGeometry,
   SphereGeometry,
-  MeshNormalNodeMaterial,
+  MeshBasicNodeMaterial,
   BatchedMesh,
+  Color,
   PerspectiveCamera,
   WebGPURenderer,
   Scene,
-  Color,
 } from "three";
 
-import Stats from "stats-gl";
+import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { radixSort } from "three/addons/utils/SortUtils.js";
+
+import {
+  transformedNormalView,
+  directionToColor,
+  diffuseColor,
+} from "three/tsl";
 
 let camera, scene, renderer;
 let controls, stats;
@@ -90,7 +96,10 @@ function initGeometries() {
 
 function createMaterial() {
   if (!material) {
-    material = new MeshNormalNodeMaterial();
+    material = new MeshBasicNodeMaterial();
+    material.outputNode = diffuseColor.mul(
+      directionToColor(transformedNormalView).y.add(0.5)
+    );
   }
 
   return material;
@@ -139,6 +148,7 @@ function initBatchedMesh() {
   for (let i = 0; i < api.count; i++) {
     const id = mesh.addInstance(geometryIds[i % geometryIds.length]);
     mesh.setMatrixAt(id, randomizeMatrix(matrix));
+    mesh.setColorAt(id, new Color(Math.random() * 0xffffff));
 
     const rotationMatrix = new Matrix4();
     rotationMatrix.makeRotationFromEuler(randomizeRotationSpeed(euler));
@@ -158,14 +168,12 @@ function init(forceWebGL = false) {
     document.body.removeChild(renderer.domElement);
   }
 
-  document.getElementById("backend").innerText =
-    "Active Backend: " + (forceWebGL ? "WebGL" : "WebGPU");
   // camera
 
   const aspect = window.innerWidth / window.innerHeight;
 
   camera = new PerspectiveCamera(70, aspect, 1, 100);
-  camera.position.z = 50;
+  camera.position.z = 30;
 
   // renderer
 
@@ -178,13 +186,7 @@ function init(forceWebGL = false) {
   // scene
 
   scene = new Scene();
-  scene.background = new Color(0xffffff);
-
-  if (forceWebGL) {
-    scene.background = new Color(0xf10000);
-  } else {
-    scene.background = new Color(0x0000f1);
-  }
+  scene.background = forceWebGL ? new Color(0xffc1c1) : new Color(0xc1c1ff);
 
   document.body.appendChild(renderer.domElement);
 
@@ -199,13 +201,8 @@ function init(forceWebGL = false) {
 
   // stats
 
-  stats = new Stats({
-    precision: 3,
-    horizontal: false,
-  });
-  stats.init(renderer);
+  stats = new Stats();
   document.body.appendChild(stats.dom);
-  stats.dom.style.position = "absolute";
 
   // gui
 

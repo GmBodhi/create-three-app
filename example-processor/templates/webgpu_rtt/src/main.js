@@ -13,7 +13,7 @@ import {
   RenderTarget,
   QuadMesh,
 } from "three";
-import { texture, uniform } from "three/tsl";
+import { texture, uniform, saturation, hue } from "three/tsl";
 
 let camera, scene, renderer;
 const mouse = new Vector2();
@@ -75,9 +75,10 @@ function init() {
   const screenFXNode = uniform(mouse);
 
   const materialFX = new MeshBasicNodeMaterial();
-  materialFX.colorNode = texture(renderTarget.texture)
-    .rgb.saturation(screenFXNode.x.oneMinus())
-    .hue(screenFXNode.y);
+  materialFX.colorNode = hue(
+    saturation(texture(renderTarget.texture).rgb, screenFXNode.x.oneMinus()),
+    screenFXNode.y
+  );
 
   quadMesh = new QuadMesh(materialFX);
 }

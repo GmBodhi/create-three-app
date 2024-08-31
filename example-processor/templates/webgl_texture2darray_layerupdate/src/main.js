@@ -145,6 +145,18 @@ async function init() {
   scene.add(mesh);
 
   window.addEventListener("resize", onWindowResize);
+
+  // Initialize the texture array by first rendering the spirited away
+  // frames in order.
+
+  textureArray.mipmaps[0].data.set(
+    spiritedaway.mipmaps[0].data.subarray(
+      0,
+      textureArray.mipmaps[0].data.length
+    )
+  );
+  textureArray.needsUpdate = true;
+  renderer.render(scene, camera);
 }
 
 function onWindowResize() {

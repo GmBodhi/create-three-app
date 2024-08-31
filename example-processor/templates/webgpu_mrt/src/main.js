@@ -12,15 +12,16 @@ import {
 } from "three";
 import {
   output,
-  transformedNormalWorld,
+  transformedNormalView,
   pass,
   step,
   diffuseColor,
   emissive,
-  viewportTopLeft,
+  directionToColor,
+  viewportUV,
   mix,
   mrt,
-  tslFn,
+  Fn,
 } from "three/tsl";
 
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
@@ -85,7 +86,7 @@ function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: transformedNormalWorld.directionToColor(),
+      normal: directionToColor(transformedNormalView),
       diffuse: diffuseColor,
       emissive: emissive,
     })
@@ -106,20 +107,16 @@ function init() {
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputColorTransform = false;
-  postProcessing.outputNode = tslFn(() => {
+  postProcessing.outputNode = Fn(() => {
     const output = scenePass.getTextureNode("output"); // output name is optional here
     const normal = scenePass.getTextureNode("normal");
     const diffuse = scenePass.getTextureNode("diffuse");
     const emissive = scenePass.getTextureNode("emissive");
 
-    const out = mix(
-      output.renderOutput(),
-      output,
-      step(0.2, viewportTopLeft.x)
-    );
-    const nor = mix(out, normal, step(0.4, viewportTopLeft.x));
-    const emi = mix(nor, emissive, step(0.6, viewportTopLeft.x));
-    const dif = mix(emi, diffuse, step(0.8, viewportTopLeft.x));
+    const out = mix(output.renderOutput(), output, step(0.2, viewportUV.x));
+    const nor = mix(out, normal, step(0.4, viewportUV.x));
+    const emi = mix(nor, emissive, step(0.6, viewportUV.x));
+    const dif = mix(emi, diffuse, step(0.8, viewportUV.x));
 
     return dif;
   })();

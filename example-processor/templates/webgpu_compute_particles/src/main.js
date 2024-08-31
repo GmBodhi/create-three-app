@@ -16,11 +16,12 @@ import {
   WebGPURenderer,
 } from "three";
 import {
-  tslFn,
+  Fn,
   uniform,
   texture,
   instanceIndex,
   float,
+  hash,
   vec3,
   storage,
   If,
@@ -76,13 +77,13 @@ function init() {
 
   // compute
 
-  const computeInit = tslFn(() => {
+  const computeInit = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const color = colorBuffer.element(instanceIndex);
 
-    const randX = instanceIndex.hash();
-    const randY = instanceIndex.add(2).hash();
-    const randZ = instanceIndex.add(3).hash();
+    const randX = hash(instanceIndex);
+    const randY = hash(instanceIndex.add(2));
+    const randZ = hash(instanceIndex.add(3));
 
     position.x = randX.mul(100).add(-50);
     position.y = 0; // randY.mul( 10 );
@@ -93,7 +94,7 @@ function init() {
 
   //
 
-  const computeUpdate = tslFn(() => {
+  const computeUpdate = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 
@@ -169,7 +170,7 @@ function init() {
 
   // click event
 
-  const computeHit = tslFn(() => {
+  const computeHit = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 
@@ -178,7 +179,7 @@ function init() {
     const distArea = float(6).sub(dist).max(0);
 
     const power = distArea.mul(0.01);
-    const relativePower = power.mul(instanceIndex.hash().mul(0.5).add(0.5));
+    const relativePower = power.mul(hash(instanceIndex).mul(0.5).add(0.5));
 
     velocity.assign(velocity.add(direction.mul(relativePower)));
   })().compute(particleCount);

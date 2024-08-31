@@ -13,7 +13,7 @@ import {
 import {
   texture,
   textureStore,
-  tslFn,
+  Fn,
   instanceIndex,
   float,
   uvec2,
@@ -50,8 +50,8 @@ function init() {
 
   // create function
 
-  const computeTexture = tslFn(({ storageTexture }) => {
-    const posX = instanceIndex.remainder(width);
+  const computeTexture = Fn(({ storageTexture }) => {
+    const posX = instanceIndex.modInt(width);
     const posY = instanceIndex.div(width);
     const indexUV = uvec2(posX, posY);
 

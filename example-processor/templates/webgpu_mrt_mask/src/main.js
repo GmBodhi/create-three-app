@@ -15,7 +15,15 @@ import {
   NeutralToneMapping,
   PostProcessing,
 } from "three";
-import { color, viewportTopLeft, mrt, output, pass, vec4 } from "three/tsl";
+import {
+  color,
+  viewportUV,
+  mrt,
+  output,
+  gaussianBlur,
+  pass,
+  vec4,
+} from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -39,7 +47,7 @@ function init() {
   camera.position.set(1, 2, 3);
 
   scene = new Scene();
-  scene.backgroundNode = viewportTopLeft.y
+  scene.backgroundNode = viewportUV.y
     .mix(color(0x66bbff), color(0x4466ff))
     .mul(0.05);
   camera.lookAt(0, 1, 0);
@@ -125,7 +133,7 @@ function init() {
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputColorTransform = false;
   postProcessing.outputNode = colorPass
-    .add(maskPass.gaussianBlur(1, 10).mul(0.3))
+    .add(gaussianBlur(maskPass, 1, 10).mul(0.3))
     .renderOutput();
 
   // controls

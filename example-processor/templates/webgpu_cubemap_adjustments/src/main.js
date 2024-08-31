@@ -18,6 +18,8 @@ import {
   pmremTexture,
   reference,
   positionLocal,
+  hue,
+  saturation,
   positionWorld,
   normalWorld,
   positionWorldDirection,
@@ -112,8 +114,8 @@ async function init() {
     const proceduralEnv = mix(mixCubeMaps, normalWorld, proceduralNode);
 
     const intensityFilter = proceduralEnv.mul(intensityNode);
-    const hueFilter = intensityFilter.hue(hueNode);
-    return hueFilter.saturation(saturationNode);
+    const hueFilter = hue(intensityFilter, hueNode);
+    return saturation(hueFilter, saturationNode);
   };
 
   const blurNode = uniform(0);

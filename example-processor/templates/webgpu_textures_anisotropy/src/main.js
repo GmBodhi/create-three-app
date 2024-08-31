@@ -167,5 +167,5 @@ function render() {
   renderer.setScissor(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2 - 2, SCREEN_HEIGHT);
   renderer.render(scene2, camera);
 
-  // renderer.setScissorTest( false );
+  renderer.setScissorTest(false);
 }

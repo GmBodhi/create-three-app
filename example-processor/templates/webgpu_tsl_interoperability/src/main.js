@@ -12,7 +12,7 @@ import {
   LinearSRGBColorSpace,
 } from "three";
 import {
-  tslFn,
+  Fn,
   attribute,
   varyingProperty,
   timerLocal,
@@ -188,12 +188,12 @@ function init() {
 
   //
 
-  const tslVertexShader = tslFn(() => {
+  const tslVertexShader = Fn(() => {
     vUv.assign(uv());
     return positionGeometry;
   });
 
-  const tslFragmentShader = tslFn(() => {
+  const tslFragmentShader = Fn(() => {
     const dimensions = vec2(crtWidthUniform, crtHeightUniform);
     const translatedUV = vUv.mul(0.5).add(0.5);
     const pixel = translatedUV.mul(dimensions);

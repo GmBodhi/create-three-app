@@ -17,7 +17,7 @@ import {
   uv,
   uint,
   float,
-  tslFn,
+  Fn,
   instanceIndex,
 } from "three/tsl";
 
@@ -60,13 +60,13 @@ async function init(forceWebGL = false) {
     arrayBufferNodes.push(storageObject(arrayBuffer, type[i], size));
   }
 
-  const computeInitOrder = tslFn(() => {
+  const computeInitOrder = Fn(() => {
     for (let i = 0; i < type.length; i++) {
       arrayBufferNodes[i].element(instanceIndex).assign(instanceIndex);
     }
   });
 
-  const computeInvertOrder = tslFn(() => {
+  const computeInvertOrder = Fn(() => {
     for (let i = 0; i < type.length; i++) {
       const invertIndex = arrayBufferNodes[i].element(
         uint(size - 1).sub(instanceIndex)
@@ -83,7 +83,7 @@ async function init(forceWebGL = false) {
 
   const material = new MeshBasicNodeMaterial({ color: 0x00ff00 });
 
-  material.colorNode = tslFn(() => {
+  material.colorNode = Fn(() => {
     const index = uint(uv().x.mul(size).floor()).toVar();
 
     If(index.greaterThanEqual(size), () => {

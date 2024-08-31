@@ -8,7 +8,13 @@ import {
   PlaneGeometry,
   WebGPURenderer,
 } from "three";
-import { checker, uv, uniform } from "three/tsl";
+import {
+  checker,
+  uv,
+  uniform,
+  gaussianBlur,
+  convertToTexture,
+} from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -30,9 +36,9 @@ function init() {
   const blurAmount = uniform(0.5);
 
   const procedural = checker(uv().mul(uvScale));
-  const proceduralToTexture = procedural.toTexture(512, 512); // ( width, height ) <- texture size
+  const proceduralToTexture = convertToTexture(procedural, 512, 512); // ( node, width, height )
 
-  const colorNode = proceduralToTexture.gaussianBlur(blurAmount, 10);
+  const colorNode = gaussianBlur(proceduralToTexture, blurAmount, 10);
 
   // extra
 

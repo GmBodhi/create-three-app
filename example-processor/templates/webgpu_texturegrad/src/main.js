@@ -20,7 +20,7 @@ import {
   vec2,
   uv,
   texture,
-  tslFn,
+  Fn,
 } from "three/tsl";
 
 // WebGPU Backend
@@ -46,7 +46,7 @@ async function init(forceWebGL = false) {
   );
 
   const elapsedTime = timerLocal();
-  material.colorNode = tslFn(() => {
+  material.colorNode = Fn(() => {
     const color = vec4(1).toVar();
 
     const vuv = uv().toVar();

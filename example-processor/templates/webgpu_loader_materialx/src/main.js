@@ -20,7 +20,7 @@ const SAMPLE_PATH =
 
 const samples = [
   "standard_surface_brass_tiled.mtlx",
-  //'standard_surface_brick_procedural.mtlx',
+  "standard_surface_brick_procedural.mtlx",
   "standard_surface_carpaint.mtlx",
   //'standard_surface_chess_set.mtlx',
   "standard_surface_chrome.mtlx",
@@ -29,7 +29,7 @@ const samples = [
   //'standard_surface_glass.mtlx',
   //'standard_surface_glass_tinted.mtlx',
   "standard_surface_gold.mtlx",
-  "standard_surface_greysphere.mtlx",
+  //'standard_surface_greysphere.mtlx',
   //'standard_surface_greysphere_calibration.mtlx',
   "standard_surface_jade.mtlx",
   //'standard_surface_look_brass_tiled.mtlx',

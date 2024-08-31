@@ -50,7 +50,7 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xbfe3dd);
   scene.environment = pmremGenerator.fromScene(
-    new RoomEnvironment(renderer),
+    new RoomEnvironment(),
     0.04
   ).texture;
 

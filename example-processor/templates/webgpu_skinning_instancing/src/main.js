@@ -16,7 +16,15 @@ import {
   WebGPURenderer,
   PostProcessing,
 } from "three";
-import { pass, mix, range, color, oscSine, timerLocal } from "three/tsl";
+import {
+  pass,
+  mix,
+  range,
+  color,
+  oscSine,
+  timerLocal,
+  gaussianBlur,
+} from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -125,7 +133,7 @@ function init() {
   const scenePassColor = scenePass.getTextureNode();
   const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(0.15, 0.3);
 
-  const scenePassColorBlurred = scenePassColor.gaussianBlur();
+  const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = scenePassDepth;
 
   postProcessing = new PostProcessing(renderer);

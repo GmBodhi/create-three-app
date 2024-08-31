@@ -1699,16 +1699,6 @@
         "/src"
       ]
     },
-    "webgl_loader_gltf_lights": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_gltf_sheen": {
       "files": {
         "index.html": "src",
@@ -1979,16 +1969,6 @@
         "/src"
       ]
     },
-    "webgl_loader_texture_logluv": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_texture_lottie": {
       "files": {
         "index.html": "src",
@@ -2247,19 +2227,6 @@
       },
       "dirs": [
         "/src"
-      ]
-    },
-    "webgl_materials_curvature": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "fragmentShaderRaw.glsl": "src/shaders",
-        "vertexShaderRaw.glsl": "src/shaders",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src",
-        "/src/shaders"
       ]
     },
     "webgl_materials_displacementmap": {
@@ -2724,6 +2691,16 @@
       ]
     },
     "webgl_panorama_equirectangular": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_performance": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3632,6 +3609,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_birds": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_geometry": {
       "files": {
         "index.html": "src",
@@ -3762,6 +3749,16 @@
         "/src"
       ]
     },
+    "webgpu_display_stereo": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_equirectangular": {
       "files": {
         "index.html": "src",
@@ -3803,6 +3800,16 @@
       ]
     },
     "webgpu_instancing_morph": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lightprobe": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3982,6 +3989,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_envmaps": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_lightmap": {
       "files": {
         "index.html": "src",
@@ -4152,6 +4169,16 @@
         "/src"
       ]
     },
+    "webgpu_ocean": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_parallax_uv": {
       "files": {
         "index.html": "src",
@@ -4163,6 +4190,16 @@
       ]
     },
     "webgpu_particles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_performance": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4302,6 +4339,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_difference": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_dof": {
       "files": {
         "index.html": "src",
@@ -4322,6 +4369,26 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_masking": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_motion_blur": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_pixel": {
       "files": {
         "index.html": "src",
@@ -4333,6 +4400,16 @@
       ]
     },
     "webgpu_postprocessing_sobel": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_ssaa": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4425,6 +4502,16 @@
         "/src"
       ]
     },
+    "webgpu_shadowmap_opacity": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_skinning": {
       "files": {
         "index.html": "src",
@@ -4446,6 +4533,16 @@
       ]
     },
     "webgpu_skinning_points": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_sky": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4495,6 +4592,16 @@
         "/src"
       ]
     },
+    "webgpu_textures_2d-array_compressed": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_textures_anisotropy": {
       "files": {
         "index.html": "src",
@@ -4506,6 +4613,46 @@
       ]
     },
     "webgpu_textures_partialupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_angular_slicing": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_coffee_smoke": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_compute_attractors_particles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_earth": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4535,6 +4682,16 @@
         "/src"
       ]
     },
+    "webgpu_tsl_halftone": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_tsl_interoperability": {
       "files": {
         "index.html": "src",
@@ -4545,7 +4702,47 @@
         "/src"
       ]
     },
+    "webgpu_tsl_procedural_terrain": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_raging_sea": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_tsl_transpiler": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_vfx_flames": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_vfx_tornado": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4576,6 +4773,16 @@
       ]
     },
     "webgpu_volume_perlin": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_water": {
       "files": {
         "index.html": "src",
         "main.js": "src",

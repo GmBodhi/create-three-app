@@ -14,10 +14,13 @@ import {
   Mesh,
   NodeObjectLoader,
 } from "three";
+import * as TSL from "three/tsl";
+
 import {
-  tslFn,
+  Fn,
   wgslFn,
   positionLocal,
+  scriptable,
   positionWorld,
   normalLocal,
   normalWorld,
@@ -31,11 +34,12 @@ import {
   vec4,
   oscSine,
   triplanarTexture,
-  viewportBottomLeft,
+  viewportUV,
   js,
   string,
   global,
-  loop,
+  Loop,
+  cameraProjectionMatrix,
 } from "three/tsl";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
@@ -137,6 +141,11 @@ function init() {
   material.alphaTestNode = 0.5;
   materials.push(material);
 
+  // camera
+  material = new MeshBasicNodeMaterial();
+  material.colorNode = cameraProjectionMatrix.mul(positionLocal);
+  materials.push(material);
+
   // Normal
   material = new MeshNormalMaterial();
   material.opacity = 0.5;
@@ -149,7 +158,7 @@ function init() {
 
   // Custom ShaderNode ( desaturate filter )
 
-  const desaturateShaderNode = tslFn((input) => {
+  const desaturateShaderNode = Fn((input) => {
     return vec3(0.299, 0.587, 0.114).dot(input.color.xyz);
   });
 
@@ -159,7 +168,7 @@ function init() {
 
   // Custom ShaderNode(no inputs) > Approach 2
 
-  const desaturateNoInputsShaderNode = tslFn(() => {
+  const desaturateNoInputsShaderNode = Fn(() => {
     return vec3(0.299, 0.587, 0.114).dot(texture(uvTexture).xyz);
   });
 
@@ -196,7 +205,7 @@ function init() {
   material.colorNode = someWGSLFn({ color: texture(uvTexture) });
   materials.push(material);
 
-  // Custom WGSL ( get texture from keywords )
+  // Custom WGSL
 
   const getWGSLTextureSample = wgslFn(`
 					fn getWGSLTextureSample( tex: texture_2d<f32>, tex_sampler: sampler, uv:vec2<f32> ) -> vec4<f32> {
@@ -207,7 +216,6 @@ function init() {
 				`);
 
   const textureNode = texture(uvTexture);
-  //getWGSLTextureSample.keywords = { tex: textureNode, tex_sampler: sampler( textureNode ) };
 
   material = new MeshBasicNodeMaterial();
   material.colorNode = getWGSLTextureSample({
@@ -229,7 +237,7 @@ function init() {
 
   // Screen Projection Texture
   material = new MeshBasicNodeMaterial();
-  material.colorNode = texture(uvTexture, viewportBottomLeft);
+  material.colorNode = texture(uvTexture, viewportUV.flipY());
   materials.push(material);
 
   // Loop
@@ -237,7 +245,7 @@ function init() {
   materials.push(material);
 
   const loopCount = 10;
-  material.colorNode = loop(loopCount, ({ i }) => {
+  material.colorNode = Loop(loopCount, ({ i }) => {
     const output = vec4().temp();
     const scale = oscSine().mul(0.09); // just a value to test
 
@@ -260,9 +268,10 @@ function init() {
   // Scriptable
 
   global.set("THREE", THREE);
-  global.set("TSL", THREE);
+  global.set("TSL", TSL);
 
-  const asyncNode = js(`
+  const asyncNode = scriptable(
+    js(`
 
 					layout = {
 						outputType: 'node'
@@ -294,9 +303,11 @@ function init() {
 
 					}
 
-				`).scriptable();
+				`)
+  );
 
-  const scriptableNode = js(`
+  const scriptableNode = scriptable(
+    js(`
 
 					layout = {
 						outputType: 'node',
@@ -346,7 +357,8 @@ function init() {
 
 					output = { helloWorld };
 
-				`).scriptable();
+				`)
+  );
 
   scriptableNode.setParameter("source", texture(uvTexture).xyz);
   scriptableNode.setParameter("contrast", asyncNode);

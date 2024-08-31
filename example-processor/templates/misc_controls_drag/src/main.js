@@ -14,6 +14,7 @@ import {
   MeshLambertMaterial,
   WebGLRenderer,
   PCFShadowMap,
+  TOUCH,
 } from "three";
 
 import { DragControls } from "three/addons/controls/DragControls.js";
@@ -126,7 +127,8 @@ function onKeyDown(event) {
   enableSelection = event.keyCode === 16 ? true : false;
 
   if (event.keyCode === 77) {
-    controls.mode = controls.mode === "translate" ? "rotate" : "translate";
+    controls.touches.ONE =
+      controls.touches.ONE === TOUCH.PAN ? TOUCH.ROTATE : TOUCH.PAN;
   }
 }
 
@@ -138,7 +140,7 @@ function onClick(event) {
   event.preventDefault();
 
   if (enableSelection === true) {
-    const draggableObjects = controls.getObjects();
+    const draggableObjects = controls.objects;
     draggableObjects.length = 0;
 
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;

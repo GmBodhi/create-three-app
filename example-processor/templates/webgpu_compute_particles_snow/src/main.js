@@ -26,17 +26,19 @@ import {
   PostProcessing,
 } from "three";
 import {
-  tslFn,
+  Fn,
   texture,
   vec3,
   pass,
   color,
   uint,
-  viewportTopLeft,
+  viewportUV,
   positionWorld,
   positionLocal,
   timerLocal,
   vec2,
+  hash,
+  gaussianBlur,
   instanceIndex,
   storage,
   If,
@@ -127,20 +129,20 @@ async function init() {
 
   const randUint = () => uint(Math.random() * 0xffffff);
 
-  const computeInit = tslFn(() => {
+  const computeInit = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const scale = scaleBuffer.element(instanceIndex);
     const particleData = dataBuffer.element(instanceIndex);
 
-    const randX = instanceIndex.hash();
-    const randY = instanceIndex.add(randUint()).hash();
-    const randZ = instanceIndex.add(randUint()).hash();
+    const randX = hash(instanceIndex);
+    const randY = hash(instanceIndex.add(randUint()));
+    const randZ = hash(instanceIndex.add(randUint()));
 
     position.x = randX.mul(100).add(-50);
     position.y = randY.mul(500).add(3);
     position.z = randZ.mul(100).add(-50);
 
-    scale.xyz = instanceIndex.add(Math.random()).hash().mul(0.8).add(0.2);
+    scale.xyz = hash(instanceIndex.add(Math.random())).mul(0.8).add(0.2);
 
     staticPositionBuffer.element(instanceIndex).assign(vec3(1000, 10000, 1000));
 
@@ -156,7 +158,7 @@ async function init() {
   const surfaceOffset = 0.2;
   const speed = 0.4;
 
-  const computeUpdate = tslFn(() => {
+  const computeUpdate = Fn(() => {
     const getCoord = (pos) => pos.add(50).div(100);
 
     const position = positionBuffer.element(instanceIndex);
@@ -181,7 +183,7 @@ async function init() {
       );
 
       position.y = position.y.add(velocity);
-    }).else(() => {
+    }).Else(() => {
       staticPositionBuffer.element(instanceIndex).assign(position);
     });
   });
@@ -288,7 +290,7 @@ async function init() {
 
   //
 
-  scene.backgroundNode = viewportTopLeft
+  scene.backgroundNode = viewportUV
     .distance(0.5)
     .mul(2)
     .mix(color(0x0f4140), color(0x060a0d));
@@ -324,13 +326,13 @@ async function init() {
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
-  const vignet = viewportTopLeft.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignet = viewportUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   const teapotTreePass = pass(teapotTree, camera).getTextureNode();
-  const teapotTreePassBlurred = teapotTreePass.gaussianBlur(vec2(1), 3);
+  const teapotTreePassBlurred = gaussianBlur(teapotTreePass, vec2(1), 3);
   teapotTreePassBlurred.resolution = new Vector2(0.2, 0.2);
 
-  const scenePassColorBlurred = scenePassColor.gaussianBlur();
+  const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.resolution = new Vector2(0.5, 0.5);
   scenePassColorBlurred.directionNode = vec2(1);
 

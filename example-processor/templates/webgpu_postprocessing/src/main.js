@@ -13,7 +13,7 @@ import {
   DirectionalLight,
   PostProcessing,
 } from "three";
-import { pass } from "three/tsl";
+import { pass, dotScreen, rgbShift } from "three/tsl";
 
 let camera, renderer, postProcessing;
 let object;
@@ -73,10 +73,10 @@ function init() {
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
 
-  const dotScreenPass = scenePassColor.dotScreen();
+  const dotScreenPass = dotScreen(scenePassColor);
   dotScreenPass.scale.value = 0.3;
 
-  const rgbShiftPass = dotScreenPass.rgbShift();
+  const rgbShiftPass = rgbShift(dotScreenPass);
   rgbShiftPass.amount.value = 0.001;
 
   postProcessing.outputNode = rgbShiftPass;

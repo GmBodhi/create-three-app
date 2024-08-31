@@ -20,8 +20,9 @@ import {
   linearDepth,
   viewportLinearDepth,
   viewportSharedTexture,
+  textureBicubic,
   viewportMipTexture,
-  viewportTopLeft,
+  viewportUV,
   checker,
   uv,
   modelScale,
@@ -85,7 +86,8 @@ function init() {
     .smoothstep(0.9, 2)
     .mul(10)
     .saturate();
-  const depthBlurred = viewportMipTexture().bicubic(
+  const depthBlurred = textureBicubic(
+    viewportMipTexture(),
     depthDistance
       .smoothstep(0, 0.6)
       .mul(40 * 5)
@@ -112,7 +114,7 @@ function init() {
   depthMaterial.side = DoubleSide;
 
   const bicubicMaterial = new MeshBasicNodeMaterial();
-  bicubicMaterial.backdropNode = viewportMipTexture().bicubic(5); // @TODO: Move to alpha value [ 0, 1 ]
+  bicubicMaterial.backdropNode = textureBicubic(viewportMipTexture(), 5); // @TODO: Move to alpha value [ 0, 1 ]
   bicubicMaterial.backdropAlphaNode = checker(uv().mul(3).mul(modelScale.xy));
   bicubicMaterial.opacityNode = bicubicMaterial.backdropAlphaNode;
   bicubicMaterial.transparent = true;
@@ -120,7 +122,7 @@ function init() {
 
   const pixelMaterial = new MeshBasicNodeMaterial();
   pixelMaterial.backdropNode = viewportSharedTexture(
-    viewportTopLeft.mul(100).floor().div(100)
+    viewportUV.mul(100).floor().div(100)
   );
   pixelMaterial.transparent = true;
 

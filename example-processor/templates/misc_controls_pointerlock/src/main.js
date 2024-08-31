@@ -76,7 +76,7 @@ function init() {
     instructions.style.display = "";
   });
 
-  scene.add(controls.getObject());
+  scene.add(controls.object);
 
   const onKeyDown = function (event) {
     switch (event.code) {
@@ -245,7 +245,7 @@ function animate() {
   const time = performance.now();
 
   if (controls.isLocked === true) {
-    raycaster.ray.origin.copy(controls.getObject().position);
+    raycaster.ray.origin.copy(controls.object.position);
     raycaster.ray.origin.y -= 10;
 
     const intersections = raycaster.intersectObjects(objects, false);
@@ -274,11 +274,11 @@ function animate() {
     controls.moveRight(-velocity.x * delta);
     controls.moveForward(-velocity.z * delta);
 
-    controls.getObject().position.y += velocity.y * delta; // new behavior
+    controls.object.position.y += velocity.y * delta; // new behavior
 
-    if (controls.getObject().position.y < 10) {
+    if (controls.object.position.y < 10) {
       velocity.y = 0;
-      controls.getObject().position.y = 10;
+      controls.object.position.y = 10;
 
       canJump = true;
     }
