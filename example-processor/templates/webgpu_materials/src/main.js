@@ -424,9 +424,21 @@ function addMesh(geometry, material) {
   scene.add(mesh);
 }
 
+function moduleToLib(module) {
+  const lib = {};
+
+  for (const nodeElement of Object.values(module)) {
+    if (typeof nodeElement === "function" && nodeElement.type !== undefined) {
+      lib[nodeElement.type] = nodeElement;
+    }
+  }
+
+  return lib;
+}
+
 function testSerialization(mesh) {
   const json = mesh.toJSON();
-  const loader = new NodeObjectLoader();
+  const loader = new NodeObjectLoader().setNodes(moduleToLib(TSL));
   const serializedMesh = loader.parse(json);
 
   serializedMesh.position.x = (objects.length % 4) * 200 - 400;
