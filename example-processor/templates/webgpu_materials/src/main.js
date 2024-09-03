@@ -438,7 +438,9 @@ function moduleToLib(module) {
 
 function testSerialization(mesh) {
   const json = mesh.toJSON();
-  const loader = new NodeObjectLoader().setNodes(moduleToLib(TSL));
+  const loader = new NodeObjectLoader()
+    .setNodes(moduleToLib(TSL))
+    .setNodeMaterials(moduleToLib(THREE));
   const serializedMesh = loader.parse(json);
 
   serializedMesh.position.x = (objects.length % 4) * 200 - 400;

@@ -59,6 +59,7 @@ const api = {
   renderBundle: true,
   count: MAX_GEOMETRY_COUNT,
   opacity: 1,
+  dynamic: false,
 };
 
 init(!api.webgpu);
@@ -214,6 +215,8 @@ async function init(forceWebGL = false) {
     init(!api.webgpu);
   });
 
+  gui.add(api, "dynamic");
+
   // listeners
 
   window.addEventListener("resize", onWindowResize);
@@ -253,9 +256,7 @@ async function init(forceWebGL = false) {
 
   function animateMeshes() {
     const count = api.count / (api.webgpu ? 1 : 10);
-    const countDynamic = api.dynamic / (api.webgpu ? 1 : 10);
-
-    const loopNum = Math.min(count, countDynamic);
+    const loopNum = api.dynamic ? count : 0;
 
     for (let i = 0; i < loopNum; i++) {
       const child = group.children[i];
