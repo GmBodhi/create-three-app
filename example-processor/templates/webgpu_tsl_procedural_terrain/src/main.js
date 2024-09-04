@@ -24,7 +24,7 @@ import {
   cross,
   dot,
   float,
-  modelNormalMatrix,
+  transformNormalToView,
   positionLocal,
   sign,
   step,
@@ -177,7 +177,7 @@ function init() {
     return position;
   })();
 
-  material.normalNode = modelNormalMatrix.mul(vNormal);
+  material.normalNode = transformNormalToView(vNormal);
 
   material.colorNode = Fn(() => {
     const finalColor = colorSand.toVar();
