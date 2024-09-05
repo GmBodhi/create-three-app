@@ -120,11 +120,12 @@ async function init() {
   window.addEventListener("resize", onWindowResize);
 
   gui = new GUI();
-  const toneMappingFolder = gui.addFolder("tone mapping");
+  const toneMappingFolder = gui.addFolder("Tone Mapping");
 
   toneMappingFolder
     .add(params, "toneMapping", Object.keys(toneMappingOptions))
 
+    .name("type")
     .onChange(function () {
       updateGUI(toneMappingFolder);
 
@@ -132,7 +133,15 @@ async function init() {
       render();
     });
 
-  const backgroundFolder = gui.addFolder("background");
+  guiExposure = toneMappingFolder
+    .add(params, "exposure", 0, 2)
+
+    .onChange(function (value) {
+      renderer.toneMappingExposure = value;
+      render();
+    });
+
+  const backgroundFolder = gui.addFolder("Background");
 
   backgroundFolder
     .add(params, "blurriness", 0, 1)
@@ -156,19 +165,10 @@ async function init() {
 }
 
 function updateGUI(folder) {
-  if (guiExposure !== null) {
-    guiExposure.destroy();
-    guiExposure = null;
-  }
-
-  if (params.toneMapping !== "None") {
-    guiExposure = folder
-      .add(params, "exposure", 0, 2)
-
-      .onChange(function () {
-        renderer.toneMappingExposure = params.exposure;
-        render();
-      });
+  if (params.toneMapping === "None") {
+    guiExposure.hide();
+  } else {
+    guiExposure.show();
   }
 }
 
