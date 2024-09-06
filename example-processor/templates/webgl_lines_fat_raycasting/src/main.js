@@ -18,8 +18,7 @@ import {
   Float32BufferAttribute,
 } from "three";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GPUStatsPanel } from "three/addons/utils/GPUStatsPanel.js";
+import Stats from "stats-gl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -32,7 +31,7 @@ import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 let line, thresholdLine, segments, thresholdSegments;
 let renderer, scene, camera, controls;
 let sphereInter, sphereOnLine;
-let stats, gpuPanel;
+let stats;
 let gui;
 let clock;
 
@@ -186,12 +185,10 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
 
-  stats = new Stats();
+  stats = new Stats({ horizontal: false });
+  stats.init(renderer);
   document.body.appendChild(stats.dom);
 
-  gpuPanel = new GPUStatsPanel(renderer.getContext());
-  stats.addPanel(gpuPanel);
-  stats.showPanel(0);
   initGui();
 }
 
@@ -248,9 +245,7 @@ function animate() {
     renderer.domElement.style.cursor = "";
   }
 
-  gpuPanel.startQuery();
   renderer.render(scene, camera);
-  gpuPanel.endQuery();
 
   stats.update();
 }

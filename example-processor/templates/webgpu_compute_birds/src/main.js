@@ -3,16 +3,20 @@ import "./style.css"; // For webpack support
 import {
   BufferGeometry,
   BufferAttribute,
-  Color,
   PerspectiveCamera,
   Scene,
   Fog,
+  HemisphereLight,
+  IcosahedronGeometry,
+  MeshStandardMaterial,
+  BackSide,
+  Mesh,
   WebGPURenderer,
+  NeutralToneMapping,
   StorageBufferAttribute,
   Vector3,
   NodeMaterial,
   DoubleSide,
-  Mesh,
 } from "three";
 import {
   uniform,
@@ -58,13 +62,13 @@ let last = performance.now();
 
 let computeVelocity, computePosition, effectController;
 
-const BIRDS = 1024;
+const BIRDS = 16384;
 const SPEED_LIMIT = 9.0;
 const BOUNDS = 800,
   BOUNDS_HALF = BOUNDS / 2;
 const UPPER_BOUNDS = BOUNDS;
 
-// Custom Geometry - using 3 triangles each. No UVs, no normals currently.
+// Custom Geometry - using 3 triangles each. No normals currently.
 class BirdGeometry extends BufferGeometry {
   constructor() {
     super();
@@ -74,12 +78,10 @@ class BirdGeometry extends BufferGeometry {
     const points = triangles * 3;
 
     const vertices = new BufferAttribute(new Float32Array(points * 3), 3);
-    const birdColors = new BufferAttribute(new Float32Array(points * 3), 3);
     const references = new BufferAttribute(new Uint32Array(points), 1);
     const birdVertex = new BufferAttribute(new Uint32Array(points), 1);
 
     this.setAttribute("position", vertices);
-    this.setAttribute("birdColor", birdColors);
     this.setAttribute("reference", references);
     this.setAttribute("birdVertex", birdVertex);
 
@@ -107,12 +109,6 @@ class BirdGeometry extends BufferGeometry {
       const triangleIndex = ~~(v / 3);
       const birdIndex = ~~(triangleIndex / trianglesPerBird);
 
-      const c = new Color(0x666666 + (~~(v / 9) / BIRDS) * 0x666666);
-
-      birdColors.array[v * 3 + 0] = c.r;
-      birdColors.array[v * 3 + 1] = c.g;
-      birdColors.array[v * 3 + 2] = c.b;
-
       references.array[v] = birdIndex;
 
       birdVertex.array[v] = v % 9;
@@ -127,21 +123,32 @@ function init() {
   document.body.appendChild(container);
 
   camera = new PerspectiveCamera(
-    75,
+    50,
     window.innerWidth / window.innerHeight,
     1,
     3000
   );
-  camera.position.z = 350;
+  camera.position.z = 1000;
 
   scene = new Scene();
-  scene.background = new Color(0xffffff);
-  scene.fog = new Fog(0xffffff, 100, 1000);
+  scene.fog = new Fog(0xffffff, 500, 3000);
 
-  renderer = new WebGPURenderer();
+  // Sky
+
+  const light = new HemisphereLight(0x0000ff, 0xffbb00, 3);
+  light.position.x = -1;
+  light.position.z = -1;
+  scene.add(light);
+
+  const geometry = new IcosahedronGeometry(1000, 6);
+  const material = new MeshStandardMaterial({ side: BackSide });
+  scene.add(new Mesh(geometry, material));
+
+  renderer = new WebGPURenderer({ antialiasing: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.toneMapping = NeutralToneMapping;
   container.appendChild(renderer.domElement);
 
   // Initialize position, velocity, and phase values
@@ -218,7 +225,7 @@ function init() {
   // Define Uniforms. Uniforms only need to be defined once rather than per shader.
 
   effectController = {
-    separation: uniform(20.0).label("separation"),
+    separation: uniform(15.0).label("separation"),
     alignment: uniform(20.0).label("alignment"),
     cohesion: uniform(20.0).label("cohesion"),
     freedom: uniform(0.75).label("freedom"),
@@ -232,16 +239,11 @@ function init() {
   const birdGeometry = new BirdGeometry();
   const birdMaterial = new NodeMaterial();
 
-  // Declare varyings
-
-  const vColor = varyingProperty("vec4", "vColor");
-
   // Animate bird mesh within vertex shader, then apply position offset to vertices.
 
   const birdVertexTSL = Fn(() => {
     const reference = attribute("reference");
     const birdVertex = attribute("birdVertex");
-    const birdColor = attribute("birdColor");
 
     const position = positionLocal.toVar();
     const newPhase = phaseRead.element(reference).toVar();
@@ -273,13 +275,10 @@ function init() {
     const finalVert = maty.mul(matz).mul(newPosition);
     finalVert.addAssign(positionRead.element(reference));
 
-    vColor.assign(vec4(birdColor, 1.0));
-
     return cameraProjectionMatrix.mul(cameraViewMatrix).mul(finalVert);
   });
 
   birdMaterial.vertexNode = birdVertexTSL();
-  birdMaterial.colorNode = vColor;
   birdMaterial.side = DoubleSide;
   const birdMesh = new Mesh(birdGeometry, birdMaterial);
   birdMesh.rotation.y = Math.PI / 2;

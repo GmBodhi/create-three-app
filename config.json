@@ -4512,6 +4512,16 @@
         "/src"
       ]
     },
+    "webgpu_shadowmap_vsm": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_skinning": {
       "files": {
         "index.html": "src",
