@@ -24,7 +24,7 @@ import {
   normalWorld,
   texture,
   uv,
-  viewportUV,
+  screenUV,
   gaussianBlur,
 } from "three/tsl";
 
@@ -161,7 +161,7 @@ function init() {
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = scenePassDepth;
 
-  const vignet = viewportUV.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignet = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = scenePassColorBlurred.mul(vignet);

@@ -22,7 +22,7 @@ import {
   viewportSharedTexture,
   textureBicubic,
   viewportMipTexture,
-  viewportUV,
+  screenUV,
   checker,
   uv,
   modelScale,
@@ -122,7 +122,7 @@ function init() {
 
   const pixelMaterial = new MeshBasicNodeMaterial();
   pixelMaterial.backdropNode = viewportSharedTexture(
-    viewportUV.mul(100).floor().div(100)
+    screenUV.mul(100).floor().div(100)
   );
   pixelMaterial.transparent = true;
 

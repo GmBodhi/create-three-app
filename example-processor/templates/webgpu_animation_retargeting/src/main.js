@@ -19,7 +19,7 @@ import {
   MathUtils,
   Euler,
 } from "three";
-import { color, viewportUV, reflector } from "three/tsl";
+import { color, screenUV, hue, timerLocal, reflector } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -58,9 +58,12 @@ document.body.appendChild(stats.dom);
 
 // scene
 const scene = new Scene();
-scene.backgroundNode = viewportUV
+scene.backgroundNode = screenUV
   .distance(0.5)
-  .mix(color(0x0175ad), color(0x02274f));
+  .mix(
+    hue(color(0x0175ad), timerLocal(0.1)),
+    hue(color(0x02274f), timerLocal(0.5))
+  );
 
 const helpers = new Group();
 helpers.visible = false;
