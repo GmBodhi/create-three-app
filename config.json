@@ -3689,6 +3689,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_water": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_cubemap_adjustments": {
       "files": {
         "index.html": "src",
@@ -4642,6 +4652,16 @@
         "/src"
       ]
     },
+    "webgpu_tonemapping": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_tsl_angular_slicing": {
       "files": {
         "index.html": "src",
@@ -4753,6 +4773,16 @@
       ]
     },
     "webgpu_tsl_vfx_flames": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_vfx_linkedparticles": {
       "files": {
         "index.html": "src",
         "main.js": "src",
