@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  WebGLRenderer,
+  WebGPURenderer,
   Scene,
   PerspectiveCamera,
   WebGLCubeRenderTarget,
@@ -11,7 +11,7 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { LightProbeHelper } from "three/addons/helpers/LightProbeHelper.js";
+import { LightProbeHelper } from "three/addons/helpers/LightProbeHelperGPU.js";
 import { LightProbeGenerator } from "three/addons/lights/LightProbeGenerator.js";
 
 let renderer, scene, camera, cubeCamera;
@@ -22,7 +22,7 @@ init();
 
 function init() {
   // renderer
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
@@ -70,6 +70,8 @@ function init() {
 
   new CubeTextureLoader().load(urls, async function (cubeTexture) {
     scene.background = cubeTexture;
+
+    await renderer.init();
 
     cubeCamera.update(renderer, scene);
 
