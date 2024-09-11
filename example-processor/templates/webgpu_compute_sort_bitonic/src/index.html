@@ -10,14 +10,21 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      <br />This example demonstrates fetching an external element from a
-      StorageBuffer. <br />The left canvas uses the WebGPU Backend, while the
-      right uses the WebGL Backend.
+      <br />
+      This example demonstrates a bitonic sort running step by step in a compute
+      shader. <br />
+      The left canvas swaps values within workgroup local arrays. The right
+      swaps values within storage buffers. <br />
+      Reference implementation by
+      <a href="https://poniesandlight.co.uk/reflect/bitonic_merge_sort/"
+        >Tim Gfrerer</a
+      >
+      <br />
       <div
-        id="timestamps"
+        id="local_swap"
         style="
           position: absolute;
-          top: 60px;
+          top: 150px;
           left: 0;
           padding: 10px;
           background: rgba(0, 0, 0, 0.5);
@@ -30,10 +37,10 @@
         "
       ></div>
       <div
-        id="timestamps_webgl"
+        id="global_swap"
         style="
           position: absolute;
-          top: 60px;
+          top: 150px;
           right: 0;
           padding: 10px;
           background: rgba(0, 0, 0, 0.5);

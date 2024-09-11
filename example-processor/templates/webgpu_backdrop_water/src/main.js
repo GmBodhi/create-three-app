@@ -255,7 +255,9 @@ function init() {
   const scenePassColor = scenePass.getTextureNode();
   const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(0.3, 0.5);
 
-  const waterMask = objectPosition(camera).y.greaterThan(0);
+  const waterMask = objectPosition(camera).y.greaterThan(
+    screenUV.y.sub(0.5).mul(camera.near)
+  );
 
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = waterMask.select(

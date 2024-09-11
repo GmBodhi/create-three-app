@@ -519,16 +519,6 @@
         "/src/shaders"
       ]
     },
-    "webgl_buffergeometry_compression": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_buffergeometry_custom_attributes_particles": {
       "files": {
         "index.html": "src",
@@ -3660,6 +3650,16 @@
       ]
     },
     "webgpu_compute_points": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_compute_sort_bitonic": {
       "files": {
         "index.html": "src",
         "main.js": "src",
