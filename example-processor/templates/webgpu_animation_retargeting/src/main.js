@@ -19,7 +19,26 @@ import {
   MathUtils,
   Euler,
 } from "three";
-import { color, screenUV, hue, timerLocal, reflector } from "three/tsl";
+import {
+  color,
+  screenUV,
+  hue,
+  timerLocal,
+  reflector,
+  Fn,
+  vec2,
+  length,
+  atan2,
+  float,
+  sin,
+  cos,
+  vec3,
+  sub,
+  mul,
+  pow,
+  dodge,
+  normalWorld,
+} from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -56,14 +75,73 @@ const clock = new Clock();
 const stats = new Stats();
 document.body.appendChild(stats.dom);
 
+export const lightSpeed = /*#__PURE__*/ Fn(([suv_immutable]) => {
+  // forked from https://www.shadertoy.com/view/7ly3D1
+
+  const time = timerLocal(1);
+  const suv = vec2(suv_immutable);
+  const uv = vec2(length(suv), atan2(suv.y, suv.x));
+  const offset = float(
+    float(0.1)
+      .mul(sin(uv.y.mul(10).sub(time.mul(0.6))))
+      .mul(cos(uv.y.mul(48).add(time.mul(0.3))))
+      .mul(cos(uv.y.mul(3.7).add(time)))
+  );
+  const rays = vec3(
+    vec3(sin(uv.y.mul(150).add(time)).mul(0.5).add(0.5))
+      .mul(
+        vec3(
+          sin(uv.y.mul(80).sub(time.mul(0.6)))
+            .mul(0.5)
+            .add(0.5)
+        )
+      )
+      .mul(
+        vec3(
+          sin(uv.y.mul(45).add(time.mul(0.8)))
+            .mul(0.5)
+            .add(0.5)
+        )
+      )
+      .mul(
+        vec3(
+          sub(
+            1,
+            cos(uv.y.add(mul(22, time).sub(pow(uv.x.add(offset), 0.3).mul(60))))
+          )
+        )
+      )
+      .mul(vec3(uv.x.mul(2)))
+  );
+
+  return rays;
+}).setLayout({
+  name: "lightSpeed",
+  type: "vec3",
+  inputs: [{ name: "suv", type: "vec2" }],
+});
+
 // scene
+
 const scene = new Scene();
-scene.backgroundNode = screenUV
+
+// background
+
+const coloredVignette = screenUV
   .distance(0.5)
   .mix(
     hue(color(0x0175ad), timerLocal(0.1)),
     hue(color(0x02274f), timerLocal(0.5))
   );
+const lightSpeedEffect = lightSpeed(normalWorld).clamp();
+const lightSpeedSky = normalWorld.y
+  .remapClamp(-0.1, 1)
+  .mix(0, lightSpeedEffect);
+const composedBackground = dodge(coloredVignette, lightSpeedSky);
+
+scene.backgroundNode = composedBackground;
+
+//
 
 const helpers = new Group();
 helpers.visible = false;
@@ -82,18 +160,24 @@ const camera = new PerspectiveCamera(
   0.25,
   50
 );
-camera.position.set(-2, 2, 4);
+camera.position.set(0, 1, 4);
 
 // add models to scene
 scene.add(sourceModel.scene);
 scene.add(targetModel.scene);
 
 // reposition models
-sourceModel.scene.position.x -= 1;
-targetModel.scene.position.x += 1;
+sourceModel.scene.position.x -= 0.8;
+targetModel.scene.position.x += 0.7;
+
+targetModel.scene.position.z -= 0.1;
 
 // reajust model
 targetModel.scene.scale.setScalar(0.01);
+
+// flip model
+sourceModel.scene.rotation.y = Math.PI / 2;
+targetModel.scene.rotation.y = -Math.PI / 2;
 
 // retarget
 const source = getSource(sourceModel);
