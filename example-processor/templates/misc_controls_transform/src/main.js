@@ -71,7 +71,6 @@ function init() {
 
   control = new TransformControls(currentCamera, renderer.domElement);
   control.addEventListener("change", render);
-
   control.addEventListener("dragging-changed", function (event) {
     orbit.enabled = !event.value;
   });
@@ -80,7 +79,9 @@ function init() {
   scene.add(mesh);
 
   control.attach(mesh);
-  scene.add(control);
+
+  const gizmo = control.getHelper();
+  scene.add(gizmo);
 
   window.addEventListener("resize", onWindowResize);
 
