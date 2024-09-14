@@ -215,7 +215,9 @@ async function init(forceWebGL = false) {
     init(!api.webgpu);
   });
 
-  gui.add(api, "dynamic");
+  gui.add(api, "dynamic").onChange(() => {
+    group.static = !group.static;
+  });
 
   // listeners
 
