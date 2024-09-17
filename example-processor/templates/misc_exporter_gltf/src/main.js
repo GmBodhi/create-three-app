@@ -364,14 +364,20 @@ function init() {
   // ---------------------------------------------------------------------
   // Ortho camera
   // ---------------------------------------------------------------------
+
+  const height = 1000; // frustum height
+  const aspect = window.innerWidth / window.innerHeight;
+
   const cameraOrtho = new OrthographicCamera(
-    window.innerWidth / -2,
-    window.innerWidth / 2,
-    window.innerHeight / 2,
-    window.innerHeight / -2,
-    0.1,
-    10
+    -height * aspect,
+    height * aspect,
+    height,
+    -height,
+    0,
+    2000
   );
+  cameraOrtho.position.set(600, 400, 0);
+  cameraOrtho.lookAt(0, 0, 0);
   scene1.add(cameraOrtho);
   cameraOrtho.name = "OrthographicCamera";
 
