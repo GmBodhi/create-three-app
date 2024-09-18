@@ -4,6 +4,7 @@ import {
   OrthographicCamera,
   Scene,
   StorageInstancedBufferAttribute,
+  StorageBufferAttribute,
   MeshBasicNodeMaterial,
   Mesh,
   PlaneGeometry,
@@ -29,6 +30,8 @@ import {
   floor,
   instanceIndex,
   workgroupBarrier,
+  atomicAdd,
+  atomicStore,
 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -140,6 +143,15 @@ async function init(forceGlobalSwap = false) {
     highestBlockHeightBuffer.count
   ).label("HighestBlockHeight");
 
+  const counterBuffer = new StorageBufferAttribute(1, 1);
+  const counterStorage = storageObject(
+    counterBuffer,
+    "uint",
+    counterBuffer.count
+  )
+    .toAtomic()
+    .label("Counter");
+
   const array = new Uint32Array(
     Array.from({ length: size }, (_, i) => {
       return i;
@@ -209,6 +221,7 @@ async function init(forceGlobalSwap = false) {
     If(
       localStorage.element(idxAfter).lessThan(localStorage.element(idxBefore)),
       () => {
+        atomicAdd(counterStorage.element(0), 1);
         const temp = localStorage.element(idxBefore).toVar();
         localStorage.element(idxBefore).assign(localStorage.element(idxAfter));
         localStorage.element(idxAfter).assign(temp);
@@ -224,6 +237,7 @@ async function init(forceGlobalSwap = false) {
         .lessThan(currentElementsStorage.element(idxBefore)),
       () => {
         // Apply the swapped values to temporary storage.
+        atomicAdd(counterStorage.element(0), 1);
         tempStorage
           .element(idxBefore)
           .assign(currentElementsStorage.element(idxAfter));
@@ -374,6 +388,7 @@ async function init(forceGlobalSwap = false) {
       .assign(forceGlobalSwap ? StepType.FLIP_GLOBAL : StepType.FLIP_LOCAL);
     nextBlockHeightStorage.element(0).assign(2);
     highestBlockHeightStorage.element(0).assign(2);
+    atomicStore(counterStorage.element(0), 0);
   });
 
   // Initialize each value in the elements buffer.
@@ -489,6 +504,9 @@ async function init(forceGlobalSwap = false) {
     algo > StepType.DISPERSE_LOCAL
       ? (nextStepGlobal = true)
       : (nextStepGlobal = false);
+    const totalSwaps = new Uint32Array(
+      await renderer.getArrayBufferAsync(counterBuffer)
+    );
 
     renderer.render(scene, camera);
 
@@ -497,6 +515,7 @@ async function init(forceGlobalSwap = false) {
 							Compute ${forceGlobalSwap ? "Global" : "Local"}: ${
       renderer.info.compute.frameCalls
     } pass in ${renderer.info.compute.timestamp.toFixed(6)}ms<br>
+							Total Swaps: ${totalSwaps}<br>
 								<div style="display: flex; flex-direction:row; justify-content: center; align-items: center;">
 									${forceGlobalSwap ? "Global Swaps" : "Local Swaps"} Compare Region&nbsp;
 									<div style="background-color: ${
