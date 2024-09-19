@@ -30,17 +30,16 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   const loader = new TiltLoader();
   loader.load("three/examples/models/tilt/BRUSH_DOME.tilt", function (object) {
     // console.log( object.children.length );
     scene.add(object);
-    render();
   });
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render);
   controls.target.y = camera.position.y;
   controls.update();
 
@@ -52,10 +51,8 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
-function render() {
+function animate() {
   renderer.render(scene, camera);
 }
