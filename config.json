@@ -3829,6 +3829,16 @@
         "/src"
       ]
     },
+    "webgpu_lensflares": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lightprobe": {
       "files": {
         "index.html": "src",
