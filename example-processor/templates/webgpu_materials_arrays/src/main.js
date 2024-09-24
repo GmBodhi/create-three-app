@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  WebGLRenderer,
+  WebGPURenderer,
   Scene,
   Color,
   PerspectiveCamera,
@@ -33,7 +33,7 @@ function init(forceWebGL = false) {
   }
 
   // renderer
-  renderer = new WebGLRenderer({
+  renderer = new WebGPURenderer({
     forceWebGL,
     antialias: true,
   });

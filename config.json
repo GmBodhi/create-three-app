@@ -4139,6 +4139,16 @@
         "/src"
       ]
     },
+    "webgpu_modifier_curve": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_morphtargets": {
       "files": {
         "index.html": "src",
