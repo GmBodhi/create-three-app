@@ -19,6 +19,7 @@ import {
   Mesh,
   BoxGeometry,
   MeshNormalMaterial,
+  Matrix3,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -169,8 +170,10 @@ function init() {
       mouseHelper.position.copy(p);
       intersection.point.copy(p);
 
+      const normalMatrix = new Matrix3().getNormalMatrix(mesh.matrixWorld);
+
       const n = intersects[0].face.normal.clone();
-      n.transformDirection(mesh.matrixWorld);
+      n.applyNormalMatrix(normalMatrix);
       n.multiplyScalar(10);
       n.add(intersects[0].point);
 

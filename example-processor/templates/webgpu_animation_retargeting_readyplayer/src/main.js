@@ -16,7 +16,14 @@ import {
   AnimationMixer,
   Vector3,
 } from "three";
-import { screenUV, color, vec2, reflector } from "three/tsl";
+import {
+  screenUV,
+  color,
+  vec2,
+  vec4,
+  reflector,
+  positionWorld,
+} from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -122,8 +129,10 @@ const reflection = reflector();
 reflection.target.rotateX(-Math.PI / 2);
 scene.add(reflection.target);
 
+const reflectionMask = positionWorld.xz.distance(0).mul(0.1).clamp().oneMinus();
+
 const floorMaterial = new NodeMaterial();
-floorMaterial.colorNode = reflection;
+floorMaterial.colorNode = vec4(reflection.rgb, reflectionMask);
 floorMaterial.opacity = 0.2;
 floorMaterial.transparent = true;
 
