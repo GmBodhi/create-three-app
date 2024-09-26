@@ -225,7 +225,7 @@ function loadLeePerrySmith() {
     });
 
     scene.add(mesh);
-    mesh.scale.set(10, 10, 10);
+    mesh.scale.multiplyScalar(10);
   });
 }
 
@@ -249,12 +249,13 @@ function shoot() {
   m.renderOrder = decals.length; // give decals a fixed render order
 
   decals.push(m);
-  scene.add(m);
+
+  mesh.attach(m);
 }
 
 function removeDecals() {
   decals.forEach(function (d) {
-    scene.remove(d);
+    mesh.remove(d);
   });
 
   decals.length = 0;

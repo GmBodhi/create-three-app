@@ -5,6 +5,7 @@ import {
   Scene,
   Color,
   WebGPURenderer,
+  PostProcessing,
   SphereGeometry,
   DataTexture,
   RedFormat,
@@ -15,6 +16,7 @@ import {
   AmbientLight,
   PointLight,
 } from "three";
+import { toonOutlinePass } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -24,7 +26,7 @@ import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 let container, stats;
 
-let camera, scene, renderer;
+let camera, scene, renderer, postProcessing;
 let particleLight;
 
 const loader = new FontLoader();
@@ -56,6 +58,12 @@ function init(font) {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
+
+  //
+
+  postProcessing = new PostProcessing(renderer);
+
+  postProcessing.outputNode = toonOutlinePass(scene, camera);
 
   // Materials
 
@@ -167,7 +175,7 @@ function render() {
 
   stats.begin();
 
-  renderer.render(scene, camera);
+  postProcessing.render();
 
   stats.end();
 }

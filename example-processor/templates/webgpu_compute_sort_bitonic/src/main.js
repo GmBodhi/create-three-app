@@ -32,6 +32,7 @@ import {
   workgroupBarrier,
   atomicAdd,
   atomicStore,
+  workgroupId,
 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -268,8 +269,10 @@ async function init(forceGlobalSwap = false) {
 
     // Get ids of indices needed to populate workgroup local buffer.
     // Use .toVar() to prevent these values from being recalculated multiple times.
-    const workgroupId = instanceIndex.div(WORKGROUP_SIZE[0]).toVar();
-    const localOffset = uint(WORKGROUP_SIZE[0]).mul(2).mul(workgroupId).toVar();
+    const localOffset = uint(WORKGROUP_SIZE[0])
+      .mul(2)
+      .mul(workgroupId.x)
+      .toVar();
 
     const localID1 = invocationLocalIndex.mul(2);
     const localID2 = invocationLocalIndex.mul(2).add(1);

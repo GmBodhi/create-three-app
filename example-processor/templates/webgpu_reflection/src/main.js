@@ -138,6 +138,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();

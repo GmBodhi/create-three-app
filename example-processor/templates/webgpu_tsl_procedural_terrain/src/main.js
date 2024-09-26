@@ -275,6 +275,7 @@ function init() {
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
