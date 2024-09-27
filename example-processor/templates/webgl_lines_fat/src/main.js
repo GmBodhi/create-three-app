@@ -15,8 +15,7 @@ import {
   LineDashedMaterial,
 } from "three";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GPUStatsPanel } from "three/addons/utils/GPUStatsPanel.js";
+import Stats from "stats-gl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -28,7 +27,7 @@ import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 let line, renderer, scene, camera, camera2, controls;
 let line1;
 let matLine, matLineBasic, matLineDashed;
-let stats, gpuPanel;
+let stats;
 let gui;
 
 // viewport
@@ -141,12 +140,9 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
 
-  stats = new Stats();
+  stats = new Stats({ horizontal: false });
+  stats.init(renderer);
   document.body.appendChild(stats.dom);
-
-  gpuPanel = new GPUStatsPanel(renderer.getContext());
-  stats.addPanel(gpuPanel);
-  stats.showPanel(0);
 
   initGui();
 }
@@ -173,9 +169,7 @@ function animate() {
 
   controls.update();
 
-  gpuPanel.startQuery();
   renderer.render(scene, camera);
-  gpuPanel.endQuery();
 
   // inset scene
 

@@ -17,7 +17,10 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 import { LightProbeGenerator } from "three/addons/lights/LightProbeGenerator.js";
+
+import { LightProbeHelper } from "three/addons/helpers/LightProbeHelperGPU.js";
 
 let mesh, renderer, scene, camera;
 
@@ -94,6 +97,8 @@ function init() {
     scene.background = cubeTexture;
 
     lightProbe.copy(LightProbeGenerator.fromCubeTexture(cubeTexture));
+    lightProbe.intensity = API.lightProbeIntensity;
+    lightProbe.position.set(-10, 0, 0); // position not used in scene lighting calculations (helper honors the position, however)
 
     const geometry = new SphereGeometry(5, 64, 32);
     //const geometry = new TorusKnotGeometry( 4, 1.5, 256, 32, 2, 3 );
@@ -109,6 +114,10 @@ function init() {
     // mesh
     mesh = new Mesh(geometry, material);
     scene.add(mesh);
+
+    // helper
+    const helper = new LightProbeHelper(lightProbe, 1);
+    scene.add(helper);
   });
 
   // gui

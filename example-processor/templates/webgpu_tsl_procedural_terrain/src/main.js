@@ -24,7 +24,7 @@ import {
   cross,
   dot,
   float,
-  modelNormalMatrix,
+  transformNormalToView,
   positionLocal,
   sign,
   step,
@@ -177,7 +177,7 @@ function init() {
     return position;
   })();
 
-  material.normalNode = modelNormalMatrix.mul(vNormal);
+  material.normalNode = transformNormalToView(vNormal);
 
   material.colorNode = Fn(() => {
     const finalColor = colorSand.toVar();
@@ -275,6 +275,7 @@ function init() {
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

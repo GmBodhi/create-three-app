@@ -167,7 +167,7 @@ function animate() {
     if (intersects.length) {
       const target = intersects[0].object;
       control.attach(target);
-      scene.add(control);
+      scene.add(control.getHelper());
     }
   }
 

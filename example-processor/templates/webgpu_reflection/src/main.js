@@ -24,7 +24,7 @@ import {
   normalWorld,
   texture,
   uv,
-  viewportUV,
+  screenUV,
   gaussianBlur,
 } from "three/tsl";
 
@@ -138,6 +138,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -161,7 +162,7 @@ function init() {
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = scenePassDepth;
 
-  const vignet = viewportUV.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignet = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = scenePassColorBlurred.mul(vignet);

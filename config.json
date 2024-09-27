@@ -519,16 +519,6 @@
         "/src/shaders"
       ]
     },
-    "webgl_buffergeometry_compression": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_buffergeometry_custom_attributes_particles": {
       "files": {
         "index.html": "src",
@@ -1046,16 +1036,6 @@
       ]
     },
     "webgl_geometry_nurbs": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_geometry_sdf": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -2020,16 +2000,6 @@
       ]
     },
     "webgl_loader_texture_ultrahdr": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_loader_tilt": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3539,6 +3509,26 @@
         "/src"
       ]
     },
+    "webgpu_animation_retargeting": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_animation_retargeting_readyplayer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_backdrop": {
       "files": {
         "index.html": "src",
@@ -3669,6 +3659,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_sort_bitonic": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_texture": {
       "files": {
         "index.html": "src",
@@ -3680,6 +3680,16 @@
       ]
     },
     "webgpu_compute_texture_pingpong": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_compute_water": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3809,7 +3819,27 @@
         "/src"
       ]
     },
+    "webgpu_lensflares": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lightprobe": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lightprobe_cubecamera": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3969,6 +3999,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_arrays": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_basic": {
       "files": {
         "index.html": "src",
@@ -4080,6 +4120,16 @@
       ]
     },
     "webgpu_mirror": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_modifier_curve": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4512,6 +4562,16 @@
         "/src"
       ]
     },
+    "webgpu_shadowmap_vsm": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_skinning": {
       "files": {
         "index.html": "src",
@@ -4613,6 +4673,16 @@
       ]
     },
     "webgpu_textures_partialupdate": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tonemapping": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4733,6 +4803,16 @@
       ]
     },
     "webgpu_tsl_vfx_flames": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_vfx_linkedparticles": {
       "files": {
         "index.html": "src",
         "main.js": "src",

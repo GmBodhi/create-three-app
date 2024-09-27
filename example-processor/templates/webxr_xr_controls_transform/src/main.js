@@ -174,7 +174,7 @@ function init() {
 
   controls = new TransformControls(camera, renderer.domElement);
   controls.attach(group.children[0]);
-  scene.add(controls);
+  scene.add(controls.getHelper());
 
   //
 

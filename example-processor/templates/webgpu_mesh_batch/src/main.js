@@ -57,6 +57,11 @@ const api = {
   perObjectFrustumCulled: true,
   opacity: 1,
   useCustomSort: true,
+  randomizeGeometry: () => {
+    for (let i = 0; i < api.count; i++) {
+      mesh.setGeometryIdAt(i, Math.floor(Math.random() * geometries.length));
+    }
+  },
 };
 
 init();
@@ -228,6 +233,7 @@ function init(forceWebGL = false) {
   gui.add(api, "sortObjects");
   gui.add(api, "perObjectFrustumCulled");
   gui.add(api, "useCustomSort");
+  gui.add(api, "randomizeGeometry");
 
   // listeners
 

@@ -34,7 +34,7 @@ import {
   vec4,
   oscSine,
   triplanarTexture,
-  viewportUV,
+  screenUV,
   js,
   string,
   global,
@@ -237,7 +237,7 @@ function init() {
 
   // Screen Projection Texture
   material = new MeshBasicNodeMaterial();
-  material.colorNode = texture(uvTexture, viewportUV.flipY());
+  material.colorNode = texture(uvTexture, screenUV.flipY());
   materials.push(material);
 
   // Loop
@@ -424,9 +424,23 @@ function addMesh(geometry, material) {
   scene.add(mesh);
 }
 
+function moduleToLib(module) {
+  const lib = {};
+
+  for (const nodeElement of Object.values(module)) {
+    if (typeof nodeElement === "function" && nodeElement.type !== undefined) {
+      lib[nodeElement.type] = nodeElement;
+    }
+  }
+
+  return lib;
+}
+
 function testSerialization(mesh) {
   const json = mesh.toJSON();
-  const loader = new NodeObjectLoader();
+  const loader = new NodeObjectLoader()
+    .setNodes(moduleToLib(TSL))
+    .setNodeMaterials(moduleToLib(THREE));
   const serializedMesh = loader.parse(json);
 
   serializedMesh.position.x = (objects.length % 4) * 200 - 400;

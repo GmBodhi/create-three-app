@@ -68,14 +68,17 @@ function init() {
 
   const urls = genCubeUrls("textures/cube/pisa/", ".png");
 
-  new CubeTextureLoader().load(urls, function (cubeTexture) {
+  new CubeTextureLoader().load(urls, async function (cubeTexture) {
     scene.background = cubeTexture;
 
     cubeCamera.update(renderer, scene);
 
-    lightProbe.copy(
-      LightProbeGenerator.fromCubeRenderTarget(renderer, cubeRenderTarget)
+    const probe = await LightProbeGenerator.fromCubeRenderTarget(
+      renderer,
+      cubeRenderTarget
     );
+
+    lightProbe.copy(probe);
 
     scene.add(new LightProbeHelper(lightProbe, 5));
 

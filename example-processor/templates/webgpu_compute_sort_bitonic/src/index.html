@@ -1,0 +1,67 @@
+<html>
+  <head>
+    <title>three.js webgpu - storage pbo external element</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      <br />
+      This example demonstrates a bitonic sort running step by step in a compute
+      shader. <br />
+      The left canvas swaps values within workgroup local arrays. The right
+      swaps values within storage buffers. <br />
+      Reference implementation by
+      <a href="https://poniesandlight.co.uk/reflect/bitonic_merge_sort/"
+        >Tim Gfrerer</a
+      >
+      <br />
+      <div
+        id="local_swap"
+        style="
+          position: absolute;
+          top: 150px;
+          left: 0;
+          padding: 10px;
+          background: rgba(0, 0, 0, 0.5);
+          color: #fff;
+          font-family: monospace;
+          font-size: 12px;
+          line-height: 1.5;
+          pointer-events: none;
+          text-align: left;
+        "
+      ></div>
+      <div
+        id="global_swap"
+        style="
+          position: absolute;
+          top: 150px;
+          right: 0;
+          padding: 10px;
+          background: rgba(0, 0, 0, 0.5);
+          color: #fff;
+          font-family: monospace;
+          font-size: 12px;
+          line-height: 1.5;
+          pointer-events: none;
+          text-align: left;
+        "
+      ></div>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.webgpu.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

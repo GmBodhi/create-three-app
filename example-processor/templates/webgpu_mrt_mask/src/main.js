@@ -17,7 +17,7 @@ import {
 } from "three";
 import {
   color,
-  viewportUV,
+  screenUV,
   mrt,
   output,
   gaussianBlur,
@@ -47,7 +47,7 @@ function init() {
   camera.position.set(1, 2, 3);
 
   scene = new Scene();
-  scene.backgroundNode = viewportUV.y
+  scene.backgroundNode = screenUV.y
     .mix(color(0x66bbff), color(0x4466ff))
     .mul(0.05);
   camera.lookAt(0, 1, 0);

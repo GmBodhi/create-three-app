@@ -23,8 +23,8 @@ import {
   uniform,
   vec4,
   rotate,
-  viewportCoordinate,
-  viewportResolution,
+  screenCoordinate,
+  screenSize,
 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -142,7 +142,7 @@ function init() {
     ([count, color, direction, start, end, radius, mixLow, mixHigh]) => {
       // grid pattern
 
-      let gridUv = viewportCoordinate.xy.div(viewportResolution.yy).mul(count);
+      let gridUv = screenCoordinate.xy.div(screenSize.yy).mul(count);
       gridUv = rotate(gridUv, Math.PI * 0.25).mod(1);
 
       // orientation strength

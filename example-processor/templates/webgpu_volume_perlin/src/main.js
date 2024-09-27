@@ -89,7 +89,7 @@ function init() {
 
   material.testNode = Fn(({ map, mapValue, probe, finalColor }) => {
     If(mapValue.greaterThan(threshold), () => {
-      const p = vec3().temp().assign(probe).addAssign(0.5);
+      const p = vec3(probe).add(0.5);
 
       finalColor.rgb.assign(
         map.normal(p).mul(0.5).add(probe.mul(1.5).add(0.25))

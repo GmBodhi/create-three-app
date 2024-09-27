@@ -146,7 +146,7 @@ function init() {
     attractor.controls.attach(attractor.reference);
     attractor.controls.visible = true;
     attractor.controls.enabled = attractor.controls.visible;
-    scene.add(attractor.controls);
+    scene.add(attractor.controls.getHelper());
 
     attractor.controls.addEventListener("dragging-changed", (event) => {
       controls.enabled = !event.value;

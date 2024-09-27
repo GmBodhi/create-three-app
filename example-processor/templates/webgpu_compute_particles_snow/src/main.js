@@ -32,7 +32,7 @@ import {
   pass,
   color,
   uint,
-  viewportUV,
+  screenUV,
   positionWorld,
   positionLocal,
   timerLocal,
@@ -290,7 +290,7 @@ async function init() {
 
   //
 
-  scene.backgroundNode = viewportUV
+  scene.backgroundNode = screenUV
     .distance(0.5)
     .mul(2)
     .mix(color(0x0f4140), color(0x060a0d));
@@ -326,7 +326,7 @@ async function init() {
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
-  const vignet = viewportUV.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignet = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   const teapotTreePass = pass(teapotTree, camera).getTextureNode();
   const teapotTreePassBlurred = gaussianBlur(teapotTreePass, vec2(1), 3);

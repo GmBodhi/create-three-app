@@ -23,7 +23,7 @@ import {
   timerLocal,
   uniform,
   Fn,
-  modelNormalMatrix,
+  transformNormalToView,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -122,7 +122,7 @@ function init() {
   const toB = positionB.sub(position).normalize();
   const normal = toA.cross(toB);
 
-  material.normalNode = modelNormalMatrix.mul(normal);
+  material.normalNode = transformNormalToView(normal);
 
   // emissive
 

@@ -3,22 +3,30 @@ import "./style.css"; // For webpack support
 import {
   BufferGeometry,
   BufferAttribute,
-  Color,
   PerspectiveCamera,
   Scene,
   Fog,
+  Vector2,
+  Raycaster,
+  IcosahedronGeometry,
+  MeshBasicNodeMaterial,
+  BackSide,
+  Mesh,
   WebGPURenderer,
+  NeutralToneMapping,
   StorageBufferAttribute,
   Vector3,
   NodeMaterial,
   DoubleSide,
-  Mesh,
 } from "three";
 import {
   uniform,
-  varyingProperty,
+  varying,
   vec4,
+  add,
+  sub,
   max,
+  dot,
   sin,
   mat3,
   uint,
@@ -43,28 +51,25 @@ import {
   length,
 } from "three/tsl";
 
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let container, stats;
 let camera, scene, renderer;
-let mouseX = 0,
-  mouseY = 0;
-
-let windowHalfX = window.innerWidth / 2,
-  windowHalfY = window.innerHeight / 2;
 
 let last = performance.now();
 
+let pointer, raycaster;
 let computeVelocity, computePosition, effectController;
 
-const BIRDS = 1024;
+const BIRDS = 16384;
 const SPEED_LIMIT = 9.0;
 const BOUNDS = 800,
   BOUNDS_HALF = BOUNDS / 2;
-const UPPER_BOUNDS = BOUNDS;
 
-// Custom Geometry - using 3 triangles each. No UVs, no normals currently.
+// Custom Geometry - using 3 triangles each. No normals currently.
 class BirdGeometry extends BufferGeometry {
   constructor() {
     super();
@@ -74,12 +79,10 @@ class BirdGeometry extends BufferGeometry {
     const points = triangles * 3;
 
     const vertices = new BufferAttribute(new Float32Array(points * 3), 3);
-    const birdColors = new BufferAttribute(new Float32Array(points * 3), 3);
     const references = new BufferAttribute(new Uint32Array(points), 1);
     const birdVertex = new BufferAttribute(new Uint32Array(points), 1);
 
     this.setAttribute("position", vertices);
-    this.setAttribute("birdColor", birdColors);
     this.setAttribute("reference", references);
     this.setAttribute("birdVertex", birdVertex);
 
@@ -95,23 +98,17 @@ class BirdGeometry extends BufferGeometry {
 
     for (let f = 0; f < BIRDS; f++) {
       // Body
-      verts_push(0, -0, -20, 0, 4, -20, 0, 0, 30);
+      verts_push(0, 0, -20, 0, -8, 10, 0, 0, 30);
 
       // Wings
-      verts_push(0, 0, -15, -wingsSpan, 0, 0, 0, 0, 15);
+      verts_push(0, 0, -15, -wingsSpan, 0, 5, 0, 0, 15);
 
-      verts_push(0, 0, 15, wingsSpan, 0, 0, 0, 0, -15);
+      verts_push(0, 0, 15, wingsSpan, 0, 5, 0, 0, -15);
     }
 
     for (let v = 0; v < triangles * 3; v++) {
       const triangleIndex = ~~(v / 3);
       const birdIndex = ~~(triangleIndex / trianglesPerBird);
-
-      const c = new Color(0x666666 + (~~(v / 9) / BIRDS) * 0x666666);
-
-      birdColors.array[v * 3 + 0] = c.r;
-      birdColors.array[v * 3 + 1] = c.g;
-      birdColors.array[v * 3 + 2] = c.b;
 
       references.array[v] = birdIndex;
 
@@ -127,22 +124,53 @@ function init() {
   document.body.appendChild(container);
 
   camera = new PerspectiveCamera(
-    75,
+    50,
     window.innerWidth / window.innerHeight,
     1,
-    3000
+    5000
   );
-  camera.position.z = 350;
+  camera.position.z = 1000;
 
   scene = new Scene();
-  scene.background = new Color(0xffffff);
-  scene.fog = new Fog(0xffffff, 100, 1000);
+  scene.fog = new Fog(0xffffff, 700, 3000);
 
-  renderer = new WebGPURenderer();
+  // Pointer
+
+  pointer = new Vector2();
+  raycaster = new Raycaster();
+
+  // Sky
+
+  const geometry = new IcosahedronGeometry(1, 6);
+  const material = new MeshBasicNodeMaterial({
+    // Use vertex positions to create atmosphere colors
+    colorNode: varying(
+      vec4(
+        sub(0.25, positionLocal.y),
+        sub(-0.25, positionLocal.y),
+        add(1.5, positionLocal.y),
+        1.0
+      )
+    ),
+    side: BackSide,
+  });
+
+  const mesh = new Mesh(geometry, material);
+  mesh.rotation.z = 0.75;
+  mesh.scale.setScalar(1200);
+  scene.add(mesh);
+
+  //
+
+  renderer = new WebGPURenderer({ antialiasing: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.toneMapping = NeutralToneMapping;
   container.appendChild(renderer.domElement);
+
+  const controls = new OrbitControls(camera, renderer.domElement);
+  controls.connect(/* renderer.domElement */);
 
   // Initialize position, velocity, and phase values
 
@@ -218,13 +246,14 @@ function init() {
   // Define Uniforms. Uniforms only need to be defined once rather than per shader.
 
   effectController = {
-    separation: uniform(20.0).label("separation"),
+    separation: uniform(15.0).label("separation"),
     alignment: uniform(20.0).label("alignment"),
     cohesion: uniform(20.0).label("cohesion"),
     freedom: uniform(0.75).label("freedom"),
     now: uniform(0.0),
     deltaTime: uniform(0.0).label("deltaTime"),
-    predator: uniform(new Vector3()).label("predator"),
+    rayOrigin: uniform(new Vector3()).label("rayOrigin"),
+    rayDirection: uniform(new Vector3()).label("rayDirection"),
   };
 
   // Create geometry
@@ -232,16 +261,11 @@ function init() {
   const birdGeometry = new BirdGeometry();
   const birdMaterial = new NodeMaterial();
 
-  // Declare varyings
-
-  const vColor = varyingProperty("vec4", "vColor");
-
   // Animate bird mesh within vertex shader, then apply position offset to vertices.
 
   const birdVertexTSL = Fn(() => {
     const reference = attribute("reference");
     const birdVertex = attribute("birdVertex");
-    const birdColor = attribute("birdColor");
 
     const position = positionLocal.toVar();
     const newPhase = phaseRead.element(reference).toVar();
@@ -273,13 +297,10 @@ function init() {
     const finalVert = maty.mul(matz).mul(newPosition);
     finalVert.addAssign(positionRead.element(reference));
 
-    vColor.assign(vec4(birdColor, 1.0));
-
     return cameraProjectionMatrix.mul(cameraViewMatrix).mul(finalVert);
   });
 
   birdMaterial.vertexNode = birdVertexTSL();
-  birdMaterial.colorNode = vColor;
   birdMaterial.side = DoubleSide;
   const birdMesh = new Mesh(birdGeometry, birdMaterial);
   birdMesh.rotation.y = Math.PI / 2;
@@ -296,8 +317,14 @@ function init() {
     const limit = property("float", "limit").assign(SPEED_LIMIT);
 
     // Destructure uniforms
-    const { alignment, separation, cohesion, predator, deltaTime } =
-      effectController;
+    const {
+      alignment,
+      separation,
+      cohesion,
+      deltaTime,
+      rayOrigin,
+      rayDirection,
+    } = effectController;
 
     const zoneRadius = separation.add(alignment).add(cohesion);
     const separationThresh = separation.div(zoneRadius);
@@ -307,24 +334,31 @@ function init() {
     const position = positionStorage.element(instanceIndex);
     const velocity = velocityStorage.element(instanceIndex);
 
-    // Add influence of mouse position to velocity.
-    const dirToPredator = predator.mul(UPPER_BOUNDS).sub(position);
-    dirToPredator.z.assign(0.0);
-    const distToPredator = length(dirToPredator);
-    const distToPreadatorSq = distToPredator.mul(distToPredator);
+    // Add influence of pointer position to velocity.
+    const directionToRay = rayOrigin.sub(position);
+    const projectionLength = dot(directionToRay, rayDirection);
 
-    const preyRadius = float(150.0);
-    const preyRadiusSq = preyRadius.mul(preyRadius);
+    const closestPoint = rayOrigin.sub(rayDirection.mul(projectionLength));
 
-    // Move birds away from predator if they are within the predator's area.
-    If(distToPredator.lessThan(preyRadius), () => {
+    const directionToClosestPoint = closestPoint.sub(position);
+    const distanceToClosestPoint = length(directionToClosestPoint);
+    const distanceToClosestPointSq = distanceToClosestPoint.mul(
+      distanceToClosestPoint
+    );
+
+    const rayRadius = float(150.0);
+    const rayRadiusSq = rayRadius.mul(rayRadius);
+
+    If(distanceToClosestPointSq.lessThan(rayRadiusSq), () => {
       // Scale bird velocity inversely with distance from prey radius center.
-      const velocityAdjust = distToPreadatorSq
-        .div(preyRadiusSq)
+      const velocityAdjust = distanceToClosestPointSq
+        .div(rayRadiusSq)
         .sub(1.0)
         .mul(deltaTime)
         .mul(100.0);
-      velocity.addAssign(normalize(dirToPredator).mul(velocityAdjust));
+      velocity.addAssign(
+        normalize(directionToClosestPoint).mul(velocityAdjust)
+      );
       limit.addAssign(5.0);
     });
 
@@ -441,9 +475,6 @@ function init() {
 }
 
 function onWindowResize() {
-  windowHalfX = window.innerWidth / 2;
-  windowHalfY = window.innerHeight / 2;
-
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
@@ -453,8 +484,8 @@ function onWindowResize() {
 function onPointerMove(event) {
   if (event.isPrimary === false) return;
 
-  mouseX = event.clientX - windowHalfX;
-  mouseY = event.clientY - windowHalfY;
+  pointer.x = (event.clientX / window.innerWidth) * 2.0 - 1.0;
+  pointer.y = 1.0 - (event.clientY / window.innerHeight) * 2.0;
 }
 
 function animate() {
@@ -469,20 +500,19 @@ function render() {
   if (deltaTime > 1) deltaTime = 1; // safety cap on large deltas
   last = now;
 
+  raycaster.setFromCamera(pointer, camera);
+
   effectController.now.value = now;
   effectController.deltaTime.value = deltaTime;
-  effectController.predator.value.set(
-    (0.5 * mouseX) / windowHalfX,
-    (-0.5 * mouseY) / windowHalfY,
-    0
-  );
-
-  mouseX = 10000;
-  mouseY = 10000;
+  effectController.rayOrigin.value.copy(raycaster.ray.origin);
+  effectController.rayDirection.value.copy(raycaster.ray.direction);
 
   renderer.compute(computeVelocity);
   renderer.compute(computePosition);
   renderer.render(scene, camera);
+
+  // Move pointer away so we only affect birds when moving the mouse
+  pointer.y = 10;
 }
 
 init();

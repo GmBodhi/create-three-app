@@ -58,7 +58,7 @@ function init() {
     //
 
     const gui = new GUI();
-    gui.add(mesh, "count", 0, count);
+    gui.add(mesh, "count", 1, count);
   });
 
   //

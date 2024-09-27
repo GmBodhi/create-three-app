@@ -18,7 +18,7 @@ import {
   diffuseColor,
   emissive,
   directionToColor,
-  viewportUV,
+  screenUV,
   mix,
   mrt,
   Fn,
@@ -113,10 +113,10 @@ function init() {
     const diffuse = scenePass.getTextureNode("diffuse");
     const emissive = scenePass.getTextureNode("emissive");
 
-    const out = mix(output.renderOutput(), output, step(0.2, viewportUV.x));
-    const nor = mix(out, normal, step(0.4, viewportUV.x));
-    const emi = mix(nor, emissive, step(0.6, viewportUV.x));
-    const dif = mix(emi, diffuse, step(0.8, viewportUV.x));
+    const out = mix(output.renderOutput(), output, step(0.2, screenUV.x));
+    const nor = mix(out, normal, step(0.4, screenUV.x));
+    const emi = mix(nor, emissive, step(0.6, screenUV.x));
+    const dif = mix(emi, diffuse, step(0.8, screenUV.x));
 
     return dif;
   })();

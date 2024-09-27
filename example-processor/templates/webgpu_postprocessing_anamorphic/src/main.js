@@ -11,7 +11,7 @@ import {
 import {
   pass,
   cubeTexture,
-  viewportUV,
+  screenUV,
   grayscale,
   uniform,
   anamorphic,
@@ -52,7 +52,7 @@ async function init() {
   scene.environment = cube1Texture;
   scene.backgroundNode = grayscale(
     cubeTexture(cube1Texture).mul(
-      viewportUV.distance(0.5).oneMinus().remapClamp(0.1, 4)
+      screenUV.distance(0.5).oneMinus().remapClamp(0.1, 4)
     )
   );
 

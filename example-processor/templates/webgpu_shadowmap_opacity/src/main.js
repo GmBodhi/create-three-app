@@ -36,6 +36,7 @@ async function init() {
   renderer.setAnimationLoop(render);
   renderer.toneMapping = AgXToneMapping;
   renderer.toneMappingExposure = 1.5;
+  renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 
   scene = new Scene();

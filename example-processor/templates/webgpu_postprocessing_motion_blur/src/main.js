@@ -30,7 +30,7 @@ import {
   mix,
   velocity,
   uv,
-  viewportUV,
+  screenUV,
 } from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -169,6 +169,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -204,12 +205,7 @@ function init() {
 
   const mBlur = motionBlur(beauty, vel);
 
-  const vignet = viewportUV
-    .distance(0.5)
-    .remap(0.6, 1)
-    .mul(2)
-    .clamp()
-    .oneMinus();
+  const vignet = screenUV.distance(0.5).remap(0.6, 1).mul(2).clamp().oneMinus();
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = mix(mBlur, vel, showVelocity).mul(vignet);

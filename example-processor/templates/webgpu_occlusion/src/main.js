@@ -12,6 +12,7 @@ import {
   SphereGeometry,
   Mesh,
   MeshPhongNodeMaterial,
+  DoubleSide,
   WebGPURenderer,
 } from "three";
 import { nodeObject, uniform } from "three/tsl";
@@ -76,7 +77,7 @@ async function init() {
 
   const plane = new Mesh(
     planeGeometry,
-    new MeshPhongNodeMaterial({ color: 0x00ff00 })
+    new MeshPhongNodeMaterial({ color: 0x00ff00, side: DoubleSide })
   );
   const sphere = new Mesh(
     sphereGeometry,

@@ -19,6 +19,7 @@ import {
   float,
   Fn,
   instanceIndex,
+  workgroupBarrier,
 } from "three/tsl";
 
 const timestamps = {
@@ -68,9 +69,10 @@ async function init(forceWebGL = false) {
 
   const computeInvertOrder = Fn(() => {
     for (let i = 0; i < type.length; i++) {
-      const invertIndex = arrayBufferNodes[i].element(
-        uint(size - 1).sub(instanceIndex)
-      );
+      const invertIndex = arrayBufferNodes[i]
+        .element(uint(size - 1).sub(instanceIndex))
+        .toVar();
+      workgroupBarrier();
       arrayBufferNodes[i].element(instanceIndex).assign(invertIndex);
     }
   });

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - buffergeometry - compression</title>
+    <title>three.js webgpu - VSM Shadows example</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,14 +10,15 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - BufferGeometry Compression<br />
-      Octahedron and Quantization encoding methods from Tarek Sherif
+      - VSM Shadows example by
+      <a href="https://github.com/supereggbert">Paul Brunt</a>
     </div>
 
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
+          "three": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.webgpu.js",
           "three/addons/": "./jsm/"
         }
       }

@@ -176,7 +176,7 @@ function swapScene() {
   }
 }
 
-function exportFile() {
+async function exportFile() {
   let result, exportType, exportCompression;
 
   if (params.type == "HalfFloatType") exportType = HalfFloatType;
@@ -187,12 +187,12 @@ function exportFile() {
   else exportCompression = NO_COMPRESSION;
 
   if (params.target == "pmrem")
-    result = exporter.parse(renderer, renderTarget, {
+    result = await exporter.parse(renderer, renderTarget, {
       type: exportType,
       compression: exportCompression,
     });
   else
-    result = exporter.parse(dataTexture, {
+    result = await exporter.parse(dataTexture, {
       type: exportType,
       compression: exportCompression,
     });

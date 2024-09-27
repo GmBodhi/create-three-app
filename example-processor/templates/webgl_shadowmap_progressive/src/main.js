@@ -83,7 +83,7 @@ function init() {
     controls.enabled = !event.value;
   });
   control.attach(lightOrigin);
-  scene.add(control);
+  scene.add(control.getHelper());
 
   // create 8 directional lights to speed up the convergence
   for (let l = 0; l < lightCount; l++) {
@@ -138,7 +138,7 @@ function init() {
       controls.enabled = !event.value;
     });
     control2.attach(object);
-    scene.add(control2);
+    scene.add(control2.getHelper());
     const lightTarget = new Group();
     lightTarget.position.set(0, 20, 0);
     for (let l = 0; l < dirLights.length; l++) {

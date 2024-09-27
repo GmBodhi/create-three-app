@@ -144,7 +144,7 @@ async function init() {
   transformControls.showX = false;
   transformControls.space = "world";
   transformControls.attach(OOI.target_hand_l);
-  scene.add(transformControls);
+  scene.add(transformControls.getHelper());
 
   // disable orbitControls while using transformControls
   transformControls.addEventListener(

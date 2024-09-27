@@ -1,30 +1,24 @@
 <html>
   <head>
-    <title>three.js webgl - SDF Geometry</title>
+    <title>three.js webgpu - light probe from cubeCamera</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
   </head>
+
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      -SDF to Mesh-<br />
-      a wrapper of
-      <a href="https://www.npmjs.com/package/isosurface" target="_blank">
-        Mikola Lysenko's Isosurface</a
-      ><br />
-      Mandelbrot by
-      <a href="https://www.shadertoy.com/view/MdXSWn" target="_blank">
-        EvilRyu</a
-      ><br />
+      webgpu - light probe from cubeCamera
     </div>
 
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
+          "three": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.webgpu.js",
           "three/addons/": "./jsm/"
         }
       }

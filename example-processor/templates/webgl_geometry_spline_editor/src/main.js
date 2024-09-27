@@ -136,7 +136,7 @@ function init() {
   transformControl.addEventListener("dragging-changed", function (event) {
     controls.enabled = !event.value;
   });
-  scene.add(transformControl);
+  scene.add(transformControl.getHelper());
 
   transformControl.addEventListener("objectChange", function () {
     updateSplineOutline();
