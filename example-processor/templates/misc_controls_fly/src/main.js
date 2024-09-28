@@ -21,7 +21,8 @@ import {
   WebGPURenderer,
   PostProcessing,
 } from "three";
-import { pass, film } from "three/tsl";
+import { pass } from "three/tsl";
+import { film } from "three/addons/tsl/display/FilmNode.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { FlyControls } from "three/addons/controls/FlyControls.js";

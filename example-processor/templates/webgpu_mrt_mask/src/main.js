@@ -15,15 +15,8 @@ import {
   NeutralToneMapping,
   PostProcessing,
 } from "three";
-import {
-  color,
-  screenUV,
-  mrt,
-  output,
-  gaussianBlur,
-  pass,
-  vec4,
-} from "three/tsl";
+import { color, screenUV, mrt, output, pass, vec4 } from "three/tsl";
+import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 

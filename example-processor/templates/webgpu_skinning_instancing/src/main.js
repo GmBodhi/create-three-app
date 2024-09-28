@@ -16,15 +16,8 @@ import {
   WebGPURenderer,
   PostProcessing,
 } from "three";
-import {
-  pass,
-  mix,
-  range,
-  color,
-  oscSine,
-  timerLocal,
-  gaussianBlur,
-} from "three/tsl";
+import { pass, mix, range, color, oscSine, timerLocal } from "three/tsl";
+import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 

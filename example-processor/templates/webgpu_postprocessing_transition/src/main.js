@@ -21,7 +21,8 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import TWEEN from "three/addons/libs/tween.module.js";
-import { uniform, transition, pass } from "three/tsl";
+import { uniform, pass } from "three/tsl";
+import { transition } from "three/addons/tsl/display/TransitionNode.js";
 
 let renderer, postProcessing, transitionController, transitionPass;
 

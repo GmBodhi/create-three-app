@@ -17,9 +17,9 @@ import {
   oscSine,
   timerGlobal,
   pass,
-  dof,
   uniform,
 } from "three/tsl";
+import { dof } from "three/addons/tsl/display/DepthOfFieldNode.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 

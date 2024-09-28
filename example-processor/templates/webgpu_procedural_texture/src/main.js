@@ -8,13 +8,8 @@ import {
   PlaneGeometry,
   WebGPURenderer,
 } from "three";
-import {
-  checker,
-  uv,
-  uniform,
-  gaussianBlur,
-  convertToTexture,
-} from "three/tsl";
+import { checker, uv, uniform, convertToTexture } from "three/tsl";
+import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 

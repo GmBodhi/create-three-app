@@ -23,7 +23,6 @@ import {
 import {
   pass,
   texture,
-  motionBlur,
   uniform,
   output,
   mrt,
@@ -32,6 +31,7 @@ import {
   uv,
   screenUV,
 } from "three/tsl";
+import { motionBlur } from "three/addons/tsl/display/MotionBlur.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 

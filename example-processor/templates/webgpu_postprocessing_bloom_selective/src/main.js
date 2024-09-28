@@ -13,7 +13,8 @@ import {
   Raycaster,
   Vector2,
 } from "three";
-import { pass, mrt, output, float, bloom, uniform } from "three/tsl";
+import { pass, mrt, output, float, uniform } from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 

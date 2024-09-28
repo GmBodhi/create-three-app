@@ -14,7 +14,9 @@ import {
   PostProcessing,
 } from "three";
 
-import { stereoPass, anaglyphPass, parallaxBarrierPass } from "three/tsl";
+import { stereoPass } from "three/addons/tsl/display/StereoPassNode.js";
+import { anaglyphPass } from "three/addons/tsl/display/AnaglyphPassNode.js";
+import { parallaxBarrierPass } from "three/addons/tsl/display/ParallaxBarrierPassNode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Timer } from "three/addons/misc/Timer.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

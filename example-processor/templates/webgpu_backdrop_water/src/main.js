@@ -28,7 +28,6 @@ import {
   pass,
   linearDepth,
   normalWorld,
-  gaussianBlur,
   triplanarTexture,
   texture,
   objectPosition,
@@ -40,6 +39,7 @@ import {
   positionWorld,
   timerLocal,
 } from "three/tsl";
+import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 

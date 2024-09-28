@@ -12,7 +12,8 @@ import {
   LinearSRGBColorSpace,
   PostProcessing,
 } from "three";
-import { pass, sobel } from "three/tsl";
+import { pass } from "three/tsl";
+import { sobel } from "three/addons/tsl/display/SobelOperatorNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 

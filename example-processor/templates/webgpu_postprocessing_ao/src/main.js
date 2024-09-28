@@ -12,15 +12,9 @@ import {
   DataTexture,
   RepeatWrapping,
 } from "three";
-import {
-  pass,
-  mrt,
-  output,
-  transformedNormalView,
-  texture,
-  ao,
-  denoise,
-} from "three/tsl";
+import { pass, mrt, output, transformedNormalView, texture } from "three/tsl";
+import { ao } from "three/addons/tsl/display/GTAONode.js";
+import { denoise } from "three/addons/tsl/display/DenoiseNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
