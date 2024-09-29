@@ -246,7 +246,7 @@ function init() {
 
   const loopCount = 10;
   material.colorNode = Loop(loopCount, ({ i }) => {
-    const output = vec4().temp();
+    const output = vec4().toVar();
     const scale = oscSine().mul(0.09); // just a value to test
 
     const scaleI = scale.mul(i);

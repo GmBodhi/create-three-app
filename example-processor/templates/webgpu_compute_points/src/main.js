@@ -67,7 +67,7 @@ function init() {
     const pointer = uniform(pointerVector);
     const limit = uniform(scaleVector);
 
-    const position = particle.add(velocity).temp();
+    const position = particle.add(velocity).toVar();
 
     velocity.x = position.x
       .abs()
