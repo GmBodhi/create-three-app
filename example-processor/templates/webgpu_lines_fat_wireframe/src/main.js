@@ -4,16 +4,12 @@ import {
   WebGPURenderer,
   Scene,
   PerspectiveCamera,
-  Color,
-  Vector3,
-  CatmullRomCurve3,
-  SRGBColorSpace,
+  IcosahedronGeometry,
   Line2NodeMaterial,
-  BufferGeometry,
-  Float32BufferAttribute,
-  LineBasicNodeMaterial,
-  LineDashedNodeMaterial,
-  Line,
+  WireframeGeometry,
+  LineBasicMaterial,
+  LineDashedMaterial,
+  LineSegments,
 } from "three";
 import { color } from "three/tsl";
 
@@ -21,12 +17,11 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Line2 } from "three/addons/lines/webgpu/Line2.js";
-import { LineGeometry } from "three/addons/lines/LineGeometry.js";
-import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
+import { Wireframe } from "three/addons/lines/webgpu/Wireframe.js";
+import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
 
-let line, renderer, scene, camera, camera2, controls, backgroundNode;
-let line1;
+let wireframe, renderer, scene, camera, camera2, controls, backgroundNode;
+let wireframe1;
 let matLine, matLineBasic, matLineDashed;
 let stats;
 let gui;
@@ -40,8 +35,8 @@ init();
 function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 0.0);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000, 0.0);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
@@ -53,87 +48,45 @@ function init() {
     1,
     1000
   );
-  camera.position.set(-40, 0, 60);
+  camera.position.set(-50, 0, 50);
 
   camera2 = new PerspectiveCamera(40, 1, 1, 1000);
   camera2.position.copy(camera.position);
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
   controls.minDistance = 10;
   controls.maxDistance = 500;
 
   backgroundNode = color(0x222222);
 
-  // Position and Color Data
+  // Wireframe ( WireframeGeometry2, Line2NodeMaterial )
 
-  const positions = [];
-  const colors = [];
+  let geo = new IcosahedronGeometry(20, 1);
 
-  const points = GeometryUtils.hilbert3D(
-    new Vector3(0, 0, 0),
-    20.0,
-    1,
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7
-  );
-
-  const spline = new CatmullRomCurve3(points);
-  const divisions = Math.round(12 * points.length);
-  const point = new Vector3();
-  const lineColor = new Color();
-
-  for (let i = 0, l = divisions; i < l; i++) {
-    const t = i / l;
-
-    spline.getPoint(t, point);
-    positions.push(point.x, point.y, point.z);
-
-    lineColor.setHSL(t, 1.0, 0.5, SRGBColorSpace);
-    colors.push(lineColor.r, lineColor.g, lineColor.b);
-  }
-
-  // Line2 ( LineGeometry, LineMaterial )
-
-  const geometry = new LineGeometry();
-  geometry.setPositions(positions);
-  geometry.setColors(colors);
+  const geometry = new WireframeGeometry2(geo);
 
   matLine = new Line2NodeMaterial({
-    color: 0xffffff,
+    color: 0x4080ff,
     linewidth: 5, // in world units with size attenuation, pixels otherwise
-    vertexColors: true,
     dashed: false,
-    alphaToCoverage: true,
   });
 
-  line = new Line2(geometry, matLine);
-  line.computeLineDistances();
-  line.scale.set(1, 1, 1);
-  scene.add(line);
+  wireframe = new Wireframe(geometry, matLine);
+  wireframe.computeLineDistances();
+  wireframe.scale.set(1, 1, 1);
+  scene.add(wireframe);
 
-  const geo = new BufferGeometry();
-  geo.setAttribute("position", new Float32BufferAttribute(positions, 3));
-  geo.setAttribute("color", new Float32BufferAttribute(colors, 3));
+  // Line ( WireframeGeometry, LineBasicMaterial ) - rendered with gl.LINE
 
-  matLineBasic = new LineBasicNodeMaterial({ vertexColors: true });
-  matLineDashed = new LineDashedNodeMaterial({
-    vertexColors: true,
-    scale: 2,
-    dashSize: 1,
-    gapSize: 1,
-  });
+  geo = new WireframeGeometry(geo);
 
-  line1 = new Line(geo, matLineBasic);
-  line1.computeLineDistances();
-  line1.visible = false;
-  scene.add(line1);
+  matLineBasic = new LineBasicMaterial({ color: 0x4080ff });
+  matLineDashed = new LineDashedMaterial({ scale: 2, dashSize: 1, gapSize: 1 });
+
+  wireframe1 = new LineSegments(geo, matLineBasic);
+  wireframe1.computeLineDistances();
+  wireframe1.visible = false;
+  scene.add(wireframe1);
 
   //
 
@@ -160,15 +113,11 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   // main scene
 
   renderer.setClearColor(0x000000, 0);
 
   renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
-
-  controls.update();
 
   renderer.autoClear = true;
 
@@ -196,6 +145,8 @@ function animate() {
   renderer.render(scene, camera2);
 
   renderer.setScissorTest(false);
+
+  stats.update();
 }
 
 //
@@ -205,61 +156,44 @@ function initGui() {
 
   const param = {
     "line type": 0,
-    "world units": false,
-    width: 5,
-    alphaToCoverage: true,
+    "width (px)": 5,
     dashed: false,
-    "dash offset": 0,
     "dash scale": 1,
     "dash / gap": 1,
   };
 
   gui
-    .add(param, "line type", { LineGeometry: 0, '"line-strip"': 1 })
+    .add(param, "line type", { LineGeometry: 0, "gl.LINE": 1 })
     .onChange(function (val) {
       switch (val) {
         case 0:
-          line.visible = true;
+          wireframe.visible = true;
 
-          line1.visible = false;
+          wireframe1.visible = false;
 
           break;
 
         case 1:
-          line.visible = false;
+          wireframe.visible = false;
 
-          line1.visible = true;
+          wireframe1.visible = true;
 
           break;
       }
     });
 
-  gui.add(param, "world units").onChange(function (val) {
-    matLine.worldUnits = val;
-    matLine.needsUpdate = true;
-  });
-
-  gui.add(param, "width", 1, 10).onChange(function (val) {
+  gui.add(param, "width (px)", 1, 10).onChange(function (val) {
     matLine.linewidth = val;
-  });
-
-  gui.add(param, "alphaToCoverage").onChange(function (val) {
-    matLine.alphaToCoverage = val;
   });
 
   gui.add(param, "dashed").onChange(function (val) {
     matLine.dashed = val;
-    line1.material = val ? matLineDashed : matLineBasic;
+    wireframe1.material = val ? matLineDashed : matLineBasic;
   });
 
-  gui.add(param, "dash scale", 0.5, 2, 0.1).onChange(function (val) {
-    matLine.scale = val;
+  gui.add(param, "dash scale", 0.5, 1, 0.1).onChange(function (val) {
+    matLine.dashScale = val;
     matLineDashed.scale = val;
-  });
-
-  gui.add(param, "dash offset", 0, 5, 0.1).onChange(function (val) {
-    matLine.dashOffset = val;
-    matLineDashed.dashOffset = val;
   });
 
   gui
