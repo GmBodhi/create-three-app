@@ -141,7 +141,7 @@ function onWindowResize() {
 }
 
 async function animate() {
-  if (computeUpdate) await renderer.computeAsync(computeUpdate);
+  if (computeUpdate) renderer.compute(computeUpdate);
 
   renderer.render(scene, camera);
 }

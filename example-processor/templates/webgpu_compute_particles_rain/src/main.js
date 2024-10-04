@@ -327,7 +327,7 @@ function init() {
 
   //
 
-  renderer.compute(computeInit);
+  renderer.computeAsync(computeInit);
 
   //
 

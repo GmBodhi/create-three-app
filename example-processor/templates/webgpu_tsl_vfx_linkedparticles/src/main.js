@@ -149,7 +149,7 @@ function init() {
   );
 
   // init particles buffers
-  renderer.compute(
+  renderer.computeAsync(
     /*#__PURE__*/ Fn(() => {
       particlePositions.element(instanceIndex).xyz.assign(vec3(10000.0));
       particlePositions.element(instanceIndex).w.assign(vec3(-1.0)); // life is stored in w component; x<0 means dead

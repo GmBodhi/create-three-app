@@ -232,7 +232,7 @@ function init() {
   const initCompute = init().compute(count);
 
   const reset = () => {
-    renderer.compute(initCompute);
+    renderer.computeAsync(initCompute);
   };
 
   reset();

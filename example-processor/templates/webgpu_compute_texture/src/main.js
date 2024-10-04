@@ -91,7 +91,7 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   // compute texture
-  renderer.compute(computeNode);
+  renderer.computeAsync(computeNode);
 
   window.addEventListener("resize", onWindowResize);
 }
