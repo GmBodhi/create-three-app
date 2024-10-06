@@ -8,7 +8,7 @@ import {
   WebGPURenderer,
   LinearToneMapping,
 } from "three";
-import { mix, oscSine, timerLocal, pmremTexture, float } from "three/tsl";
+import { mix, oscSine, time, pmremTexture, float } from "three/tsl";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
 
@@ -60,7 +60,7 @@ async function init() {
   scene.environmentNode = mix(
     pmremTexture(cube2Texture),
     pmremTexture(cube1Texture),
-    oscSine(timerLocal(0.1))
+    oscSine(time.mul(0.1))
   );
 
   scene.backgroundNode = scene.environmentNode.context({

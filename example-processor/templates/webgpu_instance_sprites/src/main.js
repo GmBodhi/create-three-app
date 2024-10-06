@@ -17,7 +17,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import {
   uniform,
-  timerGlobal,
+  time,
   instanceIndex,
   instancedBufferAttribute,
 } from "three/tsl";
@@ -69,8 +69,6 @@ function init() {
 
   // material
 
-  const timer = timerGlobal();
-
   material = new SpriteNodeMaterial({
     sizeAttenuation: true,
     map,
@@ -80,7 +78,7 @@ function init() {
   });
   material.color.setHSL(1.0, 0.3, 0.7, SRGBColorSpace);
   material.positionNode = instancedBufferAttribute(positionAttribute);
-  material.rotationNode = timer.add(instanceIndex).sin();
+  material.rotationNode = time.add(instanceIndex).sin();
   material.scaleNode = uniform(15);
 
   // sprites

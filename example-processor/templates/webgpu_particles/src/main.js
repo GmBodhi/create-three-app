@@ -20,7 +20,8 @@ import {
   color,
   rotateUV,
   positionLocal,
-  timerLocal,
+  time,
+  uniform,
 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -51,9 +52,10 @@ function init() {
   const lifeRange = range(0.1, 1);
   const offsetRange = range(new Vector3(-2, 3, -2), new Vector3(2, 5, 2));
 
-  const timer = timerLocal(0.2, 1 /*100000*/); // @TODO: need to work with 64-bit precision
+  const speed = uniform(0.2);
+  const scaledTime = time.add(5).mul(speed);
 
-  const lifeTime = timer.mul(lifeRange).mod(1);
+  const lifeTime = scaledTime.mul(lifeRange).mod(1);
   const scaleRange = range(0.3, 2);
   const rotateRange = range(0.1, 4);
 
@@ -61,7 +63,7 @@ function init() {
 
   const fakeLightEffect = positionLocal.y.oneMinus().max(0.2);
 
-  const textureNode = texture(map, rotateUV(uv(), timer.mul(rotateRange)));
+  const textureNode = texture(map, rotateUV(uv(), scaledTime.mul(rotateRange)));
 
   const opacityNode = textureNode.a.mul(life.oneMinus());
 
@@ -146,7 +148,7 @@ function init() {
 
   const gui = new GUI();
 
-  gui.add(timer, "scale", 0, 1, 0.01).name("speed");
+  gui.add(speed, "value", 0, 1, 0.01).name("speed");
 }
 
 function onWindowResize() {

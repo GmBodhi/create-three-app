@@ -4479,6 +4479,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_smaa": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_sobel": {
       "files": {
         "index.html": "src",

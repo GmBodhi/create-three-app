@@ -29,9 +29,9 @@ import {
   uint,
   positionWorld,
   billboarding,
-  timerLocal,
+  time,
   hash,
-  timerDelta,
+  deltaTime,
   vec2,
   instanceIndex,
   positionGeometry,
@@ -119,8 +119,6 @@ function init() {
 
   // compute
 
-  const timer = timerLocal();
-
   const randUint = () => uint(Math.random() * 0xffffff);
 
   const computeInit = Fn(() => {
@@ -153,7 +151,7 @@ function init() {
 
     position.addAssign(velocity);
 
-    rippleTime.x = rippleTime.x.add(timerDelta().mul(4));
+    rippleTime.x = rippleTime.x.add(deltaTime.mul(4));
 
     //
 
@@ -182,8 +180,8 @@ function init() {
 
       // next drops will not fall in the same place
 
-      position.x = hash(instanceIndex.add(timer)).mul(100).add(-50);
-      position.z = hash(instanceIndex.add(timer.add(randUint())))
+      position.x = hash(instanceIndex.add(time)).mul(100).add(-50);
+      position.z = hash(instanceIndex.add(time.add(randUint())))
         .mul(100)
         .add(-50);
     });

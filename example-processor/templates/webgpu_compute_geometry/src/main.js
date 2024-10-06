@@ -1,32 +1,124 @@
 import "./style.css"; // For webpack support
 
 import {
+  StorageBufferAttribute,
   PerspectiveCamera,
   Scene,
-  Color,
-  MeshNormalMaterial,
-  StorageBufferAttribute,
+  Raycaster,
+  Vector2,
+  MeshNormalNodeMaterial,
   WebGPURenderer,
 } from "three";
 import {
-  vec3,
-  cos,
-  sin,
-  mat3,
+  vec4,
   storage,
   Fn,
+  If,
+  uniform,
   instanceIndex,
-  timerLocal,
+  objectWorldMatrix,
+  color,
+  screenUV,
+  attribute,
 } from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+import Stats from "three/addons/libs/stats.module.js";
+
 let camera, scene, renderer;
-let computeUpdate;
+let raycaster, pointer;
+let stats;
+
+const pointerPosition = uniform(vec4(0));
+const elasticity = uniform(0.4); // elasticity ( how "strong" the spring is )
+const damping = uniform(0.94); // damping factor ( energy loss )
+const brushSize = uniform(0.25);
+const brushStrength = uniform(0.22);
 
 init();
+
+const jelly = Fn(({ renderer, geometry, object }) => {
+  const count = geometry.attributes.position.count;
+
+  // replace geometry attributes for storage buffer attributes
+
+  const positionBaseAttribute = geometry.attributes.position;
+  const positionStorageBufferAttribute = new StorageBufferAttribute(count, 3);
+  const speedBufferAttribute = new StorageBufferAttribute(count, 3);
+
+  geometry.setAttribute("storagePosition", positionStorageBufferAttribute);
+
+  // attributes
+
+  const positionAttribute = storage(
+    positionBaseAttribute,
+    "vec3",
+    count
+  ).toReadOnly();
+  const positionStorageAttribute = storage(
+    positionStorageBufferAttribute,
+    "vec3",
+    count
+  );
+
+  const speedAttribute = storage(speedBufferAttribute, "vec3", count);
+
+  // vectors
+
+  const basePosition = positionAttribute.element(instanceIndex);
+  const currentPosition = positionStorageAttribute.element(instanceIndex);
+  const currentSpeed = speedAttribute.element(instanceIndex);
+
+  //
+
+  const computeInit = Fn(() => {
+    // copy position to storage
+
+    currentPosition.assign(basePosition);
+  })().compute(count);
+
+  //
+
+  const computeUpdate = Fn(() => {
+    // pinch
+
+    If(pointerPosition.w.equal(1), () => {
+      const worldPosition = objectWorldMatrix(object).mul(currentPosition);
+
+      const dist = worldPosition.distance(pointerPosition.xyz);
+      const direction = pointerPosition.xyz.sub(worldPosition).normalize();
+
+      const power = brushSize.sub(dist).max(0).mul(brushStrength);
+
+      currentPosition.addAssign(direction.mul(power));
+    });
+
+    // compute ( jelly )
+
+    const distance = basePosition.distance(currentPosition);
+    const force = elasticity
+      .mul(distance)
+      .mul(basePosition.sub(currentPosition));
+
+    currentSpeed.addAssign(force);
+    currentSpeed.mulAssign(damping);
+
+    currentPosition.addAssign(currentSpeed);
+  })().compute(count);
+
+  // initialize the storage buffer with the base position
+
+  computeUpdate.onInit(() => renderer.compute(computeInit));
+
+  //
+
+  return computeUpdate;
+});
 
 function init() {
   camera = new PerspectiveCamera(
@@ -38,83 +130,37 @@ function init() {
   camera.position.set(0, 0, 1);
 
   scene = new Scene();
-  scene.background = new Color(0x333333);
+
+  raycaster = new Raycaster();
+  pointer = new Vector2();
+
+  // background
+
+  const bgColor = screenUV.y.mix(color(0x9f87f7), color(0xf2cdcd));
+  const bgVignet = screenUV.distance(0.5).remapClamp(0.3, 0.8).oneMinus();
+  const bgIntensity = 4;
+
+  scene.backgroundNode = bgColor.mul(
+    bgVignet.mul(color(0xa78ff6).mul(bgIntensity))
+  );
+
+  // model
 
   new GLTFLoader().load(
     "models/gltf/LeePerrySmith/LeePerrySmith.glb",
     function (gltf) {
+      // create jelly effect material
+
+      const material = new MeshNormalNodeMaterial();
+      material.geometryNode = jelly();
+      material.positionNode = attribute("storagePosition");
+
+      // apply the material to the mesh
+
       const mesh = gltf.scene.children[0];
       mesh.scale.setScalar(0.1);
-      mesh.material = new MeshNormalMaterial();
+      mesh.material = material;
       scene.add(mesh);
-
-      //
-
-      const positionBaseAttribute = mesh.geometry.attributes.position;
-      const normalBaseAttribute = mesh.geometry.attributes.normal;
-
-      // replace geometry attributes for storage buffer attributes
-
-      const positionStorageBufferAttribute = new StorageBufferAttribute(
-        positionBaseAttribute.count,
-        4
-      );
-      const normalStorageBufferAttribute = new StorageBufferAttribute(
-        normalBaseAttribute.count,
-        4
-      );
-
-      mesh.geometry.setAttribute("position", positionStorageBufferAttribute);
-      mesh.geometry.setAttribute("normal", normalStorageBufferAttribute);
-
-      // compute shader
-
-      const computeFn = Fn(() => {
-        const positionAttribute = storage(
-          positionBaseAttribute,
-          "vec3",
-          positionBaseAttribute.count
-        ).toReadOnly();
-        const normalAttribute = storage(
-          normalBaseAttribute,
-          "vec3",
-          normalBaseAttribute.count
-        ).toReadOnly();
-
-        const positionStorageAttribute = storage(
-          positionStorageBufferAttribute,
-          "vec4",
-          positionStorageBufferAttribute.count
-        );
-        const normalStorageAttribute = storage(
-          normalStorageBufferAttribute,
-          "vec4",
-          normalStorageBufferAttribute.count
-        );
-
-        const time = timerLocal(1);
-        const scale = 0.3;
-
-        //
-
-        const position = vec3(positionAttribute.element(instanceIndex));
-        const normal = vec3(normalAttribute.element(instanceIndex));
-
-        const theta = sin(time.add(position.y)).mul(scale);
-
-        const c = cos(theta);
-        const s = sin(theta);
-
-        const m = mat3(c, 0, s, 0, 1, 0, s.negate(), 0, c);
-
-        const transformed = position.mul(m);
-        const transformedNormal = normal.mul(m);
-
-        positionStorageAttribute.element(instanceIndex).assign(transformed);
-        normalStorageAttribute.element(instanceIndex).assign(transformedNormal);
-      });
-
-      computeUpdate = computeFn().compute(positionBaseAttribute.count);
     }
   );
 
@@ -130,7 +176,37 @@ function init() {
   controls.minDistance = 0.7;
   controls.maxDistance = 2;
 
+  const gui = new GUI();
+  gui.add(elasticity, "value", 0, 0.5).name("elasticity");
+  gui.add(damping, "value", 0.9, 0.98).name("damping");
+  gui.add(brushSize, "value", 0.1, 0.5).name("brush size");
+  gui.add(brushStrength, "value", 0.1, 0.3).name("brush strength");
+
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
+
   window.addEventListener("resize", onWindowResize);
+  window.addEventListener("pointermove", onPointerMove);
+}
+
+function onPointerMove(event) {
+  pointer.set(
+    (event.clientX / window.innerWidth) * 2 - 1,
+    -(event.clientY / window.innerHeight) * 2 + 1
+  );
+
+  raycaster.setFromCamera(pointer, camera);
+
+  const intersects = raycaster.intersectObject(scene);
+
+  if (intersects.length > 0) {
+    const intersect = intersects[0];
+
+    pointerPosition.value.copy(intersect.point);
+    pointerPosition.value.w = 1; // enable
+  } else {
+    pointerPosition.value.w = 0; // disable
+  }
 }
 
 function onWindowResize() {
@@ -141,7 +217,7 @@ function onWindowResize() {
 }
 
 async function animate() {
-  if (computeUpdate) renderer.compute(computeUpdate);
+  stats.update();
 
   renderer.render(scene, camera);
 }

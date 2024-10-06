@@ -22,7 +22,7 @@ import {
   RGBAFormat,
 } from "three";
 import {
-  timerLocal,
+  time,
   vec2,
   uv,
   texture,
@@ -93,7 +93,7 @@ async function init() {
   const materialBox = new MeshBasicNodeMaterial();
 
   // birection speed
-  const timerScaleNode = timerLocal().mul(vec2(-0.5, 0.1));
+  const timerScaleNode = time.mul(vec2(-0.5, 0.1));
   const animateUV = uv().add(timerScaleNode);
 
   const textureNode = texture(uvTexture, animateUV);

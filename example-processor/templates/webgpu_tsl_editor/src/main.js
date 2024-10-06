@@ -79,7 +79,7 @@ function init() {
 
     const tslCode = `// Simple uv.x animation
 
-const { texture, uniform, vec2, vec4, uv, oscSine, timerLocal, grayscale } = THREE;
+const { texture, uniform, vec2, vec4, uv, oscSine, time, grayscale } = THREE;
 
 //const samplerTexture = new Texture();
 const samplerTexture = new TextureLoader().load( 'three/examples/textures/uv_grid_opengl.jpg' );
@@ -87,9 +87,9 @@ samplerTexture.wrapS = RepeatWrapping;
 //samplerTexture.wrapT = RepeatWrapping;
 //samplerTexture.colorSpace = SRGBColorSpace;
 
-const timer = timerLocal( .5 ); // .5 is speed
+const scaledTime = time.mul( .5 ); // .5 is speed
 const uv0 = uv();
-const animateUv = vec2( uv0.x.add( oscSine( timer ) ), uv0.y );
+const animateUv = vec2( uv0.x.add( oscSine( scaledTime ) ), uv0.y );
 
 // label is optional
 const myMap = texture( samplerTexture, animateUv ).rgb.label( 'myTexture' );

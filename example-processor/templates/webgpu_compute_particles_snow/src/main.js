@@ -35,14 +35,14 @@ import {
   screenUV,
   positionWorld,
   positionLocal,
-  timerLocal,
+  time,
   vec2,
   hash,
-  gaussianBlur,
   instanceIndex,
   storage,
   If,
 } from "three/tsl";
+import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
@@ -125,8 +125,6 @@ async function init() {
 
   // compute
 
-  const timer = timerLocal();
-
   const randUint = () => uint(Math.random() * 0xffffff);
 
   const computeInit = Fn(() => {
@@ -176,10 +174,10 @@ async function init() {
 
     If(position.y.greaterThan(rippleFloorArea), () => {
       position.x = particleData.x.add(
-        timer.mul(random.mul(random)).mul(speed).sin().mul(3)
+        time.mul(random.mul(random)).mul(speed).sin().mul(3)
       );
       position.z = particleData.z.add(
-        timer.mul(random).mul(speed).cos().mul(random.mul(10))
+        time.mul(random).mul(speed).cos().mul(random.mul(10))
       );
 
       position.y = position.y.add(velocity);

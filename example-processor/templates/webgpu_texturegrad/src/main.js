@@ -14,7 +14,7 @@ import {
   If,
   vec4,
   float,
-  timerLocal,
+  time,
   cos,
   pow,
   vec2,
@@ -45,14 +45,13 @@ async function init(forceWebGL = false) {
     "textures/uv_grid_opengl.jpg"
   );
 
-  const elapsedTime = timerLocal();
   material.colorNode = Fn(() => {
     const color = vec4(1).toVar();
 
     const vuv = uv().toVar();
     const blur = pow(
       float(0.0625)
-        .sub(cos(vuv.x.mul(20.0).add(elapsedTime)))
+        .sub(cos(vuv.x.mul(20.0).add(time)))
         .mul(0.0625),
       2.0
     );

@@ -11,7 +11,7 @@ import {
   Mesh,
   WebGPURenderer,
 } from "three";
-import { texture, uv, oscTriangle, timerLocal } from "three/tsl";
+import { texture, uv, time, oscTriangle } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { unzipSync } from "three/addons/libs/fflate.module.js";
@@ -52,7 +52,7 @@ function init() {
       let coord = uv();
       coord = coord.setY(coord.y.oneMinus()); // flip y
 
-      let oscLayers = oscTriangle(timerLocal(0.5)); // [ /\/ ] triangle osc animation
+      let oscLayers = oscTriangle(time.mul(0.5)); // [ /\/ ] triangle osc animation
       oscLayers = oscLayers.add(1).mul(0.5); // convert osc range of [ -1, 1 ] to [ 0, 1 ]
       oscLayers = oscLayers.mul(map.image.depth); // scale osc range to texture depth
 

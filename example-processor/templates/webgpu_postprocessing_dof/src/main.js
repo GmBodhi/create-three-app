@@ -15,7 +15,7 @@ import {
   cubeTexture,
   positionWorld,
   oscSine,
-  timerGlobal,
+  time,
   pass,
   uniform,
 } from "three/tsl";
@@ -67,9 +67,7 @@ function init() {
   const textureCube = new CubeTextureLoader().load(urls);
   const cubeTextureNode = cubeTexture(textureCube);
   const oscPos = oscSine(
-    positionWorld
-      .div(1000 /* scene distance */)
-      .add(timerGlobal(0.2 /* speed */))
+    positionWorld.div(1000 /* scene distance */).add(time.mul(0.2))
   );
 
   const geometry = new SphereGeometry(60, 20, 10);

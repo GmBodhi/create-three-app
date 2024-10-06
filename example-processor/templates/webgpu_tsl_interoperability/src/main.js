@@ -15,7 +15,7 @@ import {
   Fn,
   attribute,
   varyingProperty,
-  timerLocal,
+  time,
   uniform,
   wgslFn,
   texture,
@@ -179,7 +179,7 @@ function init() {
     cellOffset: cellOffsetUniform,
     cellSize: cellSizeUniform,
     borderMask: borderMaskUniform,
-    time: timerLocal(),
+    time: time,
     speed: wgslShaderSpeedUniform,
     pulseIntensity: pulseIntensityUniform,
     pulseWidth: pulseWidthUniform,
@@ -205,8 +205,8 @@ function init() {
 
     const maskCoord = floor(coord.add(cellOffset)).mul(cellSizeUniform);
     const samplePoint = maskCoord.div(dimensions);
-    const time = timerLocal().mul(tslShaderSpeedUniform);
-    samplePoint.x = samplePoint.x.add(fract(time.div(20)));
+    const scaledTime = time.mul(tslShaderSpeedUniform);
+    samplePoint.x = samplePoint.x.add(fract(scaledTime.div(20)));
     samplePoint.y = samplePoint.y.sub(1.5);
 
     let color = texture(planetTexture, samplePoint);

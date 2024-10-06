@@ -90,7 +90,7 @@ function init() {
   const geometry = new PlaneGeometry(2, 2);
 
   const material = new MeshBasicNodeMaterial();
-  material.colorNode = TSL.oscSine(TSL.timerLocal(0.3)).mix(
+  material.colorNode = TSL.oscSine(TSL.time.mul(0.3)).mix(
     shaderToy1Node,
     shaderToy2Node
   );

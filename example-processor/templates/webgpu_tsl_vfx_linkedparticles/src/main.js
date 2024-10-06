@@ -38,7 +38,6 @@ import {
   sin,
   vec2,
   vec3,
-  bloom,
   color,
   Fn,
   hash,
@@ -51,11 +50,12 @@ import {
   pass,
   pcurve,
   storage,
-  timerDelta,
-  timerGlobal,
+  deltaTime,
+  time,
   uv,
   uniform,
 } from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -175,7 +175,7 @@ function init() {
     const life = particlePositions.toAttribute().w;
     const modLife = pcurve(life.oneMinus(), 8.0, 1.0);
     const pulse = pcurve(
-      sin(hash(instanceIndex).mul(PI2).add(timerGlobal(0.5).mul(PI2)))
+      sin(hash(instanceIndex).mul(PI2).add(time.mul(0.5).mul(PI2)))
         .mul(0.5)
         .add(0.5),
       0.25,
@@ -255,7 +255,7 @@ function init() {
     const position = particlePositions.element(instanceIndex).xyz;
     const life = particlePositions.element(instanceIndex).w;
     const velocity = particleVelocities.element(instanceIndex).xyz;
-    const dt = timerDelta(0.1).mul(timeScale);
+    const dt = deltaTime.mul(0.1).mul(timeScale);
 
     If(life.greaterThan(0.0), () => {
       // first we update the particles positions and velocities

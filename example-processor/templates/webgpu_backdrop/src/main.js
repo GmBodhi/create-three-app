@@ -28,7 +28,7 @@ import {
   screenUV,
   checker,
   uv,
-  timerLocal,
+  time,
   oscSine,
   output,
 } from "three/tsl";
@@ -72,7 +72,7 @@ function init() {
     mixer = new AnimationMixer(object);
 
     const material = object.children[0].children[0].material;
-    material.outputNode = oscSine(timerLocal(0.1)).mix(
+    material.outputNode = oscSine(time.mul(0.1)).mix(
       output,
       posterize(output.add(0.1), 4).mul(2)
     );

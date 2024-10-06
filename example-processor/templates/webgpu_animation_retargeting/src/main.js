@@ -24,8 +24,8 @@ import {
   color,
   screenUV,
   hue,
-  timerLocal,
   reflector,
+  time,
   Fn,
   vec2,
   length,
@@ -79,7 +79,6 @@ document.body.appendChild(stats.dom);
 export const lightSpeed = /*#__PURE__*/ Fn(([suv_immutable]) => {
   // forked from https://www.shadertoy.com/view/7ly3D1
 
-  const time = timerLocal(1);
   const suv = vec2(suv_immutable);
   const uv = vec2(length(suv), atan2(suv.y, suv.x));
   const offset = float(
@@ -131,8 +130,8 @@ const scene = new Scene();
 const coloredVignette = screenUV
   .distance(0.5)
   .mix(
-    hue(color(0x0175ad), timerLocal(0.1)),
-    hue(color(0x02274f), timerLocal(0.5))
+    hue(color(0x0175ad), time.mul(0.1)),
+    hue(color(0x02274f), time.mul(0.5))
   );
 const lightSpeedEffect = lightSpeed(normalWorld).clamp();
 const lightSpeedSky = normalWorld.y
