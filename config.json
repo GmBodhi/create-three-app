@@ -4519,6 +4519,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_ssr": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_transition": {
       "files": {
         "index.html": "src",
