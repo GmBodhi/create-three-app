@@ -9,6 +9,7 @@ import {
   Mesh,
   PlaneGeometry,
   AdditiveBlending,
+  IndirectStorageBufferAttribute,
   GridHelper,
   WebGPURenderer,
 } from "three";
@@ -97,6 +98,9 @@ function init() {
 
   //
 
+  const fireGeometry = new PlaneGeometry(1, 1);
+  const fireCount = 1000;
+
   const fireNodeMaterial = new SpriteNodeMaterial();
   fireNodeMaterial.colorNode = mix(color(0xb72f17), color(0xb72f17), life);
   fireNodeMaterial.positionNode = range(
@@ -104,20 +108,32 @@ function init() {
     new Vector3(1, 2, 1)
   ).mul(lifeTime);
   fireNodeMaterial.scaleNode = smokeNodeMaterial.scaleNode;
-  fireNodeMaterial.opacityNode = opacityNode;
+  fireNodeMaterial.opacityNode = opacityNode.mul(0.5);
   fireNodeMaterial.blending = AdditiveBlending;
   fireNodeMaterial.transparent = true;
   fireNodeMaterial.depthWrite = false;
 
-  const fireInstancedSprite = new Mesh(
-    new PlaneGeometry(1, 1),
-    fireNodeMaterial
-  );
+  const fireInstancedSprite = new Mesh(fireGeometry, fireNodeMaterial);
   fireInstancedSprite.scale.setScalar(400);
-  fireInstancedSprite.count = 100;
+  fireInstancedSprite.count = fireCount;
   fireInstancedSprite.position.y = -100;
   fireInstancedSprite.renderOrder = 1;
   scene.add(fireInstancedSprite);
+
+  // indirect draw ( optional )
+  // each indirect draw call is 5 uint32 values for indexes ( different structure for non-indexed draw calls using 4 uint32 values )
+
+  const indexCount = fireGeometry.index.array.length;
+
+  const uint32 = new Uint32Array(5);
+  uint32[0] = indexCount; // indexCount
+  uint32[1] = fireCount; // instanceCount
+  uint32[2] = 0; // firstIndex
+  uint32[3] = 0; // baseVertex
+  uint32[4] = 0; // firstInstance
+
+  const indirectAttribute = new IndirectStorageBufferAttribute(uint32, 5);
+  fireGeometry.setIndirect(indirectAttribute);
 
   //
 
