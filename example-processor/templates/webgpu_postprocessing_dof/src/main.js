@@ -169,7 +169,8 @@ function onWindowResize() {
 
 function animate() {
   render();
-  //stats.update();
+
+  stats.update();
 }
 
 function render() {
