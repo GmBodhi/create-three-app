@@ -19,6 +19,7 @@ import {
   TorusGeometry,
   Color,
   PostProcessing,
+  SRGBColorSpace,
 } from "three";
 import { pass, uniform, time, oscSine } from "three/tsl";
 import { outline } from "three/addons/tsl/display/OutlineNode.js";
@@ -169,7 +170,7 @@ function init() {
   const edgeThickness = uniform(1.0);
   const pulsePeriod = uniform(0);
   const visibleEdgeColor = uniform(new Color(0xffffff));
-  const hiddenEdgeColor = uniform(new Color(0x190a05));
+  const hiddenEdgeColor = uniform(new Color(0x4e3636));
 
   outlinePass = outline(scene, camera, {
     selectedObjects,
@@ -204,8 +205,18 @@ function init() {
   gui.add(edgeGlow, "value", 0.0, 1).name("edgeGlow");
   gui.add(edgeThickness, "value", 1, 4).name("edgeThickness");
   gui.add(pulsePeriod, "value", 0.0, 5).name("pulsePeriod");
-  gui.addColor(visibleEdgeColor, "value").name("visibleEdgeColor");
-  gui.addColor(hiddenEdgeColor, "value").name("hiddenEdgeColor");
+  gui
+    .addColor({ color: visibleEdgeColor.value.getHex(SRGBColorSpace) }, "color")
+    .onChange((value) => {
+      visibleEdgeColor.value.set(value);
+    })
+    .name("visibleEdgeColor");
+  gui
+    .addColor({ color: hiddenEdgeColor.value.getHex(SRGBColorSpace) }, "color")
+    .onChange((value) => {
+      hiddenEdgeColor.value.set(value);
+    })
+    .name("hiddenEdgeColor");
 
   //
 

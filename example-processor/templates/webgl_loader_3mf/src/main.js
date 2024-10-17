@@ -22,7 +22,13 @@ const params = {
   asset: "cube_gears",
 };
 
-const assets = ["cube_gears", "facecolors", "multipletextures", "vertexcolors"];
+const assets = [
+  "cube_gears",
+  "facecolors",
+  "multipletextures",
+  "vertexcolors",
+  "volumetric",
+];
 
 init();
 

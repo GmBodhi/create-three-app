@@ -5,15 +5,14 @@ import {
   Scene,
   Color,
   WebGPURenderer,
-  LinearSRGBColorSpace,
   NodeMaterial,
   vec4,
   Mesh,
   PlaneGeometry,
-  Texture,
+  SRGBColorSpace,
   TextureLoader,
   RepeatWrapping,
-  SRGBColorSpace,
+  LinearSRGBColorSpace,
 } from "three";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -36,7 +35,6 @@ function init() {
   const rendererDOM = document.getElementById("renderer");
 
   const renderer = new WebGPURenderer({ antialias: true });
-  renderer.outputColorSpace = LinearSRGBColorSpace;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(200, 200);
   rendererDOM.appendChild(renderer.domElement);
@@ -66,7 +64,7 @@ function init() {
   require(["vs/editor/editor.main"], () => {
     const options = {
       shader: "fragment",
-      outputColorSpace: LinearSRGBColorSpace,
+      outputColorSpace: SRGBColorSpace,
       output: "WGSL",
       preview: true,
     };
@@ -81,11 +79,9 @@ function init() {
 
 const { texture, uniform, vec2, vec4, uv, oscSine, time, grayscale } = THREE;
 
-//const samplerTexture = new Texture();
 const samplerTexture = new TextureLoader().load( 'three/examples/textures/uv_grid_opengl.jpg' );
 samplerTexture.wrapS = RepeatWrapping;
-//samplerTexture.wrapT = RepeatWrapping;
-//samplerTexture.colorSpace = SRGBColorSpace;
+samplerTexture.colorSpace = SRGBColorSpace;
 
 const scaledTime = time.mul( .5 ); // .5 is speed
 const uv0 = uv();
