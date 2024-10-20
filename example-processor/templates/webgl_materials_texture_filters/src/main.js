@@ -72,6 +72,7 @@ function init() {
   const textureCanvas2 = textureCanvas.clone();
   textureCanvas2.magFilter = NearestFilter;
   textureCanvas2.minFilter = NearestFilter;
+  textureCanvas2.generateMipmaps = false;
 
   const materialCanvas = new MeshBasicMaterial({ map: textureCanvas });
   const materialCanvas2 = new MeshBasicMaterial({

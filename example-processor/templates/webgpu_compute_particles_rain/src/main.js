@@ -99,6 +99,7 @@ function init() {
   collisionPosRT.texture.type = HalfFloatType;
   collisionPosRT.texture.magFilter = NearestFilter;
   collisionPosRT.texture.minFilter = NearestFilter;
+  collisionPosRT.texture.generateMipmaps = false;
 
   collisionPosMaterial = new MeshBasicNodeMaterial();
   collisionPosMaterial.colorNode = positionWorld;

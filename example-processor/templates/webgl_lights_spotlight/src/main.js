@@ -72,6 +72,7 @@ function init() {
     const texture = loader.load(filename);
     texture.minFilter = LinearFilter;
     texture.magFilter = LinearFilter;
+    texture.generateMipmaps = false;
     texture.colorSpace = SRGBColorSpace;
 
     textures[filename] = texture;
