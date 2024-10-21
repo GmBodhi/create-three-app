@@ -155,7 +155,6 @@ function init() {
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 5;
-  renderer.lighting = lighting; // set lighting
   document.body.appendChild(renderer.domElement);
 
   // controls
