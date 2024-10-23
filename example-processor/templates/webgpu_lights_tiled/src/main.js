@@ -87,7 +87,7 @@ function init() {
   lights = new Group();
   scene.add(lights);
 
-  const addLight = (hexColor, power = 10000, distance = 3) => {
+  const addLight = (hexColor, power = 10, distance = 3) => {
     const light = new PointLight(hexColor, 1, distance);
     light.position.set(Math.random() * 300 - 150, 1, Math.random() * 300 - 150);
     light.power = power;
@@ -147,12 +147,10 @@ function init() {
   lighting = new TiledLighting(); // ( maxLights = 1024, tileSize = 32 )
 
   renderer = new WebGPURenderer({ antialias: true });
-  renderer.lighting = lighting; // set lighting system
-
-  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.lighting = lighting; // set lighting system
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 5;
   document.body.appendChild(renderer.domElement);
