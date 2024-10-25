@@ -343,7 +343,7 @@ function animate() {
     const scaleFactor = (Math.random() + 0.5) * 0.5;
     const source = generateCloudTexture(perElementPaddedSize, scaleFactor);
 
-    renderer.copyTextureToTexture3D(source, cloudTexture, box, position);
+    renderer.copyTextureToTexture(source, cloudTexture, box, position);
 
     prevTime = time;
 
