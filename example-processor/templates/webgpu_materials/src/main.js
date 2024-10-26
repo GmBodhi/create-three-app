@@ -37,9 +37,9 @@ import {
   screenUV,
   js,
   string,
-  global,
   Loop,
   cameraProjectionMatrix,
+  ScriptableNodeResources,
 } from "three/tsl";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
@@ -267,8 +267,8 @@ function init() {
 
   // Scriptable
 
-  global.set("THREE", THREE);
-  global.set("TSL", TSL);
+  ScriptableNodeResources.set("THREE", THREE);
+  ScriptableNodeResources.set("TSL", TSL);
 
   const asyncNode = scriptable(
     js(`

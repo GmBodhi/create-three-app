@@ -4652,6 +4652,16 @@
         "/src"
       ]
     },
+    "webgpu_shadowmap_progressive": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_shadowmap_vsm": {
       "files": {
         "index.html": "src",
