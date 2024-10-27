@@ -4642,6 +4642,16 @@
         "/src"
       ]
     },
+    "webgpu_shadowmap_csm": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_shadowmap_opacity": {
       "files": {
         "index.html": "src",
