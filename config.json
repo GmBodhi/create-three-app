@@ -704,16 +704,6 @@
         "/src"
       ]
     },
-    "webgl_camera_cinematic": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_camera_logarithmicdepthbuffer": {
       "files": {
         "index.html": "src",
