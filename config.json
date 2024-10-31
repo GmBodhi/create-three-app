@@ -3051,19 +3051,6 @@
         "/src"
       ]
     },
-    "webgl_raymarching_reflect": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "fragment_shader.glsl": "src/shaders",
-        "vertex_shader.glsl": "src/shaders",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
-    },
     "webgl_read_float_buffer": {
       "files": {
         "index.html": "src",
@@ -4070,6 +4057,16 @@
       ]
     },
     "webgpu_materials_envmaps": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materials_envmaps_bpcem": {
       "files": {
         "index.html": "src",
         "main.js": "src",
