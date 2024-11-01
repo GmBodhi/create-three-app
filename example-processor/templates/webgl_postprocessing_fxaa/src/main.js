@@ -3,10 +3,8 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
   HemisphereLight,
   DirectionalLight,
-  Group,
   TetrahedronGeometry,
   MeshStandardMaterial,
   Mesh,
@@ -18,8 +16,9 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let camera, scene, renderer, clock, group, container;
+let camera, scene, renderer, controls, container;
 
 let composer1, composer2, fxaaPass;
 
@@ -38,8 +37,6 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
-
   //
 
   const hemiLight = new HemisphereLight(0xffffff, 0x8d8d8d);
@@ -51,8 +48,6 @@ function init() {
   scene.add(dirLight);
 
   //
-
-  group = new Group();
 
   const geometry = new TetrahedronGeometry(10);
   const material = new MeshStandardMaterial({
@@ -73,10 +68,8 @@ function init() {
     mesh.rotation.y = Math.random() * Math.PI;
     mesh.rotation.z = Math.random() * Math.PI;
 
-    group.add(mesh);
+    scene.add(mesh);
   }
-
-  scene.add(group);
 
   //
 
@@ -85,6 +78,8 @@ function init() {
   renderer.setSize(container.offsetWidth, container.offsetHeight);
   renderer.setAnimationLoop(animate);
   renderer.autoClear = false;
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.autoRotate = true;
   container.appendChild(renderer.domElement);
 
   //
@@ -143,7 +138,7 @@ function onWindowResize() {
 function animate() {
   const halfWidth = container.offsetWidth / 2;
 
-  group.rotation.y += clock.getDelta() * 0.1;
+  controls.update();
 
   renderer.setScissorTest(true);
 

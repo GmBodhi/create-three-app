@@ -474,7 +474,7 @@ function init() {
     .name("viscosity");
   const buttonCompute = {
     smoothWater: function () {
-      renderer.compute(computeSmooth);
+      renderer.computeAsync(computeSmooth);
     },
   };
   gui.add(buttonCompute, "smoothWater");
@@ -531,10 +531,10 @@ function render() {
     effectController.mousePos.value.set(10000, 10000);
   }
 
-  renderer.compute(computeHeight);
+  renderer.computeAsync(computeHeight);
 
   if (effectController.spheresEnabled) {
-    renderer.compute(computeSphere);
+    renderer.computeAsync(computeSphere);
   }
 
   renderer.render(scene, camera);

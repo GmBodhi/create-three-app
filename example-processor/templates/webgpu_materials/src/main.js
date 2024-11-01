@@ -37,9 +37,9 @@ import {
   screenUV,
   js,
   string,
-  global,
   Loop,
   cameraProjectionMatrix,
+  ScriptableNodeResources,
 } from "three/tsl";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
@@ -246,7 +246,7 @@ function init() {
 
   const loopCount = 10;
   material.colorNode = Loop(loopCount, ({ i }) => {
-    const output = vec4().temp();
+    const output = vec4().toVar();
     const scale = oscSine().mul(0.09); // just a value to test
 
     const scaleI = scale.mul(i);
@@ -267,8 +267,8 @@ function init() {
 
   // Scriptable
 
-  global.set("THREE", THREE);
-  global.set("TSL", TSL);
+  ScriptableNodeResources.set("THREE", THREE);
+  ScriptableNodeResources.set("TSL", TSL);
 
   const asyncNode = scriptable(
     js(`

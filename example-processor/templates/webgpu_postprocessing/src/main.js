@@ -13,7 +13,9 @@ import {
   DirectionalLight,
   PostProcessing,
 } from "three";
-import { pass, dotScreen, rgbShift } from "three/tsl";
+import { pass } from "three/tsl";
+import { dotScreen } from "three/addons/tsl/display/DotScreenNode.js";
+import { rgbShift } from "three/addons/tsl/display/RGBShiftNode.js";
 
 let camera, renderer, postProcessing;
 let object;

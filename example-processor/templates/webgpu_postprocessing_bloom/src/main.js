@@ -11,7 +11,8 @@ import {
   ReinhardToneMapping,
   PostProcessing,
 } from "three";
-import { pass, bloom } from "three/tsl";
+import { pass } from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

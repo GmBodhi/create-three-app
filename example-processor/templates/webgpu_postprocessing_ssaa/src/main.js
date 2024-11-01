@@ -14,7 +14,7 @@ import {
   Color,
   PostProcessing,
 } from "three";
-import { ssaaPass } from "three/tsl";
+import { ssaaPass } from "three/addons/tsl/display/SSAAPassNode.js";
 
 import { Timer } from "three/addons/misc/Timer.js";
 import Stats from "three/addons/libs/stats.module.js";

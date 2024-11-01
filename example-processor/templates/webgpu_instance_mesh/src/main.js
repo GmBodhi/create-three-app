@@ -11,7 +11,7 @@ import {
   DynamicDrawUsage,
   WebGPURenderer,
 } from "three";
-import { mix, range, normalWorld, oscSine, timerLocal } from "three/tsl";
+import { mix, range, normalWorld, oscSine, time } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -43,7 +43,7 @@ function init() {
   // random colors between instances from 0x000000 to 0xFFFFFF
   const randomColors = range(new Color(0x000000), new Color(0xffffff));
 
-  material.colorNode = mix(normalWorld, randomColors, oscSine(timerLocal(0.1)));
+  material.colorNode = mix(normalWorld, randomColors, oscSine(time.mul(0.1)));
 
   const loader = new BufferGeometryLoader();
   loader.load("models/json/suzanne_buffergeometry.json", function (geometry) {

@@ -18,7 +18,7 @@ import {
   positionLocal,
   smoothstep,
   texture,
-  timerLocal,
+  time,
   rotateUV,
   Fn,
   uv,
@@ -78,7 +78,6 @@ function init() {
     side: DoubleSide,
     depthWrite: false,
   });
-  const time = timerLocal();
 
   // position
 

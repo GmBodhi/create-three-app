@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - camera cinematic</title>
+    <title>three.js webgpu - post processing - Outline Pass</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,13 +10,20 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      webgl - interactive cubes
+      - Outline Pass by
+      <a href="http://eduperiment.com" target="_blank" rel="noopener"
+        >Prashant Sharma</a
+      >
+      and
+      <a href="https://clara.io" target="_blank" rel="noopener">Ben Houston</a
+      ><br /><br />
     </div>
 
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
+          "three": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.webgpu.js",
           "three/addons/": "./jsm/"
         }
       }

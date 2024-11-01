@@ -19,7 +19,7 @@ import {
   pass,
   color,
   mx_worley_noise_float,
-  timerLocal,
+  time,
   screenUV,
   vec2,
   uv,
@@ -50,7 +50,7 @@ function init() {
 
   scenePortal = new Scene();
   scenePortal.backgroundNode = mx_worley_noise_float(
-    normalWorld.mul(20).add(vec2(0, timerLocal().oneMinus()))
+    normalWorld.mul(20).add(vec2(0, time.oneMinus()))
   ).mul(color(0x0066ff));
 
   //
@@ -111,7 +111,7 @@ function init() {
       return object;
     };
 
-    const colorNode = mx_fractal_noise_vec3(uv().mul(20).add(timerLocal()));
+    const colorNode = mx_fractal_noise_vec3(uv().mul(20).add(time));
 
     const modelMain = createModel();
     const modelPortal = createModel(colorNode);

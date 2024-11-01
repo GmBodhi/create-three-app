@@ -104,7 +104,6 @@ function init() {
   const geometry = new LineGeometry();
   geometry.setPositions(positions);
   geometry.setColors(colors);
-  geometry.instanceCount = positions.length / 3 - 1;
 
   matLine = new Line2NodeMaterial({
     color: 0xffffff,

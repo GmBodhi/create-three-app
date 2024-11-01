@@ -99,6 +99,9 @@ function init() {
       sphereMaterial.needsUpdate = true;
     },
     Refraction: false,
+    backgroundRotationX: false,
+    backgroundRotationY: false,
+    backgroundRotationZ: false,
   };
 
   const gui = new GUI({ width: 300 });
@@ -115,6 +118,9 @@ function init() {
 
     sphereMaterial.needsUpdate = true;
   });
+  gui.add(params, "backgroundRotationX");
+  gui.add(params, "backgroundRotationY");
+  gui.add(params, "backgroundRotationZ");
   gui.open();
 
   window.addEventListener("resize", onWindowResize);
@@ -130,6 +136,18 @@ function onWindowResize() {
 //
 
 function animate() {
+  if (params.backgroundRotationX) {
+    scene.backgroundRotation.x += 0.001;
+  }
+
+  if (params.backgroundRotationY) {
+    scene.backgroundRotation.y += 0.001;
+  }
+
+  if (params.backgroundRotationZ) {
+    scene.backgroundRotation.z += 0.001;
+  }
+
   camera.lookAt(scene.position);
   renderer.render(scene, camera);
 }

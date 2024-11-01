@@ -19,11 +19,10 @@ import {
   cos,
   float,
   min,
-  timerLocal,
+  time,
   atan2,
   uniform,
   pass,
-  bloom,
   PI,
   PI2,
   color,
@@ -37,6 +36,7 @@ import {
   vec3,
   vec4,
 } from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -126,16 +126,21 @@ function init() {
   });
 
   floorMaterial.outputNode = Fn(() => {
-    const time = timerLocal().mul(timeScale);
+    const scaledTime = time.mul(timeScale);
 
     // noise 1
-    const noise1Uv = toRadialUv(uv(), vec2(0.5, 0.5), time, time);
+    const noise1Uv = toRadialUv(uv(), vec2(0.5, 0.5), scaledTime, scaledTime);
     noise1Uv.assign(toSkewedUv(noise1Uv, vec2(-1, 0)));
     noise1Uv.mulAssign(vec2(4, 1));
     const noise1 = texture(perlinTexture, noise1Uv, 1).r.remap(0.45, 0.7);
 
     // noise 2
-    const noise2Uv = toRadialUv(uv(), vec2(2, 8), time.mul(2), time.mul(8));
+    const noise2Uv = toRadialUv(
+      uv(),
+      vec2(2, 8),
+      scaledTime.mul(2),
+      scaledTime.mul(8)
+    );
     noise2Uv.assign(toSkewedUv(noise2Uv, vec2(-0.25, 0)));
     noise2Uv.mulAssign(vec2(2, 0.25));
     const noise2 = texture(perlinTexture, noise2Uv, 1).b.remap(0.45, 0.7);
@@ -179,21 +184,21 @@ function init() {
     parabolStrength,
     parabolOffset,
     parabolAmplitude.sub(0.05),
-    timerLocal().mul(timeScale)
+    time.mul(timeScale)
   );
 
   emissiveMaterial.outputNode = Fn(() => {
-    const time = timerLocal().mul(timeScale);
+    const scaledTime = time.mul(timeScale);
 
     // noise 1
-    const noise1Uv = uv().add(vec2(time, time.negate())).toVar();
+    const noise1Uv = uv().add(vec2(scaledTime, scaledTime.negate())).toVar();
     noise1Uv.assign(toSkewedUv(noise1Uv, vec2(-1, 0)));
     noise1Uv.mulAssign(vec2(2, 0.25));
     const noise1 = texture(perlinTexture, noise1Uv, 1).r.remap(0.45, 0.7);
 
     // noise 2
     const noise2Uv = uv()
-      .add(vec2(time.mul(0.5), time.negate()))
+      .add(vec2(scaledTime.mul(0.5), scaledTime.negate()))
       .toVar();
     noise2Uv.assign(toSkewedUv(noise2Uv, vec2(-1, 0)));
     noise2Uv.mulAssign(vec2(5, 1));
@@ -234,21 +239,21 @@ function init() {
     parabolStrength,
     parabolOffset,
     parabolAmplitude,
-    timerLocal().mul(timeScale)
+    time.mul(timeScale)
   );
 
   darkMaterial.outputNode = Fn(() => {
-    const time = timerLocal().mul(timeScale).add(123.4);
+    const scaledTime = time.mul(timeScale).add(123.4);
 
     // noise 1
-    const noise1Uv = uv().add(vec2(time, time.negate())).toVar();
+    const noise1Uv = uv().add(vec2(scaledTime, scaledTime.negate())).toVar();
     noise1Uv.assign(toSkewedUv(noise1Uv, vec2(-1, 0)));
     noise1Uv.mulAssign(vec2(2, 0.25));
     const noise1 = texture(perlinTexture, noise1Uv, 1).g.remap(0.45, 0.7);
 
     // noise 2
     const noise2Uv = uv()
-      .add(vec2(time.mul(0.5), time.negate()))
+      .add(vec2(scaledTime.mul(0.5), scaledTime.negate()))
       .toVar();
     noise2Uv.assign(toSkewedUv(noise2Uv, vec2(-1, 0)));
     noise2Uv.mulAssign(vec2(5, 1));

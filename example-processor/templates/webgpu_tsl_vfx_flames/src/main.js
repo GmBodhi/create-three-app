@@ -19,7 +19,7 @@ import {
   sin,
   step,
   texture,
-  timerLocal,
+  time,
   Fn,
   uv,
   vec2,
@@ -106,8 +106,6 @@ function init() {
   });
 
   flame1Material.colorNode = Fn(() => {
-    const time = timerLocal();
-
     // main UV
     const mainUv = uv().toVar();
     mainUv.assign(spherizeUV(mainUv, 10).mul(0.6).add(0.2)); // spherize
@@ -154,8 +152,6 @@ function init() {
   });
 
   flame2Material.colorNode = Fn(() => {
-    const time = timerLocal();
-
     // main UV
     const mainUv = uv().toVar();
     mainUv.assign(spherizeUV(mainUv, 10).mul(0.6).add(0.2)); // spherize

@@ -1,9 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  DisplayP3ColorSpace,
   ColorManagement,
-  LinearDisplayP3ColorSpace,
   Scene,
   PerspectiveCamera,
   TextureLoader,
@@ -11,6 +9,13 @@ import {
   SRGBColorSpace,
   TextureUtils,
 } from "three";
+
+import {
+  DisplayP3ColorSpace,
+  DisplayP3ColorSpaceImpl,
+  LinearDisplayP3ColorSpace,
+  LinearDisplayP3ColorSpaceImpl,
+} from "three/addons/math/ColorSpaces.js";
 
 import WebGL from "three/addons/capabilities/WebGL.js";
 
@@ -22,6 +27,11 @@ let sliderPos = window.innerWidth / 2;
 const slider = document.querySelector(".slider");
 
 const isP3Context = WebGL.isColorSpaceAvailable(DisplayP3ColorSpace);
+
+ColorManagement.define({
+  [DisplayP3ColorSpace]: DisplayP3ColorSpaceImpl,
+  [LinearDisplayP3ColorSpace]: LinearDisplayP3ColorSpaceImpl,
+});
 
 if (isP3Context) {
   ColorManagement.workingColorSpace = LinearDisplayP3ColorSpace;

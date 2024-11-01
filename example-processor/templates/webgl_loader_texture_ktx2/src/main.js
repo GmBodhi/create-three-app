@@ -3,7 +3,9 @@ import "./style.css"; // For webpack support
 import {
   RGBAFormat,
   RGBA_BPTC_Format,
+  RGB_BPTC_UNSIGNED_Format,
   RGBA_ASTC_4x4_Format,
+  RGBA_ASTC_6x6_Format,
   RGB_S3TC_DXT1_Format,
   RGBA_S3TC_DXT5_Format,
   RGB_PVRTC_4BPPV1_Format,
@@ -43,6 +45,7 @@ const SAMPLES = {
   "RGBA8 Linear": "2d_rgba8_linear.ktx2",
   // 'RGBA8 Display P3': '2d_rgba8_displayp3.ktx2',
   "RGBA16 Linear": "2d_rgba16_linear.ktx2",
+  "RGBA16 Linear (UASTC HDR)": "2d_rgba16_uastc_hdr_linear.ktx2",
   "RGBA32 Linear": "2d_rgba32_linear.ktx2",
   "ASTC 6x6 (mobile)": "2d_astc_6x6.ktx2",
 };
@@ -50,7 +53,9 @@ const SAMPLES = {
 const FORMAT_LABELS = {
   [RGBAFormat]: "RGBA",
   [RGBA_BPTC_Format]: "RGBA_BPTC",
+  [RGB_BPTC_UNSIGNED_Format]: "RGB_BPTC_UNSIGNED",
   [RGBA_ASTC_4x4_Format]: "RGBA_ASTC_4x4",
+  [RGBA_ASTC_6x6_Format]: "RGBA_ASTC_6x6",
   [RGB_S3TC_DXT1_Format]: "RGB_S3TC_DXT1",
   [RGBA_S3TC_DXT5_Format]: "RGBA_S3TC_DXT5",
   [RGB_PVRTC_4BPPV1_Format]: "RGB_PVRTC_4BPPV1",

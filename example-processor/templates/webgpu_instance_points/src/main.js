@@ -17,7 +17,7 @@ import {
   Fn,
   instanceIndex,
   sin,
-  timerLocal,
+  time,
   float,
   uniform,
   attribute,
@@ -141,9 +141,9 @@ function init() {
   computeSize = Fn(() => {
     const { pulseSpeed, minWidth, maxWidth } = effectController;
 
-    const time = timerLocal().add(float(instanceIndex));
+    const relativeTime = time.add(float(instanceIndex));
 
-    const sizeFactor = sin(time.mul(pulseSpeed)).add(1).div(2);
+    const sizeFactor = sin(relativeTime.mul(pulseSpeed)).add(1).div(2);
 
     instanceSizeStorage
       .element(instanceIndex)

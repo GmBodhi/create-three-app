@@ -18,7 +18,7 @@ import {
   mix,
   range,
   sin,
-  timerLocal,
+  time,
   uniform,
   uv,
   vec3,
@@ -55,8 +55,6 @@ function init() {
 
   const size = uniform(0.08);
   material.scaleNode = range(0, 1).mul(size);
-
-  const time = timerLocal();
 
   const radiusRatio = range(0, 1);
   const radius = radiusRatio.pow(1.5).mul(5).toVar();

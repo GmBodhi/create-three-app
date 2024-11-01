@@ -3,9 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Color,
   Clock,
-  PointLight,
   AmbientLight,
   AnimationMixer,
   MeshBasicNodeMaterial,
@@ -13,20 +11,22 @@ import {
   Mesh,
   BoxGeometry,
   WebGPURenderer,
-  LinearToneMapping,
+  NeutralToneMapping,
 } from "three";
 import {
   color,
+  positionWorld,
   linearDepth,
   viewportLinearDepth,
   viewportSharedTexture,
-  textureBicubic,
-  viewportMipTexture,
   screenUV,
+  hue,
+  time,
   checker,
   uv,
   modelScale,
 } from "three/tsl";
+import { hashBlur } from "three/addons/tsl/display/hashBlur.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -49,16 +49,15 @@ function init() {
   camera.position.set(3, 2, 3);
 
   scene = new Scene();
-  scene.background = new Color(0x777777);
+  scene.backgroundNode = hue(
+    screenUV.y.mix(color(0x66bbff), color(0x4466ff)),
+    time.mul(0.1)
+  );
   camera.lookAt(0, 1, 0);
 
   clock = new Clock();
 
-  const light = new PointLight(0xffffff, 50);
-  camera.add(light);
-  scene.add(camera);
-
-  const ambient = new AmbientLight(0x4466ff, 1);
+  const ambient = new AmbientLight(0xffffff, 2.5);
   scene.add(ambient);
 
   // model
@@ -86,39 +85,29 @@ function init() {
     .smoothstep(0.9, 2)
     .mul(10)
     .saturate();
-  const depthBlurred = textureBicubic(
-    viewportMipTexture(),
-    depthDistance
-      .smoothstep(0, 0.6)
-      .mul(40 * 5)
-      .clamp(0, 5)
+  const depthBlurred = hashBlur(
+    viewportSharedTexture(),
+    depthDistance.smoothstep(0, 0.6).mul(40).clamp().mul(0.1)
   );
 
   const blurredBlur = new MeshBasicNodeMaterial();
   blurredBlur.backdropNode = depthBlurred.add(
-    depthAlphaNode.mix(color(0x0066ff), 0)
+    depthAlphaNode.mix(color(0x003399).mul(0.3), 0)
   );
   blurredBlur.transparent = true;
   blurredBlur.side = DoubleSide;
-
-  const volumeMaterial = new MeshBasicNodeMaterial();
-  volumeMaterial.colorNode = color(0x0066ff);
-  volumeMaterial.backdropNode = viewportSharedTexture();
-  volumeMaterial.backdropAlphaNode = depthAlphaNode;
-  volumeMaterial.transparent = true;
-  volumeMaterial.side = DoubleSide;
 
   const depthMaterial = new MeshBasicNodeMaterial();
   depthMaterial.backdropNode = depthAlphaNode;
   depthMaterial.transparent = true;
   depthMaterial.side = DoubleSide;
 
-  const bicubicMaterial = new MeshBasicNodeMaterial();
-  bicubicMaterial.backdropNode = textureBicubic(viewportMipTexture(), 5); // @TODO: Move to alpha value [ 0, 1 ]
-  bicubicMaterial.backdropAlphaNode = checker(uv().mul(3).mul(modelScale.xy));
-  bicubicMaterial.opacityNode = bicubicMaterial.backdropAlphaNode;
-  bicubicMaterial.transparent = true;
-  bicubicMaterial.side = DoubleSide;
+  const checkerMaterial = new MeshBasicNodeMaterial();
+  checkerMaterial.backdropNode = hashBlur(viewportSharedTexture(), 0.05);
+  checkerMaterial.backdropAlphaNode = checker(uv().mul(3).mul(modelScale.xy));
+  checkerMaterial.opacityNode = checkerMaterial.backdropAlphaNode;
+  checkerMaterial.transparent = true;
+  checkerMaterial.side = DoubleSide;
 
   const pixelMaterial = new MeshBasicNodeMaterial();
   pixelMaterial.backdropNode = viewportSharedTexture(
@@ -128,13 +117,19 @@ function init() {
 
   // box / floor
 
-  const box = new Mesh(new BoxGeometry(2, 2, 2), volumeMaterial);
+  const box = new Mesh(new BoxGeometry(2, 2, 2), blurredBlur);
   box.position.set(0, 1, 0);
+  box.renderOrder = 1;
   scene.add(box);
 
   const floor = new Mesh(
-    new BoxGeometry(1.99, 0.01, 1.99),
-    new MeshBasicNodeMaterial({ color: 0x333333 })
+    new BoxGeometry(5, 0.01, 5),
+    new MeshBasicNodeMaterial({
+      color: 0xff6600,
+      opacityNode: positionWorld.xz.distance(0).oneMinus().clamp(),
+      transparent: true,
+      depthWrite: false,
+    })
   );
   floor.position.set(0, 0, 0);
   scene.add(floor);
@@ -145,8 +140,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMapping = LinearToneMapping;
-  renderer.toneMappingExposure = 0.2;
+  renderer.toneMapping = NeutralToneMapping;
+  renderer.toneMappingExposure = 0.9;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -159,9 +154,8 @@ function init() {
 
   const materials = {
     blurred: blurredBlur,
-    volume: volumeMaterial,
     depth: depthMaterial,
-    bicubic: bicubicMaterial,
+    checker: checkerMaterial,
     pixel: pixelMaterial,
   };
 

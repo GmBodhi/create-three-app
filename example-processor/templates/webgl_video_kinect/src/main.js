@@ -53,6 +53,7 @@ function init() {
 
   const texture = new VideoTexture(video);
   texture.minFilter = NearestFilter;
+  texture.generateMipmaps = false;
 
   const width = 640,
     height = 480;

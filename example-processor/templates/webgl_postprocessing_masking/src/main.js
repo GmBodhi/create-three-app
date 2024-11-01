@@ -67,6 +67,7 @@ function init() {
   );
   texture1.colorSpace = SRGBColorSpace;
   texture1.minFilter = LinearFilter;
+  texture1.generateMipmaps = false;
   const texture2 = new TextureLoader().load(
     "textures/2294472375_24a3b8ef46_o.jpg"
   );

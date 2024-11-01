@@ -28,7 +28,6 @@ import {
   pass,
   linearDepth,
   normalWorld,
-  gaussianBlur,
   triplanarTexture,
   texture,
   objectPosition,
@@ -38,8 +37,9 @@ import {
   viewportSharedTexture,
   mx_worley_noise_float,
   positionWorld,
-  timerLocal,
+  time,
 } from "three/tsl";
+import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -150,7 +150,7 @@ function init() {
 
   // water
 
-  const timer = timerLocal(0.8);
+  const timer = time.mul(0.8);
   const floorUV = positionWorld.xzy;
 
   const waterLayer0 = mx_worley_noise_float(floorUV.mul(4).add(timer));

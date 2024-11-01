@@ -220,6 +220,16 @@
         "/src"
       ]
     },
+    "misc_exporter_ktx2": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "misc_exporter_obj": {
       "files": {
         "index.html": "src",
@@ -685,16 +695,6 @@
       ]
     },
     "webgl_camera_array": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_camera_cinematic": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3051,19 +3051,6 @@
         "/src"
       ]
     },
-    "webgl_raymarching_reflect": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "fragment_shader.glsl": "src/shaders",
-        "vertex_shader.glsl": "src/shaders",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src",
-        "/src/shaders"
-      ]
-    },
     "webgl_read_float_buffer": {
       "files": {
         "index.html": "src",
@@ -3799,6 +3786,16 @@
         "/src"
       ]
     },
+    "webgpu_instance_sprites": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_instance_uniform": {
       "files": {
         "index.html": "src",
@@ -3899,7 +3896,27 @@
         "/src"
       ]
     },
+    "webgpu_lights_tiled": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lines_fat": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lines_fat_wireframe": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3999,6 +4016,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_alphahash": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_arrays": {
       "files": {
         "index.html": "src",
@@ -4030,6 +4057,16 @@
       ]
     },
     "webgpu_materials_envmaps": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materials_envmaps_bpcem": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4419,6 +4456,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_lensflare": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_masking": {
       "files": {
         "index.html": "src",
@@ -4439,7 +4486,27 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_outline": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_pixel": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_smaa": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4460,6 +4527,26 @@
       ]
     },
     "webgpu_postprocessing_ssaa": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_ssr": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_traa": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4552,7 +4639,27 @@
         "/src"
       ]
     },
+    "webgpu_shadowmap_csm": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_shadowmap_opacity": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_shadowmap_progressive": {
       "files": {
         "index.html": "src",
         "main.js": "src",

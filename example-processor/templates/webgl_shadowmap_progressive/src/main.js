@@ -87,7 +87,7 @@ function init() {
 
   // create 8 directional lights to speed up the convergence
   for (let l = 0; l < lightCount; l++) {
-    const dirLight = new DirectionalLight(0xffffff, 1.0 / lightCount);
+    const dirLight = new DirectionalLight(0xffffff, Math.PI / lightCount);
     dirLight.name = "Dir. Light " + l;
     dirLight.position.set(200, 200, 200);
     dirLight.castShadow = true;

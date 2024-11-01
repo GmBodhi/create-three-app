@@ -14,7 +14,7 @@ import {
 } from "three";
 import {
   normalWorld,
-  timerLocal,
+  time,
   mx_noise_vec3,
   mx_worley_noise_vec3,
   mx_cell_noise_float,
@@ -59,8 +59,7 @@ function init() {
       function (hdrTexture) {
         const geometry = new SphereGeometry(8, 64, 32);
 
-        const offsetNode = timerLocal();
-        const customUV = normalWorld.mul(10).add(offsetNode);
+        const customUV = normalWorld.mul(10).add(time);
 
         // left top
 

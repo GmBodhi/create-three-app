@@ -9,6 +9,7 @@ import {
   Mesh,
   PlaneGeometry,
   AdditiveBlending,
+  IndirectStorageBufferAttribute,
   GridHelper,
   WebGPURenderer,
 } from "three";
@@ -20,7 +21,8 @@ import {
   color,
   rotateUV,
   positionLocal,
-  timerLocal,
+  time,
+  uniform,
 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -51,9 +53,10 @@ function init() {
   const lifeRange = range(0.1, 1);
   const offsetRange = range(new Vector3(-2, 3, -2), new Vector3(2, 5, 2));
 
-  const timer = timerLocal(0.2, 1 /*100000*/); // @TODO: need to work with 64-bit precision
+  const speed = uniform(0.2);
+  const scaledTime = time.add(5).mul(speed);
 
-  const lifeTime = timer.mul(lifeRange).mod(1);
+  const lifeTime = scaledTime.mul(lifeRange).mod(1);
   const scaleRange = range(0.3, 2);
   const rotateRange = range(0.1, 4);
 
@@ -61,7 +64,7 @@ function init() {
 
   const fakeLightEffect = positionLocal.y.oneMinus().max(0.2);
 
-  const textureNode = texture(map, rotateUV(uv(), timer.mul(rotateRange)));
+  const textureNode = texture(map, rotateUV(uv(), scaledTime.mul(rotateRange)));
 
   const opacityNode = textureNode.a.mul(life.oneMinus());
 
@@ -95,6 +98,9 @@ function init() {
 
   //
 
+  const fireGeometry = new PlaneGeometry(1, 1);
+  const fireCount = 1000;
+
   const fireNodeMaterial = new SpriteNodeMaterial();
   fireNodeMaterial.colorNode = mix(color(0xb72f17), color(0xb72f17), life);
   fireNodeMaterial.positionNode = range(
@@ -102,20 +108,32 @@ function init() {
     new Vector3(1, 2, 1)
   ).mul(lifeTime);
   fireNodeMaterial.scaleNode = smokeNodeMaterial.scaleNode;
-  fireNodeMaterial.opacityNode = opacityNode;
+  fireNodeMaterial.opacityNode = opacityNode.mul(0.5);
   fireNodeMaterial.blending = AdditiveBlending;
   fireNodeMaterial.transparent = true;
   fireNodeMaterial.depthWrite = false;
 
-  const fireInstancedSprite = new Mesh(
-    new PlaneGeometry(1, 1),
-    fireNodeMaterial
-  );
+  const fireInstancedSprite = new Mesh(fireGeometry, fireNodeMaterial);
   fireInstancedSprite.scale.setScalar(400);
-  fireInstancedSprite.count = 100;
+  fireInstancedSprite.count = fireCount;
   fireInstancedSprite.position.y = -100;
   fireInstancedSprite.renderOrder = 1;
   scene.add(fireInstancedSprite);
+
+  // indirect draw ( optional )
+  // each indirect draw call is 5 uint32 values for indexes ( different structure for non-indexed draw calls using 4 uint32 values )
+
+  const indexCount = fireGeometry.index.array.length;
+
+  const uint32 = new Uint32Array(5);
+  uint32[0] = indexCount; // indexCount
+  uint32[1] = fireCount; // instanceCount
+  uint32[2] = 0; // firstIndex
+  uint32[3] = 0; // baseVertex
+  uint32[4] = 0; // firstInstance
+
+  const indirectAttribute = new IndirectStorageBufferAttribute(uint32, 5);
+  fireGeometry.setIndirect(indirectAttribute);
 
   //
 
@@ -146,7 +164,7 @@ function init() {
 
   const gui = new GUI();
 
-  gui.add(timer, "scale", 0, 1, 0.01).name("speed");
+  gui.add(speed, "value", 0, 1, 0.01).name("speed");
 }
 
 function onWindowResize() {

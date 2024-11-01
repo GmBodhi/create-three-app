@@ -128,7 +128,7 @@ function init() {
   scene.add(new AmbientLight(0xaaaaaa, 0.6));
 
   const light = new DirectionalLight(0xddffdd, 2);
-  light.position.set(1, 1, 1);
+  light.position.set(5, 5, 5);
   light.castShadow = true;
   light.shadow.mapSize.width = 1024;
   light.shadow.mapSize.height = 1024;
@@ -139,7 +139,7 @@ function init() {
   light.shadow.camera.right = d;
   light.shadow.camera.top = d;
   light.shadow.camera.bottom = -d;
-  light.shadow.camera.far = 1000;
+  light.shadow.camera.far = 25;
 
   scene.add(light);
 

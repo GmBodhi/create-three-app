@@ -16,15 +16,8 @@ import {
   WebGPURenderer,
   PostProcessing,
 } from "three";
-import {
-  pass,
-  mix,
-  range,
-  color,
-  oscSine,
-  timerLocal,
-  gaussianBlur,
-} from "three/tsl";
+import { pass, mix, range, color, oscSine, time } from "three/tsl";
+import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -85,7 +78,7 @@ function init() {
 
     object.traverse((child) => {
       if (child.isMesh) {
-        const oscNode = oscSine(timerLocal(0.1));
+        const oscNode = oscSine(time.mul(0.1));
 
         // random colors between instances from 0x000000 to 0xFFFFFF
         const randomColors = range(new Color(0x000000), new Color(0xffffff));

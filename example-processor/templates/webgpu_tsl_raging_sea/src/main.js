@@ -20,7 +20,7 @@ import {
   vec2,
   vec3,
   mul,
-  timerLocal,
+  time,
   uniform,
   Fn,
   transformNormalToView,
@@ -73,8 +73,6 @@ function init() {
   // TSL functions
 
   const wavesElevation = Fn(([position]) => {
-    const time = timerLocal();
-
     // large waves
 
     const elevation = mul(

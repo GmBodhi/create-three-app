@@ -19,6 +19,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { LDrawLoader } from "three/addons/loaders/LDrawLoader.js";
 import { LDrawUtils } from "three/addons/utils/LDrawUtils.js";
+import { LDrawConditionalLineMaterial } from "three/addons/materials/LDrawConditionalLineMaterial.js";
 
 let container, progressBarDiv;
 
@@ -138,6 +139,7 @@ function reloadObject(resetCamera) {
 
   // only smooth when not rendering with flat colors to improve processing time
   const lDrawLoader = new LDrawLoader();
+  lDrawLoader.setConditionalLineMaterial(LDrawConditionalLineMaterial);
   lDrawLoader.smoothNormals = guiData.smoothNormals && !guiData.flatColors;
   lDrawLoader.setPath(ldrawPath).load(
     guiData.modelFileName,

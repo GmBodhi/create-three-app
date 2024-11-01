@@ -8,14 +8,8 @@ import {
   Vector2,
   PostProcessing,
 } from "three";
-import {
-  pass,
-  cubeTexture,
-  screenUV,
-  grayscale,
-  uniform,
-  anamorphic,
-} from "three/tsl";
+import { pass, cubeTexture, screenUV, grayscale, uniform } from "three/tsl";
+import { anamorphic } from "three/addons/tsl/display/AnamorphicNode.js";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
 

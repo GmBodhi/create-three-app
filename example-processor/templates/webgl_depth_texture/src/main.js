@@ -110,6 +110,7 @@ function setupRenderTarget() {
   );
   target.texture.minFilter = NearestFilter;
   target.texture.magFilter = NearestFilter;
+  target.texture.generateMipmaps = false;
   target.stencilBuffer = format === DepthStencilFormat ? true : false;
   target.samples = samples;
 

@@ -166,7 +166,7 @@ function init() {
 
   //
 
-  renderer.compute(computeInit);
+  renderer.computeAsync(computeInit);
 
   // click event
 
@@ -206,7 +206,7 @@ function init() {
 
       // compute
 
-      renderer.compute(computeHit);
+      renderer.computeAsync(computeHit);
     }
   }
 
