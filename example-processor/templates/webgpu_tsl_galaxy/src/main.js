@@ -128,7 +128,7 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-async function animate() {
+function animate() {
   controls.update();
 
   renderer.render(scene, camera);
