@@ -8,6 +8,7 @@ import {
   DirectionalLight,
   Plane,
   Vector3,
+  ClippingGroup,
   MeshPhongNodeMaterial,
   DoubleSide,
   TorusKnotGeometry,
@@ -70,11 +71,23 @@ function init() {
   dirLight.shadow.mapSize.height = 1024;
   scene.add(dirLight);
 
-  // ***** Clipping planes: *****
+  // Clipping planes
 
-  const localPlane = new Plane(new Vector3(0, -1, 0), 0.8);
-  const localPlane2 = new Plane(new Vector3(0, 0, -1), 0.1);
   const globalPlane = new Plane(new Vector3(-1, 0, 0), 0.1);
+  const localPlane1 = new Plane(new Vector3(0, -1, 0), 0.8);
+  const localPlane2 = new Plane(new Vector3(0, 0, -1), 0.1);
+
+  // Clipping Groups
+
+  const globalClippingGroup = new ClippingGroup();
+  globalClippingGroup.clippingPlanes = [globalPlane];
+
+  const knotClippingGroup = new ClippingGroup();
+  knotClippingGroup.clippingPlanes = [localPlane1, localPlane2];
+  knotClippingGroup.clipIntersection = true;
+
+  scene.add(globalClippingGroup);
+  globalClippingGroup.add(knotClippingGroup);
 
   // Geometry
 
@@ -84,26 +97,27 @@ function init() {
     side: DoubleSide,
 
     // ***** Clipping setup (material): *****
-    clippingPlanes: [localPlane, localPlane2],
-    clipShadows: true,
     alphaToCoverage: true,
-    clipIntersection: true,
   });
 
   const geometry = new TorusKnotGeometry(0.4, 0.08, 95, 20);
 
   object = new Mesh(geometry, material);
   object.castShadow = true;
-  scene.add(object);
+  knotClippingGroup.add(object);
 
   const ground = new Mesh(
     new PlaneGeometry(9, 9, 1, 1),
-    new MeshPhongNodeMaterial({ color: 0xa0adaf, shininess: 150 })
+    new MeshPhongNodeMaterial({
+      color: 0xa0adaf,
+      shininess: 150,
+      alphaToCoverage: true,
+    })
   );
 
   ground.rotation.x = -Math.PI / 2; // rotates X/Y to X/Z
   ground.receiveShadow = true;
-  scene.add(ground);
+  globalClippingGroup.add(ground);
 
   // Stats
 
@@ -120,14 +134,8 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   document.body.appendChild(renderer.domElement);
 
-  // ***** Clipping setup (renderer): *****
-  const globalPlanes = [globalPlane];
-  const Empty = Object.freeze([]);
-
-  renderer.clippingPlanes = Empty; // GUI sets it to globalPlanes
-  renderer.localClippingEnabled = true;
-
   // Controls
+
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 1, 0);
   controls.update();
@@ -138,44 +146,44 @@ function init() {
     props = {
       alphaToCoverage: true,
     },
-    folderLocal = gui.addFolder("Local Clipping"),
-    propsLocal = {
+    folderKnot = gui.addFolder("Knot Clipping Group"),
+    propsKnot = {
       get Enabled() {
-        return renderer.localClippingEnabled;
+        return knotClippingGroup.enabled;
       },
       set Enabled(v) {
-        renderer.localClippingEnabled = v;
+        knotClippingGroup.enabled = v;
       },
 
       get Shadows() {
-        return material.clipShadows;
+        return knotClippingGroup.clipShadows;
       },
       set Shadows(v) {
-        material.clipShadows = v;
+        knotClippingGroup.clipShadows = v;
       },
 
       get Intersection() {
-        return material.clipIntersection;
+        return knotClippingGroup.clipIntersection;
       },
 
       set Intersection(v) {
-        material.clipIntersection = v;
+        knotClippingGroup.clipIntersection = v;
       },
 
       get Plane() {
-        return localPlane.constant;
+        return localPlane1.constant;
       },
       set Plane(v) {
-        localPlane.constant = v;
+        localPlane1.constant = v;
       },
     },
-    folderGlobal = gui.addFolder("Global Clipping"),
+    folderGlobal = gui.addFolder("Global Clipping Group"),
     propsGlobal = {
       get Enabled() {
-        return renderer.clippingPlanes !== Empty;
+        return globalClippingGroup.enabled;
       },
       set Enabled(v) {
-        renderer.clippingPlanes = v ? globalPlanes : Empty;
+        globalClippingGroup.enabled = v;
       },
 
       get Plane() {
@@ -194,10 +202,10 @@ function init() {
     material.needsUpdate = true;
   });
 
-  folderLocal.add(propsLocal, "Enabled");
-  folderLocal.add(propsLocal, "Shadows");
-  folderLocal.add(propsLocal, "Intersection");
-  folderLocal.add(propsLocal, "Plane", 0.3, 1.25);
+  folderKnot.add(propsKnot, "Enabled");
+  folderKnot.add(propsKnot, "Shadows");
+  folderKnot.add(propsKnot, "Intersection");
+  folderKnot.add(propsKnot, "Plane", 0.3, 1.25);
 
   folderGlobal.add(propsGlobal, "Enabled");
   folderGlobal.add(propsGlobal, "Plane", -0.4, 3);
