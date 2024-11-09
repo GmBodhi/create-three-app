@@ -3,29 +3,24 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Color,
-  Clock,
-  EquirectangularReflectionMapping,
   WebGPURenderer,
+  PMREMGenerator,
+  Color,
   PostProcessing,
-  AnimationMixer,
-  DataTexture,
-  RepeatWrapping,
 } from "three";
-import { pass, mrt, output, transformedNormalView, texture } from "three/tsl";
+import { pass, mrt, output, normalView } from "three/tsl";
 import { ao } from "three/addons/tsl/display/GTAONode.js";
 import { denoise } from "three/addons/tsl/display/DenoiseNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, postProcessing, controls, clock, stats, mixer;
+let camera, scene, renderer, postProcessing, controls, stats;
 
 let aoPass, denoisePass, blendPassAO, blendPassDenoise, scenePassColor;
 
@@ -35,7 +30,7 @@ const params = {
   radius: 0.25,
   scale: 1,
   thickness: 1,
-  denoised: true,
+  denoised: false,
   enabled: true,
   denoiseRadius: 5,
   lumaPhi: 5,
@@ -47,36 +42,40 @@ init();
 
 async function init() {
   camera = new PerspectiveCamera(
-    40,
+    45,
     window.innerWidth / window.innerHeight,
-    1,
-    100
+    0.1,
+    50
   );
-  camera.position.set(5, 2, 8);
+  camera.position.set(1, 1.3, 5);
 
   scene = new Scene();
-  scene.background = new Color(0xbfe3dd);
-
-  clock = new Clock();
-
-  const hdrloader = new RGBELoader();
-  const envMap = await hdrloader.loadAsync(
-    "textures/equirectangular/quarry_01_1k.hdr"
-  );
-  envMap.mapping = EquirectangularReflectionMapping;
-
-  scene.environment = envMap;
 
   renderer = new WebGPURenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
+  const environment = new RoomEnvironment();
+  const pmremGenerator = new PMREMGenerator(renderer);
+
+  scene.background = new Color(0x666666);
+  scene.environment = pmremGenerator.fromScene(environment).texture;
+  environment.dispose();
+  pmremGenerator.dispose();
+
+  //
+
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 0.5, 0);
+  controls.target.set(0, 0.5, -1);
   controls.update();
   controls.enablePan = false;
   controls.enableDamping = true;
+  controls.minDistance = 2;
+  controls.maxDistance = 8;
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
@@ -89,7 +88,7 @@ async function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: transformedNormalView,
+      normal: normalView,
     })
   );
 
@@ -100,21 +99,20 @@ async function init() {
   // ao
 
   aoPass = ao(scenePassDepth, scenePassNormal, camera);
+  aoPass.resolutionScale = 0.5;
   blendPassAO = aoPass.getTextureNode().mul(scenePassColor);
 
   // denoise (optional)
 
-  const noiseTexture = texture(generateNoise());
   denoisePass = denoise(
     aoPass.getTextureNode(),
     scenePassDepth,
     scenePassNormal,
-    noiseTexture,
     camera
   );
   blendPassDenoise = denoisePass.mul(scenePassColor);
 
-  postProcessing.outputNode = blendPassDenoise;
+  postProcessing.outputNode = blendPassAO;
 
   //
 
@@ -125,15 +123,22 @@ async function init() {
   loader.setDRACOLoader(dracoLoader);
   loader.setPath("models/gltf/");
 
-  const gltf = await loader.loadAsync("LittlestTokyo.glb");
+  const gltf = await loader.loadAsync("minimalistic_modern_bedroom.glb");
 
   const model = gltf.scene;
-  model.position.set(1, 1, 0);
-  model.scale.set(0.01, 0.01, 0.01);
+  model.position.set(0, 1, 0);
   scene.add(model);
 
-  mixer = new AnimationMixer(model);
-  mixer.clipAction(gltf.animations[0]).play();
+  model.traverse((o) => {
+    // Transparent objects (e.g. loaded via GLTFLoader) might have "depthWrite" set to "false".
+    // This is wanted when rendering the beauty pass however it produces wrong results when computing
+    // AO since depth and normal data are out of sync. Computing normals from depth by not using MRT
+    // can mitigate the issue although the depth information (and thus the normals) are not correct in
+    // first place. Besides, normal estimation is computationally more expensive than just sampling a
+    // normal texture. So depending on your scene, consider to enable "depthWrite" for all transparent objects.
+
+    if (o.material) o.material.depthWrite = true;
+  });
 
   window.addEventListener("resize", onWindowResize);
 
@@ -150,7 +155,6 @@ async function init() {
   gui.add(params, "radius").min(0.01).max(1).onChange(updateParameters);
   gui.add(params, "scale").min(0.01).max(2).onChange(updateParameters);
   gui.add(params, "thickness").min(0.01).max(2).onChange(updateParameters);
-  gui.add(params, "denoised").onChange(updatePassChain);
   gui.add(params, "enabled").onChange(updatePassChain);
   const folder = gui.addFolder("Denoise settings");
   folder
@@ -162,6 +166,7 @@ async function init() {
   folder.add(params, "lumaPhi").min(0.01).max(10).onChange(updateParameters);
   folder.add(params, "depthPhi").min(0.01).max(10).onChange(updateParameters);
   folder.add(params, "normalPhi").min(0.01).max(10).onChange(updateParameters);
+  folder.add(params, "denoised").name("enabled").onChange(updatePassChain);
 }
 
 function updatePassChain() {
@@ -191,35 +196,6 @@ function updateParameters() {
   denoisePass.normalPhi.value = params.normalPhi;
 }
 
-function generateNoise(size = 64) {
-  const simplex = new SimplexNoise();
-
-  const arraySize = size * size * 4;
-  const data = new Uint8Array(arraySize);
-
-  for (let i = 0; i < size; i++) {
-    for (let j = 0; j < size; j++) {
-      const x = i;
-      const y = j;
-
-      data[(i * size + j) * 4] = (simplex.noise(x, y) * 0.5 + 0.5) * 255;
-      data[(i * size + j) * 4 + 1] =
-        (simplex.noise(x + size, y) * 0.5 + 0.5) * 255;
-      data[(i * size + j) * 4 + 2] =
-        (simplex.noise(x, y + size) * 0.5 + 0.5) * 255;
-      data[(i * size + j) * 4 + 3] =
-        (simplex.noise(x + size, y + size) * 0.5 + 0.5) * 255;
-    }
-  }
-
-  const noiseTexture = new DataTexture(data, size, size);
-  noiseTexture.wrapS = RepeatWrapping;
-  noiseTexture.wrapT = RepeatWrapping;
-  noiseTexture.needsUpdate = true;
-
-  return noiseTexture;
-}
-
 function onWindowResize() {
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -231,12 +207,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
-
-  if (mixer) {
-    mixer.update(delta);
-  }
-
   controls.update();
 
   postProcessing.render();
