@@ -3,16 +3,8 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Fog,
-  Mesh,
-  PlaneGeometry,
-  MeshStandardNodeMaterial,
-  BoxGeometry,
-  IcosahedronGeometry,
-  ConeGeometry,
   WebGPURenderer,
   PMREMGenerator,
-  Color,
   PostProcessing,
   NearestFilter,
 } from "three";
@@ -22,31 +14,28 @@ import {
   output,
   transformedNormalView,
   metalness,
-  vec4 /*, uniform*/,
+  blendNormal,
+  screenUV,
+  color,
 } from "three/tsl";
 import { ssr } from "three/addons/tsl/display/SSRNode.js";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
 
 const params = {
-  maxDistance: 0.1,
+  maxDistance: 0.2,
   opacity: 1,
-  thickness: 0.018,
+  thickness: 0.015,
   enabled: true,
-  autoRotate: false,
 };
 
 let camera, scene, renderer, postProcessing, ssrPass;
 let gui, stats, controls;
-
-// Configure and create Draco decoder.
-const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("jsm/libs/draco/");
-dracoLoader.setDecoderConfig({ type: "js" });
 
 init();
 
@@ -55,64 +44,25 @@ async function init() {
     35,
     window.innerWidth / window.innerHeight,
     0.1,
-    15
+    50
   );
-  camera.position.set(0.1, 0.2, 0.5);
+  camera.position.set(2.5, 2, 2.5);
 
   scene = new Scene();
-  scene.fog = new Fog(0x666666, 1, 4);
+  scene.backgroundNode = screenUV
+    .distance(0.5)
+    .remap(0, 0.5)
+    .mix(color(0x666666), color(0x393939));
 
-  // Ground
-  const plane = new Mesh(
-    new PlaneGeometry(8, 8),
-    new MeshStandardNodeMaterial({ color: 0xcbcbcb })
-  );
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath("jsm/libs/draco/");
+  dracoLoader.setDecoderConfig({ type: "js" });
 
-  // any node material can write custom MRT metalness values for controlling SSR
-
-  // plane.material.mrtNode = mrt( {
-  // 	output: output,
-  // 	normal: transformedNormalView,
-  // 	metalness: uniform( 0.5 )
-  // } );
-
-  plane.rotation.x = -Math.PI / 2;
-  plane.position.y = -0.0001;
-  scene.add(plane);
-
-  dracoLoader.load("models/draco/bunny.drc", function (geometry) {
-    geometry.computeVertexNormals();
-
-    const material = new MeshStandardNodeMaterial({
-      color: 0xa5a5a5,
-      metalness: 1,
-    });
-    const mesh = new Mesh(geometry, material);
-    mesh.position.y = -0.0365;
-    scene.add(mesh);
-
-    dracoLoader.dispose();
+  const loader = new GLTFLoader();
+  loader.setDRACOLoader(dracoLoader);
+  loader.load("models/gltf/steampunk_camera.glb", function (gltf) {
+    scene.add(gltf.scene);
   });
-
-  let geometry, material, mesh;
-
-  geometry = new BoxGeometry(0.05, 0.05, 0.05);
-  material = new MeshStandardNodeMaterial({ color: "green", metalness: 0.3 });
-  mesh = new Mesh(geometry, material);
-  mesh.position.set(-0.12, 0.025, 0.015);
-  scene.add(mesh);
-
-  geometry = new IcosahedronGeometry(0.025, 4);
-  material = new MeshStandardNodeMaterial({ color: "cyan", metalness: 0.5 });
-  mesh = new Mesh(geometry, material);
-  mesh.position.set(-0.05, 0.025, 0.08);
-  scene.add(mesh);
-
-  geometry = new ConeGeometry(0.025, 0.05, 64);
-  material = new MeshStandardNodeMaterial({ color: "yellow", metalness: 0.4 });
-  mesh = new Mesh(geometry, material);
-  mesh.position.set(-0.05, 0.025, -0.055);
-  scene.add(mesh);
 
   //
 
@@ -127,7 +77,6 @@ async function init() {
   const environment = new RoomEnvironment();
   const pmremGenerator = new PMREMGenerator(renderer);
 
-  scene.background = new Color(0x666666);
   scene.environment = pmremGenerator.fromScene(environment).texture;
   scene.environmentIntensity = 0.75;
   pmremGenerator.dispose();
@@ -163,10 +112,7 @@ async function init() {
 
   // blend SSR over beauty
 
-  const outputNode = vec4(
-    scenePass.rgb.mul(ssrPass.a.oneMinus()).add(ssrPass.rgb.mul(ssrPass.a)),
-    scenePass.a
-  );
+  const outputNode = blendNormal(scenePassColor, ssrPass);
 
   postProcessing.outputNode = outputNode;
 
@@ -174,7 +120,6 @@ async function init() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
-  controls.target.set(0, 0.05, 0);
   controls.update();
 
   // stats
@@ -189,7 +134,7 @@ async function init() {
   gui = new GUI();
   gui.add(params, "maxDistance").min(0).max(1).onChange(updateParameters);
   gui.add(params, "opacity").min(0).max(1).onChange(updateParameters);
-  gui.add(params, "thickness").min(0).max(0.1).onChange(updateParameters);
+  gui.add(params, "thickness").min(0).max(0.05).onChange(updateParameters);
   gui.add(params, "enabled").onChange(() => {
     if (params.enabled === true) {
       postProcessing.outputNode = outputNode;
@@ -199,7 +144,6 @@ async function init() {
 
     postProcessing.needsUpdate = true;
   });
-  gui.add(params, "autoRotate");
 
   updateParameters();
 }
@@ -219,8 +163,6 @@ function onWindowResize() {
 
 function animate() {
   stats.begin();
-
-  controls.autoRotate = params.autoRotate;
 
   controls.update();
 
