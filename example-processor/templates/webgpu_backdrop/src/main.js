@@ -20,7 +20,7 @@ import {
   color,
   viewportSharedTexture,
   hue,
-  overlay,
+  blendOverlay,
   posterize,
   grayscale,
   saturation,
@@ -117,7 +117,7 @@ function init() {
   addBackdropSphere(grayscale(viewportSharedTexture().rgb));
   addBackdropSphere(saturation(viewportSharedTexture().rgb, 10), oscSine());
   addBackdropSphere(
-    overlay(viewportSharedTexture().rgb, checker(uv().mul(10)))
+    blendOverlay(viewportSharedTexture().rgb, checker(uv().mul(10)))
   );
   addBackdropSphere(
     viewportSharedTexture(viewportSafeUV(screenUV.mul(40).floor().div(40)))

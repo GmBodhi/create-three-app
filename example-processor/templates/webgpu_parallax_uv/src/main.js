@@ -14,7 +14,7 @@ import {
   WebGPURenderer,
   ReinhardToneMapping,
 } from "three";
-import { texture, parallaxUV, overlay, uv } from "three/tsl";
+import { texture, parallaxUV, blendOverlay, uv } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -96,7 +96,7 @@ async function init() {
   const parallaxUVOffset = parallaxUV(uv(), offsetUV);
   const parallaxResult = texture(bottomTexture, parallaxUVOffset);
 
-  const iceNode = overlay(texture(topTexture), parallaxResult);
+  const iceNode = blendOverlay(texture(topTexture), parallaxResult);
 
   // material
 

@@ -14,7 +14,7 @@ import {
   output,
   transformedNormalView,
   metalness,
-  blendNormal,
+  blendColor,
   screenUV,
   color,
 } from "three/tsl";
@@ -112,7 +112,7 @@ async function init() {
 
   // blend SSR over beauty
 
-  const outputNode = blendNormal(scenePassColor, ssrPass);
+  const outputNode = blendColor(scenePassColor, ssrPass);
 
   postProcessing.outputNode = outputNode;
 
