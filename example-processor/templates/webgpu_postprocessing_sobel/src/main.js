@@ -3,32 +3,31 @@ import "./style.css"; // For webpack support
 import {
   Scene,
   PerspectiveCamera,
-  AmbientLight,
-  PointLight,
-  TorusKnotGeometry,
-  MeshPhongMaterial,
-  Mesh,
+  MeshStandardNodeMaterial,
   WebGPURenderer,
-  LinearSRGBColorSpace,
+  LinearToneMapping,
+  PMREMGenerator,
   PostProcessing,
 } from "three";
-import { pass } from "three/tsl";
+import { pass, renderOutput } from "three/tsl";
 import { sobel } from "three/addons/tsl/display/SobelOperatorNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer;
+let camera, scene, renderer, controls;
 let postProcessing;
 
 const params = {
-  enable: true,
+  enabled: true,
 };
 
 init();
 
-function init() {
+async function init() {
   scene = new Scene();
 
   camera = new PerspectiveCamera(
@@ -38,24 +37,15 @@ function init() {
     100
   );
   camera.position.set(0, 1, 3);
-  camera.lookAt(scene.position);
 
   //
 
-  const ambientLight = new AmbientLight(0xe7e7e7);
-  scene.add(ambientLight);
+  const loader = new GLTFLoader();
+  const gltf = await loader.loadAsync("models/gltf/DragonAttenuation.glb");
+  const model = gltf.scene.children[1];
+  model.material = new MeshStandardNodeMaterial();
 
-  const pointLight = new PointLight(0xffffff, 20);
-  camera.add(pointLight);
-  scene.add(camera);
-
-  //
-
-  const geometry = new TorusKnotGeometry(1, 0.3, 256, 32);
-  const material = new MeshPhongMaterial({ color: 0xffff00 });
-
-  const mesh = new Mesh(geometry, material);
-  scene.add(mesh);
+  scene.add(model);
 
   //
 
@@ -63,28 +53,39 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.outputColorSpace = LinearSRGBColorSpace;
+  renderer.toneMapping = LinearToneMapping;
   document.body.appendChild(renderer.domElement);
+
+  await renderer.init();
+
+  const environment = new RoomEnvironment();
+  const pmremGenerator = new PMREMGenerator(renderer);
+
+  scene.environment = pmremGenerator.fromScene(environment).texture;
+  pmremGenerator.dispose();
 
   //
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
   controls.enableZoom = false;
+  controls.target.set(0, 0.5, 0);
+  controls.update();
 
   // postprocessing
 
   postProcessing = new PostProcessing(renderer);
+  postProcessing.outputColorTransform = false;
 
   const scenePass = pass(scene, camera);
-  const scenePassColor = scenePass.getTextureNode();
 
-  postProcessing.outputNode = sobel(scenePassColor);
+  postProcessing.outputNode = sobel(renderOutput(scenePass));
 
   //
 
   const gui = new GUI();
 
-  gui.add(params, "enable");
+  gui.add(params, "enabled");
   gui.open();
 
   //
@@ -100,7 +101,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  if (params.enable === true) {
+  controls.update();
+
+  if (params.enabled === true) {
     postProcessing.render();
   } else {
     renderer.render(scene, camera);

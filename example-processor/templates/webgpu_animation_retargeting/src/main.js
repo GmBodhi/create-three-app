@@ -37,7 +37,7 @@ import {
   sub,
   mul,
   pow,
-  dodge,
+  blendDodge,
   normalWorld,
 } from "three/tsl";
 
@@ -137,7 +137,7 @@ const lightSpeedEffect = lightSpeed(normalWorld).clamp();
 const lightSpeedSky = normalWorld.y
   .remapClamp(-0.1, 1)
   .mix(0, lightSpeedEffect);
-const composedBackground = dodge(coloredVignette, lightSpeedSky);
+const composedBackground = blendDodge(coloredVignette, lightSpeedSky);
 
 scene.backgroundNode = composedBackground;
 
