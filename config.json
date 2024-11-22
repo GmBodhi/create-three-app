@@ -3873,6 +3873,16 @@
         "/src"
       ]
     },
+    "webgpu_lights_physical": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lights_rectarealight": {
       "files": {
         "index.html": "src",
