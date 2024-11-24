@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  StorageInstancedBufferAttribute,
   PerspectiveCamera,
   DataTexture,
   RedFormat,
@@ -11,9 +10,8 @@ import {
 import {
   Fn,
   uniform,
-  storage,
-  storageObject,
   instanceIndex,
+  instancedArray,
   float,
   texture,
   screenUV,
@@ -25,7 +23,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 let camera, scene, renderer;
 let computeNode;
 let waveBuffer, sampleRate;
-let waveGPUBuffer;
+let waveArray;
 let currentAudio, currentAnalyser;
 const analyserBuffer = new Uint8Array(1024);
 let analyserTexture;
@@ -39,8 +37,8 @@ async function playAudioBuffer() {
 
   await renderer.computeAsync(computeNode);
 
-  const waveArray = new Float32Array(
-    await renderer.getArrayBufferAsync(waveGPUBuffer)
+  const wave = new Float32Array(
+    await renderer.getArrayBufferAsync(waveArray.value)
   );
 
   // play result
@@ -48,11 +46,11 @@ async function playAudioBuffer() {
   const audioOutputContext = new AudioContext({ sampleRate });
   const audioOutputBuffer = audioOutputContext.createBuffer(
     1,
-    waveArray.length,
+    wave.length,
     sampleRate
   );
 
-  audioOutputBuffer.copyToChannel(waveArray, 0);
+  audioOutputBuffer.copyToChannel(wave, 0);
 
   const source = audioOutputContext.createBufferSource();
   source.connect(audioOutputContext.destination);
@@ -88,17 +86,16 @@ async function init() {
 
   // create webgpu buffers
 
-  waveGPUBuffer = new StorageInstancedBufferAttribute(waveBuffer, 1);
-
-  const waveStorageNode = storage(waveGPUBuffer, "float", waveBuffer.length);
+  waveArray = instancedArray(waveBuffer);
 
   // read-only buffer
 
-  const waveNode = storageObject(
-    new StorageInstancedBufferAttribute(waveBuffer, 1),
-    "float",
-    waveBuffer.length
-  ).toReadOnly();
+  const waveNode = instancedArray(waveBuffer);
+
+  // The Pixel Buffer Object (PBO) is required to get the GPU computed data to the CPU in the WebGL2 fallback.
+  // As used in `renderer.getArrayBufferAsync( waveArray.value )`.
+
+  waveNode.setPBO(true);
 
   // params
 
@@ -130,7 +127,7 @@ async function init() {
 
     // store
 
-    const waveStorageElementNode = waveStorageNode.element(instanceIndex);
+    const waveStorageElementNode = waveArray.element(instanceIndex);
 
     waveStorageElementNode.assign(wave);
   });

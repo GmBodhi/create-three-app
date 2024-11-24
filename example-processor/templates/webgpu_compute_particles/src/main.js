@@ -5,7 +5,6 @@ import {
   PerspectiveCamera,
   Scene,
   TextureLoader,
-  StorageInstancedBufferAttribute,
   SpriteNodeMaterial,
   Mesh,
   PlaneGeometry,
@@ -19,11 +18,11 @@ import {
   Fn,
   uniform,
   texture,
+  instancedArray,
   instanceIndex,
   float,
   hash,
   vec3,
-  storage,
   If,
 } from "three/tsl";
 
@@ -64,16 +63,9 @@ function init() {
 
   //
 
-  const createBuffer = () =>
-    storage(
-      new StorageInstancedBufferAttribute(particleCount, 3),
-      "vec3",
-      particleCount
-    );
-
-  const positionBuffer = createBuffer();
-  const velocityBuffer = createBuffer();
-  const colorBuffer = createBuffer();
+  const positionBuffer = instancedArray(particleCount, "vec3");
+  const velocityBuffer = instancedArray(particleCount, "vec3");
+  const colorBuffer = instancedArray(particleCount, "vec3");
 
   // compute
 

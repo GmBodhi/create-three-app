@@ -17,6 +17,7 @@ import {
   code,
   instanceIndex,
   uniform,
+  NodeAccess,
 } from "three/tsl";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -61,10 +62,14 @@ function init() {
 
   const wgslFormat = hdr ? "rgba16float" : "rgba8unorm";
 
-  const readPing = storageTexture(pingTexture).setAccess("read-only");
-  const writePing = storageTexture(pingTexture).setAccess("write-only");
-  const readPong = storageTexture(pongTexture).setAccess("read-only");
-  const writePong = storageTexture(pongTexture).setAccess("write-only");
+  const readPing = storageTexture(pingTexture).setAccess(NodeAccess.READ_ONLY);
+  const writePing = storageTexture(pingTexture).setAccess(
+    NodeAccess.WRITE_ONLY
+  );
+  const readPong = storageTexture(pongTexture).setAccess(NodeAccess.READ_ONLY);
+  const writePong = storageTexture(pongTexture).setAccess(
+    NodeAccess.WRITE_ONLY
+  );
 
   // compute init
 
