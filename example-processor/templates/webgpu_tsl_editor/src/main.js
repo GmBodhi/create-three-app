@@ -1,19 +1,7 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Color,
-  WebGPURenderer,
-  NodeMaterial,
-  vec4,
-  Mesh,
-  PlaneGeometry,
-  SRGBColorSpace,
-  TextureLoader,
-  RepeatWrapping,
-  LinearSRGBColorSpace,
-} from "three";
+import * as THREE from "three/webgpu";
+import { vec4 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -77,7 +65,7 @@ function init() {
 
     const tslCode = `// Simple uv.x animation
 
-const { texture, uniform, vec2, vec4, uv, oscSine, time, grayscale } = THREE;
+const { texture, uniform, vec2, vec4, uv, oscSine, time, grayscale } = await import( 'three/tsl' );
 
 const samplerTexture = new TextureLoader().load( 'three/examples/textures/uv_grid_opengl.jpg' );
 samplerTexture.wrapS = RepeatWrapping;
@@ -125,8 +113,10 @@ output = vec4( finalColor, opacity );
 
     const build = async () => {
       try {
+        const AsyncFunction = async function () {}.constructor;
+
         const tslCode = `let output = null;\n${editor.getValue()}\nreturn { output };`;
-        const nodes = new Function("THREE", tslCode)(THREE);
+        const nodes = await new AsyncFunction("THREE", tslCode)(THREE);
 
         mesh.material.fragmentNode = nodes.output;
         mesh.material.needsUpdate = true;

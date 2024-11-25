@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  TSL,
   PerspectiveCamera,
   Scene,
   Color,
@@ -36,6 +37,18 @@ import {
 } from "three/tsl";
 
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
+
+let code = "";
+
+const tsl = { ...TSL };
+const keys = Object.keys(tsl).sort();
+
+for (const key of keys) {
+  code += `export const ${key} = TSL.${key};\n`;
+}
+
+console.log(code);
+//console.log( `export { ${ keys.join( ',\n\t' ) } };` );
 
 let camera, scene, renderer;
 

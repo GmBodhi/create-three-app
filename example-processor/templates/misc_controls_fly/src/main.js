@@ -1,26 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  TextureLoader,
-  Vector3,
-  Clock,
-  PerspectiveCamera,
-  Scene,
-  FogExp2,
-  DirectionalLight,
-  MeshPhongMaterial,
-  Vector2,
-  SRGBColorSpace,
-  SphereGeometry,
-  Mesh,
-  MeshLambertMaterial,
-  BufferGeometry,
-  Float32BufferAttribute,
-  PointsMaterial,
-  Points,
-  WebGPURenderer,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass } from "three/tsl";
 import { film } from "three/addons/tsl/display/FilmNode.js";
 
