@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import {
-  TSL,
   PerspectiveCamera,
   Scene,
   Color,
@@ -37,18 +36,6 @@ import {
 } from "three/tsl";
 
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
-
-let code = "";
-
-const tsl = { ...TSL };
-const keys = Object.keys(tsl).sort();
-
-for (const key of keys) {
-  code += `export const ${key} = TSL.${key};\n`;
-}
-
-console.log(code);
-//console.log( `export { ${ keys.join( ',\n\t' ) } };` );
 
 let camera, scene, renderer;
 
@@ -106,6 +93,7 @@ async function init() {
   const materialBox = new MeshBasicNodeMaterial();
 
   // birection speed
+
   const timerScaleNode = time.mul(vec2(-0.5, 0.1));
   const animateUV = uv().add(timerScaleNode);
 
