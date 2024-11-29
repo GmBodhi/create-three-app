@@ -99,7 +99,7 @@ function init() {
     new Vector3(0, 1, 0),
     new Vector3(1, 0, -0.5).normalize(),
   ]);
-  const attractorsLength = uniform(attractorsPositions.array.length);
+  const attractorsLength = uniform(attractorsPositions.array.length, "uint");
   const attractors = [];
   const helpersRingGeometry = new RingGeometry(
     1,

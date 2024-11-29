@@ -209,6 +209,12 @@ function init() {
     "phaseStorage"
   );
 
+  // The Pixel Buffer Object (PBO) is required to get the GPU computed data in the WebGL2 fallback.
+
+  positionStorage.setPBO(true);
+  velocityStorage.setPBO(true);
+  phaseStorage.setPBO(true);
+
   // Define Uniforms. Uniforms only need to be defined once rather than per shader.
 
   effectController = {

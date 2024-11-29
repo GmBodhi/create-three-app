@@ -28,7 +28,8 @@ let currentAudio, currentAnalyser;
 const analyserBuffer = new Uint8Array(1024);
 let analyserTexture;
 
-init();
+const startButton = document.getElementById("startButton");
+startButton.addEventListener("click", init);
 
 async function playAudioBuffer() {
   if (currentAudio) currentAudio.stop();
@@ -68,6 +69,9 @@ async function playAudioBuffer() {
 }
 
 async function init() {
+  const overlay = document.getElementById("overlay");
+  overlay.remove();
+
   // audio buffer
 
   const soundBuffer = await fetch("sounds/webgpu-audio-processing.mp3").then(
@@ -88,14 +92,10 @@ async function init() {
 
   waveArray = instancedArray(waveBuffer);
 
-  // read-only buffer
-
-  const waveNode = instancedArray(waveBuffer);
-
   // The Pixel Buffer Object (PBO) is required to get the GPU computed data to the CPU in the WebGL2 fallback.
   // As used in `renderer.getArrayBufferAsync( waveArray.value )`.
 
-  waveNode.setPBO(true);
+  waveArray.setPBO(true);
 
   // params
 
@@ -112,12 +112,12 @@ async function init() {
 
     const time = index.mul(pitch);
 
-    let wave = waveNode.element(time);
+    let wave = waveArray.element(time);
 
     // delay
 
     for (let i = 1; i < 7; i++) {
-      const waveOffset = waveNode.element(
+      const waveOffset = waveArray.element(
         index.sub(delayOffset.mul(sampleRate).mul(i)).mul(pitch)
       );
       const waveOffsetVolume = waveOffset.mul(delayVolume.div(i * i));
@@ -183,12 +183,7 @@ async function init() {
 
   window.addEventListener("resize", onWindowResize);
 
-  document.onclick = () => {
-    const overlay = document.getElementById("overlay");
-    if (overlay !== null) overlay.remove();
-
-    playAudioBuffer();
-  };
+  playAudioBuffer();
 }
 
 function onWindowResize() {

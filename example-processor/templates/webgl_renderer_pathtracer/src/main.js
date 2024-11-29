@@ -26,7 +26,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { LDrawLoader } from "three/addons/loaders/LDrawLoader.js";
 import { LDrawUtils } from "three/addons/utils/LDrawUtils.js";
-
+import { LDrawConditionalLineMaterial } from "three/addons/materials/LDrawConditionalLineMaterial.js";
 import {
   WebGLPathTracer,
   BlurredEnvMapGenerator,
@@ -130,6 +130,7 @@ async function loadModel() {
 
   // only smooth when not rendering with flat colors to improve processing time
   const ldrawPromise = new LDrawLoader()
+    .setConditionalLineMaterial(LDrawConditionalLineMaterial)
     .setPath("models/ldraw/officialLibrary/")
     .loadAsync("models/7140-1-X-wingFighter.mpd_Packed.mpd", onProgress)
     .then(function (legoGroup) {
