@@ -11,7 +11,6 @@ import {
   HalfFloatType,
   NearestFilter,
   MeshBasicNodeMaterial,
-  StorageInstancedBufferAttribute,
   SphereGeometry,
   MeshStandardNodeMaterial,
   Mesh,
@@ -33,13 +32,13 @@ import {
   color,
   uint,
   screenUV,
+  instancedArray,
   positionWorld,
   positionLocal,
   time,
   vec2,
   hash,
   instanceIndex,
-  storage,
   If,
 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
@@ -109,20 +108,10 @@ async function init() {
 
   //
 
-  const createBuffer = (type = "vec3") =>
-    storage(
-      new StorageInstancedBufferAttribute(
-        maxParticleCount,
-        type === "vec4" ? 4 : 3
-      ),
-      type,
-      maxParticleCount
-    );
-
-  const positionBuffer = createBuffer();
-  const scaleBuffer = createBuffer();
-  const staticPositionBuffer = createBuffer();
-  const dataBuffer = createBuffer("vec4");
+  const positionBuffer = instancedArray(maxParticleCount, "vec3");
+  const scaleBuffer = instancedArray(maxParticleCount, "vec3");
+  const staticPositionBuffer = instancedArray(maxParticleCount, "vec3");
+  const dataBuffer = instancedArray(maxParticleCount, "vec4");
 
   // compute
 

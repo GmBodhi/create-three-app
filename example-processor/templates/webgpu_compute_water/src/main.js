@@ -6,7 +6,6 @@ import {
   PerspectiveCamera,
   Scene,
   DirectionalLight,
-  StorageBufferAttribute,
   PlaneGeometry,
   ShaderMaterial,
   MeshPhongMaterial,
@@ -15,7 +14,6 @@ import {
   MeshBasicMaterial,
   InstancedMesh,
   SphereGeometry,
-  StorageInstancedBufferAttribute,
   WebGPURenderer,
 } from "three";
 
@@ -37,7 +35,7 @@ import {
   vertexIndex,
   Fn,
   uniform,
-  storageObject,
+  instancedArray,
   min,
   max,
   positionLocal,
@@ -137,30 +135,8 @@ function init() {
     }
   }
 
-  const heightBufferAttribute = new StorageBufferAttribute(heightArray, 1);
-  const prevHeightBufferAttribute = new StorageBufferAttribute(
-    prevHeightArray,
-    1
-  );
-
-  const heightStorage = storageObject(
-    heightBufferAttribute,
-    "float",
-    heightBufferAttribute.count
-  ).label("Height");
-  const prevHeightStorage = storageObject(
-    prevHeightBufferAttribute,
-    "float",
-    prevHeightBufferAttribute.count
-  ).label("PrevHeight");
-
-  const heightRead = storageObject(
-    heightBufferAttribute,
-    "float",
-    heightBufferAttribute.count
-  )
-    .toReadOnly()
-    .label("HeightRead");
+  const heightStorage = instancedArray(heightArray).label("Height");
+  const prevHeightStorage = instancedArray(prevHeightArray).label("PrevHeight");
 
   // Get Indices of Neighbor Values of an Index in the Simulation Grid
   const getNeighborIndicesTSL = (index) => {
@@ -294,7 +270,7 @@ function init() {
     // To correct the lighting as our mesh undulates, we have to reassign the normals in the position shader.
     const { normalX, normalY } = getNormalsFromHeightTSL(
       vertexIndex,
-      heightRead
+      heightStorage
     );
 
     varyingProperty("vec3", "v_normalView").assign(
@@ -304,7 +280,7 @@ function init() {
     return vec3(
       positionLocal.x,
       positionLocal.y,
-      heightRead.element(vertexIndex)
+      heightStorage.element(vertexIndex)
     );
   })();
 
@@ -346,29 +322,13 @@ function init() {
   sphereVelocityArray.fill(0.0);
 
   // Sphere Instance Storage
-  const sphereInstancePositionAttribute = new StorageInstancedBufferAttribute(
+  const sphereInstancePositionStorage = instancedArray(
     spherePositionArray,
-    3
-  );
-  const sphereInstancePositionStorage = storageObject(
-    sphereInstancePositionAttribute,
-    "vec3",
-    sphereInstancePositionAttribute.count
+    "vec3"
   ).label("SpherePosition");
-  const sphereInstancePositionRead = storageObject(
-    sphereInstancePositionAttribute,
-    "vec3",
-    sphereInstancePositionAttribute.count
-  ).toReadOnly();
-
-  const sphereVelocityAttribute = new StorageInstancedBufferAttribute(
+  const sphereVelocityStorage = instancedArray(
     sphereVelocityArray,
-    2
-  );
-  const sphereVelocityStorage = storageObject(
-    sphereVelocityAttribute,
-    "vec2",
-    sphereVelocityAttribute.count
+    "vec2"
   ).label("SphereVelocity");
 
   computeSphere = Fn(() => {
@@ -394,7 +354,7 @@ function init() {
     const heightInstanceIndex = zCoord.mul(WIDTH).add(xCoord);
 
     // Set to read-only to be safe, even if it's not strictly necessary for compute access.
-    const height = heightRead.element(heightInstanceIndex);
+    const height = heightStorage.element(heightInstanceIndex);
 
     // Assign height to sphere position
     instancePosition.y.assign(height);
@@ -402,7 +362,7 @@ function init() {
     // Calculate normal of the water mesh at this location.
     const { normalX, normalY } = getNormalsFromHeightTSL(
       heightInstanceIndex,
-      heightRead
+      heightStorage
     );
 
     normalX.mulAssign(0.1);
@@ -437,7 +397,8 @@ function init() {
   })().compute(NUM_SPHERES);
 
   sphereMaterial.positionNode = Fn(() => {
-    const instancePosition = sphereInstancePositionRead.element(instanceIndex);
+    const instancePosition =
+      sphereInstancePositionStorage.element(instanceIndex);
 
     const newPosition = positionLocal.add(instancePosition);
 

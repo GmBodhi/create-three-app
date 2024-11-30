@@ -16,7 +16,6 @@ import {
   Mesh,
   SpriteNodeMaterial,
   AdditiveBlending,
-  StorageInstancedBufferAttribute,
   PlaneGeometry,
   InstancedMesh,
   SRGBColorSpace,
@@ -32,7 +31,7 @@ import {
   mix,
   mod,
   sin,
-  storage,
+  instancedArray,
   Fn,
   uint,
   uniform,
@@ -100,7 +99,7 @@ function init() {
     new Vector3(0, 1, 0),
     new Vector3(1, 0, -0.5).normalize(),
   ]);
-  const attractorsLength = uniform(attractorsPositions.array.length);
+  const attractorsLength = uniform(attractorsPositions.array.length, "uint");
   const attractors = [];
   const helpersRingGeometry = new RingGeometry(
     1,
@@ -183,16 +182,8 @@ function init() {
   const colorA = uniform(color("#5900ff"));
   const colorB = uniform(color("#ffa575"));
 
-  const positionBuffer = storage(
-    new StorageInstancedBufferAttribute(count, 3),
-    "vec3",
-    count
-  );
-  const velocityBuffer = storage(
-    new StorageInstancedBufferAttribute(count, 3),
-    "vec3",
-    count
-  );
+  const positionBuffer = instancedArray(count, "vec3");
+  const velocityBuffer = instancedArray(count, "vec3");
 
   const sphericalToVec3 = Fn(([phi, theta]) => {
     const sinPhiRadius = sin(phi);

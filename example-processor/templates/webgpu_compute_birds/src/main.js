@@ -14,7 +14,6 @@ import {
   Mesh,
   WebGPURenderer,
   NeutralToneMapping,
-  StorageBufferAttribute,
   Vector3,
   NodeMaterial,
   DoubleSide,
@@ -31,6 +30,7 @@ import {
   mat3,
   uint,
   negate,
+  attributeArray,
   cameraProjectionMatrix,
   cameraViewMatrix,
   positionLocal,
@@ -39,8 +39,6 @@ import {
   attribute,
   property,
   float,
-  storage,
-  storageObject,
   Fn,
   If,
   cos,
@@ -162,7 +160,7 @@ function init() {
 
   //
 
-  renderer = new WebGPURenderer({ antialiasing: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -198,50 +196,24 @@ function init() {
     phaseArray[i] = 1;
   }
 
-  // Create storage buffer attributes.
-
-  const positionBufferAttribute = new StorageBufferAttribute(positionArray, 3);
-  const velocityBufferAttribute = new StorageBufferAttribute(velocityArray, 3);
-  const phaseBufferAttribute = new StorageBufferAttribute(phaseArray, 1);
-
   // Labels applied to storage nodes and uniform nodes are reflected within the shader output,
   // and are useful for debugging purposes.
 
-  // Access storage buffer attribute data from within shaders with a StorageNode.
+  const positionStorage = attributeArray(positionArray, "vec3").label(
+    "positionStorage"
+  );
+  const velocityStorage = attributeArray(velocityArray, "vec3").label(
+    "velocityStorage"
+  );
+  const phaseStorage = attributeArray(phaseArray, "float").label(
+    "phaseStorage"
+  );
 
-  const positionStorage = storage(
-    positionBufferAttribute,
-    "vec3",
-    positionBufferAttribute.count
-  ).label("positionStorage");
-  const velocityStorage = storage(
-    velocityBufferAttribute,
-    "vec3",
-    velocityBufferAttribute.count
-  ).label("velocityStorage");
-  const phaseStorage = storage(
-    phaseBufferAttribute,
-    "float",
-    phaseBufferAttribute.count
-  ).label("phaseStorage");
+  // The Pixel Buffer Object (PBO) is required to get the GPU computed data in the WebGL2 fallback.
 
-  // Create read-only storage nodes. Storage nodes can only be accessed outside of compute shaders in a read-only state.
-
-  const positionRead = storageObject(
-    positionBufferAttribute,
-    "vec3",
-    positionBufferAttribute.count
-  ).toReadOnly();
-  const velocityRead = storageObject(
-    velocityBufferAttribute,
-    "vec3",
-    velocityBufferAttribute.count
-  ).toReadOnly();
-  const phaseRead = storageObject(
-    phaseBufferAttribute,
-    "float",
-    phaseBufferAttribute.count
-  ).toReadOnly();
+  positionStorage.setPBO(true);
+  velocityStorage.setPBO(true);
+  phaseStorage.setPBO(true);
 
   // Define Uniforms. Uniforms only need to be defined once rather than per shader.
 
@@ -268,8 +240,8 @@ function init() {
     const birdVertex = attribute("birdVertex");
 
     const position = positionLocal.toVar();
-    const newPhase = phaseRead.element(reference).toVar();
-    const newVelocity = normalize(velocityRead.element(reference)).toVar();
+    const newPhase = phaseStorage.element(reference).toVar();
+    const newVelocity = normalize(velocityStorage.element(reference)).toVar();
 
     If(birdVertex.equal(4).or(birdVertex.equal(7)), () => {
       // flap wings
@@ -295,16 +267,18 @@ function init() {
     const matz = mat3(cosrz, sinrz, 0, negate(sinrz), cosrz, 0, 0, 0, 1);
 
     const finalVert = maty.mul(matz).mul(newPosition);
-    finalVert.addAssign(positionRead.element(reference));
+    finalVert.addAssign(positionStorage.element(reference));
 
     return cameraProjectionMatrix.mul(cameraViewMatrix).mul(finalVert);
   });
 
   birdMaterial.vertexNode = birdVertexTSL();
   birdMaterial.side = DoubleSide;
+
   const birdMesh = new Mesh(birdGeometry, birdMaterial);
   birdMesh.rotation.y = Math.PI / 2;
   birdMesh.matrixAutoUpdate = false;
+  birdMesh.frustumCulled = false;
   birdMesh.updateMatrix();
 
   // Define GPU Compute shaders.

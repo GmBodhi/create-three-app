@@ -1,6 +1,8 @@
 <html>
   <head>
-    <title>three.js webgpu - postprocessing - Screen Space Reflection</title>
+    <title>
+      three.js webgpu - postprocessing - Screen Space Reflections (SSR)
+    </title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -9,18 +11,30 @@
   </head>
 
   <body style="overflow: hidden">
-    <div id="container"></div>
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - SSR demo by
-      <a href="https://github.com/gonnavis" target="_blank">Vis</a>.<br />
+      webgpu - postprocessing - screen space reflections<br />
+      <a href="https://skfb.ly/6tqYD" target="_blank" rel="noopener"
+        >Steampunk Camera</a
+      >
+      by
+      <a href="https://sketchfab.com/lumoize" target="_blank" rel="noopener"
+        >dylanheyes</a
+      >
+      is licensed under
+      <a
+        href="https://creativecommons.org/licenses/by/4.0/"
+        target="_blank"
+        rel="noopener"
+        >Creative Commons Attribution</a
+      >.<br />
     </div>
-
     <script type="importmap">
       {
         "imports": {
           "three": "../build/three.webgpu.js",
-          "three/tsl": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
           "three/addons/": "./jsm/"
         }
       }

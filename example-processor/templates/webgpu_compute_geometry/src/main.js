@@ -55,11 +55,7 @@ const jelly = Fn(({ renderer, geometry, object }) => {
 
   // attributes
 
-  const positionAttribute = storage(
-    positionBaseAttribute,
-    "vec3",
-    count
-  ).toReadOnly();
+  const positionAttribute = storage(positionBaseAttribute, "vec3", count);
   const positionStorageAttribute = storage(
     positionStorageBufferAttribute,
     "vec3",

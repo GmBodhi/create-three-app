@@ -139,7 +139,7 @@ function init() {
 
   // shadow
 
-  slicedMaterial.shadowNode = Fn(() => {
+  slicedMaterial.castShadowNode = Fn(() => {
     // discard
 
     inAngle(positionLocal.xy, sliceStart, sliceArc).discard();

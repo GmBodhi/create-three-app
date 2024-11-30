@@ -10,7 +10,6 @@ import {
   HalfFloatType,
   NearestFilter,
   MeshBasicNodeMaterial,
-  StorageInstancedBufferAttribute,
   DoubleSide,
   Mesh,
   PlaneGeometry,
@@ -27,6 +26,7 @@ import {
   texture,
   uv,
   uint,
+  instancedArray,
   positionWorld,
   billboarding,
   time,
@@ -35,7 +35,6 @@ import {
   vec2,
   instanceIndex,
   positionGeometry,
-  storage,
   If,
 } from "three/tsl";
 
@@ -106,17 +105,10 @@ function init() {
 
   //
 
-  const createBuffer = (type = "vec3") =>
-    storage(
-      new StorageInstancedBufferAttribute(maxParticleCount, 3),
-      type,
-      maxParticleCount
-    );
-
-  const positionBuffer = createBuffer();
-  const velocityBuffer = createBuffer();
-  const ripplePositionBuffer = createBuffer();
-  const rippleTimeBuffer = createBuffer();
+  const positionBuffer = instancedArray(maxParticleCount, "vec3");
+  const velocityBuffer = instancedArray(maxParticleCount, "vec3");
+  const ripplePositionBuffer = instancedArray(maxParticleCount, "vec3");
+  const rippleTimeBuffer = instancedArray(maxParticleCount, "vec3");
 
   // compute
 

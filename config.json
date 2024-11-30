@@ -507,13 +507,10 @@
       "files": {
         "index.html": "src",
         "main.js": "src",
-        "fragmentShader.glsl": "src/shaders",
-        "vertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
       "dirs": [
-        "/src",
-        "/src/shaders"
+        "/src"
       ]
     },
     "webgl_buffergeometry_attributes_none": {
@@ -3876,6 +3873,16 @@
         "/src"
       ]
     },
+    "webgpu_lights_physical": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lights_rectarealight": {
       "files": {
         "index.html": "src",
@@ -3887,6 +3894,16 @@
       ]
     },
     "webgpu_lights_selective": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lights_spotlight": {
       "files": {
         "index.html": "src",
         "main.js": "src",

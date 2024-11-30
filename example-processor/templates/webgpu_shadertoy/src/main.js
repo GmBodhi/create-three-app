@@ -5,16 +5,7 @@ import example2_ from "./shaders/example2.glsl";
 
 import "./style.css"; // For webpack support
 
-import {
-  Node,
-  OrthographicCamera,
-  Scene,
-  PlaneGeometry,
-  MeshBasicNodeMaterial,
-  Mesh,
-  WebGPURenderer,
-  LinearSRGBColorSpace,
-} from "three";
+import * as THREE from "three/webgpu";
 import * as TSL from "three/tsl";
 
 import Transpiler from "three/addons/transpiler/Transpiler.js";

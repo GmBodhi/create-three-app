@@ -106,7 +106,7 @@ function init() {
     return materialColor;
   })();
 
-  materialCustomShadow.shadowNode = Fn(() => {
+  materialCustomShadow.castShadowNode = Fn(() => {
     discardNode.discard();
 
     return materialColor;
