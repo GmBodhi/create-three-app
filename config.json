@@ -1786,36 +1786,6 @@
         "/src"
       ]
     },
-    "webgl_loader_mmd": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_loader_mmd_audio": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_loader_mmd_pose": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_nrrd": {
       "files": {
         "index.html": "src",
