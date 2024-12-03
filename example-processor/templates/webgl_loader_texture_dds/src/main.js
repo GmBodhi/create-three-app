@@ -26,10 +26,11 @@ function init() {
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
-    0.1,
+    1,
     100
   );
-  camera.position.z = 15;
+  camera.position.y = -2;
+  camera.position.z = 16;
 
   scene = new Scene();
 
@@ -91,6 +92,9 @@ function init() {
   );
   map10.anisotropy = 4;
 
+  const map11 = loader.load("textures/wave_normals_24bit_uncompressed.dds");
+  map11.anisotropy = 4;
+
   const cubemap1 = loader.load(
     "textures/compressed/Mountains.dds",
     function (texture) {
@@ -146,6 +150,7 @@ function init() {
   const material10 = new MeshBasicMaterial({ map: map8 });
   const material11 = new MeshBasicMaterial({ map: map9 });
   const material12 = new MeshBasicMaterial({ map: map10 });
+  const material13 = new MeshBasicMaterial({ map: map11 });
 
   let mesh = new Mesh(new TorusGeometry(), material1);
   mesh.position.x = -10;
@@ -216,6 +221,12 @@ function init() {
   mesh = new Mesh(geometry, material12);
   mesh.position.x = 10;
   mesh.position.y = 2;
+  scene.add(mesh);
+  meshes.push(mesh);
+
+  mesh = new Mesh(geometry, material13);
+  mesh.position.x = -10;
+  mesh.position.y = -6;
   scene.add(mesh);
   meshes.push(mesh);
 

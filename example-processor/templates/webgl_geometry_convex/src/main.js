@@ -81,7 +81,7 @@ function init() {
 
   let dodecahedronGeometry = new DodecahedronGeometry(10);
 
-  // if normal and uv attributes are not removed, mergeVertices() can't consolidate indentical vertices with different normal/uv data
+  // if normal and uv attributes are not removed, mergeVertices() can't consolidate identical vertices with different normal/uv data
 
   dodecahedronGeometry.deleteAttribute("normal");
   dodecahedronGeometry.deleteAttribute("uv");
