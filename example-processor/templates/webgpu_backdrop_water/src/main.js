@@ -223,7 +223,7 @@ function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer(/*{ antialias: true }*/);
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
