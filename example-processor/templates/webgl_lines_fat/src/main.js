@@ -140,7 +140,7 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
 
-  stats = new Stats({ horizontal: false });
+  stats = new Stats({ horizontal: false, trackGPU: true });
   stats.init(renderer);
   document.body.appendChild(stats.dom);
 
