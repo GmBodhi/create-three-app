@@ -136,8 +136,8 @@ function init() {
     );
 
     const shading = map
-      .uv(probe.add(vec3(-0.01)))
-      .r.sub(map.uv(probe.add(vec3(0.01))).r);
+      .sample(probe.add(vec3(-0.01)))
+      .r.sub(map.sample(probe.add(vec3(0.01))).r);
 
     const col = shading.mul(3.0).add(probe.x.add(probe.y).mul(0.25)).add(0.2);
 
