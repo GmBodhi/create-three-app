@@ -9,7 +9,7 @@ import {
   Sprite,
   WebGPURenderer,
 } from "three";
-import { texture, uv, userData, rangeFog, color } from "three/tsl";
+import { texture, uv, userData, fog, rangeFogFactor, color } from "three/tsl";
 
 let camera, scene, renderer;
 
@@ -30,7 +30,7 @@ function init() {
   camera.position.z = 1500;
 
   scene = new Scene();
-  scene.fogNode = rangeFog(color(0x0000ff), 1500, 2100);
+  scene.fogNode = fog(color(0x0000ff), rangeFogFactor(1500, 2100));
 
   // create sprites
 

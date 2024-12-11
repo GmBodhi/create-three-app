@@ -13,7 +13,8 @@ import {
 } from "three";
 import {
   color,
-  rangeFog,
+  fog,
+  rangeFogFactor,
   checker,
   uv,
   mix,
@@ -41,7 +42,7 @@ function init() {
   camera.position.z = 7;
 
   scene = new Scene();
-  scene.fogNode = rangeFog(color(0xff00ff), 12, 30);
+  scene.fogNode = fog(color(0xff00ff), rangeFogFactor(12, 30));
 
   const sphereGeometry = new SphereGeometry(0.1, 16, 8);
 
