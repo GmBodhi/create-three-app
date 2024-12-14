@@ -297,13 +297,17 @@ function animate(t, frame) {
   const gl = renderer.getContext();
 
   // Init layers once in immersive mode and video is ready.
-  if (session && session.renderState.layers === undefined) {
+  const useLayers =
+    session.enabledFeatures !== undefined &&
+    session.enabledFeatures.includes("layers");
+
+  if (session && !useLayers) {
     errorMesh.visible = true;
   }
 
   if (
     session &&
-    session.renderState.layers !== undefined &&
+    useLayers &&
     session.hasMediaLayer === undefined &&
     video.readyState >= 2
   ) {
