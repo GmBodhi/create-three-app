@@ -12,7 +12,7 @@ import {
   Color,
 } from "three";
 import {
-  storageObject,
+  storage,
   If,
   vec3,
   not,
@@ -111,26 +111,27 @@ async function init(forceGlobalSwap = false) {
     1
   );
 
-  const nextAlgoStorage = storageObject(
-    nextAlgoBuffer,
-    "uint",
-    nextAlgoBuffer.count
-  ).label("NextAlgo");
+  const nextAlgoStorage = storage(nextAlgoBuffer, "uint", nextAlgoBuffer.count)
+    .setPBO(true)
+    .label("NextAlgo");
 
   const nextBlockHeightBuffer = new StorageInstancedBufferAttribute(
     new Uint32Array(1).fill(2),
     1
   );
-  const nextBlockHeightStorage = storageObject(
-    nextBlockHeightBuffer,
-    "uint",
-    nextBlockHeightBuffer.count
-  ).label("NextBlockHeight");
-  const nextBlockHeightRead = storageObject(
+  const nextBlockHeightStorage = storage(
     nextBlockHeightBuffer,
     "uint",
     nextBlockHeightBuffer.count
   )
+    .setPBO(true)
+    .label("NextBlockHeight");
+  const nextBlockHeightRead = storage(
+    nextBlockHeightBuffer,
+    "uint",
+    nextBlockHeightBuffer.count
+  )
+    .setPBO(true)
     .label("NextBlockHeight")
     .toReadOnly();
 
@@ -138,18 +139,17 @@ async function init(forceGlobalSwap = false) {
     new Uint32Array(1).fill(2),
     1
   );
-  const highestBlockHeightStorage = storageObject(
+  const highestBlockHeightStorage = storage(
     highestBlockHeightBuffer,
     "uint",
     highestBlockHeightBuffer.count
-  ).label("HighestBlockHeight");
+  )
+    .setPBO(true)
+    .label("HighestBlockHeight");
 
   const counterBuffer = new StorageBufferAttribute(1, 1);
-  const counterStorage = storageObject(
-    counterBuffer,
-    "uint",
-    counterBuffer.count
-  )
+  const counterStorage = storage(counterBuffer, "uint", counterBuffer.count)
+    .setPBO(true)
     .toAtomic()
     .label("Counter");
 
@@ -174,19 +174,21 @@ async function init(forceGlobalSwap = false) {
   randomizeDataArray();
 
   const currentElementsBuffer = new StorageInstancedBufferAttribute(array, 1);
-  const currentElementsStorage = storageObject(
-    currentElementsBuffer,
-    "uint",
-    size
-  ).label("Elements");
+  const currentElementsStorage = storage(currentElementsBuffer, "uint", size)
+    .setPBO(true)
+    .label("Elements");
   const tempBuffer = new StorageInstancedBufferAttribute(array, 1);
-  const tempStorage = storageObject(tempBuffer, "uint", size).label("Temp");
+  const tempStorage = storage(tempBuffer, "uint", size)
+    .setPBO(true)
+    .label("Temp");
   const randomizedElementsBuffer = new StorageInstancedBufferAttribute(size, 1);
-  const randomizedElementsStorage = storageObject(
+  const randomizedElementsStorage = storage(
     randomizedElementsBuffer,
     "uint",
     size
-  ).label("RandomizedElements");
+  )
+    .setPBO(true)
+    .label("RandomizedElements");
 
   const getFlipIndices = (index, blockHeight) => {
     const blockOffset = index.mul(2).div(blockHeight).mul(blockHeight);
