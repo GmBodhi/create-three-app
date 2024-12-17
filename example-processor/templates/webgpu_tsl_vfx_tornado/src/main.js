@@ -20,7 +20,7 @@ import {
   float,
   min,
   time,
-  atan2,
+  atan,
   uniform,
   pass,
   PI,
@@ -70,7 +70,7 @@ function init() {
   const toRadialUv = Fn(([uv, multiplier, rotation, offset]) => {
     const centeredUv = uv.sub(0.5).toVar();
     const distanceToCenter = centeredUv.length();
-    const angle = atan2(centeredUv.y, centeredUv.x);
+    const angle = atan(centeredUv.y, centeredUv.x);
     const radialUv = vec2(angle.add(PI).div(PI2), distanceToCenter).toVar();
     radialUv.mulAssign(multiplier);
     radialUv.x.addAssign(rotation);
@@ -85,7 +85,7 @@ function init() {
 
   const twistedCylinder = Fn(
     ([position, parabolStrength, parabolOffset, parabolAmplitude, time]) => {
-      const angle = atan2(position.z, position.x).toVar();
+      const angle = atan(position.z, position.x).toVar();
       const elevation = position.y;
 
       // parabol

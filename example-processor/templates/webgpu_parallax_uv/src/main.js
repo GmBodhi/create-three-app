@@ -88,7 +88,7 @@ async function init() {
   bottomTexture.wrapS = RepeatWrapping;
   bottomTexture.wrapT = RepeatWrapping;
 
-  // paralax effect
+  // parallax effect
 
   const parallaxScale = 0.3;
   const offsetUV = texture(displaceTexture).mul(parallaxScale);

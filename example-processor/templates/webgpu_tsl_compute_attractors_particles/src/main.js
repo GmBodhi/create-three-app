@@ -241,7 +241,7 @@ function init() {
     // const delta = timerDelta().mul( timeScale ).min( 1 / 30 ).toVar();
     const delta = float(1 / 60)
       .mul(timeScale)
-      .toVar(); // uses fixed delta to consistant result
+      .toVar(); // uses fixed delta to consistent result
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
 

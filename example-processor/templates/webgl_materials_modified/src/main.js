@@ -84,7 +84,7 @@ function buildTwistMaterial(amount) {
     material.userData.shader = shader;
   };
 
-  // Make sure WebGLRenderer doesnt reuse a single program
+  // Make sure WebGLRenderer doesn't reuse a single program
 
   material.customProgramCacheKey = function () {
     return amount.toFixed(1);

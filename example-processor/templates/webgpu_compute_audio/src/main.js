@@ -92,9 +92,14 @@ async function init() {
 
   waveArray = instancedArray(waveBuffer);
 
+  // read-only buffer
+
+  const originalWave = instancedArray(waveBuffer).toReadOnly();
+
   // The Pixel Buffer Object (PBO) is required to get the GPU computed data to the CPU in the WebGL2 fallback.
   // As used in `renderer.getArrayBufferAsync( waveArray.value )`.
 
+  originalWave.setPBO(true);
   waveArray.setPBO(true);
 
   // params
@@ -112,12 +117,12 @@ async function init() {
 
     const time = index.mul(pitch);
 
-    let wave = waveArray.element(time);
+    let wave = originalWave.element(time);
 
     // delay
 
     for (let i = 1; i < 7; i++) {
-      const waveOffset = waveArray.element(
+      const waveOffset = originalWave.element(
         index.sub(delayOffset.mul(sampleRate).mul(i)).mul(pitch)
       );
       const waveOffsetVolume = waveOffset.mul(delayVolume.div(i * i));
@@ -182,6 +187,7 @@ async function init() {
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
+  document.addEventListener("click", playAudioBuffer);
 
   playAudioBuffer();
 }

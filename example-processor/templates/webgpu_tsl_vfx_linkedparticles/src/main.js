@@ -27,7 +27,7 @@ import {
   PostProcessing,
 } from "three";
 import {
-  atan2,
+  atan,
   cos,
   float,
   max,
@@ -166,7 +166,7 @@ function init() {
   particleMaterial.depthWrite = false;
   particleMaterial.positionNode = particlePositions.toAttribute();
   particleMaterial.scaleNode = vec2(particleSize);
-  particleMaterial.rotationNode = atan2(
+  particleMaterial.rotationNode = atan(
     particleVelocities.toAttribute().y,
     particleVelocities.toAttribute().x
   );
@@ -466,7 +466,7 @@ function init() {
   bloomFolder.add(bloomPass.radius, "value", 0, 1, 0.01).name("Radius");
 }
 
-function onWindowResize(e) {
+function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
@@ -483,10 +483,10 @@ function updatePointer() {
   raycaster.ray.intersectPlane(raycastPlane, scenePointer);
 }
 
-async function animate() {
+function animate() {
   // compute particles
-  await renderer.computeAsync(updateParticles);
-  await renderer.computeAsync(spawnParticles);
+  renderer.compute(updateParticles);
+  renderer.compute(spawnParticles);
 
   // update particle index for next spawn
   spawnIndex.value = (spawnIndex.value + nbToSpawn.value) % nbParticles;
@@ -512,5 +512,5 @@ async function animate() {
 
   controls.update();
 
-  postProcessing.renderAsync();
+  postProcessing.render();
 }

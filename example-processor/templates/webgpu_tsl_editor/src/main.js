@@ -8,7 +8,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 init();
 
 function init() {
-  // add the depedencies
+  // add the dependencies
 
   const width = 200;
   const height = 200;
