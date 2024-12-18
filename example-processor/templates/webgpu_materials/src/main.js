@@ -267,7 +267,6 @@ function init() {
 
   // Scriptable
 
-  ScriptableNodeResources.set("THREE", THREE);
   ScriptableNodeResources.set("TSL", TSL);
 
   const asyncNode = scriptable(
@@ -439,7 +438,7 @@ function moduleToLib(module) {
 function testSerialization(mesh) {
   const json = mesh.toJSON();
   const loader = new NodeObjectLoader()
-    .setNodes(moduleToLib(TSL))
+    .setNodes(moduleToLib(THREE))
     .setNodeMaterials(moduleToLib(THREE));
   const serializedMesh = loader.parse(json);
 

@@ -205,10 +205,15 @@ function init() {
 
   const mBlur = motionBlur(beauty, vel);
 
-  const vignet = screenUV.distance(0.5).remap(0.6, 1).mul(2).clamp().oneMinus();
+  const vignette = screenUV
+    .distance(0.5)
+    .remap(0.6, 1)
+    .mul(2)
+    .clamp()
+    .oneMinus();
 
   postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = mix(mBlur, vel, showVelocity).mul(vignet);
+  postProcessing.outputNode = mix(mBlur, vel, showVelocity).mul(vignette);
 
   //
 

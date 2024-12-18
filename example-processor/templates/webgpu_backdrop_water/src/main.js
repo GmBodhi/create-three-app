@@ -265,12 +265,12 @@ function init() {
     scenePass.getLinearDepthNode().mul(5)
   );
 
-  const vignet = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignette = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = waterMask.select(
     scenePassColorBlurred,
-    scenePassColorBlurred.mul(color(0x74ccf4)).mul(vignet)
+    scenePassColorBlurred.mul(color(0x74ccf4)).mul(vignette)
   );
 
   //

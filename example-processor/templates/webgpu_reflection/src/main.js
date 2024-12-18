@@ -162,10 +162,10 @@ function init() {
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = scenePassDepth;
 
-  const vignet = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignette = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = scenePassColorBlurred.mul(vignet);
+  postProcessing.outputNode = scenePassColorBlurred.mul(vignette);
 
   //
 
