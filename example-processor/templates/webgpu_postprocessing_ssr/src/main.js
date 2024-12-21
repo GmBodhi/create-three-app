@@ -3,7 +3,9 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  FrontSide,
   WebGPURenderer,
+  ACESFilmicToneMapping,
   PMREMGenerator,
   PostProcessing,
   NearestFilter,
@@ -19,6 +21,7 @@ import {
   color,
 } from "three/tsl";
 import { ssr } from "three/addons/tsl/display/SSRNode.js";
+import { smaa } from "three/addons/tsl/display/SMAANode.js";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -28,7 +31,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
 
 const params = {
-  maxDistance: 0.2,
+  maxDistance: 0.5,
   opacity: 1,
   thickness: 0.015,
   enabled: true,
@@ -46,13 +49,13 @@ async function init() {
     0.1,
     50
   );
-  camera.position.set(2.5, 2, 2.5);
+  camera.position.set(3, 2, 3);
 
   scene = new Scene();
   scene.backgroundNode = screenUV
     .distance(0.5)
     .remap(0, 0.5)
-    .mix(color(0x666666), color(0x393939));
+    .mix(color(0x888877), color(0x776666));
 
   const dracoLoader = new DRACOLoader();
   dracoLoader.setDecoderPath("jsm/libs/draco/");
@@ -61,6 +64,14 @@ async function init() {
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);
   loader.load("models/gltf/steampunk_camera.glb", function (gltf) {
+    gltf.scene.traverse(function (object) {
+      if (object.material) {
+        // Avoid overdrawing
+        object.material.side = FrontSide;
+      }
+    });
+
+    gltf.scene.position.y = 0.1;
     scene.add(gltf.scene);
   });
 
@@ -70,6 +81,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 
   await renderer.init();
@@ -78,7 +90,7 @@ async function init() {
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.environment = pmremGenerator.fromScene(environment).texture;
-  scene.environmentIntensity = 0.75;
+  scene.environmentIntensity = 1.25;
   pmremGenerator.dispose();
 
   //
@@ -109,10 +121,11 @@ async function init() {
     scenePassMetalness,
     camera
   );
+  ssrPass.resolutionScale = 1.0;
 
   // blend SSR over beauty
 
-  const outputNode = blendColor(scenePassColor, ssrPass);
+  const outputNode = smaa(blendColor(scenePassColor, ssrPass));
 
   postProcessing.outputNode = outputNode;
 
