@@ -4603,6 +4603,16 @@
         "/src"
       ]
     },
+    "webgpu_rendertarget_2d-array_3d": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_rtt": {
       "files": {
         "index.html": "src",
