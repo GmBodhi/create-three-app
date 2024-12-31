@@ -78,7 +78,7 @@ async function init() {
   //
 
   renderer = new WebGPURenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
+  // renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
