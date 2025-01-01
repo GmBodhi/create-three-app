@@ -41,7 +41,6 @@ function init() {
   camera.position.set(1300, 500, 0);
 
   scene = new Scene();
-  //scene.fogNode = rangeFog( color( 0x0000ff ), 1500, 2100 );
 
   // textures
 

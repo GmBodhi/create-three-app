@@ -348,7 +348,7 @@ function init() {
         const dirToBird = birdPosition.sub(position);
         const distToBird = length(dirToBird);
 
-        // Don't apply any changes to velocity if the distance to this bird is negligable.
+        // Don't apply any changes to velocity if the distance to this bird is negligible.
         If(distToBird.lessThan(0.0001), () => {
           Continue();
         });

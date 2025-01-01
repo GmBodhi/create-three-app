@@ -4,7 +4,7 @@ import {
   PerspectiveCamera,
   Scene,
   WebGPURenderer,
-  Color,
+  CubeTextureLoader,
   Mesh,
   SphereGeometry,
   MeshBasicMaterial,
@@ -51,8 +51,18 @@ async function init() {
   controls.update();
 
   //
+  const loader = new CubeTextureLoader().setPath(
+    "three/examples/textures/cube/Park3Med/"
+  );
 
-  scene.background = new Color(0x006699);
+  scene.background = await loader.loadAsync([
+    "px.jpg",
+    "nx.jpg",
+    "py.jpg",
+    "ny.jpg",
+    "pz.jpg",
+    "nz.jpg",
+  ]);
 
   let model;
 
@@ -101,9 +111,6 @@ async function init() {
   //while ( scene.children.length > 0 ) scene.remove( scene.children[ 0 ] );
 
   const sceneRT = new PMREMGenerator(renderer).fromScene(scene);
-
-  scene.background = null;
-  scene.backgroundNode = null;
 
   //
 

@@ -1,5 +1,13 @@
+.viewport-label {
+  position: absolute;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-family: monospace;
+  z-index: 1000;
+}
 body {
-  background: #fff;
   margin: 0;
   background-color: #000;
   color: #fff;
@@ -27,6 +35,11 @@ button {
   top: 0;
   width: 100%;
 }
+#info,
+.viewport-label {
+  user-select: none;
+  pointer-events: none;
+}
 #info {
   padding: 10px;
   box-sizing: border-box;
@@ -34,8 +47,6 @@ button {
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
-  user-select: none;
-  pointer-events: none;
   z-index: 1;
 }
 button,

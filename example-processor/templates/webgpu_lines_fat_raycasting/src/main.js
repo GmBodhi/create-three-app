@@ -4,8 +4,9 @@ import {
   Color,
   Vector2,
   Raycaster,
+  Line2NodeMaterial,
   Clock,
-  WebGLRenderer,
+  WebGPURenderer,
   Scene,
   PerspectiveCamera,
   SphereGeometry,
@@ -22,10 +23,9 @@ import Stats from "stats-gl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { LineMaterial } from "three/addons/lines/LineMaterial.js";
-import { LineSegments2 } from "three/addons/lines/LineSegments2.js";
+import { LineSegments2 } from "three/addons/lines/webgpu/LineSegments2.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
-import { Line2 } from "three/addons/lines/Line2.js";
+import { Line2 } from "three/addons/lines/webgpu/Line2.js";
 import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 
 let line, thresholdLine, segments, thresholdSegments;
@@ -44,7 +44,7 @@ const raycaster = new Raycaster();
 raycaster.params.Line2 = {};
 raycaster.params.Line2.threshold = 0;
 
-const matLine = new LineMaterial({
+const matLine = new Line2NodeMaterial({
   color: 0xffffff,
   linewidth: 1, // in world units with size attenuation, pixels otherwise
   worldUnits: true,
@@ -53,7 +53,7 @@ const matLine = new LineMaterial({
   alphaToCoverage: true,
 });
 
-const matThresholdLine = new LineMaterial({
+const matThresholdLine = new Line2NodeMaterial({
   color: 0xffffff,
   linewidth: matLine.linewidth, // in world units with size attenuation, pixels otherwise
   worldUnits: true,
@@ -80,7 +80,7 @@ init();
 function init() {
   clock = new Clock();
 
-  renderer = new WebGLRenderer({ antialias: true, alpha: true });
+  renderer = new WebGPURenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000000, 0.0);
@@ -204,7 +204,7 @@ function onPointerMove(event) {
   pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
 }
 
-function animate() {
+async function animate() {
   const delta = clock.getDelta();
 
   const obj = line.visible ? line : segments;
@@ -245,7 +245,7 @@ function animate() {
     renderer.domElement.style.cursor = "";
   }
 
-  renderer.render(scene, camera);
+  await renderer.renderAsync(scene, camera);
 
   stats.update();
 }

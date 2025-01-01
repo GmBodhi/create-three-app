@@ -329,7 +329,7 @@ function render() {
   splineCamera.position.copy(position);
   cameraEye.position.copy(position);
 
-  // using arclength for stablization in look ahead
+  // using arclength for stabilization in look ahead
 
   tubeGeometry.parameters.path.getPointAt(
     (t + 30 / tubeGeometry.parameters.path.getLength()) % 1,

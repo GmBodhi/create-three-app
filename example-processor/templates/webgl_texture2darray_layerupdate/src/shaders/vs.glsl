@@ -1,7 +1,7 @@
 
 	uniform vec2 size;
 	attribute uint instancedIndex;
-	flat out uint diffuseIndex; 
+	flat out uint diffuseIndex;
 	out vec2 vUv;
 
 	void main() {

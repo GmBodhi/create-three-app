@@ -18,7 +18,7 @@ import {
 import {
   If,
   PI2,
-  atan2,
+  atan,
   color,
   frontFacing,
   output,
@@ -82,10 +82,7 @@ function init() {
   // TSL functions
 
   const inAngle = Fn(([position, angleStart, angleArc]) => {
-    const angle = atan2(position.y, position.x)
-      .sub(angleStart)
-      .mod(PI2)
-      .toVar();
+    const angle = atan(position.y, position.x).sub(angleStart).mod(PI2).toVar();
     return angle.greaterThan(0).and(angle.lessThan(angleArc));
   });
 

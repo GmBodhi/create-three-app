@@ -29,7 +29,7 @@ import {
   Fn,
   vec2,
   length,
-  atan2,
+  atan,
   float,
   sin,
   cos,
@@ -80,7 +80,7 @@ export const lightSpeed = /*#__PURE__*/ Fn(([suv_immutable]) => {
   // forked from https://www.shadertoy.com/view/7ly3D1
 
   const suv = vec2(suv_immutable);
-  const uv = vec2(length(suv), atan2(suv.y, suv.x));
+  const uv = vec2(length(suv), atan(suv.y, suv.x));
   const offset = float(
     float(0.1)
       .mul(sin(uv.y.mul(10).sub(time.mul(0.6))))

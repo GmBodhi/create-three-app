@@ -41,7 +41,7 @@ function init() {
   );
   scene.add(camera);
 
-  // Create the panoramic sphere geometery
+  // Create the panoramic sphere geometry
   const panoSphereGeo = new SphereGeometry(6, 256, 256);
 
   // Create the panoramic sphere material

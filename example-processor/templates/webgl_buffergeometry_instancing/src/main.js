@@ -93,7 +93,7 @@ function init() {
   }
 
   const geometry = new InstancedBufferGeometry();
-  geometry.instanceCount = instances; // set so its initalized for dat.GUI, will be set in first draw otherwise
+  geometry.instanceCount = instances; // set so its initialized for dat.GUI, will be set in first draw otherwise
 
   geometry.setAttribute("position", new Float32BufferAttribute(positions, 3));
 

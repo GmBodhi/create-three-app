@@ -9,7 +9,7 @@ import {
   PostProcessing,
   EquirectangularReflectionMapping,
 } from "three";
-import { pass, color, rangeFog } from "three/tsl";
+import { pass, color, rangeFogFactor } from "three/tsl";
 
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
@@ -52,7 +52,7 @@ function init() {
 
   // get fog factor from scene pass context
   // equivalent to: scene.fog = new Fog( 0x0066ff, 2.7, 4 );
-  const fogFactor = rangeFog(null, 2.7, 4).context({
+  const fogFactor = rangeFogFactor(2.7, 4).context({
     getViewZ: () => scenePassViewZ,
   });
 

@@ -1786,36 +1786,6 @@
         "/src"
       ]
     },
-    "webgl_loader_mmd": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_loader_mmd_audio": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_loader_mmd_pose": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_nrrd": {
       "files": {
         "index.html": "src",
@@ -3543,6 +3513,16 @@
         "/src"
       ]
     },
+    "webgpu_camera": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_camera_logarithmicdepthbuffer": {
       "files": {
         "index.html": "src",
@@ -3924,6 +3904,16 @@
       ]
     },
     "webgpu_lines_fat": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lines_fat_raycasting": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4604,6 +4594,16 @@
       ]
     },
     "webgpu_refraction": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_rendertarget_2d-array_3d": {
       "files": {
         "index.html": "src",
         "main.js": "src",

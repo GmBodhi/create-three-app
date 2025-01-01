@@ -79,7 +79,7 @@ function init() {
     5
   );
 
-  // if normal and uv attributes are not removed, mergeVertices() can't consolidate indentical vertices with different normal/uv data
+  // if normal and uv attributes are not removed, mergeVertices() can't consolidate identical vertices with different normal/uv data
 
   boxGeometry1.deleteAttribute("normal");
   boxGeometry1.deleteAttribute("uv");

@@ -5,7 +5,7 @@ uniform sampler2D map;
 varying vec2 vUv;
 varying float vScale;
 
-// HSL to RGB Convertion helpers
+// HSL to RGB Conversion helpers
 vec3 HUEtoRGB(float H) {
   H = mod(H, 1.0);
   float R = abs(H * 6.0 - 3.0) - 1.0;

@@ -32,6 +32,7 @@ const params = {
   envMapIntensity: 1,
   lightIntensity: 1,
   exposure: 1,
+  transmissionResolutionScale: 1,
 };
 
 let camera, scene, renderer;
@@ -170,6 +171,14 @@ function init() {
     renderer.toneMappingExposure = params.exposure;
     render();
   });
+
+  gui
+    .add(params, "transmissionResolutionScale", 0.01, 1, 0.01)
+    .name("transmission resolution")
+    .onChange(function () {
+      renderer.transmissionResolutionScale = params.transmissionResolutionScale;
+      render();
+    });
 
   gui.open();
 }

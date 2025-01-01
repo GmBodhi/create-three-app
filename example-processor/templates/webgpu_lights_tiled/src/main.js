@@ -22,7 +22,7 @@ import {
   NeutralToneMapping,
   PostProcessing,
 } from "three";
-import { texture, uv, pass, uniform } from "three/tsl";
+import { texture, uv, pass, normalMap, uniform } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { TiledLighting } from "three/addons/lighting/TiledLighting.js";
@@ -129,10 +129,12 @@ function init() {
   floorNormal.wrapS = RepeatWrapping;
   floorNormal.wrapT = RepeatWrapping;
 
+  const uvTile = uv().mul(50);
+
   const planeGeometry = new PlaneGeometry(1000, 1000);
   const planeMaterial = new MeshPhongNodeMaterial({
-    colorNode: texture(floorColor, uv().mul(50)),
-    normalMap: floorNormal,
+    colorNode: texture(floorColor, uvTile),
+    normalNode: normalMap(texture(floorNormal, uvTile)),
   });
 
   const ground = new Mesh(planeGeometry, planeMaterial);

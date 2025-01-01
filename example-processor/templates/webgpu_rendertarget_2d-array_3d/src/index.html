@@ -1,0 +1,40 @@
+<html>
+  <head>
+    <title>three.js webgpu - RenderTargetArray and RenderTarget3D</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      - WebGPU - RenderTargetArray and RenderTarget3D<br />
+    </div>
+    <div class="viewport-label" style="bottom: 2%; left: 2%">
+      DataArrayTexture
+    </div>
+    <div class="viewport-label" style="bottom: 2%; left: 52%">
+      Data3DTexture
+    </div>
+    <div class="viewport-label" style="bottom: 52%; left: 52%">
+      RenderTarget3D
+    </div>
+    <div class="viewport-label" style="bottom: 52%; left: 2%">
+      RenderTargetArray
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

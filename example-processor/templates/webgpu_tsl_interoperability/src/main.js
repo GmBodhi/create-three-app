@@ -76,7 +76,7 @@ function init() {
 
   // Only wgsl vertex shaders take varyings arguments when defined.
   // For a wgsl fragment shader, pass the varyingProperty node to the
-  // fragment shader's constructor to acess the varying value computed
+  // fragment shader's constructor to access the varying value computed
   // by the vertex shader.
   const wgslFragmentShader = wgslFn(`
 					fn crtFragment(
