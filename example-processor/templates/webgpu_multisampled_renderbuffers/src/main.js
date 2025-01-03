@@ -56,7 +56,7 @@ init();
 function initGUI() {
   const gui = new GUI();
   gui.add(params, "samples", 0, 4).step(1);
-  gui.add(params, "animated", true);
+  gui.add(params, "animated");
 }
 
 function init() {
