@@ -60,9 +60,9 @@ function init() {
   camera.position.set(-600, 550, 1300);
 
   // LIGHTS
-  ambientLight = new AmbientLight(0x7c7c7c, 3.0);
+  ambientLight = new AmbientLight(0x7c7c7c, 2.0);
 
-  light = new DirectionalLight(0xffffff, 3.0);
+  light = new DirectionalLight(0xffffff, 2.0);
   light.position.set(0.32, 0.39, 0.7);
 
   // RENDERER
@@ -97,7 +97,12 @@ function init() {
     side: DoubleSide,
   });
   materials["smooth"] = new MeshLambertMaterial({ side: DoubleSide });
-  materials["glossy"] = new MeshPhongMaterial({ side: DoubleSide });
+  materials["glossy"] = new MeshPhongMaterial({
+    color: 0xc0c0c0,
+    specular: 0x404040,
+    shininess: 300,
+    side: DoubleSide,
+  });
   materials["textured"] = new MeshPhongMaterial({
     map: textureMap,
     side: DoubleSide,
