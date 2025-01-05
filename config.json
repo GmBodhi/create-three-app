@@ -280,6 +280,16 @@
         "/src"
       ]
     },
+    "misc_raycaster_helper": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "misc_uv_tests": {
       "files": {
         "index.html": "src",
