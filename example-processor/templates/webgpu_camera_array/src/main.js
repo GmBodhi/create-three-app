@@ -10,45 +10,34 @@ import {
   PlaneGeometry,
   MeshPhongMaterial,
   Mesh,
-  BoxGeometry,
+  CylinderGeometry,
   WebGPURenderer,
 } from "three";
 
+import Stats from "three/addons/libs/stats.module.js";
+
 let camera, scene, renderer;
 let mesh;
+let stats;
+
 const AMOUNT = 6;
 
 init();
 
 function init() {
-  const ASPECT_RATIO = window.innerWidth / window.innerHeight;
+  const subCameras = [];
 
-  const WIDTH = window.innerWidth / AMOUNT;
-  const HEIGHT = window.innerHeight / AMOUNT;
+  for (let i = 0; i < AMOUNT * AMOUNT; i++) {
+    const subCamera = new PerspectiveCamera(40, 1, 0.1, 10);
+    subCamera.viewport = new Vector4();
 
-  const cameras = [];
-
-  for (let y = 0; y < AMOUNT; y++) {
-    for (let x = 0; x < AMOUNT; x++) {
-      const subcamera = new PerspectiveCamera(40, ASPECT_RATIO, 0.1, 10);
-      subcamera.viewport = new Vector4(
-        Math.floor(x * WIDTH),
-        Math.floor(y * HEIGHT),
-        Math.ceil(WIDTH),
-        Math.ceil(HEIGHT)
-      );
-      subcamera.position.x = x / AMOUNT - 0.5;
-      subcamera.position.y = 0.5 - y / AMOUNT;
-      subcamera.position.z = 1.5;
-      subcamera.position.multiplyScalar(2);
-      subcamera.lookAt(0, 0, 0);
-      subcamera.updateMatrixWorld();
-      cameras.push(subcamera);
-    }
+    subCameras.push(subCamera);
   }
 
-  camera = new ArrayCamera(cameras);
+  camera = new ArrayCamera(subCameras);
   camera.position.z = 3;
+
+  updateCameras();
 
   scene = new Scene();
 
@@ -57,8 +46,8 @@ function init() {
   const light = new DirectionalLight(0xffffff, 3);
   light.position.set(0.5, 0.5, 1);
   light.castShadow = true;
-  light.shadow.camera.zoom = 4; // tighter shadow map
   light.shadow.bias = -0.001;
+  light.shadow.camera.zoom = 4; // tighter shadow map
   scene.add(light);
 
   const geometryBackground = new PlaneGeometry(100, 100);
@@ -69,7 +58,7 @@ function init() {
   background.position.set(0, 0, -1);
   scene.add(background);
 
-  const geometryCylinder = new BoxGeometry();
+  const geometryCylinder = new CylinderGeometry(0.5, 0.5, 1, 32);
   const materialCylinder = new MeshPhongMaterial({ color: 0xff0000 });
 
   mesh = new Mesh(geometryCylinder, materialCylinder);
@@ -77,7 +66,7 @@ function init() {
   mesh.receiveShadow = true;
   scene.add(mesh);
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer(/*{ forceWebGL: true }*/);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -87,9 +76,14 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
+
+  //
+
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
 }
 
-function onWindowResize() {
+function updateCameras() {
   const ASPECT_RATIO = window.innerWidth / window.innerHeight;
   const WIDTH = window.innerWidth / AMOUNT;
   const HEIGHT = window.innerHeight / AMOUNT;
@@ -100,6 +94,7 @@ function onWindowResize() {
   for (let y = 0; y < AMOUNT; y++) {
     for (let x = 0; x < AMOUNT; x++) {
       const subcamera = camera.cameras[AMOUNT * y + x];
+      subcamera.copy(camera); // copy fov, aspect ratio, near, far from the root camera
 
       subcamera.viewport.set(
         Math.floor(x * WIDTH),
@@ -107,15 +102,30 @@ function onWindowResize() {
         Math.ceil(WIDTH),
         Math.ceil(HEIGHT)
       );
-
-      subcamera.aspect = ASPECT_RATIO;
       subcamera.updateProjectionMatrix();
+
+      subcamera.position.x = x / AMOUNT - 0.5;
+      subcamera.position.y = 0.5 - y / AMOUNT;
+      subcamera.position.z = 1.5 + (x + y) * 0.5;
+      subcamera.position.multiplyScalar(2);
+
+      subcamera.lookAt(0, 0, 0);
+      subcamera.updateMatrixWorld();
     }
   }
+}
+
+function onWindowResize() {
+  updateCameras();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
+  mesh.rotation.x += 0.005;
+  mesh.rotation.z += 0.01;
+
   renderer.render(scene, camera);
+
+  stats.update();
 }
