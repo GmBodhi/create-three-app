@@ -5026,6 +5026,16 @@
         "/src"
       ]
     },
+    "webgpu_xr_cubes": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webxr_ar_cones": {
       "files": {
         "index.html": "src",
