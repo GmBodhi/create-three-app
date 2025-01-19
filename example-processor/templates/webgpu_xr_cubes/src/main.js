@@ -119,7 +119,11 @@ function init() {
   controller.addEventListener("selectstart", onSelectStart);
   controller.addEventListener("selectend", onSelectEnd);
   controller.addEventListener("connected", function (event) {
-    this.add(buildController(event.data));
+    const targetRayMode = event.data.targetRayMode;
+
+    if (targetRayMode === "tracked-pointer" || targetRayMode === "gaze") {
+      this.add(buildController(event.data));
+    }
   });
   controller.addEventListener("disconnected", function () {
     this.remove(this.children[0]);
