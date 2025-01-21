@@ -25,7 +25,7 @@ import {
 } from "three";
 
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
-import { XRButton } from "three/addons/webxr/XRButtonGPU.js";
+import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 
 const clock = new Clock();
