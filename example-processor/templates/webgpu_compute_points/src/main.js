@@ -10,6 +10,9 @@ import {
   Points,
   WebGPURenderer,
 } from "three";
+
+import Stats from "stats-gl";
+
 import {
   Fn,
   uniform,
@@ -23,7 +26,7 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer;
+let camera, scene, renderer, stats;
 let computeNode;
 
 const pointerVector = new Vector2(-10.0, -10.0); // Out of bounds first
@@ -120,6 +123,19 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
+  stats = new Stats({
+    precision: 4,
+    horizontal: false,
+    trackGPU: true,
+    trackCPT: true,
+    logsPerSecond: 10,
+    graphsPerSecond: 60,
+    samplesGraph: 30,
+  });
+  stats.init(renderer);
+  document.body.appendChild(stats.dom);
+  stats.dom.style.position = "absolute";
+
   window.addEventListener("resize", onWindowResize);
   window.addEventListener("mousemove", onMouseMove);
 
@@ -149,5 +165,11 @@ function onMouseMove(event) {
 
 function animate() {
   renderer.compute(computeNode);
+  renderer.resolveTimestampsAsync("compute");
+
   renderer.render(scene, camera);
+
+  renderer.resolveTimestampsAsync().then(() => {
+    stats.update();
+  });
 }

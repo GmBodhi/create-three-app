@@ -199,8 +199,9 @@ async function init(forceWebGL = false) {
   stats = new Stats({
     precision: 3,
     horizontal: false,
+    trackGPU: true,
   });
-  // stats.init( renderer );
+  stats.init(renderer);
   document.body.appendChild(stats.dom);
   stats.dom.style.position = "absolute";
 
@@ -248,6 +249,8 @@ async function init(forceWebGL = false) {
 
     const average =
       renderTimeAverages.reduce((a, b) => a + b, 0) / renderTimeAverages.length;
+
+    renderer.resolveTimestampsAsync();
     stats.update();
 
     document.getElementById("backend").innerText =
