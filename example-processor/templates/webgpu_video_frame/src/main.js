@@ -36,6 +36,9 @@ function init() {
   // eslint-disable-next-line compat/compat
   const decoder = new VideoDecoder({
     output(frame) {
+      // To avoid video decoder stalls, we should close the VideoFrame which is no longer needed. https://w3c.github.io/webcodecs/#dom-videodecoder-decode
+      if (videoTexture.image instanceof VideoFrame) videoTexture.image.close();
+
       videoTexture.setFrame(frame);
     },
     error(e) {
@@ -50,8 +53,22 @@ function init() {
     onChunk(chunk) {
       decoder.decode(chunk);
     },
-    setStatus(s) {
-      console.info("MP4Demuxer:", s);
+    setStatus(kind, status) {
+      console.info("MP4Demuxer:", kind);
+
+      if (kind === "fetch" && status === "Done") {
+        decoder.flush().then(() => {
+          decoder.close();
+
+          // In case our VideoFrameTexture is no longer needed, we should close its backed VideoFrame, see issue #30379:
+          if (videoTexture.image instanceof VideoFrame)
+            videoTexture.image.close();
+
+          videoTexture.image = null;
+
+          scene.remove(mesh);
+        });
+      }
     },
   });
 

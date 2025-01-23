@@ -98,7 +98,7 @@ function init() {
 
   raycaster = new Raycaster();
 
-  renderer = new WebGPURenderer({ forceWebGL: true });
+  renderer = new WebGPURenderer({ antialias: true, forceWebGL: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
