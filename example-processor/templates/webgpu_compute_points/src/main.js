@@ -9,6 +9,7 @@ import {
   PointsNodeMaterial,
   Points,
   WebGPURenderer,
+  TimestampQuery,
 } from "three";
 
 import Stats from "stats-gl";
@@ -165,7 +166,7 @@ function onMouseMove(event) {
 
 function animate() {
   renderer.compute(computeNode);
-  renderer.resolveTimestampsAsync("compute");
+  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
 
   renderer.render(scene, camera);
 

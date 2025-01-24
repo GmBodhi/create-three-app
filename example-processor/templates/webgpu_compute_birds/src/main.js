@@ -17,6 +17,7 @@ import {
   Vector3,
   NodeMaterial,
   DoubleSide,
+  TimestampQuery,
 } from "three";
 import {
   uniform,
@@ -498,7 +499,7 @@ function render() {
 
   renderer.compute(computeVelocity);
   renderer.compute(computePosition);
-  renderer.resolveTimestampsAsync("compute");
+  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
   renderer.render(scene, camera);
 
   // Move pointer away so we only affect birds when moving the mouse

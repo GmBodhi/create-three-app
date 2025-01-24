@@ -6,6 +6,7 @@ import {
   WebGPURenderer,
   ACESFilmicToneMapping,
   EquirectangularReflectionMapping,
+  TimestampQuery,
 } from "three";
 
 import Stats from "stats-gl";
@@ -124,7 +125,7 @@ function onWindowResize() {
 
 async function render() {
   await renderer.renderAsync(scene, camera);
-  renderer.resolveTimestampsAsync("render");
+  renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
 
   stats.update();
 }

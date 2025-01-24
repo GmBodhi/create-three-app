@@ -23,6 +23,7 @@ import {
   ACESFilmicToneMapping,
   Vector2,
   PostProcessing,
+  TimestampQuery,
 } from "three";
 import {
   Fn,
@@ -366,7 +367,7 @@ async function animate() {
   // compute
 
   renderer.compute(computeParticles);
-  renderer.resolveTimestampsAsync("compute");
+  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
 
   // result
 
