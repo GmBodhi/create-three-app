@@ -9,9 +9,10 @@ import {
   PlaneGeometry,
   WebGPURenderer,
   Color,
+  TimestampQuery,
 } from "three";
 import {
-  storageObject,
+  storage,
   If,
   vec3,
   uv,
@@ -58,7 +59,7 @@ async function init(forceWebGL = false) {
       typeSize
     );
 
-    arrayBufferNodes.push(storageObject(arrayBuffer, type[i], size));
+    arrayBufferNodes.push(storage(arrayBuffer, type[i], size).setPBO(true));
   }
 
   const computeInitOrder = Fn(() => {
@@ -180,6 +181,9 @@ async function init(forceWebGL = false) {
 
     await renderer.computeAsync(compute);
     await renderer.renderAsync(scene, camera);
+
+    renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
+    renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
 
     timestamps[forceWebGL ? "webgl" : "webgpu"].innerHTML = `
 

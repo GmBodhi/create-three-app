@@ -10,6 +10,7 @@ import {
   PlaneGeometry,
   WebGPURenderer,
   Color,
+  TimestampQuery,
 } from "three";
 import {
   storage,
@@ -34,6 +35,8 @@ import {
   atomicStore,
   workgroupId,
 } from "three/tsl";
+
+import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -95,6 +98,12 @@ init(true);
 
 // When forceGlobalSwap is true, force all valid local swaps to be global swaps.
 async function init(forceGlobalSwap = false) {
+  if (WebGPU.isAvailable() === false) {
+    document.body.appendChild(WebGPU.getErrorMessage());
+
+    throw new Error("No WebGPU support");
+  }
+
   let currentStep = 0;
   let nextStepGlobal = false;
 
@@ -503,6 +512,8 @@ async function init(forceGlobalSwap = false) {
       currentStep = 0;
     }
 
+    renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
+
     const algo = new Uint32Array(
       await renderer.getArrayBufferAsync(nextAlgoBuffer)
     );
@@ -514,6 +525,7 @@ async function init(forceGlobalSwap = false) {
     );
 
     renderer.render(scene, camera);
+    renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
 
     timestamps[forceGlobalSwap ? "global_swap" : "local_swap"].innerHTML = `
 

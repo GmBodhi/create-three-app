@@ -98,7 +98,6 @@ async function init(forceWebGL = false) {
   const renderer = new WebGPURenderer({
     antialias: false,
     forceWebGL: forceWebGL,
-    trackTimestamp: true,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
