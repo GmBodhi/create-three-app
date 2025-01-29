@@ -4776,6 +4776,16 @@
         "/src"
       ]
     },
+    "webgpu_struct_drawindirect": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_texturegrad": {
       "files": {
         "index.html": "src",

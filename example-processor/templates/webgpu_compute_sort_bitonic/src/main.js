@@ -90,6 +90,12 @@ gui
     }
   });
 
+if (WebGPU.isAvailable() === false) {
+  document.body.appendChild(WebGPU.getErrorMessage());
+
+  throw new Error("No WebGPU support");
+}
+
 // Allow Workgroup Array Swaps
 init();
 
@@ -98,12 +104,6 @@ init(true);
 
 // When forceGlobalSwap is true, force all valid local swaps to be global swaps.
 async function init(forceGlobalSwap = false) {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   let currentStep = 0;
   let nextStepGlobal = false;
 
