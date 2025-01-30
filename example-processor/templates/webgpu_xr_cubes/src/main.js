@@ -15,6 +15,7 @@ import {
   Vector3,
   Raycaster,
   WebGPURenderer,
+  UnsignedByteType,
   BufferGeometry,
   Float32BufferAttribute,
   AdditiveBlending,
@@ -98,7 +99,11 @@ function init() {
 
   raycaster = new Raycaster();
 
-  renderer = new WebGPURenderer({ antialias: true, forceWebGL: true });
+  renderer = new WebGPURenderer({
+    antialias: true,
+    forceWebGL: true,
+    colorBufferType: UnsignedByteType,
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

@@ -206,6 +206,7 @@ function init() {
   // events
 
   renderer.domElement.addEventListener("pointermove", onMove);
+
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
