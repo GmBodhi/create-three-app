@@ -163,7 +163,6 @@ function init() {
   const particleGeom = new PlaneGeometry(particleQuadSize, particleQuadSize);
 
   const particleMaterial = new SpriteNodeMaterial();
-  particleMaterial.transparent = true;
   particleMaterial.blending = AdditiveBlending;
   particleMaterial.depthWrite = false;
   particleMaterial.positionNode = particlePositions.toAttribute();

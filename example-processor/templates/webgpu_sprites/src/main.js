@@ -52,7 +52,6 @@ function init() {
   material.colorNode = textureNode.mul(uv()).mul(2).saturate();
   material.opacityNode = textureNode.a;
   material.rotationNode = userData("rotation", "float"); // get value of: sprite.userData.rotation
-  material.transparent = true;
 
   for (let a = 0; a < amount; a++) {
     const x = Math.random() - 0.5;

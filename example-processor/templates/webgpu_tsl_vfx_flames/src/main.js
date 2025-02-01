@@ -100,10 +100,7 @@ function init() {
 
   // flame 1 material
 
-  const flame1Material = new SpriteNodeMaterial({
-    transparent: true,
-    side: DoubleSide,
-  });
+  const flame1Material = new SpriteNodeMaterial({ side: DoubleSide });
 
   flame1Material.colorNode = Fn(() => {
     // main UV
@@ -146,10 +143,7 @@ function init() {
 
   // flame 2 material
 
-  const flame2Material = new SpriteNodeMaterial({
-    transparent: true,
-    side: DoubleSide,
-  });
+  const flame2Material = new SpriteNodeMaterial({ side: DoubleSide });
 
   flame2Material.colorNode = Fn(() => {
     // main UV
