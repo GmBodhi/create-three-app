@@ -32,7 +32,7 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-const particleCount = 1000000;
+const particleCount = 500000;
 
 const gravity = uniform(-0.0098);
 const bounce = uniform(0.8);
