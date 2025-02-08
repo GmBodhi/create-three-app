@@ -1,26 +1,29 @@
 import "./style.css"; // For webpack support
 
 import {
-  WebGPURenderer,
   Scene,
   PerspectiveCamera,
   Color,
   Vector3,
   CatmullRomCurve3,
   SRGBColorSpace,
+  InstancedBufferAttribute,
   StorageInstancedBufferAttribute,
-  InstancedPointsNodeMaterial,
+  PointsNodeMaterial,
+  Sprite,
+  WebGPURenderer,
 } from "three";
 import {
   color,
   storage,
   Fn,
+  instancedBufferAttribute,
   instanceIndex,
   sin,
   time,
   float,
   uniform,
-  attribute,
+  shapeCircle,
   mix,
   vec3,
 } from "three/tsl";
@@ -29,9 +32,6 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-import InstancedPoints from "three/addons/objects/InstancedPoints.js";
-import InstancedPointsGeometry from "three/addons/geometries/InstancedPointsGeometry.js";
 
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
@@ -50,13 +50,7 @@ let computeSize;
 
 init();
 
-function init() {
-  renderer = new WebGPURenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
-  document.body.appendChild(renderer.domElement);
-
+async function init() {
   scene = new Scene();
 
   camera = new PerspectiveCamera(
@@ -70,17 +64,12 @@ function init() {
   camera2 = new PerspectiveCamera(40, 1, 1, 1000);
   camera2.position.copy(camera.position);
 
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.minDistance = 10;
-  controls.maxDistance = 500;
-
   backgroundNode = color(0x222222);
 
   effectController = {
     pulseSpeed: uniform(6),
     minWidth: uniform(6),
-    maxWidth: uniform(12),
+    maxWidth: uniform(20),
     alphaToCoverage: true,
   };
 
@@ -123,15 +112,19 @@ function init() {
 
   // Instanced Points
 
-  const geometry = new InstancedPointsGeometry();
-  geometry.setPositions(positions);
-  geometry.setColors(colors);
+  const positionAttribute = new InstancedBufferAttribute(
+    new Float32Array(positions),
+    3
+  );
+  const colorsAttribute = new InstancedBufferAttribute(
+    new Float32Array(colors),
+    3
+  );
 
   const instanceSizeBufferAttribute = new StorageInstancedBufferAttribute(
     sizes,
     1
   );
-  geometry.setAttribute("instanceSize", instanceSizeBufferAttribute);
   const instanceSizeStorage = storage(
     instanceSizeBufferAttribute,
     "float",
@@ -150,30 +143,49 @@ function init() {
       .assign(sizeFactor.mul(maxWidth.sub(minWidth)).add(minWidth));
   })().compute(divisions);
 
-  geometry.instanceCount = positions.length / 3; // this should not be necessary
+  // Material / Sprites
 
-  material = new InstancedPointsNodeMaterial({
-    color: 0xffffff,
-    pointWidth: 10, // in pixel units
+  const attributeRange = instancedBufferAttribute(instanceSizeBufferAttribute);
+  const pointColors = mix(
+    vec3(0.0),
+    instancedBufferAttribute(colorsAttribute),
+    attributeRange.div(float(effectController.maxWidth))
+  );
+
+  material = new PointsNodeMaterial({
+    colorNode: pointColors,
+    opacityNode: shapeCircle(),
+    positionNode: instancedBufferAttribute(positionAttribute),
+    // rotationNode: time,
+    sizeNode: instancedBufferAttribute(instanceSizeBufferAttribute),
+    // size: 40, // in pixels units
     vertexColors: true,
+    sizeAttenuation: false,
     alphaToCoverage: true,
   });
 
-  const attributeRange = attribute("instanceSize").sub(1);
-
-  material.pointWidthNode = attribute("instanceSize");
-  material.pointColorNode = mix(
-    vec3(0.0),
-    attribute("instanceColor"),
-    attributeRange.div(float(effectController.maxWidth.sub(1)))
-  );
-
-  const instancedPoints = new InstancedPoints(geometry, material);
-  instancedPoints.scale.set(1, 1, 1);
+  const instancedPoints = new Sprite(material);
+  instancedPoints.count = divisions;
   scene.add(instancedPoints);
+
+  // Renderer / Controls
+
+  renderer = new WebGPURenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  //renderer.logarithmicDepthBuffer = true;
+  document.body.appendChild(renderer.domElement);
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.minDistance = 10;
+  controls.maxDistance = 500;
 
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
+
+  // GUI
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
@@ -184,8 +196,8 @@ function init() {
     material.alphaToCoverage = val;
   });
 
-  gui.add(effectController.minWidth, "value", 1, 20, 1).name("minWidth");
-  gui.add(effectController.maxWidth, "value", 2, 20, 1).name("maxWidth");
+  gui.add(effectController.minWidth, "value", 1, 30, 1).name("minWidth");
+  gui.add(effectController.maxWidth, "value", 2, 30, 1).name("maxWidth");
   gui.add(effectController.pulseSpeed, "value", 1, 20, 0.1).name("pulseSpeed");
 }
 
@@ -206,6 +218,7 @@ function animate() {
   stats.update();
 
   // compute
+
   renderer.compute(computeSize);
 
   // main scene

@@ -23,6 +23,7 @@ import {
   ACESFilmicToneMapping,
   Vector2,
   PostProcessing,
+  TimestampQuery,
 } from "three";
 import {
   Fn,
@@ -295,6 +296,8 @@ async function init() {
   stats = new Stats({
     precision: 3,
     horizontal: false,
+    trackGPU: true,
+    trackCPT: true,
   });
   stats.init(renderer);
   document.body.appendChild(stats.dom);
@@ -359,11 +362,12 @@ async function animate() {
 
   scene.overrideMaterial = collisionPosMaterial;
   renderer.setRenderTarget(collisionPosRT);
-  await renderer.renderAsync(scene, collisionCamera);
+  renderer.render(scene, collisionCamera);
 
   // compute
 
-  await renderer.computeAsync(computeParticles);
+  renderer.compute(computeParticles);
+  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
 
   // result
 
@@ -372,5 +376,6 @@ async function animate() {
 
   await postProcessing.renderAsync();
 
+  renderer.resolveTimestampsAsync();
   stats.update();
 }

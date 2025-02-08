@@ -280,6 +280,16 @@
         "/src"
       ]
     },
+    "misc_raycaster_helper": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "misc_uv_tests": {
       "files": {
         "index.html": "src",
@@ -3523,6 +3533,16 @@
         "/src"
       ]
     },
+    "webgpu_camera_array": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_camera_logarithmicdepthbuffer": {
       "files": {
         "index.html": "src",
@@ -4756,6 +4776,16 @@
         "/src"
       ]
     },
+    "webgpu_struct_drawindirect": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_texturegrad": {
       "files": {
         "index.html": "src",
@@ -4817,16 +4847,6 @@
       ]
     },
     "webgpu_tsl_angular_slicing": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgpu_tsl_coffee_smoke": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4956,6 +4976,16 @@
         "/src"
       ]
     },
+    "webgpu_video_frame": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_video_panorama": {
       "files": {
         "index.html": "src",
@@ -4987,6 +5017,16 @@
       ]
     },
     "webgpu_water": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_xr_cubes": {
       "files": {
         "index.html": "src",
         "main.js": "src",

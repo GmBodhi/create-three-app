@@ -17,6 +17,7 @@ import {
   Vector3,
   NodeMaterial,
   DoubleSide,
+  TimestampQuery,
 } from "three";
 import {
   uniform,
@@ -51,7 +52,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import Stats from "three/addons/libs/stats.module.js";
+import Stats from "stats-gl";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let container, stats;
@@ -160,7 +161,7 @@ function init() {
 
   //
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -300,31 +301,32 @@ function init() {
       rayDirection,
     } = effectController;
 
-    const zoneRadius = separation.add(alignment).add(cohesion);
-    const separationThresh = separation.div(zoneRadius);
-    const alignmentThresh = separation.add(alignment).div(zoneRadius);
-    const zoneRadiusSq = zoneRadius.mul(zoneRadius);
+    const zoneRadius = separation.add(alignment).add(cohesion).toConst();
+    const separationThresh = separation.div(zoneRadius).toConst();
+    const alignmentThresh = separation.add(alignment).div(zoneRadius).toConst();
+    const zoneRadiusSq = zoneRadius.mul(zoneRadius).toConst();
 
-    const position = positionStorage.element(instanceIndex);
-    const velocity = velocityStorage.element(instanceIndex);
+    // Cache current bird's position and velocity outside the loop
+    const birdIndex = instanceIndex.toConst("birdIndex");
+    const position = positionStorage.element(birdIndex).toVar();
+    const velocity = velocityStorage.element(birdIndex).toVar();
 
-    // Add influence of pointer position to velocity.
-    const directionToRay = rayOrigin.sub(position);
-    const projectionLength = dot(directionToRay, rayDirection);
+    // Add influence of pointer position to velocity using cached position
+    const directionToRay = rayOrigin.sub(position).toConst();
+    const projectionLength = dot(directionToRay, rayDirection).toConst();
+    const closestPoint = rayOrigin
+      .sub(rayDirection.mul(projectionLength))
+      .toConst();
+    const directionToClosestPoint = closestPoint.sub(position).toConst();
+    const distanceToClosestPoint = length(directionToClosestPoint).toConst();
+    const distanceToClosestPointSq = distanceToClosestPoint
+      .mul(distanceToClosestPoint)
+      .toConst();
 
-    const closestPoint = rayOrigin.sub(rayDirection.mul(projectionLength));
-
-    const directionToClosestPoint = closestPoint.sub(position);
-    const distanceToClosestPoint = length(directionToClosestPoint);
-    const distanceToClosestPointSq = distanceToClosestPoint.mul(
-      distanceToClosestPoint
-    );
-
-    const rayRadius = float(150.0);
-    const rayRadiusSq = rayRadius.mul(rayRadius);
+    const rayRadius = float(150.0).toConst();
+    const rayRadiusSq = rayRadius.mul(rayRadius).toConst();
 
     If(distanceToClosestPointSq.lessThan(rayRadiusSq), () => {
-      // Scale bird velocity inversely with distance from prey radius center.
       const velocityAdjust = distanceToClosestPointSq
         .div(rayRadiusSq)
         .sub(1.0)
@@ -344,11 +346,16 @@ function init() {
     Loop(
       { start: uint(0), end: uint(BIRDS), type: "uint", condition: "<" },
       ({ i }) => {
+        If(i.equal(birdIndex), () => {
+          Continue();
+        });
+
+        // Cache bird's position and velocity
+
         const birdPosition = positionStorage.element(i);
         const dirToBird = birdPosition.sub(position);
         const distToBird = length(dirToBird);
 
-        // Don't apply any changes to velocity if the distance to this bird is negligible.
         If(distToBird.lessThan(0.0001), () => {
           Continue();
         });
@@ -406,8 +413,10 @@ function init() {
     If(length(velocity).greaterThan(limit), () => {
       velocity.assign(normalize(velocity).mul(limit));
     });
-  })().compute(BIRDS);
 
+    // Write back the final velocity to storage
+    velocityStorage.element(birdIndex).assign(velocity);
+  })().compute(BIRDS);
   computePosition = Fn(() => {
     const { deltaTime } = effectController;
     positionStorage
@@ -428,7 +437,13 @@ function init() {
 
   scene.add(birdMesh);
 
-  stats = new Stats();
+  stats = new Stats({
+    precision: 3,
+    horizontal: false,
+    trackGPU: true,
+    trackCPT: true,
+  });
+  stats.init(renderer);
   container.appendChild(stats.dom);
 
   container.style.touchAction = "none";
@@ -464,6 +479,7 @@ function onPointerMove(event) {
 
 function animate() {
   render();
+  renderer.resolveTimestampsAsync();
   stats.update();
 }
 
@@ -483,6 +499,7 @@ function render() {
 
   renderer.compute(computeVelocity);
   renderer.compute(computePosition);
+  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
   renderer.render(scene, camera);
 
   // Move pointer away so we only affect birds when moving the mouse

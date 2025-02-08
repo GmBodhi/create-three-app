@@ -3,17 +3,38 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  EquirectangularReflectionMapping,
+  TextureLoader,
+  PlaneGeometry,
+  RepeatWrapping,
+  MeshBasicNodeMaterial,
+  DoubleSide,
+  Mesh,
   WebGPURenderer,
-  ACESFilmicToneMapping,
   PostProcessing,
 } from "three";
-import { pass, texture3D, uniform, renderOutput } from "three/tsl";
+import {
+  mix,
+  mul,
+  oneMinus,
+  positionLocal,
+  smoothstep,
+  texture,
+  time,
+  rotateUV,
+  Fn,
+  uv,
+  vec2,
+  vec3,
+  vec4,
+  pass,
+  texture3D,
+  uniform,
+  renderOutput,
+} from "three/tsl";
 import { lut3D } from "three/addons/tsl/display/Lut3DNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 import { LUTCubeLoader } from "three/addons/loaders/LUTCubeLoader.js";
 import { LUT3dlLoader } from "three/addons/loaders/LUT3dlLoader.js";
 import { LUTImageLoader } from "three/addons/loaders/LUTImageLoader.js";
@@ -36,43 +57,27 @@ const lutMap = {
   NightLUT: null,
 };
 
-let gui;
-let camera, scene, renderer;
-let postProcessing, lutPass;
+let camera, scene, renderer, postProcessing, controls, lutPass;
 
 init();
 
 async function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
   camera = new PerspectiveCamera(
-    45,
+    25,
     window.innerWidth / window.innerHeight,
-    0.25,
-    20
+    0.1,
+    100
   );
-  camera.position.set(-1.8, 0.6, 2.7);
+  camera.position.set(8, 10, 12);
 
   scene = new Scene();
 
-  new RGBELoader()
-    .setPath("textures/equirectangular/")
-    .load("royal_esplanade_1k.hdr", function (texture) {
-      texture.mapping = EquirectangularReflectionMapping;
+  // Loaders
 
-      scene.background = texture;
-      scene.environment = texture;
+  const gltfLoader = new GLTFLoader();
+  const textureLoader = new TextureLoader();
 
-      // model
-
-      const loader = new GLTFLoader().setPath(
-        "models/gltf/DamagedHelmet/glTF/"
-      );
-      loader.load("DamagedHelmet.gltf", function (gltf) {
-        scene.add(gltf.scene);
-      });
-    });
+  // LUTs
 
   const lutCubeLoader = new LUTCubeLoader();
   const lutImageLoader = new LUTImageLoader();
@@ -95,12 +100,94 @@ async function init() {
     lutMap[name] = await lutMap[name];
   }
 
-  renderer = new WebGPURenderer();
+  // baked model
+
+  gltfLoader.load("three/examples/models/gltf/coffeeMug.glb", (gltf) => {
+    gltf.scene.getObjectByName("baked").material.map.anisotropy = 8;
+    scene.add(gltf.scene);
+  });
+
+  // geometry
+
+  const smokeGeometry = new PlaneGeometry(1, 1, 16, 64);
+  smokeGeometry.translate(0, 0.5, 0);
+  smokeGeometry.scale(1.5, 6, 1.5);
+
+  // texture
+
+  const noiseTexture = textureLoader.load(
+    "three/examples/textures/noises/perlin/128x128.png"
+  );
+  noiseTexture.wrapS = RepeatWrapping;
+  noiseTexture.wrapT = RepeatWrapping;
+
+  // material
+
+  const smokeMaterial = new MeshBasicNodeMaterial({
+    transparent: true,
+    side: DoubleSide,
+    depthWrite: false,
+  });
+
+  // position
+
+  smokeMaterial.positionNode = Fn(() => {
+    // twist
+
+    const twistNoiseUv = vec2(0.5, uv().y.mul(0.2).sub(time.mul(0.005)).mod(1));
+    const twist = texture(noiseTexture, twistNoiseUv).r.mul(10);
+    positionLocal.xz.assign(rotateUV(positionLocal.xz, twist, vec2(0)));
+
+    // wind
+
+    const windOffset = vec2(
+      texture(noiseTexture, vec2(0.25, time.mul(0.01)).mod(1)).r.sub(0.5),
+      texture(noiseTexture, vec2(0.75, time.mul(0.01)).mod(1)).r.sub(0.5)
+    ).mul(uv().y.pow(2).mul(10));
+    positionLocal.addAssign(windOffset);
+
+    return positionLocal;
+  })();
+
+  // color
+
+  smokeMaterial.colorNode = Fn(() => {
+    // alpha
+
+    const alphaNoiseUv = uv()
+      .mul(vec2(0.5, 0.3))
+      .add(vec2(0, time.mul(0.03).negate()));
+    const alpha = mul(
+      // pattern
+      texture(noiseTexture, alphaNoiseUv).r.smoothstep(0.4, 1),
+
+      // edges fade
+      smoothstep(0, 0.1, uv().x),
+      smoothstep(0, 0.1, oneMinus(uv().x)),
+      smoothstep(0, 0.1, uv().y),
+      smoothstep(0, 0.1, oneMinus(uv().y))
+    );
+
+    // color
+
+    const finalColor = mix(vec3(0.6, 0.3, 0.2), vec3(1, 1, 1), alpha.pow(3));
+
+    return vec4(finalColor, alpha);
+  })();
+
+  // mesh
+
+  const smoke = new Mesh(smokeGeometry, smokeMaterial);
+  smoke.position.y = 1.83;
+  scene.add(smoke);
+
+  // renderer
+
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMapping = ACESFilmicToneMapping;
-  container.appendChild(renderer.domElement);
+  document.body.appendChild(renderer.domElement);
 
   // post processing
 
@@ -126,15 +213,17 @@ async function init() {
 
   postProcessing.outputNode = lutPass;
 
-  //
+  // controls
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 2;
-  controls.maxDistance = 10;
-  controls.target.set(0, 0, -0.2);
-  controls.update();
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.minDistance = 0.1;
+  controls.maxDistance = 50;
+  controls.target.y = 3;
 
-  gui = new GUI();
+  // gui
+
+  const gui = new GUI();
   gui.add(params, "lut", Object.keys(lutMap));
   gui.add(params, "intensity").min(0).max(1);
 
@@ -148,9 +237,9 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-//
+async function animate() {
+  controls.update();
 
-function animate() {
   lutPass.intensityNode.value = params.intensity;
 
   if (lutMap[params.lut]) {

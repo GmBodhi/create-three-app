@@ -6,9 +6,10 @@ import {
   WebGPURenderer,
   ACESFilmicToneMapping,
   EquirectangularReflectionMapping,
+  TimestampQuery,
 } from "three";
 
-import Stats from "three/addons/libs/stats.module.js";
+import Stats from "stats-gl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -47,7 +48,7 @@ function init() {
 
   scene = new Scene();
 
-  renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
@@ -58,7 +59,13 @@ function init() {
 
   //
 
-  stats = new Stats();
+  stats = new Stats({
+    precision: 3,
+    horizontal: false,
+    trackGPU: true,
+  });
+  stats.init(renderer);
+
   document.body.appendChild(stats.dom);
 
   new RGBELoader()
@@ -116,8 +123,9 @@ function onWindowResize() {
 
 //
 
-function render() {
-  renderer.renderAsync(scene, camera);
+async function render() {
+  await renderer.renderAsync(scene, camera);
+  renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
 
   stats.update();
 }

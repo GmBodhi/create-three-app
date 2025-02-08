@@ -85,7 +85,7 @@ async function init() {
   );
 
   const instanceUniform = nodeObject(
-    new OcclusionNode(sphere, new Color(0x00ff00), new Color(0x0000ff))
+    new OcclusionNode(sphere, new Color(0x0000ff), new Color(0x00ff00))
   );
 
   plane.material.colorNode = instanceUniform;
@@ -101,11 +101,6 @@ async function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  // ensure shaders/pipelines are all complete before rendering
-
-  await renderer.compileAsync(scene, camera);
-
   renderer.setAnimationLoop(render);
   document.body.appendChild(renderer.domElement);
 

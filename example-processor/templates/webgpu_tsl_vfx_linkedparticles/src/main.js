@@ -9,6 +9,7 @@ import {
   Scene,
   Clock,
   WebGPURenderer,
+  ACESFilmicToneMapping,
   StorageInstancedBufferAttribute,
   PlaneGeometry,
   SpriteNodeMaterial,
@@ -122,6 +123,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 
   // TSL function

@@ -43,6 +43,7 @@ import {
 } from "three/tsl";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -56,6 +57,12 @@ const objects = [],
 init();
 
 function init() {
+  if (WebGPU.isAvailable() === false) {
+    document.body.appendChild(WebGPU.getErrorMessage());
+
+    throw new Error("No WebGPU support");
+  }
+
   const container = document.createElement("div");
   document.body.appendChild(container);
 

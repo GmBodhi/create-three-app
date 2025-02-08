@@ -20,6 +20,7 @@ import {
 import {
   color,
   instanceIndex,
+  struct,
   If,
   varyingProperty,
   uint,
@@ -307,34 +308,38 @@ function init() {
   const sphereMaterial = new MeshPhongMaterial({ color: 0xffff00 });
 
   // Initialize sphere mesh instance position and velocity.
-  const spherePositionArray = new Float32Array(NUM_SPHERES * 3);
+  // position<vec3> + velocity<vec2> + unused<vec3> = 8 floats per sphere.
+  // for structs arrays must be enclosed in multiple of 4
+
+  const sphereStride = 8;
+  const sphereArray = new Float32Array(NUM_SPHERES * sphereStride);
 
   // Only hold velocity in x and z directions.
   // The sphere is wedded to the surface of the water, and will only move vertically with the water.
-  const sphereVelocityArray = new Float32Array(NUM_SPHERES * 2);
 
   for (let i = 0; i < NUM_SPHERES; i++) {
-    spherePositionArray[i * 3 + 0] = (Math.random() - 0.5) * BOUNDS * 0.7;
-    spherePositionArray[i * 3 + 1] = 0;
-    spherePositionArray[i * 3 + 2] = (Math.random() - 0.5) * BOUNDS * 0.7;
+    sphereArray[i * sphereStride + 0] = (Math.random() - 0.5) * BOUNDS * 0.7;
+    sphereArray[i * sphereStride + 1] = 0;
+    sphereArray[i * sphereStride + 2] = (Math.random() - 0.5) * BOUNDS * 0.7;
   }
 
-  sphereVelocityArray.fill(0.0);
+  const SphereStruct = struct({
+    position: "vec3",
+    velocity: "vec2",
+  });
 
   // Sphere Instance Storage
-  const sphereInstancePositionStorage = instancedArray(
-    spherePositionArray,
-    "vec3"
-  ).label("SpherePosition");
-  const sphereVelocityStorage = instancedArray(
-    sphereVelocityArray,
-    "vec2"
-  ).label("SphereVelocity");
+  const sphereVelocityStorage = instancedArray(sphereArray, SphereStruct).label(
+    "SphereData"
+  );
 
   computeSphere = Fn(() => {
-    const instancePosition =
-      sphereInstancePositionStorage.element(instanceIndex);
-    const velocity = sphereVelocityStorage.element(instanceIndex);
+    const instancePosition = sphereVelocityStorage
+      .element(instanceIndex)
+      .get("position");
+    const velocity = sphereVelocityStorage
+      .element(instanceIndex)
+      .get("velocity");
 
     // Bring position from range of [ -BOUNDS/2, BOUNDS/2 ] to [ 0, BOUNDS ]
     const tempX = instancePosition.x.add(BOUNDS_HALF);
@@ -397,8 +402,9 @@ function init() {
   })().compute(NUM_SPHERES);
 
   sphereMaterial.positionNode = Fn(() => {
-    const instancePosition =
-      sphereInstancePositionStorage.element(instanceIndex);
+    const instancePosition = sphereVelocityStorage
+      .element(instanceIndex)
+      .get("position");
 
     const newPosition = positionLocal.add(instancePosition);
 

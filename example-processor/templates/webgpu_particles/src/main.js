@@ -26,6 +26,7 @@ import {
 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -35,6 +36,12 @@ let controls;
 init();
 
 function init() {
+  if (WebGPU.isAvailable() === false) {
+    document.body.appendChild(WebGPU.getErrorMessage());
+
+    throw new Error("No WebGPU support");
+  }
+
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(60, innerWidth / innerHeight, 1, 5000);

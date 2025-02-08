@@ -13,6 +13,7 @@ import {
   Raycaster,
   Vector2,
   WebGPURenderer,
+  TimestampQuery,
 } from "three";
 import {
   Fn,
@@ -205,6 +206,7 @@ function init() {
   // events
 
   renderer.domElement.addEventListener("pointermove", onMove);
+
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -240,8 +242,10 @@ async function animate() {
   stats.update();
 
   await renderer.computeAsync(computeParticles);
+  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
 
   await renderer.renderAsync(scene, camera);
+  renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
 
   // throttle the logging
 

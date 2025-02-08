@@ -24,7 +24,7 @@ let index = 0;
 init();
 
 function init() {
-  renderer = new WebGPURenderer({ forceWebGL: true });
+  renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
