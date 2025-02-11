@@ -4,7 +4,6 @@ import {
   WebGPURenderer,
   PerspectiveCamera,
   Scene,
-  Clock,
   CapsuleGeometry,
   MeshNormalMaterial,
   DoubleSide,
@@ -15,7 +14,7 @@ import {
 import { RaycasterHelper } from "https://cdn.jsdelivr.net/npm/@gsimone/three-raycaster-helper@0.1.0/dist/gsimone-three-raycaster-helper.esm.js";
 
 let scene, renderer;
-let camera, clock;
+let camera;
 
 let capsule1, capsule2, capsule3;
 let raycaster, raycasterHelper;
@@ -40,7 +39,6 @@ function init() {
   camera.position.z = 10;
 
   scene = new Scene();
-  clock = new Clock();
 
   //
 
@@ -77,12 +75,12 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function animate() {
+function animate(time) {
+  const elapsedTime = time / 1000; // ms to s
+
   [capsule1, capsule2, capsule3].forEach((capsule) => {
-    capsule.position.y = Math.sin(
-      clock.getElapsedTime() * 0.5 + capsule.position.x
-    );
-    capsule.rotation.z = Math.sin(clock.getElapsedTime() * 0.5) * Math.PI * 1;
+    capsule.position.y = Math.sin(elapsedTime * 0.5 + capsule.position.x);
+    capsule.rotation.z = Math.sin(elapsedTime * 0.5) * Math.PI * 1;
   });
 
   raycasterHelper.hits = raycaster.intersectObjects(scene.children);

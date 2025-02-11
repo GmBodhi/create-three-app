@@ -7,7 +7,6 @@ import {
   Raycaster,
   PerspectiveCamera,
   Scene,
-  Clock,
   WebGPURenderer,
   ACESFilmicToneMapping,
   StorageInstancedBufferAttribute,
@@ -59,10 +58,11 @@ import {
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Timer } from "three/addons/misc/Timer.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
-let camera, scene, renderer, postProcessing, controls, clock, light;
+let camera, scene, renderer, postProcessing, controls, timer, light;
 
 let updateParticles, spawnParticles; // TSL compute nodes
 let getInstanceColor; // TSL function
@@ -114,7 +114,7 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
 
   // renderer
 
@@ -485,6 +485,8 @@ function updatePointer() {
 }
 
 function animate() {
+  timer.update();
+
   // compute particles
   renderer.compute(updateParticles);
   renderer.compute(spawnParticles);
@@ -502,9 +504,9 @@ function animate() {
 
   // rotating colors
   colorOffset.value +=
-    clock.getDelta() * colorRotationSpeed.value * timeScale.value;
+    timer.getDelta() * colorRotationSpeed.value * timeScale.value;
 
-  const elapsedTime = clock.getElapsedTime();
+  const elapsedTime = timer.getElapsed();
   light.position.set(
     Math.sin(elapsedTime * 0.5) * 30,
     Math.cos(elapsedTime * 0.3) * 30,
