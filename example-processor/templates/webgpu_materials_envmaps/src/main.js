@@ -102,6 +102,7 @@ function init() {
     backgroundRotationX: false,
     backgroundRotationY: false,
     backgroundRotationZ: false,
+    syncMaterial: false,
   };
 
   const gui = new GUI({ width: 300 });
@@ -121,6 +122,7 @@ function init() {
   gui.add(params, "backgroundRotationX");
   gui.add(params, "backgroundRotationY");
   gui.add(params, "backgroundRotationZ");
+  gui.add(params, "syncMaterial");
   gui.open();
 
   window.addEventListener("resize", onWindowResize);
@@ -146,6 +148,10 @@ function animate() {
 
   if (params.backgroundRotationZ) {
     scene.backgroundRotation.z += 0.001;
+  }
+
+  if (params.syncMaterial) {
+    sphereMesh.material.envMapRotation.copy(scene.backgroundRotation);
   }
 
   camera.lookAt(scene.position);
