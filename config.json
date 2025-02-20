@@ -5006,6 +5006,26 @@
         "/src"
       ]
     },
+    "webgpu_volume_lighting": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_volume_lighting_rectarea": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_volume_perlin": {
       "files": {
         "index.html": "src",
