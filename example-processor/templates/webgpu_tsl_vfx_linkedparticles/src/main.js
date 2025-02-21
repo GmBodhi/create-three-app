@@ -115,6 +115,7 @@ function init() {
   scene = new Scene();
 
   timer = new Timer();
+  timer.connect(document);
 
   // renderer
 

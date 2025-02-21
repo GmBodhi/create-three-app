@@ -41,6 +41,7 @@ function init() {
   scene = new Scene();
 
   timer = new Timer();
+  timer.connect(document);
 
   const geometry = new BufferGeometry();
   const material = new LineBasicMaterial({ vertexColors: true });

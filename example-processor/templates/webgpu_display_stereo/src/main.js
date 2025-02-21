@@ -57,6 +57,7 @@ function init() {
     .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
 
   timer = new Timer();
+  timer.connect(document);
 
   const geometry = new SphereGeometry(0.1, 32, 16);
 

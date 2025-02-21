@@ -53,6 +53,7 @@ function init() {
   scene.background = new Color(0x0487e2);
 
   timer = new Timer();
+  timer.connect(document);
 
   const texture = new TextureLoader().load("textures/crate.gif");
   texture.colorSpace = SRGBColorSpace;

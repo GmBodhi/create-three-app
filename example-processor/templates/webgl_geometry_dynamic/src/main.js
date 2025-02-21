@@ -39,6 +39,7 @@ function init() {
   camera.position.y = 200;
 
   timer = new Timer();
+  timer.connect(document);
 
   scene = new Scene();
   scene.background = new Color(0xaaccff);
