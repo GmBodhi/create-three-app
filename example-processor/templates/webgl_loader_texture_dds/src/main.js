@@ -150,7 +150,7 @@ function init() {
   const material10 = new MeshBasicMaterial({ map: map8 });
   const material11 = new MeshBasicMaterial({ map: map9 });
   const material12 = new MeshBasicMaterial({ map: map10 });
-  const material13 = new MeshBasicMaterial({ map: map11 });
+  const material13 = new MeshBasicMaterial({ map: map11, transparent: true });
 
   let mesh = new Mesh(new TorusGeometry(), material1);
   mesh.position.x = -10;
