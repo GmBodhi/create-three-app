@@ -201,7 +201,7 @@ function init() {
   //sunLight.add( new Mesh( new SphereGeometry( 0.1, 16, 16 ), new MeshBasicMaterial( { color: 0xffffff } ) ) );
   scene.add(spotLight);
 
-  // Post-Proccessing
+  // Post-Processing
 
   postProcessing = new PostProcessing(renderer);
 
@@ -218,7 +218,7 @@ function init() {
   const scenePass = pass(scene, camera);
   const sceneLinearDepth = scenePass.getTextureNode("depth");
 
-  // Material - Apply oclussion depth of volumetric lighting based on the scene depth
+  // Material - Apply occlusion depth of volumetric lighting based on the scene depth
 
   volumetricMaterial.depthNode = sceneLinearDepth.sample(screenUV);
 
