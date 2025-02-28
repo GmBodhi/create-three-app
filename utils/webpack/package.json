@@ -8,7 +8,7 @@
     "dev": "webpack serve --config ./bundler/webpack.dev.js"
   },
   "dependencies": {
-    "three": "^0.137.x"
+    "three": "^0.174.0"
   },
   "devDependencies": {
     "babel-loader": "^8.2.2",
