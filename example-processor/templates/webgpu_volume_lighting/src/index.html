@@ -1,33 +1,37 @@
 <html>
   <head>
-    <title>three.js - WebGPU - Compute Particles</title>
+    <title>three.js webgpu - volumetric lighting</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
   </head>
+
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      WebGPU - Compute - 500k Particles
-      <div
-        id="timestamps"
-        style="
-          position: absolute;
-          top: 60px;
-          left: 0;
-          padding: 10px;
-          background: rgba(0, 0, 0, 0.5);
-          color: #fff;
-          font-family: monospace;
-          font-size: 12px;
-          line-height: 1.5;
-          pointer-events: none;
-          text-align: left;
-        "
-      ></div>
+      webgpu - volumetric lighting <br />Improve the quality/performance
+      adjusting the parameters in the Controls
     </div>
+
+    <video
+      id="video"
+      loop=""
+      muted=""
+      crossorigin="anonymous"
+      playsinline=""
+      style="display: none"
+    >
+      <source
+        src="textures/sintel.ogv"
+        type='video/ogg; codecs="theora, vorbis"'
+      />
+      <source
+        src="textures/sintel.mp4"
+        type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+      />
+    </video>
 
     <script type="importmap">
       {

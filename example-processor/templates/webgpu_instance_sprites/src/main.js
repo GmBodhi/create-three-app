@@ -74,7 +74,6 @@ function init() {
     map,
     alphaMap: map,
     alphaTest: 0.1,
-    transparent: true,
   });
   material.color.setHSL(1.0, 0.3, 0.7, SRGBColorSpace);
   material.positionNode = instancedBufferAttribute(positionAttribute);

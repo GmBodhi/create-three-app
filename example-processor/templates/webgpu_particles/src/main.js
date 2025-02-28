@@ -92,7 +92,6 @@ function init() {
   smokeNodeMaterial.positionNode = offsetRange.mul(lifeTime);
   smokeNodeMaterial.scaleNode = scaleRange.mul(lifeTime.max(0.3));
   smokeNodeMaterial.depthWrite = false;
-  smokeNodeMaterial.transparent = true;
 
   const smokeInstancedSprite = new Mesh(
     new PlaneGeometry(1, 1),

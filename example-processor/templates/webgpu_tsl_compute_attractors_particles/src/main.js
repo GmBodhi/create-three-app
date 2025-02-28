@@ -165,7 +165,6 @@ function init() {
 
   const count = Math.pow(2, 18);
   const material = new SpriteNodeMaterial({
-    transparent: true,
     blending: AdditiveBlending,
     depthWrite: false,
   });

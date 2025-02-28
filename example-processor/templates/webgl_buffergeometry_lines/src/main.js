@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
   BufferGeometry,
   LineBasicMaterial,
   Float32BufferAttribute,
@@ -11,9 +10,10 @@ import {
   WebGLRenderer,
 } from "three";
 
+import { Timer } from "three/addons/misc/Timer.js";
 import Stats from "three/addons/libs/stats.module.js";
 
-let container, stats, clock;
+let container, stats, timer;
 
 let camera, scene, renderer;
 
@@ -40,7 +40,8 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const geometry = new BufferGeometry();
   const material = new LineBasicMaterial({ vertexColors: true });
@@ -102,8 +103,10 @@ function onWindowResize() {
 //
 
 function animate() {
-  const delta = clock.getDelta();
-  const time = clock.getElapsedTime();
+  timer.update();
+
+  const delta = timer.getDelta();
+  const time = timer.getElapsed();
 
   line.rotation.x = time * 0.25;
   line.rotation.y = time * 0.5;

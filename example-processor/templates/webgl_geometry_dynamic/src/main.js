@@ -2,7 +2,6 @@ import "./style.css"; // For webpack support
 
 import {
   PerspectiveCamera,
-  Clock,
   Scene,
   Color,
   FogExp2,
@@ -19,10 +18,11 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
+import { Timer } from "three/addons/misc/Timer.js";
 
 let camera, controls, scene, renderer, stats;
 
-let mesh, geometry, material, clock;
+let mesh, geometry, material, timer;
 
 const worldWidth = 128,
   worldDepth = 128;
@@ -38,7 +38,8 @@ function init() {
   );
   camera.position.y = 200;
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   scene = new Scene();
   scene.background = new Color(0xaaccff);
@@ -96,13 +97,14 @@ function onWindowResize() {
 //
 
 function animate() {
+  timer.update();
   render();
   stats.update();
 }
 
 function render() {
-  const delta = clock.getDelta();
-  const time = clock.getElapsedTime() * 10;
+  const delta = timer.getDelta();
+  const time = timer.getElapsed() * 10;
 
   const position = geometry.attributes.position;
 

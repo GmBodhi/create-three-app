@@ -48,7 +48,6 @@ function init() {
   // galaxy
 
   const material = new SpriteNodeMaterial({
-    transparent: true,
     depthWrite: false,
     blending: AdditiveBlending,
   });

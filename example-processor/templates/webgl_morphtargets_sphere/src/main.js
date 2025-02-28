@@ -38,6 +38,7 @@ function init() {
   scene = new Scene();
 
   timer = new Timer();
+  timer.connect(document);
 
   const light1 = new PointLight(0xff2200, 50000);
   light1.position.set(100, 100, 100);

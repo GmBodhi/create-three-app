@@ -72,6 +72,7 @@ function init() {
   document.body.appendChild(stats.dom);
 
   timer = new Timer();
+  timer.connect(document);
 
   camera = new PerspectiveCamera(65, width / height, 3, 10);
   camera.position.z = 7;
