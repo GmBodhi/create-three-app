@@ -240,11 +240,11 @@ function init() {
   // Scene Pass
 
   const scenePass = pass(scene, camera);
-  const sceneLinearDepth = scenePass.getTextureNode("depth");
+  const sceneDepth = scenePass.getTextureNode("depth");
 
   // Material - Apply occlusion depth of volumetric lighting based on the scene depth
 
-  volumetricMaterial.depthNode = sceneLinearDepth.sample(screenUV);
+  volumetricMaterial.depthNode = sceneDepth.sample(screenUV);
 
   // Volumetric Lighting Pass
 
@@ -267,7 +267,6 @@ function init() {
   // GUI
 
   const params = {
-    quality: 1,
     resolution: volumetricPass.getResolution(),
     denoise: true,
   };
