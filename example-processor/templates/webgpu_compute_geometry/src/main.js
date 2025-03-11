@@ -34,6 +34,8 @@ let camera, scene, renderer;
 let raycaster, pointer;
 let stats;
 
+let mesh;
+
 const pointerPosition = uniform(vec4(0));
 const elasticity = uniform(0.4); // elasticity ( how "strong" the spring is )
 const damping = uniform(0.94); // damping factor ( energy loss )
@@ -45,7 +47,7 @@ init();
 const jelly = Fn(({ renderer, geometry, object }) => {
   const count = geometry.attributes.position.count;
 
-  // replace geometry attributes for storage buffer attributes
+  // Create storage buffer attribute for modified position.
 
   const positionBaseAttribute = geometry.attributes.position;
   const positionStorageBufferAttribute = new StorageBufferAttribute(count, 3);
@@ -53,7 +55,7 @@ const jelly = Fn(({ renderer, geometry, object }) => {
 
   geometry.setAttribute("storagePosition", positionStorageBufferAttribute);
 
-  // attributes
+  // Attributes
 
   const positionAttribute = storage(positionBaseAttribute, "vec3", count);
   const positionStorageAttribute = storage(
@@ -64,16 +66,19 @@ const jelly = Fn(({ renderer, geometry, object }) => {
 
   const speedAttribute = storage(speedBufferAttribute, "vec3", count);
 
-  // vectors
+  // Vectors
 
+  // Base vec3 position of the mesh vertices.
   const basePosition = positionAttribute.element(instanceIndex);
+  // Mesh vertices after compute modification.
   const currentPosition = positionStorageAttribute.element(instanceIndex);
+  // Speed of each mesh vertex.
   const currentSpeed = speedAttribute.element(instanceIndex);
 
   //
 
   const computeInit = Fn(() => {
-    // copy position to storage
+    // Modified storage position starts out the same as the base position.
 
     currentPosition.assign(basePosition);
   })().compute(count);
@@ -153,7 +158,7 @@ function init() {
 
       // apply the material to the mesh
 
-      const mesh = gltf.scene.children[0];
+      mesh = gltf.scene.children[0];
       mesh.scale.setScalar(0.1);
       mesh.material = material;
       scene.add(mesh);
