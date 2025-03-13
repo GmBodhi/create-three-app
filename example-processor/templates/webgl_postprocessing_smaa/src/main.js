@@ -74,10 +74,7 @@ function init() {
   composer = new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene, camera));
 
-  smaaPass = new SMAAPass(
-    window.innerWidth * renderer.getPixelRatio(),
-    window.innerHeight * renderer.getPixelRatio()
-  );
+  smaaPass = new SMAAPass();
   composer.addPass(smaaPass);
 
   const outputPass = new OutputPass();

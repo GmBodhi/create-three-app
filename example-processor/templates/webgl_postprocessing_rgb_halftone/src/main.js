@@ -133,11 +133,7 @@ function init() {
     greyscale: false,
     disable: false,
   };
-  const halftonePass = new HalftonePass(
-    window.innerWidth,
-    window.innerHeight,
-    params
-  );
+  const halftonePass = new HalftonePass(params);
   composer.addPass(renderPass);
   composer.addPass(halftonePass);
 
