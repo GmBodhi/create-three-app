@@ -23,7 +23,7 @@ jobs:
           ref: ${{ matrix.ref }}
 
       - name: Install Node v14
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: 14
 
