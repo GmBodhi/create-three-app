@@ -161,7 +161,7 @@ function reloadObject(resetCamera) {
           newMaterial.opacity = material.opacity;
           newMaterial.transparent = material.transparent;
           newMaterial.depthWrite = material.depthWrite;
-          newMaterial.toneMapping = false;
+          newMaterial.toneMapped = false;
 
           return newMaterial;
         }
@@ -293,7 +293,7 @@ function onProgress(xhr) {
   if (xhr.lengthComputable) {
     updateProgressBar(xhr.loaded / xhr.total);
 
-    console.log(Math.round((xhr.loaded / xhr.total) * 100, 2) + "% downloaded");
+    console.log(Math.round((xhr.loaded / xhr.total) * 100) + "% downloaded");
   }
 }
 

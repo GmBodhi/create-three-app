@@ -203,8 +203,8 @@ async function init(forceGlobalSwap = false) {
     const blockOffset = index.mul(2).div(blockHeight).mul(blockHeight);
     const halfHeight = blockHeight.div(2);
     const idx = uvec2(
-      index.modInt(halfHeight),
-      blockHeight.sub(index.modInt(halfHeight)).sub(1)
+      index.mod(halfHeight),
+      blockHeight.sub(index.mod(halfHeight)).sub(1)
     );
     idx.x.addAssign(blockOffset);
     idx.y.addAssign(blockOffset);
@@ -216,8 +216,8 @@ async function init(forceGlobalSwap = false) {
     const blockOffset = index.mul(2).div(blockHeight).mul(blockHeight);
     const halfHeight = blockHeight.div(2);
     const idx = uvec2(
-      index.modInt(halfHeight),
-      index.modInt(halfHeight).add(halfHeight)
+      index.mod(halfHeight),
+      index.mod(halfHeight).add(halfHeight)
     );
 
     idx.x.addAssign(blockOffset);
@@ -441,7 +441,7 @@ async function init(forceGlobalSwap = false) {
       () => {
         const boolCheck = int(
           elementIndex
-            .modInt(nextBlockHeightRead.element(0))
+            .mod(nextBlockHeightRead.element(0))
             .lessThan(nextBlockHeightRead.element(0).div(2))
         );
         color.z.assign(
