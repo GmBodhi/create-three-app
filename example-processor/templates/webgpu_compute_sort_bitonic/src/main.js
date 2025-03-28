@@ -517,9 +517,7 @@ async function init(forceGlobalSwap = false) {
     const algo = new Uint32Array(
       await renderer.getArrayBufferAsync(nextAlgoBuffer)
     );
-    algo > StepType.DISPERSE_LOCAL
-      ? (nextStepGlobal = true)
-      : (nextStepGlobal = false);
+    nextStepGlobal = algo[0] > StepType.DISPERSE_LOCAL;
     const totalSwaps = new Uint32Array(
       await renderer.getArrayBufferAsync(counterBuffer)
     );

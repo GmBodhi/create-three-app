@@ -215,7 +215,7 @@ function init() {
   gltfLoader.load("three/examples/models/gltf/Michelle.glb", (gltf) => {
     const model = gltf.scene;
     model.position.y = -2;
-    model.scale.setScalar(2.5, 2.5, 2.5);
+    model.scale.setScalar(2.5);
     model.traverse((child) => {
       if (child.isMesh) child.material.outputNode = halftones(output);
     });

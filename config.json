@@ -3077,6 +3077,16 @@
         "/src/shaders"
       ]
     },
+    "webgl_reverse_depth_buffer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_rtt": {
       "files": {
         "index.html": "src",

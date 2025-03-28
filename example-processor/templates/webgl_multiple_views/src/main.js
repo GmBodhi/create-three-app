@@ -258,7 +258,7 @@ function render() {
     const view = views[ii];
     const camera = view.camera;
 
-    view.updateCamera(camera, scene, mouseX, mouseY);
+    view.updateCamera(camera, scene, mouseX);
 
     const left = Math.floor(windowWidth * view.left);
     const bottom = Math.floor(windowHeight * view.bottom);
