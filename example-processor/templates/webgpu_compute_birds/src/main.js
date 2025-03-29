@@ -168,8 +168,8 @@ function init() {
   renderer.toneMapping = NeutralToneMapping;
   container.appendChild(renderer.domElement);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.connect(/* renderer.domElement */);
+  const controls = new OrbitControls(camera);
+  controls.connect(renderer.domElement);
 
   // Initialize position, velocity, and phase values
 

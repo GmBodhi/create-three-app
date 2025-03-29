@@ -503,6 +503,16 @@
         "/src"
       ]
     },
+    "webgl_animation_walk": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_buffergeometry": {
       "files": {
         "index.html": "src",
@@ -1179,10 +1189,8 @@
       "files": {
         "index.html": "src",
         "main.js": "src",
-        "heightmapFragmentShader.glsl": "src/shaders",
         "readWaterLevelFragmentShader.glsl": "src/shaders",
         "smoothFragmentShader.glsl": "src/shaders",
-        "waterVertexShader.glsl": "src/shaders",
         "style.css": "src"
       },
       "dirs": [
@@ -2998,6 +3006,16 @@
         "/src/shaders"
       ]
     },
+    "webgl_random_uv": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_raycaster_bvh": {
       "files": {
         "index.html": "src",
@@ -3075,6 +3093,16 @@
       "dirs": [
         "/src",
         "/src/shaders"
+      ]
+    },
+    "webgl_reverse_depth_buffer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
       ]
     },
     "webgl_rtt": {
@@ -3434,6 +3462,16 @@
       ]
     },
     "webgl_volume_perlin": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_watch": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -5047,6 +5085,16 @@
       ]
     },
     "webgpu_xr_cubes": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_xr_native_layers": {
       "files": {
         "index.html": "src",
         "main.js": "src",

@@ -230,6 +230,9 @@ function pick() {
   renderer.setClearColor(clearColor);
   renderer.render(pickingScene, camera);
 
+  // Restore active render target to canvas
+  renderer.setRenderTarget(null);
+
   // clear the view offset so rendering returns to normal
   camera.clearViewOffset();
 
@@ -259,6 +262,5 @@ function render() {
 
   pick();
 
-  renderer.setRenderTarget(null);
   renderer.render(scene, camera);
 }

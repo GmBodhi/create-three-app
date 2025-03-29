@@ -95,7 +95,7 @@ function onPointerMove(event) {
   lat = (event.clientY - onPointerDownMouseY) * 0.1 + onPointerDownLat;
 }
 
-function onPointerUp() {
+function onPointerUp(event) {
   if (event.isPrimary === false) return;
 
   isUserInteracting = false;

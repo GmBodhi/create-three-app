@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgpu - volumetric lighting rect area</title>
+    <title>three.js webgl - GLTFloader</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -9,18 +9,23 @@
   </head>
 
   <body style="overflow: hidden">
+    <div id="container"></div>
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      webgpu - volumetric lighting rect area <br />Improve the
-      quality/performance adjusting the parameters in the Controls
+      - Random UV and Disolve
     </div>
+
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script
+      async=""
+      src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
+    ></script>
 
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.webgpu.js",
-          "three/webgpu": "../build/three.webgpu.js",
-          "three/tsl": "../build/three.tsl.js",
+          "three": "../build/three.module.js",
           "three/addons/": "./jsm/"
         }
       }

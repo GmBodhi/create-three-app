@@ -1,13 +1,12 @@
 //Shaders
 
-import heightmapFragmentShader_ from "./shaders/heightmapFragmentShader.glsl";
 import smoothFragmentShader_ from "./shaders/smoothFragmentShader.glsl";
 import readWaterLevelFragmentShader_ from "./shaders/readWaterLevelFragmentShader.glsl";
-import waterVertexShader_ from "./shaders/waterVertexShader.glsl";
 
 import "./style.css"; // For webpack support
 
 import {
+  Quaternion,
   Vector2,
   Raycaster,
   Vector3,
@@ -15,43 +14,56 @@ import {
   Scene,
   DirectionalLight,
   WebGLRenderer,
+  ACESFilmicToneMapping,
+  EquirectangularReflectionMapping,
   PlaneGeometry,
-  ShaderMaterial,
-  MeshPhongMaterial,
-  UniformsUtils,
-  ShaderLib,
-  ShaderChunk,
-  Color,
+  DoubleSide,
   Mesh,
+  TorusGeometry,
+  MeshStandardMaterial,
   MeshBasicMaterial,
   WebGLRenderTarget,
   ClampToEdgeWrapping,
   NearestFilter,
   RGBAFormat,
   UnsignedByteType,
-  SphereGeometry,
+  VSMShadowMap,
+  CameraHelper,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer.js";
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 // Texture width for simulation
 const WIDTH = 128;
 
 // Water size in system units
-const BOUNDS = 512;
+const BOUNDS = 6;
 const BOUNDS_HALF = BOUNDS * 0.5;
 
+let tmpHeightmap = null;
+let tmpQuat = new Quaternion();
+let tmpQuatX = new Quaternion();
+let tmpQuatZ = new Quaternion();
+let duckModel = null;
+
 let container, stats;
-let camera, scene, renderer;
+let camera, scene, renderer, controls;
 let mouseMoved = false;
+let mousedown = false;
 const mouseCoords = new Vector2();
 const raycaster = new Raycaster();
 
+let sun;
 let waterMesh;
+let poolBorder;
 let meshRay;
 let gpuCompute;
 let heightmapVariable;
@@ -62,139 +74,164 @@ let readWaterLevelRenderTarget;
 let readWaterLevelImage;
 const waterNormal = new Vector3();
 
-const NUM_SPHERES = 5;
-const spheres = [];
-let spheresEnabled = true;
+const NUM_DUCK = 12;
+const ducks = [];
+let ducksEnabled = true;
 
 const simplex = new SimplexNoise();
 
+let frame = 0;
+
+const effectController = {
+  mouseSize: 0.2,
+  mouseDeep: 0.01,
+  viscosity: 0.93,
+  speed: 5,
+  ducksEnabled: ducksEnabled,
+  wireframe: false,
+  shadow: false,
+};
+
 init();
 
-function init() {
+async function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
   camera = new PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
-    1,
-    3000
+    0.1,
+    1000
   );
-  camera.position.set(0, 200, 350);
+  camera.position.set(0, 2.0, 4);
   camera.lookAt(0, 0, 0);
 
   scene = new Scene();
 
-  const sun = new DirectionalLight(0xffffff, 3.0);
-  sun.position.set(300, 400, 175);
+  sun = new DirectionalLight(0xffffff, 4.0);
+  sun.position.set(-1, 2.6, 1.4);
   scene.add(sun);
 
-  const sun2 = new DirectionalLight(0x40a040, 2.0);
-  sun2.position.set(-100, 350, -200);
-  scene.add(sun2);
-
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ antialias: true, stencil: false });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.5;
   container.appendChild(renderer.domElement);
+
+  controls = new OrbitControls(camera, container);
 
   stats = new Stats();
   container.appendChild(stats.dom);
 
   container.style.touchAction = "none";
   container.addEventListener("pointermove", onPointerMove);
-
-  document.addEventListener("keydown", function (event) {
-    // W Pressed: Toggle wireframe
-    if (event.keyCode === 87) {
-      waterMesh.material.wireframe = !waterMesh.material.wireframe;
-      waterMesh.material.needsUpdate = true;
-    }
-  });
+  container.addEventListener("pointerdown", onPointerDown);
+  container.addEventListener("pointerup", onPointerUp);
 
   window.addEventListener("resize", onWindowResize);
 
-  const gui = new GUI();
+  const rgbeLoader = new RGBELoader().setPath(
+    "three/examples/textures/equirectangular/"
+  );
+  const glbloader = new GLTFLoader().setPath("models/gltf/");
+  glbloader.setDRACOLoader(
+    new DRACOLoader().setDecoderPath("jsm/libs/draco/gltf/")
+  );
 
-  const effectController = {
-    mouseSize: 20.0,
-    viscosity: 0.98,
-    spheresEnabled: spheresEnabled,
-  };
+  const [env, model] = await Promise.all([
+    rgbeLoader.loadAsync("blouberg_sunrise_2_1k.hdr"),
+    glbloader.loadAsync("duck.glb"),
+  ]);
+  env.mapping = EquirectangularReflectionMapping;
+  scene.environment = env;
+  scene.background = env;
+  scene.backgroundBlurriness = 0.3;
+  scene.environmentIntensity = 1.25;
+
+  duckModel = model.scene.children[0];
+  duckModel.receiveShadow = true;
+  duckModel.castShadow = true;
+
+  const gui = new GUI();
+  gui.domElement.style.right = "0px";
 
   const valuesChanger = function () {
     heightmapVariable.material.uniforms["mouseSize"].value =
       effectController.mouseSize;
-    heightmapVariable.material.uniforms["viscosityConstant"].value =
+    heightmapVariable.material.uniforms["deep"].value =
+      effectController.mouseDeep;
+    heightmapVariable.material.uniforms["viscosity"].value =
       effectController.viscosity;
-    spheresEnabled = effectController.spheresEnabled;
-    for (let i = 0; i < NUM_SPHERES; i++) {
-      if (spheres[i]) {
-        spheres[i].visible = spheresEnabled;
-      }
+    ducksEnabled = effectController.ducksEnabled;
+
+    let i = NUM_DUCK;
+    while (i--) {
+      if (ducks[i]) ducks[i].visible = ducksEnabled;
     }
   };
 
+  gui.add(effectController, "mouseSize", 0.1, 1.0, 0.1).onChange(valuesChanger);
   gui
-    .add(effectController, "mouseSize", 1.0, 100.0, 1.0)
+    .add(effectController, "mouseDeep", 0.01, 1.0, 0.01)
     .onChange(valuesChanger);
   gui
     .add(effectController, "viscosity", 0.9, 0.999, 0.001)
     .onChange(valuesChanger);
-  gui.add(effectController, "spheresEnabled").onChange(valuesChanger);
-  const buttonSmooth = {
-    smoothWater: function () {
-      smoothWater();
-    },
-  };
-  gui.add(buttonSmooth, "smoothWater");
+  gui.add(effectController, "speed", 1, 6, 1);
+  gui.add(effectController, "ducksEnabled").onChange(valuesChanger);
+  gui.add(effectController, "wireframe").onChange((v) => {
+    waterMesh.material.wireframe = v;
+    poolBorder.material.wireframe = v;
+  });
+  gui.add(effectController, "shadow").onChange(addShadow);
+
+  //const buttonSmooth = { smoothWater: function () {smoothWater();} };
+  //gui.add( buttonSmooth, 'smoothWater' );
 
   initWater();
 
-  createSpheres();
+  createducks();
 
   valuesChanger();
+
+  animate();
 }
 
 function initWater() {
-  const materialColor = 0x0040c0;
-
   const geometry = new PlaneGeometry(BOUNDS, BOUNDS, WIDTH - 1, WIDTH - 1);
 
-  // material: make a ShaderMaterial clone of MeshPhongMaterial, with customized vertex shader
-  const material = new ShaderMaterial({
-    uniforms: UniformsUtils.merge([
-      ShaderLib["phong"].uniforms,
-      {
-        heightmap: { value: null },
-      },
-    ]),
-    vertexShader: waterVertexShader_,
-    fragmentShader: ShaderChunk["meshphong_frag"],
+  const material = new WaterMaterial({
+    color: 0x9bd2ec,
+    metalness: 0.9,
+    roughness: 0,
+    transparent: true,
+    opacity: 0.8,
+    side: DoubleSide,
   });
 
-  material.lights = true;
-
-  // Material attributes from MeshPhongMaterial
-  // Sets the uniforms with the material values
-  material.uniforms["diffuse"].value = new Color(materialColor);
-  material.uniforms["specular"].value = new Color(0x111111);
-  material.uniforms["shininess"].value = Math.max(50, 1e-4);
-  material.uniforms["opacity"].value = material.opacity;
-
-  // Defines
-  material.defines.WIDTH = WIDTH.toFixed(1);
-  material.defines.BOUNDS = BOUNDS.toFixed(1);
-
-  waterUniforms = material.uniforms;
-
   waterMesh = new Mesh(geometry, material);
-  waterMesh.rotation.x = -Math.PI / 2;
+  waterMesh.rotation.x = -Math.PI * 0.5;
   waterMesh.matrixAutoUpdate = false;
   waterMesh.updateMatrix();
 
+  waterMesh.receiveShadow = true;
+  waterMesh.castShadow = true;
+
   scene.add(waterMesh);
+
+  // pool border
+  const borderGeom = new TorusGeometry(4.2, 0.1, 12, 4);
+  borderGeom.rotateX(Math.PI * 0.5);
+  borderGeom.rotateY(Math.PI * 0.25);
+  poolBorder = new Mesh(
+    borderGeom,
+    new MeshStandardMaterial({ color: 0x908877, roughness: 0.2 })
+  );
+  scene.add(poolBorder);
+  borderGeom.receiveShadow = true;
+  borderGeom.castShadow = true;
 
   // Mesh just for mouse raycasting
   const geometryRay = new PlaneGeometry(BOUNDS, BOUNDS, 1, 1);
@@ -217,7 +254,7 @@ function initWater() {
 
   heightmapVariable = gpuCompute.addVariable(
     "heightmap",
-    heightmapFragmentShader_,
+    shaderChange.heightmap_frag,
     heightmap0
   );
 
@@ -226,15 +263,13 @@ function initWater() {
   heightmapVariable.material.uniforms["mousePos"] = {
     value: new Vector2(10000, 10000),
   };
-  heightmapVariable.material.uniforms["mouseSize"] = { value: 20.0 };
-  heightmapVariable.material.uniforms["viscosityConstant"] = { value: 0.98 };
-  heightmapVariable.material.uniforms["heightCompensation"] = { value: 0 };
+  heightmapVariable.material.uniforms["mouseSize"] = { value: 0.2 };
+  heightmapVariable.material.uniforms["viscosity"] = { value: 0.93 };
+  heightmapVariable.material.uniforms["deep"] = { value: 0.01 };
   heightmapVariable.material.defines.BOUNDS = BOUNDS.toFixed(1);
 
   const error = gpuCompute.init();
-  if (error !== null) {
-    console.error(error);
-  }
+  if (error !== null) console.error(error);
 
   // Create compute shader to smooth the water surface and velocity
   smoothShader = gpuCompute.createShaderMaterial(smoothFragmentShader_, {
@@ -267,7 +302,7 @@ function initWater() {
 }
 
 function fillTexture(texture) {
-  const waterMaxHeight = 10;
+  const waterMaxHeight = 0.1;
 
   function noise(x, y) {
     let multR = waterMaxHeight;
@@ -300,6 +335,30 @@ function fillTexture(texture) {
   }
 }
 
+function addShadow(v) {
+  renderer.shadowMap.enabled = v;
+  sun.castShadow = v;
+
+  if (v) {
+    renderer.shadowMap.type = VSMShadowMap;
+    let shadow = sun.shadow;
+    shadow.mapSize.width = shadow.mapSize.height = 2048;
+    shadow.radius = 2;
+    shadow.bias = -0.0005;
+    let shadowCam = shadow.camera,
+      s = 5;
+    shadowCam.near = 0.1;
+    shadowCam.far = 6;
+    shadowCam.right = shadowCam.top = s;
+    shadowCam.left = shadowCam.bottom = -s;
+  } else {
+    if (sun.shadow) sun.shadow.dispose();
+  }
+
+  // debug shadow
+  //scene.add(  new CameraHelper(shadowCam) );
+}
+
 function smoothWater() {
   const currentRenderTarget =
     gpuCompute.getCurrentRenderTarget(heightmapVariable);
@@ -316,16 +375,11 @@ function smoothWater() {
   }
 }
 
-function createSpheres() {
-  const sphereTemplate = new Mesh(
-    new SphereGeometry(4, 24, 12),
-    new MeshPhongMaterial({ color: 0xffff00 })
-  );
-
-  for (let i = 0; i < NUM_SPHERES; i++) {
-    let sphere = sphereTemplate;
-    if (i < NUM_SPHERES - 1) {
-      sphere = sphereTemplate.clone();
+function createducks() {
+  for (let i = 0; i < NUM_DUCK; i++) {
+    let sphere = duckModel;
+    if (i < NUM_DUCK - 1) {
+      sphere = duckModel.clone();
     }
 
     sphere.position.x = (Math.random() - 0.5) * BOUNDS * 0.7;
@@ -335,19 +389,15 @@ function createSpheres() {
 
     scene.add(sphere);
 
-    spheres[i] = sphere;
+    ducks[i] = sphere;
   }
 }
 
-function sphereDynamics() {
-  const currentRenderTarget =
-    gpuCompute.getCurrentRenderTarget(heightmapVariable);
+function duckDynamics() {
+  readWaterLevelShader.uniforms["levelTexture"].value = tmpHeightmap;
 
-  readWaterLevelShader.uniforms["levelTexture"].value =
-    currentRenderTarget.texture;
-
-  for (let i = 0; i < NUM_SPHERES; i++) {
-    const sphere = spheres[i];
+  for (let i = 0; i < NUM_DUCK; i++) {
+    const sphere = ducks[i];
 
     if (sphere) {
       // Read water level and orientation
@@ -374,30 +424,50 @@ function sphereDynamics() {
 
       const pos = sphere.position;
 
+      let startPos = pos.clone();
+
       // Set height
       pos.y = pixels[0];
 
       // Move sphere
-      waterNormal.multiplyScalar(0.1);
+      waterNormal.multiplyScalar(0.01);
       sphere.userData.velocity.add(waterNormal);
       sphere.userData.velocity.multiplyScalar(0.998);
       pos.add(sphere.userData.velocity);
 
-      if (pos.x < -BOUNDS_HALF) {
-        pos.x = -BOUNDS_HALF + 0.001;
+      let decal = 0.001;
+      let limit = BOUNDS_HALF - 0.2;
+
+      if (pos.x < -limit) {
+        pos.x = -limit + decal;
         sphere.userData.velocity.x *= -0.3;
-      } else if (pos.x > BOUNDS_HALF) {
-        pos.x = BOUNDS_HALF - 0.001;
+      } else if (pos.x > limit) {
+        pos.x = limit - decal;
         sphere.userData.velocity.x *= -0.3;
       }
 
-      if (pos.z < -BOUNDS_HALF) {
-        pos.z = -BOUNDS_HALF + 0.001;
+      if (pos.z < -limit) {
+        pos.z = -limit + decal;
         sphere.userData.velocity.z *= -0.3;
-      } else if (pos.z > BOUNDS_HALF) {
-        pos.z = BOUNDS_HALF - 0.001;
+      } else if (pos.z > limit) {
+        pos.z = limit - decal;
         sphere.userData.velocity.z *= -0.3;
       }
+
+      // duck orientation test
+
+      let startNormal = new Vector3(pixels[1], 1, -pixels[2]).normalize();
+
+      let dir = startPos.sub(pos);
+      dir.y = 0;
+      dir.normalize();
+
+      let yAxis = new Vector3(0, 1, 0);
+      let zAxis = new Vector3(0, 0, -1);
+      tmpQuatX.setFromUnitVectors(zAxis, dir);
+      tmpQuatZ.setFromUnitVectors(yAxis, startNormal);
+      tmpQuat.multiplyQuaternions(tmpQuatZ, tmpQuatX);
+      sphere.quaternion.slerp(tmpQuat, 0.017);
     }
   }
 }
@@ -409,29 +479,27 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function setMouseCoords(x, y) {
-  mouseCoords.set(
-    (x / renderer.domElement.clientWidth) * 2 - 1,
-    -(y / renderer.domElement.clientHeight) * 2 + 1
-  );
-  mouseMoved = true;
+function onPointerDown(event) {
+  mousedown = true;
+}
+
+function onPointerUp(event) {
+  mousedown = false;
+  controls.enabled = true;
 }
 
 function onPointerMove(event) {
-  if (event.isPrimary === false) return;
-
-  setMouseCoords(event.clientX, event.clientY);
+  let dom = renderer.domElement;
+  mouseCoords.set(
+    (event.clientX / dom.clientWidth) * 2 - 1,
+    -(event.clientY / dom.clientHeight) * 2 + 1
+  );
 }
 
-function animate() {
-  render();
-  stats.update();
-}
-
-function render() {
+function raycast() {
   // Set uniforms: mouse interaction
   const uniforms = heightmapVariable.material.uniforms;
-  if (mouseMoved) {
+  if (mousedown) {
     raycaster.setFromCamera(mouseCoords, camera);
 
     const intersects = raycaster.intersectObject(meshRay);
@@ -439,26 +507,160 @@ function render() {
     if (intersects.length > 0) {
       const point = intersects[0].point;
       uniforms["mousePos"].value.set(point.x, point.z);
+      if (controls.enabled) controls.enabled = false;
     } else {
       uniforms["mousePos"].value.set(10000, 10000);
     }
-
-    mouseMoved = false;
   } else {
     uniforms["mousePos"].value.set(10000, 10000);
   }
+}
 
-  // Do the gpu computation
-  gpuCompute.compute();
+function animate() {
+  requestAnimationFrame(animate);
+  render();
+  stats.update();
+}
 
-  if (spheresEnabled) {
-    sphereDynamics();
+function render() {
+  raycast();
+
+  frame++;
+
+  if (frame >= 7 - effectController.speed) {
+    // Do the gpu computation
+    gpuCompute.compute();
+    tmpHeightmap = gpuCompute.getCurrentRenderTarget(heightmapVariable).texture;
+
+    if (ducksEnabled) duckDynamics();
+
+    // Get compute output in custom uniform
+    if (waterMesh) waterMesh.material.heightmap = tmpHeightmap;
+
+    frame = 0;
   }
-
-  // Get compute output in custom uniform
-  waterUniforms["heightmap"].value =
-    gpuCompute.getCurrentRenderTarget(heightmapVariable).texture;
 
   // Render
   renderer.render(scene, camera);
 }
+
+//----------------------
+
+class WaterMaterial extends MeshStandardMaterial {
+  constructor(parameters) {
+    super();
+
+    this.defines = {
+      STANDARD: "",
+      USE_UV: "",
+      WIDTH: WIDTH.toFixed(1),
+      BOUNDS: BOUNDS.toFixed(1),
+    };
+
+    this.extra = {};
+
+    this.addParametre("heightmap", null);
+
+    this.setValues(parameters);
+  }
+
+  addParametre(name, value) {
+    this.extra[name] = value;
+    Object.defineProperty(this, name, {
+      get: () => this.extra[name],
+      set: (v) => {
+        this.extra[name] = v;
+        if (this.userData.shader)
+          this.userData.shader.uniforms[name].value = this.extra[name];
+      },
+    });
+  }
+
+  onBeforeCompile(shader) {
+    for (let name in this.extra) {
+      shader.uniforms[name] = { value: this.extra[name] };
+    }
+
+    shader.vertexShader = shader.vertexShader.replace(
+      "#include <common>",
+      shaderChange.common
+    );
+    //shader.vertexShader = 'uniform sampler2D heightmap;\n' + shader.vertexShader;
+    shader.vertexShader = shader.vertexShader.replace(
+      "#include <beginnormal_vertex>",
+      shaderChange.beginnormal_vertex
+    );
+    shader.vertexShader = shader.vertexShader.replace(
+      "#include <begin_vertex>",
+      shaderChange.begin_vertex
+    );
+
+    this.userData.shader = shader;
+  }
+}
+
+const shaderChange = {
+  heightmap_frag: /* glsl */ `
+			    #include <common>
+
+				uniform vec2 mousePos;
+				uniform float mouseSize;
+				uniform float viscosity;
+				uniform float deep;
+
+				void main()	{
+
+					vec2 cellSize = 1.0 / resolution.xy;
+
+					vec2 uv = gl_FragCoord.xy * cellSize;
+
+					// heightmapValue.x == height from previous frame
+					// heightmapValue.y == height from penultimate frame
+					// heightmapValue.z, heightmapValue.w not used
+					vec4 heightmapValue = texture2D( heightmap, uv );
+
+					// Get neighbours
+					vec4 north = texture2D( heightmap, uv + vec2( 0.0, cellSize.y ) );
+					vec4 south = texture2D( heightmap, uv + vec2( 0.0, - cellSize.y ) );
+					vec4 east = texture2D( heightmap, uv + vec2( cellSize.x, 0.0 ) );
+					vec4 west = texture2D( heightmap, uv + vec2( - cellSize.x, 0.0 ) );
+
+					//float newHeight = ( ( north.x + south.x + east.x + west.x ) * 0.5 - heightmapValue.y ) * viscosity;
+					float newHeight = ( ( north.x + south.x + east.x + west.x ) * 0.5 - (heightmapValue.y) ) * viscosity;
+
+
+					// Mouse influence
+					float mousePhase = clamp( length( ( uv - vec2( 0.5 ) ) * BOUNDS - vec2( mousePos.x, - mousePos.y ) ) * PI / mouseSize, 0.0, PI );
+					//newHeight += ( cos( mousePhase ) + 1.0 ) * 0.28 * 10.0;
+					newHeight -= ( cos( mousePhase ) + 1.0 ) * deep;
+
+					heightmapValue.y = heightmapValue.x;
+					heightmapValue.x = newHeight;
+
+					gl_FragColor = heightmapValue;
+
+				}
+			    `,
+  // FOR MATERIAL
+  common: /* glsl */ `
+				#include <common>
+				uniform sampler2D heightmap;
+				`,
+  beginnormal_vertex: /* glsl */ `
+			    vec2 cellSize = vec2( 1.0 / WIDTH, 1.0 / WIDTH );
+			    vec3 objectNormal = vec3(
+				( texture2D( heightmap, uv + vec2( - cellSize.x, 0 ) ).x - texture2D( heightmap, uv + vec2( cellSize.x, 0 ) ).x ) * WIDTH / BOUNDS,
+				( texture2D( heightmap, uv + vec2( 0, - cellSize.y ) ).x - texture2D( heightmap, uv + vec2( 0, cellSize.y ) ).x ) * WIDTH / BOUNDS,
+				1.0 );
+				#ifdef USE_TANGENT
+					vec3 objectTangent = vec3( tangent.xyz );
+				#endif
+			    `,
+  begin_vertex: /* glsl */ `
+			    float heightValue = texture2D( heightmap, uv ).x;
+			    vec3 transformed = vec3( position.x, position.y, heightValue );
+			    #ifdef USE_ALPHAHASH
+					vPosition = vec3( position );
+				#endif
+			    `,
+};

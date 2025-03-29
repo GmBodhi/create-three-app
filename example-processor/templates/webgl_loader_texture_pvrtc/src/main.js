@@ -96,10 +96,10 @@ function init() {
     flare_2bpp_rgba.magFilter =
       LinearFilter;
 
-  disturb_2bpp_rgb.encoding =
-    flare_4bpp_rgba.encoding =
-    disturb_4bpp_rgb.encoding =
-    disturb_4bpp_rgb_v3.encoding =
+  disturb_2bpp_rgb.colorSpace =
+    flare_4bpp_rgba.colorSpace =
+    disturb_4bpp_rgb.colorSpace =
+    disturb_4bpp_rgb_v3.colorSpace =
     flare_2bpp_rgba.colorSpace =
       SRGBColorSpace;
 

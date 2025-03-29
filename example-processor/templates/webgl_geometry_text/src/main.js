@@ -320,7 +320,7 @@ function onPointerMove(event) {
     targetRotationOnPointerDown + (pointerX - pointerXOnPointerDown) * 0.02;
 }
 
-function onPointerUp() {
+function onPointerUp(event) {
   if (event.isPrimary === false) return;
 
   document.removeEventListener("pointermove", onPointerMove);
