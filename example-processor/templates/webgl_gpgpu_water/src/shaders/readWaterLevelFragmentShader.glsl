@@ -41,7 +41,6 @@ vec4 encode_float(float val) {
 
 void main() {
   vec2 cellSize = 1.0 / resolution.xy;
-
   float waterLevel = texture2D(levelTexture, point1).x;
 
   vec2 normal = vec2(

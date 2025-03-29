@@ -1,23 +1,26 @@
 <html>
   <head>
-    <title>three.js webgl - gpgpu - water</title>
+    <title>three.js webgl - GLTFloader</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
   </head>
+
   <body style="overflow: hidden">
+    <div id="container"></div>
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - <span id="waterSize"></span> webgl gpgpu water<br />
-      Click and Move mouse to disturb water.
+      - Random UV and Disolve
     </div>
 
-    <!-- This is just a smoothing 'compute shader' for using manually: -->
-
-    <!-- This is a 'compute shader' to read the current level and normal of water at a point -->
-    <!-- It is used with a variable of size 1x1 -->
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script
+      async=""
+      src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"
+    ></script>
 
     <script type="importmap">
       {
