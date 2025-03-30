@@ -64,11 +64,11 @@ function init() {
   dirLight.position.set(-0.5, 1, 0.8);
   dirLight.castShadow = true;
   scene.add(dirLight);
-  let shadow = dirLight.shadow;
+  const shadow = dirLight.shadow;
   shadow.mapSize.width = shadow.mapSize.height = 1024;
   shadow.radius = 16;
   shadow.bias = -0.0005;
-  let shadowCam = shadow.camera,
+  const shadowCam = shadow.camera,
     s = 2;
   shadowCam.near = 0.5;
   shadowCam.far = 3;
@@ -78,7 +78,7 @@ function init() {
   //scene.add( new CameraHelper(shadowCam) );
 
   // add ground plane
-  let plane = new PlaneGeometry(2, 2);
+  const plane = new PlaneGeometry(2, 2);
   plane.rotateX(-Math.PI * 0.5);
   ground = new Mesh(plane, new ShadowMaterial({ opacity: 0.5 }));
   ground.receiveShadow = true;

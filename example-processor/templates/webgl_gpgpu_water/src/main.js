@@ -49,14 +49,13 @@ const BOUNDS = 6;
 const BOUNDS_HALF = BOUNDS * 0.5;
 
 let tmpHeightmap = null;
-let tmpQuat = new Quaternion();
-let tmpQuatX = new Quaternion();
-let tmpQuatZ = new Quaternion();
+const tmpQuat = new Quaternion();
+const tmpQuatX = new Quaternion();
+const tmpQuatZ = new Quaternion();
 let duckModel = null;
 
 let container, stats;
 let camera, scene, renderer, controls;
-let mouseMoved = false;
 let mousedown = false;
 const mouseCoords = new Vector2();
 const raycaster = new Raycaster();
@@ -67,7 +66,6 @@ let poolBorder;
 let meshRay;
 let gpuCompute;
 let heightmapVariable;
-let waterUniforms;
 let smoothShader;
 let readWaterLevelShader;
 let readWaterLevelRenderTarget;
@@ -113,7 +111,7 @@ async function init() {
   sun.position.set(-1, 2.6, 1.4);
   scene.add(sun);
 
-  renderer = new WebGLRenderer({ antialias: true, stencil: false });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
@@ -196,7 +194,7 @@ async function init() {
 
   valuesChanger();
 
-  animate();
+  renderer.setAnimationLoop(animate);
 }
 
 function initWater() {
@@ -341,11 +339,11 @@ function addShadow(v) {
 
   if (v) {
     renderer.shadowMap.type = VSMShadowMap;
-    let shadow = sun.shadow;
+    const shadow = sun.shadow;
     shadow.mapSize.width = shadow.mapSize.height = 2048;
     shadow.radius = 2;
     shadow.bias = -0.0005;
-    let shadowCam = shadow.camera,
+    const shadowCam = shadow.camera,
       s = 5;
     shadowCam.near = 0.1;
     shadowCam.far = 6;
@@ -424,7 +422,7 @@ function duckDynamics() {
 
       const pos = sphere.position;
 
-      let startPos = pos.clone();
+      const startPos = pos.clone();
 
       // Set height
       pos.y = pixels[0];
@@ -435,8 +433,8 @@ function duckDynamics() {
       sphere.userData.velocity.multiplyScalar(0.998);
       pos.add(sphere.userData.velocity);
 
-      let decal = 0.001;
-      let limit = BOUNDS_HALF - 0.2;
+      const decal = 0.001;
+      const limit = BOUNDS_HALF - 0.2;
 
       if (pos.x < -limit) {
         pos.x = -limit + decal;
@@ -456,14 +454,14 @@ function duckDynamics() {
 
       // duck orientation test
 
-      let startNormal = new Vector3(pixels[1], 1, -pixels[2]).normalize();
+      const startNormal = new Vector3(pixels[1], 1, -pixels[2]).normalize();
 
-      let dir = startPos.sub(pos);
+      const dir = startPos.sub(pos);
       dir.y = 0;
       dir.normalize();
 
-      let yAxis = new Vector3(0, 1, 0);
-      let zAxis = new Vector3(0, 0, -1);
+      const yAxis = new Vector3(0, 1, 0);
+      const zAxis = new Vector3(0, 0, -1);
       tmpQuatX.setFromUnitVectors(zAxis, dir);
       tmpQuatZ.setFromUnitVectors(yAxis, startNormal);
       tmpQuat.multiplyQuaternions(tmpQuatZ, tmpQuatX);
@@ -479,17 +477,17 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onPointerDown(event) {
+function onPointerDown() {
   mousedown = true;
 }
 
-function onPointerUp(event) {
+function onPointerUp() {
   mousedown = false;
   controls.enabled = true;
 }
 
 function onPointerMove(event) {
-  let dom = renderer.domElement;
+  const dom = renderer.domElement;
   mouseCoords.set(
     (event.clientX / dom.clientWidth) * 2 - 1,
     -(event.clientY / dom.clientHeight) * 2 + 1
@@ -517,7 +515,6 @@ function raycast() {
 }
 
 function animate() {
-  requestAnimationFrame(animate);
   render();
   stats.update();
 }
@@ -577,7 +574,7 @@ class WaterMaterial extends MeshStandardMaterial {
   }
 
   onBeforeCompile(shader) {
-    for (let name in this.extra) {
+    for (const name in this.extra) {
       shader.uniforms[name] = { value: this.extra[name] };
     }
 
@@ -601,7 +598,7 @@ class WaterMaterial extends MeshStandardMaterial {
 
 const shaderChange = {
   heightmap_frag: /* glsl */ `
-			    #include <common>
+				#include <common>
 
 				uniform vec2 mousePos;
 				uniform float mouseSize;
@@ -640,27 +637,27 @@ const shaderChange = {
 					gl_FragColor = heightmapValue;
 
 				}
-			    `,
+				`,
   // FOR MATERIAL
   common: /* glsl */ `
 				#include <common>
 				uniform sampler2D heightmap;
 				`,
   beginnormal_vertex: /* glsl */ `
-			    vec2 cellSize = vec2( 1.0 / WIDTH, 1.0 / WIDTH );
-			    vec3 objectNormal = vec3(
+				vec2 cellSize = vec2( 1.0 / WIDTH, 1.0 / WIDTH );
+				vec3 objectNormal = vec3(
 				( texture2D( heightmap, uv + vec2( - cellSize.x, 0 ) ).x - texture2D( heightmap, uv + vec2( cellSize.x, 0 ) ).x ) * WIDTH / BOUNDS,
 				( texture2D( heightmap, uv + vec2( 0, - cellSize.y ) ).x - texture2D( heightmap, uv + vec2( 0, cellSize.y ) ).x ) * WIDTH / BOUNDS,
 				1.0 );
 				#ifdef USE_TANGENT
 					vec3 objectTangent = vec3( tangent.xyz );
 				#endif
-			    `,
+				`,
   begin_vertex: /* glsl */ `
-			    float heightValue = texture2D( heightmap, uv ).x;
-			    vec3 transformed = vec3( position.x, position.y, heightValue );
-			    #ifdef USE_ALPHAHASH
+				float heightValue = texture2D( heightmap, uv ).x;
+				vec3 transformed = vec3( position.x, position.y, heightValue );
+				#ifdef USE_ALPHAHASH
 					vPosition = vec3( position );
 				#endif
-			    `,
+				`,
 };
