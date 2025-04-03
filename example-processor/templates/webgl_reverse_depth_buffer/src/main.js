@@ -42,7 +42,7 @@ function init() {
   const numInstances = xCount * yCount;
 
   const d = 0.0001; // half distance between two planes
-  const o = 0.5; // half x offset to shift planes so they are only partially overlaping
+  const o = 0.5; // half x offset to shift planes so they are only partially overlapping
 
   const positions = new Float32Array([
     -1 - o,

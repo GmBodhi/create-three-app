@@ -263,8 +263,8 @@ function getTime() {
   const minute = currentDate.getMinutes();
   const second = currentDate.getSeconds();
   let day = currentDate.getDay();
-  const mounth = currentDate.getMonth();
-  const mili = currentDate.getMilliseconds();
+  const month = currentDate.getMonth();
+  const milli = currentDate.getMilliseconds();
   if (hour >= 12) hour -= 12;
   if (day > 30) day = 30;
 
@@ -272,8 +272,8 @@ function getTime() {
   meshs.minute.rotation.y = -minute * 6 * torad;
   meshs.second.rotation.y = -second * 6 * torad;
   meshs.mini_03.rotation.y = -day * 12 * torad;
-  meshs.mini_02.rotation.y = -mounth * 30 * torad;
-  meshs.mini_01.rotation.y = -mili * 0.36 * torad;
+  meshs.mini_02.rotation.y = -month * 30 * torad;
+  meshs.mini_01.rotation.y = -milli * 0.36 * torad;
 }
 
 function onWindowResize() {

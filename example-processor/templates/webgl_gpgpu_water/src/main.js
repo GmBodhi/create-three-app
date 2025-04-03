@@ -556,12 +556,12 @@ class WaterMaterial extends MeshStandardMaterial {
 
     this.extra = {};
 
-    this.addParametre("heightmap", null);
+    this.addParameter("heightmap", null);
 
     this.setValues(parameters);
   }
 
-  addParametre(name, value) {
+  addParameter(name, value) {
     this.extra[name] = value;
     Object.defineProperty(this, name, {
       get: () => this.extra[name],

@@ -261,7 +261,7 @@ function updateCharacter(delta) {
   const ease = controls.ease;
   const rotate = controls.rotate;
   const position = controls.position;
-  const azimut = orbitControls.getAzimuthalAngle();
+  const azimuth = orbitControls.getAzimuthalAngle();
 
   const active = key[0] === 0 && key[1] === 0 ? false : true;
   const play = active ? (key[2] ? "Run" : "Walk") : "Idle";
@@ -278,7 +278,7 @@ function updateCharacter(delta) {
       current.weight = 1.0;
       current.stopFading();
       old.stopFading();
-      // sycro if not idle
+      // synchro if not idle
       if (play !== "Idle")
         current.time =
           old.time * (current.getClip().duration / old.getClip().duration);
@@ -303,11 +303,11 @@ function updateCharacter(delta) {
     ease.set(key[1], 0, key[0]).multiplyScalar(velocity * delta);
 
     // calculate camera direction
-    const angle = unwrapRad(Math.atan2(ease.x, ease.z) + azimut);
+    const angle = unwrapRad(Math.atan2(ease.x, ease.z) + azimuth);
     rotate.setFromAxisAngle(up, angle);
 
     // apply camera angle on ease
-    controls.ease.applyAxisAngle(up, azimut);
+    controls.ease.applyAxisAngle(up, azimuth);
 
     position.add(ease);
     camera.position.add(ease);
@@ -318,7 +318,7 @@ function updateCharacter(delta) {
     orbitControls.target.copy(position).add({ x: 0, y: 1, z: 0 });
     followGroup.position.copy(position);
 
-    // decale floor at infinie
+    // Move the floor without any limit
     const dx = position.x - floor.position.x;
     const dz = position.z - floor.position.z;
     if (Math.abs(dx) > controls.floorDecale) floor.position.x += dx;
