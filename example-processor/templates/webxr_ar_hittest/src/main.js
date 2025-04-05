@@ -15,7 +15,7 @@ import { ARButton } from "three/addons/webxr/ARButton.js";
 
 let container;
 let camera, scene, renderer;
-let controller;
+let controller1, controller2;
 
 let reticle;
 
@@ -72,9 +72,13 @@ function init() {
     }
   }
 
-  controller = renderer.xr.getController(0);
-  controller.addEventListener("select", onSelect);
-  scene.add(controller);
+  controller1 = renderer.xr.getController(0);
+  controller1.addEventListener("select", onSelect);
+  scene.add(controller1);
+
+  controller2 = renderer.xr.getController(1);
+  controller2.addEventListener("select", onSelect);
+  scene.add(controller2);
 
   reticle = new Mesh(
     new RingGeometry(0.15, 0.2, 32).rotateX(-Math.PI / 2),
