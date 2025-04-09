@@ -1554,6 +1554,16 @@
         "/src"
       ]
     },
+    "webgl_loader_3dtiles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_3mf": {
       "files": {
         "index.html": "src",
