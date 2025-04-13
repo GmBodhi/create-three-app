@@ -410,6 +410,16 @@
         "/src"
       ]
     },
+    "physics_rapier_terrain": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "physics_rapier_vehicle_controller": {
       "files": {
         "index.html": "src",
