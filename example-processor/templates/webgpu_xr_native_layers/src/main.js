@@ -190,6 +190,7 @@ function init() {
     antialias: true,
     forceWebGL: true,
     colorBufferType: UnsignedByteType,
+    multiview: true,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
