@@ -24,26 +24,27 @@ a:hover {
   display: inline-block;
   position: relative;
 }
-#depth-warning,
-.container_label {
-  position: absolute;
-  width: 100%;
-  text-align: center;
-}
 .container_label {
   bottom: 1em;
   color: #fff;
   z-index: 10;
   display: block;
+  text-align: center;
 }
-#depth-warning {
-  top: 40px;
+#info,
+#info_note,
+#overlay,
+.container_label {
+  position: absolute;
+  width: 100%;
+}
+#info_note {
+  top: 24px;
   padding: 10px;
   box-sizing: border-box;
-  color: #f55;
-  font-weight: 700;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.8);
   z-index: 2;
-  display: none;
 }
 #overlay button,
 button {
@@ -52,9 +53,7 @@ button {
 }
 #info,
 #overlay {
-  position: absolute;
   top: 0;
-  width: 100%;
 }
 #info {
   padding: 10px;
