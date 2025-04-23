@@ -3651,6 +3651,16 @@
         "/src"
       ]
     },
+    "webgpu_caustics": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_centroid_sampling": {
       "files": {
         "index.html": "src",
@@ -5105,6 +5115,16 @@
       ]
     },
     "webgpu_video_panorama": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_volume_caustics": {
       "files": {
         "index.html": "src",
         "main.js": "src",

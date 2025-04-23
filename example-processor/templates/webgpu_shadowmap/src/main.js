@@ -13,7 +13,6 @@ import {
   Mesh,
   CylinderGeometry,
   PlaneGeometry,
-  MeshPhongMaterial,
   WebGPURenderer,
   ACESFilmicToneMapping,
   Clock,
@@ -138,13 +137,13 @@ function init() {
   scene.add(pillar4);
 
   const planeGeometry = new PlaneGeometry(200, 200);
-  const planeMaterial = new MeshPhongMaterial({
-    color: 0x999999,
-    shininess: 0,
-    specular: 0x111111,
-  });
 
-  planeMaterial.shadowPositionNode = Fn(() => {
+  const planeMaterial = new MeshPhongNodeMaterial();
+  planeMaterial.color.setHex(0x999999);
+  planeMaterial.shininess = 0;
+  planeMaterial.specular.setHex(0x111111);
+
+  planeMaterial.receivedShadowPositionNode = Fn(() => {
     const pos = positionWorld.toVar();
     pos.xz.addAssign(mx_fractal_noise_vec3(positionWorld.mul(2)).saturate().xz);
     return pos;

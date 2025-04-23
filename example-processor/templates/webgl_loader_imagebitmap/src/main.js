@@ -28,10 +28,9 @@ function addImageBitmap() {
       texture.colorSpace = SRGBColorSpace;
       const material = new MeshBasicMaterial({ map: texture });
 
-      /* ImageBitmap should be disposed when done with it
-						   Can't be done until it's actually uploaded to WebGLTexture */
+      // ImageBitmap should be disposed when done with it.
 
-      // imageBitmap.close();
+      texture.onUpdate = disposeImageBitmap;
 
       addCube(material);
     },
@@ -140,4 +139,9 @@ function animate() {
   group.rotation.y = performance.now() / 3000;
 
   renderer.render(scene, camera);
+}
+
+function disposeImageBitmap(texture) {
+  texture.source.data.close();
+  texture.onUpdate = null; // make sure this callback is executed only once per texture
 }
