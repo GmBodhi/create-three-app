@@ -11,12 +11,13 @@ import {
   DirectionalLight,
   MeshPhongMaterial,
   DoubleSide,
-  Group,
   BoxGeometry,
-  Mesh,
+  InstancedMesh,
   PlaneGeometry,
   Color,
+  Group,
   MeshBasicMaterial,
+  Mesh,
   WebGLRenderer,
 } from "three";
 
@@ -197,17 +198,19 @@ function init() {
     clipShadows: true,
   });
 
-  object = new Group();
-
+  const count = 5 * 5 * 5;
   const geometry = new BoxGeometry(0.18, 0.18, 0.18);
+  object = new InstancedMesh(geometry, clipMaterial, count);
+  object.castShadow = true;
+
+  let i = 0;
+  const matrix = new Matrix4();
 
   for (let z = -2; z <= 2; ++z)
     for (let y = -2; y <= 2; ++y)
       for (let x = -2; x <= 2; ++x) {
-        const mesh = new Mesh(geometry, clipMaterial);
-        mesh.position.set(x / 5, y / 5, z / 5);
-        mesh.castShadow = true;
-        object.add(mesh);
+        matrix.setPosition(x / 5, y / 5, z / 5);
+        object.setMatrixAt(i++, matrix);
       }
 
   scene.add(object);

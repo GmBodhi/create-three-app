@@ -50,7 +50,6 @@ const setting = {
 };
 
 init();
-render();
 
 function init() {
   const container = document.getElementById("container");
@@ -65,9 +64,10 @@ function init() {
 
   scene = new Scene();
 
-  renderer = new WebGLRenderer({ antialias: true, alpha: false });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.7;
   renderer.shadowMap.enabled = true;
@@ -83,8 +83,6 @@ function init() {
       scene.backgroundBlurriness = 0.5;
       scene.backgroundIntensity = 1.0;
       scene.environmentIntensity = 1.5;
-
-      render();
 
       // model
 
@@ -105,6 +103,7 @@ function init() {
                 child.castShadow = true;
               }
             }
+
             meshs[child.name] = child;
           }
         });
@@ -140,11 +139,11 @@ function init() {
   dirLight.position.set(-0.1, 0.6, 0.4);
   dirLight.castShadow = true;
   scene.add(dirLight);
-  let shadow = dirLight.shadow;
+  const shadow = dirLight.shadow;
   shadow.mapSize.width = shadow.mapSize.height = 1024;
   shadow.radius = 8;
   shadow.bias = -0.0005;
-  let shadowCam = shadow.camera,
+  const shadowCam = shadow.camera,
     s = 0.5;
   shadowCam.near = 0.1;
   shadowCam.far = 2;
@@ -261,11 +260,11 @@ function upBloom() {
 function getTime() {
   const currentDate = new Date();
   let hour = currentDate.getHours();
-  let minute = currentDate.getMinutes();
-  let second = currentDate.getSeconds();
+  const minute = currentDate.getMinutes();
+  const second = currentDate.getSeconds();
   let day = currentDate.getDay();
-  let mounth = currentDate.getMonth();
-  let mili = currentDate.getMilliseconds();
+  const month = currentDate.getMonth();
+  const milli = currentDate.getMilliseconds();
   if (hour >= 12) hour -= 12;
   if (day > 30) day = 30;
 
@@ -273,8 +272,8 @@ function getTime() {
   meshs.minute.rotation.y = -minute * 6 * torad;
   meshs.second.rotation.y = -second * 6 * torad;
   meshs.mini_03.rotation.y = -day * 12 * torad;
-  meshs.mini_02.rotation.y = -mounth * 30 * torad;
-  meshs.mini_01.rotation.y = -mili * 0.36 * torad;
+  meshs.mini_02.rotation.y = -month * 30 * torad;
+  meshs.mini_01.rotation.y = -milli * 0.36 * torad;
 }
 
 function onWindowResize() {
@@ -298,8 +297,7 @@ function onWindowResize() {
 
 //
 
-function render() {
-  requestAnimationFrame(render);
+function animate() {
   controls.update();
 
   TWEEN.update();

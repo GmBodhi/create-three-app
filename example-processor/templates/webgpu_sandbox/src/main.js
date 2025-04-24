@@ -235,7 +235,9 @@ function createDataTexture() {
   return texture;
 }
 
-/** Correct UVs to be compatible with `flipY=false` textures. */
+/*
+ * Correct UVs to be compatible with `flipY=false` textures.
+ */
 function flipY(geometry) {
   const uv = geometry.attributes.uv;
 

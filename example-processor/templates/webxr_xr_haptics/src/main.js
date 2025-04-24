@@ -132,13 +132,12 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.xr.addEventListener("sessionstart", () => initAudio());
   renderer.shadowMap.enabled = true;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
 
   document.body.appendChild(XRButton.createButton(renderer));
-
-  document.getElementById("XRButton").addEventListener("click", initAudio);
 
   // controllers
 

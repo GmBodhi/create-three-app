@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>three.js loader - 3d tiles</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      3d tiles -
+      <a
+        href="https://github.com/NASA-AMMOS/3DTilesRendererJS"
+        target="_blank"
+        rel="noopener"
+        >3d-tiles-renderer</a
+      ><br />
+      See
+      <a
+        href="https://github.com/NASA-AMMOS/3DTilesRendererJS"
+        target="_blank"
+        rel="noopener"
+        >main project repository</a
+      >
+      for more information and examples on loading 3d tiles
+      <br />
+      and other tiled data formats.
+      <a href="https://developers.google.com/maps/documentation/tile/3d-tiles"
+        >Google Photorealistic Tiles</a
+      >
+      token courtesy of <a href="https://ion.cesium.com/">Cesium Ion</a>.
+    </div>
+
+    <div id="credits">
+      <img src="./textures/google_on_non_white_hdpi.png" />
+      <a href="https://ion.cesium.com/"
+        ><img src="./textures/cesiumion.png"
+      /></a>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.module.js",
+          "three/examples/": "./",
+          "3d-tiles-renderer": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.4.8/src/index.js",
+          "3d-tiles-renderer/plugins": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.4.8/src/plugins/index.js"
+        }
+      }
+    </script>
+  </body>
+</html>

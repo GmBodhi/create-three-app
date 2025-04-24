@@ -57,7 +57,9 @@ function init() {
       });
     });
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer({
+    antialias: true /*, compatibilityMode: true*/,
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;

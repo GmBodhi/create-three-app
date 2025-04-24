@@ -53,7 +53,7 @@ function init() {
   const xrLight = new XREstimatedLight(renderer);
 
   xrLight.addEventListener("estimationstart", () => {
-    // Swap the default light out for the estimated one one we start getting some estimated values.
+    // Swap the default light out for the estimated one once we start getting some estimated values.
     scene.add(xrLight);
     scene.remove(defaultLight);
 

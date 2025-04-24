@@ -2,6 +2,10 @@ import "./style.css"; // For webpack support
 
 // https://webgpu.github.io/webgpu-samples/?sample=reversedZ
 import {
+  WebGLRenderTarget,
+  UnsignedByteType,
+  DepthTexture,
+  FloatType,
   PerspectiveCamera,
   Scene,
   BufferGeometry,
@@ -14,9 +18,19 @@ import {
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-let stats, camera, scene, normalRenderer, logarithmicRenderer, reverseRenderer;
+let stats, camera, scene;
+let normalRenderer, logarithmicRenderer, reverseRenderer;
+let normalComposer, logarithmicComposer, reverseComposer;
 const meshes = [];
+
+const renderTarget = new WebGLRenderTarget();
+renderTarget.type = UnsignedByteType;
+renderTarget.depthTexture = new DepthTexture();
+renderTarget.depthTexture.type = FloatType;
 
 init();
 animate();
@@ -42,7 +56,7 @@ function init() {
   const numInstances = xCount * yCount;
 
   const d = 0.0001; // half distance between two planes
-  const o = 0.5; // half x offset to shift planes so they are only partially overlaping
+  const o = 0.5; // half x offset to shift planes so they are only partially overlapping
 
   const positions = new Float32Array([
     -1 - o,
@@ -127,12 +141,20 @@ function init() {
   normalRenderer.domElement.style.position = "relative";
   normalContainer.appendChild(normalRenderer.domElement);
 
+  normalComposer = new EffectComposer(normalRenderer, renderTarget);
+  normalComposer.addPass(new RenderPass(scene, camera));
+  normalComposer.addPass(new OutputPass());
+
   const logarithmicContainer = document.getElementById("container_logarithmic");
   logarithmicRenderer = new WebGLRenderer({ logarithmicDepthBuffer: true });
   logarithmicRenderer.setPixelRatio(window.devicePixelRatio);
   logarithmicRenderer.setSize(0.33 * window.innerWidth, window.innerHeight);
   logarithmicRenderer.domElement.style.position = "relative";
   logarithmicContainer.appendChild(logarithmicRenderer.domElement);
+
+  logarithmicComposer = new EffectComposer(logarithmicRenderer, renderTarget);
+  logarithmicComposer.addPass(new RenderPass(scene, camera));
+  logarithmicComposer.addPass(new OutputPass());
 
   const reverseContainer = document.getElementById("container_reverse");
   reverseRenderer = new WebGLRenderer({ reverseDepthBuffer: true });
@@ -141,16 +163,12 @@ function init() {
   reverseRenderer.domElement.style.position = "relative";
   reverseContainer.appendChild(reverseRenderer.domElement);
 
-  // Check depth buffer precision
-  const gl = normalRenderer.getContext();
-
-  const depthBits = gl.getParameter(gl.DEPTH_BITS);
-
-  if (depthBits < 24) {
-    document.getElementById("depth-warning").style.display = "block";
-  }
+  reverseComposer = new EffectComposer(reverseRenderer, renderTarget);
+  reverseComposer.addPass(new RenderPass(scene, camera));
+  reverseComposer.addPass(new OutputPass());
 
   window.addEventListener("resize", onWindowResize);
+  onWindowResize();
 }
 
 function animate() {
@@ -168,17 +186,25 @@ function animate() {
 }
 
 function render() {
-  normalRenderer.render(scene, camera);
-  logarithmicRenderer.render(scene, camera);
-  reverseRenderer.render(scene, camera);
+  normalComposer.render();
+  logarithmicComposer.render();
+  reverseComposer.render();
 
   stats.update();
 }
 
 function onWindowResize() {
-  normalRenderer.setSize(0.33 * window.innerWidth, window.innerHeight);
-  logarithmicRenderer.setSize(0.33 * window.innerWidth, window.innerHeight);
-  reverseRenderer.setSize(0.33 * window.innerWidth, window.innerHeight);
+  const width = 0.33 * window.innerWidth;
+  const height = window.innerHeight;
+  const dpr = window.devicePixelRatio;
+
+  normalComposer.setSize(width * dpr, height * dpr);
+  logarithmicComposer.setSize(width * dpr, height * dpr);
+  reverseComposer.setSize(width * dpr, height * dpr);
+
+  normalRenderer.setSize(width, height);
+  logarithmicRenderer.setSize(width, height);
+  reverseRenderer.setSize(width, height);
 
   camera.aspect = (0.33 * window.innerWidth) / window.innerHeight;
   camera.updateProjectionMatrix();

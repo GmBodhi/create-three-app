@@ -4,8 +4,11 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
-  TextureLoader,
+  FileLoader,
+  CanvasTexture,
+  NearestFilter,
   SRGBColorSpace,
+  TextureLoader,
   MeshStandardMaterial,
   Mesh,
   WebGLRenderer,
@@ -14,6 +17,8 @@ import {
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { LottieLoader } from "three/addons/loaders/LottieLoader.js";
+
+import lottie from "https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/+esm";
 
 let renderer, scene, camera;
 let mesh;
@@ -32,12 +37,39 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0x111111);
 
-  const loader = new LottieLoader();
-  loader.setQuality(2);
+  // lottie
+
+  const loader = new FileLoader();
+  loader.setResponseType("json");
   loader.load(
     "textures/lottie/24017-lottie-logo-animation.json",
-    function (texture) {
-      setupControls(texture.animation);
+    function (data) {
+      const container = document.createElement("div");
+      container.style.width = data.w + "px";
+      container.style.height = data.h + "px";
+      document.body.appendChild(container);
+
+      const animation = lottie.loadAnimation({
+        container: container,
+        animType: "canvas",
+        loop: true,
+        autoplay: true,
+        animationData: data,
+        rendererSettings: { dpr: 1 },
+      });
+
+      const texture = new CanvasTexture(animation.container);
+      texture.minFilter = NearestFilter;
+      texture.generateMipmaps = false;
+      texture.colorSpace = SRGBColorSpace;
+
+      animation.addEventListener("enterFrame", function () {
+        texture.needsUpdate = true;
+      });
+
+      container.style.display = "none"; // must be done after loadAnimation() otherwise canvas has 0 dimensions
+
+      setupControls(animation);
 
       // texture = new TextureLoader().load( 'textures/uv_grid_directx.jpg' );
       // texture.colorSpace = SRGBColorSpace;

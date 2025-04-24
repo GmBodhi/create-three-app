@@ -9,7 +9,6 @@ import {
   Color,
   Fog,
   Group,
-  HemisphereLight,
   DirectionalLight,
   CameraHelper,
   WebGLRenderer,
@@ -40,7 +39,7 @@ let group, followGroup, model, skeleton, mixer, clock;
 
 let actions;
 
-let settings = {
+const settings = {
   show_skeleton: false,
   fixe_transition: true,
 };
@@ -88,14 +87,10 @@ function init() {
   followGroup = new Group();
   scene.add(followGroup);
 
-  /*const hemiLight = new HemisphereLight( 0xffffff, 0xb3602b, 0.5 );
-				hemiLight.position.set( 0, 20, 0 );
-				scene.add( hemiLight );*/
-
   const dirLight = new DirectionalLight(0xffffff, 5);
   dirLight.position.set(-2, 5, -3);
   dirLight.castShadow = true;
-  let cam = dirLight.shadow.camera;
+  const cam = dirLight.shadow.camera;
   cam.top = cam.right = 2;
   cam.bottom = cam.left = -2;
   cam.near = 3;
@@ -110,6 +105,7 @@ function init() {
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   renderer.shadowMap.enabled = true;
@@ -143,8 +139,8 @@ function init() {
 }
 
 function addFloor() {
-  let size = 50;
-  let repeat = 16;
+  const size = 50;
+  const repeat = 16;
 
   const maxAnisotropy = renderer.capabilities.getMaxAnisotropy();
 
@@ -163,7 +159,7 @@ function addFloor() {
   floorN.wrapS = floorN.wrapT = RepeatWrapping;
   floorN.anisotropy = maxAnisotropy;
 
-  let mat = new MeshStandardMaterial({
+  const mat = new MeshStandardMaterial({
     map: floorT,
     normalMap: floorN,
     normalScale: new Vector2(0.5, 0.5),
@@ -172,7 +168,7 @@ function addFloor() {
     roughness: 0.85,
   });
 
-  let g = new PlaneGeometry(size, size, 50, 50);
+  const g = new PlaneGeometry(size, size, 50, 50);
   g.rotateX(-PI90);
 
   floor = new Mesh(g, mat);
@@ -182,9 +178,9 @@ function addFloor() {
   controls.floorDecale = (size / repeat) * 4;
 
   const bulbGeometry = new SphereGeometry(0.05, 16, 8);
-  let bulbLight = new PointLight(0xffee88, 2, 500, 2);
+  const bulbLight = new PointLight(0xffee88, 2, 500, 2);
 
-  let bulbMat = new MeshStandardMaterial({
+  const bulbMat = new MeshStandardMaterial({
     emissive: 0xffffee,
     emissiveIntensity: 1,
     color: 0x000000,
@@ -246,7 +242,7 @@ function loadModel() {
       Run: mixer.clipAction(animations[1]),
     };
 
-    for (let m in actions) {
+    for (const m in actions) {
       actions[m].enabled = true;
       actions[m].setEffectiveTimeScale(1);
       if (m !== "Idle") actions[m].setEffectiveWeight(0);
@@ -265,10 +261,10 @@ function updateCharacter(delta) {
   const ease = controls.ease;
   const rotate = controls.rotate;
   const position = controls.position;
-  const azimut = orbitControls.getAzimuthalAngle();
+  const azimuth = orbitControls.getAzimuthalAngle();
 
-  let active = key[0] === 0 && key[1] === 0 ? false : true;
-  let play = active ? (key[2] ? "Run" : "Walk") : "Idle";
+  const active = key[0] === 0 && key[1] === 0 ? false : true;
+  const play = active ? (key[2] ? "Run" : "Walk") : "Idle";
 
   // change animation
 
@@ -282,7 +278,7 @@ function updateCharacter(delta) {
       current.weight = 1.0;
       current.stopFading();
       old.stopFading();
-      // sycro if not idle
+      // synchro if not idle
       if (play !== "Idle")
         current.time =
           old.time * (current.getClip().duration / old.getClip().duration);
@@ -300,18 +296,18 @@ function updateCharacter(delta) {
 
   if (controls.current !== "Idle") {
     // run/walk velocity
-    let velocity =
+    const velocity =
       controls.current == "Run" ? controls.runVelocity : controls.walkVelocity;
 
     // direction with key
     ease.set(key[1], 0, key[0]).multiplyScalar(velocity * delta);
 
     // calculate camera direction
-    let angle = unwrapRad(Math.atan2(ease.x, ease.z) + azimut);
+    const angle = unwrapRad(Math.atan2(ease.x, ease.z) + azimuth);
     rotate.setFromAxisAngle(up, angle);
 
     // apply camera angle on ease
-    controls.ease.applyAxisAngle(up, azimut);
+    controls.ease.applyAxisAngle(up, azimuth);
 
     position.add(ease);
     camera.position.add(ease);
@@ -322,14 +318,15 @@ function updateCharacter(delta) {
     orbitControls.target.copy(position).add({ x: 0, y: 1, z: 0 });
     followGroup.position.copy(position);
 
-    // decale floor at infinie
-    let dx = position.x - floor.position.x;
-    let dz = position.z - floor.position.z;
+    // Move the floor without any limit
+    const dx = position.x - floor.position.x;
+    const dz = position.z - floor.position.z;
     if (Math.abs(dx) > controls.floorDecale) floor.position.x += dx;
     if (Math.abs(dz) > controls.floorDecale) floor.position.z += dz;
   }
 
-  mixer.update(delta);
+  if (mixer) mixer.update(delta);
+
   orbitControls.update();
 }
 
@@ -343,6 +340,7 @@ function createPanel() {
   panel.add(settings, "show_skeleton").onChange((b) => {
     skeleton.visible = b;
   });
+
   panel.add(settings, "fixe_transition");
 }
 
@@ -417,9 +415,7 @@ function onWindowResize() {
 function animate() {
   // Render loop
 
-  requestAnimationFrame(animate);
-
-  let delta = clock.getDelta();
+  const delta = clock.getDelta();
 
   updateCharacter(delta);
 

@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>three.js webgpu - centroid sampling</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="demo">
+      <div id="antialising-disabled" class="renderer-wrapper">
+        <div>antialising disabled</div>
+      </div>
+      <div id="antialising-enabled" class="renderer-wrapper">
+        <div>antialising enabled</div>
+      </div>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

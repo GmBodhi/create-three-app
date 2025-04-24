@@ -370,7 +370,57 @@
         "/src"
       ]
     },
+    "physics_rapier_basic": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "physics_rapier_character_controller": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "physics_rapier_instancing": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "physics_rapier_joints": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "physics_rapier_terrain": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "physics_rapier_vehicle_controller": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -1505,6 +1555,16 @@
       ]
     },
     "webgl_loader_3ds": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_loader_3dtiles": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3591,6 +3651,26 @@
         "/src"
       ]
     },
+    "webgpu_caustics": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_centroid_sampling": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_clearcoat": {
       "files": {
         "index.html": "src",
@@ -4714,6 +4794,16 @@
         "/src"
       ]
     },
+    "webgpu_shadowmap_array": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_shadowmap_csm": {
       "files": {
         "index.html": "src",
@@ -5025,6 +5115,16 @@
       ]
     },
     "webgpu_video_panorama": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_volume_caustics": {
       "files": {
         "index.html": "src",
         "main.js": "src",
