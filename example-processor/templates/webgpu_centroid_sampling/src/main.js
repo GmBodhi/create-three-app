@@ -108,8 +108,14 @@ function init() {
     });
   };
 
-  const withFlatFirstShader = createShader("flat", "first");
-  const withFlatEitherShader = createShader("flat", "either");
+  const withFlatFirstShader = createShader(
+    InterpolationSamplingType.FLAT,
+    InterpolationSamplingMode.FLAT_FIRST
+  );
+  const withFlatEitherShader = createShader(
+    InterpolationSamplingType.FLAT,
+    InterpolationSamplingMode.FLAT_EITHER
+  );
 
   const withSampleShader = Fn(() => {
     testUV.setInterpolation(
