@@ -192,7 +192,7 @@ function initGui() {
   });
 
   gui.add(param, "dash scale", 0.5, 1, 0.1).onChange(function (val) {
-    matLine.dashScale = val;
+    matLine.scale = val;
     matLineDashed.scale = val;
   });
 
