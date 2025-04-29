@@ -6,16 +6,29 @@ import {
   ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
-  HemisphereLight,
   TextureLoader,
   LinearFilter,
   SRGBColorSpace,
+  HemisphereLight,
   SpotLight,
   SpotLightHelper,
   PlaneGeometry,
   MeshLambertMaterial,
   Mesh,
 } from "three";
+import {
+  Fn,
+  vec2,
+  length,
+  uniform,
+  abs,
+  max,
+  min,
+  sub,
+  div,
+  saturate,
+  acos,
+} from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -29,6 +42,8 @@ let spotLight, lightHelper;
 init();
 
 function init() {
+  // Renderer
+
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -51,6 +66,8 @@ function init() {
   );
   camera.position.set(7, 4, 1);
 
+  // Controls
+
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 2;
   controls.maxDistance = 10;
@@ -58,8 +75,7 @@ function init() {
   controls.target.set(0, 1, 0);
   controls.update();
 
-  const ambient = new HemisphereLight(0xffffff, 0x8d8d8d, 0.15);
-  scene.add(ambient);
+  // Textures
 
   const loader = new TextureLoader().setPath("textures/");
   const filenames = ["disturb.jpg", "colors.png", "uv_grid_opengl.jpg"];
@@ -78,13 +94,40 @@ function init() {
     textures[filename] = texture;
   }
 
+  // Lights
+
+  const ambient = new HemisphereLight(0xffffff, 0x8d8d8d, 0.15);
+  scene.add(ambient);
+
+  const boxAttenuationFn = Fn(([lightNode], builder) => {
+    const light = lightNode.light;
+
+    const sdBox = Fn(([p, b]) => {
+      const d = vec2(abs(p).sub(b)).toVar();
+
+      return length(max(d, 0.0)).add(min(max(d.x, d.y), 0.0));
+    });
+
+    const penumbraCos = uniform("float").onRenderUpdate(() =>
+      Math.min(Math.cos(light.angle * (1 - light.penumbra)), 0.99999)
+    );
+    const spotLightCoord = lightNode.getSpotLightCoord(builder);
+    const coord = spotLightCoord.xyz.div(spotLightCoord.w);
+
+    const boxDist = sdBox(coord.xy.sub(vec2(0.5)), vec2(0.5));
+    const angleFactor = div(-1.0, sub(1.0, acos(penumbraCos)).sub(1.0));
+    const attenuation = saturate(boxDist.mul(-2.0).mul(angleFactor));
+
+    return attenuation;
+  });
+
   spotLight = new SpotLight(0xffffff, 100);
+  spotLight.map = textures["disturb.jpg"];
   spotLight.position.set(2.5, 5, 2.5);
   spotLight.angle = Math.PI / 6;
   spotLight.penumbra = 1;
   spotLight.decay = 2;
   spotLight.distance = 0;
-  spotLight.map = textures["disturb.jpg"];
 
   spotLight.castShadow = true;
   spotLight.shadow.mapSize.width = 1024;
@@ -109,7 +152,7 @@ function init() {
   mesh.receiveShadow = true;
   scene.add(mesh);
 
-  //
+  // Models
 
   new PLYLoader().load("models/ply/binary/Lucy100k.ply", function (geometry) {
     geometry.scale(0.0024, 0.0024, 0.0024);
@@ -141,6 +184,7 @@ function init() {
     decay: spotLight.decay,
     focus: spotLight.shadow.focus,
     shadows: true,
+    customAttenuation: false,
   };
 
   gui.add(params, "map", textures).onChange(function (val) {
@@ -184,6 +228,17 @@ function init() {
       }
     });
   });
+
+  gui
+    .add(params, "customAttenuation")
+    .name("custom attenuation")
+    .onChange(function (val) {
+      spotLight.attenuationNode = val ? boxAttenuationFn : null;
+
+      aspectGUI.setValue(1).enable(val);
+    });
+
+  const aspectGUI = gui.add(spotLight.shadow, "aspect", 0, 2).enable(false);
 
   gui.open();
 }

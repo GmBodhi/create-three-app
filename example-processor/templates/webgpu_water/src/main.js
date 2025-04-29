@@ -148,7 +148,7 @@ function init() {
   // gui
 
   const gui = new GUI();
-  const waterNode = water.material.fragmentNode;
+  const waterNode = water.material.colorNode;
 
   gui.addColor(params, "color").onChange(function (value) {
     waterNode.color.value.set(value);

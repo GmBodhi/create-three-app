@@ -156,6 +156,16 @@ async function init() {
     position.set(0, Math.random() + 1, 0);
     physics.setMeshPosition(spheres, position, index);
   }, 1000 / 60);
+
+  window.addEventListener("resize", onWindowResize);
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
