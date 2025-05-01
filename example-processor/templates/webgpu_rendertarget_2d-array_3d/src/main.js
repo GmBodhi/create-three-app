@@ -11,7 +11,7 @@ import {
   RenderTarget3D,
   DataArrayTexture,
   NodeMaterial,
-  RenderTargetArray,
+  RenderTarget,
   QuadMesh,
 } from "three";
 import {
@@ -194,14 +194,10 @@ async function init() {
       materialQuad.depthTest = false;
       materialQuad.outputNode = vec4(texture(mapArray).depth(uZCoord).rgb, 1);
 
-      const fboArray = new RenderTargetArray(
-        size.width,
-        size.height,
-        size.depth,
-        {
-          depthBuffer: false,
-        }
-      );
+      const fboArray = new RenderTarget(size.width, size.height, {
+        depthBuffer: false,
+        depth: size.depth,
+      });
       fboArray.texture.name = "RenderTargetArray";
 
       const fboArrayHelper = new TextureHelper(fboArray.texture, 10, 10, depth);
