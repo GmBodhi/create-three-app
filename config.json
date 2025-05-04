@@ -952,16 +952,6 @@
         "/src"
       ]
     },
-    "webgl_effects_peppersghost": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_effects_stereo": {
       "files": {
         "index.html": "src",
@@ -1382,16 +1372,6 @@
       ]
     },
     "webgl_interactive_voxelpainter": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_layers": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3922,6 +3902,16 @@
       ]
     },
     "webgpu_instancing_morph": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_layers": {
       "files": {
         "index.html": "src",
         "main.js": "src",
