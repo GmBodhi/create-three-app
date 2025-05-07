@@ -10,6 +10,8 @@ import {
   NeutralToneMapping,
   WebGPURenderer,
   Scene,
+  DirectionalLight,
+  DirectionalLightHelper,
   PerspectiveCamera,
   EquirectangularReflectionMapping,
 } from "three";
@@ -17,15 +19,16 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 
-let mesh, renderer, scene, camera, controls;
+let renderer, scene, camera, controls;
 let gui,
   guiExposure = null;
 
 const params = {
   exposure: 1.0,
-  toneMapping: "AgX",
+  toneMapping: "Neutral",
   blurriness: 0.3,
   intensity: 1.0,
 };
@@ -57,29 +60,40 @@ async function init() {
   scene = new Scene();
   scene.backgroundBlurriness = params.blurriness;
 
+  const light = new DirectionalLight(0xfff3ee, 3); // simualte sun
+  light.position.set(1, 0.05, 0.7);
+  scene.add(light);
+
+  // scene.add( new DirectionalLightHelper( light, 1, 0x000000 ) );
+
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
-    0.25,
-    20
+    0.01,
+    10
   );
-  camera.position.set(-1.8, 0.6, 2.7);
+  camera.position.set(-0.02, 0.03, 0.05);
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableZoom = false;
   controls.enablePan = false;
-  controls.target.set(0, 0, -0.2);
+  controls.enableDamping = true;
+  controls.minDistance = 0.03;
+  controls.maxDistance = 0.2;
+  controls.target.set(0, 0.03, 0);
   controls.update();
 
   const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");
 
-  const gltfLoader = new GLTFLoader().setPath(
-    "models/gltf/DamagedHelmet/glTF/"
-  );
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.setDRACOLoader(dracoLoader);
+  gltfLoader.setPath("models/gltf/");
 
   const [texture, gltf] = await Promise.all([
     rgbeLoader.loadAsync("venice_sunset_1k.hdr"),
-    gltfLoader.loadAsync("DamagedHelmet.gltf"),
+    gltfLoader.loadAsync("venice_mask.glb"),
   ]);
 
   // environment
@@ -91,10 +105,11 @@ async function init() {
 
   // model
 
-  mesh = gltf.scene.getObjectByName("node_damagedHelmet_-6514");
-  scene.add(mesh);
+  scene.add(gltf.scene);
 
   window.addEventListener("resize", onWindowResize);
+
+  //
 
   gui = new GUI();
   const toneMappingFolder = gui.addFolder("Tone Mapping");
@@ -137,7 +152,7 @@ async function init() {
   gui.open();
 }
 
-function updateGUI(folder) {
+function updateGUI() {
   if (params.toneMapping === "None") {
     guiExposure.hide();
   } else {
@@ -154,5 +169,7 @@ function onWindowResize() {
 }
 
 function animate() {
+  controls.update();
+
   renderer.render(scene, camera);
 }
