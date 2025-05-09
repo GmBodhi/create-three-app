@@ -36,27 +36,38 @@ function init() {
   //scene.add( new AxesHelper( 1 ) );
 
   const loader = new PCDLoader();
-  loader.load(
-    "three/examples/models/pcd/binary/Zaghetto.pcd",
-    function (points) {
+
+  const loadPointCloud = function (file) {
+    loader.load("three/examples/models/pcd/" + file, function (points) {
       points.geometry.center();
       points.geometry.rotateX(Math.PI);
-      points.name = "Zaghetto.pcd";
+      points.name = file;
       scene.add(points);
-
-      //
 
       const gui = new GUI();
 
       gui.add(points.material, "size", 0.001, 0.01).onChange(render);
       gui.addColor(points.material, "color").onChange(render);
+      gui
+        .add(points, "name", [
+          "ascii/simple.pcd",
+          "binary/Zaghetto.pcd",
+          "binary/Zaghetto_8bit.pcd",
+          "binary_compressed/pcl_logo.pcd",
+        ])
+        .name("type")
+        .onChange((e) => {
+          gui.destroy();
+          scene.remove(points);
+          loadPointCloud(e);
+        });
       gui.open();
 
-      //
-
       render();
-    }
-  );
+    });
+  };
+
+  loadPointCloud("binary/Zaghetto.pcd");
 
   window.addEventListener("resize", onWindowResize);
 }
