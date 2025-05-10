@@ -270,16 +270,6 @@
         "/src"
       ]
     },
-    "misc_lookat": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "misc_raycaster_helper": {
       "files": {
         "index.html": "src",
