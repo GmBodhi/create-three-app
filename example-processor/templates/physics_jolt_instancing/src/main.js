@@ -17,7 +17,7 @@ import {
   InstancedMesh,
   DynamicDrawUsage,
   IcosahedronGeometry,
-  WebGLRenderer,
+  WebGPURenderer,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { JoltPhysics } from "three/addons/physics/JoltPhysics.js";
@@ -55,6 +55,7 @@ async function init() {
   dirLight.position.set(5, 5, 5);
   dirLight.castShadow = true;
   dirLight.shadow.camera.zoom = 2;
+  dirLight.shadow.bias = -0.001;
   scene.add(dirLight);
 
   const shadowPlane = new Mesh(
@@ -127,7 +128,7 @@ async function init() {
 
   //
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
