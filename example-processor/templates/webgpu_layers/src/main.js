@@ -55,8 +55,6 @@ function init() {
 
   scene.backgroundNode = horizontalEffect.add(lightEffect);
 
-  scene.add(camera);
-
   const sprite = new TextureLoader().load("textures/sprites/blossom.png");
   sprite.colorSpace = SRGBColorSpace;
 
