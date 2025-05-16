@@ -35,7 +35,12 @@ const params = {
   asset: "Samba Dancing",
 };
 
-const assets = ["Samba Dancing", "morph_test"];
+const assets = [
+  "Samba Dancing",
+  "morph_test",
+  "monkey",
+  "monkey_embedded_texture",
+];
 
 init();
 
