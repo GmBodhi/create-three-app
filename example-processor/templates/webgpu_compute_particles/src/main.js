@@ -25,6 +25,7 @@ import {
   vec2,
   vec3,
   hash,
+  shapeCircle,
   instancedArray,
   instanceIndex,
 } from "three/tsl";
@@ -119,8 +120,9 @@ function init() {
   material.colorNode = uv().mul(colors.element(instanceIndex));
   material.positionNode = positions.toAttribute();
   material.scaleNode = size;
-  material.alphaTestNode = uv().mul(2).distance(vec2(1));
-  material.transparent = false;
+  material.opacityNode = shapeCircle();
+  material.alphaToCoverage = true;
+  material.transparent = true;
 
   const particles = new Sprite(material);
   particles.count = particleCount;
