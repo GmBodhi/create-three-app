@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import {
   Clock,
   WebGPURenderer,
-  ACESFilmicToneMapping,
+  NeutralToneMapping,
   Scene,
   PerspectiveCamera,
   EquirectangularReflectionMapping,
@@ -20,7 +20,6 @@ import {
   BufferGeometry,
   MeshPhysicalNodeMaterial,
   DoubleSide,
-  Color,
 } from "three";
 
 import {
@@ -84,8 +83,8 @@ async function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1.35;
+  renderer.toneMapping = NeutralToneMapping;
+  renderer.toneMappingExposure = 1;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -99,10 +98,10 @@ async function init() {
   camera.position.set(-1.6, -0.1, -1.6);
 
   controls = new OrbitControls(camera, renderer.domElement);
-
-  controls.target.set(0, -0.1, 0);
   controls.minDistance = 1;
   controls.maxDistance = 3;
+  controls.target.set(0, -0.1, 0);
+  controls.update();
 
   const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");
 
@@ -127,7 +126,6 @@ async function init() {
   materialFolder.addColor(clothMaterial, "sheenColor");
 
   window.addEventListener("resize", onWindowResize);
-  controls.update();
 
   renderer.setAnimationLoop(render);
 }
@@ -487,12 +485,13 @@ function setupClothMesh() {
   geometry.setIndex(indices);
 
   clothMaterial = new MeshPhysicalNodeMaterial({
+    color: 0x204080,
     side: DoubleSide,
     transparent: true,
     opacity: 0.85,
     sheen: 1.0,
     sheenRoughness: 0.5,
-    sheenColor: new Color(0xffffff),
+    sheenColor: 0xffffff,
   });
 
   clothMaterial.positionNode = Fn(({ material }) => {
