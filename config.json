@@ -3691,6 +3691,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_particles_fluid": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_particles_rain": {
       "files": {
         "index.html": "src",
