@@ -9,7 +9,6 @@ import {
   PerspectiveCamera,
   TOUCH,
   EquirectangularReflectionMapping,
-  PostProcessing,
   IcosahedronGeometry,
   MeshStandardNodeMaterial,
   Mesh,
@@ -45,13 +44,8 @@ import {
   vec4,
   cross,
   step,
-  pass,
-  mrt,
-  output,
-  normalView,
 } from "three/tsl";
 
-import { ao } from "three/addons/tsl/display/GTAONode.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
@@ -80,7 +74,6 @@ let particleMesh;
 const mouseCoord = new Vector3();
 const prevMouseCoord = new Vector3();
 let mouseRayOriginUniform, mouseRayDirectionUniform, mouseForceUniform;
-let postProcessing, aoPass, blendPassAO, scenePassColor;
 
 if (WebGPU.isAvailable() === false) {
   document.body.appendChild(WebGPU.getErrorMessage());
@@ -91,7 +84,6 @@ const gui = new GUI();
 
 const params = {
   particleCount: 8192 * 4,
-  ambientOcclusion: true,
 };
 
 init();
@@ -143,25 +135,6 @@ async function init() {
       particleMesh.count = value;
       particleCountUniform.value = value;
     });
-
-  gui.add(params, "ambientOcclusion");
-
-  // setting up post processing for ambient occlusion
-  postProcessing = new PostProcessing(renderer);
-  const scenePass = pass(scene, camera);
-  scenePass.setMRT(
-    mrt({
-      output: output,
-      normal: normalView,
-    })
-  );
-  scenePassColor = scenePass.getTextureNode("output");
-  const scenePassNormal = scenePass.getTextureNode("normal");
-  const scenePassDepth = scenePass.getTextureNode("depth");
-  aoPass = ao(scenePassDepth, scenePassNormal, camera);
-  aoPass.resolutionScale = 0.5;
-  blendPassAO = aoPass.getTextureNode().mul(scenePassColor);
-  postProcessing.outputNode = blendPassAO;
 
   window.addEventListener("resize", onWindowResize);
   controls.update();
@@ -697,9 +670,5 @@ async function render() {
     g2pKernel,
   ]);
 
-  if (params.ambientOcclusion) {
-    await postProcessing.renderAsync();
-  } else {
-    await renderer.renderAsync(scene, camera);
-  }
+  await renderer.renderAsync(scene, camera);
 }

@@ -128,6 +128,10 @@ function createGUI() {
 function loadSVG(url) {
   //
 
+  if (scene) disposeScene(scene);
+
+  //
+
   scene = new Scene();
   scene.background = new Color(0xb0b0b0);
 
@@ -226,4 +230,13 @@ function onWindowResize() {
 
 function render() {
   renderer.render(scene, camera);
+}
+
+function disposeScene(scene) {
+  scene.traverse(function (object) {
+    if (object.isMesh || object.isLine) {
+      object.geometry.dispose();
+      object.material.dispose();
+    }
+  });
 }
