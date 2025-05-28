@@ -310,8 +310,8 @@ function init() {
     2,
     new Vector3(0, 1.5, -0.5),
     new Quaternion(),
-    1024,
-    1024,
+    1500,
+    1000,
     renderRollercoaster
   );
   scene.add(rollercoasterLayer);
@@ -424,8 +424,8 @@ function init() {
     1,
     new Vector3(-1.5, 1.5, -1.5),
     new Quaternion(),
-    1024,
-    1024,
+    800,
+    800,
     renderQuad
   );
   scene.add(horseLayer);
@@ -493,8 +493,8 @@ function init() {
     0.8,
     new Vector3(1.5, 1.5, -1.5),
     new Quaternion(),
-    1024,
-    1024,
+    1280,
+    800,
     renderGui
   );
   scene.add(guiLayer);

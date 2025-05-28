@@ -1,167 +1,148 @@
 import "./style.css"; // For webpack support
 
 import {
-  RGBAFormat,
-  RGBA_BPTC_Format,
-  RGB_BPTC_UNSIGNED_Format,
-  RGBA_ASTC_4x4_Format,
-  RGBA_ASTC_6x6_Format,
-  RGB_S3TC_DXT1_Format,
-  RGBA_S3TC_DXT5_Format,
-  RGB_PVRTC_4BPPV1_Format,
-  RGBA_PVRTC_4BPPV1_Format,
-  RGB_ETC1_Format,
-  RGB_ETC2_Format,
-  RGBA_ETC2_EAC_Format,
-  UnsignedByteType,
-  ByteType,
-  ShortType,
-  UnsignedShortType,
-  IntType,
-  UnsignedIntType,
-  FloatType,
-  HalfFloatType,
+  DataTexture,
+  CompressedTexture,
   WebGLRenderer,
-  Scene,
-  Color,
-  PerspectiveCamera,
   PlaneGeometry,
-  MeshBasicMaterial,
-  DoubleSide,
+  Scene,
+  PerspectiveCamera,
   Mesh,
-  NearestMipmapNearestFilter,
+  MeshBasicMaterial,
 } from "three";
 
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, controls, loader, material;
+let canvas, renderer;
 
-const SAMPLES = {
-  "BasisU ETC1S": "2d_etc1s.ktx2",
-  "BasisU UASTC": "2d_uastc.ktx2",
-  "RGBA8 sRGB": "2d_rgba8.ktx2",
-  "RGBA8 Linear": "2d_rgba8_linear.ktx2",
-  // 'RGBA8 Display P3': '2d_rgba8_displayp3.ktx2',
-  "RGBA16 Linear": "2d_rgba16_linear.ktx2",
-  "RGBA16 Linear (UASTC HDR)": "2d_rgba16_uastc_hdr_linear.ktx2",
-  "RGBA32 Linear": "2d_rgba32_linear.ktx2",
-  "ASTC 6x6 (mobile)": "2d_astc_6x6.ktx2",
-};
+const scenes = [];
 
-const FORMAT_LABELS = {
-  [RGBAFormat]: "RGBA",
-  [RGBA_BPTC_Format]: "RGBA_BPTC",
-  [RGB_BPTC_UNSIGNED_Format]: "RGB_BPTC_UNSIGNED",
-  [RGBA_ASTC_4x4_Format]: "RGBA_ASTC_4x4",
-  [RGBA_ASTC_6x6_Format]: "RGBA_ASTC_6x6",
-  [RGB_S3TC_DXT1_Format]: "RGB_S3TC_DXT1",
-  [RGBA_S3TC_DXT5_Format]: "RGBA_S3TC_DXT5",
-  [RGB_PVRTC_4BPPV1_Format]: "RGB_PVRTC_4BPPV1",
-  [RGBA_PVRTC_4BPPV1_Format]: "RGBA_PVRTC_4BPPV1",
-  [RGB_ETC1_Format]: "RGB_ETC1",
-  [RGB_ETC2_Format]: "RGB_ETC2",
-  [RGBA_ETC2_EAC_Format]: "RGB_ETC2_EAC",
-};
+const sections = [
+  {
+    title: "Uncompressed",
+    description:
+      "Uncompressed formats (rgba8, rgba16, rgba32) load as DataTexture objects." +
+      " Lossless, easy to read/write, uncompressed on GPU, optionally compressed over the network.",
+    textures: [
+      { path: "2d_rgba8.ktx2" },
+      { path: "2d_rgba8_linear.ktx2" },
+      { path: "2d_rgba16_linear.ktx2" },
+      { path: "2d_rgba32_linear.ktx2" },
+    ],
+  },
+  {
+    title: "Compressed",
+    description:
+      "Compressed formats (ASTC, BCn, ...) load as CompressedTexture objects," +
+      " reducing memory cost. Requires native support on the device GPU: no single compressed" +
+      " format is supported on every device.",
+    textures: [
+      { path: "2d_astc4x4.ktx2" },
+      { path: "2d_etc1.ktx2" },
+      { path: "2d_etc2.ktx2" },
+      { path: "2d_bc1.ktx2" },
+      { path: "2d_bc3.ktx2" },
+      // { path: '2d_bc5.ktx2' },
+      { path: "2d_bc7.ktx2" },
+    ],
+  },
 
-const TYPE_LABELS = {
-  [UnsignedByteType]: "UnsignedByteType",
-  [ByteType]: "ByteType",
-  [ShortType]: "ShortType",
-  [UnsignedShortType]: "UnsignedShortType",
-  [IntType]: "IntType",
-  [UnsignedIntType]: "UnsignedIntType",
-  [FloatType]: "FloatType",
-  [HalfFloatType]: "HalfFloatType",
-};
-
-const params = {
-  sample: Object.values(SAMPLES)[0],
-};
+  {
+    title: "Universal",
+    description:
+      "Basis Universal textures are specialized intermediate formats supporting fast" +
+      " runtime transcoding into other GPU texture compression formats. After transcoding," +
+      " universal textures can be used on any device at reduced memory cost.",
+    textures: [{ path: "2d_etc1s.ktx2" }, { path: "2d_uastc.ktx2" }],
+  },
+];
 
 init();
 
 async function init() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
+  canvas = document.getElementById("c");
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ canvas, antialias: true });
+  renderer.setClearColor(0xffffff, 1);
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(width, height);
-  document.body.appendChild(renderer.domElement);
 
-  window.addEventListener("resize", onWindowResize);
-
-  scene = new Scene();
-  scene.background = new Color(0x202020);
-
-  camera = new PerspectiveCamera(60, width / height, 0.1, 100);
-  camera.position.set(0, 0, 2.5);
-  camera.lookAt(scene.position);
-  scene.add(camera);
-
-  controls = new OrbitControls(camera, renderer.domElement);
-
-  // PlaneGeometry UVs assume flipY=true, which compressed textures don't support.
-  const geometry = flipY(new PlaneGeometry());
-  material = new MeshBasicMaterial({
-    color: 0xffffff,
-    side: DoubleSide,
-    transparent: true,
-  });
-  const mesh = new Mesh(geometry, material);
-  scene.add(mesh);
-
-  loader = new KTX2Loader()
+  const loader = new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
+    .setPath("textures/ktx2/")
     .detectSupport(renderer);
 
-  const gui = new GUI();
+  const geometry = flipY(new PlaneGeometry(1, 1));
 
-  gui.add(params, "sample", SAMPLES).onChange(loadTexture);
+  const content = document.getElementById("content");
 
-  await loadTexture(params.sample);
+  for (const section of sections) {
+    const sectionElement = document.createElement("section");
+
+    const sectionHeader = document.createElement("h2");
+    sectionHeader.textContent = section.title;
+    sectionElement.appendChild(sectionHeader);
+
+    const sectionDescription = document.createElement("p");
+    sectionDescription.className = "description";
+    sectionDescription.textContent = section.description;
+    sectionElement.appendChild(sectionDescription);
+
+    for (const { path, supported } of section.textures) {
+      const scene = new Scene();
+
+      // make a list item
+      const element = document.createElement("div");
+      element.className = "list-item";
+
+      const sceneElement = document.createElement("div");
+      element.appendChild(sceneElement);
+
+      const labelElement = document.createElement("div");
+      labelElement.innerText = "file: " + path;
+      element.appendChild(labelElement);
+
+      // the element that represents the area we want to render the scene
+      scene.userData.element = sceneElement;
+      sectionElement.appendChild(element);
+
+      const camera = new PerspectiveCamera(50, 1, 1, 10);
+      camera.position.z = 2;
+      scene.userData.camera = camera;
+
+      try {
+        const texture = await loader.loadAsync(
+          supported === false ? "fail_load.ktx2" : path
+        );
+        const mesh = new Mesh(
+          geometry,
+          new MeshBasicMaterial({ map: texture })
+        );
+
+        labelElement.innerText += "\ncolorSpace: " + texture.colorSpace;
+
+        scene.add(mesh);
+        scenes.push(scene);
+      } catch (e) {
+        console.error(`Failed to load ${path}`, e);
+      }
+    }
+
+    content.appendChild(sectionElement);
+  }
 
   renderer.setAnimationLoop(animate);
 }
 
-function animate() {
-  controls.update();
+function updateSize() {
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
 
-  renderer.render(scene, camera);
-}
-
-function onWindowResize() {
-  const width = window.innerWidth;
-  const height = window.innerHeight;
-
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
-  renderer.setSize(width, height);
-}
-
-async function loadTexture(path) {
-  try {
-    const texture = await loader.loadAsync(
-      `three/examples/textures/compressed/${path}`
-    );
-    texture.minFilter = NearestMipmapNearestFilter;
-
-    material.map = texture;
-    material.needsUpdate = true;
-
-    console.info(`format: ${FORMAT_LABELS[texture.format]}`);
-    console.info(`type: ${TYPE_LABELS[texture.type]}`);
-    console.info(`colorSpace: ${texture.colorSpace}`);
-  } catch (e) {
-    console.error(e);
+  if (canvas.width !== width || canvas.height !== height) {
+    renderer.setSize(width, height, false);
   }
-
-  // NOTE: Call `loader.dispose()` when finished loading textures.
 }
 
-/** Correct UVs to be compatible with `flipY=false` textures. */
+/** Rewrite UVs for `flipY=false` textures. */
 function flipY(geometry) {
   const uv = geometry.attributes.uv;
 
@@ -170,4 +151,49 @@ function flipY(geometry) {
   }
 
   return geometry;
+}
+
+function animate() {
+  updateSize();
+
+  canvas.style.transform = `translateY(${window.scrollY}px)`;
+
+  renderer.setClearColor(0xffffff);
+  renderer.setScissorTest(false);
+  renderer.clear();
+
+  renderer.setClearColor(0xe0e0e0);
+  renderer.setScissorTest(true);
+
+  scenes.forEach(function (scene) {
+    // get the element that is a place holder for where we want to
+    // draw the scene
+    const element = scene.userData.element;
+
+    // get its position relative to the page's viewport
+    const rect = element.getBoundingClientRect();
+
+    // check if it's offscreen. If so skip it
+    if (
+      rect.bottom < 0 ||
+      rect.top > renderer.domElement.clientHeight ||
+      rect.right < 0 ||
+      rect.left > renderer.domElement.clientWidth
+    ) {
+      return; // it's off screen
+    }
+
+    // set the viewport
+    const width = rect.right - rect.left;
+    const height = rect.bottom - rect.top;
+    const left = rect.left;
+    const bottom = renderer.domElement.clientHeight - rect.bottom;
+
+    renderer.setViewport(left, bottom, width, height);
+    renderer.setScissor(left, bottom, width, height);
+
+    const camera = scene.userData.camera;
+
+    renderer.render(scene, camera);
+  });
 }
