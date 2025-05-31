@@ -17,10 +17,9 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, postProcessing, controls, stats;
+let camera, scene, renderer, postProcessing, controls;
 
 let aoPass, denoisePass, blendPassAO, blendPassDenoise, scenePassColor;
 
@@ -51,7 +50,7 @@ async function init() {
 
   scene = new Scene();
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -77,9 +76,6 @@ async function init() {
   controls.minDistance = 2;
   controls.maxDistance = 8;
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   //
 
   postProcessing = new PostProcessing(renderer);
@@ -99,10 +95,10 @@ async function init() {
   // ao
 
   aoPass = ao(scenePassDepth, scenePassNormal, camera);
-  aoPass.resolutionScale = 0.5;
+  aoPass.resolutionScale = 0.5; // running AO in half resolution is often sufficient
   blendPassAO = aoPass.getTextureNode().mul(scenePassColor);
 
-  // denoise (optional)
+  // denoise (optional, use it if you need best quality but is has a noticeable hit on performance)
 
   denoisePass = denoise(
     aoPass.getTextureNode(),
@@ -210,5 +206,4 @@ function animate() {
   controls.update();
 
   postProcessing.render();
-  stats.update();
 }

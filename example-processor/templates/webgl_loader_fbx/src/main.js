@@ -35,7 +35,12 @@ const params = {
   asset: "Samba Dancing",
 };
 
-const assets = ["Samba Dancing", "morph_test"];
+const assets = [
+  "Samba Dancing",
+  "morph_test",
+  "monkey",
+  "monkey_embedded_texture",
+];
 
 init();
 
@@ -116,6 +121,10 @@ function loadAsset(asset) {
   loader.load("models/fbx/" + asset + ".fbx", function (group) {
     if (object) {
       object.traverse(function (child) {
+        if (child.isSkinnedMesh) {
+          child.skeleton.dispose();
+        }
+
         if (child.material) {
           const materials = Array.isArray(child.material)
             ? child.material

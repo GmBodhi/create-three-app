@@ -12,26 +12,22 @@ import {
   Mesh,
 } from "three";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let container, stats, loader;
+let container, loader;
 
-let camera, scene, renderer;
+let camera, scene, renderer, controls;
 
 let mesh;
 
 let spotLight;
 
-let mouseX = 0;
-let mouseY = 0;
-
-let targetX = 0;
-let targetY = 0;
-
-const windowHalfX = window.innerWidth / 2;
-const windowHalfY = window.innerHeight / 2;
+const params = {
+  enableBumpMap: true,
+};
 
 init();
 
@@ -99,15 +95,31 @@ function init() {
 
   renderer.shadowMap.enabled = true;
 
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
   // EVENTS
 
-  document.addEventListener("mousemove", onDocumentMouseMove);
   window.addEventListener("resize", onWindowResize);
+
+  // GUI
+
+  const gui = new GUI();
+
+  gui
+    .add(params, "enableBumpMap")
+    .name("enable bump map")
+    .onChange((value) => {
+      mesh.material.bumpMap = value === true ? mapHeight : null;
+      mesh.material.needsUpdate = true;
+    });
+  gui.add(material, "bumpScale", 0, 40).name("bump scale");
+  gui.open();
+
+  // CONTROLS
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.minDistance = 8;
+  controls.maxDistance = 50;
+  controls.enablePan = false;
+  controls.enableDamping = true;
 }
 
 function createScene(geometry, scale, material) {
@@ -131,27 +143,10 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 }
 
-function onDocumentMouseMove(event) {
-  mouseX = event.clientX - windowHalfX;
-  mouseY = event.clientY - windowHalfY;
-}
-
 //
 
 function animate() {
-  render();
-
-  stats.update();
-}
-
-function render() {
-  targetX = mouseX * 0.001;
-  targetY = mouseY * 0.001;
-
-  if (mesh) {
-    mesh.rotation.y += 0.05 * (targetX - mesh.rotation.y);
-    mesh.rotation.x += 0.05 * (targetY - mesh.rotation.x);
-  }
+  controls.update();
 
   renderer.render(scene, camera);
 }

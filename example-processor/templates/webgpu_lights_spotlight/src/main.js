@@ -6,10 +6,10 @@ import {
   ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
-  HemisphereLight,
   TextureLoader,
   LinearFilter,
   SRGBColorSpace,
+  HemisphereLight,
   SpotLight,
   SpotLightHelper,
   PlaneGeometry,
@@ -29,6 +29,8 @@ let spotLight, lightHelper;
 init();
 
 function init() {
+  // Renderer
+
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -51,6 +53,8 @@ function init() {
   );
   camera.position.set(7, 4, 1);
 
+  // Controls
+
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 2;
   controls.maxDistance = 10;
@@ -58,8 +62,7 @@ function init() {
   controls.target.set(0, 1, 0);
   controls.update();
 
-  const ambient = new HemisphereLight(0xffffff, 0x8d8d8d, 0.15);
-  scene.add(ambient);
+  // Textures
 
   const loader = new TextureLoader().setPath("textures/");
   const filenames = ["disturb.jpg", "colors.png", "uv_grid_opengl.jpg"];
@@ -78,13 +81,18 @@ function init() {
     textures[filename] = texture;
   }
 
+  // Lights
+
+  const ambient = new HemisphereLight(0xffffff, 0x8d8d8d, 0.15);
+  scene.add(ambient);
+
   spotLight = new SpotLight(0xffffff, 100);
+  spotLight.map = textures["disturb.jpg"];
   spotLight.position.set(2.5, 5, 2.5);
   spotLight.angle = Math.PI / 6;
   spotLight.penumbra = 1;
   spotLight.decay = 2;
   spotLight.distance = 0;
-  spotLight.map = textures["disturb.jpg"];
 
   spotLight.castShadow = true;
   spotLight.shadow.mapSize.width = 1024;
@@ -109,7 +117,7 @@ function init() {
   mesh.receiveShadow = true;
   scene.add(mesh);
 
-  //
+  // Models
 
   new PLYLoader().load("models/ply/binary/Lucy100k.ply", function (geometry) {
     geometry.scale(0.0024, 0.0024, 0.0024);
@@ -141,6 +149,7 @@ function init() {
     decay: spotLight.decay,
     focus: spotLight.shadow.focus,
     shadows: true,
+    customAttenuation: false,
   };
 
   gui.add(params, "map", textures).onChange(function (val) {

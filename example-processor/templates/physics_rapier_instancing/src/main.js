@@ -8,8 +8,10 @@ import {
   HemisphereLight,
   DirectionalLight,
   Mesh,
-  BoxGeometry,
+  PlaneGeometry,
   ShadowMaterial,
+  BoxGeometry,
+  MeshBasicMaterial,
   MeshLambertMaterial,
   Matrix4,
   InstancedMesh,
@@ -55,14 +57,24 @@ async function init() {
   dirLight.shadow.camera.zoom = 2;
   scene.add(dirLight);
 
-  const floor = new Mesh(
-    new BoxGeometry(10, 5, 10),
-    new ShadowMaterial({ color: 0x444444 })
+  const shadowPlane = new Mesh(
+    new PlaneGeometry(10, 10),
+    new ShadowMaterial({
+      color: 0x444444,
+    })
   );
-  floor.position.y = -2.5;
-  floor.receiveShadow = true;
-  floor.userData.physics = { mass: 0 };
-  scene.add(floor);
+  shadowPlane.rotation.x = -Math.PI / 2;
+  shadowPlane.receiveShadow = true;
+  scene.add(shadowPlane);
+
+  const floorCollider = new Mesh(
+    new BoxGeometry(10, 5, 10),
+    new MeshBasicMaterial({ color: 0x666666 })
+  );
+  floorCollider.position.y = -2.5;
+  floorCollider.userData.physics = { mass: 0 };
+  floorCollider.visible = false;
+  scene.add(floorCollider);
 
   //
 
@@ -144,6 +156,16 @@ async function init() {
     position.set(0, Math.random() + 1, 0);
     physics.setMeshPosition(spheres, position, index);
   }, 1000 / 60);
+
+  window.addEventListener("resize", onWindowResize);
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {

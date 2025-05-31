@@ -61,7 +61,7 @@ function init() {
     texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
     texture.colorSpace = SRGBColorSpace;
 
-    //texture.matrixAutoUpdate = false; // default true; set to false to update texture.matrix manually
+    //texture.matrixAutoUpdate = false; // default is true; set to false to update texture.matrix manually
 
     const material = new MeshBasicMaterial({ map: texture });
 
@@ -102,16 +102,15 @@ function updateUvTransform() {
     texture.rotation = API.rotation; // rotation is around center
   } else {
     // setting the matrix uv transform directly
-    //texture.matrix.setUvTransform( API.offsetX, API.offsetY, API.repeatX, API.repeatY, API.rotation, API.centerX, API.centerY );
-
-    // another way...
-    texture.matrix
-      .identity()
-      .translate(-API.centerX, -API.centerY)
-      .rotate(API.rotation) // I don't understand how rotation can precede scale, but it seems to be required...
-      .scale(API.repeatX, API.repeatY)
-      .translate(API.centerX, API.centerY)
-      .translate(API.offsetX, API.offsetY);
+    texture.matrix.setUvTransform(
+      API.offsetX,
+      API.offsetY,
+      API.repeatX,
+      API.repeatY,
+      API.rotation,
+      API.centerX,
+      API.centerY
+    );
   }
 
   render();

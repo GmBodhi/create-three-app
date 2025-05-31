@@ -65,7 +65,7 @@ function init() {
   window.addEventListener("resize", onWindowResize);
 
   const gui = new GUI({ title: "Damp setting" });
-  gui.add(afterimagePass.uniforms["damp"], "value", 0, 1).step(0.001);
+  gui.add(afterimagePass, "damp", 0, 1).step(0.001);
   gui.add(params, "enable");
 }
 

@@ -176,7 +176,7 @@ function init() {
   // } );
 
   gui.add(params, "shadows").onChange(function (value) {
-    renderer.shadowMap.enabled = value;
+    csmDirectionalLight.castShadow = value;
   });
 
   gui

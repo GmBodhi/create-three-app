@@ -4,27 +4,30 @@ import {
   Vector3,
   PerspectiveCamera,
   Scene,
-  TextureLoader,
   SpriteNodeMaterial,
-  Mesh,
-  PlaneGeometry,
+  Sprite,
   GridHelper,
+  PlaneGeometry,
+  Mesh,
   MeshBasicMaterial,
   Raycaster,
   Vector2,
   WebGPURenderer,
+  TOUCH,
   TimestampQuery,
 } from "three";
 import {
   Fn,
+  If,
   uniform,
-  texture,
+  float,
+  uv,
+  vec2,
+  vec3,
+  hash,
+  shapeCircle,
   instancedArray,
   instanceIndex,
-  float,
-  hash,
-  vec3,
-  If,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -32,9 +35,9 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-const particleCount = 500000;
+const particleCount = 200_000;
 
-const gravity = uniform(-0.0098);
+const gravity = uniform(-0.00098);
 const bounce = uniform(0.8);
 const friction = uniform(0.99);
 const size = uniform(0.12);
@@ -45,6 +48,8 @@ let camera, scene, renderer;
 let controls, stats;
 let computeParticles;
 
+let isOrbitControlsActive;
+
 const timestamps = document.getElementById("timestamps");
 
 init();
@@ -53,43 +58,41 @@ function init() {
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(50, innerWidth / innerHeight, 0.1, 1000);
-  camera.position.set(15, 30, 15);
+  camera.position.set(0, 5, 20);
 
   scene = new Scene();
 
-  // textures
-
-  const textureLoader = new TextureLoader();
-  const map = textureLoader.load("textures/sprite1.png");
-
   //
 
-  const positionBuffer = instancedArray(particleCount, "vec3");
-  const velocityBuffer = instancedArray(particleCount, "vec3");
-  const colorBuffer = instancedArray(particleCount, "vec3");
+  const positions = instancedArray(particleCount, "vec3");
+  const velocities = instancedArray(particleCount, "vec3");
+  const colors = instancedArray(particleCount, "vec3");
 
   // compute
 
+  const separation = 0.2;
+  const amount = Math.sqrt(particleCount);
+  const offset = float(amount / 2);
+
   const computeInit = Fn(() => {
-    const position = positionBuffer.element(instanceIndex);
-    const color = colorBuffer.element(instanceIndex);
+    const position = positions.element(instanceIndex);
+    const color = colors.element(instanceIndex);
 
-    const randX = hash(instanceIndex);
-    const randY = hash(instanceIndex.add(2));
-    const randZ = hash(instanceIndex.add(3));
+    const x = instanceIndex.mod(amount);
+    const z = instanceIndex.div(amount);
 
-    position.x = randX.mul(100).add(-50);
-    position.y = 0; // randY.mul( 10 );
-    position.z = randZ.mul(100).add(-50);
+    position.x = offset.sub(x).mul(separation);
+    position.z = offset.sub(z).mul(separation);
 
-    color.assign(vec3(randX, randY, randZ));
+    color.x = hash(instanceIndex);
+    color.y = hash(instanceIndex.add(2));
   })().compute(particleCount);
 
   //
 
   const computeUpdate = Fn(() => {
-    const position = positionBuffer.element(instanceIndex);
-    const velocity = velocityBuffer.element(instanceIndex);
+    const position = positions.element(instanceIndex);
+    const velocity = velocities.element(instanceIndex);
 
     velocity.addAssign(vec3(0.0, gravity, 0.0));
     position.addAssign(velocity);
@@ -111,33 +114,27 @@ function init() {
 
   computeParticles = computeUpdate().compute(particleCount);
 
-  // create nodes
-
-  const textureNode = texture(map);
-
   // create particles
 
-  const particleMaterial = new SpriteNodeMaterial();
-  particleMaterial.colorNode = textureNode.mul(
-    colorBuffer.element(instanceIndex)
-  );
-  particleMaterial.positionNode = positionBuffer.toAttribute();
-  particleMaterial.scaleNode = size;
-  particleMaterial.depthWrite = false;
-  particleMaterial.depthTest = true;
-  particleMaterial.transparent = true;
+  const material = new SpriteNodeMaterial();
+  material.colorNode = uv().mul(colors.element(instanceIndex));
+  material.positionNode = positions.toAttribute();
+  material.scaleNode = size;
+  material.opacityNode = shapeCircle();
+  material.alphaToCoverage = true;
+  material.transparent = true;
 
-  const particles = new Mesh(new PlaneGeometry(1, 1), particleMaterial);
+  const particles = new Sprite(material);
   particles.count = particleCount;
   particles.frustumCulled = false;
   scene.add(particles);
 
   //
 
-  const helper = new GridHelper(60, 40, 0x303030, 0x303030);
+  const helper = new GridHelper(90, 45, 0x303030, 0x303030);
   scene.add(helper);
 
-  const geometry = new PlaneGeometry(1000, 1000);
+  const geometry = new PlaneGeometry(200, 200);
   geometry.rotateX(-Math.PI / 2);
 
   const plane = new Mesh(geometry, new MeshBasicMaterial({ visible: false }));
@@ -161,18 +158,18 @@ function init() {
 
   renderer.computeAsync(computeInit);
 
-  // click event
+  // Hit
 
   const computeHit = Fn(() => {
-    const position = positionBuffer.element(instanceIndex);
-    const velocity = velocityBuffer.element(instanceIndex);
+    const position = positions.element(instanceIndex);
+    const velocity = velocities.element(instanceIndex);
 
     const dist = position.distance(clickPosition);
     const direction = position.sub(clickPosition).normalize();
-    const distArea = float(6).sub(dist).max(0);
+    const distArea = float(3).sub(dist).max(0);
 
     const power = distArea.mul(0.01);
-    const relativePower = power.mul(hash(instanceIndex).mul(0.5).add(0.5));
+    const relativePower = power.mul(hash(instanceIndex).mul(1.5).add(0.5));
 
     velocity.assign(velocity.add(direction.mul(relativePower)));
   })().compute(particleCount);
@@ -180,6 +177,8 @@ function init() {
   //
 
   function onMove(event) {
+    if (isOrbitControlsActive) return;
+
     pointer.set(
       (event.clientX / window.innerWidth) * 2 - 1,
       -(event.clientY / window.innerHeight) * 2 + 1
@@ -187,7 +186,7 @@ function init() {
 
     raycaster.setFromCamera(pointer, camera);
 
-    const intersects = raycaster.intersectObjects([plane], false);
+    const intersects = raycaster.intersectObject(plane, false);
 
     if (intersects.length > 0) {
       const { point } = intersects[0];
@@ -203,17 +202,28 @@ function init() {
     }
   }
 
-  // events
-
   renderer.domElement.addEventListener("pointermove", onMove);
 
-  //
+  // controls
 
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
   controls.minDistance = 5;
   controls.maxDistance = 200;
-  controls.target.set(0, 0, 0);
+  controls.target.set(0, -8, 0);
   controls.update();
+
+  controls.addEventListener("start", () => {
+    isOrbitControlsActive = true;
+  });
+  controls.addEventListener("end", () => {
+    isOrbitControlsActive = false;
+  });
+
+  controls.touches = {
+    ONE: null,
+    TWO: TOUCH.DOLLY_PAN,
+  };
 
   //
 
@@ -240,6 +250,8 @@ function onWindowResize() {
 
 async function animate() {
   stats.update();
+
+  controls.update();
 
   await renderer.computeAsync(computeParticles);
   renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);

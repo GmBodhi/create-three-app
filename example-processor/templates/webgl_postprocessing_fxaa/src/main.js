@@ -15,7 +15,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
-import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
+import { FXAAPass } from "three/addons/postprocessing/FXAAPass.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, renderer, controls, container;
@@ -89,7 +89,7 @@ function init() {
 
   //
 
-  fxaaPass = new ShaderPass(FXAAShader);
+  fxaaPass = new FXAAPass();
 
   const outputPass = new OutputPass();
 
@@ -98,13 +98,6 @@ function init() {
   composer1.addPass(outputPass);
 
   //
-
-  const pixelRatio = renderer.getPixelRatio();
-
-  fxaaPass.material.uniforms["resolution"].value.x =
-    1 / (container.offsetWidth * pixelRatio);
-  fxaaPass.material.uniforms["resolution"].value.y =
-    1 / (container.offsetHeight * pixelRatio);
 
   composer2 = new EffectComposer(renderer);
   composer2.addPass(renderPass);
@@ -126,13 +119,6 @@ function onWindowResize() {
   renderer.setSize(container.offsetWidth, container.offsetHeight);
   composer1.setSize(container.offsetWidth, container.offsetHeight);
   composer2.setSize(container.offsetWidth, container.offsetHeight);
-
-  const pixelRatio = renderer.getPixelRatio();
-
-  fxaaPass.material.uniforms["resolution"].value.x =
-    1 / (container.offsetWidth * pixelRatio);
-  fxaaPass.material.uniforms["resolution"].value.y =
-    1 / (container.offsetHeight * pixelRatio);
 }
 
 function animate() {

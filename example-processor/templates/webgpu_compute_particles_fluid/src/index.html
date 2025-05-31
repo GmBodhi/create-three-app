@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - effects - peppers ghost</title>
+    <title>three.js webgpu - compute fluid particles</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,23 +10,16 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      -
-      <a href="https://en.wikipedia.org/wiki/Pepper%27s_ghost"
-        >peppers ghost effect</a
-      >
-      demo <br />
-      <a
-        href="http://www.instructables.com/id/Reflective-Prism/?ALLSTEPS"
-        target="_blank"
-        rel="noopener"
-        >how to build the reflective prism</a
-      >
+      webgpu - fluid particles<br />
+      MLS-MPM particle simulation running in compute shaders
     </div>
 
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
           "three/addons/": "./jsm/"
         }
       }

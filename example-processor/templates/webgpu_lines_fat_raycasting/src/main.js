@@ -80,7 +80,11 @@ init();
 function init() {
   clock = new Clock();
 
-  renderer = new WebGPURenderer({ antialias: true, alpha: true });
+  renderer = new WebGPURenderer({
+    antialias: true,
+    alpha: true,
+    trackTimestamp: true,
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000000, 0.0);

@@ -270,16 +270,6 @@
         "/src"
       ]
     },
-    "misc_lookat": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "misc_raycaster_helper": {
       "files": {
         "index.html": "src",
@@ -952,16 +942,6 @@
         "/src"
       ]
     },
-    "webgl_effects_peppersghost": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_effects_stereo": {
       "files": {
         "index.html": "src",
@@ -1053,16 +1033,6 @@
       ]
     },
     "webgl_geometry_cube": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_geometry_dynamic": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -1391,16 +1361,6 @@
         "/src"
       ]
     },
-    "webgl_layers": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_lensflares": {
       "files": {
         "index.html": "src",
@@ -1445,16 +1405,6 @@
       ]
     },
     "webgl_lights_physical": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_lights_pointlights": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3711,6 +3661,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_cloth": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_geometry": {
       "files": {
         "index.html": "src",
@@ -3722,6 +3682,16 @@
       ]
     },
     "webgpu_compute_particles": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_compute_particles_fluid": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3931,6 +3901,16 @@
         "/src"
       ]
     },
+    "webgpu_layers": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lensflares": {
       "files": {
         "index.html": "src",
@@ -3992,6 +3972,26 @@
       ]
     },
     "webgpu_lights_physical": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lights_pointlights": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lights_projector": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4731,6 +4731,16 @@
         "/src"
       ]
     },
+    "webgpu_reflection_blurred": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_refraction": {
       "files": {
         "index.html": "src",
@@ -5195,6 +5205,16 @@
       ]
     },
     "webgpu_xr_native_layers": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_xr_rollercoaster": {
       "files": {
         "index.html": "src",
         "main.js": "src",

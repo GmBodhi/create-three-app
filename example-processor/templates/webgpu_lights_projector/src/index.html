@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>three.js webgpu - projector light</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      webgpu - projector light<br />
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+
+    <video
+      id="video"
+      loop=""
+      muted=""
+      crossorigin="anonymous"
+      playsinline=""
+      style="display: none"
+    >
+      <source
+        src="textures/sintel.ogv"
+        type='video/ogg; codecs="theora, vorbis"'
+      />
+      <source
+        src="textures/sintel.mp4"
+        type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'
+      />
+    </video>
+  </body>
+</html>

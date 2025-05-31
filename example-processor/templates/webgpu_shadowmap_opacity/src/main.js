@@ -9,7 +9,7 @@ import {
   AmbientLight,
   DirectionalLight,
 } from "three";
-import { Fn, vec4 } from "three/tsl";
+import { Fn, mix } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -87,8 +87,9 @@ async function init() {
 
   // shadow node
 
-  const customShadow = Fn(([color, opacity = 0.8]) => {
-    return vec4(color, opacity);
+  const customShadow = Fn(([color, opacity = 1]) => {
+    //return vec4( color, opacity ); // opacity by blending
+    return mix(1, color, opacity); // opacity by color
   });
 
   // apply shadow

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - layers</title>
+    <title>three.js webgpu - compute cloth</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,13 +10,16 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - webgl layers
+      webgpu - compute cloth<br />
+      Simple cloth simulation with a verlet system running in compute shaders
     </div>
 
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
           "three/addons/": "./jsm/"
         }
       }

@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgl - lights - point lights</title>
+    <title>three.js - lights - point lights</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,20 +10,29 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - point lights WebGL demo.<br />
+      - point lights<br />
       Walt Disney head by
       <a
         href="http://web.archive.org/web/20120903131400/http://davidoreilly.com/post/18087489343/disneyhead"
         target="_blank"
         rel="noopener"
         >David OReilly</a
+      ><br />
+      Displacement effect by
+      <a
+        href="https://web.archive.org/web/20210101053445/http://oos.moxiecode.com/js_webgl/stanford_bunny/"
+        target="_blank"
+        rel="noopener"
+        >oosmoxiecode</a
       >
     </div>
 
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
           "three/addons/": "./jsm/"
         }
       }

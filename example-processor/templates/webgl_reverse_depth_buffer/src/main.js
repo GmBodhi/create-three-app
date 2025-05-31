@@ -3,7 +3,6 @@ import "./style.css"; // For webpack support
 // https://webgpu.github.io/webgpu-samples/?sample=reversedZ
 import {
   WebGLRenderTarget,
-  UnsignedByteType,
   DepthTexture,
   FloatType,
   PerspectiveCamera,
@@ -28,7 +27,6 @@ let normalComposer, logarithmicComposer, reverseComposer;
 const meshes = [];
 
 const renderTarget = new WebGLRenderTarget();
-renderTarget.type = UnsignedByteType;
 renderTarget.depthTexture = new DepthTexture();
 renderTarget.depthTexture.type = FloatType;
 

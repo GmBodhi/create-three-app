@@ -45,7 +45,7 @@ init();
 
 async function init() {
   // Renderer setup
-  renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -93,7 +93,6 @@ async function init() {
   const tsm = new TileShadowNode(dirLight, {
     tilesX: 2,
     tilesY: 2,
-    debug: true,
   });
 
   dirLight.shadow.shadowNode = tsm;

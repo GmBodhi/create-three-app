@@ -8,14 +8,16 @@ import {
   HemisphereLight,
   DirectionalLight,
   Mesh,
-  BoxGeometry,
+  PlaneGeometry,
   ShadowMaterial,
+  BoxGeometry,
+  MeshBasicMaterial,
   MeshLambertMaterial,
   Matrix4,
   InstancedMesh,
   DynamicDrawUsage,
   IcosahedronGeometry,
-  WebGLRenderer,
+  WebGPURenderer,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { JoltPhysics } from "three/addons/physics/JoltPhysics.js";
@@ -53,16 +55,27 @@ async function init() {
   dirLight.position.set(5, 5, 5);
   dirLight.castShadow = true;
   dirLight.shadow.camera.zoom = 2;
+  dirLight.shadow.bias = -0.001;
   scene.add(dirLight);
 
-  const floor = new Mesh(
-    new BoxGeometry(10, 5, 10),
-    new ShadowMaterial({ color: 0x444444 })
+  const shadowPlane = new Mesh(
+    new PlaneGeometry(10, 10),
+    new ShadowMaterial({
+      color: 0x444444,
+    })
   );
-  floor.position.y = -2.5;
-  floor.receiveShadow = true;
-  floor.userData.physics = { mass: 0 };
-  scene.add(floor);
+  shadowPlane.rotation.x = -Math.PI / 2;
+  shadowPlane.receiveShadow = true;
+  scene.add(shadowPlane);
+
+  const floorCollider = new Mesh(
+    new BoxGeometry(10, 5, 10),
+    new MeshBasicMaterial({ color: 0x666666 })
+  );
+  floorCollider.position.y = -2.5;
+  floorCollider.userData.physics = { mass: 0 };
+  floorCollider.visible = false;
+  scene.add(floorCollider);
 
   //
 
@@ -115,7 +128,7 @@ async function init() {
 
   //
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

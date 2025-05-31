@@ -14,12 +14,16 @@ import {
 } from "three";
 import { vec4, color, positionLocal, mix } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let container, stats;
+let container;
 let camera, scene, renderer;
+
+const params = {
+  intensity: 1,
+};
 
 init();
 
@@ -85,10 +89,19 @@ async function init() {
   controls.maxPolarAngle = (0.9 * Math.PI) / 2;
   controls.enableZoom = false;
 
-  // STATS
+  // GUI
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+  const gui = new GUI();
+
+  gui
+    .add(params, "intensity", 0, 1)
+    .name("Light Map Intensity")
+    .onChange((value) => {
+      for (const material of object.material) {
+        material.lightMapIntensity = value;
+      }
+    });
+  gui.open();
 
   //
 
@@ -106,5 +119,4 @@ function onWindowResize() {
 
 function animate() {
   renderer.render(scene, camera);
-  stats.update();
 }

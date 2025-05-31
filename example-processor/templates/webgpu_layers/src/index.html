@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js misc - lookAt</title>
+    <title>three.js webgpu - layers</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -10,13 +10,15 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - Object3D.lookAt() example
+      - webgpu layers
     </div>
 
     <script type="importmap">
       {
         "imports": {
-          "three": "../build/three.module.js",
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
           "three/addons/": "./jsm/"
         }
       }
