@@ -3861,6 +3861,16 @@
         "/src"
       ]
     },
+    "webgpu_instance_path": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_instance_points": {
       "files": {
         "index.html": "src",
