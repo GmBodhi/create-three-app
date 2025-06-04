@@ -5,22 +5,18 @@ import {
   Scene,
   AmbientLight,
   PointLight,
-  LoadingManager,
-  TextureLoader,
-  SRGBColorSpace,
   WebGLRenderer,
 } from "three";
 
+import { MTLLoader } from "three/addons/loaders/MTLLoader.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let camera, scene, renderer;
-
-let object;
+let camera, scene, renderer, controls;
 
 init();
 
-function init() {
+async function init() {
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -40,62 +36,35 @@ function init() {
   camera.add(pointLight);
   scene.add(camera);
 
-  // manager
-
-  function loadModel() {
-    object.traverse(function (child) {
-      if (child.isMesh) child.material.map = texture;
-    });
-
-    object.position.y = -0.95;
-    object.scale.setScalar(0.01);
-    scene.add(object);
-
-    render();
-  }
-
-  const manager = new LoadingManager(loadModel);
-
-  // texture
-
-  const textureLoader = new TextureLoader(manager);
-  const texture = textureLoader.load("textures/uv_grid_opengl.jpg", render);
-  texture.colorSpace = SRGBColorSpace;
-
   // model
 
-  function onProgress(xhr) {
-    if (xhr.lengthComputable) {
-      const percentComplete = (xhr.loaded / xhr.total) * 100;
-      console.log("model " + percentComplete.toFixed(2) + "% downloaded");
-    }
-  }
+  const mtlLoader = new MTLLoader().setPath("models/obj/male02/");
+  const materials = await mtlLoader.loadAsync("male02.mtl");
+  materials.preload();
 
-  function onError() {}
+  const objLoader = new OBJLoader().setPath("models/obj/male02/");
+  objLoader.setMaterials(materials); // optional since OBJ asstes can be loaded without an accompanying MTL file
 
-  const loader = new OBJLoader(manager);
-  loader.load(
-    "models/obj/male02/male02.obj",
-    function (obj) {
-      object = obj;
-    },
-    onProgress,
-    onError
-  );
+  const object = await objLoader.loadAsync("male02.obj");
+
+  object.position.y = -0.95;
+  object.scale.setScalar(0.01);
+  scene.add(object);
 
   //
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
   controls.minDistance = 2;
   controls.maxDistance = 5;
-  controls.addEventListener("change", render);
 
   //
 
@@ -109,6 +78,8 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function render() {
+function animate() {
+  controls.update();
+
   renderer.render(scene, camera);
 }
