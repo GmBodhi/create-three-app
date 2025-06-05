@@ -110,11 +110,11 @@ function init() {
 
   const withFlatFirstShader = createShader(
     InterpolationSamplingType.FLAT,
-    InterpolationSamplingMode.FLAT_FIRST
+    InterpolationSamplingMode.FIRST
   );
   const withFlatEitherShader = createShader(
     InterpolationSamplingType.FLAT,
-    InterpolationSamplingMode.FLAT_EITHER
+    InterpolationSamplingMode.EITHER
   );
 
   const withSampleShader = Fn(() => {
@@ -200,16 +200,16 @@ function init() {
       InterpolationSamplingMode.NORMAL,
       InterpolationSamplingMode.CENTROID,
       InterpolationSamplingMode.SAMPLE,
-      InterpolationSamplingMode.FLAT_FIRST,
-      InterpolationSamplingMode.FLAT_EITHER,
+      "flat first",
+      "flat either",
     ])
     .onChange(() => {
       const interpolationShaderLib = {
         [InterpolationSamplingMode.NORMAL]: withoutInterpolationShader,
         [InterpolationSamplingMode.CENTROID]: withInterpolationShader,
         [InterpolationSamplingMode.SAMPLE]: withSampleShader,
-        [InterpolationSamplingMode.FLAT_FIRST]: withFlatFirstShader,
-        [InterpolationSamplingMode.FLAT_EITHER]: withFlatEitherShader,
+        ["flat first"]: withFlatFirstShader,
+        ["flat either"]: withFlatEitherShader,
       };
 
       const shader = interpolationShaderLib[effectController.sampling];
