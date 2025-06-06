@@ -36,7 +36,7 @@
     "url": "git+https://github.com/GmBodhi/create-three-app.git"
   },
   "devDependencies": {
-    "@types/node": "^16.6.1",
+    "@types/node": "^22.0.0",
     "csso": "^4.2.0",
     "eslint": "^7.32.0",
     "glslx": "^0.2.13",
