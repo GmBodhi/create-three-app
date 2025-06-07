@@ -31,7 +31,7 @@ import {
   mat3,
   uint,
   negate,
-  attributeArray,
+  instancedArray,
   cameraProjectionMatrix,
   cameraViewMatrix,
   positionLocal,
@@ -200,13 +200,13 @@ function init() {
   // Labels applied to storage nodes and uniform nodes are reflected within the shader output,
   // and are useful for debugging purposes.
 
-  const positionStorage = attributeArray(positionArray, "vec3").label(
+  const positionStorage = instancedArray(positionArray, "vec3").label(
     "positionStorage"
   );
-  const velocityStorage = attributeArray(velocityArray, "vec3").label(
+  const velocityStorage = instancedArray(velocityArray, "vec3").label(
     "velocityStorage"
   );
-  const phaseStorage = attributeArray(phaseArray, "float").label(
+  const phaseStorage = instancedArray(phaseArray, "float").label(
     "phaseStorage"
   );
 

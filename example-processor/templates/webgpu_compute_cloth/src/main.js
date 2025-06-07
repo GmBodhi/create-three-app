@@ -19,6 +19,7 @@ import {
   MeshStandardNodeMaterial,
   BufferGeometry,
   MeshPhysicalNodeMaterial,
+  Color,
   DoubleSide,
 } from "three";
 
@@ -77,6 +78,11 @@ const params = {
   wind: 1.0,
 };
 
+const API = {
+  color: 0x204080, // sRGB
+  sheenColor: 0xffffff, // sRGB
+};
+
 init();
 
 async function init() {
@@ -118,12 +124,17 @@ async function init() {
   gui.add(params, "wireframe");
   gui.add(params, "sphere");
   gui.add(params, "wind", 0, 5, 0.1);
+
   const materialFolder = gui.addFolder("material");
-  materialFolder.addColor(clothMaterial, "color");
+  materialFolder.addColor(API, "color").onChange(function (color) {
+    clothMaterial.color.setHex(color);
+  });
   materialFolder.add(clothMaterial, "roughness", 0.0, 1, 0.01);
   materialFolder.add(clothMaterial, "sheen", 0.0, 1, 0.01);
   materialFolder.add(clothMaterial, "sheenRoughness", 0.0, 1, 0.01);
-  materialFolder.addColor(clothMaterial, "sheenColor");
+  materialFolder.addColor(API, "sheenColor").onChange(function (color) {
+    clothMaterial.sheenColor.setHex(color);
+  });
 
   window.addEventListener("resize", onWindowResize);
 
@@ -485,13 +496,13 @@ function setupClothMesh() {
   geometry.setIndex(indices);
 
   clothMaterial = new MeshPhysicalNodeMaterial({
-    color: 0x204080,
+    color: new Color().setHex(API.color),
     side: DoubleSide,
     transparent: true,
     opacity: 0.85,
     sheen: 1.0,
     sheenRoughness: 0.5,
-    sheenColor: 0xffffff,
+    sheenColor: new Color().setHex(API.sheenColor),
   });
 
   clothMaterial.positionNode = Fn(({ material }) => {
