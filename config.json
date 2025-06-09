@@ -4571,6 +4571,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_ca": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_difference": {
       "files": {
         "index.html": "src",
