@@ -54,6 +54,7 @@ import {
   time,
   uv,
   uniform,
+  step,
 } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
@@ -190,7 +191,7 @@ function init() {
   })();
 
   particleMaterial.opacityNode = /*#__PURE__*/ Fn(() => {
-    const circle = uv().xy.sub(0.5).length().step(0.5);
+    const circle = step(uv().xy.sub(0.5).length(), 0.5);
     const life = particlePositions.toAttribute().w;
 
     return circle.mul(life);

@@ -109,6 +109,7 @@ async function init() {
         blending: MultiplyBlending,
         toneMapped: false,
         transparent: true,
+        premultipliedAlpha: true,
       })
     );
     mesh.rotation.x = -Math.PI / 2;

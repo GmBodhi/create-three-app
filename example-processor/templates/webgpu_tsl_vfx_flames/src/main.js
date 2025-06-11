@@ -136,7 +136,7 @@ function init() {
     );
 
     // output
-    const color = mix(gradientColor, vec3(1), shape.step(0.8).oneMinus());
+    const color = mix(gradientColor, vec3(1), shape.step(0.8));
     const alpha = shape.smoothstep(0, 0.3);
     return vec4(color.rgb, alpha);
   })();
@@ -191,7 +191,7 @@ function init() {
       .smoothstep(0.25, 1);
 
     // shape
-    const shape = mainUv.sub(0.5).mul(vec2(6, 1)).length().step(0.5);
+    const shape = step(mainUv.sub(0.5).mul(vec2(6, 1)).length(), 0.5);
     shape.assign(shape.mul(cellularNoise));
     shape.mulAssign(gradient3);
     shape.assign(step(0.01, shape));

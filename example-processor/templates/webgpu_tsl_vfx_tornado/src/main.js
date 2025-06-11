@@ -18,7 +18,6 @@ import {
 import {
   luminance,
   cos,
-  float,
   min,
   time,
   atan,
@@ -28,7 +27,6 @@ import {
   PI2,
   color,
   positionLocal,
-  oneMinus,
   sin,
   texture,
   Fn,
@@ -149,7 +147,7 @@ function init() {
     // outer fade
     const distanceToCenter = uv().sub(0.5).toVar();
     const outerFade = min(
-      oneMinus(distanceToCenter.length()).smoothstep(0.5, 0.9),
+      distanceToCenter.length().oneMinus().smoothstep(0.5, 0.9),
       distanceToCenter.length().smoothstep(0, 0.2)
     );
 
@@ -158,7 +156,7 @@ function init() {
 
     // output
     return vec4(
-      emissiveColor.mul(float(0.2).step(effect)).mul(3), // Emissive
+      emissiveColor.mul(effect.step(0.2)).mul(3), // Emissive
       effect.smoothstep(0, 0.01) // Alpha
     );
   })();
@@ -208,7 +206,7 @@ function init() {
     // outer fade
     const outerFade = min(
       uv().y.smoothstep(0, 0.1),
-      oneMinus(uv().y).smoothstep(0, 0.4)
+      uv().y.oneMinus().smoothstep(0, 0.4)
     );
 
     // effect
@@ -263,7 +261,7 @@ function init() {
     // outer fade
     const outerFade = min(
       uv().y.smoothstep(0, 0.2),
-      oneMinus(uv().y).smoothstep(0, 0.4)
+      uv().y.oneMinus().smoothstep(0, 0.4)
     );
 
     // effect
