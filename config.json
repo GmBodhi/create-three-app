@@ -982,16 +982,6 @@
         "/src"
       ]
     },
-    "webgl_geometries_parametric": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_geometry_colors": {
       "files": {
         "index.html": "src",
