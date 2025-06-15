@@ -553,6 +553,16 @@
         "/src"
       ]
     },
+    "webgl_batch_lod_bvh": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_buffergeometry": {
       "files": {
         "index.html": "src",

@@ -1,0 +1,52 @@
+<html>
+  <head>
+    <title>three.js raycaster - batch - lod - bvh</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      batch lod bvh -
+      <a
+        href="https://github.com/agargaro/batched-mesh-extensions"
+        target="_blank"
+        rel="noopener"
+        >@three.ez/batched-mesh-extensions</a
+      ><br />
+      BatchedMesh with 10 geometries and 500k instances. Each geometry has 5
+      LODs (4 generated with meshoptimizer). <br />
+      Frustum culling and raycasting are accelerated by using BVHs (TLAS &amp;
+      BLAS). <br />
+      See
+      <a
+        href="https://github.com/agargaro/batched-mesh-extensions"
+        target="_blank"
+        rel="noopener"
+        >main project repository</a
+      >
+      for more information and examples on BatchedMesh extensions.
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.module.js",
+          "three/addons/": "./jsm/",
+
+          "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.9.0/build/index.module.js",
+
+          "@three.ez/batched-mesh-extensions": "https://cdn.jsdelivr.net/npm/@three.ez/batched-mesh-extensions@0.0.8/build/webgl.js",
+          "bvh.js": "https://cdn.jsdelivr.net/npm/bvh.js@0.0.13/build/index.js",
+
+          "@three.ez/simplify-geometry": "https://cdn.jsdelivr.net/npm/@three.ez/simplify-geometry@0.0.1/build/index.js",
+          "meshoptimizer": "https://cdn.jsdelivr.net/npm/meshoptimizer@0.23.0/+esm"
+        }
+      }
+    </script>
+  </body>
+</html>
