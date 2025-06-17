@@ -26,7 +26,7 @@ import {
   screenUV,
   mrt,
   output,
-  transformedNormalWorld,
+  normalWorld,
   uv,
   vec2,
 } from "three/tsl";
@@ -94,7 +94,7 @@ function init() {
 
   sceneMRT = mrt({
     output: output,
-    normal: transformedNormalWorld,
+    normal: normalWorld,
   });
 
   // Scene

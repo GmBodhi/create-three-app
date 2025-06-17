@@ -21,7 +21,7 @@ import {
   color,
   pass,
   reflector,
-  normalWorld,
+  normalWorldGeometry,
   texture,
   uv,
   screenUV,
@@ -53,7 +53,10 @@ function init() {
 
   scene = new Scene();
   scene.fog = new Fog(0x0487e2, 7, 25);
-  scene.backgroundNode = normalWorld.y.mix(color(0x0487e2), color(0x0066ff));
+  scene.backgroundNode = normalWorldGeometry.y.mix(
+    color(0x0487e2),
+    color(0x0066ff)
+  );
   camera.lookAt(0, 1, 0);
 
   const sunLight = new DirectionalLight(0xffe499, 5);

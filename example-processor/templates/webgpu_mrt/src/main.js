@@ -12,7 +12,7 @@ import {
 } from "three";
 import {
   output,
-  transformedNormalView,
+  normalView,
   pass,
   step,
   diffuseColor,
@@ -86,7 +86,7 @@ function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: directionToColor(transformedNormalView),
+      normal: directionToColor(normalView),
       diffuse: diffuseColor,
       emissive: emissive,
     })

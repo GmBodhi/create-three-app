@@ -16,7 +16,7 @@ import {
 } from "three";
 import {
   step,
-  normalWorld,
+  normalWorldGeometry,
   output,
   texture,
   vec3,
@@ -89,11 +89,17 @@ function init() {
   // fresnel
 
   const viewDirection = positionWorld.sub(cameraPosition).normalize();
-  const fresnel = viewDirection.dot(normalWorld).abs().oneMinus().toVar();
+  const fresnel = viewDirection
+    .dot(normalWorldGeometry)
+    .abs()
+    .oneMinus()
+    .toVar();
 
   // sun orientation
 
-  const sunOrientation = normalWorld.dot(normalize(sun.position)).toVar();
+  const sunOrientation = normalWorldGeometry
+    .dot(normalize(sun.position))
+    .toVar();
 
   // atmosphere color
 

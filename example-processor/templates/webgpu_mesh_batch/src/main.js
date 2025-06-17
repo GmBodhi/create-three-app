@@ -23,11 +23,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { radixSort } from "three/addons/utils/SortUtils.js";
 
-import {
-  transformedNormalView,
-  directionToColor,
-  diffuseColor,
-} from "three/tsl";
+import { normalView, directionToColor, diffuseColor } from "three/tsl";
 
 let camera, scene, renderer;
 let controls, stats;
@@ -103,7 +99,7 @@ function createMaterial() {
   if (!material) {
     material = new MeshBasicNodeMaterial();
     material.outputNode = diffuseColor.mul(
-      directionToColor(transformedNormalView).y.add(0.5)
+      directionToColor(normalView).y.add(0.5)
     );
   }
 

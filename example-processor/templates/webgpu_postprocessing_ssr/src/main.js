@@ -14,7 +14,7 @@ import {
   pass,
   mrt,
   output,
-  transformedNormalView,
+  normalView,
   metalness,
   blendColor,
   screenUV,
@@ -104,7 +104,7 @@ async function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: transformedNormalView,
+      normal: normalView,
       metalness: metalness,
     })
   );
