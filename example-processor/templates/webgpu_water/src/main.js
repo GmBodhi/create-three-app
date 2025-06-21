@@ -3,43 +3,45 @@ import "./style.css"; // For webpack support
 import {
   Scene,
   PerspectiveCamera,
-  Clock,
-  TorusKnotGeometry,
-  MeshNormalMaterial,
-  Mesh,
-  PlaneGeometry,
-  MeshStandardMaterial,
   TextureLoader,
   RepeatWrapping,
-  SRGBColorSpace,
+  PlaneGeometry,
   Vector2,
-  CubeTextureLoader,
   AmbientLight,
   DirectionalLight,
   WebGPURenderer,
+  NeutralToneMapping,
+  PostProcessing,
 } from "three";
+
+import { pass, mrt, output, emissive, color, screenUV } from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { WaterMesh } from "three/addons/objects/Water2Mesh.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-let scene, camera, clock, renderer, water;
-
-let torusKnot;
+let scene, camera, renderer, water, postProcessing, controls;
 
 const params = {
   color: "#ffffff",
-  scale: 4,
-  flowX: 1,
-  flowY: 1,
+  scale: 2,
+  flowX: 0.25,
+  flowY: 0.25,
 };
 
 init();
 
-function init() {
+async function init() {
   // scene
 
   scene = new Scene();
+  scene.backgroundNode = screenUV
+    .distance(0.5)
+    .remap(0, 0.5)
+    .mix(color(0x666666), color(0x111111));
 
   // camera
 
@@ -49,56 +51,34 @@ function init() {
     0.1,
     200
   );
-  camera.position.set(-15, 7, 15);
+  camera.position.set(-25, 10, -25);
   camera.lookAt(scene.position);
 
-  // clock
+  // asset loading
 
-  clock = new Clock();
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
 
-  // mesh
-
-  const torusKnotGeometry = new TorusKnotGeometry(3, 1, 256, 32);
-  const torusKnotMaterial = new MeshNormalMaterial();
-
-  torusKnot = new Mesh(torusKnotGeometry, torusKnotMaterial);
-  torusKnot.position.y = 4;
-  torusKnot.scale.set(0.5, 0.5, 0.5);
-  scene.add(torusKnot);
-
-  // ground
-
-  const groundGeometry = new PlaneGeometry(20, 20);
-  const groundMaterial = new MeshStandardMaterial({
-    roughness: 0.8,
-    metalness: 0.4,
-  });
-  const ground = new Mesh(groundGeometry, groundMaterial);
-  ground.rotation.x = Math.PI * -0.5;
-  scene.add(ground);
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.setDRACOLoader(dracoLoader);
 
   const textureLoader = new TextureLoader();
-  textureLoader.load("textures/hardwood2_diffuse.jpg", function (map) {
-    map.wrapS = RepeatWrapping;
-    map.wrapT = RepeatWrapping;
-    map.anisotropy = 16;
-    map.repeat.set(4, 4);
-    map.colorSpace = SRGBColorSpace;
-    groundMaterial.map = map;
-    groundMaterial.needsUpdate = true;
-  });
 
-  //
+  const [gltf, normalMap0, normalMap1] = await Promise.all([
+    gltfLoader.loadAsync("models/gltf/pool.glb"),
+    textureLoader.loadAsync("textures/water/Water_1_M_Normal.jpg"),
+    textureLoader.loadAsync("textures/water/Water_2_M_Normal.jpg"),
+  ]);
 
-  const normalMap0 = textureLoader.load("textures/water/Water_1_M_Normal.jpg");
-  const normalMap1 = textureLoader.load("textures/water/Water_2_M_Normal.jpg");
+  gltf.scene.scale.setScalar(0.1);
+  scene.add(gltf.scene);
+
+  // water
 
   normalMap0.wrapS = normalMap0.wrapT = RepeatWrapping;
   normalMap1.wrapS = normalMap1.wrapT = RepeatWrapping;
 
-  // water
-
-  const waterGeometry = new PlaneGeometry(20, 20);
+  const waterGeometry = new PlaneGeometry(30, 40);
 
   water = new WaterMesh(waterGeometry, {
     color: params.color,
@@ -108,32 +88,17 @@ function init() {
     normalMap1: normalMap1,
   });
 
-  water.position.y = 1;
+  water.position.set(0, 0.2, -2);
   water.rotation.x = Math.PI * -0.5;
+  water.renderOrder = Infinity;
   scene.add(water);
-
-  // skybox
-
-  const cubeTextureLoader = new CubeTextureLoader();
-  cubeTextureLoader.setPath("textures/cube/Park2/");
-
-  const cubeTexture = cubeTextureLoader.load([
-    "posx.jpg",
-    "negx.jpg",
-    "posy.jpg",
-    "negy.jpg",
-    "posz.jpg",
-    "negz.jpg",
-  ]);
-
-  scene.background = cubeTexture;
 
   // light
 
-  const ambientLight = new AmbientLight(0xe7e7e7, 1.2);
+  const ambientLight = new AmbientLight(0xccccccc, 0.4);
   scene.add(ambientLight);
 
-  const directionalLight = new DirectionalLight(0xffffff, 2);
+  const directionalLight = new DirectionalLight(0xf435ab, 3);
   directionalLight.position.set(-1, 1, 1);
   scene.add(directionalLight);
 
@@ -143,7 +108,25 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setAnimationLoop(animate);
+  renderer.toneMapping = NeutralToneMapping;
   document.body.appendChild(renderer.domElement);
+
+  postProcessing = new PostProcessing(renderer);
+
+  const scenePass = pass(scene, camera);
+  scenePass.setMRT(
+    mrt({
+      output,
+      emissive,
+    })
+  );
+
+  const outputPass = scenePass.getTextureNode();
+  const emissivePass = scenePass.getTextureNode("emissive");
+
+  const bloomPass = bloom(emissivePass);
+
+  postProcessing.outputNode = outputPass.add(bloomPass);
 
   // gui
 
@@ -175,9 +158,10 @@ function init() {
 
   //
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 5;
   controls.maxDistance = 50;
+  controls.enableDamping = true;
 
   //
 
@@ -191,10 +175,7 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  controls.update();
 
-  torusKnot.rotation.x += delta;
-  torusKnot.rotation.y += delta * 0.5;
-
-  renderer.render(scene, camera);
+  postProcessing.render();
 }

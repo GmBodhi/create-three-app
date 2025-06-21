@@ -3481,26 +3481,6 @@
         "/src"
       ]
     },
-    "webgl_water": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_water_flowmap": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_worker_offscreencanvas": {
       "files": {
         "index.html": "src",
