@@ -20,7 +20,7 @@ import { RapierPhysics } from "three/addons/physics/RapierPhysics.js";
 import { RapierHelper } from "three/addons/helpers/RapierHelper.js";
 import Stats from "three/addons/libs/stats.module.js";
 
-let camera, scene, renderer, stats;
+let camera, scene, renderer, stats, controls;
 let physics, physicsHelper;
 
 init();
@@ -67,7 +67,8 @@ async function init() {
   document.body.appendChild(renderer.domElement);
   renderer.setAnimationLoop(animate);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
   controls.target = new Vector3(0, 2, 0);
   controls.update();
 
@@ -145,7 +146,18 @@ function onWindowResize() {
 }
 
 function animate() {
+  for (const object of scene.children) {
+    if (object.isMesh) {
+      if (object.position.y < -10) {
+        scene.remove(object);
+        physics.removeMesh(object);
+      }
+    }
+  }
+
   if (physicsHelper) physicsHelper.update();
+
+  controls.update();
 
   renderer.render(scene, camera);
 

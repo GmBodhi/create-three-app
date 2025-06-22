@@ -4731,6 +4731,16 @@
         "/src"
       ]
     },
+    "webgpu_reflection_roughness": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_refraction": {
       "files": {
         "index.html": "src",
