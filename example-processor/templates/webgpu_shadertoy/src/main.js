@@ -24,7 +24,6 @@ class ShaderToyNode extends Node {
 
     const encoder = new TSLEncoder();
     encoder.iife = iife;
-    encoder.uniqueNames = true;
 
     const jsCode = new Transpiler(decoder, encoder).parse(glsl);
 

@@ -298,8 +298,8 @@ async function init() {
     new MeshStandardMaterial({ color: 0x908877, roughness: 0.2 })
   );
   scene.add(poolBorder);
-  borderGeom.receiveShadow = true;
-  borderGeom.castShadow = true;
+  poolBorder.receiveShadow = true;
+  poolBorder.castShadow = true;
 
   // Mesh just for mouse raycasting
   const geometryRay = new PlaneGeometry(BOUNDS, BOUNDS, 1, 1);
