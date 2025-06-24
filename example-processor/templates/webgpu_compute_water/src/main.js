@@ -284,8 +284,6 @@ async function init() {
   waterMesh.rotation.x = -Math.PI * 0.5;
   waterMesh.matrixAutoUpdate = false;
   waterMesh.updateMatrix();
-  waterMesh.receiveShadow = true;
-  waterMesh.castShadow = true;
 
   scene.add(waterMesh);
 
@@ -298,8 +296,6 @@ async function init() {
     new MeshStandardMaterial({ color: 0x908877, roughness: 0.2 })
   );
   scene.add(poolBorder);
-  poolBorder.receiveShadow = true;
-  poolBorder.castShadow = true;
 
   // Mesh just for mouse raycasting
   const geometryRay = new PlaneGeometry(BOUNDS, BOUNDS, 1, 1);
@@ -446,8 +442,6 @@ async function init() {
   scene.environmentIntensity = 1.25;
 
   duckModel = model.scene.children[0];
-  duckModel.receiveShadow = true;
-  duckModel.castShadow = true;
   duckModel.material.positionNode = Fn(() => {
     const instancePosition = duckInstanceDataStorage
       .element(instanceIndex)
