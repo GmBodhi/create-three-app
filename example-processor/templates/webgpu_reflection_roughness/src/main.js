@@ -110,7 +110,7 @@ async function init() {
   floorMaterial.roughnessNode = roughness.mul(0.2);
   floorMaterial.colorNode = Fn(() => {
     // blur reflection using textureBicubic()
-    const dirtyReflection = textureBicubic(reflection, roughness.mul(0.9)).rgb;
+    const dirtyReflection = textureBicubic(reflection, roughness.mul(0.9));
 
     // falloff opacity by distance like an opacity-fog
     const opacity = rangeFogFactor(7, 25).oneMinus();
