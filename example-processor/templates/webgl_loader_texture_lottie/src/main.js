@@ -16,11 +16,11 @@ import {
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
-import { LottieLoader } from "three/addons/loaders/LottieLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import lottie from "https://cdn.jsdelivr.net/npm/lottie-web@5.12.2/+esm";
+import lottie from "https://cdn.jsdelivr.net/npm/lottie-web@5.13.0/+esm";
 
-let renderer, scene, camera;
+let renderer, scene, camera, controls;
 let mesh;
 
 init();
@@ -45,8 +45,9 @@ function init() {
     "textures/lottie/24017-lottie-logo-animation.json",
     function (data) {
       const container = document.createElement("div");
-      container.style.width = data.w + "px";
-      container.style.height = data.h + "px";
+      const dpr = window.devicePixelRatio;
+      container.style.width = data.w * dpr + "px";
+      container.style.height = data.h * dpr + "px";
       document.body.appendChild(container);
 
       const animation = lottie.loadAnimation({
@@ -55,7 +56,7 @@ function init() {
         loop: true,
         autoplay: true,
         animationData: data,
-        rendererSettings: { dpr: 1 },
+        rendererSettings: { dpr: dpr },
       });
 
       const texture = new CanvasTexture(animation.container);
@@ -94,6 +95,9 @@ function init() {
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.environment = pmremGenerator.fromScene(environment).texture;
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.autoRotate = true;
 
   //
 
@@ -137,9 +141,7 @@ function onWindowResize() {
 //
 
 function animate() {
-  if (mesh) {
-    mesh.rotation.y -= 0.001;
-  }
+  controls.update();
 
   renderer.render(scene, camera);
 }
