@@ -172,6 +172,17 @@ function init() {
   mesh3.position.set(50, 100, 50);
 
   scene.add(mesh3);
+
+  //
+
+  window.addEventListener("resize", onWindowResize);
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function animate() {
