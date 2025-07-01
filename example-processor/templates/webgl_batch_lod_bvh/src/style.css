@@ -1,3 +1,8 @@
+a {
+  color: #ff0;
+  text-decoration: none;
+  pointer-events: auto;
+}
 body {
   margin: 0;
   background-color: #000;
@@ -6,11 +11,6 @@ body {
   font-size: 13px;
   line-height: 24px;
   overscroll-behavior: none;
-}
-a {
-  color: #ff0;
-  text-decoration: none;
-  pointer-events: auto;
 }
 a:hover {
   text-decoration: underline;

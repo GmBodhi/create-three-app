@@ -24,10 +24,18 @@ import {
   LatheGeometry,
   TorusGeometry,
   TorusKnotGeometry,
+  CapsuleGeometry,
   WebGLRenderer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
+
+import { ParametricGeometry } from "three/addons/geometries/ParametricGeometry.js";
+import {
+  plane,
+  klein,
+  mobius,
+} from "three/addons/geometries/ParametricFunctions.js";
 
 let camera, scene, renderer, stats;
 
@@ -40,11 +48,11 @@ function init() {
     1,
     2000
   );
-  camera.position.y = 400;
+  camera.position.y = 500;
 
   scene = new Scene();
 
-  let object;
+  let object, geometry;
 
   const ambientLight = new AmbientLight(0xcccccc, 1.5);
   scene.add(ambientLight);
@@ -63,43 +71,43 @@ function init() {
   //
 
   object = new Mesh(new SphereGeometry(75, 20, 10), material);
-  object.position.set(-300, 0, 200);
+  object.position.set(-300, 0, 300);
   scene.add(object);
 
-  object = new Mesh(new IcosahedronGeometry(75, 1), material);
-  object.position.set(-100, 0, 200);
+  object = new Mesh(new IcosahedronGeometry(75), material);
+  object.position.set(-100, 0, 300);
   scene.add(object);
 
-  object = new Mesh(new OctahedronGeometry(75, 2), material);
-  object.position.set(100, 0, 200);
+  object = new Mesh(new OctahedronGeometry(75), material);
+  object.position.set(100, 0, 300);
   scene.add(object);
 
-  object = new Mesh(new TetrahedronGeometry(75, 0), material);
-  object.position.set(300, 0, 200);
+  object = new Mesh(new TetrahedronGeometry(75), material);
+  object.position.set(300, 0, 300);
   scene.add(object);
 
   //
 
   object = new Mesh(new PlaneGeometry(100, 100, 4, 4), material);
-  object.position.set(-300, 0, 0);
+  object.position.set(-300, 0, 100);
   scene.add(object);
 
   object = new Mesh(new BoxGeometry(100, 100, 100, 4, 4, 4), material);
-  object.position.set(-100, 0, 0);
+  object.position.set(-100, 0, 100);
   scene.add(object);
 
   object = new Mesh(new CircleGeometry(50, 20, 0, Math.PI * 2), material);
-  object.position.set(100, 0, 0);
+  object.position.set(100, 0, 100);
   scene.add(object);
 
   object = new Mesh(new RingGeometry(10, 50, 20, 5, 0, Math.PI * 2), material);
-  object.position.set(300, 0, 0);
+  object.position.set(300, 0, 100);
   scene.add(object);
 
   //
 
   object = new Mesh(new CylinderGeometry(25, 75, 100, 40, 5), material);
-  object.position.set(-300, 0, -200);
+  object.position.set(-300, 0, -100);
   scene.add(object);
 
   const points = [];
@@ -111,15 +119,40 @@ function init() {
   }
 
   object = new Mesh(new LatheGeometry(points, 20), material);
-  object.position.set(-100, 0, -200);
+  object.position.set(-100, 0, -100);
   scene.add(object);
 
   object = new Mesh(new TorusGeometry(50, 20, 20, 20), material);
-  object.position.set(100, 0, -200);
+  object.position.set(100, 0, -100);
   scene.add(object);
 
   object = new Mesh(new TorusKnotGeometry(50, 10, 50, 20), material);
-  object.position.set(300, 0, -200);
+  object.position.set(300, 0, -100);
+  scene.add(object);
+
+  //
+
+  object = new Mesh(new CapsuleGeometry(20, 50), material);
+  object.position.set(-300, 0, -300);
+  scene.add(object);
+
+  geometry = new ParametricGeometry(plane, 10, 10);
+  geometry.scale(100, 100, 100);
+  geometry.center();
+  object = new Mesh(geometry, material);
+  object.position.set(-100, 0, -300);
+  scene.add(object);
+
+  geometry = new ParametricGeometry(klein, 20, 20);
+  object = new Mesh(geometry, material);
+  object.position.set(100, 0, -300);
+  object.scale.multiplyScalar(5);
+  scene.add(object);
+
+  geometry = new ParametricGeometry(mobius, 20, 20);
+  object = new Mesh(geometry, material);
+  object.position.set(300, 0, -300);
+  object.scale.multiplyScalar(30);
   scene.add(object);
 
   //

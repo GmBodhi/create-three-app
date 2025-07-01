@@ -2,44 +2,59 @@ import "./style.css"; // For webpack support
 
 import {
   Scene,
+  HalfFloatType,
+  EquirectangularReflectionMapping,
   PerspectiveCamera,
-  Clock,
-  TorusKnotGeometry,
-  MeshNormalMaterial,
-  Mesh,
-  PlaneGeometry,
-  MeshStandardMaterial,
   TextureLoader,
   RepeatWrapping,
-  SRGBColorSpace,
+  PlaneGeometry,
   Vector2,
-  CubeTextureLoader,
-  AmbientLight,
-  DirectionalLight,
+  MeshStandardMaterial,
+  DoubleSide,
+  Mesh,
   WebGPURenderer,
+  ACESFilmicToneMapping,
+  PostProcessing,
 } from "three";
 
+import { pass, mrt, output, emissive, color, screenUV } from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
+
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
+
 import { WaterMesh } from "three/addons/objects/Water2Mesh.js";
+import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-let scene, camera, clock, renderer, water;
-
-let torusKnot;
+let scene, camera, renderer, water, postProcessing, controls;
 
 const params = {
-  color: "#ffffff",
-  scale: 4,
+  color: "#99e0ff",
+  scale: 2,
   flowX: 1,
   flowY: 1,
 };
 
 init();
 
-function init() {
-  // scene
-
+async function init() {
   scene = new Scene();
+
+  const loader = new UltraHDRLoader();
+  loader.setDataType(HalfFloatType);
+  loader.load(
+    `textures/equirectangular/moonless_golf_2k.hdr.jpg`,
+    function (texture) {
+      texture.mapping = EquirectangularReflectionMapping;
+      texture.needsUpdate = true;
+
+      scene.background = texture;
+      scene.environment = texture;
+    }
+  );
 
   // camera
 
@@ -49,56 +64,34 @@ function init() {
     0.1,
     200
   );
-  camera.position.set(-15, 7, 15);
-  camera.lookAt(scene.position);
+  camera.position.set(-20, 6, -30);
 
-  // clock
+  // asset loading
 
-  clock = new Clock();
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
 
-  // mesh
-
-  const torusKnotGeometry = new TorusKnotGeometry(3, 1, 256, 32);
-  const torusKnotMaterial = new MeshNormalMaterial();
-
-  torusKnot = new Mesh(torusKnotGeometry, torusKnotMaterial);
-  torusKnot.position.y = 4;
-  torusKnot.scale.set(0.5, 0.5, 0.5);
-  scene.add(torusKnot);
-
-  // ground
-
-  const groundGeometry = new PlaneGeometry(20, 20);
-  const groundMaterial = new MeshStandardMaterial({
-    roughness: 0.8,
-    metalness: 0.4,
-  });
-  const ground = new Mesh(groundGeometry, groundMaterial);
-  ground.rotation.x = Math.PI * -0.5;
-  scene.add(ground);
+  const gltfLoader = new GLTFLoader();
+  gltfLoader.setDRACOLoader(dracoLoader);
 
   const textureLoader = new TextureLoader();
-  textureLoader.load("textures/hardwood2_diffuse.jpg", function (map) {
-    map.wrapS = RepeatWrapping;
-    map.wrapT = RepeatWrapping;
-    map.anisotropy = 16;
-    map.repeat.set(4, 4);
-    map.colorSpace = SRGBColorSpace;
-    groundMaterial.map = map;
-    groundMaterial.needsUpdate = true;
-  });
 
-  //
+  const [gltf, normalMap0, normalMap1] = await Promise.all([
+    gltfLoader.loadAsync("models/gltf/pool.glb"),
+    textureLoader.loadAsync("textures/water/Water_1_M_Normal.jpg"),
+    textureLoader.loadAsync("textures/water/Water_2_M_Normal.jpg"),
+  ]);
 
-  const normalMap0 = textureLoader.load("textures/water/Water_1_M_Normal.jpg");
-  const normalMap1 = textureLoader.load("textures/water/Water_2_M_Normal.jpg");
+  gltf.scene.position.z = 2;
+  gltf.scene.scale.setScalar(0.1);
+  scene.add(gltf.scene);
+
+  // water
 
   normalMap0.wrapS = normalMap0.wrapT = RepeatWrapping;
   normalMap1.wrapS = normalMap1.wrapT = RepeatWrapping;
 
-  // water
-
-  const waterGeometry = new PlaneGeometry(20, 20);
+  const waterGeometry = new PlaneGeometry(30, 40);
 
   water = new WaterMesh(waterGeometry, {
     color: params.color,
@@ -108,42 +101,78 @@ function init() {
     normalMap1: normalMap1,
   });
 
-  water.position.y = 1;
+  water.position.set(0, 0.2, -2);
   water.rotation.x = Math.PI * -0.5;
+  water.renderOrder = Infinity;
   scene.add(water);
 
-  // skybox
+  // floor
 
-  const cubeTextureLoader = new CubeTextureLoader();
-  cubeTextureLoader.setPath("textures/cube/Park2/");
+  const floorGeometry = new PlaneGeometry(1, 1);
+  floorGeometry.rotateX(-Math.PI * 0.5);
+  const floorMaterial = new MeshStandardMaterial({
+    color: 0x444444,
+    roughness: 1,
+    metalness: 0,
+    side: DoubleSide,
+  });
 
-  const cubeTexture = cubeTextureLoader.load([
-    "posx.jpg",
-    "negx.jpg",
-    "posy.jpg",
-    "negy.jpg",
-    "posz.jpg",
-    "negz.jpg",
-  ]);
+  {
+    const floor = new Mesh(floorGeometry, floorMaterial);
+    floor.position.set(20, 0, 0);
+    floor.scale.set(15, 1, 80);
+    scene.add(floor);
+  }
 
-  scene.background = cubeTexture;
+  {
+    const floor = new Mesh(floorGeometry, floorMaterial);
+    floor.position.set(-20, 0, 0);
+    floor.scale.set(15, 1, 80);
+    scene.add(floor);
+  }
 
-  // light
+  {
+    const floor = new Mesh(floorGeometry, floorMaterial);
+    floor.position.set(0, 0, 30);
+    floor.scale.set(30, 1, 20);
+    scene.add(floor);
+  }
 
-  const ambientLight = new AmbientLight(0xe7e7e7, 1.2);
-  scene.add(ambientLight);
-
-  const directionalLight = new DirectionalLight(0xffffff, 2);
-  directionalLight.position.set(-1, 1, 1);
-  scene.add(directionalLight);
+  {
+    const floor = new Mesh(floorGeometry, floorMaterial);
+    floor.position.set(0, 0, -30);
+    floor.scale.set(30, 1, 20);
+    scene.add(floor);
+  }
 
   // renderer
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setAnimationLoop(animate);
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.5;
   document.body.appendChild(renderer.domElement);
+
+  // postprocessing
+
+  postProcessing = new PostProcessing(renderer);
+
+  const scenePass = pass(scene, camera);
+  scenePass.setMRT(
+    mrt({
+      output,
+      emissive,
+    })
+  );
+
+  const outputPass = scenePass.getTextureNode();
+  const emissivePass = scenePass.getTextureNode("emissive");
+
+  const bloomPass = bloom(emissivePass, 2);
+
+  postProcessing.outputNode = outputPass.add(bloomPass);
 
   // gui
 
@@ -175,9 +204,10 @@ function init() {
 
   //
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 5;
-  controls.maxDistance = 50;
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.target.set(0, 0, -5);
+  controls.update();
 
   //
 
@@ -191,10 +221,7 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  controls.update();
 
-  torusKnot.rotation.x += delta;
-  torusKnot.rotation.y += delta * 0.5;
-
-  renderer.render(scene, camera);
+  postProcessing.render();
 }

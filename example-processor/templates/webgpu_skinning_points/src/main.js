@@ -82,7 +82,7 @@ function init() {
           .add(1);
         materialPoints.sizeAttenuation = false;
 
-        materialPoints.positionNode = Fn(() => {
+        const updateSkinningPoints = Fn(() => {
           const pointPosition = pointPositionArray.element(instanceIndex);
           const pointSpeed = pointSpeedArray.element(instanceIndex);
 
@@ -93,9 +93,19 @@ function init() {
 
           pointSpeed.assign(skinningSpeed);
           pointPosition.assign(skinningWorldPosition);
+        }, "void");
+
+        materialPoints.positionNode = Fn(() => {
+          updateSkinningPoints();
 
           return pointPositionArray.toAttribute();
-        })().compute(countOfPoints);
+        })()
+          .compute(countOfPoints)
+          .onInit(() => {
+            // initialize point positions and speeds
+
+            renderer.compute(updateSkinningPoints().compute(countOfPoints));
+          });
 
         const pointCloud = new Sprite(materialPoints);
         pointCloud.count = countOfPoints;

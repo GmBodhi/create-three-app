@@ -98,9 +98,11 @@ function init() {
   const geometry1 = new IcosahedronGeometry(radius, 1);
 
   const count = geometry1.attributes.position.count;
+  const arrayType =
+    typeof Float16Array !== "undefined" ? Float16Array : Float32Array;
   geometry1.setAttribute(
     "color",
-    new BufferAttribute(new Float32Array(count * 3), 3)
+    new BufferAttribute(new arrayType(count * 3), 3)
   );
 
   const geometry2 = geometry1.clone();

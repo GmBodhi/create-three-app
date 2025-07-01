@@ -9,16 +9,20 @@ import {
   PMREMGenerator,
   PostProcessing,
   NearestFilter,
+  UnsignedByteType,
 } from "three";
 import {
   pass,
   mrt,
   output,
-  transformedNormalView,
+  normalView,
   metalness,
   blendColor,
   screenUV,
   color,
+  sample,
+  directionToColor,
+  colorToDirection,
 } from "three/tsl";
 import { ssr } from "three/addons/tsl/display/SSRNode.js";
 import { smaa } from "three/addons/tsl/display/SMAANode.js";
@@ -104,7 +108,7 @@ async function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: transformedNormalView,
+      normal: directionToColor(normalView),
       metalness: metalness,
     })
   );
@@ -114,10 +118,24 @@ async function init() {
   const scenePassDepth = scenePass.getTextureNode("depth");
   const scenePassMetalness = scenePass.getTextureNode("metalness");
 
+  // optimization bandwidth packing the normals and reducing the texture precision if possible
+
+  const metalnessTexture = scenePass.getTexture("metalness");
+  metalnessTexture.type = UnsignedByteType;
+
+  const normalTexture = scenePass.getTexture("normal");
+  normalTexture.type = UnsignedByteType;
+
+  const customNormal = sample((uv) => {
+    return colorToDirection(scenePassNormal.sample(uv));
+  });
+
+  //
+
   ssrPass = ssr(
     scenePassColor,
     scenePassDepth,
-    scenePassNormal,
+    customNormal,
     scenePassMetalness,
     camera
   );

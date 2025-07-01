@@ -553,6 +553,16 @@
         "/src"
       ]
     },
+    "webgl_batch_lod_bvh": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_buffergeometry": {
       "files": {
         "index.html": "src",
@@ -973,16 +983,6 @@
       ]
     },
     "webgl_geometries": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_geometries_parametric": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -1825,16 +1825,6 @@
       ]
     },
     "webgl_loader_obj": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_loader_obj_mtl": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3491,26 +3481,6 @@
         "/src"
       ]
     },
-    "webgl_water": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_water_flowmap": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_worker_offscreencanvas": {
       "files": {
         "index.html": "src",
@@ -3852,6 +3822,16 @@
       ]
     },
     "webgpu_instance_mesh": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_instance_path": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4571,6 +4551,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_ca": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_difference": {
       "files": {
         "index.html": "src",
@@ -4732,6 +4722,16 @@
       ]
     },
     "webgpu_reflection_blurred": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_reflection_roughness": {
       "files": {
         "index.html": "src",
         "main.js": "src",

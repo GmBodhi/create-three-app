@@ -122,6 +122,7 @@ function createSpotShadowMesh() {
     map: shadowTexture,
     blending: MultiplyBlending,
     toneMapped: false,
+    premultipliedAlpha: true,
   });
 
   const mesh = new Mesh(geometry, material);

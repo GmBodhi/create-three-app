@@ -10,7 +10,7 @@ import {
   MeshBasicNodeMaterial,
 } from "three";
 import {
-  normalWorld,
+  normalWorldGeometry,
   uniform,
   normalView,
   positionViewDirection,
@@ -72,7 +72,11 @@ async function init() {
         const pmremRoughness = uniform(0.5);
         const pmremNode = pmremTexture(map, reflectVec, pmremRoughness);
 
-        scene.backgroundNode = pmremTexture(map, normalWorld, pmremRoughness);
+        scene.backgroundNode = pmremTexture(
+          map,
+          normalWorldGeometry,
+          pmremRoughness
+        );
 
         scene.add(
           new Mesh(

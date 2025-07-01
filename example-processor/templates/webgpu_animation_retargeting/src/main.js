@@ -38,7 +38,7 @@ import {
   mul,
   pow,
   blendDodge,
-  normalWorld,
+  normalWorldGeometry,
 } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -133,8 +133,8 @@ const coloredVignette = screenUV
     hue(color(0x0175ad), time.mul(0.1)),
     hue(color(0x02274f), time.mul(0.5))
   );
-const lightSpeedEffect = lightSpeed(normalWorld).clamp();
-const lightSpeedSky = normalWorld.y
+const lightSpeedEffect = lightSpeed(normalWorldGeometry).clamp();
+const lightSpeedSky = normalWorldGeometry.y
   .remapClamp(-0.1, 1)
   .mix(0, lightSpeedEffect);
 const composedBackground = blendDodge(coloredVignette, lightSpeedSky);

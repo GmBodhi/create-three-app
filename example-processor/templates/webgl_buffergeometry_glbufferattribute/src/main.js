@@ -8,6 +8,7 @@ import {
   Fog,
   BufferGeometry,
   SRGBColorSpace,
+  LinearSRGBColorSpace,
   GLBufferAttribute,
   PointsMaterial,
   Points,
@@ -86,7 +87,8 @@ function init() {
 
     color.setRGB(vx, vy, vz, SRGBColorSpace);
 
-    colors.push(color.r, color.g, color.b);
+    const hex = color.getHex(LinearSRGBColorSpace);
+    colors.push((hex >> 16) & 255, (hex >> 8) & 255, hex & 255);
   }
 
   const gl = renderer.getContext();
@@ -101,7 +103,7 @@ function init() {
 
   const rgb = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, rgb);
-  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colors), gl.STATIC_DRAW);
+  gl.bufferData(gl.ARRAY_BUFFER, new Uint8Array(colors), gl.STATIC_DRAW);
 
   const posAttr1 = new GLBufferAttribute(pos, gl.FLOAT, 3, 4, particles);
   const posAttr2 = new GLBufferAttribute(pos2, gl.FLOAT, 3, 4, particles);
@@ -115,7 +117,7 @@ function init() {
 
   geometry.setAttribute(
     "color",
-    new GLBufferAttribute(rgb, gl.FLOAT, 3, 4, particles)
+    new GLBufferAttribute(rgb, gl.UNSIGNED_BYTE, 3, 1, particles, true)
   );
 
   //

@@ -84,7 +84,7 @@ async function init() {
     .detectSupportAsync(renderer);
 
   const ktxTexture = await ktxLoader.loadAsync(
-    "three/examples/textures/compressed/sample_uastc_zstd.ktx2"
+    "three/examples/textures/ktx2/2d_uastc.ktx2"
   );
 
   // box mesh
