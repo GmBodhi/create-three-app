@@ -2,16 +2,14 @@ import "./style.css"; // For webpack support
 
 import {
   Vector2,
+  WebGPURenderer,
   PerspectiveCamera,
   Scene,
   Color,
+  PMREMGenerator,
   Clock,
-  AmbientLight,
-  DirectionalLight,
-  PointLight,
   Group,
   GridHelper,
-  WebGPURenderer,
   PostProcessing,
   MeshStandardMaterial,
   BoxGeometry,
@@ -30,6 +28,8 @@ import {
 } from "three";
 import { pass, renderOutput, uniform } from "three/tsl";
 
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { chromaticAberration } from "three/addons/tsl/display/ChromaticAberrationNode.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -45,11 +45,17 @@ const params = {
 };
 
 let camera, scene, renderer, clock, mainGroup;
-let postProcessing;
+let controls, postProcessing;
 
 init();
 
 async function init() {
+  renderer = new WebGPURenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  document.body.appendChild(renderer.domElement);
+
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -57,28 +63,25 @@ async function init() {
     200
   );
   camera.position.set(0, 15, params.cameraDistance);
-  camera.lookAt(0, 0, 0);
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.1;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = -0.1;
+  controls.target.set(0, 0.5, 0);
+  controls.update();
 
   scene = new Scene();
   scene.background = new Color(0x0a0a0a);
 
+  const pmremGenerator = new PMREMGenerator(renderer);
+  scene.environment = pmremGenerator.fromScene(
+    new RoomEnvironment(),
+    0.04
+  ).texture;
+
   clock = new Clock();
-
-  // Lighting
-  const ambientLight = new AmbientLight(0xffffff, 0.3);
-  scene.add(ambientLight);
-
-  const dirLight1 = new DirectionalLight(0xffffff, 1.5);
-  dirLight1.position.set(10, 20, 10);
-  scene.add(dirLight1);
-
-  const dirLight2 = new DirectionalLight(0x4080ff, 0.5);
-  dirLight2.position.set(-10, 20, -10);
-  scene.add(dirLight2);
-
-  const pointLight = new PointLight(0xff4080, 1, 50);
-  pointLight.position.set(0, 10, 0);
-  scene.add(pointLight);
 
   // Create main group
   mainGroup = new Group();
@@ -91,12 +94,6 @@ async function init() {
   const gridHelper = new GridHelper(40, 20, 0x444444, 0x222222);
   gridHelper.position.y = -10;
   scene.add(gridHelper);
-
-  renderer = new WebGPURenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
-  document.body.appendChild(renderer.domElement);
 
   // post processing
   postProcessing = new PostProcessing(renderer);
@@ -143,9 +140,8 @@ async function init() {
 
   const animationFolder = gui.addFolder("Animation");
   animationFolder.add(params, "animated");
-  animationFolder.add(params, "autoRotate");
-  animationFolder.add(params, "cameraDistance", 20, 60).onChange((value) => {
-    camera.position.z = value;
+  animationFolder.add(params, "autoRotate").onChange((value) => {
+    controls.autoRotate = value;
   });
 }
 
@@ -285,6 +281,8 @@ function onWindowResize() {
 function animate() {
   const time = clock.getElapsedTime();
 
+  controls.update();
+
   if (params.animated) {
     // Animate individual shapes
     mainGroup.children.forEach((child, index) => {
@@ -304,13 +302,6 @@ function animate() {
         child.position.y = Math.sin(time + index) * 2;
       }
     });
-  }
-
-  if (params.autoRotate) {
-    const radius = params.cameraDistance;
-    camera.position.x = Math.sin(time * 0.1) * radius;
-    camera.position.z = Math.cos(time * 0.1) * radius;
-    camera.lookAt(0, 0, 0);
   }
 
   postProcessing.render();

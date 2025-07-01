@@ -3,15 +3,14 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  HalfFloatType,
   EquirectangularReflectionMapping,
   TextureLoader,
   SRGBColorSpace,
   RepeatWrapping,
-  MeshStandardNodeMaterial,
-  DoubleSide,
   Mesh,
-  PlaneGeometry,
   BoxGeometry,
+  MeshStandardNodeMaterial,
   WebGPURenderer,
   NeutralToneMapping,
 } from "three";
@@ -27,9 +26,8 @@ import {
   time,
 } from "three/tsl";
 
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -46,21 +44,22 @@ async function init() {
     0.25,
     30
   );
-  camera.position.set(-4, 2, 4);
-  camera.lookAt(0, 0.4, 0);
+  camera.position.set(-4, 1, 4);
 
   scene = new Scene();
 
-  //
-
-  new RGBELoader()
-    .setPath("textures/equirectangular/")
-    .load("moonless_golf_1k.hdr", function (texture) {
+  const loader = new UltraHDRLoader();
+  loader.setDataType(HalfFloatType);
+  loader.load(
+    `textures/equirectangular/spruit_sunrise_2k.hdr.jpg`,
+    function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
+      texture.needsUpdate = true;
 
       scene.background = texture;
       scene.environment = texture;
-    });
+    }
+  );
 
   // textures
 
@@ -76,18 +75,20 @@ async function init() {
   perlinMap.wrapT = RepeatWrapping;
   perlinMap.colorSpace = SRGBColorSpace;
 
-  // uv map for debugging
+  // uv box for debugging
 
-  const uvMaterial = new MeshStandardNodeMaterial({
-    map: uvMap,
-    emissiveMap: uvMap,
-    emissive: 0xffffff,
-    side: DoubleSide,
-  });
-
-  const uvMesh = new Mesh(new PlaneGeometry(2, 2), uvMaterial);
-  uvMesh.position.set(0, 1, 0);
-  scene.add(uvMesh);
+  const mesh = new Mesh(
+    new BoxGeometry(1, 1, 1),
+    new MeshStandardNodeMaterial({
+      map: uvMap,
+      roughnessMap: uvMap,
+      emissiveMap: uvMap,
+      emissive: 0xffffff,
+    })
+  );
+  mesh.position.set(0, 1.25, 0);
+  mesh.scale.setScalar(2);
+  scene.add(mesh);
 
   // reflection
 
@@ -124,12 +125,12 @@ async function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = NeutralToneMapping;
-  renderer.toneMappingExposure = 2;
+  renderer.toneMappingExposure = 1.5;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -141,7 +142,7 @@ async function init() {
   controls.maxPolarAngle = Math.PI / 2;
   controls.autoRotate = true;
   controls.autoRotateSpeed = -0.1;
-  controls.target.set(0, 0.5, 0);
+  controls.target.set(0, 0.75, 0);
   controls.update();
 
   // events
@@ -156,7 +157,7 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function animate() {
+function animate(time) {
   stats.update();
 
   controls.update();

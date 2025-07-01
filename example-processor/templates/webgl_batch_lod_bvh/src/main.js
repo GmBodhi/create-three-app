@@ -9,18 +9,18 @@ import {
   Vector3,
   Quaternion,
   Matrix4,
-  PerspectiveCamera,
-  Scene,
-  Fog,
-  AmbientLight,
-  DirectionalLight,
   WebGLRenderer,
+  ACESFilmicToneMapping,
+  Scene,
+  PMREMGenerator,
+  PerspectiveCamera,
   TorusKnotGeometry,
   MeshStandardMaterial,
   WebGLCoordinateSystem,
 } from "three";
 import Stats from "three/addons/libs/stats.module.js";
 import { MapControls } from "three/addons/controls/MapControls.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { acceleratedRaycast, computeBatchedBoundsTree } from "three-mesh-bvh";
@@ -49,7 +49,7 @@ const instancesCount = 500000;
 let batchedMesh;
 let lastHoveredInstance = null;
 const lastHoveredColor = new Color();
-const yellow = new Color("yellow");
+const highlight = new Color("red");
 
 const raycaster = new Raycaster();
 const mouse = new Vector2(1, 1);
@@ -62,29 +62,35 @@ const color = new Color();
 init();
 
 async function init() {
-  // environment
-  camera = new PerspectiveCamera(
-    50,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    600
-  );
-  camera.position.set(0, 10, 50);
-
-  scene = new Scene();
-  scene.fog = new Fog(0x000000, 500, 600);
-
-  const ambient = new AmbientLight();
-  scene.add(camera, ambient);
-
-  const dirLight = new DirectionalLight("white", 2);
-  camera.add(dirLight, dirLight.target);
-
   // renderer
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.8;
   document.body.appendChild(renderer.domElement);
+
+  //
+
+  scene = new Scene();
+
+  const pmremGenerator = new PMREMGenerator(renderer);
+  scene.environment = pmremGenerator.fromScene(
+    new RoomEnvironment(),
+    0.04
+  ).texture;
+
+  //
+
+  camera = new PerspectiveCamera(
+    50,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.set(0, 20, 55);
+
+  //
 
   raycaster.firstHitOnly = true;
 
@@ -121,7 +127,7 @@ async function init() {
     instancesCount,
     vertexCount,
     indexCount,
-    new MeshStandardMaterial({ metalness: 0.2, roughness: 0.2 })
+    new MeshStandardMaterial({ metalness: 1, roughness: 0.8 })
   );
 
   // enable radix sort for better performance
@@ -135,8 +141,8 @@ async function init() {
       -1,
       LODIndexCount[i]
     );
-    batchedMesh.addGeometryLOD(geometryId, geometryLOD[1], 15);
-    batchedMesh.addGeometryLOD(geometryId, geometryLOD[2], 75);
+    batchedMesh.addGeometryLOD(geometryId, geometryLOD[1], 50);
+    batchedMesh.addGeometryLOD(geometryId, geometryLOD[2], 100);
     batchedMesh.addGeometryLOD(geometryId, geometryLOD[3], 125);
     batchedMesh.addGeometryLOD(geometryId, geometryLOD[4], 200);
   }
@@ -235,7 +241,7 @@ function raycast() {
 
   if (batchId) {
     batchedMesh.getColorAt(batchId, lastHoveredColor);
-    batchedMesh.setColorAt(batchId, yellow);
+    batchedMesh.setColorAt(batchId, highlight);
   }
 
   lastHoveredInstance = batchId;

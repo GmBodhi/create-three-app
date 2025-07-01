@@ -2,15 +2,18 @@ import "./style.css"; // For webpack support
 
 import {
   Scene,
+  HalfFloatType,
+  EquirectangularReflectionMapping,
   PerspectiveCamera,
   TextureLoader,
   RepeatWrapping,
   PlaneGeometry,
   Vector2,
-  AmbientLight,
-  DirectionalLight,
+  MeshStandardMaterial,
+  DoubleSide,
+  Mesh,
   WebGPURenderer,
-  NeutralToneMapping,
+  ACESFilmicToneMapping,
   PostProcessing,
 } from "three";
 
@@ -18,7 +21,10 @@ import { pass, mrt, output, emissive, color, screenUV } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
+
 import { WaterMesh } from "three/addons/objects/Water2Mesh.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -26,22 +32,29 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 let scene, camera, renderer, water, postProcessing, controls;
 
 const params = {
-  color: "#ffffff",
+  color: "#99e0ff",
   scale: 2,
-  flowX: 0.25,
-  flowY: 0.25,
+  flowX: 1,
+  flowY: 1,
 };
 
 init();
 
 async function init() {
-  // scene
-
   scene = new Scene();
-  scene.backgroundNode = screenUV
-    .distance(0.5)
-    .remap(0, 0.5)
-    .mix(color(0x666666), color(0x111111));
+
+  const loader = new UltraHDRLoader();
+  loader.setDataType(HalfFloatType);
+  loader.load(
+    `textures/equirectangular/moonless_golf_2k.hdr.jpg`,
+    function (texture) {
+      texture.mapping = EquirectangularReflectionMapping;
+      texture.needsUpdate = true;
+
+      scene.background = texture;
+      scene.environment = texture;
+    }
+  );
 
   // camera
 
@@ -51,8 +64,7 @@ async function init() {
     0.1,
     200
   );
-  camera.position.set(-25, 10, -25);
-  camera.lookAt(scene.position);
+  camera.position.set(-20, 6, -30);
 
   // asset loading
 
@@ -70,6 +82,7 @@ async function init() {
     textureLoader.loadAsync("textures/water/Water_2_M_Normal.jpg"),
   ]);
 
+  gltf.scene.position.z = 2;
   gltf.scene.scale.setScalar(0.1);
   scene.add(gltf.scene);
 
@@ -93,23 +106,56 @@ async function init() {
   water.renderOrder = Infinity;
   scene.add(water);
 
-  // light
+  // floor
 
-  const ambientLight = new AmbientLight(0xccccccc, 0.4);
-  scene.add(ambientLight);
+  const floorGeometry = new PlaneGeometry(1, 1);
+  floorGeometry.rotateX(-Math.PI * 0.5);
+  const floorMaterial = new MeshStandardMaterial({
+    color: 0x444444,
+    roughness: 1,
+    metalness: 0,
+    side: DoubleSide,
+  });
 
-  const directionalLight = new DirectionalLight(0xf435ab, 3);
-  directionalLight.position.set(-1, 1, 1);
-  scene.add(directionalLight);
+  {
+    const floor = new Mesh(floorGeometry, floorMaterial);
+    floor.position.set(20, 0, 0);
+    floor.scale.set(15, 1, 80);
+    scene.add(floor);
+  }
+
+  {
+    const floor = new Mesh(floorGeometry, floorMaterial);
+    floor.position.set(-20, 0, 0);
+    floor.scale.set(15, 1, 80);
+    scene.add(floor);
+  }
+
+  {
+    const floor = new Mesh(floorGeometry, floorMaterial);
+    floor.position.set(0, 0, 30);
+    floor.scale.set(30, 1, 20);
+    scene.add(floor);
+  }
+
+  {
+    const floor = new Mesh(floorGeometry, floorMaterial);
+    floor.position.set(0, 0, -30);
+    floor.scale.set(30, 1, 20);
+    scene.add(floor);
+  }
 
   // renderer
 
-  renderer = new WebGPURenderer();
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setAnimationLoop(animate);
-  renderer.toneMapping = NeutralToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.5;
   document.body.appendChild(renderer.domElement);
+
+  // postprocessing
 
   postProcessing = new PostProcessing(renderer);
 
@@ -124,7 +170,7 @@ async function init() {
   const outputPass = scenePass.getTextureNode();
   const emissivePass = scenePass.getTextureNode("emissive");
 
-  const bloomPass = bloom(emissivePass);
+  const bloomPass = bloom(emissivePass, 2);
 
   postProcessing.outputNode = outputPass.add(bloomPass);
 
@@ -159,9 +205,9 @@ async function init() {
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.minDistance = 5;
-  controls.maxDistance = 50;
   controls.enableDamping = true;
+  controls.target.set(0, 0, -5);
+  controls.update();
 
   //
 
