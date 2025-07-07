@@ -6,8 +6,6 @@ import {
   Fog,
   DirectionalLight,
   HemisphereLight,
-  Clock,
-  AnimationMixer,
   TextureLoader,
   RepeatWrapping,
   SRGBColorSpace,
@@ -16,29 +14,52 @@ import {
   BoxGeometry,
   WebGPURenderer,
   PostProcessing,
+  Vector3,
+  Color,
+  MeshStandardNodeMaterial,
+  InstancedBufferAttribute,
 } from "three";
+
 import {
+  abs,
   color,
-  pass,
-  reflector,
+  div,
+  float,
+  Fn,
+  instancedBufferAttribute,
+  materialColor,
+  min,
   normalWorldGeometry,
-  texture,
-  uv,
+  pass,
+  positionGeometry,
+  positionLocal,
+  reflector,
   screenUV,
+  sin,
+  sub,
+  texture,
+  time,
+  uniform,
+  uv,
+  varyingProperty,
 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
-
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import Stats from "three/addons/libs/stats.module.js";
+import TWEEN from "three/addons/libs/tween.module.js";
 
 let camera, scene, renderer;
-let model, mixer, clock;
 let postProcessing;
 let controls;
 let stats;
+
+// below uniforms will be animated via TWEEN.js
+
+const uniformLife = uniform(0);
+const uniformEffector1 = uniform(-0.2);
+const uniformEffector2 = uniform(-0.2);
 
 init();
 
@@ -49,7 +70,7 @@ function init() {
     0.25,
     30
   );
-  camera.position.set(2, 2.5, 3);
+  camera.position.set(4, 2, 4);
 
   scene = new Scene();
   scene.fog = new Fog(0x0487e2, 7, 25);
@@ -59,42 +80,15 @@ function init() {
   );
   camera.lookAt(0, 1, 0);
 
-  const sunLight = new DirectionalLight(0xffe499, 5);
-  sunLight.castShadow = true;
-  sunLight.shadow.camera.near = 0.1;
-  sunLight.shadow.camera.far = 5;
-  sunLight.shadow.camera.right = 2;
-  sunLight.shadow.camera.left = -2;
-  sunLight.shadow.camera.top = 2;
-  sunLight.shadow.camera.bottom = -2;
-  sunLight.shadow.mapSize.width = 2048;
-  sunLight.shadow.mapSize.height = 2048;
-  sunLight.shadow.bias = -0.001;
-  sunLight.position.set(0.5, 3, 0.5);
+  const sunLight = new DirectionalLight(0xffe499, 3);
+  sunLight.position.set(7, 3, 7);
 
-  const waterAmbientLight = new HemisphereLight(0x333366, 0x74ccf4, 5);
+  const waterAmbientLight = new HemisphereLight(0x333366, 0x74ccf4, 3);
   const skyAmbientLight = new HemisphereLight(0x74ccf4, 0, 1);
 
   scene.add(sunLight);
   scene.add(skyAmbientLight);
   scene.add(waterAmbientLight);
-
-  clock = new Clock();
-
-  // animated model
-
-  const loader = new GLTFLoader();
-  loader.load("models/gltf/Michelle.glb", function (gltf) {
-    model = gltf.scene;
-    model.children[0].children[0].castShadow = true;
-
-    mixer = new AnimationMixer(model);
-
-    const action = mixer.clipAction(gltf.animations[0]);
-    action.play();
-
-    scene.add(model);
-  });
 
   // textures
 
@@ -113,6 +107,11 @@ function init() {
   floorNormal.wrapS = RepeatWrapping;
   floorNormal.wrapT = RepeatWrapping;
 
+  // tree
+
+  const treeMesh = createTreeMesh();
+  scene.add(treeMesh);
+
   // floor
 
   const floorUV = uv().mul(15);
@@ -130,8 +129,6 @@ function init() {
   floorMaterial.colorNode = texture(floorColor, floorUV).add(reflection);
 
   const floor = new Mesh(new BoxGeometry(50, 0.001, 50), floorMaterial);
-  floor.receiveShadow = true;
-
   floor.position.set(0, 0, 0);
   scene.add(floor);
 
@@ -141,11 +138,12 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
+
+  // controls
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 1;
@@ -153,14 +151,14 @@ function init() {
   controls.maxPolarAngle = Math.PI / 2;
   controls.autoRotate = true;
   controls.autoRotateSpeed = 1;
-  controls.target.set(0, 0.5, 0);
+  controls.target.set(0, 1, 0);
   controls.update();
 
   // post-processing
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
-  const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(0.3, 0.5);
+  const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(0.3, 0.7);
 
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = scenePassDepth;
@@ -173,6 +171,10 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
+
+  //
+
+  startTweens();
 }
 
 function onWindowResize() {
@@ -187,11 +189,218 @@ function animate() {
 
   controls.update();
 
-  const delta = clock.getDelta();
-
-  if (model) {
-    mixer.update(delta);
-  }
+  TWEEN.update();
 
   postProcessing.render();
+}
+
+function startTweens() {
+  const lifeTween = new TWEEN.Tween(uniformLife)
+    .to({ value: 1 }, 5000)
+    .easing(TWEEN.Easing.Bounce.Out);
+  lifeTween.start();
+
+  const effectTween = new TWEEN.Tween(uniformEffector1)
+    .to({ value: 1.2 }, 2500)
+    .delay(3000)
+    .easing(TWEEN.Easing.Sinusoidal.InOut)
+    .onComplete(function () {
+      secondaryTweens();
+    });
+  effectTween.start();
+}
+
+function secondaryTweens() {
+  uniformEffector1.value = -0.2;
+  uniformEffector2.value = -0.2;
+
+  const effect2Tween = new TWEEN.Tween(uniformEffector2)
+    .to({ value: 1.2 }, 3000)
+    .repeat(Infinity)
+    .easing(TWEEN.Easing.Sinusoidal.InOut);
+  effect2Tween.start();
+
+  const effectTween = new TWEEN.Tween(uniformEffector1)
+    .to({ value: 1.2 }, 3000)
+    .delay(800)
+    .repeat(Infinity)
+    .easing(TWEEN.Easing.Sinusoidal.InOut);
+  effectTween.start();
+}
+
+function createTreeMesh() {
+  const maxSteps = 6;
+  const angleLeft = (Math.PI / 180) * 30;
+  const angleRight = (Math.PI / 180) * 40;
+  const lengthMult = 0.88;
+
+  const positions = [];
+  const normals = [];
+  const colors = [];
+  const data = []; // will save seed, size and time
+
+  let instanceCount = 0;
+
+  const newPosition = new Vector3();
+  const position = new Vector3();
+  const normal = new Vector3();
+  const color = new Color();
+
+  function createTreePart(angle, x, y, z, length, count) {
+    if (count < maxSteps) {
+      const newLength = length * lengthMult;
+      const newX = x + Math.cos(angle) * length;
+      const newY = y + Math.sin(angle) * length;
+      const countSq = Math.min(3.2, count * count);
+      const newZ = z + (Math.random() * countSq - countSq / 2) * length;
+
+      let size = 30 - count * 8;
+      if (size > 25) size = 25;
+      if (size < 10) size = 10;
+
+      size = size / 10;
+
+      const subSteps = 60;
+
+      // below loop generates the instanced data for a tree part
+
+      for (let i = 0; i < subSteps; i++) {
+        instanceCount++;
+
+        const percent = i / subSteps;
+        const extra = 1 / maxSteps;
+
+        // position
+
+        newPosition.set(x, y, z).lerp(new Vector3(newX, newY, newZ), percent);
+        position.copy(newPosition);
+
+        position.x += Math.random() * (size * 3) - size * 1.5;
+        position.y += Math.random() * (size * 3) - size * 1.5;
+        position.z += Math.random() * (size * 3) - size * 1.5;
+
+        positions.push(position.x, position.y, position.z);
+
+        const scale = 0.25 * Math.random();
+
+        // normal
+
+        normal.copy(position).sub(newPosition).normalize();
+        normals.push(normal.x, normal.y, normal.z);
+
+        // color
+
+        color.setHSL(
+          0.55 + Math.random() * 0.05,
+          1.0,
+          0.7 + Math.random() * 0.3
+        );
+        colors.push(color.r, color.g, color.b);
+
+        // to save vertex buffers, we store the size, time and seed in a single attribute
+
+        const instanceSize = size * scale;
+        const instanceTime = count / maxSteps + percent * extra;
+        const instanceSeed = Math.random();
+
+        data.push(instanceSize, instanceTime, instanceSeed);
+      }
+
+      createTreePart(
+        angle - angleRight,
+        newX,
+        newY,
+        newZ,
+        newLength,
+        count + 1
+      );
+      createTreePart(angle + angleLeft, newX, newY, newZ, newLength, count + 1);
+    }
+  }
+
+  const angle = Math.PI * 0.5;
+
+  // the tree is represented as a collection of instances boxes generated with below recursive function
+
+  createTreePart(angle, 0, 0, 0, 16, 0);
+
+  const geometry = new BoxGeometry();
+  const material = new MeshStandardNodeMaterial();
+  const mesh = new Mesh(geometry, material);
+  mesh.scale.setScalar(0.05);
+  mesh.count = instanceCount;
+  mesh.frustumCulled = false;
+
+  // instanced data
+
+  const attributePosition = new InstancedBufferAttribute(
+    new Float32Array(positions),
+    3
+  );
+  const attributeNormal = new InstancedBufferAttribute(
+    new Float32Array(normals),
+    3
+  );
+  const attributeColor = new InstancedBufferAttribute(
+    new Float32Array(colors),
+    3
+  );
+  const attributeData = new InstancedBufferAttribute(new Float32Array(data), 3);
+
+  // TSL
+
+  const vVisbility = varyingProperty("float");
+
+  const instancePosition = instancedBufferAttribute(attributePosition);
+  const instanceNormal = instancedBufferAttribute(attributeNormal);
+  const instanceColor = instancedBufferAttribute(attributeColor);
+  const instanceData = instancedBufferAttribute(attributeData);
+
+  material.positionNode = Fn(() => {
+    const instanceSize = instanceData.x;
+    const instanceTime = instanceData.y;
+    const instanceSeed = instanceData.z;
+
+    // effectors (these are responsible for the blob-like scale effects)
+
+    const dif1 = abs(instanceTime.sub(uniformEffector1)).toConst();
+    let effect = dif1
+      .lessThanEqual(0.15)
+      .select(sub(0.15, dif1).mul(sub(1.7, instanceTime).mul(10)), float(0));
+
+    const dif2 = abs(instanceTime.sub(uniformEffector2)).toConst();
+    effect = dif2
+      .lessThanEqual(0.15)
+      .select(sub(0.15, dif2).mul(sub(1.7, instanceTime).mul(10)), effect);
+
+    // life (controls the visibility and initial scale of the cubes)
+
+    const scale = uniformLife
+      .greaterThan(instanceTime)
+      .select(min(1, div(uniformLife.sub(instanceTime), 0)))
+      .oneMinus();
+    vVisbility.assign(uniformLife.greaterThan(instanceTime).select(1, 0));
+
+    // accumulate different vertex animations
+
+    let animated = positionLocal.add(instancePosition).toVar();
+    const direction = positionGeometry.normalize().toConst();
+
+    animated = animated.add(direction.mul(effect.add(instanceSize)));
+    animated = animated.sub(direction.mul(scale));
+    animated = animated.add(instanceNormal.mul(effect.mul(1)));
+    animated = animated.add(
+      instanceNormal.mul(abs(sin(time.add(instanceSeed.mul(2))).mul(1.5)))
+    );
+
+    return animated;
+  })();
+
+  material.colorNode = Fn(() => {
+    vVisbility.equal(0).discard();
+
+    return materialColor.mul(instanceColor);
+  })();
+
+  return mesh;
 }
