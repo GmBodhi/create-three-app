@@ -9,6 +9,7 @@ import {
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
+  ReversedCoordinateSystem,
   PCFShadowMap,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -93,11 +94,16 @@ function init() {
 
   // RENDERER
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true, reverseDepthBuffer: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
+
+  if (renderer.capabilities.reverseDepthBuffer) {
+    camera.coordinateSystem = ReversedCoordinateSystem;
+    camera.updateProjectionMatrix();
+  }
 
   renderer.autoClear = false;
 

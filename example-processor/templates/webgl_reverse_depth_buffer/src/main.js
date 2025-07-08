@@ -6,6 +6,7 @@ import {
   DepthTexture,
   FloatType,
   PerspectiveCamera,
+  ReversedCoordinateSystem,
   Scene,
   BufferGeometry,
   BufferAttribute,
@@ -21,7 +22,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-let stats, camera, scene;
+let stats, camera, reversedCamera, scene;
 let normalRenderer, logarithmicRenderer, reverseRenderer;
 let normalComposer, logarithmicComposer, reverseComposer;
 const meshes = [];
@@ -46,6 +47,9 @@ function init() {
     9999
   );
   camera.position.z = 12;
+
+  reversedCamera = camera.clone();
+  reversedCamera.coordinateSystem = ReversedCoordinateSystem;
 
   scene = new Scene();
 
@@ -162,7 +166,7 @@ function init() {
   reverseContainer.appendChild(reverseRenderer.domElement);
 
   reverseComposer = new EffectComposer(reverseRenderer, renderTarget);
-  reverseComposer.addPass(new RenderPass(scene, camera));
+  reverseComposer.addPass(new RenderPass(scene, reversedCamera));
   reverseComposer.addPass(new OutputPass());
 
   window.addEventListener("resize", onWindowResize);
@@ -206,4 +210,7 @@ function onWindowResize() {
 
   camera.aspect = (0.33 * window.innerWidth) / window.innerHeight;
   camera.updateProjectionMatrix();
+
+  reversedCamera.aspect = (0.33 * window.innerWidth) / window.innerHeight;
+  reversedCamera.updateProjectionMatrix();
 }

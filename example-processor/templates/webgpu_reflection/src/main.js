@@ -149,6 +149,7 @@ function init() {
   controls.minDistance = 1;
   controls.maxDistance = 10;
   controls.maxPolarAngle = Math.PI / 2;
+  controls.enableDamping = true;
   controls.autoRotate = true;
   controls.autoRotateSpeed = 1;
   controls.target.set(0, 1, 0);
