@@ -9,6 +9,7 @@ import {
   PerspectiveCamera,
   PMREMGenerator,
   Scene,
+  Timer,
   TextureLoader,
   SRGBColorSpace,
   BoxGeometry,
@@ -17,7 +18,6 @@ import {
   DynamicDrawUsage,
 } from "three";
 
-import { Timer } from "three/addons/misc/Timer.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import TWEEN from "three/addons/libs/tween.module.js";
 

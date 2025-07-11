@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  Timer,
   SphereGeometry,
   PointLight,
   Mesh,
@@ -18,7 +19,6 @@ import {
 
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Timer } from "three/addons/misc/Timer.js";
 
 import {
   abs,

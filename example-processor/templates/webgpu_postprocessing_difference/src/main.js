@@ -7,6 +7,7 @@ import {
   Scene,
   Fog,
   Color,
+  Timer,
   TextureLoader,
   SRGBColorSpace,
   BoxGeometry,
@@ -17,7 +18,6 @@ import {
 import { pass, luminance, saturation } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Timer } from "three/addons/misc/Timer.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 

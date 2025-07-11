@@ -7,6 +7,7 @@ import {
   Raycaster,
   PerspectiveCamera,
   Scene,
+  Timer,
   WebGPURenderer,
   ACESFilmicToneMapping,
   StorageInstancedBufferAttribute,
@@ -59,7 +60,6 @@ import {
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Timer } from "three/addons/misc/Timer.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 

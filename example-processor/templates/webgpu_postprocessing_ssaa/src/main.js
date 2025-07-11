@@ -2,6 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   WebGPURenderer,
+  Timer,
   PerspectiveCamera,
   Scene,
   Group,
@@ -16,7 +17,6 @@ import {
 } from "three";
 import { ssaaPass } from "three/addons/tsl/display/SSAAPassNode.js";
 
-import { Timer } from "three/addons/misc/Timer.js";
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
