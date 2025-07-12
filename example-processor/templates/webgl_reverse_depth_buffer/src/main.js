@@ -6,7 +6,6 @@ import {
   DepthTexture,
   FloatType,
   PerspectiveCamera,
-  ReversedCoordinateSystem,
   Scene,
   BufferGeometry,
   BufferAttribute,
@@ -49,7 +48,7 @@ function init() {
   camera.position.z = 12;
 
   reversedCamera = camera.clone();
-  reversedCamera.coordinateSystem = ReversedCoordinateSystem;
+  reversedCamera.reversedDepth = true;
 
   scene = new Scene();
 
