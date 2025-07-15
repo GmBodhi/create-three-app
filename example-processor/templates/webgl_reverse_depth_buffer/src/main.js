@@ -158,7 +158,7 @@ function init() {
   logarithmicComposer.addPass(new OutputPass());
 
   const reverseContainer = document.getElementById("container_reverse");
-  reverseRenderer = new WebGLRenderer({ reverseDepthBuffer: true });
+  reverseRenderer = new WebGLRenderer({ reversedDepthBuffer: true });
   reverseRenderer.setPixelRatio(window.devicePixelRatio);
   reverseRenderer.setSize(0.33 * window.innerWidth, window.innerHeight);
   reverseRenderer.domElement.style.position = "relative";
