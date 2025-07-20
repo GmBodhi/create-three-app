@@ -180,13 +180,13 @@ async function init() {
     const reflectionMask = reflectionBlurred.a
       .mul(reflectionDepth)
       .remapClamp(0, roughnessRange);
-    const reflectionItensity = 0.1;
+    const reflectionIntensity = 0.1;
     const reflectionMixFactor = reflectionMask.mul(roughness.mul(2).min(1));
     const reflectionFinal = mix(
       reflection.rgb,
       reflectionBlurred.rgb,
       reflectionMixFactor
-    ).mul(reflectionItensity);
+    ).mul(reflectionIntensity);
 
     // mix reflection with animated circle
 

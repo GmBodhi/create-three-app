@@ -374,7 +374,7 @@ async function init() {
     const targetY = waterHeight.add(yOffset);
 
     const deltaY = targetY.sub(instancePosition.y);
-    instancePosition.y.addAssign(deltaY.mul(verticalResponseFactor)); // Atualiza Y gradualmente
+    instancePosition.y.addAssign(deltaY.mul(verticalResponseFactor)); // Gradually update position
 
     // Get the normal of the water surface at the duck's position
     const pushX = normalX.mul(waterPushFactor);
@@ -403,7 +403,7 @@ async function init() {
 
     If(instancePosition.z.lessThan(-limit), () => {
       instancePosition.z = -limit;
-      velocity.y.mulAssign(bounceDamping); // Inverte e amortece vz (velocity.y)
+      velocity.y.mulAssign(bounceDamping); // Invert and damp vz (velocity.y)
     }).ElseIf(instancePosition.z.greaterThan(limit), () => {
       instancePosition.z = limit;
       velocity.y.mulAssign(bounceDamping);

@@ -350,7 +350,7 @@ function createTreeMesh() {
 
   // TSL
 
-  const vVisbility = varyingProperty("float");
+  const vVisibility = varyingProperty("float");
 
   const instancePosition = instancedBufferAttribute(attributePosition);
   const instanceNormal = instancedBufferAttribute(attributeNormal);
@@ -380,7 +380,7 @@ function createTreeMesh() {
       .greaterThan(instanceTime)
       .select(min(1, div(uniformLife.sub(instanceTime), 0)))
       .oneMinus();
-    vVisbility.assign(uniformLife.greaterThan(instanceTime).select(1, 0));
+    vVisibility.assign(uniformLife.greaterThan(instanceTime).select(1, 0));
 
     // accumulate different vertex animations
 
@@ -398,7 +398,7 @@ function createTreeMesh() {
   })();
 
   material.colorNode = Fn(() => {
-    vVisbility.equal(0).discard();
+    vVisibility.equal(0).discard();
 
     return materialColor.mul(instanceColor);
   })();

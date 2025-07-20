@@ -59,7 +59,7 @@ float noise(vec2 p, float freq ){
 }
 
 float pNoise(vec2 p, int res){
-	float persistance = .5;
+	float persistence = .5;
 	float n = 0.;
 	float normK = 0.;
 	float f = 4.;
@@ -69,7 +69,7 @@ float pNoise(vec2 p, int res){
 		n+=amp*noise(p, f);
 		f*=2.;
 		normK+=amp;
-		amp*=persistance;
+		amp*=persistence;
 		if (iCount == res) break;
 		iCount++;
 	}

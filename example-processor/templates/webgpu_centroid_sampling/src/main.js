@@ -174,7 +174,7 @@ function init() {
   });
 
   document.body
-    .querySelector("#antialising-enabled")
+    .querySelector("#antialiasing-enabled")
     .appendChild(rendererAntialiasingEnabled.domElement);
   rendererAntialiasingEnabled.setPixelRatio(window.devicePixelRatio);
   rendererAntialiasingEnabled.setSize(
@@ -184,10 +184,10 @@ function init() {
   rendererAntialiasingEnabled.setAnimationLoop(animateAliased);
 
   document.body
-    .querySelector("#antialising-disabled")
+    .querySelector("#antialiasing-disabled")
     .appendChild(rendererAntialiasingDisabled.domElement);
   document.body
-    .querySelector("#antialising-disabled")
+    .querySelector("#antialiasing-disabled")
     .appendChild(rendererAntialiasingDisabled.domElement);
 
   onWindowResize();

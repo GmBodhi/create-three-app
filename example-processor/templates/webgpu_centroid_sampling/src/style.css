@@ -19,7 +19,7 @@ body {
 .renderer-wrapper {
   flex-direction: column;
 }
-#antialising-disabled {
+#antialiasing-disabled {
   border-right: 1px solid #000;
 }
 canvas {

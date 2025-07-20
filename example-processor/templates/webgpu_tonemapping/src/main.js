@@ -60,7 +60,7 @@ async function init() {
   scene = new Scene();
   scene.backgroundBlurriness = params.blurriness;
 
-  const light = new DirectionalLight(0xfff3ee, 3); // simualte sun
+  const light = new DirectionalLight(0xfff3ee, 3); // simulate sun
   light.position.set(1, 0.05, 0.7);
   scene.add(light);
 
