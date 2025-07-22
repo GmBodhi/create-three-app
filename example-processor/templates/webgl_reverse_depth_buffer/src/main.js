@@ -48,7 +48,6 @@ function init() {
   camera.position.z = 12;
 
   reversedCamera = camera.clone();
-  reversedCamera.reversedDepth = true;
 
   scene = new Scene();
 

@@ -99,11 +99,6 @@ function init() {
   renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
-  if (renderer.capabilities.reversedDepthBuffer) {
-    camera.reversedDepth = true;
-    camera.updateProjectionMatrix();
-  }
-
   renderer.autoClear = false;
 
   //

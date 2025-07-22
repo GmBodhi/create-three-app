@@ -480,7 +480,7 @@ function init() {
   gui.add(parameters, "thickness", 0, 1).onChange(onThicknessChange);
   gui.domElement.style.visibility = "hidden";
 
-  guiGroup = new InteractiveGroup(renderer, guiCamera);
+  guiGroup = new InteractiveGroup();
   guiScene.add(guiGroup);
 
   const mesh = new HTMLMesh(gui.domElement);
