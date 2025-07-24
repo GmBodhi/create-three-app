@@ -13,6 +13,7 @@ import {
   CameraHelper,
   WebGLRenderer,
   ACESFilmicToneMapping,
+  PCFSoftShadowMap,
   EquirectangularReflectionMapping,
   TextureLoader,
   SRGBColorSpace,
@@ -23,7 +24,6 @@ import {
   Mesh,
   SphereGeometry,
   PointLight,
-  DoubleSide,
   SkeletonHelper,
   AnimationMixer,
 } from "three";
@@ -73,7 +73,6 @@ function init() {
     100
   );
   camera.position.set(0, 2, -5);
-  //camera.lookAt( 0, 1, 0 );
 
   clock = new Clock();
 
@@ -95,8 +94,7 @@ function init() {
   cam.bottom = cam.left = -2;
   cam.near = 3;
   cam.far = 8;
-  dirLight.shadow.bias = -0.005;
-  dirLight.shadow.radius = 4;
+  dirLight.shadow.mapSize.set(1024, 1024);
   followGroup.add(dirLight);
   followGroup.add(dirLight.target);
 
@@ -109,6 +107,7 @@ function init() {
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = PCFSoftShadowMap;
   container.appendChild(renderer.domElement);
 
   orbitControls = new OrbitControls(camera, renderer.domElement);
@@ -204,7 +203,6 @@ function loadModel() {
         if (object.name == "vanguard_Mesh") {
           object.castShadow = true;
           object.receiveShadow = true;
-          object.material.shadowSide = DoubleSide;
           //object.material.envMapIntensity = 0.5;
           object.material.metalness = 1.0;
           object.material.roughness = 0.2;
@@ -223,6 +221,7 @@ function loadModel() {
     //
 
     skeleton = new SkeletonHelper(model);
+    skeleton.setColors(new Color(0xe000ff), new Color(0x00e0ff));
     skeleton.visible = false;
     scene.add(skeleton);
 

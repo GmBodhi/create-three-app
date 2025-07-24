@@ -5,7 +5,6 @@ import {
   Scene,
   Fog,
   DirectionalLight,
-  HemisphereLight,
   TextureLoader,
   RepeatWrapping,
   SRGBColorSpace,
@@ -13,6 +12,8 @@ import {
   Mesh,
   BoxGeometry,
   WebGPURenderer,
+  PCFSoftShadowMap,
+  ACESFilmicToneMapping,
   PostProcessing,
   Vector3,
   Color,
@@ -22,13 +23,12 @@ import {
 
 import {
   abs,
+  blendOverlay,
   color,
-  div,
   float,
   Fn,
   instancedBufferAttribute,
   materialColor,
-  min,
   normalWorldGeometry,
   pass,
   positionGeometry,
@@ -41,7 +41,7 @@ import {
   time,
   uniform,
   uv,
-  varyingProperty,
+  vec3,
 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
@@ -57,13 +57,12 @@ let stats;
 
 // below uniforms will be animated via TWEEN.js
 
-const uniformLife = uniform(0);
 const uniformEffector1 = uniform(-0.2);
 const uniformEffector2 = uniform(-0.2);
 
 init();
 
-function init() {
+async function init() {
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
@@ -73,43 +72,51 @@ function init() {
   camera.position.set(4, 2, 4);
 
   scene = new Scene();
-  scene.fog = new Fog(0x0487e2, 7, 25);
+  scene.fog = new Fog(0x4195a4, 1, 25);
   scene.backgroundNode = normalWorldGeometry.y.mix(
-    color(0x0487e2),
+    color(0x4195a4),
     color(0x0066ff)
   );
   camera.lookAt(0, 1, 0);
 
-  const sunLight = new DirectionalLight(0xffe499, 3);
-  sunLight.position.set(7, 3, 7);
-
-  const waterAmbientLight = new HemisphereLight(0x333366, 0x74ccf4, 3);
-  const skyAmbientLight = new HemisphereLight(0x74ccf4, 0, 1);
-
+  const sunLight = new DirectionalLight(0xffe499, 2);
+  sunLight.position.set(7, 5, 7);
+  sunLight.castShadow = true;
+  sunLight.shadow.camera.zoom = 1.5;
+  sunLight.shadow.mapSize.set(1024, 1024);
+  sunLight.shadow.bias = -0.0001;
   scene.add(sunLight);
-  scene.add(skyAmbientLight);
-  scene.add(waterAmbientLight);
+
+  const backLight = new DirectionalLight(0x0487e2, 0.5);
+  backLight.position.set(7, -5, 7);
+  scene.add(backLight);
 
   // textures
 
   const textureLoader = new TextureLoader();
 
-  const floorColor = textureLoader.load(
+  const floorColor = await textureLoader.loadAsync(
     "textures/floors/FloorsCheckerboard_S_Diffuse.jpg"
   );
   floorColor.wrapS = RepeatWrapping;
   floorColor.wrapT = RepeatWrapping;
   floorColor.colorSpace = SRGBColorSpace;
 
-  const floorNormal = textureLoader.load(
+  const floorNormal = await textureLoader.loadAsync(
     "textures/floors/FloorsCheckerboard_S_Normal.jpg"
   );
   floorNormal.wrapS = RepeatWrapping;
   floorNormal.wrapT = RepeatWrapping;
+  floorNormal.repeat.set(15, 15);
+
+  const boxMap = await textureLoader.loadAsync("textures/edge3.jpg");
+  boxMap.colorSpace = SRGBColorSpace;
 
   // tree
 
-  const treeMesh = createTreeMesh();
+  const treeMesh = createTreeMesh(boxMap);
+  treeMesh.castShadow = true;
+  treeMesh.receiveShadow = true;
   scene.add(treeMesh);
 
   // floor
@@ -127,9 +134,11 @@ function init() {
 
   const floorMaterial = new MeshPhongNodeMaterial();
   floorMaterial.colorNode = texture(floorColor, floorUV).add(reflection);
+  floorMaterial.normalMap = floorNormal;
+  floorMaterial.normalScale.set(0.2, -0.2);
 
   const floor = new Mesh(new BoxGeometry(50, 0.001, 50), floorMaterial);
-  floor.position.set(0, 0, 0);
+  floor.receiveShadow = true;
   scene.add(floor);
 
   // renderer
@@ -138,6 +147,9 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -164,18 +176,29 @@ function init() {
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = scenePassDepth;
 
-  const vignette = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignette = screenUV.distance(0.5).mul(1.25).clamp().oneMinus().sub(0.2);
 
   postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = scenePassColorBlurred.mul(vignette);
+  postProcessing.outputNode = blendOverlay(scenePassColorBlurred, vignette);
+
+  // tweens
+
+  new TWEEN.Tween(uniformEffector1)
+    .to({ value: 1.2 }, 3000)
+    .delay(800)
+    .repeat(Infinity)
+    .easing(TWEEN.Easing.Sinusoidal.InOut)
+    .start();
+
+  new TWEEN.Tween(uniformEffector2)
+    .to({ value: 1.2 }, 3000)
+    .repeat(Infinity)
+    .easing(TWEEN.Easing.Sinusoidal.InOut)
+    .start();
 
   //
 
   window.addEventListener("resize", onWindowResize);
-
-  //
-
-  startTweens();
 }
 
 function onWindowResize() {
@@ -195,45 +218,13 @@ function animate() {
   postProcessing.render();
 }
 
-function startTweens() {
-  const lifeTween = new TWEEN.Tween(uniformLife)
-    .to({ value: 1 }, 5000)
-    .easing(TWEEN.Easing.Bounce.Out);
-  lifeTween.start();
-
-  const effectTween = new TWEEN.Tween(uniformEffector1)
-    .to({ value: 1.2 }, 2500)
-    .delay(3000)
-    .easing(TWEEN.Easing.Sinusoidal.InOut)
-    .onComplete(function () {
-      secondaryTweens();
-    });
-  effectTween.start();
+function random() {
+  return (Math.random() - 0.5) * 2.0;
 }
 
-function secondaryTweens() {
-  uniformEffector1.value = -0.2;
-  uniformEffector2.value = -0.2;
-
-  const effect2Tween = new TWEEN.Tween(uniformEffector2)
-    .to({ value: 1.2 }, 3000)
-    .repeat(Infinity)
-    .easing(TWEEN.Easing.Sinusoidal.InOut);
-  effect2Tween.start();
-
-  const effectTween = new TWEEN.Tween(uniformEffector1)
-    .to({ value: 1.2 }, 3000)
-    .delay(800)
-    .repeat(Infinity)
-    .easing(TWEEN.Easing.Sinusoidal.InOut);
-  effectTween.start();
-}
-
-function createTreeMesh() {
-  const maxSteps = 6;
-  const angleLeft = (Math.PI / 180) * 30;
-  const angleRight = (Math.PI / 180) * 40;
-  const lengthMult = 0.88;
+function createTreeMesh(boxMap) {
+  const maxSteps = 5;
+  const lengthMult = 0.8;
 
   const positions = [];
   const normals = [];
@@ -248,6 +239,8 @@ function createTreeMesh() {
   const color = new Color();
 
   function createTreePart(angle, x, y, z, length, count) {
+    if (Math.random() > (maxSteps / count) * 0.25) return;
+
     if (count < maxSteps) {
       const newLength = length * lengthMult;
       const newX = x + Math.cos(angle) * length;
@@ -259,9 +252,9 @@ function createTreeMesh() {
       if (size > 25) size = 25;
       if (size < 10) size = 10;
 
-      size = size / 10;
+      size = size / 100;
 
-      const subSteps = 60;
+      const subSteps = 200;
 
       // below loop generates the instanced data for a tree part
 
@@ -282,7 +275,7 @@ function createTreeMesh() {
 
         positions.push(position.x, position.y, position.z);
 
-        const scale = 0.25 * Math.random();
+        const scale = Math.random();
 
         // normal
 
@@ -292,9 +285,9 @@ function createTreeMesh() {
         // color
 
         color.setHSL(
-          0.55 + Math.random() * 0.05,
-          1.0,
-          0.7 + Math.random() * 0.3
+          (count / maxSteps) * 0.5 + Math.random() * 0.05,
+          0.75,
+          0.6 + Math.random() * 0.1
         );
         colors.push(color.r, color.g, color.b);
 
@@ -308,14 +301,53 @@ function createTreeMesh() {
       }
 
       createTreePart(
-        angle - angleRight,
+        angle + random(),
         newX,
         newY,
         newZ,
-        newLength,
+        newLength + random(),
         count + 1
       );
-      createTreePart(angle + angleLeft, newX, newY, newZ, newLength, count + 1);
+      createTreePart(
+        angle + random(),
+        newX,
+        newY,
+        newZ,
+        newLength + random(),
+        count + 1
+      );
+      createTreePart(
+        angle + random(),
+        newX,
+        newY,
+        newZ,
+        newLength + random(),
+        count + 1
+      );
+      createTreePart(
+        angle + random(),
+        newX,
+        newY,
+        newZ,
+        newLength + random(),
+        count + 1
+      );
+      createTreePart(
+        angle + random(),
+        newX,
+        newY,
+        newZ,
+        newLength + random(),
+        count + 1
+      );
+      createTreePart(
+        angle + random(),
+        newX,
+        newY,
+        newZ,
+        newLength + random(),
+        count + 1
+      );
     }
   }
 
@@ -326,7 +358,7 @@ function createTreeMesh() {
   createTreePart(angle, 0, 0, 0, 16, 0);
 
   const geometry = new BoxGeometry();
-  const material = new MeshStandardNodeMaterial();
+  const material = new MeshStandardNodeMaterial({ map: boxMap });
   const mesh = new Mesh(geometry, material);
   mesh.scale.setScalar(0.05);
   mesh.count = instanceCount;
@@ -350,8 +382,6 @@ function createTreeMesh() {
 
   // TSL
 
-  const vVisibility = varyingProperty("float");
-
   const instancePosition = instancedBufferAttribute(attributePosition);
   const instanceNormal = instancedBufferAttribute(attributeNormal);
   const instanceColor = instancedBufferAttribute(attributeColor);
@@ -374,21 +404,13 @@ function createTreeMesh() {
       .lessThanEqual(0.15)
       .select(sub(0.15, dif2).mul(sub(1.7, instanceTime).mul(10)), effect);
 
-    // life (controls the visibility and initial scale of the cubes)
-
-    const scale = uniformLife
-      .greaterThan(instanceTime)
-      .select(min(1, div(uniformLife.sub(instanceTime), 0)))
-      .oneMinus();
-    vVisibility.assign(uniformLife.greaterThan(instanceTime).select(1, 0));
-
     // accumulate different vertex animations
 
     let animated = positionLocal.add(instancePosition).toVar();
     const direction = positionGeometry.normalize().toConst();
 
     animated = animated.add(direction.mul(effect.add(instanceSize)));
-    animated = animated.sub(direction.mul(scale));
+    animated = animated.sub(direction.mul(effect));
     animated = animated.add(instanceNormal.mul(effect.mul(1)));
     animated = animated.add(
       instanceNormal.mul(abs(sin(time.add(instanceSeed.mul(2))).mul(1.5)))
@@ -398,9 +420,23 @@ function createTreeMesh() {
   })();
 
   material.colorNode = Fn(() => {
-    vVisibility.equal(0).discard();
-
     return materialColor.mul(instanceColor);
+  })();
+
+  material.emissiveNode = Fn(() => {
+    const instanceTime = instanceData.y;
+
+    const dif1 = abs(instanceTime.sub(uniformEffector1)).toConst();
+    const effect1 = dif1
+      .lessThanEqual(0.15)
+      .select(sub(0.15, dif1).mul(sub(1.7, instanceTime).mul(10)), float(0));
+
+    const dif2 = abs(instanceTime.sub(uniformEffector2)).toConst();
+    const effect2 = dif2
+      .lessThanEqual(0.15)
+      .select(sub(0.15, dif2).mul(sub(1.7, instanceTime).mul(10)), effect1);
+
+    return vec3(effect1, 0, effect2).mul(instanceColor);
   })();
 
   return mesh;
