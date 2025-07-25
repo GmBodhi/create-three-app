@@ -200,13 +200,13 @@ function init() {
   // Labels applied to storage nodes and uniform nodes are reflected within the shader output,
   // and are useful for debugging purposes.
 
-  const positionStorage = instancedArray(positionArray, "vec3").label(
+  const positionStorage = instancedArray(positionArray, "vec3").setName(
     "positionStorage"
   );
-  const velocityStorage = instancedArray(velocityArray, "vec3").label(
+  const velocityStorage = instancedArray(velocityArray, "vec3").setName(
     "velocityStorage"
   );
-  const phaseStorage = instancedArray(phaseArray, "float").label(
+  const phaseStorage = instancedArray(phaseArray, "float").setName(
     "phaseStorage"
   );
 
@@ -219,14 +219,14 @@ function init() {
   // Define Uniforms. Uniforms only need to be defined once rather than per shader.
 
   effectController = {
-    separation: uniform(15.0).label("separation"),
-    alignment: uniform(20.0).label("alignment"),
-    cohesion: uniform(20.0).label("cohesion"),
-    freedom: uniform(0.75).label("freedom"),
+    separation: uniform(15.0).setName("separation"),
+    alignment: uniform(20.0).setName("alignment"),
+    cohesion: uniform(20.0).setName("cohesion"),
+    freedom: uniform(0.75).setName("freedom"),
     now: uniform(0.0),
-    deltaTime: uniform(0.0).label("deltaTime"),
-    rayOrigin: uniform(new Vector3()).label("rayOrigin"),
-    rayDirection: uniform(new Vector3()).label("rayDirection"),
+    deltaTime: uniform(0.0).setName("deltaTime"),
+    rayOrigin: uniform(new Vector3()).setName("rayOrigin"),
+    rayDirection: uniform(new Vector3()).setName("rayDirection"),
   };
 
   // Create geometry

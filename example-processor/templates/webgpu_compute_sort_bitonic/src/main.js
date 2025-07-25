@@ -122,7 +122,7 @@ async function init(forceGlobalSwap = false) {
 
   const nextAlgoStorage = storage(nextAlgoBuffer, "uint", nextAlgoBuffer.count)
     .setPBO(true)
-    .label("NextAlgo");
+    .setName("NextAlgo");
 
   const nextBlockHeightBuffer = new StorageInstancedBufferAttribute(
     new Uint32Array(1).fill(2),
@@ -134,14 +134,14 @@ async function init(forceGlobalSwap = false) {
     nextBlockHeightBuffer.count
   )
     .setPBO(true)
-    .label("NextBlockHeight");
+    .setName("NextBlockHeight");
   const nextBlockHeightRead = storage(
     nextBlockHeightBuffer,
     "uint",
     nextBlockHeightBuffer.count
   )
     .setPBO(true)
-    .label("NextBlockHeight")
+    .setName("NextBlockHeight")
     .toReadOnly();
 
   const highestBlockHeightBuffer = new StorageInstancedBufferAttribute(
@@ -154,13 +154,13 @@ async function init(forceGlobalSwap = false) {
     highestBlockHeightBuffer.count
   )
     .setPBO(true)
-    .label("HighestBlockHeight");
+    .setName("HighestBlockHeight");
 
   const counterBuffer = new StorageBufferAttribute(1, 1);
   const counterStorage = storage(counterBuffer, "uint", counterBuffer.count)
     .setPBO(true)
     .toAtomic()
-    .label("Counter");
+    .setName("Counter");
 
   const array = new Uint32Array(
     Array.from({ length: size }, (_, i) => {
@@ -185,11 +185,11 @@ async function init(forceGlobalSwap = false) {
   const currentElementsBuffer = new StorageInstancedBufferAttribute(array, 1);
   const currentElementsStorage = storage(currentElementsBuffer, "uint", size)
     .setPBO(true)
-    .label("Elements");
+    .setName("Elements");
   const tempBuffer = new StorageInstancedBufferAttribute(array, 1);
   const tempStorage = storage(tempBuffer, "uint", size)
     .setPBO(true)
-    .label("Temp");
+    .setName("Temp");
   const randomizedElementsBuffer = new StorageInstancedBufferAttribute(size, 1);
   const randomizedElementsStorage = storage(
     randomizedElementsBuffer,
@@ -197,7 +197,7 @@ async function init(forceGlobalSwap = false) {
     size
   )
     .setPBO(true)
-    .label("RandomizedElements");
+    .setName("RandomizedElements");
 
   const getFlipIndices = (index, blockHeight) => {
     const blockOffset = index.mul(2).div(blockHeight).mul(blockHeight);

@@ -116,7 +116,7 @@ async function init() {
 
   computeNode = computeCloud({ storageTexture })
     .compute(size * size * size)
-    .label("computeCloud");
+    .setName("computeCloud");
 
   // Shader
 
