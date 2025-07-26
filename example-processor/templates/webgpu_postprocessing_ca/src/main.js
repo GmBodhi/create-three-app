@@ -56,6 +56,8 @@ async function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
