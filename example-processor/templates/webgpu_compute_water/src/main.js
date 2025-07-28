@@ -1,23 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector2,
-  Raycaster,
-  PerspectiveCamera,
-  Scene,
-  DirectionalLight,
-  PlaneGeometry,
-  MeshStandardNodeMaterial,
-  DoubleSide,
-  Mesh,
-  TorusGeometry,
-  MeshStandardMaterial,
-  MeshBasicMaterial,
-  EquirectangularReflectionMapping,
-  InstancedMesh,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   instanceIndex,
   struct,

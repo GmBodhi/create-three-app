@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  WebGPURenderer,
-  FileLoader,
-  Data3DTexture,
-  RedFormat,
-  LinearFilter,
-  RenderTarget3D,
-  DataArrayTexture,
-  NodeMaterial,
-  RenderTarget,
-  QuadMesh,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   vec2,
   uniform,

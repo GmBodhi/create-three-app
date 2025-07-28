@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  SphereGeometry,
-  TextureLoader,
-  RepeatWrapping,
-  MeshStandardNodeMaterial,
-  Mesh,
-  PointLight,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   fog,
   rangeFogFactor,

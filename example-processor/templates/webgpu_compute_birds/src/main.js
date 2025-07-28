@@ -1,24 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  BufferGeometry,
-  BufferAttribute,
-  PerspectiveCamera,
-  Scene,
-  Fog,
-  Vector2,
-  Raycaster,
-  IcosahedronGeometry,
-  MeshBasicNodeMaterial,
-  BackSide,
-  Mesh,
-  WebGPURenderer,
-  NeutralToneMapping,
-  Vector3,
-  NodeMaterial,
-  DoubleSide,
-  TimestampQuery,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   uniform,
   varying,

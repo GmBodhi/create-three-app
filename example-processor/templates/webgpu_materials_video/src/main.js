@@ -1,15 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  DirectionalLight,
-  WebGPURenderer,
-  VideoTexture,
-  BoxGeometry,
-  MeshPhongMaterial,
-  Mesh,
-} from "three";
+import * as THREE from "three/webgpu";
 
 let container;
 

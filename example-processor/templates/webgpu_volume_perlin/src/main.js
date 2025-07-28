@@ -1,18 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  Scene,
-  PerspectiveCamera,
-  Vector3,
-  Data3DTexture,
-  RedFormat,
-  LinearFilter,
-  NodeMaterial,
-  BackSide,
-  Mesh,
-  BoxGeometry,
-} from "three";
+import * as THREE from "three/webgpu";
 import { Break, If, vec3, vec4, texture3D, uniform, Fn } from "three/tsl";
 
 import { RaymarchingBox } from "three/addons/tsl/utils/Raymarching.js";

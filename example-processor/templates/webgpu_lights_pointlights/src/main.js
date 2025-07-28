@@ -1,21 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Timer,
-  SphereGeometry,
-  PointLight,
-  Mesh,
-  MeshBasicMaterial,
-  AmbientLight,
-  WebGPURenderer,
-  MeshPhongNodeMaterial,
-  Vector3,
-  Plane,
-  BufferGeometry,
-  Float32BufferAttribute,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";

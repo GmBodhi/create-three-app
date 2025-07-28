@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector2,
-  OrthographicCamera,
-  Scene,
-  BufferGeometry,
-  BufferAttribute,
-  PointsNodeMaterial,
-  Points,
-  WebGPURenderer,
-  TimestampQuery,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import Stats from "stats-gl";
 

@@ -1,20 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  Scene,
-  PerspectiveCamera,
-  CanvasTexture,
-  SRGBColorSpace,
-  Mesh,
-  SphereGeometry,
-  MeshBasicNodeMaterial,
-  BackSide,
-  Storage3DTexture,
-  Color,
-  NodeMaterial,
-  BoxGeometry,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   time,
   mx_noise_vec3,

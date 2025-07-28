@@ -1,27 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Fog,
-  Color,
-  MeshBasicMaterial,
-  InstancedMesh,
-  SphereGeometry,
-  DynamicDrawUsage,
-  Group,
-  PointLight,
-  AmbientLight,
-  TextureLoader,
-  RepeatWrapping,
-  SRGBColorSpace,
-  PlaneGeometry,
-  MeshPhongNodeMaterial,
-  Mesh,
-  WebGPURenderer,
-  NeutralToneMapping,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { texture, uv, pass, normalMap, uniform } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 

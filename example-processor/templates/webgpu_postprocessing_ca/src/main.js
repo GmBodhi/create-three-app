@@ -1,31 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector2,
-  WebGPURenderer,
-  PerspectiveCamera,
-  Scene,
-  Color,
-  PMREMGenerator,
-  Clock,
-  Group,
-  GridHelper,
-  PostProcessing,
-  MeshStandardMaterial,
-  BoxGeometry,
-  SphereGeometry,
-  ConeGeometry,
-  CylinderGeometry,
-  TorusGeometry,
-  OctahedronGeometry,
-  IcosahedronGeometry,
-  TorusKnotGeometry,
-  Mesh,
-  BufferGeometry,
-  BufferAttribute,
-  PointsMaterial,
-  Points,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass, renderOutput, uniform } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";

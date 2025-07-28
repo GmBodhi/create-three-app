@@ -1,14 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  Scene,
-  PerspectiveCamera,
-  WebGLCubeRenderTarget,
-  CubeCamera,
-  LightProbe,
-  CubeTextureLoader,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { LightProbeHelper } from "three/addons/helpers/LightProbeHelperGPU.js";

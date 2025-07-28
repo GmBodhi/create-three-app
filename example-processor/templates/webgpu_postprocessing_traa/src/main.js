@@ -1,17 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  PerspectiveCamera,
-  Scene,
-  BoxGeometry,
-  MeshBasicMaterial,
-  Mesh,
-  TextureLoader,
-  NearestFilter,
-  SRGBColorSpace,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { mrt, output, pass, velocity } from "three/tsl";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 

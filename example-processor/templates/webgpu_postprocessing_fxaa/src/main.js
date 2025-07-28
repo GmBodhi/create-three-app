@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Color,
-  Clock,
-  HemisphereLight,
-  DirectionalLight,
-  Group,
-  TetrahedronGeometry,
-  MeshStandardMaterial,
-  Mesh,
-  WebGPURenderer,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass, renderOutput } from "three/tsl";
 import { fxaa } from "three/addons/tsl/display/FXAANode.js";
 

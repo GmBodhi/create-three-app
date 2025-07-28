@@ -1,24 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  RectAreaLightNode,
-  Scene,
-  PerspectiveCamera,
-  WebGLCubeRenderTarget,
-  HalfFloatType,
-  LinearMipmapLinearFilter,
-  LinearFilter,
-  CubeReflectionMapping,
-  CubeCamera,
-  TextureLoader,
-  RepeatWrapping,
-  MeshStandardNodeMaterial,
-  Mesh,
-  PlaneGeometry,
-  SRGBColorSpace,
-  RectAreaLight,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   bumpMap,
   float,

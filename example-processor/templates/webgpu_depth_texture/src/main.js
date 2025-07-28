@@ -1,18 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Color,
-  MeshBasicNodeMaterial,
-  TorusKnotGeometry,
-  Mesh,
-  WebGPURenderer,
-  DepthTexture,
-  FloatType,
-  RenderTarget,
-  QuadMesh,
-} from "three";
+import * as THREE from "three/webgpu";
 import { texture } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";

@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector3,
-  PerspectiveCamera,
-  Scene,
-  CubeTextureLoader,
-  Timer,
-  SphereGeometry,
-  MeshBasicMaterial,
-  InstancedMesh,
-  DynamicDrawUsage,
-  Mesh,
-  WebGPURenderer,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { stereoPass } from "three/addons/tsl/display/StereoPassNode.js";
 import { anaglyphPass } from "three/addons/tsl/display/AnaglyphPassNode.js";

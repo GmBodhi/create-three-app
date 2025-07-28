@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  LightingModel,
-  PerspectiveCamera,
-  Scene,
-  SphereGeometry,
-  NodeMaterial,
-  Mesh,
-  PointLight,
-  Vector3,
-  BufferGeometry,
-  PointsNodeMaterial,
-  Points,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import { color, lights } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";

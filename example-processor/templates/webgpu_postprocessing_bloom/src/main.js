@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Clock,
-  Scene,
-  PerspectiveCamera,
-  AmbientLight,
-  PointLight,
-  AnimationMixer,
-  WebGPURenderer,
-  ReinhardToneMapping,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 

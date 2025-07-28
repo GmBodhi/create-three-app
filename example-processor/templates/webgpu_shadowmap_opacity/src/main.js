@@ -1,14 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  WebGPURenderer,
-  AgXToneMapping,
-  Scene,
-  Color,
-  AmbientLight,
-  DirectionalLight,
-} from "three";
+import * as THREE from "three/webgpu";
 import { Fn, mix } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";

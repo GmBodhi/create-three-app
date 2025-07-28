@@ -1,22 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  PCFSoftShadowMap,
-  ACESFilmicToneMapping,
-  Scene,
-  PerspectiveCamera,
-  TextureLoader,
-  HemisphereLight,
-  ProjectorLight,
-  SpotLightHelper,
-  PlaneGeometry,
-  MeshLambertMaterial,
-  Mesh,
-  VideoTexture,
-  LinearFilter,
-  SRGBColorSpace,
-} from "three";
+import * as THREE from "three/webgpu";
 import { Fn, color, mx_worley_noise_float, time } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";

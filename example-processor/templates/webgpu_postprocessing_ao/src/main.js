@@ -1,13 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  WebGPURenderer,
-  PMREMGenerator,
-  Color,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass, mrt, output, normalView, velocity } from "three/tsl";
 import { ao } from "three/addons/tsl/display/GTAONode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";

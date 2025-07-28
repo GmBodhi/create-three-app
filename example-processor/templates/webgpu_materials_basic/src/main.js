@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  CubeReflectionMapping,
-  CubeRefractionMapping,
-  PerspectiveCamera,
-  CubeTextureLoader,
-  Scene,
-  SphereGeometry,
-  MeshBasicMaterial,
-  Mesh,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 

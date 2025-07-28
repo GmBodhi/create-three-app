@@ -1,12 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  WebGPURenderer,
-  LinearToneMapping,
-  EquirectangularReflectionMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
@@ -17,7 +11,7 @@ import { MaterialXLoader } from "three/examples/jsm/loaders/MaterialXLoader.js";
 
 const SAMPLE_PATH =
   "https://raw.githubusercontent.com/materialx/MaterialX/main/resources/Materials/Examples/StandardSurface/";
-
+const LOCAL_SAMPLE_PATH = "materialx/";
 const samples = [
   "standard_surface_brass_tiled.mtlx",
   "standard_surface_brick_procedural.mtlx",
@@ -42,6 +36,29 @@ const samples = [
   "standard_surface_wood_tiled.mtlx",
 ];
 
+const localSamples = [
+  "heightnormal.mtlx",
+  "conditional_if_float.mtlx",
+  "image_transform.mtlx",
+  "color3_vec3_cm_test.mtlx",
+  "rotate2d_test.mtlx",
+  "rotate3d_test.mtlx",
+  "heighttonormal_normal_input.mtlx",
+  "roughness_test.mtlx",
+  "opacity_test.mtlx",
+  "opacity_only_test.mtlx",
+  "specular_test.mtlx",
+  "ior_test.mtlx",
+  "combined_test.mtlx",
+  "texture_opacity_test.mtlx",
+  "transmission_test.mtlx",
+  "transmission_only_test.mtlx",
+  "transmission_rough.mtlx",
+  "thin_film_rainbow_test.mtlx",
+  "thin_film_ior_clamp_test.mtlx",
+  "sheen_test.mtlx",
+];
+
 let camera, scene, renderer, prefab;
 const models = [];
 
@@ -61,7 +78,7 @@ function init() {
 
   scene = new Scene();
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = LinearToneMapping;
@@ -92,7 +109,11 @@ function init() {
       ).scene;
 
       for (const sample of samples) {
-        addSample(sample);
+        await addSample(sample, SAMPLE_PATH);
+      }
+
+      for (const sample of localSamples) {
+        await addSample(sample, LOCAL_SAMPLE_PATH);
       }
     });
 
@@ -117,7 +138,7 @@ function updateModelsAlign() {
   }
 }
 
-async function addSample(sample) {
+async function addSample(sample, path) {
   const model = prefab.clone();
 
   models.push(model);
@@ -129,7 +150,7 @@ async function addSample(sample) {
   //
 
   const material = await new MaterialXLoader()
-    .setPath(SAMPLE_PATH)
+    .setPath(path)
     .loadAsync(sample)
     .then(({ materials }) => Object.values(materials).pop());
 

@@ -1,20 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  Timer,
-  PerspectiveCamera,
-  Scene,
-  Group,
-  PointLight,
-  AmbientLight,
-  SphereGeometry,
-  MeshStandardMaterial,
-  InstancedMesh,
-  Mesh,
-  Color,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { ssaaPass } from "three/addons/tsl/display/SSAAPassNode.js";
 
 import Stats from "three/addons/libs/stats.module.js";

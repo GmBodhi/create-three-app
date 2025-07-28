@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  Scene,
-  Color,
-  PerspectiveCamera,
-  MeshBasicMaterial,
-  DoubleSide,
-  PlaneGeometry,
-  BoxGeometry,
-  Mesh,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

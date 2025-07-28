@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  PerspectiveCamera,
-  Scene,
-  CapsuleGeometry,
-  MeshNormalMaterial,
-  DoubleSide,
-  Mesh,
-  Raycaster,
-  Vector3,
-} from "three";
+import * as THREE from "three/webgpu";
 import { RaycasterHelper } from "https://cdn.jsdelivr.net/npm/@gsimone/three-raycaster-helper@0.1.0/dist/gsimone-three-raycaster-helper.esm.js";
 
 let scene, renderer;

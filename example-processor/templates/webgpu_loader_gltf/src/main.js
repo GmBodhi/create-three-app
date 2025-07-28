@@ -1,13 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  EquirectangularReflectionMapping,
-  LinearMipmapLinearFilter,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
 

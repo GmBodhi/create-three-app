@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  PerspectiveCamera,
-  Scene,
-  BoxGeometry,
-  MeshBasicMaterial,
-  Mesh,
-  TextureLoader,
-  SRGBColorSpace,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass } from "three/tsl";
 import { smaa } from "three/addons/tsl/display/SMAANode.js";
 

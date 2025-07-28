@@ -1,20 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector2,
-  Vector3,
-  PerspectiveCamera,
-  Scene,
-  Color,
-  Raycaster,
-  Timer,
-  AnimationMixer,
-  HalfFloatType,
-  EquirectangularReflectionMapping,
-  WebGPURenderer,
-  NeutralToneMapping,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { mix, pass, renderOutput, smoothstep, uniform, vec3 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 import { fxaa } from "three/addons/tsl/display/FXAANode.js";

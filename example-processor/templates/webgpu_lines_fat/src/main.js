@@ -1,20 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  Scene,
-  PerspectiveCamera,
-  Color,
-  Vector3,
-  CatmullRomCurve3,
-  SRGBColorSpace,
-  Line2NodeMaterial,
-  BufferGeometry,
-  Float32BufferAttribute,
-  LineBasicNodeMaterial,
-  LineDashedNodeMaterial,
-  Line,
-} from "three";
+import * as THREE from "three/webgpu";
 import { color } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";

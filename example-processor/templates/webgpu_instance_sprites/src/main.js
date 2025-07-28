@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  FogExp2,
-  InstancedBufferAttribute,
-  TextureLoader,
-  SRGBColorSpace,
-  SpriteNodeMaterial,
-  Sprite,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

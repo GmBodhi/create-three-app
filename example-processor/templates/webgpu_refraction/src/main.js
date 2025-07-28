@@ -1,18 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Scene,
-  PerspectiveCamera,
-  IcosahedronGeometry,
-  MeshPhongMaterial,
-  Mesh,
-  TextureLoader,
-  RepeatWrapping,
-  PlaneGeometry,
-  MeshBasicNodeMaterial,
-  PointLight,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   viewportSafeUV,
   viewportSharedTexture,

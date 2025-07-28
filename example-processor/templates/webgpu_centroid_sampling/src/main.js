@@ -1,23 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  CanvasTexture,
-  SRGBColorSpace,
-  UVMapping,
-  RepeatWrapping,
-  NearestFilter,
-  RGBAFormat,
-  UnsignedByteType,
-  PerspectiveCamera,
-  Scene,
-  BufferGeometry,
-  BufferAttribute,
-  MeshBasicNodeMaterial,
-  InterpolationSamplingType,
-  InterpolationSamplingMode,
-  Mesh,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import { varying, uv, texture, Fn } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

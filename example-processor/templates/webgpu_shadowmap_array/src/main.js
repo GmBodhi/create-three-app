@@ -1,32 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  BasicShadowMap,
-  PCFSoftShadowMap,
-  ACESFilmicToneMapping,
-  PerspectiveCamera,
-  Scene,
-  Fog,
-  AmbientLight,
-  DirectionalLight,
-  Group,
-  PlaneGeometry,
-  MeshPhongMaterial,
-  Mesh,
-  Clock,
-  CylinderGeometry,
-  InstancedMesh,
-  Matrix4,
-  TorusKnotGeometry,
-  MeshPhongNodeMaterial,
-  BoxGeometry,
-  SphereGeometry,
-  ConeGeometry,
-  BatchedMesh,
-  Color,
-  TorusGeometry,
-} from "three";
+import * as THREE from "three/webgpu";
 import { mx_fractal_noise_vec3, positionWorld, Fn, color } from "three/tsl";
 
 import { TileShadowNode } from "three/addons/tsl/shadows/TileShadowNode.js";

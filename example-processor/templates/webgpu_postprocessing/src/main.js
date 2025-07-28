@@ -1,18 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  PerspectiveCamera,
-  Scene,
-  Fog,
-  Object3D,
-  SphereGeometry,
-  MeshPhongMaterial,
-  Mesh,
-  AmbientLight,
-  DirectionalLight,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass } from "three/tsl";
 import { dotScreen } from "three/addons/tsl/display/DotScreenNode.js";
 import { rgbShift } from "three/addons/tsl/display/RGBShiftNode.js";

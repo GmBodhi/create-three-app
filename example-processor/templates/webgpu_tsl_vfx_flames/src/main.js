@@ -1,17 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Color,
-  TextureLoader,
-  CanvasTexture,
-  SRGBColorSpace,
-  SpriteNodeMaterial,
-  DoubleSide,
-  Sprite,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   PI2,
   oneMinus,

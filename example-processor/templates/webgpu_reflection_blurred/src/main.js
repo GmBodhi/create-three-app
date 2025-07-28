@@ -1,22 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  HemisphereLight,
-  Clock,
-  AnimationMixer,
-  TextureLoader,
-  SRGBColorSpace,
-  MeshStandardNodeMaterial,
-  DoubleSide,
-  Mesh,
-  PlaneGeometry,
-  PointLight,
-  BoxGeometry,
-  WebGPURenderer,
-  NeutralToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   Fn,
   vec4,

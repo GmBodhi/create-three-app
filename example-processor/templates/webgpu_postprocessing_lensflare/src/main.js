@@ -1,15 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  EquirectangularReflectionMapping,
-  Box3,
-  Vector3,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass, mrt, output, emissive, uniform } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 import { lensflare } from "three/addons/tsl/display/LensflareNode.js";

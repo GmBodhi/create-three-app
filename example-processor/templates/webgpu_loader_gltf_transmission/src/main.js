@@ -1,14 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Clock,
-  PerspectiveCamera,
-  Scene,
-  EquirectangularReflectionMapping,
-  AnimationMixer,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";

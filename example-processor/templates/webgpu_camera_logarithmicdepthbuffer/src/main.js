@@ -1,18 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  WebGPURenderer,
-  Scene,
-  AmbientLight,
-  DirectionalLight,
-  SphereGeometry,
-  Color,
-  MeshPhongMaterial,
-  Group,
-  Mesh,
-  MathUtils,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";

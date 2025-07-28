@@ -1,35 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector3,
-  Euler,
-  Quaternion,
-  ConeGeometry,
-  BoxGeometry,
-  PlaneGeometry,
-  CapsuleGeometry,
-  CircleGeometry,
-  CylinderGeometry,
-  DodecahedronGeometry,
-  IcosahedronGeometry,
-  OctahedronGeometry,
-  PolyhedronGeometry,
-  RingGeometry,
-  SphereGeometry,
-  TetrahedronGeometry,
-  TorusGeometry,
-  TorusKnotGeometry,
-  BundleGroup,
-  Group,
-  MeshToonNodeMaterial,
-  Color,
-  DoubleSide,
-  Mesh,
-  PerspectiveCamera,
-  WebGPURenderer,
-  Scene,
-  DirectionalLight,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import Stats from "stats-gl";
 

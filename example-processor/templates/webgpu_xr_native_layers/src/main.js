@@ -1,40 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector3,
-  Clock,
-  Object3D,
-  Matrix4,
-  Scene,
-  Color,
-  Raycaster,
-  PerspectiveCamera,
-  LineSegments,
-  LineBasicMaterial,
-  HemisphereLight,
-  DirectionalLight,
-  IcosahedronGeometry,
-  Mesh,
-  MeshLambertMaterial,
-  WebGPURenderer,
-  UnsignedByteType,
-  Quaternion,
-  PlaneGeometry,
-  MeshBasicMaterial,
-  DoubleSide,
-  MeshPhongMaterial,
-  CylinderGeometry,
-  CircleGeometry,
-  AnimationMixer,
-  OrthographicCamera,
-  Box3,
-  MathUtils,
-  BufferGeometry,
-  Float32BufferAttribute,
-  AdditiveBlending,
-  Line,
-  RingGeometry,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
 import { VRButton } from "three/addons/webxr/VRButton.js";

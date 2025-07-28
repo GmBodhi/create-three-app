@@ -1,17 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  LinearMipmapLinearFilter,
-  CubeTextureLoader,
-  Matrix4,
-  SphereGeometry,
-  Mesh,
-  MeshStandardMaterial,
-  WebGPURenderer,
-  LinearToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   uniform,
   mix,

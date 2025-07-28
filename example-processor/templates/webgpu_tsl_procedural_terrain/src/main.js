@@ -1,23 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Color,
-  EquirectangularReflectionMapping,
-  DirectionalLight,
-  MeshStandardNodeMaterial,
-  PlaneGeometry,
-  Mesh,
-  SRGBColorSpace,
-  MeshPhysicalMaterial,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-  Vector2,
-  Vector3,
-  Raycaster,
-  MeshBasicMaterial,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   mx_noise_float,
   color,

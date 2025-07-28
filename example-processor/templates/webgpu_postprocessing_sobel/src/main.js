@@ -1,14 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Scene,
-  PerspectiveCamera,
-  MeshStandardNodeMaterial,
-  WebGPURenderer,
-  LinearToneMapping,
-  PMREMGenerator,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass, renderOutput } from "three/tsl";
 import { sobel } from "three/addons/tsl/display/SobelOperatorNode.js";
 

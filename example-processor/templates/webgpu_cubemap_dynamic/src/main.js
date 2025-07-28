@@ -1,22 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  TextureLoader,
-  LinearMipmapLinearFilter,
-  LinearFilter,
-  WebGLCubeRenderTarget,
-  HalfFloatType,
-  CubeCamera,
-  MeshStandardNodeMaterial,
-  Mesh,
-  IcosahedronGeometry,
-  BoxGeometry,
-  TorusKnotGeometry,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";

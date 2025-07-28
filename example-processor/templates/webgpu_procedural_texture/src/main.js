@@ -1,13 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  OrthographicCamera,
-  Scene,
-  MeshBasicNodeMaterial,
-  Mesh,
-  PlaneGeometry,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import { checker, uv, uniform, convertToTexture } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 

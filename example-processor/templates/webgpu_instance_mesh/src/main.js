@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Object3D,
-  PerspectiveCamera,
-  Scene,
-  MeshBasicMaterial,
-  Color,
-  BufferGeometryLoader,
-  InstancedMesh,
-  DynamicDrawUsage,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import { mix, range, normalWorld, oscSine, time } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";

@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  RectAreaLightNode,
-  WebGPURenderer,
-  PerspectiveCamera,
-  Scene,
-  RectAreaLight,
-  BoxGeometry,
-  MeshStandardMaterial,
-  Mesh,
-  TorusKnotGeometry,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import Stats from "three/addons/libs/stats.module.js";
 

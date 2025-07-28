@@ -1,30 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  OrthographicCamera,
-  Scene,
-  Color,
-  Clock,
-  TextureLoader,
-  MeshPhongMaterial,
-  Mesh,
-  BoxGeometry,
-  PlaneGeometry,
-  IcosahedronGeometry,
-  AmbientLight,
-  DirectionalLight,
-  SpotLight,
-  WebGPURenderer,
-  BasicShadowMap,
-  PostProcessing,
-  Vector2,
-  NearestFilter,
-  RepeatWrapping,
-  SRGBColorSpace,
-  MathUtils,
-  Vector3,
-  Quaternion,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
