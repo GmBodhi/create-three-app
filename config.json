@@ -5244,6 +5244,16 @@
         "/src"
       ]
     },
+    "webxr_ar_camera_access": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webxr_ar_cones": {
       "files": {
         "index.html": "src",

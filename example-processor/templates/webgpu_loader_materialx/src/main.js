@@ -2,12 +2,14 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { RGBELoader } from "three/examples/jsm/loaders/RGBELoader.js";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { MaterialXLoader } from "three/examples/jsm/loaders/MaterialXLoader.js";
+import { MaterialXLoader } from "three/addons/loaders/MaterialXLoader.js";
+
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 const SAMPLE_PATH =
   "https://raw.githubusercontent.com/materialx/MaterialX/main/resources/Materials/Examples/StandardSurface/";
@@ -115,13 +117,15 @@ function init() {
       for (const sample of localSamples) {
         await addSample(sample, LOCAL_SAMPLE_PATH);
       }
+
+      addGUI();
     });
 
   window.addEventListener("resize", onWindowResize);
 }
 
 function updateModelsAlign() {
-  const COLUMN_COUNT = 6;
+  const COLUMN_COUNT = 8;
   const DIST_X = 3;
   const DIST_Y = 4;
 
@@ -157,8 +161,41 @@ async function addSample(sample, path) {
   const calibrationMesh = model.getObjectByName("Calibration_Mesh");
   calibrationMesh.material = material;
 
-  const Preview_Mesh = model.getObjectByName("Preview_Mesh");
-  Preview_Mesh.material = material;
+  const previewMesh = model.getObjectByName("Preview_Mesh");
+  previewMesh.material = material;
+}
+
+function addGUI() {
+  const gui = new GUI();
+
+  const API = {
+    showCalibrationMesh: true,
+    showPreviewMesh: true,
+  };
+
+  const folder = gui.addFolder("SHOW");
+
+  folder
+    .add(API, "showCalibrationMesh")
+    .name("Calibration Mesh")
+    .onChange(function (value) {
+      setVisibility("Calibration_Mesh", value);
+    });
+
+  folder
+    .add(API, "showPreviewMesh")
+    .name("Preview Mesh")
+    .onChange(function (value) {
+      setVisibility("Preview_Mesh", value);
+    });
+}
+
+function setVisibility(name, visible) {
+  scene.traverse(function (node) {
+    if (node.isMesh) {
+      if (node.name == name) node.visible = visible;
+    }
+  });
 }
 
 //
