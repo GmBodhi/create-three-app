@@ -60,6 +60,7 @@ function init() {
   });
 
   texture = new VideoTexture(video);
+  texture.colorSpace = SRGBColorSpace;
 
   //
 

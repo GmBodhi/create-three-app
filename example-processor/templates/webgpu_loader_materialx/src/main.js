@@ -2,6 +2,20 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
+import {
+  Fn,
+  length,
+  fract,
+  vec4,
+  positionWorld,
+  smoothstep,
+  max,
+  abs,
+  float,
+  cameraPosition,
+  clamp,
+} from "three/tsl";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
@@ -61,7 +75,8 @@ const localSamples = [
   "sheen_test.mtlx",
 ];
 
-let camera, scene, renderer, prefab;
+let camera, scene, renderer;
+let controls, prefab;
 const models = [];
 
 init();
@@ -70,17 +85,7 @@ function init() {
   const container = document.createElement("div");
   document.body.appendChild(container);
 
-  camera = new PerspectiveCamera(
-    45,
-    window.innerWidth / window.innerHeight,
-    0.25,
-    50
-  );
-  camera.position.set(0, 3, 20);
-
-  scene = new Scene();
-
-  renderer = new WebGPURenderer({ antialias: true, alpha: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = LinearToneMapping;
@@ -88,9 +93,84 @@ function init() {
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
+  camera = new PerspectiveCamera(
+    45,
+    window.innerWidth / window.innerHeight,
+    0.25,
+    200
+  );
+  camera.position.set(10, 10, 20);
+
+  scene = new Scene();
+  scene.background = new Color(0xffffff);
+
+  // Ground plane
+
+  const material = new MeshStandardNodeMaterial();
+
+  const gridXZ = Fn(
+    ([
+      gridSize = float(1.0),
+      dotWidth = float(0.1),
+      lineWidth = float(0.02),
+    ]) => {
+      const worldPos = positionWorld;
+      const grid = fract(worldPos.xz.div(gridSize));
+
+      // Distance-based antialiasing
+      const distToCamera = length(worldPos.sub(cameraPosition));
+      const smoothing = clamp(distToCamera.div(100.0), 0.01, 0.02);
+
+      // Create dots at cell centers
+      const dotDist = length(grid.sub(0.5));
+      const dots = smoothstep(
+        dotWidth.add(smoothing),
+        dotWidth.sub(smoothing),
+        dotDist
+      );
+
+      // Create grid lines
+      const lineX = smoothstep(
+        lineWidth.add(smoothing),
+        lineWidth.sub(smoothing),
+        abs(grid.x.sub(0.5))
+      );
+      const lineZ = smoothstep(
+        lineWidth.add(smoothing),
+        lineWidth.sub(smoothing),
+        abs(grid.y.sub(0.5))
+      );
+      const lines = max(lineX, lineZ);
+
+      return max(dots, lines);
+    }
+  );
+
+  const radialGradient = Fn(([radius = float(10.0), falloff = float(1.0)]) => {
+    return smoothstep(radius, radius.sub(falloff), length(positionWorld));
+  });
+
+  // Create grid pattern
+  const gridPattern = gridXZ(1.0, 0.04, 0.01);
+  const baseColor = vec4(1.0, 1.0, 1.0, 0.0);
+  const gridColor = vec4(0.2, 0.2, 0.2, 1.0);
+
+  // Mix base color with grid lines
+  material.colorNode = gridPattern
+    .mix(baseColor, gridColor)
+    .mul(radialGradient(30.0, 20.0));
+  material.transparent = true;
+
+  const plane = new Mesh(new CircleGeometry(50), material);
+  plane.rotation.x = -Math.PI / 2;
+  plane.renderOrder = -1;
+  scene.add(plane);
+
   //
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera);
+  controls.connect(renderer.domElement);
+  controls.enableDamping = true;
   controls.minDistance = 2;
   controls.maxDistance = 40;
 
@@ -101,7 +181,6 @@ function init() {
     .load("san_giuseppe_bridge_2k.hdr", async (texture) => {
       texture.mapping = EquirectangularReflectionMapping;
 
-      scene.background = texture;
       scene.environment = texture;
 
       prefab = (
@@ -125,20 +204,20 @@ function init() {
 }
 
 function updateModelsAlign() {
-  const COLUMN_COUNT = 8;
+  const COLUMN_COUNT = 6;
   const DIST_X = 3;
-  const DIST_Y = 4;
+  const DIST_Z = 3;
 
   const lineCount = Math.floor(models.length / COLUMN_COUNT) - 1.5;
 
   const offsetX = DIST_X * (COLUMN_COUNT - 1) * -0.5;
-  const offsetY = DIST_Y * lineCount * 0.5;
+  const offsetZ = DIST_Z * lineCount * 0.5;
 
   for (let i = 0; i < models.length; i++) {
     const model = models[i];
 
     model.position.x = (i % COLUMN_COUNT) * DIST_X + offsetX;
-    model.position.y = Math.floor(i / COLUMN_COUNT) * -DIST_Y + offsetY;
+    model.position.z = Math.floor(i / COLUMN_COUNT) * -DIST_Z + offsetZ;
   }
 }
 
@@ -163,6 +242,11 @@ async function addSample(sample, path) {
 
   const previewMesh = model.getObjectByName("Preview_Mesh");
   previewMesh.material = material;
+
+  if (material.transparent) {
+    calibrationMesh.renderOrder = 1;
+    previewMesh.renderOrder = 2;
+  }
 }
 
 function addGUI() {
@@ -208,5 +292,6 @@ function onWindowResize() {
 }
 
 function render() {
+  controls.update();
   renderer.render(scene, camera);
 }

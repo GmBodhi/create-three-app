@@ -5,6 +5,7 @@ import { mix, pass, renderOutput, smoothstep, uniform, vec3 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 import { fxaa } from "three/addons/tsl/display/FXAANode.js";
 
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
@@ -12,7 +13,15 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import TWEEN from "three/addons/libs/tween.module.js";
 
-let camera, scene, timer, renderer, model, mixer, raycaster, postProcessing;
+let camera,
+  controls,
+  scene,
+  timer,
+  renderer,
+  model,
+  mixer,
+  raycaster,
+  postProcessing;
 
 const pointerCoords = new Vector2();
 const focusPoint = new Vector3(1, 1.75, -0.4);
@@ -27,8 +36,12 @@ async function init() {
     0.1,
     100
   );
-  camera.position.set(-5, 4, 5);
-  camera.lookAt(0, 1.5, 0);
+  camera.position.set(-6, 5, 6);
+
+  controls = new OrbitControls(camera);
+  controls.target.set(0, 2, 0);
+  controls.enableDamping = true;
+  controls.update();
 
   scene = new Scene();
   scene.background = new Color(0x90d5ff);
@@ -111,6 +124,8 @@ async function init() {
 
   //
 
+  controls.connect(renderer.domElement);
+
   renderer.domElement.addEventListener("pointerdown", onPointerDown);
 
   window.addEventListener("resize", onWindowResize);
@@ -145,6 +160,8 @@ function onWindowResize() {
 
 function animate() {
   TWEEN.update();
+
+  controls.update();
 
   timer.update();
 

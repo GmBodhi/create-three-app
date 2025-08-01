@@ -296,7 +296,7 @@ async function init() {
   const vignette = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
 
   const teapotTreePass = pass(teapotTree, camera).getTextureNode();
-  const teapotTreePassBlurred = gaussianBlur(teapotTreePass, vec2(1), 3);
+  const teapotTreePassBlurred = gaussianBlur(teapotTreePass, vec2(1), 6);
   teapotTreePassBlurred.resolution = new Vector2(0.2, 0.2);
 
   const scenePassColorBlurred = gaussianBlur(scenePassColor);

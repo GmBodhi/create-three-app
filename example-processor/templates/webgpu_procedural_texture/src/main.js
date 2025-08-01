@@ -26,7 +26,7 @@ function init() {
   const procedural = checker(uv().mul(uvScale));
   const proceduralToTexture = convertToTexture(procedural, 512, 512); // ( node, width, height )
 
-  const colorNode = gaussianBlur(proceduralToTexture, blurAmount, 10);
+  const colorNode = gaussianBlur(proceduralToTexture, blurAmount, 20);
 
   // extra
 

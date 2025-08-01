@@ -112,7 +112,7 @@ function init() {
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputColorTransform = false;
   postProcessing.outputNode = colorPass
-    .add(gaussianBlur(maskPass, 1, 10).mul(0.3))
+    .add(gaussianBlur(maskPass, 1, 20).mul(0.3))
     .renderOutput();
 
   // controls

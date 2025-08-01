@@ -157,6 +157,7 @@ function init() {
           video.play();
 
           videoTexture = new VideoTexture(video);
+          videoTexture.colorSpace = SRGBColorSpace;
         }
 
         projectorLight.map = videoTexture;
