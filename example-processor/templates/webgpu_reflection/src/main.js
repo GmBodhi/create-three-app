@@ -10,10 +10,12 @@ import {
   Fn,
   instancedBufferAttribute,
   materialColor,
+  max,
   normalWorldGeometry,
   pass,
   positionGeometry,
   positionLocal,
+  pow2,
   reflector,
   screenUV,
   sin,
@@ -22,6 +24,7 @@ import {
   time,
   uniform,
   uv,
+  vec2,
   vec3,
 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
@@ -53,7 +56,7 @@ async function init() {
   camera.position.set(4, 2, 4);
 
   scene = new Scene();
-  scene.fog = new Fog(0x4195a4, 1, 25);
+  scene.fog = new Fog(0x4195a4, 1, 20);
   scene.backgroundNode = normalWorldGeometry.y.mix(
     color(0x4195a4),
     color(0x0066ff)
@@ -82,6 +85,7 @@ async function init() {
   floorColor.wrapS = RepeatWrapping;
   floorColor.wrapT = RepeatWrapping;
   floorColor.colorSpace = SRGBColorSpace;
+  floorColor.repeat.set(15, 15);
 
   const floorNormal = await textureLoader.loadAsync(
     "textures/floors/FloorsCheckerboard_S_Normal.jpg"
@@ -90,12 +94,9 @@ async function init() {
   floorNormal.wrapT = RepeatWrapping;
   floorNormal.repeat.set(15, 15);
 
-  const boxMap = await textureLoader.loadAsync("textures/edge3.jpg");
-  boxMap.colorSpace = SRGBColorSpace;
-
   // tree
 
-  const treeMesh = createTreeMesh(boxMap);
+  const treeMesh = createTreeMesh();
   treeMesh.castShadow = true;
   treeMesh.receiveShadow = true;
   scene.add(treeMesh);
@@ -108,13 +109,14 @@ async function init() {
     .sub(1)
     .mul(0.02);
 
-  const reflection = reflector({ resolution: 0.5 }); // 0.5 is half of the rendering view
+  const reflection = reflector({ resolution: 0.2 });
   reflection.target.rotateX(-Math.PI / 2);
   reflection.uvNode = reflection.uvNode.add(floorNormalOffset);
   scene.add(reflection.target);
 
   const floorMaterial = new MeshPhongNodeMaterial();
-  floorMaterial.colorNode = texture(floorColor, floorUV).add(reflection);
+  floorMaterial.colorNode = texture(floorColor, floorUV);
+  floorMaterial.emissiveNode = reflection.mul(0.25);
   floorMaterial.normalMap = floorNormal;
   floorMaterial.normalScale.set(0.2, -0.2);
 
@@ -203,7 +205,7 @@ function random() {
   return (Math.random() - 0.5) * 2.0;
 }
 
-function createTreeMesh(boxMap) {
+function createTreeMesh() {
   const maxSteps = 5;
   const lengthMult = 0.8;
 
@@ -235,7 +237,7 @@ function createTreeMesh(boxMap) {
 
       size = size / 100;
 
-      const subSteps = 200;
+      const subSteps = 50;
 
       // below loop generates the instanced data for a tree part
 
@@ -250,13 +252,13 @@ function createTreeMesh(boxMap) {
         newPosition.set(x, y, z).lerp(new Vector3(newX, newY, newZ), percent);
         position.copy(newPosition);
 
-        position.x += Math.random() * (size * 3) - size * 1.5;
-        position.y += Math.random() * (size * 3) - size * 1.5;
-        position.z += Math.random() * (size * 3) - size * 1.5;
+        position.x += random() * size * 3;
+        position.y += random() * size * 3;
+        position.z += random() * size * 3;
 
         positions.push(position.x, position.y, position.z);
 
-        const scale = Math.random();
+        const scale = Math.random() + 5;
 
         // normal
 
@@ -339,7 +341,7 @@ function createTreeMesh(boxMap) {
   createTreePart(angle, 0, 0, 0, 16, 0);
 
   const geometry = new BoxGeometry();
-  const material = new MeshStandardNodeMaterial({ map: boxMap });
+  const material = new MeshStandardNodeMaterial();
   const mesh = new Mesh(geometry, material);
   mesh.scale.setScalar(0.05);
   mesh.count = instanceCount;
@@ -400,8 +402,14 @@ function createTreeMesh(boxMap) {
     return animated;
   })();
 
+  const squareEdge = Fn(() => {
+    const pos = uv().sub(vec2(0.5, 0.5));
+    const squareDistance = max(abs(pos.x), abs(pos.y));
+    return squareDistance.div(0.5).clamp(0.85, 1).sub(0.5).mul(2.0);
+  })();
+
   material.colorNode = Fn(() => {
-    return materialColor.mul(instanceColor);
+    return squareEdge.sub(instanceColor);
   })();
 
   material.emissiveNode = Fn(() => {
@@ -417,7 +425,7 @@ function createTreeMesh(boxMap) {
       .lessThanEqual(0.15)
       .select(sub(0.15, dif2).mul(sub(1.7, instanceTime).mul(10)), effect1);
 
-    return vec3(effect1, 0, effect2).mul(instanceColor);
+    return pow2(vec3(effect1, 0, effect2)).mul(instanceColor);
   })();
 
   return mesh;

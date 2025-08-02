@@ -12,8 +12,7 @@ import {
   max,
   abs,
   float,
-  cameraPosition,
-  clamp,
+  fwidth,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -106,7 +105,7 @@ function init() {
 
   // Ground plane
 
-  const material = new MeshStandardNodeMaterial();
+  const material = new MeshBasicNodeMaterial();
 
   const gridXZ = Fn(
     ([
@@ -114,19 +113,19 @@ function init() {
       dotWidth = float(0.1),
       lineWidth = float(0.02),
     ]) => {
-      const worldPos = positionWorld;
-      const grid = fract(worldPos.xz.div(gridSize));
+      const coord = positionWorld.xz.div(gridSize);
+      const grid = fract(coord);
 
-      // Distance-based antialiasing
-      const distToCamera = length(worldPos.sub(cameraPosition));
-      const smoothing = clamp(distToCamera.div(100.0), 0.01, 0.02);
+      // Screen-space derivative for automatic antialiasing
+      const fw = fwidth(coord);
+      const smoothing = max(fw.x, fw.y).mul(0.5);
 
-      // Create dots at cell centers
-      const dotDist = length(grid.sub(0.5));
+      // Create squares at cell centers
+      const squareDist = max(abs(grid.x.sub(0.5)), abs(grid.y.sub(0.5)));
       const dots = smoothstep(
         dotWidth.add(smoothing),
         dotWidth.sub(smoothing),
-        dotDist
+        squareDist
       );
 
       // Create grid lines
@@ -151,9 +150,9 @@ function init() {
   });
 
   // Create grid pattern
-  const gridPattern = gridXZ(1.0, 0.04, 0.01);
+  const gridPattern = gridXZ(1.0, 0.03, 0.005);
   const baseColor = vec4(1.0, 1.0, 1.0, 0.0);
-  const gridColor = vec4(0.2, 0.2, 0.2, 1.0);
+  const gridColor = vec4(0.5, 0.5, 0.5, 1.0);
 
   // Mix base color with grid lines
   material.colorNode = gridPattern
@@ -161,7 +160,7 @@ function init() {
     .mul(radialGradient(30.0, 20.0));
   material.transparent = true;
 
-  const plane = new Mesh(new CircleGeometry(50), material);
+  const plane = new Mesh(new CircleGeometry(40), material);
   plane.rotation.x = -Math.PI / 2;
   plane.renderOrder = -1;
   scene.add(plane);
