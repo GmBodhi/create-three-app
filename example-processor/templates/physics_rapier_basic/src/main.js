@@ -18,6 +18,7 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RapierPhysics } from "three/addons/physics/RapierPhysics.js";
 import { RapierHelper } from "three/addons/helpers/RapierHelper.js";
+import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import Stats from "three/addons/libs/stats.module.js";
 
 let camera, scene, renderer, stats, controls;
@@ -116,9 +117,14 @@ async function initPhysics() {
   setInterval(addBody, 1000);
 }
 
+const geometries = [
+  new BoxGeometry(1, 1, 1),
+  new SphereGeometry(0.5),
+  new RoundedBoxGeometry(1, 1, 1, 2, 0.25),
+];
+
 function addBody() {
-  const geometry =
-    Math.random() > 0.5 ? new SphereGeometry(0.5) : new BoxGeometry(1, 1, 1);
+  const geometry = geometries[Math.floor(Math.random() * geometries.length)];
   const material = new MeshStandardMaterial({
     color: Math.floor(Math.random() * 0xffffff),
   });

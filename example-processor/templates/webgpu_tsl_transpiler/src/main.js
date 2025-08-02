@@ -5,8 +5,6 @@ import GLSLDecoder from "three/addons/transpiler/GLSLDecoder.js";
 import WGSLEncoder from "three/addons/transpiler/WGSLEncoder.js";
 import TSLEncoder from "three/addons/transpiler/TSLEncoder.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
 init();
 
 function init() {
@@ -59,7 +57,7 @@ float noise(vec2 p, float freq ){
 }
 
 float pNoise(vec2 p, int res){
-	float persistance = .5;
+	float persistence = .5;
 	float n = 0.;
 	float normK = 0.;
 	float f = 4.;
@@ -69,7 +67,7 @@ float pNoise(vec2 p, int res){
 		n+=amp*noise(p, f);
 		f*=2.;
 		normK+=amp;
-		amp*=persistance;
+		amp*=persistence;
 		if (iCount == res) break;
 		iCount++;
 	}
@@ -83,6 +81,7 @@ float pNoise(vec2 p, int res){
       language: "c",
       theme: "vs-dark",
       automaticLayout: true,
+      wordWrap: "on",
       minimap: { enabled: false },
     });
 
@@ -91,6 +90,7 @@ float pNoise(vec2 p, int res){
       language: "javascript",
       theme: "vs-dark",
       automaticLayout: true,
+      wordWrap: "on",
       readOnly: true,
       minimap: { enabled: false },
     });
@@ -135,14 +135,20 @@ float pNoise(vec2 p, int res){
       timeout = setTimeout(build, 1000);
     });
 
-    // gui
+    // dropdowns
 
-    const gui = new GUI();
+    const decoderSelect = document.getElementById("decoder-select");
+    const encoderSelect = document.getElementById("encoder-select");
 
-    gui.add(options, "decoder", ["GLSL"]);
-    gui.add(options, "encoder", ["TSL", "WGSL"]).onChange((encoder) => {
-      const language = encoderLanguages[encoder];
+    decoderSelect.addEventListener("change", () => {
+      options.decoder = decoderSelect.value;
+      build();
+    });
 
+    encoderSelect.addEventListener("change", () => {
+      options.encoder = encoderSelect.value;
+
+      const language = encoderLanguages[encoderSelect.value];
       window.monaco.editor.setModelLanguage(result.getModel(), language);
 
       build();

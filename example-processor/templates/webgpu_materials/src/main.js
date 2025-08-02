@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  GridHelper,
-  TextureLoader,
-  RepeatWrapping,
-  MeshBasicNodeMaterial,
-  MeshNormalMaterial,
-  Vector3,
-  Group,
-  WebGPURenderer,
-  Mesh,
-  NodeObjectLoader,
-} from "three";
+import * as THREE from "three/webgpu";
 import * as TSL from "three/tsl";
 
 import {
@@ -447,20 +434,20 @@ function testSerialization(mesh) {
   const loader = new NodeObjectLoader()
     .setNodes(moduleToLib(THREE))
     .setNodeMaterials(moduleToLib(THREE));
-  const serializedMesh = loader.parse(json);
+  const serializedMesh = loader.parse(json, () => {
+    serializedMesh.position.x = (objects.length % 4) * 200 - 400;
+    serializedMesh.position.z = Math.floor(objects.length / 4) * 200 - 200;
 
-  serializedMesh.position.x = (objects.length % 4) * 200 - 400;
-  serializedMesh.position.z = Math.floor(objects.length / 4) * 200 - 200;
+    const scriptableNode = serializedMesh.material.colorNode;
 
-  const scriptableNode = serializedMesh.material.colorNode;
+    // it's because local.get( 'material' ) is used in the example ( local/global is unserializable )
+    scriptableNode.setLocal("material", serializedMesh.material);
+    scriptableNode.setParameter("execFrom", "serialized");
 
-  // it's because local.get( 'material' ) is used in the example ( local/global is unserializable )
-  scriptableNode.setLocal("material", serializedMesh.material);
-  scriptableNode.setParameter("execFrom", "serialized");
+    objects.push(serializedMesh);
 
-  objects.push(serializedMesh);
-
-  scene.add(serializedMesh);
+    scene.add(serializedMesh);
+  });
 }
 
 function onWindowResize() {

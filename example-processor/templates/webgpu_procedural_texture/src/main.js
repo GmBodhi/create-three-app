@@ -1,13 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  OrthographicCamera,
-  Scene,
-  MeshBasicNodeMaterial,
-  Mesh,
-  PlaneGeometry,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import { checker, uv, uniform, convertToTexture } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
@@ -33,7 +26,7 @@ function init() {
   const procedural = checker(uv().mul(uvScale));
   const proceduralToTexture = convertToTexture(procedural, 512, 512); // ( node, width, height )
 
-  const colorNode = gaussianBlur(proceduralToTexture, blurAmount, 10);
+  const colorNode = gaussianBlur(proceduralToTexture, blurAmount, 20);
 
   // extra
 

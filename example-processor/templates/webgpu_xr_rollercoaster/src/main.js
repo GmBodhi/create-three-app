@@ -1,22 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  UnsignedByteType,
-  Scene,
-  Color,
-  HemisphereLight,
-  Object3D,
-  PerspectiveCamera,
-  PlaneGeometry,
-  Vector3,
-  MeshLambertMaterial,
-  Mesh,
-  MeshBasicMaterial,
-  DoubleSide,
-  MeshPhongMaterial,
-  CylinderGeometry,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import {
   RollerCoasterGeometry,

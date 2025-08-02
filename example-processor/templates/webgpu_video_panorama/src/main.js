@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  SphereGeometry,
-  VideoTexture,
-  SRGBColorSpace,
-  MeshBasicMaterial,
-  Mesh,
-  WebGPURenderer,
-  MathUtils,
-} from "three";
+import * as THREE from "three/webgpu";
 
 let camera, scene, renderer;
 

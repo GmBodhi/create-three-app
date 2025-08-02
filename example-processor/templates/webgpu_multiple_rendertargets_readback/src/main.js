@@ -1,24 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  RenderTarget,
-  NearestFilter,
-  DataTexture,
-  UnsignedByteType,
-  RGBAFormat,
-  MeshBasicNodeMaterial,
-  Scene,
-  Color,
-  PerspectiveCamera,
-  TextureLoader,
-  SRGBColorSpace,
-  RepeatWrapping,
-  NodeMaterial,
-  Mesh,
-  TorusKnotGeometry,
-  QuadMesh,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   mix,
   step,

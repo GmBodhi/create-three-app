@@ -1,22 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Fog,
-  AmbientLight,
-  SpotLight,
-  DirectionalLight,
-  Group,
-  TorusKnotGeometry,
-  MeshPhongNodeMaterial,
-  Mesh,
-  CylinderGeometry,
-  PlaneGeometry,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-  Clock,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   mx_fractal_noise_vec3,
   positionWorld,

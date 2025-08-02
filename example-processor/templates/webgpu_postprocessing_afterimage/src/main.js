@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  PerspectiveCamera,
-  Scene,
-  TextureLoader,
-  Vector3,
-  Color,
-  SRGBColorSpace,
-  InstancedBufferAttribute,
-  SpriteNodeMaterial,
-  AdditiveBlending,
-  Sprite,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   instancedBufferAttribute,
   mod,

@@ -20,7 +20,7 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 
-import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
@@ -93,7 +93,7 @@ function init() {
 
   // RENDERER
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({ antialias: true, reversedDepthBuffer: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.setAnimationLoop(animate);
@@ -108,13 +108,14 @@ function init() {
 
   // CONTROLS
 
-  controls = new FirstPersonControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enablePan = false;
+  controls.maxPolarAngle = Math.PI / 2;
+  controls.minDistance = 200;
+  controls.maxDistance = 2200;
 
-  controls.lookSpeed = 0.0125;
-  controls.movementSpeed = 500;
-  controls.lookVertical = true;
-
-  controls.lookAt(scene.position);
+  controls.target.set(0, -75, 25);
+  controls.update();
 
   // STATS
 
@@ -128,15 +129,10 @@ function init() {
 }
 
 function onWindowResize() {
-  SCREEN_WIDTH = window.innerWidth;
-  SCREEN_HEIGHT = window.innerHeight;
-
-  camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+  camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 
-  renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-  controls.handleResize();
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
 function onKeyDown(event) {

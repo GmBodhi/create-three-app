@@ -1,25 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  AmbientLight,
-  DirectionalLight,
-  WebGPURenderer,
-  Vector3,
-  RingGeometry,
-  ConeGeometry,
-  MeshBasicMaterial,
-  DoubleSide,
-  Object3D,
-  Group,
-  Mesh,
-  SpriteNodeMaterial,
-  AdditiveBlending,
-  PlaneGeometry,
-  InstancedMesh,
-  SRGBColorSpace,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   float,
   If,

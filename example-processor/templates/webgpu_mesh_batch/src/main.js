@@ -1,20 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Matrix4,
-  Vector3,
-  Euler,
-  Quaternion,
-  ConeGeometry,
-  BoxGeometry,
-  SphereGeometry,
-  MeshBasicNodeMaterial,
-  BatchedMesh,
-  Color,
-  PerspectiveCamera,
-  WebGPURenderer,
-  Scene,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import Stats from "three/addons/libs/stats.module.js";
 

@@ -1,23 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Clock,
-  InstancedMesh,
-  Object3D,
-  Color,
-  PerspectiveCamera,
-  Scene,
-  AmbientLight,
-  DirectionalLight,
-  MeshPhongNodeMaterial,
-  BoxGeometry,
-  Vector3,
-  IcosahedronGeometry,
-  TextureLoader,
-  WebGPURenderer,
-  PostProcessing,
-  TextureNode,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import TWEEN from "three/addons/libs/tween.module.js";

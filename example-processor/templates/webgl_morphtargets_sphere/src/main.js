@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  Timer,
   PointLight,
   AmbientLight,
   PointsMaterial,
@@ -13,7 +14,6 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { Timer } from "three/addons/misc/Timer.js";
 
 let camera, scene, renderer, timer;
 

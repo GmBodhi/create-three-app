@@ -1,24 +1,9 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  SphereGeometry,
-  PointLight,
-  Mesh,
-  MeshBasicMaterial,
-  AmbientLight,
-  WebGPURenderer,
-  MeshPhongNodeMaterial,
-  Vector3,
-  Plane,
-  BufferGeometry,
-  Float32BufferAttribute,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Timer } from "three/addons/misc/Timer.js";
 
 import {
   abs,
@@ -179,7 +164,7 @@ function createGeometry(geometry) {
     v3.copy(v0).add(v1).add(v2).divideScalar(3); // compute center
     v3.add(n.copy(plane.normal).multiplyScalar(-1)); // displace center inwards
 
-    // generate tetraeder for each triangle
+    // generate tetrahedron for each triangle
 
     vertices.push(v0.x, v0.y, v0.z, v1.x, v1.y, v1.z, v2.x, v2.y, v2.z);
     vertices.push(v3.x, v3.y, v3.z, v1.x, v1.y, v1.z, v0.x, v0.y, v0.z);

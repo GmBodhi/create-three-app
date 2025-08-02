@@ -1,20 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  NoToneMapping,
-  LinearToneMapping,
-  ReinhardToneMapping,
-  CineonToneMapping,
-  ACESFilmicToneMapping,
-  AgXToneMapping,
-  NeutralToneMapping,
-  WebGPURenderer,
-  Scene,
-  DirectionalLight,
-  DirectionalLightHelper,
-  PerspectiveCamera,
-  EquirectangularReflectionMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -60,7 +46,7 @@ async function init() {
   scene = new Scene();
   scene.backgroundBlurriness = params.blurriness;
 
-  const light = new DirectionalLight(0xfff3ee, 3); // simualte sun
+  const light = new DirectionalLight(0xfff3ee, 3); // simulate sun
   light.position.set(1, 0.05, 0.7);
   scene.add(light);
 

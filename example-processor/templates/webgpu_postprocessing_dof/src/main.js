@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  CubeTextureLoader,
-  SphereGeometry,
-  MeshBasicNodeMaterial,
-  InstancedMesh,
-  Matrix4,
-  WebGPURenderer,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   cubeTexture,
   positionWorld,

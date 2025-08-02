@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  BoxGeometry,
-  MeshPhongNodeMaterial,
-  InstancedMesh,
-  Object3D,
-  Vector3,
-  HemisphereLight,
-  PlaneGeometry,
-  MeshPhongMaterial,
-  Mesh,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   color,
   fog,

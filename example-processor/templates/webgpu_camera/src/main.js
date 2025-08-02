@@ -1,21 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Scene,
-  PerspectiveCamera,
-  CameraHelper,
-  OrthographicCamera,
-  Group,
-  Mesh,
-  SphereGeometry,
-  MeshBasicMaterial,
-  BufferGeometry,
-  MathUtils,
-  Float32BufferAttribute,
-  Points,
-  PointsMaterial,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import { color } from "three/tsl";
 
 let SCREEN_WIDTH = window.innerWidth;

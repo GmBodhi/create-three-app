@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector2,
-  OrthographicCamera,
-  Scene,
-  StorageTexture,
-  HalfFloatType,
-  MeshBasicMaterial,
-  Mesh,
-  PlaneGeometry,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   storageTexture,
   wgslFn,

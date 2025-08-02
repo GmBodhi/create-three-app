@@ -1,15 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  OrthographicCamera,
-  Scene,
-  MeshBasicNodeMaterial,
-  TextureLoader,
-  Mesh,
-  PlaneGeometry,
-  WebGPURenderer,
-  Color,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   If,
   vec4,

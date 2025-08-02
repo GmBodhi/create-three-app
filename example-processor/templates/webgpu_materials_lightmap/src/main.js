@@ -1,17 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  DirectionalLight,
-  Color,
-  MeshBasicNodeMaterial,
-  BackSide,
-  Mesh,
-  SphereGeometry,
-  ObjectLoader,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import { vec4, color, positionLocal, mix } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

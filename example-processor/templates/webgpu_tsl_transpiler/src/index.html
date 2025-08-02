@@ -8,6 +8,19 @@
     />
   </head>
   <body style="overflow: hidden">
+    <div id="source-dropdown">
+      <label for="decoder-select">Encoder</label>
+      <select id="decoder-select">
+        <option value="GLSL">GLSL</option>
+      </select>
+    </div>
+    <div id="result-dropdown">
+      <label for="encoder-select">Decoder</label>
+      <select id="encoder-select">
+        <option value="TSL">TSL</option>
+        <option value="WGSL">WGSL</option>
+      </select>
+    </div>
     <div id="source"></div>
     <div id="result"></div>
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs/loader.js"></script>

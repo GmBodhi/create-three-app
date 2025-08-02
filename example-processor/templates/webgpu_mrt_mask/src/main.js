@@ -1,20 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Clock,
-  SpotLight,
-  AnimationMixer,
-  SphereGeometry,
-  Group,
-  MathUtils,
-  MeshStandardNodeMaterial,
-  Mesh,
-  WebGPURenderer,
-  NeutralToneMapping,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { color, screenUV, mrt, output, pass, vec4 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
@@ -126,7 +112,7 @@ function init() {
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputColorTransform = false;
   postProcessing.outputNode = colorPass
-    .add(gaussianBlur(maskPass, 1, 10).mul(0.3))
+    .add(gaussianBlur(maskPass, 1, 20).mul(0.3))
     .renderOutput();
 
   // controls

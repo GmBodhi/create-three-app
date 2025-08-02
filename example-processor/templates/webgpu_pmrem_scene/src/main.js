@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  WebGPURenderer,
-  CubeTextureLoader,
-  Mesh,
-  SphereGeometry,
-  MeshBasicMaterial,
-  PMREMGenerator,
-  MeshBasicNodeMaterial,
-} from "three";
+import * as THREE from "three/webgpu";
 import { normalWorld, uniform, pmremTexture } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";

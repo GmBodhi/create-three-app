@@ -3721,6 +3721,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_texture_3d": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_texture_pingpong": {
       "files": {
         "index.html": "src",
@@ -4581,6 +4591,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_dof_basic": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_fxaa": {
       "files": {
         "index.html": "src",
@@ -5215,6 +5235,16 @@
       ]
     },
     "webgpu_xr_rollercoaster": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_ar_camera_access": {
       "files": {
         "index.html": "src",
         "main.js": "src",

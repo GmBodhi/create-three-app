@@ -1,24 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector3,
-  PerspectiveCamera,
-  Scene,
-  Color,
-  HemisphereLight,
-  DirectionalLight,
-  Mesh,
-  PlaneGeometry,
-  ShadowMaterial,
-  BoxGeometry,
-  MeshBasicMaterial,
-  MeshLambertMaterial,
-  Matrix4,
-  InstancedMesh,
-  DynamicDrawUsage,
-  IcosahedronGeometry,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { JoltPhysics } from "three/addons/physics/JoltPhysics.js";
 import Stats from "three/addons/libs/stats.module.js";

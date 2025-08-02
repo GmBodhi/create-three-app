@@ -1,19 +1,8 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  PerspectiveCamera,
-  Scene,
-  BoxGeometry,
-  MeshBasicMaterial,
-  Mesh,
-  TextureLoader,
-  NearestFilter,
-  SRGBColorSpace,
-  PostProcessing,
-} from "three";
-import { mrt, output, velocity } from "three/tsl";
-import { traaPass } from "three/addons/tsl/display/TRAAPassNode.js";
+import * as THREE from "three/webgpu";
+import { mrt, output, pass, velocity } from "three/tsl";
+import { traa } from "three/addons/tsl/display/TRAANode.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 
@@ -65,7 +54,7 @@ function init() {
   // postprocessing
 
   postProcessing = new PostProcessing(renderer);
-  const scenePass = traaPass(scene, camera);
+  const scenePass = pass(scene, camera);
   scenePass.setMRT(
     mrt({
       output: output,
@@ -73,7 +62,18 @@ function init() {
     })
   );
 
-  postProcessing.outputNode = scenePass;
+  const scenePassColor = scenePass.getTextureNode("output");
+  const scenePassDepth = scenePass.getTextureNode("depth");
+  const scenePassVelocity = scenePass.getTextureNode("velocity");
+
+  const traaNode = traa(
+    scenePassColor,
+    scenePassDepth,
+    scenePassVelocity,
+    camera
+  );
+
+  postProcessing.outputNode = traaNode;
 
   //
 

@@ -1,13 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  WebGPURenderer,
-  LinearToneMapping,
-  Vector2,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass, cubeTexture, screenUV, grayscale, uniform } from "three/tsl";
 import { anamorphic } from "three/addons/tsl/display/AnamorphicNode.js";
 

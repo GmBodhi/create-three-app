@@ -1,12 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  DataTexture,
-  RedFormat,
-  Scene,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   Fn,
   uniform,

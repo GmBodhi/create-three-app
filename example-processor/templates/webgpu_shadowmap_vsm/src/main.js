@@ -1,23 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Color,
-  Fog,
-  AmbientLight,
-  SpotLight,
-  DirectionalLight,
-  Group,
-  TorusKnotGeometry,
-  MeshPhongMaterial,
-  Mesh,
-  CylinderGeometry,
-  PlaneGeometry,
-  WebGPURenderer,
-  VSMShadowMap,
-  Clock,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

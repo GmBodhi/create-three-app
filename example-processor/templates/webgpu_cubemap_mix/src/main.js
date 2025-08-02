@@ -1,13 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  LinearMipmapLinearFilter,
-  CubeTextureLoader,
-  WebGPURenderer,
-  LinearToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 import { mix, oscSine, time, pmremTexture, float } from "three/tsl";
 
 import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";

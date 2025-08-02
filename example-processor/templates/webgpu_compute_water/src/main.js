@@ -1,23 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector2,
-  Raycaster,
-  PerspectiveCamera,
-  Scene,
-  DirectionalLight,
-  PlaneGeometry,
-  MeshStandardNodeMaterial,
-  DoubleSide,
-  Mesh,
-  TorusGeometry,
-  MeshStandardMaterial,
-  MeshBasicMaterial,
-  EquirectangularReflectionMapping,
-  InstancedMesh,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   instanceIndex,
   struct,
@@ -72,11 +55,11 @@ const raycaster = new Raycaster();
 let frame = 0;
 
 const effectController = {
-  mousePos: uniform(new Vector2()).label("mousePos"),
-  mouseSpeed: uniform(new Vector2()).label("mouseSpeed"),
-  mouseDeep: uniform(0.5).label("mouseDeep"),
-  mouseSize: uniform(0.12).label("mouseSize"),
-  viscosity: uniform(0.96).label("viscosity"),
+  mousePos: uniform(new Vector2()).setName("mousePos"),
+  mouseSpeed: uniform(new Vector2()).setName("mouseSpeed"),
+  mouseDeep: uniform(0.5).setName("mouseDeep"),
+  mouseSize: uniform(0.12).setName("mouseSize"),
+  viscosity: uniform(0.96).setName("viscosity"),
   ducksEnabled: true,
   wireframe: false,
   speed: 5,
@@ -148,8 +131,9 @@ async function init() {
     }
   }
 
-  const heightStorage = instancedArray(heightArray).label("Height");
-  const prevHeightStorage = instancedArray(prevHeightArray).label("PrevHeight");
+  const heightStorage = instancedArray(heightArray).setName("Height");
+  const prevHeightStorage =
+    instancedArray(prevHeightArray).setName("PrevHeight");
 
   // Get Indices of Neighbor Values of an Index in the Simulation Grid
   const getNeighborIndicesTSL = (index) => {
@@ -336,7 +320,7 @@ async function init() {
   const duckInstanceDataStorage = instancedArray(
     duckInstanceDataArray,
     DuckStruct
-  ).label("DuckInstanceData");
+  ).setName("DuckInstanceData");
 
   computeDucks = Fn(() => {
     const yOffset = float(-0.04);
@@ -374,7 +358,7 @@ async function init() {
     const targetY = waterHeight.add(yOffset);
 
     const deltaY = targetY.sub(instancePosition.y);
-    instancePosition.y.addAssign(deltaY.mul(verticalResponseFactor)); // Atualiza Y gradualmente
+    instancePosition.y.addAssign(deltaY.mul(verticalResponseFactor)); // Gradually update position
 
     // Get the normal of the water surface at the duck's position
     const pushX = normalX.mul(waterPushFactor);
@@ -403,7 +387,7 @@ async function init() {
 
     If(instancePosition.z.lessThan(-limit), () => {
       instancePosition.z = -limit;
-      velocity.y.mulAssign(bounceDamping); // Inverte e amortece vz (velocity.y)
+      velocity.y.mulAssign(bounceDamping); // Invert and damp vz (velocity.y)
     }).ElseIf(instancePosition.z.greaterThan(limit), () => {
       instancePosition.z = limit;
       velocity.y.mulAssign(bounceDamping);

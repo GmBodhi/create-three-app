@@ -1,31 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector2,
-  Vector3,
-  Plane,
-  Raycaster,
-  PerspectiveCamera,
-  Scene,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-  StorageInstancedBufferAttribute,
-  PlaneGeometry,
-  SpriteNodeMaterial,
-  AdditiveBlending,
-  InstancedMesh,
-  DynamicDrawUsage,
-  StorageBufferAttribute,
-  BufferGeometry,
-  MeshBasicNodeMaterial,
-  DoubleSide,
-  Mesh,
-  IcosahedronGeometry,
-  Matrix4,
-  MeshStandardNodeMaterial,
-  PointLight,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   atan,
   cos,
@@ -59,7 +34,6 @@ import {
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Timer } from "three/addons/misc/Timer.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 

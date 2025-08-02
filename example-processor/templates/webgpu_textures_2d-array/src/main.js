@@ -1,16 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  FileLoader,
-  DataArrayTexture,
-  RedFormat,
-  MeshBasicNodeMaterial,
-  PlaneGeometry,
-  Mesh,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 import { texture, uv, time, oscTriangle } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";

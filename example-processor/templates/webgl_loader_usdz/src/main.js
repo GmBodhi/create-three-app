@@ -10,7 +10,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
-import { USDZLoader } from "three/addons/loaders/USDZLoader.js";
+import { USDLoader } from "three/addons/loaders/USDLoader.js";
 
 let camera, scene, renderer;
 
@@ -29,7 +29,7 @@ async function init() {
 
   const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");
 
-  const usdzLoader = new USDZLoader().setPath("models/usdz/");
+  const usdzLoader = new USDLoader().setPath("models/usdz/");
 
   const [texture, model] = await Promise.all([
     rgbeLoader.loadAsync("venice_sunset_1k.hdr"),

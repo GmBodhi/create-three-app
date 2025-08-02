@@ -334,8 +334,7 @@ function hideProgressBar() {
 }
 
 function updateProgressBar(fraction) {
-  progressBarDiv.innerText =
-    "Loading... " + Math.round(fraction * 100, 2) + "%";
+  progressBarDiv.innerText = "Loading... " + Math.round(fraction * 100) + "%";
 }
 
 function generateRadialFloorTexture(dim) {

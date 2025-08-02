@@ -40,6 +40,7 @@ const assets = [
   "morph_test",
   "monkey",
   "monkey_embedded_texture",
+  "vCube",
 ];
 
 init();

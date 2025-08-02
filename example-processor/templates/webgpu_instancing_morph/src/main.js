@@ -1,21 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Clock,
-  PerspectiveCamera,
-  Scene,
-  Color,
-  Fog,
-  DirectionalLight,
-  HemisphereLight,
-  Mesh,
-  PlaneGeometry,
-  MeshStandardMaterial,
-  InstancedMesh,
-  MeshStandardNodeMaterial,
-  AnimationMixer,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 

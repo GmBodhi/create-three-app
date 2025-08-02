@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Clock,
-  SpotLight,
-  AnimationMixer,
-  SphereGeometry,
-  Group,
-  MathUtils,
-  MeshStandardNodeMaterial,
-  Mesh,
-  WebGPURenderer,
-  NeutralToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   float,
   vec3,

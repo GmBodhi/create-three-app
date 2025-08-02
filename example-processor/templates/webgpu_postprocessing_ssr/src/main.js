@@ -1,28 +1,20 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  FrontSide,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-  PMREMGenerator,
-  PostProcessing,
-  NearestFilter,
-  UnsignedByteType,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   pass,
   mrt,
   output,
   normalView,
   metalness,
+  roughness,
   blendColor,
   screenUV,
   color,
   sample,
   directionToColor,
   colorToDirection,
+  vec2,
 } from "three/tsl";
 import { ssr } from "three/addons/tsl/display/SSRNode.js";
 import { smaa } from "three/addons/tsl/display/SMAANode.js";
@@ -70,6 +62,10 @@ async function init() {
   loader.load("models/gltf/steampunk_camera.glb", function (gltf) {
     gltf.scene.traverse(function (object) {
       if (object.material) {
+        if (object.material.name === "Lense_Casing") {
+          object.material.transparent = true;
+        }
+
         // Avoid overdrawing
         object.material.side = FrontSide;
       }
@@ -109,25 +105,29 @@ async function init() {
     mrt({
       output: output,
       normal: directionToColor(normalView),
-      metalness: metalness,
+      metalrough: vec2(metalness, roughness),
     })
   );
 
   const scenePassColor = scenePass.getTextureNode("output");
   const scenePassNormal = scenePass.getTextureNode("normal");
   const scenePassDepth = scenePass.getTextureNode("depth");
-  const scenePassMetalness = scenePass.getTextureNode("metalness");
+  const scenePassMetalRough = scenePass.getTextureNode("metalrough");
 
   // optimization bandwidth packing the normals and reducing the texture precision if possible
-
-  const metalnessTexture = scenePass.getTexture("metalness");
-  metalnessTexture.type = UnsignedByteType;
 
   const normalTexture = scenePass.getTexture("normal");
   normalTexture.type = UnsignedByteType;
 
+  const metalRoughTexture = scenePass.getTexture("metalrough");
+  metalRoughTexture.type = UnsignedByteType;
+
   const customNormal = sample((uv) => {
     return colorToDirection(scenePassNormal.sample(uv));
+  });
+
+  const customMetalness = sample((uv) => {
+    return scenePassMetalRough.sample(uv).r;
   });
 
   //
@@ -136,14 +136,16 @@ async function init() {
     scenePassColor,
     scenePassDepth,
     customNormal,
-    scenePassMetalness,
+    customMetalness,
     camera
   );
   ssrPass.resolutionScale = 1.0;
 
   // blend SSR over beauty
 
-  const outputNode = smaa(blendColor(scenePassColor, ssrPass));
+  const outputNode = smaa(
+    blendColor(scenePassColor, ssrPass.mul(scenePassMetalRough.g.oneMinus()))
+  );
 
   postProcessing.outputNode = outputNode;
 

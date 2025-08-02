@@ -1,15 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  EquirectangularReflectionMapping,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-  NearestFilter,
-  UnsignedByteType,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   output,
   normalView,

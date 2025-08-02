@@ -1,23 +1,9 @@
 import "./style.css"; // For webpack support
 
-import {
-  WebGPURenderer,
-  PCFSoftShadowMap,
-  ACESFilmicToneMapping,
-  Scene,
-  PerspectiveCamera,
-  TextureLoader,
-  HemisphereLight,
-  ProjectorLight,
-  SpotLightHelper,
-  PlaneGeometry,
-  MeshLambertMaterial,
-  Mesh,
-  VideoTexture,
-  LinearFilter,
-  SRGBColorSpace,
-} from "three";
+import * as THREE from "three/webgpu";
 import { Fn, color, mx_worley_noise_float, time } from "three/tsl";
+
+import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -28,9 +14,16 @@ let renderer, scene, camera;
 
 let projectorLight, lightHelper;
 
+let stats;
+
 init();
 
 function init() {
+  // Stats
+
+  stats = new Stats();
+  document.body.appendChild(stats.dom);
+
   // Renderer
 
   renderer = new WebGPURenderer({ antialias: true });
@@ -164,6 +157,7 @@ function init() {
           video.play();
 
           videoTexture = new VideoTexture(video);
+          videoTexture.colorSpace = SRGBColorSpace;
         }
 
         projectorLight.map = videoTexture;
@@ -232,6 +226,8 @@ function onWindowResize() {
 
 function animate() {
   const time = performance.now() / 3000;
+
+  stats.update();
 
   projectorLight.position.x = Math.cos(time) * 2.5;
   projectorLight.position.z = Math.sin(time) * 2.5;

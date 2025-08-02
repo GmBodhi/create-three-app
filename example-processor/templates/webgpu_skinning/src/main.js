@@ -1,15 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Clock,
-  PointLight,
-  AmbientLight,
-  AnimationMixer,
-  WebGPURenderer,
-  LinearToneMapping,
-} from "three";
+import * as THREE from "three/webgpu";
 import { color, screenUV } from "three/tsl";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";

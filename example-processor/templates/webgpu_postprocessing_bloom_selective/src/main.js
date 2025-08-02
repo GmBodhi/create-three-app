@@ -1,18 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Scene,
-  PerspectiveCamera,
-  IcosahedronGeometry,
-  Color,
-  MeshBasicNodeMaterial,
-  Mesh,
-  WebGPURenderer,
-  NeutralToneMapping,
-  PostProcessing,
-  Raycaster,
-  Vector2,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass, mrt, output, float, uniform } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 

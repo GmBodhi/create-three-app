@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  TextureLoader,
-  SRGBColorSpace,
-  PlaneGeometry,
-  Mesh,
-  WebGPURenderer,
-  Vector3,
-  MathUtils,
-  InstancedBufferAttribute,
-  MeshBasicNodeMaterial,
-  DoubleSide,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -180,11 +167,11 @@ function getMaterial(count, color, sprite) {
   const localTime = instancedBufferAttribute(timeAttribute).add(time.mul(0.02));
   const modTime = mod(localTime, 1.0);
 
-  const rotatedPositon = rotate(
+  const rotatedPosition = rotate(
     positionLocal,
     instanceRotation.mul(modTime.mul(20))
   );
-  material.positionNode = rotatedPositon
+  material.positionNode = rotatedPosition
     .add(instancePosition)
     .add(instanceDirection.mul(modTime.mul(50)));
 

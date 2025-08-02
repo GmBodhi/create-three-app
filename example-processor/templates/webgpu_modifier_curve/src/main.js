@@ -1,22 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector2,
-  Scene,
-  PerspectiveCamera,
-  BoxGeometry,
-  MeshBasicNodeMaterial,
-  Mesh,
-  CatmullRomCurve3,
-  Line,
-  BufferGeometry,
-  LineBasicMaterial,
-  DirectionalLight,
-  AmbientLight,
-  MeshStandardNodeMaterial,
-  WebGPURenderer,
-  Raycaster,
-} from "three";
+import * as THREE from "three/webgpu";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import Stats from "three/addons/libs/stats.module.js";
 import { Flow } from "three/addons/modifiers/CurveModifierGPU.js";

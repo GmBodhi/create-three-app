@@ -76,8 +76,8 @@ const uv0 = uv();
 const animateUv = vec2( uv0.x.add( oscSine( scaledTime ) ), uv0.y );
 
 // label is optional
-const myMap = texture( samplerTexture, animateUv ).rgb.label( 'myTexture' );
-const myColor = uniform( new Color( 0x0066ff ) ).label( 'myColor' );
+const myMap = texture( samplerTexture, animateUv ).rgb.setName( 'myTexture' );
+const myColor = uniform( new Color( 0x0066ff ) ).setName( 'myColor' );
 const opacity = .7;
 
 const desaturatedMap = grayscale( myMap.rgb );
@@ -116,7 +116,7 @@ output = vec4( finalColor, opacity );
         const AsyncFunction = async function () {}.constructor;
 
         const tslCode = `let output = null;\n${editor.getValue()}\nreturn { output };`;
-        const nodes = await new AsyncFunction("THREE", tslCode)(THREE);
+        const nodes = await new AsyncFunction("three/webgpu", tslCode)(THREE);
 
         mesh.material.fragmentNode = nodes.output;
         mesh.material.needsUpdate = true;

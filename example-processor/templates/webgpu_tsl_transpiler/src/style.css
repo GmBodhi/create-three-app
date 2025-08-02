@@ -1,20 +1,51 @@
+* {
+  box-sizing: border-box;
+}
 #result,
 #source {
   position: absolute;
-  top: 0;
-  width: 50%;
-  height: 100%;
+  top: 50px;
+  height: calc(100% - 50px);
 }
 #source {
   left: 0;
+  width: calc(50% - 1px);
 }
 #result {
   right: 0;
+  width: 50%;
+}
+#result-dropdown,
+#source-dropdown {
+  position: absolute;
+  top: 0;
+  padding: 10px;
+  z-index: 100;
+  background: #222;
+  text-align: center;
+}
+#source-dropdown {
+  width: calc(50% - 1px);
+}
+#result-dropdown {
+  left: calc(50%);
+  width: 50%;
+}
+select {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+  padding: 5px 10px;
+}
+body,
+label {
+  color: #fff;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
 }
 body {
   margin: 0;
   background-color: #000;
-  color: #fff;
   font-family: Monospace;
   font-size: 13px;
   line-height: 24px;

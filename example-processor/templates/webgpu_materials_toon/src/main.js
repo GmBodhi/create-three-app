@@ -1,21 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Color,
-  WebGPURenderer,
-  PostProcessing,
-  SphereGeometry,
-  DataTexture,
-  RedFormat,
-  MeshToonNodeMaterial,
-  Mesh,
-  MeshBasicNodeMaterial,
-  Vector3,
-  AmbientLight,
-  PointLight,
-} from "three";
+import * as THREE from "three/webgpu";
 import { toonOutlinePass } from "three/tsl";
 
 import Stats from "three/addons/libs/stats.module.js";

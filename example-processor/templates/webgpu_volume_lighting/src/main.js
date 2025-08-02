@@ -1,28 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Data3DTexture,
-  RedFormat,
-  LinearFilter,
-  RepeatWrapping,
-  WebGPURenderer,
-  NeutralToneMapping,
-  Scene,
-  PerspectiveCamera,
-  VolumeNodeMaterial,
-  Mesh,
-  BoxGeometry,
-  MeshStandardMaterial,
-  DoubleSide,
-  PlaneGeometry,
-  PointLight,
-  SphereGeometry,
-  MeshBasicMaterial,
-  SpotLight,
-  TextureLoader,
-  PostProcessing,
-  Layers,
-} from "three";
+import * as THREE from "three/webgpu";
 import {
   vec3,
   Fn,

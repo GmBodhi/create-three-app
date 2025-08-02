@@ -1,24 +1,11 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector3,
-  PerspectiveCamera,
-  Scene,
-  CubeTextureLoader,
-  SphereGeometry,
-  MeshBasicMaterial,
-  InstancedMesh,
-  DynamicDrawUsage,
-  Mesh,
-  WebGPURenderer,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { stereoPass } from "three/addons/tsl/display/StereoPassNode.js";
 import { anaglyphPass } from "three/addons/tsl/display/AnaglyphPassNode.js";
 import { parallaxBarrierPass } from "three/addons/tsl/display/ParallaxBarrierPassNode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { Timer } from "three/addons/misc/Timer.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, postProcessing;

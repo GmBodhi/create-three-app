@@ -1,26 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Raycaster,
-  Vector2,
-  Object3D,
-  Group,
-  WebGPURenderer,
-  Scene,
-  PerspectiveCamera,
-  AmbientLight,
-  DirectionalLight,
-  Mesh,
-  MeshPhongMaterial,
-  SphereGeometry,
-  MeshLambertMaterial,
-  DoubleSide,
-  PlaneGeometry,
-  TorusGeometry,
-  Color,
-  PostProcessing,
-  SRGBColorSpace,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass, uniform, time, oscSine } from "three/tsl";
 import { outline } from "three/addons/tsl/display/OutlineNode.js";
 

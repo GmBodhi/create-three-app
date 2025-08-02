@@ -1,15 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  PlaneGeometry,
-  VideoFrameTexture,
-  SRGBColorSpace,
-  MeshBasicMaterial,
-  Mesh,
-  WebGPURenderer,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { MP4Demuxer } from "three/addons/libs/demuxer_mp4.js";
 

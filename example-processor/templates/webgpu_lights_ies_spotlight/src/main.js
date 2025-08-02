@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  UnsignedByteType,
-  Scene,
-  IESSpotLight,
-  SpotLightHelper,
-  MeshPhongMaterial,
-  PlaneGeometry,
-  Mesh,
-  BoxGeometry,
-  IcosahedronGeometry,
-  WebGPURenderer,
-  PerspectiveCamera,
-  MathUtils,
-} from "three";
+import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 

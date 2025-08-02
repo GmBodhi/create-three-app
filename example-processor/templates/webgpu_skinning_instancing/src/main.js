@@ -1,21 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  PerspectiveCamera,
-  Scene,
-  Clock,
-  PointLight,
-  PlaneGeometry,
-  Mesh,
-  MeshBasicMaterial,
-  AnimationMixer,
-  Object3D,
-  Color,
-  MeshStandardNodeMaterial,
-  InstancedBufferAttribute,
-  WebGPURenderer,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 import { pass, mix, range, color, oscSine, time } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 

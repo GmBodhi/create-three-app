@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
+  Timer,
   BufferGeometry,
   LineBasicMaterial,
   Float32BufferAttribute,
@@ -10,7 +11,6 @@ import {
   WebGLRenderer,
 } from "three";
 
-import { Timer } from "three/addons/misc/Timer.js";
 import Stats from "three/addons/libs/stats.module.js";
 
 let container, stats, timer;

@@ -1,24 +1,10 @@
 import "./style.css"; // For webpack support
 
-import {
-  Scene,
-  HalfFloatType,
-  EquirectangularReflectionMapping,
-  PerspectiveCamera,
-  TextureLoader,
-  RepeatWrapping,
-  PlaneGeometry,
-  Vector2,
-  MeshStandardMaterial,
-  DoubleSide,
-  Mesh,
-  WebGPURenderer,
-  ACESFilmicToneMapping,
-  PostProcessing,
-} from "three";
+import * as THREE from "three/webgpu";
 
-import { pass, mrt, output, emissive, color, screenUV } from "three/tsl";
+import { pass, mrt, output, emissive, renderOutput } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
+import { fxaa } from "three/addons/tsl/display/FXAANode.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -46,7 +32,7 @@ async function init() {
   const loader = new UltraHDRLoader();
   loader.setDataType(HalfFloatType);
   loader.load(
-    `textures/equirectangular/moonless_golf_2k.hdr.jpg`,
+    "textures/equirectangular/moonless_golf_2k.hdr.jpg",
     function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
       texture.needsUpdate = true;
@@ -147,7 +133,7 @@ async function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer();
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setAnimationLoop(animate);
@@ -158,6 +144,7 @@ async function init() {
   // postprocessing
 
   postProcessing = new PostProcessing(renderer);
+  postProcessing.outputColorTransform = false;
 
   const scenePass = pass(scene, camera);
   scenePass.setMRT(
@@ -167,12 +154,15 @@ async function init() {
     })
   );
 
-  const outputPass = scenePass.getTextureNode();
+  const beautyPass = scenePass.getTextureNode();
   const emissivePass = scenePass.getTextureNode("emissive");
 
   const bloomPass = bloom(emissivePass, 2);
 
-  postProcessing.outputNode = outputPass.add(bloomPass);
+  const outputPass = renderOutput(beautyPass.add(bloomPass));
+
+  const fxaaPass = fxaa(outputPass);
+  postProcessing.outputNode = fxaaPass;
 
   // gui
 

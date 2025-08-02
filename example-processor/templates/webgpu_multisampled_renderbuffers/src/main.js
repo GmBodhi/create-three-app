@@ -1,19 +1,6 @@
 import "./style.css"; // For webpack support
 
-import {
-  Vector2,
-  Matrix4,
-  Vector3,
-  PerspectiveCamera,
-  Scene,
-  Color,
-  BoxGeometry,
-  MeshBasicNodeMaterial,
-  InstancedMesh,
-  WebGPURenderer,
-  RenderTarget,
-  QuadMesh,
-} from "three";
+import * as THREE from "three/webgpu";
 import { texture } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
