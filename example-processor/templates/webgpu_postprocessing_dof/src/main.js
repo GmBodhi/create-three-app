@@ -10,6 +10,7 @@ import {
   uniform,
 } from "three/tsl";
 import { dof } from "three/addons/tsl/display/DepthOfFieldNode.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -17,13 +18,7 @@ import Stats from "three/addons/libs/stats.module.js";
 
 //
 
-let camera, scene, renderer, mesh, stats;
-
-let mouseX = 0,
-  mouseY = 0;
-
-let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2;
+let camera, scene, renderer, mesh, controls, stats;
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -33,7 +28,7 @@ let postProcessing;
 init();
 
 function init() {
-  camera = new PerspectiveCamera(70, width / height, 1, 3000);
+  camera = new PerspectiveCamera(70, width / height, 1, 3500);
   camera.position.z = 200;
 
   scene = new Scene();
@@ -86,16 +81,16 @@ function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   const effectController = {
-    focus: uniform(500.0),
-    aperture: uniform(5),
-    maxblur: uniform(0.01),
+    focusDistance: uniform(500),
+    focalLength: uniform(200),
+    bokehScale: uniform(10),
   };
 
   // post processing
@@ -110,17 +105,17 @@ function init() {
   const dofPass = dof(
     scenePassColor,
     scenePassViewZ,
-    effectController.focus,
-    effectController.aperture.mul(0.00001),
-    effectController.maxblur
+    effectController.focusDistance,
+    effectController.focalLength,
+    effectController.bokehScale
   );
 
   postProcessing.outputNode = dofPass;
 
   // controls
 
-  renderer.domElement.style.touchAction = "none";
-  renderer.domElement.addEventListener("pointermove", onPointerMove);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
 
   window.addEventListener("resize", onWindowResize);
 
@@ -132,22 +127,14 @@ function init() {
   // gui
 
   const gui = new GUI();
-  gui.add(effectController.focus, "value", 10.0, 3000.0, 10).name("focus");
-  gui.add(effectController.aperture, "value", 0, 10, 0.1).name("aperture");
-  gui.add(effectController.maxblur, "value", 0.0, 0.01, 0.001).name("maxblur");
-}
-
-function onPointerMove(event) {
-  if (event.isPrimary === false) return;
-
-  mouseX = event.clientX - windowHalfX;
-  mouseY = event.clientY - windowHalfY;
+  gui
+    .add(effectController.focusDistance, "value", 10.0, 3000.0)
+    .name("focus distance");
+  gui.add(effectController.focalLength, "value", 50, 750).name("focal length");
+  gui.add(effectController.bokehScale, "value", 1, 20).name("bokeh scale");
 }
 
 function onWindowResize() {
-  windowHalfX = window.innerWidth / 2;
-  windowHalfY = window.innerHeight / 2;
-
   width = window.innerWidth;
   height = window.innerHeight;
 
@@ -158,16 +145,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  render();
-
-  stats.update();
-}
-
-function render() {
-  camera.position.x += (mouseX - camera.position.x) * 0.036;
-  camera.position.y += (-mouseY - camera.position.y) * 0.036;
-
-  camera.lookAt(scene.position);
+  controls.update();
 
   postProcessing.render();
+
+  stats.update();
 }
