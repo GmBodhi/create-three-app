@@ -113,9 +113,6 @@ async function init() {
       p2g1Kernel.count = value;
       p2g2Kernel.count = value;
       g2pKernel.count = value;
-      p2g1Kernel.updateDispatchCount();
-      p2g2Kernel.updateDispatchCount();
-      g2pKernel.updateDispatchCount();
       particleMesh.count = value;
       particleCountUniform.value = value;
     });

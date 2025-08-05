@@ -3095,7 +3095,7 @@
         "/src/shaders"
       ]
     },
-    "webgl_reverse_depth_buffer": {
+    "webgl_reversed_depth_buffer": {
       "files": {
         "index.html": "src",
         "main.js": "src",
