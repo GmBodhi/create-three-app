@@ -23,7 +23,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
-import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
 import { DebugEnvironment } from "three/addons/environments/DebugEnvironment.js";
 
 const params = {
@@ -37,11 +36,8 @@ const params = {
 let container, stats;
 let camera, scene, renderer, controls;
 let torusMesh, planeMesh;
-let generatedCubeRenderTarget,
-  ldrCubeRenderTarget,
-  hdrCubeRenderTarget,
-  rgbmCubeRenderTarget;
-let ldrCubeMap, hdrCubeMap, rgbmCubeMap;
+let generatedCubeRenderTarget, ldrCubeRenderTarget, hdrCubeRenderTarget;
+let ldrCubeMap, hdrCubeMap;
 
 init();
 
@@ -105,14 +101,6 @@ function init() {
       ldrCubeRenderTarget = pmremGenerator.fromCubemap(ldrCubeMap);
     });
 
-  const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  rgbmCubeMap = new RGBMLoader()
-    .setMaxRange(16)
-    .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemap(rgbmUrls, function () {
-      rgbmCubeRenderTarget = pmremGenerator.fromCubemap(rgbmCubeMap);
-    });
-
   const pmremGenerator = new PMREMGenerator(renderer);
   pmremGenerator.compileCubemapShader();
 
@@ -137,7 +125,7 @@ function init() {
 
   const gui = new GUI();
 
-  gui.add(params, "envMap", ["Generated", "LDR", "HDR", "RGBM16"]);
+  gui.add(params, "envMap", ["Generated", "LDR", "HDR"]);
   gui.add(params, "roughness", 0, 1, 0.01);
   gui.add(params, "metalness", 0, 1, 0.01);
   gui.add(params, "exposure", 0, 2, 0.01);
@@ -179,10 +167,6 @@ function render() {
     case "HDR":
       renderTarget = hdrCubeRenderTarget;
       cubeMap = hdrCubeMap;
-      break;
-    case "RGBM16":
-      renderTarget = rgbmCubeRenderTarget;
-      cubeMap = rgbmCubeMap;
       break;
   }
 

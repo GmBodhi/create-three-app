@@ -1954,16 +1954,6 @@
         "/src"
       ]
     },
-    "webgl_loader_texture_rgbm": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_texture_tga": {
       "files": {
         "index.html": "src",

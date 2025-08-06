@@ -15,7 +15,7 @@ import {
   reflectVector,
 } from "three/tsl";
 
-import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
+import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -48,11 +48,10 @@ async function init() {
 
   // cube textures
 
-  const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  const cube1Texture = await new RGBMLoader()
-    .setMaxRange(16)
-    .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemapAsync(rgbmUrls);
+  const hdrUrls = ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"];
+  const cube1Texture = await new HDRCubeTextureLoader()
+    .setPath("three/examples/textures/cube/pisaHDR/")
+    .loadAsync(hdrUrls);
 
   cube1Texture.generateMipmaps = true;
   cube1Texture.minFilter = LinearMipmapLinearFilter;
