@@ -27,6 +27,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
 
 const params = {
+  quality: 0.5,
   maxDistance: 0.5,
   opacity: 1,
   thickness: 0.015,
@@ -139,7 +140,6 @@ async function init() {
     customMetalness,
     camera
   );
-  ssrPass.resolutionScale = 1.0;
 
   // blend SSR over beauty
 
@@ -165,6 +165,7 @@ async function init() {
   // GUI
 
   gui = new GUI();
+  gui.add(params, "quality").min(0).max(1).onChange(updateParameters);
   gui.add(params, "maxDistance").min(0).max(1).onChange(updateParameters);
   gui.add(params, "opacity").min(0).max(1).onChange(updateParameters);
   gui.add(params, "thickness").min(0).max(0.05).onChange(updateParameters);
@@ -182,6 +183,7 @@ async function init() {
 }
 
 function updateParameters() {
+  ssrPass.quality.value = params.quality;
   ssrPass.maxDistance.value = params.maxDistance;
   ssrPass.opacity.value = params.opacity;
   ssrPass.thickness.value = params.thickness;

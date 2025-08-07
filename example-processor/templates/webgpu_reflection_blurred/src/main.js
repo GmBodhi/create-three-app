@@ -5,6 +5,7 @@ import {
   Fn,
   vec4,
   fract,
+  sample,
   abs,
   uniform,
   pow,
@@ -151,11 +152,19 @@ async function init() {
     const radiusRange = mix(0.01, 0.1, radius); // range [ 0.01, 0.1 ]
     const roughnessRange = mix(0.3, 0.03, roughness); // range [ 0.03, 0.3 ]
 
+    // mask the sample
+
+    const maskReflection = sample((uv) => {
+      const sample = reflection.sample(uv);
+      const mask = reflectionDepth.sample(uv);
+
+      return vec4(sample.rgb, sample.a.mul(mask.r));
+    }, reflection.uvNode);
+
     // blur the reflection
 
-    const reflectionBlurred = hashBlur(reflection, radiusRange, {
+    const reflectionBlurred = hashBlur(maskReflection, radiusRange, {
       repeats: 40,
-      mask: reflectionDepth,
       premultipliedAlpha: true,
     });
 
