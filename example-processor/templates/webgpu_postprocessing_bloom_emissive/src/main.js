@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 import { pass, mrt, output, emissive } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -32,7 +32,7 @@ function init() {
 
   scene = new Scene();
 
-  new RGBELoader()
+  new HDRLoader()
     .setPath("textures/equirectangular/")
     .load("moonless_golf_1k.hdr", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;

@@ -19,7 +19,7 @@ import * as TWEEN from "tween";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -74,7 +74,7 @@ function init() {
   renderer.shadowMap.type = VSMShadowMap;
   container.appendChild(renderer.domElement);
 
-  new RGBELoader()
+  new HDRLoader()
     .setPath("textures/equirectangular/")
     .load("lobe.hdr", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;

@@ -10,7 +10,7 @@ import {
   pmremTexture,
 } from "three/tsl";
 
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -51,7 +51,7 @@ async function init() {
   controls.maxDistance = 10;
   controls.update();
 
-  new RGBELoader()
+  new HDRLoader()
     .setPath("textures/equirectangular/")
     .load("royal_esplanade_1k.hdr", function (map) {
       map.mapping = EquirectangularReflectionMapping;

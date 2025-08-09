@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let camera, scene, renderer;
 
@@ -32,15 +32,15 @@ async function init() {
   renderer.toneMappingExposure = 1;
   container.appendChild(renderer.domElement);
 
-  const rgbeLoader = await new RGBELoader()
+  const hdrTexture = await new HDRLoader()
     .setPath("textures/equirectangular/")
     .loadAsync("pedestrian_overpass_1k.hdr");
-  rgbeLoader.mapping = EquirectangularReflectionMapping;
+  hdrTexture.mapping = EquirectangularReflectionMapping;
 
   scene = new Scene();
   scene.backgroundBlurriness = 0.5;
-  scene.environment = rgbeLoader;
-  scene.background = rgbeLoader;
+  scene.environment = hdrTexture;
+  scene.background = hdrTexture;
 
   const loader = new GLTFLoader();
   const gltf = await loader.loadAsync("models/gltf/DispersionTest.glb");

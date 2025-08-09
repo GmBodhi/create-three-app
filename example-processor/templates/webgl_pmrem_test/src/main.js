@@ -15,7 +15,7 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -98,7 +98,7 @@ function init() {
 
 function createObjects() {
   let radianceMap = null;
-  new RGBELoader()
+  new HDRLoader()
     // .setDataType( FloatType )
     .setPath("textures/equirectangular/")
     .load("spot1Lux.hdr", function (texture) {

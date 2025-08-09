@@ -21,7 +21,7 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let camera, scene, renderer, controls, drag;
 
@@ -43,8 +43,8 @@ function init() {
 
   // environment
 
-  const rgbeLoader = new RGBELoader();
-  rgbeLoader.load(
+  const hdrLoader = new HDRLoader();
+  hdrLoader.load(
     "three/examples/textures/equirectangular/pedestrian_overpass_1k.hdr",
     (environmentMap) => {
       environmentMap.mapping = EquirectangularReflectionMapping;

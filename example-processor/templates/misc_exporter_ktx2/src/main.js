@@ -21,7 +21,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { KTX2Exporter } from "three/addons/exporters/KTX2Exporter.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let scene,
@@ -61,14 +61,14 @@ function init() {
   scene = new Scene();
 
   exporter = new KTX2Exporter();
-  const rgbeloader = new RGBELoader();
+  const hdrLoader = new HDRLoader();
 
   //
 
   const pmremGenerator = new PMREMGenerator(renderer);
   pmremGenerator.compileEquirectangularShader();
 
-  rgbeloader.load(
+  hdrLoader.load(
     "textures/equirectangular/venice_sunset_1k.hdr",
     function (texture) {
       texture.mapping = EquirectangularReflectionMapping;

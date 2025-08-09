@@ -26,7 +26,7 @@ import {
 
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -407,7 +407,7 @@ async function init() {
 
   // Models / Textures
 
-  const rgbeLoader = new RGBELoader().setPath(
+  const hdrLoader = new HDRLoader().setPath(
     "three/examples/textures/equirectangular/"
   );
   const glbloader = new GLTFLoader().setPath("models/gltf/");
@@ -416,7 +416,7 @@ async function init() {
   );
 
   const [env, model] = await Promise.all([
-    rgbeLoader.loadAsync("blouberg_sunrise_2_1k.hdr"),
+    hdrLoader.loadAsync("blouberg_sunrise_2_1k.hdr"),
     glbloader.loadAsync("duck.glb"),
   ]);
   env.mapping = EquirectangularReflectionMapping;

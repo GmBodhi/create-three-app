@@ -32,7 +32,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let scene, renderer, camera, floor, orbitControls;
 let group, followGroup, model, skeleton, mixer, clock;
@@ -125,7 +125,7 @@ function init() {
 
   // DEMO
 
-  new RGBELoader()
+  new HDRLoader()
     .setPath("textures/equirectangular/")
     .load("lobe.hdr", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;

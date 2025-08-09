@@ -17,7 +17,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { MaterialXLoader } from "three/addons/loaders/MaterialXLoader.js";
@@ -175,7 +175,7 @@ function init() {
 
   //
 
-  new RGBELoader()
+  new HDRLoader()
     .setPath("textures/equirectangular/")
     .load("san_giuseppe_bridge_2k.hdr", async (texture) => {
       texture.mapping = EquirectangularReflectionMapping;

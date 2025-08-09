@@ -17,7 +17,7 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
@@ -55,7 +55,7 @@ function init() {
   scene = new Scene();
   scene.rotation.y = 0.5; // avoid flying objects occluding the sun
 
-  new RGBELoader()
+  new HDRLoader()
     .setPath("textures/equirectangular/")
     .load("quarry_01_1k.hdr", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;

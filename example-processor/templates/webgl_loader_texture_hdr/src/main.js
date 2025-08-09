@@ -12,7 +12,7 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 const params = {
   exposure: 2.0,
@@ -37,7 +37,7 @@ function init() {
 
   camera = new OrthographicCamera(-aspect, aspect, 1, -1, 0, 1);
 
-  new RGBELoader().load(
+  new HDRLoader().load(
     "textures/memorial.hdr",
     function (texture, textureData) {
       //console.log( textureData );
