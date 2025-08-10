@@ -28,6 +28,7 @@ const sections = [
       { path: "2d_rgba8_linear.ktx2" },
       { path: "2d_rgba16_linear.ktx2" },
       { path: "2d_rgba32_linear.ktx2" },
+      { path: "2d_rgb9e5_linear.ktx2" },
     ],
   },
   {
