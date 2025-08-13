@@ -194,6 +194,7 @@ function init() {
     }
   });
   ssrPass.thickness = 0.018;
+  gui.add(ssrPass, "resolutionScale").min(0).max(1);
   gui.add(ssrPass, "thickness").min(0).max(0.1).step(0.0001);
   ssrPass.infiniteThick = false;
   gui.add(ssrPass, "infiniteThick");

@@ -36,6 +36,7 @@ function init() {
   camera.position.set(1300, 500, 0);
 
   scene = new Scene();
+  scene.background = new Color(0x333333);
 
   // textures
 
@@ -130,7 +131,7 @@ function init() {
 
   //
 
-  const helper = new GridHelper(3000, 40, 0x303030, 0x303030);
+  const helper = new GridHelper(3000, 40, 0x444444, 0x444444);
   helper.position.y = -75;
   scene.add(helper);
 

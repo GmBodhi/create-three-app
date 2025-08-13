@@ -30,31 +30,32 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  //renderer.toneMapping = ACESFilmicToneMapping; // apply tone mapping in post processing
+  renderer.toneMapping = NoToneMapping; // apply tone mapping in post processing, instead
   container.appendChild(renderer.domElement);
 
   // post processing
 
-  // render scene pass ( the same of css )
+  // render scene pass
   const scenePass = pass(scene, camera);
   const scenePassViewZ = scenePass.getViewZNode();
 
-  // background color
-  const backgroundColor = color(0x0066ff);
+  // fog color
+  const fogColor = color(0x4080cc); // in sRGB color space
 
-  // get fog factor from scene pass context
-  // equivalent to: scene.fog = new Fog( 0x0066ff, 2.7, 4 );
+  // get fog factor from the scene pass context
+  // equivalent to: scene.fog = new Fog( 0x4080cc, 2.7, 4 );
   const fogFactor = rangeFogFactor(2.7, 4).context({
     getViewZ: () => scenePassViewZ,
   });
 
-  // tone mapping scene pass
-  const scenePassTM = scenePass.toneMapping(ACESFilmicToneMapping);
+  // tone-mapped scene pass
+  const scenePassTM = scenePass.toneMapping(ACESFilmicToneMapping, 1);
 
-  // mix fog from fog factor and background color
-  const compose = fogFactor.mix(scenePassTM, backgroundColor);
+  // mix fog using fog factor and fog color
+  const compose = fogFactor.mix(scenePassTM, fogColor);
 
   postProcessing = new PostProcessing(renderer);
+  postProcessing.outputColorTransform = true; // no tone mapping will be applied, only the default color space transform
   postProcessing.outputNode = compose;
 
   //
