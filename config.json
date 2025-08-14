@@ -1704,6 +1704,16 @@
         "/src"
       ]
     },
+    "webgl_loader_gltf_progressive_lod": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_gltf_sheen": {
       "files": {
         "index.html": "src",
@@ -3691,6 +3701,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_reduce": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_sort_bitonic": {
       "files": {
         "index.html": "src",
@@ -4171,6 +4191,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_cubemap_mipmaps": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_displacementmap": {
       "files": {
         "index.html": "src",
@@ -4222,6 +4252,16 @@
       ]
     },
     "webgpu_materials_sss": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materials_texture_manualmipmap": {
       "files": {
         "index.html": "src",
         "main.js": "src",
