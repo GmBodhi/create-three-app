@@ -72,7 +72,6 @@ function init() {
     antialias: true,
     alpha: true,
     preserveDrawingBuffer: true,
-    premultipliedAlpha: false,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
