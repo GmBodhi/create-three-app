@@ -28,13 +28,15 @@ import Stats from "three/addons/libs/stats.module.js";
 
 const params = {
   quality: 0.5,
+  blurQuality: 2,
   maxDistance: 0.5,
   opacity: 1,
   thickness: 0.015,
+  roughness: 1,
   enabled: true,
 };
 
-let camera, scene, renderer, postProcessing, ssrPass;
+let camera, scene, model, renderer, postProcessing, ssrPass;
 let gui, stats, controls;
 
 init();
@@ -61,7 +63,9 @@ async function init() {
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);
   loader.load("models/gltf/steampunk_camera.glb", function (gltf) {
-    gltf.scene.traverse(function (object) {
+    model = gltf.scene;
+
+    model.traverse(function (object) {
       if (object.material) {
         if (object.material.name === "Lense_Casing") {
           object.material.transparent = true;
@@ -72,8 +76,8 @@ async function init() {
       }
     });
 
-    gltf.scene.position.y = 0.1;
-    scene.add(gltf.scene);
+    model.position.y = 0.1;
+    scene.add(model);
   });
 
   //
@@ -98,15 +102,12 @@ async function init() {
 
   postProcessing = new PostProcessing(renderer);
 
-  const scenePass = pass(scene, camera, {
-    minFilter: NearestFilter,
-    magFilter: NearestFilter,
-  });
+  const scenePass = pass(scene, camera);
   scenePass.setMRT(
     mrt({
       output: output,
       normal: directionToColor(normalView),
-      metalrough: vec2(metalness, roughness),
+      metalrough: vec2(metalness, roughness), // pack metalness and roughness into a single attachement
     })
   );
 
@@ -115,7 +116,7 @@ async function init() {
   const scenePassDepth = scenePass.getTextureNode("depth");
   const scenePassMetalRough = scenePass.getTextureNode("metalrough");
 
-  // optimization bandwidth packing the normals and reducing the texture precision if possible
+  // optional: optimize bandwidth by reducing the texture precision for normals and metal/roughness
 
   const normalTexture = scenePass.getTexture("normal");
   normalTexture.type = UnsignedByteType;
@@ -127,25 +128,20 @@ async function init() {
     return colorToDirection(scenePassNormal.sample(uv));
   });
 
-  const customMetalness = sample((uv) => {
-    return scenePassMetalRough.sample(uv).r;
-  });
-
   //
 
   ssrPass = ssr(
     scenePassColor,
     scenePassDepth,
     customNormal,
-    customMetalness,
-    camera
+    scenePassMetalRough,
+    camera,
+    true
   );
 
   // blend SSR over beauty
 
-  const outputNode = smaa(
-    blendColor(scenePassColor, ssrPass.mul(scenePassMetalRough.g.oneMinus()))
-  );
+  const outputNode = smaa(blendColor(scenePassColor, ssrPass));
 
   postProcessing.outputNode = outputNode;
 
@@ -165,11 +161,22 @@ async function init() {
   // GUI
 
   gui = new GUI();
-  gui.add(params, "quality").min(0).max(1).onChange(updateParameters);
-  gui.add(params, "maxDistance").min(0).max(1).onChange(updateParameters);
-  gui.add(params, "opacity").min(0).max(1).onChange(updateParameters);
-  gui.add(params, "thickness").min(0).max(0.05).onChange(updateParameters);
-  gui.add(params, "enabled").onChange(() => {
+  const ssrFolder = gui.addFolder("SSR");
+  ssrFolder.add(params, "quality").min(0).max(1).onChange(updateParameters);
+  ssrFolder
+    .add(params, "blurQuality")
+    .min(1)
+    .max(3)
+    .step(1)
+    .onChange(updateParameters);
+  ssrFolder.add(params, "maxDistance").min(0).max(1).onChange(updateParameters);
+  ssrFolder.add(params, "opacity").min(0).max(1).onChange(updateParameters);
+  ssrFolder
+    .add(params, "thickness")
+    .min(0)
+    .max(0.05)
+    .onChange(updateParameters);
+  ssrFolder.add(params, "enabled").onChange(() => {
     if (params.enabled === true) {
       postProcessing.outputNode = outputNode;
     } else {
@@ -178,12 +185,25 @@ async function init() {
 
     postProcessing.needsUpdate = true;
   });
+  const modelFolder = gui.addFolder("Model");
+  modelFolder
+    .add(params, "roughness")
+    .min(0)
+    .max(1)
+    .onChange((value) => {
+      model.traverse(function (object) {
+        if (object.material) {
+          object.material.roughness = value;
+        }
+      });
+    });
 
   updateParameters();
 }
 
 function updateParameters() {
   ssrPass.quality.value = params.quality;
+  ssrPass.blurQuality.value = params.blurQuality;
   ssrPass.maxDistance.value = params.maxDistance;
   ssrPass.opacity.value = params.opacity;
   ssrPass.thickness.value = params.thickness;
