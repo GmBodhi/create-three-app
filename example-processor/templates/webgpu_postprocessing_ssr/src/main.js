@@ -124,7 +124,7 @@ async function init() {
   const metalRoughTexture = scenePass.getTexture("metalrough");
   metalRoughTexture.type = UnsignedByteType;
 
-  const customNormal = sample((uv) => {
+  const sceneNormal = sample((uv) => {
     return colorToDirection(scenePassNormal.sample(uv));
   });
 
@@ -133,10 +133,9 @@ async function init() {
   ssrPass = ssr(
     scenePassColor,
     scenePassDepth,
-    customNormal,
-    scenePassMetalRough,
-    camera,
-    true
+    sceneNormal,
+    scenePassMetalRough.r,
+    scenePassMetalRough.g
   );
 
   // blend SSR over beauty
