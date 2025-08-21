@@ -14,6 +14,10 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 let camera, scene, renderer;
 let postProcessing;
 
+const params = {
+  resolutionScale: 0.2,
+};
+
 init();
 
 async function init() {
@@ -75,7 +79,7 @@ async function init() {
     scaleNode,
     samples
   );
-  anamorphicPass.resolution = new Vector2(0.2, 0.2); // 1 = full resolution
+  anamorphicPass.resolutionScale = params.resolutionScale; // 1 = full resolution
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = scenePass.add(anamorphicPass.mul(intensity));
@@ -88,9 +92,9 @@ async function init() {
   gui.add(threshold, "value", 0.8, 3, 0.001).name("threshold");
   gui.add(scaleNode, "value", 1, 10, 0.1).name("scale");
   gui
-    .add(anamorphicPass.resolution, "x", 0.1, 1, 0.1)
-    .name("resolution")
-    .onChange((v) => (anamorphicPass.resolution.y = v));
+    .add(params, "resolutionScale", 0.1, 1, 0.1)
+    .name("resolution scale")
+    .onChange((value) => (anamorphicPass.resolutionScale = value));
 
   //
 

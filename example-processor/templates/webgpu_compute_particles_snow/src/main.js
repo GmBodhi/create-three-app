@@ -297,10 +297,10 @@ async function init() {
 
   const teapotTreePass = pass(teapotTree, camera).getTextureNode();
   const teapotTreePassBlurred = gaussianBlur(teapotTreePass, vec2(1), 6);
-  teapotTreePassBlurred.resolution = new Vector2(0.2, 0.2);
+  teapotTreePassBlurred.resolutionScale = 0.2;
 
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
-  scenePassColorBlurred.resolution = new Vector2(0.5, 0.5);
+  scenePassColorBlurred.resolutionScale = 0.5;
   scenePassColorBlurred.directionNode = vec2(1);
 
   // compose

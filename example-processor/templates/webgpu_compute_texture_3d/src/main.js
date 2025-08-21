@@ -22,10 +22,17 @@ import { RaymarchingBox } from "three/addons/tsl/utils/Raymarching.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 let renderer, scene, camera;
 let mesh;
 let computeNode;
+
+if (WebGPU.isAvailable() === false) {
+  document.body.appendChild(WebGPU.getErrorMessage());
+
+  throw new Error("No WebGPU support");
+}
 
 init();
 

@@ -136,7 +136,7 @@ async function init() {
   const radius = uniform(0.2);
 
   const reflection = reflector({
-    resolution: 0.5,
+    resolutionScale: 0.5,
     depth: true,
     bounces: false,
   }); // 0.5 is half of the rendering view
@@ -211,7 +211,9 @@ async function init() {
   gui = new GUI();
   gui.add(roughness, "value", 0, 1).name("roughness");
   gui.add(radius, "value", 0, 1).name("radius");
-  gui.add(reflection.reflector, "resolution", 0.25, 1).name("resolution");
+  gui
+    .add(reflection.reflector, "resolutionScale", 0.25, 1)
+    .name("resolution scale");
 
   stats = new Stats();
   document.body.appendChild(stats.dom);

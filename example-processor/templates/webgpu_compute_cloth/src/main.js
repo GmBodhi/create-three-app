@@ -23,6 +23,7 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 let renderer, scene, camera, controls;
 
@@ -61,6 +62,14 @@ const API = {
   color: 0x204080, // sRGB
   sheenColor: 0xffffff, // sRGB
 };
+
+// TODO: Fix example with WebGL backend
+
+if (WebGPU.isAvailable() === false) {
+  document.body.appendChild(WebGPU.getErrorMessage());
+
+  throw new Error("No WebGPU support");
+}
 
 init();
 
