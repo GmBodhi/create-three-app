@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  Vector2,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
@@ -15,6 +16,8 @@ import {
   PointLight,
 } from "three";
 
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Reflector } from "three/addons/objects/Reflector.js";
 
@@ -25,6 +28,10 @@ let cameraControls;
 let sphereGroup, smallSphere;
 
 let groundMirror, verticalMirror;
+
+let resolutionScale = 1; // render target scale factor in [ 0, 1 ]
+
+const size = new Vector2();
 
 init();
 
@@ -64,11 +71,14 @@ function init() {
 
   let geometry, material;
 
+  renderer.getDrawingBufferSize(size);
+  size.multiplyScalar(resolutionScale).round();
+
   geometry = new CircleGeometry(40, 64);
   groundMirror = new Reflector(geometry, {
     clipBias: 0.003,
-    textureWidth: window.innerWidth * window.devicePixelRatio,
-    textureHeight: window.innerHeight * window.devicePixelRatio,
+    textureWidth: size.width,
+    textureHeight: size.heignt,
     color: 0xb5b5b5,
   });
   groundMirror.position.y = 0.5;
@@ -78,8 +88,8 @@ function init() {
   geometry = new PlaneGeometry(100, 100);
   verticalMirror = new Reflector(geometry, {
     clipBias: 0.003,
-    textureWidth: window.innerWidth * window.devicePixelRatio,
-    textureHeight: window.innerHeight * window.devicePixelRatio,
+    textureWidth: size.width,
+    textureHeight: size.height,
     color: 0xc1cbcb,
   });
   verticalMirror.position.y = 50;
@@ -187,6 +197,23 @@ function init() {
   blueLight.position.set(0, 50, 550);
   scene.add(blueLight);
 
+  // GUI
+
+  const params = {
+    resolution: resolutionScale,
+  };
+
+  const gui = new GUI();
+
+  const folder = gui.addFolder("Mirrors");
+
+  folder.add(params, "resolution", 0.2, 1, 0.1).onChange(function (val) {
+    resolutionScale = val;
+    onWindowResize();
+  });
+
+  folder.open();
+
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -196,18 +223,11 @@ function onWindowResize() {
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
-  groundMirror
-    .getRenderTarget()
-    .setSize(
-      window.innerWidth * window.devicePixelRatio,
-      window.innerHeight * window.devicePixelRatio
-    );
-  verticalMirror
-    .getRenderTarget()
-    .setSize(
-      window.innerWidth * window.devicePixelRatio,
-      window.innerHeight * window.devicePixelRatio
-    );
+  renderer.getDrawingBufferSize(size);
+  size.multiplyScalar(resolutionScale).round();
+
+  groundMirror.getRenderTarget().setSize(size.width, size.height);
+  verticalMirror.getRenderTarget().setSize(size.width, size.height);
 }
 
 function animate() {
