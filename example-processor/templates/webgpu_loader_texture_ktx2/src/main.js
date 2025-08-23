@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import {
   DataTexture,
   CompressedTexture,
-  WebGLRenderer,
+  WebGPURenderer,
   PlaneGeometry,
   Scene,
   PerspectiveCamera,
@@ -42,10 +42,10 @@ const sections = [
       { path: "2d_astc4x4.ktx2" },
       { path: "2d_etc1.ktx2" },
       { path: "2d_etc2.ktx2" },
-      { path: "2d_bc1.ktx2" },
+      // { path: '2d_bc1.ktx2' }, TODO: Add support for WebGPU
       { path: "2d_bc3.ktx2" },
       // { path: '2d_bc5.ktx2' },
-      { path: "2d_bc7.ktx2" },
+      // { path: '2d_bc7.ktx2' }, TODO: Add support for WebGPU
     ],
   },
 
@@ -55,11 +55,7 @@ const sections = [
       "Basis Universal textures are specialized intermediate formats supporting fast" +
       " runtime transcoding into other GPU texture compression formats. After transcoding," +
       " universal textures can be used on any device at reduced memory cost.",
-    textures: [
-      { path: "2d_etc1s.ktx2" },
-      { path: "2d_uastc.ktx2" },
-      { path: "2d_uastc_hdr4x4.ktx2" },
-    ],
+    textures: [{ path: "2d_etc1s.ktx2" }, { path: "2d_uastc.ktx2" }],
   },
 ];
 
@@ -68,9 +64,11 @@ init();
 async function init() {
   canvas = document.getElementById("c");
 
-  renderer = new WebGLRenderer({ canvas, antialias: true });
+  renderer = new WebGPURenderer({ canvas, antialias: true, forceWebGL: false });
   renderer.setClearColor(0xffffff, 1);
   renderer.setPixelRatio(window.devicePixelRatio);
+
+  await renderer.init();
 
   const loader = new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
@@ -148,7 +146,8 @@ function updateSize() {
   }
 }
 
-/** Rewrite UVs for `flipY=false` textures. */
+// Rewrite UVs for `flipY=false` textures.
+
 function flipY(geometry) {
   const uv = geometry.attributes.uv;
 
@@ -181,10 +180,10 @@ function animate() {
 
     // check if it's offscreen. If so skip it
     if (
-      rect.bottom < 0 ||
-      rect.top > renderer.domElement.clientHeight ||
-      rect.right < 0 ||
-      rect.left > renderer.domElement.clientWidth
+      rect.top < 0 ||
+      rect.bottom > renderer.domElement.clientHeight ||
+      rect.left < 0 ||
+      rect.right > renderer.domElement.clientWidth
     ) {
       return; // it's off screen
     }
@@ -193,10 +192,10 @@ function animate() {
     const width = rect.right - rect.left;
     const height = rect.bottom - rect.top;
     const left = rect.left;
-    const bottom = renderer.domElement.clientHeight - rect.bottom;
+    const top = rect.top;
 
-    renderer.setViewport(left, bottom, width, height);
-    renderer.setScissor(left, bottom, width, height);
+    renderer.setViewport(left, top, width, height);
+    renderer.setScissor(left, top, width, height);
 
     const camera = scene.userData.camera;
 
