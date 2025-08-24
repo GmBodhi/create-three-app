@@ -4391,6 +4391,16 @@
         "/src"
       ]
     },
+    "webgpu_multiple_elements": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_multiple_rendertargets": {
       "files": {
         "index.html": "src",

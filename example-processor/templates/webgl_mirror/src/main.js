@@ -78,7 +78,7 @@ function init() {
   groundMirror = new Reflector(geometry, {
     clipBias: 0.003,
     textureWidth: size.width,
-    textureHeight: size.heignt,
+    textureHeight: size.height,
     color: 0xb5b5b5,
   });
   groundMirror.position.y = 0.5;

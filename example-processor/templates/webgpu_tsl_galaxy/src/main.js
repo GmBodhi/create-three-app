@@ -55,7 +55,7 @@ function init() {
   const position = vec3(cos(angle), 0, sin(angle)).mul(radius);
 
   const randomOffset = range(vec3(-1), vec3(1))
-    .pow(3)
+    .pow3()
     .mul(radiusRatio)
     .add(0.2);
 
