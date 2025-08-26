@@ -9,7 +9,6 @@ import {
   float,
   Fn,
   instancedBufferAttribute,
-  materialColor,
   max,
   normalWorldGeometry,
   pass,

@@ -29,8 +29,8 @@ import { ShadowMapViewer } from "three/addons/utils/ShadowMapViewer.js";
 const SHADOW_MAP_WIDTH = 2048,
   SHADOW_MAP_HEIGHT = 1024;
 
-let SCREEN_WIDTH = window.innerWidth;
-let SCREEN_HEIGHT = window.innerHeight;
+const SCREEN_WIDTH = window.innerWidth;
+const SCREEN_HEIGHT = window.innerHeight;
 const FLOOR = -250;
 
 let camera, controls, scene, renderer;

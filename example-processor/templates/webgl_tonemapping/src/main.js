@@ -140,7 +140,7 @@ async function init() {
 
     .name("type")
     .onChange(function () {
-      updateGUI(toneMappingFolder);
+      updateGUI();
 
       renderer.toneMapping = toneMappingOptions[params.toneMapping];
     });
@@ -168,7 +168,7 @@ async function init() {
       scene.backgroundIntensity = value;
     });
 
-  updateGUI(toneMappingFolder);
+  updateGUI();
 
   gui.open();
 }

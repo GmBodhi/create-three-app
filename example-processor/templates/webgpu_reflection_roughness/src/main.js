@@ -38,7 +38,7 @@ async function init() {
   const loader = new UltraHDRLoader();
   loader.setDataType(HalfFloatType);
   loader.load(
-    `textures/equirectangular/spruit_sunrise_2k.hdr.jpg`,
+    "textures/equirectangular/spruit_sunrise_2k.hdr.jpg",
     function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
       texture.needsUpdate = true;

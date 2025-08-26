@@ -215,11 +215,11 @@ const leftEffectController = {
   highlight: uniform(0),
   // Uniform that corresponds to the index of the current algorithm within the algorithms array
   currentAlgo: uniform(0),
-  // Current state of reduction (Running, validating, reseting)
+  // Current state of reduction (Running, validating, resetting)
   state: "Run Algo",
   // Current display mode
   displayMode: "Input Log2",
-  // Reduce 0 specfic uniform
+  // Reduce 0 specific uniform
   numThreadsDispatched: uniform(size / 2),
   // The subgroup size used by this side's device
 };
@@ -585,7 +585,7 @@ const createReduce4Fn = (props) => {
     const subgroupMetaRank = invocationLocalIndex.div(subgroupSize);
 
     // Each subgroup block scans across 4 subgroups. So when we move into a new subgroup,
-    // align that subgroups' acccesses to the next 4 subgroups
+    // align that subgroups' accesses to the next 4 subgroups
     const subgroupOffset = subgroupMetaRank
       .mul(subgroupSize)
       .mul(workPerThread);

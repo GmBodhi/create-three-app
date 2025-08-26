@@ -107,7 +107,7 @@ async function init() {
     mrt({
       output: output,
       normal: directionToColor(normalView),
-      metalrough: vec2(metalness, roughness), // pack metalness and roughness into a single attachement
+      metalrough: vec2(metalness, roughness), // pack metalness and roughness into a single attachment
     })
   );
 

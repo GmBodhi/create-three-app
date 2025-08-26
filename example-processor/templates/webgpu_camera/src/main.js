@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { color } from "three/tsl";
 
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;
@@ -12,7 +11,6 @@ let camera, scene, renderer, mesh;
 let cameraRig, activeCamera, activeHelper;
 let cameraPerspective, cameraOrtho;
 let cameraPerspectiveHelper, cameraOrthoHelper;
-let backgroundNode;
 const frustumSize = 600;
 
 init();
