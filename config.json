@@ -1644,6 +1644,16 @@
         "/src"
       ]
     },
+    "webgl_loader_gltf_animation_pointer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_gltf_anisotropy": {
       "files": {
         "index.html": "src",
@@ -5175,6 +5185,16 @@
       ]
     },
     "webgpu_tsl_vfx_tornado": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_tsl_wood": {
       "files": {
         "index.html": "src",
         "main.js": "src",
