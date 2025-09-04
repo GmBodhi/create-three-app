@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import {
   If,
-  PI2,
+  TWO_PI,
   atan,
   color,
   frontFacing,
@@ -68,7 +68,10 @@ function init() {
   // TSL functions
 
   const inAngle = Fn(([position, angleStart, angleArc]) => {
-    const angle = atan(position.y, position.x).sub(angleStart).mod(PI2).toVar();
+    const angle = atan(position.y, position.x)
+      .sub(angleStart)
+      .mod(TWO_PI)
+      .toVar();
     return angle.greaterThan(0).and(angle.lessThan(angleArc));
   });
 

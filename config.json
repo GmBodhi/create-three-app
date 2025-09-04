@@ -10,6 +10,16 @@
         "/src"
       ]
     },
+    "css3d_mixed": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "css3d_molecules": {
       "files": {
         "index.html": "src",
@@ -2215,6 +2225,16 @@
       ]
     },
     "webgl_materials_envmaps_exr": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_materials_envmaps_fasthdr": {
       "files": {
         "index.html": "src",
         "main.js": "src",

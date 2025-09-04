@@ -19,7 +19,6 @@ import {
   positionLocal,
   modelWorldMatrix,
   sqrt,
-  attribute,
   property,
   float,
   Fn,
@@ -30,6 +29,7 @@ import {
   normalize,
   instanceIndex,
   length,
+  vertexIndex,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -56,17 +56,11 @@ class BirdGeometry extends BufferGeometry {
   constructor() {
     super();
 
-    const trianglesPerBird = 3;
-    const triangles = BIRDS * trianglesPerBird;
-    const points = triangles * 3;
+    const points = 3 * 3;
 
     const vertices = new BufferAttribute(new Float32Array(points * 3), 3);
-    const references = new BufferAttribute(new Uint32Array(points), 1);
-    const birdVertex = new BufferAttribute(new Uint32Array(points), 1);
 
     this.setAttribute("position", vertices);
-    this.setAttribute("reference", references);
-    this.setAttribute("birdVertex", birdVertex);
 
     let v = 0;
 
@@ -78,24 +72,14 @@ class BirdGeometry extends BufferGeometry {
 
     const wingsSpan = 20;
 
-    for (let f = 0; f < BIRDS; f++) {
-      // Body
-      verts_push(0, 0, -20, 0, -8, 10, 0, 0, 30);
+    // Body
+    verts_push(0, 0, -20, 0, -8, 10, 0, 0, 30);
 
-      // Wings
-      verts_push(0, 0, -15, -wingsSpan, 0, 5, 0, 0, 15);
+    // Left Wing
+    verts_push(0, 0, -15, -wingsSpan, 0, 5, 0, 0, 15);
 
-      verts_push(0, 0, 15, wingsSpan, 0, 5, 0, 0, -15);
-    }
-
-    for (let v = 0; v < triangles * 3; v++) {
-      const triangleIndex = ~~(v / 3);
-      const birdIndex = ~~(triangleIndex / trianglesPerBird);
-
-      references.array[v] = birdIndex;
-
-      birdVertex.array[v] = v % 9;
-    }
+    // Right Wing
+    verts_push(0, 0, 15, wingsSpan, 0, 5, 0, 0, -15);
 
     this.scale(0.2, 0.2, 0.2);
   }
@@ -228,14 +212,13 @@ function init() {
   // Animate bird mesh within vertex shader, then apply position offset to vertices.
 
   const birdVertexTSL = Fn(() => {
-    const reference = attribute("reference");
-    const birdVertex = attribute("birdVertex");
-
     const position = positionLocal.toVar();
-    const newPhase = phaseStorage.element(reference).toVar();
-    const newVelocity = normalize(velocityStorage.element(reference)).toVar();
+    const newPhase = phaseStorage.element(instanceIndex).toVar();
+    const newVelocity = normalize(
+      velocityStorage.element(instanceIndex)
+    ).toVar();
 
-    If(birdVertex.equal(4).or(birdVertex.equal(7)), () => {
+    If(vertexIndex.equal(4).or(vertexIndex.equal(7)), () => {
       // flap wings
       position.y = sin(newPhase).mul(5.0);
     });
@@ -259,7 +242,7 @@ function init() {
     const matz = mat3(cosrz, sinrz, 0, negate(sinrz), cosrz, 0, 0, 0, 1);
 
     const finalVert = maty.mul(matz).mul(newPosition);
-    finalVert.addAssign(positionStorage.element(reference));
+    finalVert.addAssign(positionStorage.element(instanceIndex));
 
     return cameraProjectionMatrix.mul(cameraViewMatrix).mul(finalVert);
   });
@@ -267,7 +250,7 @@ function init() {
   birdMaterial.vertexNode = birdVertexTSL();
   birdMaterial.side = DoubleSide;
 
-  const birdMesh = new Mesh(birdGeometry, birdMaterial);
+  const birdMesh = new InstancedMesh(birdGeometry, birdMaterial, BIRDS);
   birdMesh.rotation.y = Math.PI / 2;
   birdMesh.matrixAutoUpdate = false;
   birdMesh.frustumCulled = false;

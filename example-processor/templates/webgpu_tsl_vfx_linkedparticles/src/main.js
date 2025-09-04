@@ -9,7 +9,7 @@ import {
   min,
   mix,
   PI,
-  PI2,
+  TWO_PI,
   sin,
   vec2,
   vec3,
@@ -164,7 +164,7 @@ function init() {
     const life = particlePositions.toAttribute().w;
     const modLife = pcurve(life.oneMinus(), 8.0, 1.0);
     const pulse = pcurve(
-      sin(hash(instanceIndex).mul(PI2).add(time.mul(0.5).mul(PI2)))
+      sin(hash(instanceIndex).mul(TWO_PI).add(time.mul(0.5).mul(TWO_PI)))
         .mul(0.5)
         .add(0.5),
       0.25,
@@ -360,7 +360,7 @@ function init() {
 
     // random spherical direction
     const rRange = float(0.01);
-    const rTheta = hash(particleIndex).mul(PI2);
+    const rTheta = hash(particleIndex).mul(TWO_PI);
     const rPhi = hash(particleIndex.add(1)).mul(PI);
     const rx = sin(rTheta).mul(cos(rPhi));
     const ry = sin(rTheta).mul(sin(rPhi));

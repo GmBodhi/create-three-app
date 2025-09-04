@@ -13,7 +13,7 @@ import {
   uv,
   vec3,
   vec4,
-  PI2,
+  TWO_PI,
 } from "three/tsl";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -49,7 +49,7 @@ function init() {
   const radius = radiusRatio.pow(1.5).mul(5).toVar();
 
   const branches = 3;
-  const branchAngle = range(0, branches).floor().mul(PI2.div(branches));
+  const branchAngle = range(0, branches).floor().mul(TWO_PI.div(branches));
   const angle = branchAngle.add(time.mul(radiusRatio.oneMinus()));
 
   const position = vec3(cos(angle), 0, sin(angle)).mul(radius);

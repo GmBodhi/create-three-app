@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 import {
-  PI2,
+  TWO_PI,
   oneMinus,
   spherizeUV,
   sin,
@@ -99,7 +99,9 @@ function init() {
     mainUv.assign(mainUv.mul(2, 1).sub(vec2(0.5, 0))); // scale
 
     // gradients
-    const gradient1 = sin(time.mul(10).sub(mainUv.y.mul(PI2).mul(2))).toVar();
+    const gradient1 = sin(
+      time.mul(10).sub(mainUv.y.mul(TWO_PI).mul(2))
+    ).toVar();
     const gradient2 = mainUv.y.smoothstep(0, 1).toVar();
     mainUv.x.addAssign(gradient1.mul(gradient2).mul(0.2));
 
@@ -147,7 +149,7 @@ function init() {
     mainUv.x.addAssign(perlinNoise.x.mul(0.5));
 
     // gradients
-    const gradient1 = sin(time.mul(10).sub(mainUv.y.mul(PI2).mul(2)));
+    const gradient1 = sin(time.mul(10).sub(mainUv.y.mul(TWO_PI).mul(2)));
     const gradient2 = mainUv.y.smoothstep(0, 1);
     const gradient3 = oneMinus(mainUv.y).smoothstep(0, 0.3);
     mainUv.x.addAssign(gradient1.mul(gradient2).mul(0.2));

@@ -10,7 +10,7 @@ import {
   uniform,
   pass,
   PI,
-  PI2,
+  TWO_PI,
   color,
   positionLocal,
   sin,
@@ -56,7 +56,7 @@ function init() {
     const centeredUv = uv.sub(0.5).toVar();
     const distanceToCenter = centeredUv.length();
     const angle = atan(centeredUv.y, centeredUv.x);
-    const radialUv = vec2(angle.add(PI).div(PI2), distanceToCenter).toVar();
+    const radialUv = vec2(angle.add(PI).div(TWO_PI), distanceToCenter).toVar();
     radialUv.mulAssign(multiplier);
     radialUv.x.addAssign(rotation);
     radialUv.y.addAssign(offset);
