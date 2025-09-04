@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { mix, oscSine, time, pmremTexture, float } from "three/tsl";
 
-import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
+import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -26,11 +26,10 @@ async function init() {
 
   scene = new Scene();
 
-  const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  const cube1Texture = new RGBMLoader()
-    .setMaxRange(16)
-    .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemap(rgbmUrls);
+  const hdrUrls = ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"];
+  const cube1Texture = new HDRCubeTextureLoader()
+    .setPath("three/examples/textures/cube/pisaHDR/")
+    .load(hdrUrls);
 
   cube1Texture.generateMipmaps = true;
   cube1Texture.minFilter = LinearMipmapLinearFilter;

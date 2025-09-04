@@ -365,6 +365,7 @@ async function init(forceGlobalSwap = false) {
           nextBlockHeight
             .greaterThan(WORKGROUP_SIZE[0] * 2)
             .select(StepType.DISPERSE_GLOBAL, StepType.DISPERSE_LOCAL)
+            .uniformFlow()
         );
       }
     });

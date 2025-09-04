@@ -25,7 +25,7 @@ import {
   ZIPS_COMPRESSION,
   NO_COMPRESSION,
 } from "three/addons/exporters/EXRExporter.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let scene,
@@ -66,14 +66,14 @@ function init() {
   scene = new Scene();
 
   exporter = new EXRExporter();
-  const rgbeloader = new RGBELoader();
+  const hdrLoader = new HDRLoader();
 
   //
 
   const pmremGenerator = new PMREMGenerator(renderer);
   pmremGenerator.compileEquirectangularShader();
 
-  rgbeloader.load(
+  hdrLoader.load(
     "textures/equirectangular/san_giuseppe_bridge_2k.hdr",
     function (texture) {
       texture.mapping = EquirectangularReflectionMapping;

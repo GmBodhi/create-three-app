@@ -1,0 +1,205 @@
+@keyframes labelAbsorb {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%);
+  }
+  40%,
+  60% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  80% {
+    opacity: 1;
+    transform: translate(0, -20%);
+  }
+  to {
+    opacity: 0;
+    transform: translate(0, 100%);
+  }
+}
+#reduction-panel,
+.thread-row {
+  display: flex;
+  align-items: center;
+}
+#reduction-panel {
+  background-color: #111;
+  width: 100%;
+  position: fixed;
+  height: auto;
+  bottom: 0;
+  z-index: 99;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 2px solid #222;
+  text-align: center;
+}
+#panel-title {
+  width: fit-content;
+}
+.thread-row {
+  flex-direction: row;
+  margin: 4px 0;
+  position: relative;
+}
+.thread {
+  background-color: #444;
+  transition: background-color 0.5s, transform 0.5s;
+}
+.stage-display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 5px;
+}
+.stage-label {
+  font-size: 1.2em;
+  color: #aaa;
+  font-style: bold;
+  margin-top: 6px;
+  margin-bottom: 20px;
+}
+.thread {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  margin: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.05),
+    rgba(0, 0, 0, 0.2)
+  );
+  box-shadow: inset 0 0 2px rgba(255, 255, 255, 0.1);
+  font-family: monospace;
+  color: #fff;
+}
+.thread_data {
+  display: block;
+  max-width: 100%;
+  padding: 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(8px, 2vw, 14px);
+  text-align: center;
+}
+.subgroup {
+  display: flex;
+  position: relative;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.subgroup::after,
+.subgroup::before {
+  position: absolute;
+  z-index: 100;
+  width: 100%;
+}
+.subgroup::before {
+  content: "subgroupAdd()";
+  top: -20px;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  font-weight: 700;
+  color: #fff;
+}
+.subgroup::after {
+  content: attr(data-label);
+  bottom: -20px;
+  opacity: 1;
+  color: gray;
+}
+.reduction-stage {
+  margin-bottom: 20px;
+}
+.subgroup.anim::before {
+  opacity: 0;
+  animation-name: labelAbsorb;
+  animation-duration: 1.5s;
+  transition: transform 0.6s ease-out, opacity 0.3s ease-in 0.3s;
+}
+body {
+  margin: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: Monospace;
+  font-size: 13px;
+  line-height: 24px;
+  overscroll-behavior: none;
+}
+a {
+  color: #ff0;
+  text-decoration: none;
+  pointer-events: auto;
+}
+a:hover {
+  text-decoration: underline;
+}
+#overlay button,
+button {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+#info,
+#overlay {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+#info {
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+}
+button,
+input,
+select {
+  pointer-events: auto;
+}
+.lil-gui {
+  z-index: 2 !important;
+}
+@media all and (max-width: 640px) {
+  .lil-gui.root {
+    right: auto;
+    top: auto;
+    max-height: 50%;
+    max-width: 80%;
+    bottom: 0;
+    left: 0;
+  }
+}
+#overlay {
+  font-size: 16px;
+  z-index: 2;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.7);
+}
+#overlay button {
+  background: 0 0;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  color: #fff;
+  padding: 12px 18px;
+}
+#notSupported {
+  width: 50%;
+  background-color: red;
+  margin: 20px auto auto;
+  padding: 10px;
+}

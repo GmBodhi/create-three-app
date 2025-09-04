@@ -6,7 +6,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let renderer, scene, camera, controls;
 let gui,
@@ -68,7 +68,7 @@ async function init() {
   controls.target.set(0, 0.03, 0);
   controls.update();
 
-  const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");
+  const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
 
   const dracoLoader = new DRACOLoader();
   dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
@@ -78,7 +78,7 @@ async function init() {
   gltfLoader.setPath("models/gltf/");
 
   const [texture, gltf] = await Promise.all([
-    rgbeLoader.loadAsync("venice_sunset_1k.hdr"),
+    hdrLoader.loadAsync("venice_sunset_1k.hdr"),
     gltfLoader.loadAsync("venice_mask.glb"),
   ]);
 
@@ -105,7 +105,7 @@ async function init() {
 
     .name("type")
     .onChange(function () {
-      updateGUI(toneMappingFolder);
+      updateGUI();
 
       renderer.toneMapping = toneMappingOptions[params.toneMapping];
     });
@@ -133,7 +133,7 @@ async function init() {
       scene.backgroundIntensity = value;
     });
 
-  updateGUI(toneMappingFolder);
+  updateGUI();
 
   gui.open();
 }

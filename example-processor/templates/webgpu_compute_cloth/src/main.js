@@ -22,7 +22,8 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 let renderer, scene, camera, controls;
 
@@ -62,6 +63,14 @@ const API = {
   sheenColor: 0xffffff, // sRGB
 };
 
+// TODO: Fix example with WebGL backend
+
+if (WebGPU.isAvailable() === false) {
+  document.body.appendChild(WebGPU.getErrorMessage());
+
+  throw new Error("No WebGPU support");
+}
+
 init();
 
 async function init() {
@@ -88,9 +97,9 @@ async function init() {
   controls.target.set(0, -0.1, 0);
   controls.update();
 
-  const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");
+  const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
 
-  const hdrTexture = await rgbeLoader.loadAsync("royal_esplanade_1k.hdr");
+  const hdrTexture = await hdrLoader.loadAsync("royal_esplanade_1k.hdr");
   hdrTexture.mapping = EquirectangularReflectionMapping;
   scene.background = hdrTexture;
   scene.backgroundBlurriness = 0.5;

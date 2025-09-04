@@ -141,7 +141,7 @@ async function init() {
     .min(0.01)
     .max(1)
     .onChange(updateParameters);
-  gui.add(params, "radius").min(0.01).max(1).onChange(updateParameters);
+  gui.add(params, "radius").min(0.1).max(1).onChange(updateParameters);
   gui.add(params, "scale").min(0.01).max(2).onChange(updateParameters);
   gui.add(params, "thickness").min(0.01).max(2).onChange(updateParameters);
 }

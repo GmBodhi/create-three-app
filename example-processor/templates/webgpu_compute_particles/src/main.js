@@ -7,7 +7,6 @@ import {
   uniform,
   float,
   uv,
-  vec2,
   vec3,
   hash,
   shapeCircle,
@@ -20,7 +19,7 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-const particleCount = 200_000;
+const particleCount = 200000;
 
 const gravity = uniform(-0.00098);
 const bounce = uniform(0.8);

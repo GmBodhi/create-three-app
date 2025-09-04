@@ -1,0 +1,116 @@
+* {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background-color: #000;
+  color: #fff;
+  font-family: Monospace;
+  font-size: 13px;
+  line-height: 24px;
+  overscroll-behavior: none;
+}
+a {
+  color: #ff0;
+  text-decoration: none;
+}
+#c,
+#content {
+  position: absolute;
+  width: 100%;
+}
+#content {
+  top: 0;
+  z-index: 1;
+  padding: 3em 0 0;
+}
+#c {
+  left: 0;
+  height: 100%;
+}
+.list-item {
+  display: inline-block;
+  margin: 1em;
+  padding: 1em;
+  box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.25);
+}
+.list-item > div:nth-child(1) {
+  width: 200px;
+  height: 200px;
+}
+.list-item > div:nth-child(2) {
+  color: #888;
+  font-family: sans-serif;
+  font-size: large;
+  width: 200px;
+  margin-top: 0.5em;
+}
+a:hover {
+  text-decoration: underline;
+}
+#overlay button,
+button {
+  text-transform: uppercase;
+  cursor: pointer;
+}
+#info,
+#overlay {
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+#info {
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
+}
+a,
+button,
+input,
+select {
+  pointer-events: auto;
+}
+.lil-gui {
+  z-index: 2 !important;
+}
+@media all and (max-width: 640px) {
+  .lil-gui.root {
+    right: auto;
+    top: auto;
+    max-height: 50%;
+    max-width: 80%;
+    bottom: 0;
+    left: 0;
+  }
+}
+#overlay {
+  font-size: 16px;
+  z-index: 2;
+  left: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.7);
+}
+#overlay button {
+  background: 0 0;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  color: #fff;
+  padding: 12px 18px;
+}
+#notSupported {
+  width: 50%;
+  background-color: red;
+  margin: 20px auto auto;
+  padding: 10px;
+}

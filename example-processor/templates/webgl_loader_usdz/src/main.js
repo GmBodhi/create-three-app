@@ -9,7 +9,7 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { USDLoader } from "three/addons/loaders/USDLoader.js";
 
 let camera, scene, renderer;
@@ -27,12 +27,12 @@ async function init() {
 
   scene = new Scene();
 
-  const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");
+  const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
 
   const usdzLoader = new USDLoader().setPath("models/usdz/");
 
   const [texture, model] = await Promise.all([
-    rgbeLoader.loadAsync("venice_sunset_1k.hdr"),
+    hdrLoader.loadAsync("venice_sunset_1k.hdr"),
     usdzLoader.loadAsync("saeukkang.usdz"),
   ]);
 

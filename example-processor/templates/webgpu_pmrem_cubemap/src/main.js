@@ -10,7 +10,7 @@ import {
   pmremTexture,
 } from "three/tsl";
 
-import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
+import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -51,10 +51,10 @@ async function init() {
   controls.maxDistance = 10;
   controls.update();
 
-  new RGBMLoader()
-    .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemap(
-      ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"],
+  new HDRCubeTextureLoader()
+    .setPath("three/examples/textures/cube/pisaHDR/")
+    .load(
+      ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"],
       function (map) {
         const reflectVec = positionViewDirection
           .negate()

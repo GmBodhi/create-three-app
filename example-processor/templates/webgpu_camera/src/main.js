@@ -1,7 +1,6 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { color } from "three/tsl";
 
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;
@@ -12,7 +11,6 @@ let camera, scene, renderer, mesh;
 let cameraRig, activeCamera, activeHelper;
 let cameraPerspective, cameraOrtho;
 let cameraPerspectiveHelper, cameraOrthoHelper;
-let backgroundNode;
 const frustumSize = 600;
 
 init();
@@ -100,7 +98,7 @@ function init() {
 
   const particles = new Points(
     geometry,
-    new PointsMaterial({ color: 0x888888 })
+    new PointsMaterial({ color: 0xffffff })
   );
   scene.add(particles);
 
@@ -113,7 +111,6 @@ function init() {
   container.appendChild(renderer.domElement);
 
   renderer.setScissorTest(true);
-  backgroundNode = color(0x111111);
   renderer.setClearColor(0x000000, 1);
 
   //
@@ -203,20 +200,17 @@ function render() {
 
   activeHelper.visible = false;
 
-  renderer.autoClear = true;
-
+  renderer.setClearColor(0x000000, 1);
   renderer.setScissor(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
   renderer.setViewport(0, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
-  scene.backgroundNode = null;
   renderer.render(scene, activeCamera);
 
   //
 
   activeHelper.visible = true;
 
+  renderer.setClearColor(0x111111, 1);
   renderer.setScissor(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
   renderer.setViewport(SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2, SCREEN_HEIGHT);
-  renderer.autoClear = false;
-  scene.backgroundNode = backgroundNode;
   renderer.render(scene, camera);
 }

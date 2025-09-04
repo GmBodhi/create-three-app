@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -52,7 +52,7 @@ function init() {
 
   scene.background = new Color(0xaaaaaa);
 
-  new RGBELoader()
+  new HDRLoader()
     .setPath("textures/equirectangular/")
     .load("royal_esplanade_1k.hdr", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;

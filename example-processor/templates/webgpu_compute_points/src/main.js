@@ -10,7 +10,6 @@ import {
   instancedArray,
   float,
   vec2,
-  vec3,
   color,
   instanceIndex,
 } from "three/tsl";
@@ -64,7 +63,7 @@ function init() {
     const distanceFromPointer = pointer.sub(position).length();
 
     particle.assign(
-      distanceFromPointer.lessThanEqual(pointerSize).select(vec3(), position)
+      distanceFromPointer.lessThanEqual(pointerSize).select(vec2(), position)
     );
   });
 

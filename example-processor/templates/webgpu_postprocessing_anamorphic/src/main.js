@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 import { pass, cubeTexture, screenUV, grayscale, uniform } from "three/tsl";
 import { anamorphic } from "three/addons/tsl/display/AnamorphicNode.js";
 
-import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
+import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -13,6 +13,10 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
 let postProcessing;
+
+const params = {
+  resolutionScale: 0.2,
+};
 
 init();
 
@@ -30,11 +34,10 @@ async function init() {
 
   scene = new Scene();
 
-  const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  const cube1Texture = await new RGBMLoader()
-    .setMaxRange(16)
-    .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemapAsync(rgbmUrls);
+  const hdrUrls = ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"];
+  const cube1Texture = await new HDRCubeTextureLoader()
+    .setPath("three/examples/textures/cube/pisaHDR/")
+    .loadAsync(hdrUrls);
 
   scene.environment = cube1Texture;
   scene.backgroundNode = grayscale(
@@ -76,7 +79,7 @@ async function init() {
     scaleNode,
     samples
   );
-  anamorphicPass.resolution = new Vector2(0.2, 0.2); // 1 = full resolution
+  anamorphicPass.resolutionScale = params.resolutionScale; // 1 = full resolution
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = scenePass.add(anamorphicPass.mul(intensity));
@@ -89,9 +92,9 @@ async function init() {
   gui.add(threshold, "value", 0.8, 3, 0.001).name("threshold");
   gui.add(scaleNode, "value", 1, 10, 0.1).name("scale");
   gui
-    .add(anamorphicPass.resolution, "x", 0.1, 1, 0.1)
-    .name("resolution")
-    .onChange((v) => (anamorphicPass.resolution.y = v));
+    .add(params, "resolutionScale", 0.1, 1, 0.1)
+    .name("resolution scale")
+    .onChange((value) => (anamorphicPass.resolutionScale = value));
 
   //
 

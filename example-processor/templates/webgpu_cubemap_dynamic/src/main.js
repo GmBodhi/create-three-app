@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RGBMLoader } from "three/addons/loaders/RGBMLoader.js";
+import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
@@ -35,13 +35,12 @@ async function init() {
     "three/examples/textures/uv_grid_opengl.jpg"
   );
 
-  const rgbmUrls = ["px.png", "nx.png", "py.png", "ny.png", "pz.png", "nz.png"];
-  const texture = await new RGBMLoader()
-    .setMaxRange(16)
-    .setPath("three/examples/textures/cube/pisaRGBM16/")
-    .loadCubemapAsync(rgbmUrls);
+  const hdrUrls = ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"];
+  const texture = await new HDRCubeTextureLoader()
+    .setPath("three/examples/textures/cube/pisaHDR/")
+    .loadAsync(hdrUrls);
 
-  texture.name = "pisaRGBM16";
+  texture.name = "pisaHDR";
   texture.minFilter = LinearMipmapLinearFilter;
   texture.magFilter = LinearFilter;
 

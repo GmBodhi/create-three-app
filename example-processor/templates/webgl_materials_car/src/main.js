@@ -25,7 +25,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let camera, scene, renderer;
 let stats;
@@ -69,7 +69,7 @@ function init() {
 
   scene = new Scene();
   scene.background = new Color(0x333333);
-  scene.environment = new RGBELoader().load(
+  scene.environment = new HDRLoader().load(
     "textures/equirectangular/venice_sunset_1k.hdr"
   );
   scene.environment.mapping = EquirectangularReflectionMapping;

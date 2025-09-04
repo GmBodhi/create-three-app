@@ -6,7 +6,7 @@ import { color, lights } from "three/tsl";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 class CustomLightingModel extends LightingModel {
-  direct({ lightColor, reflectedLight }, stack) {
+  direct({ lightColor, reflectedLight } /*, builder */) {
     reflectedLight.directDiffuse.addAssign(lightColor);
   }
 }
@@ -59,7 +59,7 @@ function init() {
 
   const points = [];
 
-  for (let i = 0; i < 500_000; i++) {
+  for (let i = 0; i < 500000; i++) {
     const point = new Vector3().random().subScalar(0.5).multiplyScalar(3);
     points.push(point);
   }

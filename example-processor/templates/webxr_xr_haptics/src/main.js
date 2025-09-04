@@ -183,7 +183,7 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function handleCollisions(controller) {
+function handleCollisions() {
   for (let i = 0; i < group.children.length; i++) {
     group.children[i].collided = false;
   }

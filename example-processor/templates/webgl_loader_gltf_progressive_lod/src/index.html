@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>three.js webgl - GLTF with progressive loading</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+  </head>
+
+  <!--
+			Documentation: 
+			https://www.npmjs.com/package/@needle-tools/gltf-progressive
+
+			Example:
+			Initial download reduced by 98.8% with progressive loading.
+			Mesh and texture LODs are loaded on demand depending on the mesh size on screen.
+
+			→ 237.9 MB original asset sizes 
+			→ 2.9 MB initial download (base data)
+			→ 46.3 MB progressive download on demand (all LODs, in reality only individual levels are actually loaded)
+	-->
+
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      - GLTF progressive loading: 82x faster -
+      <a
+        href="https://www.npmjs.com/package/@needle-tools/gltf-progressive"
+        target="_blank"
+        rel="noopener"
+        >@needle-tools/gltf-progressive</a
+      ><br />
+      Mobile Home &amp; Peachy Balloon by
+      <a
+        href="https://sketchfab.com/3d-models/mobile-home-5240b1dbc29c4ea28be7f91b3638951a"
+        target="_blank"
+        rel="noopener"
+        >ConradJustin</a
+      ><br />
+      The Forgotten Knight by
+      <a
+        href="https://sketchfab.com/3d-models/the-forgotten-knight-d14eb14d83bd4e7ba7cbe443d76a10fd"
+        target="_blank"
+        rel="noopener"
+        >Dark Igorek</a
+      ><br />
+      <a
+        href="https://hdrihaven.com/hdri/?h=quarry_01"
+        target="_blank"
+        rel="noopener"
+        >Quarry 01</a
+      >
+      from
+      <a href="https://hdrihaven.com/" target="_blank" rel="noopener"
+        >HDRI Haven</a
+      >
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.module.js",
+          "three/addons/": "./jsm/",
+          "three/examples/": "./",
+          "@needle-tools/gltf-progressive": "https://cdn.jsdelivr.net/npm/@needle-tools/gltf-progressive@3.2.0/gltf-progressive.min.js"
+        }
+      }
+    </script>
+  </body>
+</html>

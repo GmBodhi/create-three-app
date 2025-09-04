@@ -36,6 +36,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import Stats from "stats-gl";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 let container, stats;
 let camera, scene, renderer;
@@ -98,6 +99,14 @@ class BirdGeometry extends BufferGeometry {
 
     this.scale(0.2, 0.2, 0.2);
   }
+}
+
+// TODO: Fix example with WebGL backend
+
+if (WebGPU.isAvailable() === false) {
+  document.body.appendChild(WebGPU.getErrorMessage());
+
+  throw new Error("No WebGPU support");
 }
 
 function init() {

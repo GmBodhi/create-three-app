@@ -21,7 +21,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GroundedSkybox } from "three/addons/objects/GroundedSkybox.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 const params = {
   height: 15,
@@ -45,7 +45,7 @@ async function init() {
 
   scene = new Scene();
 
-  const hdrLoader = new RGBELoader();
+  const hdrLoader = new HDRLoader();
   const envMap = await hdrLoader.loadAsync(
     "textures/equirectangular/blouberg_sunrise_2_1k.hdr"
   );

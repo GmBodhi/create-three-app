@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let renderer, scene, camera, controls;
 
@@ -36,12 +36,12 @@ async function init() {
   controls.target.set(0, 0.2, 0);
   controls.update();
 
-  const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");
+  const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
 
   const gltfLoader = new GLTFLoader().setPath("models/gltf/");
 
   const [texture, gltf] = await Promise.all([
-    rgbeLoader.loadAsync("venice_sunset_1k.hdr"),
+    hdrLoader.loadAsync("venice_sunset_1k.hdr"),
     gltfLoader.loadAsync("IridescenceLamp.glb"),
   ]);
 

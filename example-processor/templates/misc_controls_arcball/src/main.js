@@ -19,7 +19,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { ArcballControls } from "three/addons/controls/ArcballControls.js";
 
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 const cameras = ["Orthographic", "Perspective"];
 const cameraType = { type: "Perspective" };
@@ -130,7 +130,7 @@ function init() {
       scene.add(group);
       render();
 
-      new RGBELoader()
+      new HDRLoader()
         .setPath("textures/equirectangular/")
         .load("venice_sunset_1k.hdr", function (hdrEquirect) {
           hdrEquirect.mapping = EquirectangularReflectionMapping;

@@ -23,7 +23,7 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { LDrawLoader } from "three/addons/loaders/LDrawLoader.js";
 import { LDrawUtils } from "three/addons/utils/LDrawUtils.js";
 import { LDrawConditionalLineMaterial } from "three/addons/materials/LDrawConditionalLineMaterial.js";
@@ -72,7 +72,6 @@ function init() {
     antialias: true,
     alpha: true,
     preserveDrawingBuffer: true,
-    premultipliedAlpha: false,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -173,7 +172,7 @@ async function loadModel() {
     })
     .catch(onError);
 
-  const envMapPromise = new RGBELoader()
+  const envMapPromise = new HDRLoader()
     .setPath("textures/equirectangular/")
     .loadAsync("royal_esplanade_1k.hdr")
     .then((tex) => {

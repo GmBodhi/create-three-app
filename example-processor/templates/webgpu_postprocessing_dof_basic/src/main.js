@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 import { mix, pass, renderOutput, smoothstep, uniform, vec3 } from "three/tsl";
-import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
+import { boxBlur } from "three/addons/tsl/display/boxBlur.js";
 import { fxaa } from "three/addons/tsl/display/FXAANode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -91,15 +91,21 @@ async function init() {
 
   // DOF uniforms
 
-  const maxBlur = uniform(2); // maximum amount of blur
+  const blurSize = uniform(2); // determines the kernel size of the blur
+  const blurSpread = uniform(4); // determines how far the blur is spread
   const minDistance = uniform(1); // all positions at or below minDistance will be completely in focus.
   const maxDistance = uniform(3); // all positions at or beyond maxDistance will be completely out of focus.
 
   // beauty and blur/out-of-focus pass
 
   const scenePass = pass(scene, camera);
+
+  const scenePassColor = scenePass.getTextureNode();
   const scenePassViewZ = scenePass.getViewZNode();
-  const scenePassBlurred = gaussianBlur(scenePass, maxBlur);
+  const scenePassBlurred = boxBlur(scenePassColor, {
+    size: blurSize,
+    separation: blurSpread,
+  });
 
   // simple DOF from https://lettier.github.io/3d-game-shaders-for-beginners/depth-of-field.html
 
@@ -108,7 +114,7 @@ async function init() {
     maxDistance,
     scenePassViewZ.sub(focusPointView.z).abs()
   );
-  const dofPass = mix(scenePass, scenePassBlurred, blur);
+  const dofPass = mix(scenePassColor, scenePassBlurred, blur);
 
   const outputPass = renderOutput(dofPass);
   const fxaaPass = fxaa(outputPass);
@@ -120,7 +126,8 @@ async function init() {
   const gui = new GUI();
   gui.add(minDistance, "value", 0, 3).name("min distance");
   gui.add(maxDistance, "value", 0, 5).name("max distance");
-  gui.add(maxBlur, "value", 0, 5).name("max blur");
+  gui.add(blurSize, "value", 1, 3, 1).name("blur size");
+  gui.add(blurSpread, "value", 1, 7, 1).name("blur spread");
 
   //
 

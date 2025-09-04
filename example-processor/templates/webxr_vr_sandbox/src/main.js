@@ -20,7 +20,7 @@ import {
   Line,
 } from "three";
 
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { Reflector } from "three/addons/objects/Reflector.js";
 import { VRButton } from "three/addons/webxr/VRButton.js";
 
@@ -50,7 +50,7 @@ init();
 function init() {
   scene = new Scene();
 
-  new RGBELoader()
+  new HDRLoader()
     .setPath("textures/equirectangular/")
     .load("moonless_golf_1k.hdr", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;

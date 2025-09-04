@@ -32,7 +32,7 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RGBELoader } from "three/addons/loaders/RGBELoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
@@ -97,9 +97,9 @@ async function init() {
   controls.maxPolarAngle = Math.PI * 0.35;
   controls.touches = { TWO: TOUCH.DOLLY_ROTATE };
 
-  const rgbeLoader = new RGBELoader().setPath("textures/equirectangular/");
+  const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
 
-  const hdrTexture = await rgbeLoader.loadAsync("royal_esplanade_1k.hdr");
+  const hdrTexture = await hdrLoader.loadAsync("royal_esplanade_1k.hdr");
   hdrTexture.mapping = EquirectangularReflectionMapping;
   scene.background = hdrTexture;
   scene.backgroundBlurriness = 0.5;
@@ -113,9 +113,6 @@ async function init() {
       p2g1Kernel.count = value;
       p2g2Kernel.count = value;
       g2pKernel.count = value;
-      p2g1Kernel.updateDispatchCount();
-      p2g2Kernel.updateDispatchCount();
-      g2pKernel.updateDispatchCount();
       particleMesh.count = value;
       particleCountUniform.value = value;
     });
