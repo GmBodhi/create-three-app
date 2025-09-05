@@ -35,7 +35,7 @@ let composer, camera, scene, renderer;
 let gui, dirLight, pointLight, controls, bloomPass, fxaaPass;
 let ready = false;
 
-const meshs = {};
+const meshes = {};
 const materials = {};
 const torad = Math.PI / 180;
 
@@ -104,13 +104,13 @@ function init() {
               }
             }
 
-            meshs[child.name] = child;
+            meshes[child.name] = child;
           }
         });
 
         scene.add(gltf.scene);
 
-        meshs.glass.material = new MeshPhysicalMaterial({
+        meshes.glass.material = new MeshPhysicalMaterial({
           color: 0x020205,
           transparent: true,
           opacity: setting.opacity,
@@ -247,7 +247,7 @@ function createGUI() {
 function upMaterial() {
   materials.Gold.metalness = materials.Silver.metalness = setting.metalness;
   materials.Gold.roughness = materials.Silver.roughness = setting.roughness;
-  meshs.glass.material.opacity = setting.opacity;
+  meshes.glass.material.opacity = setting.opacity;
 }
 
 function upBloom() {
@@ -268,12 +268,12 @@ function getTime() {
   if (hour >= 12) hour -= 12;
   if (day > 30) day = 30;
 
-  meshs.hour.rotation.y = -hour * 30 * torad;
-  meshs.minute.rotation.y = -minute * 6 * torad;
-  meshs.second.rotation.y = -second * 6 * torad;
-  meshs.mini_03.rotation.y = -day * 12 * torad;
-  meshs.mini_02.rotation.y = -month * 30 * torad;
-  meshs.mini_01.rotation.y = -milli * 0.36 * torad;
+  meshes.hour.rotation.y = -hour * 30 * torad;
+  meshes.minute.rotation.y = -minute * 6 * torad;
+  meshes.second.rotation.y = -second * 6 * torad;
+  meshes.mini_03.rotation.y = -day * 12 * torad;
+  meshes.mini_02.rotation.y = -month * 30 * torad;
+  meshes.mini_01.rotation.y = -milli * 0.36 * torad;
 }
 
 function onWindowResize() {
