@@ -573,8 +573,7 @@ function updatePhysics(deltaTime) {
         impactPoint,
         impactNormal,
         1,
-        2,
-        1.5
+        2
       );
 
       const numObjects = debris.length;
@@ -602,8 +601,7 @@ function updatePhysics(deltaTime) {
         impactPoint,
         impactNormal,
         1,
-        2,
-        1.5
+        2
       );
 
       const numObjects = debris.length;

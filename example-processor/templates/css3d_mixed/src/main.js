@@ -98,7 +98,7 @@ function init() {
   iframe.style.width = "1028px";
   iframe.style.height = "768px";
   iframe.style.border = "0px";
-  iframe.src = "/examples/#webgl_animation_keyframes";
+  iframe.src = "three/examples/#webgl_animation_keyframes";
   scene.add(new CSS3DObject(iframe));
 
   // Add controls

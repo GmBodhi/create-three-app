@@ -54,7 +54,7 @@ const params = {
   width: matLine.linewidth,
   alphaToCoverage: matLine.alphaToCoverage,
   threshold: raycaster.params.Line2.threshold,
-  translation: raycaster.params.Line2.threshold,
+  translation: 0,
   animate: true,
 };
 
