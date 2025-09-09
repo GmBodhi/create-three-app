@@ -787,7 +787,7 @@ async function init(leftSideDisplay = true) {
   );
 
   // Represents array of data as uints in compute shader.
-  const inputStorage = instancedArray(array, "uint", size)
+  const inputStorage = instancedArray(array, "uint")
     .setPBO(true)
     .setName(`Current_${leftSideDisplay ? "Left" : "Right"}`);
   // Represents array of data as vec4s in compute shader;
@@ -809,15 +809,11 @@ async function init(leftSideDisplay = true) {
   const rowSize = divRoundUp(size, numRows);
 
   const workgroupSumsArray = new Uint32Array(numRows);
-  const workgroupSumsStorage = instancedArray(
-    workgroupSumsArray,
-    "uint",
-    numRows
-  )
+  const workgroupSumsStorage = instancedArray(workgroupSumsArray, "uint")
     .setPBO(true)
     .setName(`WorkgroupSums_${leftSideDisplay ? "Left" : "Right"}`);
   const debugArray = new Uint32Array(1024);
-  const debugStorage = instancedArray(debugArray, "uint", 1024)
+  const debugStorage = instancedArray(debugArray, "uint")
     .setPBO(true)
     .setName(`Debug_${leftSideDisplay ? "Left" : "Right"}`);
 
