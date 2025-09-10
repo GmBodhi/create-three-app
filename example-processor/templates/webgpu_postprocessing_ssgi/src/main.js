@@ -51,7 +51,7 @@ async function init() {
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 1, 0);
-  controls.enablePan = false;
+  controls.enablePan = true;
   controls.minDistance = 1;
   controls.maxDistance = 6;
   controls.update();
@@ -128,9 +128,9 @@ async function init() {
   gui.add(giPass.backfaceLighting, "value", 0, 1).name("backface lighting");
   gui.add(giPass.aoIntensity, "value", 0, 4).name("AO intenstiy");
   gui.add(giPass.giIntensity, "value", 0, 100).name("GI intenstiy");
+  gui.add(giPass.useLinearThickness, "value").name("use linear thickness");
   gui.add(giPass.useScreenSpaceSampling, "value").name("screen-space sampling");
   gui.add(giPass, "useTemporalFiltering").name("temporal filtering");
-  //gui.add( giPass.useLinearThickness, 'value' ).name( 'use linear thickness' );
 
   const params = {
     output: 0,
