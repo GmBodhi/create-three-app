@@ -35,6 +35,7 @@ async function init() {
   camera.position.set(2.8, 1.8, 5);
 
   scene = new Scene();
+  scene.background = new Color(0xffffff);
 
   renderer = new WebGPURenderer();
   //renderer.setPixelRatio( window.devicePixelRatio ); // probably too costly for most hardware
