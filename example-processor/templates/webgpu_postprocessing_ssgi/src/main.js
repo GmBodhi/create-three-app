@@ -6,10 +6,14 @@ import {
   mrt,
   output,
   normalView,
+  diffuseColor,
   velocity,
   add,
   vec3,
   vec4,
+  directionToColor,
+  colorToDirection,
+  sample,
 } from "three/tsl";
 import { ssgi } from "three/addons/tsl/display/SSGINode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
@@ -65,19 +69,33 @@ async function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: normalView,
+      diffuseColor: diffuseColor,
+      normal: directionToColor(normalView),
       velocity: velocity,
     })
   );
 
   const scenePassColor = scenePass.getTextureNode("output");
+  const scenePassDiffuse = scenePass.getTextureNode("diffuseColor");
   const scenePassDepth = scenePass.getTextureNode("depth");
   const scenePassNormal = scenePass.getTextureNode("normal");
   const scenePassVelocity = scenePass.getTextureNode("velocity");
 
+  // bandwidth optimization
+
+  const diffuseTexture = scenePass.getTexture("diffuseColor");
+  diffuseTexture.type = UnsignedByteType;
+
+  const normalTexture = scenePass.getTexture("normal");
+  normalTexture.type = UnsignedByteType;
+
+  const sceneNormal = sample((uv) => {
+    return colorToDirection(scenePassNormal.sample(uv));
+  });
+
   // gi
 
-  const giPass = ssgi(scenePassColor, scenePassDepth, scenePassNormal, camera);
+  const giPass = ssgi(scenePassColor, scenePassDepth, sceneNormal, camera);
   giPass.sliceCount.value = 2;
   giPass.stepCount.value = 8;
 
@@ -87,7 +105,7 @@ async function init() {
   const ao = giPass.a;
 
   const compositePass = vec4(
-    add(scenePassColor.rgb, gi).mul(ao),
+    add(scenePassColor.rgb.mul(ao), scenePassDiffuse.rgb.mul(gi)),
     scenePassColor.a
   );
 
@@ -119,8 +137,15 @@ async function init() {
 
   //
 
+  const params = {
+    output: 0,
+  };
+
+  const types = { Default: 0, AO: 1, GI: 2, Beauty: 3 };
+
   const gui = new GUI();
   gui.title("SSGI settings");
+  gui.add(params, "output", types).onChange(updatePostprocessing);
   gui.add(giPass.sliceCount, "value", 1, 4).step(1).name("slice count");
   gui.add(giPass.stepCount, "value", 1, 32).step(1).name("step count");
   gui.add(giPass.radius, "value", 1, 25).name("radius");
@@ -131,15 +156,12 @@ async function init() {
   gui.add(giPass.giIntensity, "value", 0, 100).name("GI intenstiy");
   gui.add(giPass.useLinearThickness, "value").name("use linear thickness");
   gui.add(giPass.useScreenSpaceSampling, "value").name("screen-space sampling");
-  gui.add(giPass, "useTemporalFiltering").name("temporal filtering");
+  gui
+    .add(giPass, "useTemporalFiltering")
+    .name("temporal filtering")
+    .onChange(updatePostprocessing);
 
-  const params = {
-    output: 0,
-  };
-
-  const types = { Default: 0, AO: 1, GI: 2, Beauty: 3 };
-
-  gui.add(params, "output", types).onChange((value) => {
+  function updatePostprocessing(value) {
     if (value === 1) {
       postProcessing.outputNode = vec4(vec3(ao), 1);
     } else if (value === 2) {
@@ -147,11 +169,13 @@ async function init() {
     } else if (value === 3) {
       postProcessing.outputNode = scenePassColor;
     } else {
-      postProcessing.outputNode = traaPass;
+      postProcessing.outputNode = giPass.useTemporalFiltering
+        ? traaPass
+        : compositePass;
     }
 
     postProcessing.needsUpdate = true;
-  });
+  }
 }
 
 function onWindowResize() {

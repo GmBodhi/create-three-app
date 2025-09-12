@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass, mrt, output, normalView, velocity } from "three/tsl";
+import { pass, mrt, output, normalView, velocity, vec3, vec4 } from "three/tsl";
 import { ao } from "three/addons/tsl/display/GTAONode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 
@@ -91,7 +91,7 @@ async function init() {
 
   aoPass = ao(scenePassDepth, scenePassNormal, camera);
   aoPass.resolutionScale = 0.5; // running AO in half resolution is often sufficient
-  blendPassAO = aoPass.getTextureNode().mul(scenePassColor);
+  blendPassAO = vec4(scenePassColor.rgb.mul(aoPass.r), scenePassColor.a); // the AO is stored only in the red channel
 
   // traa
 
@@ -142,7 +142,7 @@ async function init() {
   gui.add(params, "thickness").min(0.01).max(2).onChange(updateParameters);
   gui.add(params, "aoOnly").onChange((value) => {
     if (value === true) {
-      postProcessing.outputNode = aoPass;
+      postProcessing.outputNode = vec4(vec3(aoPass.r), 1);
     } else {
       postProcessing.outputNode = traaPass;
     }
