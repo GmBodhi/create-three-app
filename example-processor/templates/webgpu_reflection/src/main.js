@@ -108,7 +108,7 @@ async function init() {
     .sub(1)
     .mul(0.02);
 
-  const reflection = reflector({ resolution: 0.2 });
+  const reflection = reflector({ resolutionScale: 0.2 });
   reflection.target.rotateX(-Math.PI / 2);
   reflection.uvNode = reflection.uvNode.add(floorNormalOffset);
   scene.add(reflection.target);

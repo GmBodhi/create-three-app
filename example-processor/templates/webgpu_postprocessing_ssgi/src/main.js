@@ -161,7 +161,9 @@ async function init() {
     .name("temporal filtering")
     .onChange(updatePostprocessing);
 
-  function updatePostprocessing(value) {
+  function updatePostprocessing() {
+    const value = params.output;
+
     if (value === 1) {
       postProcessing.outputNode = vec4(vec3(ao), 1);
     } else if (value === 2) {
