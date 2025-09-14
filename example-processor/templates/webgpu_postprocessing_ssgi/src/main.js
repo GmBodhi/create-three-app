@@ -19,8 +19,6 @@ import { ssgi } from "three/addons/tsl/display/SSGINode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import Stats from "three/addons/libs/stats.module.js";
@@ -31,22 +29,21 @@ init();
 
 async function init() {
   camera = new PerspectiveCamera(
-    60,
+    40,
     window.innerWidth / window.innerHeight,
     0.1,
-    50
+    100
   );
-  camera.position.set(2.8, 1.8, 5);
+  camera.position.set(0, 10, 30);
 
   scene = new Scene();
-  scene.background = new Color(0xffffff);
+  scene.background = new Color(0xaaaaaa);
 
   renderer = new WebGPURenderer();
   //renderer.setPixelRatio( window.devicePixelRatio ); // probably too costly for most hardware
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMapping = NeutralToneMapping;
-  renderer.toneMappingExposure = 1.5;
+  renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
   stats = new Stats();
@@ -55,10 +52,10 @@ async function init() {
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 1, 0);
+  controls.target.set(0, 7, 0);
   controls.enablePan = true;
   controls.minDistance = 1;
-  controls.maxDistance = 6;
+  controls.maxDistance = 100;
   controls.update();
 
   //
@@ -119,19 +116,92 @@ async function init() {
   );
   postProcessing.outputNode = traaPass;
 
-  //
+  // Cornell Box inspired scene
 
-  const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/");
-  dracoLoader.setDecoderConfig({ type: "js" });
-  const loader = new GLTFLoader();
-  loader.setDRACOLoader(dracoLoader);
-  loader.setPath("models/gltf/");
+  // Walls
+  const wallGeometry = new PlaneGeometry(1, 1);
 
-  const gltf = await loader.loadAsync("mirrors_edge.glb");
+  // Left wall - red
+  const redWallMaterial = new MeshPhysicalMaterial({ color: "#ff0000" });
+  const leftWall = new Mesh(wallGeometry, redWallMaterial);
+  leftWall.scale.set(20, 15, 1);
+  leftWall.rotation.y = Math.PI * 0.5;
+  leftWall.position.set(-10, 7.5, 0);
+  leftWall.receiveShadow = true;
+  scene.add(leftWall);
 
-  const model = gltf.scene;
-  scene.add(model);
+  // Right wall - green
+  const greenWallMaterial = new MeshPhysicalMaterial({ color: "#00ff00" });
+  const rightWall = new Mesh(wallGeometry, greenWallMaterial);
+  rightWall.scale.set(20, 15, 1);
+  rightWall.rotation.y = Math.PI * -0.5;
+  rightWall.position.set(10, 7.5, 0);
+  rightWall.receiveShadow = true;
+  scene.add(rightWall);
+
+  // White walls and boxes
+  const whiteMaterial = new MeshPhysicalMaterial({ color: "#fff" });
+
+  // Floor
+  const floor = new Mesh(wallGeometry, whiteMaterial);
+  floor.scale.set(20, 20, 1);
+  floor.rotation.x = Math.PI * -0.5;
+  floor.receiveShadow = true;
+  scene.add(floor);
+
+  // Back wall
+  const backWall = new Mesh(wallGeometry, whiteMaterial);
+  backWall.scale.set(15, 20, 1);
+  backWall.rotation.z = Math.PI * -0.5;
+  backWall.position.set(0, 7.5, -10);
+  backWall.receiveShadow = true;
+  scene.add(backWall);
+
+  // Ceiling
+  const ceiling = new Mesh(wallGeometry, whiteMaterial);
+  ceiling.scale.set(20, 20, 1);
+  ceiling.rotation.x = Math.PI * 0.5;
+  ceiling.position.set(0, 15, 0);
+  ceiling.receiveShadow = true;
+  scene.add(ceiling);
+
+  // Boxes
+  const tallBoxGeometry = new BoxGeometry(5, 7, 5);
+  const tallBox = new Mesh(tallBoxGeometry, whiteMaterial);
+  tallBox.rotation.y = Math.PI * 0.25;
+  tallBox.position.set(-3, 3.5, -2);
+  tallBox.castShadow = true;
+  tallBox.receiveShadow = true;
+  scene.add(tallBox);
+
+  const shortBoxGeometry = new BoxGeometry(4, 4, 4);
+  const shortBox = new Mesh(shortBoxGeometry, whiteMaterial);
+  shortBox.rotation.y = Math.PI * -0.1;
+  shortBox.position.set(4, 2, 4);
+  shortBox.castShadow = true;
+  shortBox.receiveShadow = true;
+  scene.add(shortBox);
+
+  // Light source geometry
+  const lightSourceGeometry = new CylinderGeometry(2.5, 2.5, 1, 64);
+  const lightSourceMaterial = new MeshBasicMaterial();
+  const lightSource = new Mesh(lightSourceGeometry, lightSourceMaterial);
+  lightSource.position.y = 15;
+  scene.add(lightSource);
+
+  // Point light
+  const pointLight = new PointLight("#ffffff", 100);
+  pointLight.position.set(0, 13, 0);
+  pointLight.distance = 100;
+  pointLight.castShadow = true;
+  pointLight.shadow.mapSize.width = 1024;
+  pointLight.shadow.mapSize.height = 1024;
+  pointLight.shadow.bias = -0.0025;
+  scene.add(pointLight);
+
+  // Ambient light
+  const ambientLight = new AmbientLight("#0c0c0c");
+  scene.add(ambientLight);
 
   window.addEventListener("resize", onWindowResize);
 
@@ -141,7 +211,7 @@ async function init() {
     output: 0,
   };
 
-  const types = { Default: 0, AO: 1, GI: 2, Beauty: 3 };
+  const types = { Combined: 0, Direct: 3, AO: 1, GI: 2 };
 
   const gui = new GUI();
   gui.title("SSGI settings");
