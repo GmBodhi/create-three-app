@@ -20,10 +20,9 @@ import { traa } from "three/addons/tsl/display/TRAANode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing, controls, stats;
+let camera, scene, renderer, postProcessing, controls;
 
 init();
 
@@ -46,8 +45,8 @@ async function init() {
   renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
-  stats = new Stats();
-  document.body.appendChild(stats.domElement);
+  renderer.inspector = new Inspector();
+  document.body.appendChild(renderer.inspector.domElement);
 
   //
 
@@ -105,6 +104,7 @@ async function init() {
     add(scenePassColor.rgb.mul(ao), scenePassDiffuse.rgb.mul(gi)),
     scenePassColor.a
   );
+  compositePass.name = "Composite";
 
   // traa
 
@@ -213,8 +213,7 @@ async function init() {
 
   const types = { Combined: 0, Direct: 3, AO: 1, GI: 2 };
 
-  const gui = new GUI();
-  gui.title("SSGI settings");
+  const gui = renderer.inspector.createParameters("SSGI settings");
   gui.add(params, "output", types).onChange(updatePostprocessing);
   gui.add(giPass.sliceCount, "value", 1, 4).step(1).name("slice count");
   gui.add(giPass.stepCount, "value", 1, 32).step(1).name("step count");
@@ -231,9 +230,7 @@ async function init() {
     .name("temporal filtering")
     .onChange(updatePostprocessing);
 
-  function updatePostprocessing() {
-    const value = params.output;
-
+  function updatePostprocessing(value) {
     if (value === 1) {
       postProcessing.outputNode = vec4(vec3(ao), 1);
     } else if (value === 2) {
@@ -262,8 +259,6 @@ function onWindowResize() {
 
 function animate() {
   controls.update();
-
-  stats.update();
 
   postProcessing.render();
 }

@@ -32,13 +32,13 @@ import {
   vertexIndex,
 } from "three/tsl";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import Stats from "stats-gl";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
-let container, stats;
+let container;
 let camera, scene, renderer;
 
 let last = performance.now();
@@ -139,8 +139,9 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
+  renderer.setAnimationLoop(render);
   renderer.toneMapping = NeutralToneMapping;
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera);
@@ -390,7 +391,10 @@ function init() {
 
     // Write back the final velocity to storage
     velocityStorage.element(birdIndex).assign(velocity);
-  })().compute(BIRDS);
+  })()
+    .compute(BIRDS)
+    .setName("Birds Velocity");
+
   computePosition = Fn(() => {
     const { deltaTime } = effectController;
     positionStorage
@@ -407,26 +411,18 @@ function init() {
       .add(length(velocity.xz).mul(deltaTime).mul(3.0))
       .add(max(velocity.y, 0.0).mul(deltaTime).mul(6.0));
     phaseStorage.element(instanceIndex).assign(modValue.mod(62.83));
-  })().compute(BIRDS);
+  })()
+    .compute(BIRDS)
+    .setName("Birds Position");
 
   scene.add(birdMesh);
-
-  stats = new Stats({
-    precision: 3,
-    horizontal: false,
-    trackGPU: true,
-    trackCPT: true,
-  });
-  stats.init(renderer);
-  container.appendChild(stats.dom);
 
   container.style.touchAction = "none";
   container.addEventListener("pointermove", onPointerMove);
 
   window.addEventListener("resize", onWindowResize);
 
-  const gui = new GUI();
-
+  const gui = renderer.inspector.createParameters("Birds settings");
   gui
     .add(effectController.separation, "value", 0.0, 100.0, 1.0)
     .name("Separation");
@@ -434,7 +430,6 @@ function init() {
     .add(effectController.alignment, "value", 0.0, 100, 0.001)
     .name("Alignment ");
   gui.add(effectController.cohesion, "value", 0.0, 100, 0.025).name("Cohesion");
-  gui.close();
 }
 
 function onWindowResize() {
@@ -449,12 +444,6 @@ function onPointerMove(event) {
 
   pointer.x = (event.clientX / window.innerWidth) * 2.0 - 1.0;
   pointer.y = 1.0 - (event.clientY / window.innerHeight) * 2.0;
-}
-
-function animate() {
-  render();
-  renderer.resolveTimestampsAsync();
-  stats.update();
 }
 
 function render() {
@@ -473,7 +462,7 @@ function render() {
 
   renderer.compute(computeVelocity);
   renderer.compute(computePosition);
-  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
+
   renderer.render(scene, camera);
 
   // Move pointer away so we only affect birds when moving the mouse
