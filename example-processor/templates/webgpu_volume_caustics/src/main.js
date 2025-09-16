@@ -28,16 +28,13 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { bayer16 } from "three/addons/tsl/math/Bayer.js";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
-import Stats from "three/addons/libs/stats.module.js";
-
 let camera, scene, renderer, controls;
 let postProcessing;
-let stats;
 let gltf;
 
 init();
@@ -165,12 +162,6 @@ async function init() {
     return causticEffect.mul(scatteringDot.add(0.1)).mul(0.02);
   })();
 
-  // GUI
-
-  const gui = new GUI();
-  gui.add(causticOcclusion, "value", 0, 20).name("caustic occlusion");
-  gui.addColor(duck.material, "color").name("material color");
-
   // Ground
 
   const textureLoader = new TextureLoader();
@@ -190,10 +181,17 @@ async function init() {
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
+
+  // GUI
+
+  const gui = renderer.inspector.createParameters("Volumetric Caustics");
+  gui.add(causticOcclusion, "value", 0, 20).name("caustic occlusion");
+  gui.addColor(duck.material, "color").name("material color");
 
   // Post-Processing
 
@@ -296,8 +294,9 @@ async function init() {
   // Volumetric Lighting Pass
 
   const volumetricPass = pass(scene, camera, { depthBuffer: false });
+  volumetricPass.name = "Volumetric Lighting";
   volumetricPass.setLayers(volumetricLayer);
-  volumetricPass.setResolution(0.5);
+  volumetricPass.setResolutionScale(0.5);
 
   // Compose and Denoise
 
@@ -308,11 +307,6 @@ async function init() {
   );
 
   postProcessing.outputNode = scenePassColor;
-
-  // Stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   // Controls
 
@@ -332,8 +326,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   for (const mesh of gltf.children) {
     mesh.rotation.y -= 0.01;
   }

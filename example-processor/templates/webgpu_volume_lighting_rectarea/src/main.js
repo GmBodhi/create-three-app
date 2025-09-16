@@ -16,19 +16,16 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 import { RectAreaLightTexturesLib } from "three/addons/lights/RectAreaLightTexturesLib.js";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { bayer16 } from "three/addons/tsl/math/Bayer.js";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
-
-import Stats from "three/addons/libs/stats.module.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let renderer, scene, camera;
 let volumetricMesh, meshKnot;
 let rectLight1, rectLight2, rectLight3;
 let clock;
 let postProcessing;
-let stats;
 
 init();
 
@@ -76,9 +73,6 @@ function init() {
 
   const LAYER_VOLUMETRIC_LIGHTING = 10;
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   clock = new Clock();
 
   renderer = new WebGPURenderer();
@@ -88,6 +82,7 @@ function init() {
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 2;
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -228,7 +223,7 @@ function init() {
 
   const volumetricPass = pass(scene, camera, { depthBuffer: false });
   volumetricPass.setLayers(volumetricLayer);
-  volumetricPass.setResolution(0.25);
+  volumetricPass.setResolutionScale(0.25);
 
   // Compose and Denoise
 
@@ -245,15 +240,15 @@ function init() {
   // GUI
 
   const params = {
-    resolution: volumetricPass.getResolution(),
+    resolution: volumetricPass.getResolutionScale(),
     denoise: true,
   };
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Volumetric Lighting");
 
-  const rayMarching = gui.addFolder("Ray Marching").close();
+  const rayMarching = gui.addFolder("Ray Marching");
   rayMarching.add(params, "resolution", 0.1, 0.5).onChange((resolution) => {
-    volumetricPass.setResolution(resolution);
+    volumetricPass.setResolutionScale(resolution);
   });
   rayMarching.add(volumetricMaterial, "steps", 2, 12).name("step count");
   rayMarching.add(denoiseStrength, "value", 0, 1).name("denoise strength");
@@ -268,7 +263,7 @@ function init() {
     postProcessing.needsUpdate = true;
   });
 
-  const lighting = gui.addFolder("Lighting / Scene").close();
+  const lighting = gui.addFolder("Lighting / Scene");
   lighting
     .add(volumetricLightingIntensity, "value", 0, 2)
     .name("fog intensity");
@@ -286,8 +281,6 @@ function onWindowResize() {
 
 function animate() {
   const delta = clock.getDelta();
-
-  stats.update();
 
   rectLight1.rotation.y += -delta;
   rectLight2.rotation.y += delta * 0.5;
