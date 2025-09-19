@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import {
   instancedBufferAttribute,
+  uniform,
   mod,
   pass,
   texture,
@@ -23,7 +24,7 @@ let camera, scene, renderer, particles, stats;
 let postProcessing, afterImagePass, scenePass;
 
 const params = {
-  damp: 0.8,
+  damp: uniform(0.8, "float").setName("damp"),
   enabled: true,
 };
 

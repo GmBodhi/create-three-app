@@ -3871,6 +3871,16 @@
         "/src"
       ]
     },
+    "webgpu_hdr": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_instance_mesh": {
       "files": {
         "index.html": "src",

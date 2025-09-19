@@ -56,10 +56,10 @@ function init() {
     window.innerWidth / 2,
     window.innerHeight / 2,
     window.innerHeight / -2,
-    -10000,
-    10000
+    1,
+    1000
   );
-  cameraRTT.position.z = 100;
+  cameraRTT.position.z = 500;
 
   //
 

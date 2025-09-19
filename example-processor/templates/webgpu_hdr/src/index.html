@@ -1,0 +1,35 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <title>three.js webgpu - HDR Draw</title>
+  </head>
+  <body style="overflow: hidden">
+    <div id="info" style="color: #000">
+      <a href="https://threejs.org" target="_blank" rel="noopener">threejs</a> -
+      HDR Draw
+    </div>
+    <div id="no-hdr" style="display: none">
+      <div>
+        The browser says your device or monitor doesn't support HDR.<br />
+        If you're on a laptop using an external monitor, try the built in
+        monitor<br />
+        or, try this site on your phone. Most phones support HDR.
+      </div>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

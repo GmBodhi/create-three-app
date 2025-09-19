@@ -37,15 +37,6 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
-import {
-  ExtendedSRGBColorSpace,
-  ExtendedSRGBColorSpaceImpl,
-} from "three/addons/math/ColorSpaces.js";
-
-ColorManagement.define({
-  [ExtendedSRGBColorSpace]: ExtendedSRGBColorSpaceImpl,
-});
-
 let camera, scene, renderer, postProcessing, controls, timer, light;
 
 let updateParticles, spawnParticles; // TSL compute nodes
@@ -103,15 +94,12 @@ function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: true, outputType: HalfFloatType });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setClearColor(0x14171a);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-
-  renderer.outputColorSpace = ExtendedSRGBColorSpace;
-  // TODO: Add support for tone mapping #29573
-  // renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 
   // TSL function
