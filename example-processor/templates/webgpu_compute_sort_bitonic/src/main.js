@@ -9,21 +9,20 @@ import {
   uniform,
   uv,
   uint,
-  float,
   Fn,
   vec2,
   abs,
   int,
-  invocationLocalIndex,
-  workgroupArray,
   uvec2,
   floor,
   instanceIndex,
-  workgroupBarrier,
-  atomicAdd,
-  atomicStore,
-  workgroupId,
 } from "three/tsl";
+
+import {
+  BitonicSort,
+  getBitonicDisperseIndices,
+  getBitonicFlipIndices,
+} from "three/addons/gpgpu/BitonicSort.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
@@ -31,8 +30,8 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 const StepType = {
   NONE: 0,
-  // Swap values within workgroup local buffer.
-  FLIP_LOCAL: 1,
+  // Swap values within workgroup local values
+  SWAP_LOCAL: 1,
   DISPERSE_LOCAL: 2,
   // Swap values within global data buffer.
   FLIP_GLOBAL: 3,
@@ -58,13 +57,13 @@ const getNumSteps = () => {
 
 // Total number of steps in a bitonic sort with 'size' elements.
 const MAX_STEPS = getNumSteps();
-const WORKGROUP_SIZE = [64];
 
 const effectController = {
   // Sqr root of 16834
   gridWidth: uniform(gridDim),
   gridHeight: uniform(gridDim),
   highlight: uniform(1),
+  stepBitonic: true,
   "Display Mode": "Swap Zone Highlight",
 };
 
@@ -85,16 +84,170 @@ if (WebGPU.isAvailable() === false) {
   throw new Error("No WebGPU support");
 }
 
-// Allow Workgroup Array Swaps
-init();
+// Display utilities
 
-// Global Swaps Only
-init(true);
+const getElementIndex = Fn(
+  ([uvNode, gridWidth, gridHeight]) => {
+    const newUV = uvNode.mul(vec2(gridWidth, gridHeight));
+    const pixel = uvec2(uint(floor(newUV.x)), uint(floor(newUV.y)));
+    const elementIndex = uint(gridWidth).mul(pixel.y).add(pixel.x);
 
-// When forceGlobalSwap is true, force all valid local swaps to be global swaps.
-async function init(forceGlobalSwap = false) {
+    return elementIndex;
+  },
+  {
+    uvNode: "vec2",
+    gridWidth: "uint",
+    gridHeight: "uint",
+    return: "uint",
+  }
+);
+
+const getColor = Fn(
+  ([colorChanger, gridWidth, gridHeight]) => {
+    const subtracter = colorChanger.div(gridWidth.mul(gridHeight));
+    return vec3(subtracter.oneMinus()).toVar();
+  },
+  {
+    colorChanger: "float",
+    gridWidth: "float",
+    gridHeight: "float",
+    return: "vec3",
+  }
+);
+
+const randomizeDataArray = (array) => {
+  let currentIndex = array.length;
+  while (currentIndex !== 0) {
+    const randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+    [array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex],
+    ];
+  }
+};
+
+const windowResizeCallback = (renderer, scene, camera) => {
+  renderer.setSize(window.innerWidth / 2, window.innerHeight);
+  const aspect = window.innerWidth / 2 / window.innerHeight;
+  const frustumHeight = camera.top - camera.bottom;
+  camera.left = (-frustumHeight * aspect) / 2;
+  camera.right = (frustumHeight * aspect) / 2;
+  camera.updateProjectionMatrix();
+  renderer.render(scene, camera);
+};
+
+const constructInnerHTML = (isGlobal, colorsArr) => {
+  return `
+
+				Compute ${isGlobal ? "Global" : "Local"}:
+				<div style="display: flex; flex-direction:row; justify-content: center; align-items: center;">
+					${isGlobal ? "Global Swaps" : "Local Swaps"} Compare Region&nbsp;
+					<div style="background-color: ${
+            colorsArr[0]
+          }; width:12.5px; height: 1em; border-radius: 20%;"></div>
+					&nbsp;to Region&nbsp;
+					<div style="background-color: ${
+            colorsArr[1]
+          }; width:12.5px; height: 1em; border-radius: 20%;"></div>
+				</div>`;
+};
+
+const createDisplayMesh = (
+  elementsStorage,
+  algoStorage = null,
+  blockHeightStorage = null
+) => {
+  const material = new MeshBasicNodeMaterial({ color: 0x00ff00 });
+
+  const display = Fn(() => {
+    const { gridWidth, gridHeight, highlight } = effectController;
+
+    const elementIndex = getElementIndex(uv(), gridWidth, gridHeight);
+    const color = getColor(
+      elementsStorage.element(elementIndex),
+      gridWidth,
+      gridHeight
+    ).toVar();
+
+    if (algoStorage !== null && blockHeightStorage !== null) {
+      If(
+        highlight
+          .equal(1)
+          .and(not(algoStorage.element(0).equal(StepType.NONE))),
+        () => {
+          const boolCheck = int(
+            elementIndex
+              .mod(blockHeightStorage.element(0))
+              .lessThan(blockHeightStorage.element(0).div(2))
+          );
+          color.z.assign(
+            algoStorage.element(0).lessThanEqual(StepType.DISPERSE_LOCAL)
+          );
+          color.x.mulAssign(boolCheck);
+          color.y.mulAssign(abs(boolCheck.sub(1)));
+        }
+      );
+    }
+
+    return color;
+  });
+
+  material.colorNode = display();
+  const plane = new Mesh(new PlaneGeometry(1, 1), material);
+  return plane;
+};
+
+const createDisplayMesh2 = (elementsStorage, infoStorage) => {
+  const material = new MeshBasicNodeMaterial({ color: 0x00ff00 });
+
+  const display = Fn(() => {
+    const { gridWidth, gridHeight, highlight } = effectController;
+
+    const elementIndex = getElementIndex(uv(), gridWidth, gridHeight);
+    const color = getColor(
+      elementsStorage.element(elementIndex),
+      gridWidth,
+      gridHeight
+    ).toVar();
+
+    If(
+      highlight
+        .equal(1)
+        .and(not(infoStorage.element(0).equal(StepType.SWAP_LOCAL))),
+      () => {
+        const boolCheck = int(
+          elementIndex
+            .mod(infoStorage.element(1))
+            .lessThan(infoStorage.element(1).div(2))
+        );
+        color.z.assign(
+          infoStorage.element(0).lessThanEqual(StepType.DISPERSE_LOCAL)
+        );
+        color.x.mulAssign(boolCheck);
+        color.y.mulAssign(abs(boolCheck.sub(1)));
+      }
+    );
+
+    return color;
+  });
+
+  material.colorNode = display();
+  const plane = new Mesh(new PlaneGeometry(1, 1), material);
+  return plane;
+};
+
+const setupDomElement = (renderer) => {
+  document.body.appendChild(renderer.domElement);
+  renderer.domElement.style.position = "absolute";
+  renderer.domElement.style.top = "0";
+  renderer.domElement.style.left = "0";
+  renderer.domElement.style.width = "50%";
+  renderer.domElement.style.height = "100%";
+};
+
+async function initBitonicSort() {
   let currentStep = 0;
-  let nextStepGlobal = false;
 
   const aspect = window.innerWidth / 2 / window.innerHeight;
   const camera = new OrthographicCamera(-aspect, aspect, 1, -1, 0, 2);
@@ -102,16 +255,131 @@ async function init(forceGlobalSwap = false) {
 
   const scene = new Scene();
 
-  const nextAlgoBuffer = new StorageInstancedBufferAttribute(
-    new Uint32Array(1).fill(
-      forceGlobalSwap ? StepType.FLIP_GLOBAL : StepType.FLIP_LOCAL
-    ),
-    1
+  const array = new Uint32Array(
+    Array.from({ length: size }, (_, i) => {
+      return i;
+    })
   );
 
-  const nextAlgoStorage = storage(nextAlgoBuffer, "uint", nextAlgoBuffer.count)
+  randomizeDataArray(array);
+
+  const currentElementsBuffer = new StorageInstancedBufferAttribute(array, 1);
+  const currentElementsStorage = storage(currentElementsBuffer, "uint", size)
     .setPBO(true)
-    .setName("NextAlgo");
+    .setName("Elements");
+  const randomizedElementsBuffer = new StorageInstancedBufferAttribute(size, 1);
+  const randomizedElementsStorage = storage(
+    randomizedElementsBuffer,
+    "uint",
+    size
+  )
+    .setPBO(true)
+    .setName("RandomizedElements");
+
+  const computeInitFn = Fn(() => {
+    randomizedElementsStorage
+      .element(instanceIndex)
+      .assign(currentElementsStorage.element(instanceIndex));
+  });
+
+  const computeResetBuffersFn = Fn(() => {
+    currentElementsStorage
+      .element(instanceIndex)
+      .assign(randomizedElementsStorage.element(instanceIndex));
+  });
+
+  const renderer = new WebGPURenderer({ antialias: false });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth / 2, window.innerHeight);
+
+  const animate = () => {
+    renderer.render(scene, camera);
+  };
+
+  renderer.setAnimationLoop(animate);
+  setupDomElement(renderer);
+  scene.background = new Color(0x313131);
+
+  const bitonicSortModule = new BitonicSort(renderer, currentElementsStorage, {
+    workgroupSize: 64,
+    sideEffectBuffers: [2, 3],
+  });
+
+  scene.add(
+    createDisplayMesh2(currentElementsStorage, bitonicSortModule.infoStorage)
+  );
+
+  // Initialize each value in the elements buffer.
+  const computeInit = computeInitFn().compute(size);
+  const computeReset = computeResetBuffersFn().compute(size);
+
+  await renderer.computeAsync(computeInit);
+
+  gui.add(effectController, "stepBitonic").onChange(async () => {
+    if (currentStep < bitonicSortModule.stepCount) {
+      await bitonicSortModule.computeStep(renderer);
+
+      currentStep++;
+    } else {
+      await renderer.computeAsync(computeReset);
+
+      currentStep = 0;
+    }
+
+    timestamps["local_swap"].innerHTML = constructInnerHTML(false, localColors);
+  });
+
+  const stepAnimation = async function () {
+    renderer.info.reset();
+
+    if (currentStep < bitonicSortModule.stepCount) {
+      bitonicSortModule.computeStep(renderer);
+
+      currentStep++;
+    } else {
+      renderer.compute(computeReset);
+
+      currentStep = 0;
+    }
+
+    timestamps["local_swap"].innerHTML = constructInnerHTML(false, localColors);
+
+    if (currentStep === bitonicSortModule.stepCount) {
+      setTimeout(stepAnimation, 1000);
+    } else {
+      setTimeout(stepAnimation, 100);
+    }
+  };
+
+  stepAnimation();
+
+  window.addEventListener("resize", onWindowResize);
+
+  function onWindowResize() {
+    windowResizeCallback(renderer, scene, camera);
+  }
+}
+
+initBitonicSort();
+
+// Global Swaps Only
+initGlobalSwapOnly();
+
+// When forceGlobalSwap is true, force all valid local swaps to be global swaps.
+async function initGlobalSwapOnly() {
+  let currentStep = 0;
+
+  const aspect = window.innerWidth / 2 / window.innerHeight;
+  const camera = new OrthographicCamera(-aspect, aspect, 1, -1, 0, 2);
+  camera.position.z = 1;
+
+  const scene = new Scene();
+
+  const infoArray = new Uint32Array(3, 2, 2);
+  const infoBuffer = new StorageInstancedBufferAttribute(infoArray, 1);
+  const infoStorage = storage(infoBuffer, "uint", infoBuffer.count)
+    .setPBO(true)
+    .setName("TheInfo");
 
   const nextBlockHeightBuffer = new StorageInstancedBufferAttribute(
     new Uint32Array(1).fill(2),
@@ -133,43 +401,13 @@ async function init(forceGlobalSwap = false) {
     .setName("NextBlockHeight")
     .toReadOnly();
 
-  const highestBlockHeightBuffer = new StorageInstancedBufferAttribute(
-    new Uint32Array(1).fill(2),
-    1
-  );
-  const highestBlockHeightStorage = storage(
-    highestBlockHeightBuffer,
-    "uint",
-    highestBlockHeightBuffer.count
-  )
-    .setPBO(true)
-    .setName("HighestBlockHeight");
-
-  const counterBuffer = new StorageBufferAttribute(1, 1);
-  const counterStorage = storage(counterBuffer, "uint", counterBuffer.count)
-    .setPBO(true)
-    .toAtomic()
-    .setName("Counter");
-
   const array = new Uint32Array(
     Array.from({ length: size }, (_, i) => {
       return i;
     })
   );
 
-  const randomizeDataArray = () => {
-    let currentIndex = array.length;
-    while (currentIndex !== 0) {
-      const randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex -= 1;
-      [array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex],
-      ];
-    }
-  };
-
-  randomizeDataArray();
+  randomizeDataArray(array);
 
   const currentElementsBuffer = new StorageInstancedBufferAttribute(array, 1);
   const currentElementsStorage = storage(currentElementsBuffer, "uint", size)
@@ -188,48 +426,7 @@ async function init(forceGlobalSwap = false) {
     .setPBO(true)
     .setName("RandomizedElements");
 
-  const getFlipIndices = (index, blockHeight) => {
-    const blockOffset = index.mul(2).div(blockHeight).mul(blockHeight);
-    const halfHeight = blockHeight.div(2);
-    const idx = uvec2(
-      index.mod(halfHeight),
-      blockHeight.sub(index.mod(halfHeight)).sub(1)
-    );
-    idx.x.addAssign(blockOffset);
-    idx.y.addAssign(blockOffset);
-
-    return idx;
-  };
-
-  const getDisperseIndices = (index, blockHeight) => {
-    const blockOffset = index.mul(2).div(blockHeight).mul(blockHeight);
-    const halfHeight = blockHeight.div(2);
-    const idx = uvec2(
-      index.mod(halfHeight),
-      index.mod(halfHeight).add(halfHeight)
-    );
-
-    idx.x.addAssign(blockOffset);
-    idx.y.addAssign(blockOffset);
-
-    return idx;
-  };
-
-  const localStorage = workgroupArray("uint", 64 * 2);
-
   // Swap the elements in local storage
-  const localCompareAndSwap = (idxBefore, idxAfter) => {
-    If(
-      localStorage.element(idxAfter).lessThan(localStorage.element(idxBefore)),
-      () => {
-        atomicAdd(counterStorage.element(0), 1);
-        const temp = localStorage.element(idxBefore).toVar();
-        localStorage.element(idxBefore).assign(localStorage.element(idxAfter));
-        localStorage.element(idxAfter).assign(temp);
-      }
-    );
-  };
-
   const globalCompareAndSwap = (idxBefore, idxAfter) => {
     // If the later element is less than the current element
     If(
@@ -238,7 +435,6 @@ async function init(forceGlobalSwap = false) {
         .lessThan(currentElementsStorage.element(idxBefore)),
       () => {
         // Apply the swapped values to temporary storage.
-        atomicAdd(counterStorage.element(0), 1);
         tempStorage
           .element(idxBefore)
           .assign(currentElementsStorage.element(idxAfter));
@@ -265,113 +461,43 @@ async function init(forceGlobalSwap = false) {
 
   const computeBitonicStepFn = Fn(() => {
     const nextBlockHeight = nextBlockHeightStorage.element(0).toVar();
-    const nextAlgo = nextAlgoStorage.element(0).toVar();
-
-    // Get ids of indices needed to populate workgroup local buffer.
-    // Use .toVar() to prevent these values from being recalculated multiple times.
-    const localOffset = uint(WORKGROUP_SIZE[0])
-      .mul(2)
-      .mul(workgroupId.x)
-      .toVar();
-
-    const localID1 = invocationLocalIndex.mul(2);
-    const localID2 = invocationLocalIndex.mul(2).add(1);
-
-    // If we will perform a local swap, then populate the local data
-    If(nextAlgo.lessThanEqual(uint(StepType.DISPERSE_LOCAL)), () => {
-      localStorage
-        .element(localID1)
-        .assign(currentElementsStorage.element(localOffset.add(localID1)));
-      localStorage
-        .element(localID2)
-        .assign(currentElementsStorage.element(localOffset.add(localID2)));
-    });
-
-    workgroupBarrier();
+    const nextAlgo = infoStorage.element(0).toVar();
 
     // TODO: Convert to switch block.
-    If(nextAlgo.equal(uint(StepType.FLIP_LOCAL)), () => {
-      const idx = getFlipIndices(invocationLocalIndex, nextBlockHeight);
-      localCompareAndSwap(idx.x, idx.y);
-    })
-      .ElseIf(nextAlgo.equal(uint(StepType.DISPERSE_LOCAL)), () => {
-        const idx = getDisperseIndices(invocationLocalIndex, nextBlockHeight);
-        localCompareAndSwap(idx.x, idx.y);
-      })
-      .ElseIf(nextAlgo.equal(uint(StepType.FLIP_GLOBAL)), () => {
-        const idx = getFlipIndices(instanceIndex, nextBlockHeight);
-        globalCompareAndSwap(idx.x, idx.y);
-      })
-      .ElseIf(nextAlgo.equal(uint(StepType.DISPERSE_GLOBAL)), () => {
-        const idx = getDisperseIndices(instanceIndex, nextBlockHeight);
-        globalCompareAndSwap(idx.x, idx.y);
-      });
-
-    // Ensure that all invocations have swapped their own regions of data
-    workgroupBarrier();
-
-    // Populate output data with the results from our swaps
-    If(nextAlgo.lessThanEqual(uint(StepType.DISPERSE_LOCAL)), () => {
-      currentElementsStorage
-        .element(localOffset.add(localID1))
-        .assign(localStorage.element(localID1));
-      currentElementsStorage
-        .element(localOffset.add(localID2))
-        .assign(localStorage.element(localID2));
+    If(nextAlgo.equal(uint(StepType.FLIP_GLOBAL)), () => {
+      const idx = getBitonicFlipIndices(instanceIndex, nextBlockHeight);
+      globalCompareAndSwap(idx.x, idx.y);
+    }).ElseIf(nextAlgo.equal(uint(StepType.DISPERSE_GLOBAL)), () => {
+      const idx = getBitonicDisperseIndices(instanceIndex, nextBlockHeight);
+      globalCompareAndSwap(idx.x, idx.y);
     });
 
-    // If the previous algorithm was global, we execute an additional compute step to sync the current buffer with the output buffer.
+    // Since this algorithm is global only, we execute an additional compute step to sync the current buffer with the output buffer.
   });
 
   const computeSetAlgoFn = Fn(() => {
     const nextBlockHeight = nextBlockHeightStorage.element(0).toVar();
-    const nextAlgo = nextAlgoStorage.element(0);
-    const highestBlockHeight = highestBlockHeightStorage.element(0).toVar();
+    const nextAlgo = infoStorage.element(0);
+    const highestBlockHeight = infoStorage.element(2).toVar();
 
     nextBlockHeight.divAssign(2);
 
     If(nextBlockHeight.equal(1), () => {
       highestBlockHeight.mulAssign(2);
 
-      if (forceGlobalSwap) {
-        If(highestBlockHeight.equal(size * 2), () => {
-          nextAlgo.assign(StepType.NONE);
-          nextBlockHeight.assign(0);
-        }).Else(() => {
-          nextAlgo.assign(StepType.FLIP_GLOBAL);
-          nextBlockHeight.assign(highestBlockHeight);
-        });
-      } else {
-        If(highestBlockHeight.equal(size * 2), () => {
-          nextAlgo.assign(StepType.NONE);
-          nextBlockHeight.assign(0);
-        })
-          .ElseIf(highestBlockHeight.greaterThan(WORKGROUP_SIZE[0] * 2), () => {
-            nextAlgo.assign(StepType.FLIP_GLOBAL);
-            nextBlockHeight.assign(highestBlockHeight);
-          })
-          .Else(() => {
-            nextAlgo.assign(
-              forceGlobalSwap ? StepType.FLIP_GLOBAL : StepType.FLIP_LOCAL
-            );
-            nextBlockHeight.assign(highestBlockHeight);
-          });
-      }
+      If(highestBlockHeight.equal(size * 2), () => {
+        nextAlgo.assign(StepType.NONE);
+        nextBlockHeight.assign(0);
+      }).Else(() => {
+        nextAlgo.assign(StepType.FLIP_GLOBAL);
+        nextBlockHeight.assign(highestBlockHeight);
+      });
     }).Else(() => {
-      if (forceGlobalSwap) {
-        nextAlgo.assign(StepType.DISPERSE_GLOBAL);
-      } else {
-        nextAlgo.assign(
-          nextBlockHeight
-            .greaterThan(WORKGROUP_SIZE[0] * 2)
-            .select(StepType.DISPERSE_GLOBAL, StepType.DISPERSE_LOCAL)
-            .uniformFlow()
-        );
-      }
+      nextAlgo.assign(StepType.DISPERSE_GLOBAL);
     });
 
     nextBlockHeightStorage.element(0).assign(nextBlockHeight);
-    highestBlockHeightStorage.element(0).assign(highestBlockHeight);
+    infoStorage.element(2).assign(highestBlockHeight);
   });
 
   const computeAlignCurrentFn = Fn(() => {
@@ -387,12 +513,9 @@ async function init(forceGlobalSwap = false) {
   });
 
   const computeResetAlgoFn = Fn(() => {
-    nextAlgoStorage
-      .element(0)
-      .assign(forceGlobalSwap ? StepType.FLIP_GLOBAL : StepType.FLIP_LOCAL);
+    infoStorage.element(0).assign(StepType.FLIP_GLOBAL);
     nextBlockHeightStorage.element(0).assign(2);
-    highestBlockHeightStorage.element(0).assign(2);
-    atomicStore(counterStorage.element(0), 0);
+    infoStorage.element(2).assign(2);
   });
 
   // Initialize each value in the elements buffer.
@@ -407,53 +530,11 @@ async function init(forceGlobalSwap = false) {
   const computeResetBuffers = computeResetBuffersFn().compute(size);
   const computeResetAlgo = computeResetAlgoFn().compute(1);
 
-  const material = new MeshBasicNodeMaterial({ color: 0x00ff00 });
+  scene.add(
+    createDisplayMesh(currentElementsStorage, infoStorage, nextBlockHeightRead)
+  );
 
-  const display = Fn(() => {
-    const { gridWidth, gridHeight, highlight } = effectController;
-
-    const newUV = uv().mul(vec2(gridWidth, gridHeight));
-
-    const pixel = uvec2(uint(floor(newUV.x)), uint(floor(newUV.y)));
-
-    const elementIndex = uint(gridWidth).mul(pixel.y).add(pixel.x);
-
-    const colorChanger = currentElementsStorage.element(elementIndex);
-
-    const subtracter = float(colorChanger).div(gridWidth.mul(gridHeight));
-
-    const color = vec3(subtracter.oneMinus()).toVar();
-
-    If(
-      highlight
-        .equal(1)
-        .and(not(nextAlgoStorage.element(0).equal(StepType.NONE))),
-      () => {
-        const boolCheck = int(
-          elementIndex
-            .mod(nextBlockHeightRead.element(0))
-            .lessThan(nextBlockHeightRead.element(0).div(2))
-        );
-        color.z.assign(
-          nextAlgoStorage.element(0).lessThanEqual(StepType.DISPERSE_LOCAL)
-        );
-        color.x.mulAssign(boolCheck);
-        color.y.mulAssign(abs(boolCheck.sub(1)));
-      }
-    );
-
-    return color;
-  });
-
-  material.colorNode = display();
-
-  const plane = new Mesh(new PlaneGeometry(1, 1), material);
-  scene.add(plane);
-
-  const renderer = new WebGPURenderer({
-    antialias: false,
-    trackTimestamp: true,
-  });
+  const renderer = new WebGPURenderer({ antialias: false });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
 
@@ -462,35 +543,17 @@ async function init(forceGlobalSwap = false) {
   };
 
   renderer.setAnimationLoop(animate);
-
-  document.body.appendChild(renderer.domElement);
-  renderer.domElement.style.position = "absolute";
-  renderer.domElement.style.top = "0";
-  renderer.domElement.style.left = "0";
-  renderer.domElement.style.width = "50%";
-  renderer.domElement.style.height = "100%";
-
-  if (forceGlobalSwap) {
-    renderer.domElement.style.left = "50%";
-
-    scene.background = new Color(0x212121);
-  } else {
-    scene.background = new Color(0x313131);
-  }
+  setupDomElement(renderer);
+  renderer.domElement.style.left = "50%";
+  scene.background = new Color(0x212121);
 
   await renderer.computeAsync(computeInit);
 
-  renderer.info.autoReset = false;
-
   const stepAnimation = async function () {
-    renderer.info.reset();
-
     if (currentStep !== MAX_STEPS) {
       renderer.compute(computeBitonicStep);
 
-      if (nextStepGlobal) {
-        renderer.compute(computeAlignCurrent);
-      }
+      renderer.compute(computeAlignCurrent);
 
       renderer.compute(computeSetAlgo);
 
@@ -502,40 +565,15 @@ async function init(forceGlobalSwap = false) {
       currentStep = 0;
     }
 
-    renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
-
-    const algo = new Uint32Array(
-      await renderer.getArrayBufferAsync(nextAlgoBuffer)
+    timestamps["global_swap"].innerHTML = constructInnerHTML(
+      true,
+      globalColors
     );
-    nextStepGlobal = algo[0] > StepType.DISPERSE_LOCAL;
-    const totalSwaps = new Uint32Array(
-      await renderer.getArrayBufferAsync(counterBuffer)
-    );
-
-    renderer.render(scene, camera);
-    renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
-
-    timestamps[forceGlobalSwap ? "global_swap" : "local_swap"].innerHTML = `
-
-							Compute ${forceGlobalSwap ? "Global" : "Local"}: ${
-      renderer.info.compute.frameCalls
-    } pass in ${renderer.info.compute.timestamp.toFixed(6)}ms<br>
-							Total Swaps: ${totalSwaps}<br>
-								<div style="display: flex; flex-direction:row; justify-content: center; align-items: center;">
-									${forceGlobalSwap ? "Global Swaps" : "Local Swaps"} Compare Region&nbsp;
-									<div style="background-color: ${
-                    forceGlobalSwap ? globalColors[0] : localColors[0]
-                  }; width:12.5px; height: 1em; border-radius: 20%;"></div>
-									&nbsp;to Region&nbsp;
-									<div style="background-color: ${
-                    forceGlobalSwap ? globalColors[1] : localColors[1]
-                  }; width:12.5px; height: 1em; border-radius: 20%;"></div>
-								</div>`;
 
     if (currentStep === MAX_STEPS) {
       setTimeout(stepAnimation, 1000);
     } else {
-      setTimeout(stepAnimation, 50);
+      setTimeout(stepAnimation, 100);
     }
   };
 
@@ -544,17 +582,6 @@ async function init(forceGlobalSwap = false) {
   window.addEventListener("resize", onWindowResize);
 
   function onWindowResize() {
-    renderer.setSize(window.innerWidth / 2, window.innerHeight);
-
-    const aspect = window.innerWidth / 2 / window.innerHeight;
-
-    const frustumHeight = camera.top - camera.bottom;
-
-    camera.left = (-frustumHeight * aspect) / 2;
-    camera.right = (frustumHeight * aspect) / 2;
-
-    camera.updateProjectionMatrix();
-
-    renderer.render(scene, camera);
+    windowResizeCallback(renderer, scene, camera);
   }
 }
