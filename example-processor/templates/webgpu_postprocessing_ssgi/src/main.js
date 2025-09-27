@@ -43,10 +43,8 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
-  document.body.appendChild(renderer.domElement);
-
   renderer.inspector = new Inspector();
-  document.body.appendChild(renderer.inspector.domElement);
+  document.body.appendChild(renderer.domElement);
 
   //
 
@@ -72,10 +70,21 @@ async function init() {
   );
 
   const scenePassColor = scenePass.getTextureNode("output");
-  const scenePassDiffuse = scenePass.getTextureNode("diffuseColor");
-  const scenePassDepth = scenePass.getTextureNode("depth");
-  const scenePassNormal = scenePass.getTextureNode("normal");
-  const scenePassVelocity = scenePass.getTextureNode("velocity");
+  const scenePassDiffuse = scenePass
+    .getTextureNode("diffuseColor")
+    .toInspector("Diffuse Color");
+  const scenePassDepth = scenePass
+    .getTextureNode("depth")
+    .toInspector("Depth", () => {
+      return scenePass.getLinearDepthNode();
+    });
+
+  const scenePassNormal = scenePass
+    .getTextureNode("normal")
+    .toInspector("Normal");
+  const scenePassVelocity = scenePass
+    .getTextureNode("velocity")
+    .toInspector("Velocity");
 
   // bandwidth optimization
 
@@ -97,8 +106,8 @@ async function init() {
 
   // composite
 
-  const gi = giPass.rgb;
-  const ao = giPass.a;
+  const gi = giPass.rgb.toInspector("SSGI");
+  const ao = giPass.a.toInspector("AO");
 
   const compositePass = vec4(
     add(scenePassColor.rgb.mul(ao), scenePassDiffuse.rgb.mul(gi)),

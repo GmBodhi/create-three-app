@@ -17,6 +17,8 @@ import {
 
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 let camera, scene, renderer;
 
 let box;
@@ -42,6 +44,8 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
+
+  renderer.inspector = new Inspector();
 
   // textures
 

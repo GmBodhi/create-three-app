@@ -22,6 +22,7 @@ import {
   max,
   positionLocal,
   transformNormalToView,
+  globalId,
 } from "three/tsl";
 
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
@@ -216,9 +217,10 @@ async function init() {
 
     const newHeight = neighborHeight.mul(viscosity);
 
-    // Get 2-D compute coordinate from one-dimensional instanceIndex.
-    const x = float(instanceIndex.mod(WIDTH)).mul(1 / WIDTH);
-    const y = float(instanceIndex.div(WIDTH)).mul(1 / WIDTH);
+    // Get x and y position of the coordinate in the water plane
+
+    const x = float(globalId.x).mul(1 / WIDTH);
+    const y = float(globalId.y).mul(1 / WIDTH);
 
     // Mouse influence
     const centerVec = vec2(0.5);
@@ -239,7 +241,7 @@ async function init() {
 
     prevHeightStorage.element(instanceIndex).assign(height);
     heightStorage.element(instanceIndex).assign(newHeight);
-  })().compute(WIDTH * WIDTH);
+  })().compute(WIDTH * WIDTH, [16, 16]);
 
   // Water Geometry corresponds with buffered compute grid.
   const waterGeometry = new PlaneGeometry(BOUNDS, BOUNDS, WIDTH - 1, WIDTH - 1);
@@ -338,7 +340,7 @@ async function init() {
     const linearDamping = float(0.92);
     const bounceDamping = float(-0.4);
 
-    // Get 2-D compute coordinate from one-dimensional instanceIndex. The calculation will
+    // Get 2-D compute coordinate from one-dimensional instanceIndex.
     const instancePosition = duckInstanceDataStorage
       .element(instanceIndex)
       .get("position")
@@ -581,7 +583,7 @@ function render() {
   frame++;
 
   if (frame >= 7 - effectController.speed) {
-    renderer.computeAsync(computeHeight);
+    renderer.computeAsync(computeHeight, [8, 8, 1]);
 
     if (effectController.ducksEnabled) {
       renderer.computeAsync(computeDucks);

@@ -2,13 +2,11 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let camera, scene, renderer, startTime, object, stats;
+let camera, scene, renderer, startTime, object;
 
 init();
 
@@ -104,11 +102,6 @@ function init() {
   ground.receiveShadow = true;
   globalClippingGroup.add(ground);
 
-  // Stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   // Renderer
 
   renderer = new WebGPURenderer({ antialias: true });
@@ -116,6 +109,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   window.addEventListener("resize", onWindowResize);
   document.body.appendChild(renderer.domElement);
 
@@ -127,57 +121,59 @@ function init() {
 
   // GUI
 
-  const gui = new GUI(),
-    props = {
-      alphaToCoverage: true,
+  const gui = renderer.inspector.createParameters("Clipping settings");
+  const props = {
+    alphaToCoverage: true,
+  };
+
+  const folderKnot = gui.addFolder("Knot Clipping Group");
+  const propsKnot = {
+    get Enabled() {
+      return knotClippingGroup.enabled;
     },
-    folderKnot = gui.addFolder("Knot Clipping Group"),
-    propsKnot = {
-      get Enabled() {
-        return knotClippingGroup.enabled;
-      },
-      set Enabled(v) {
-        knotClippingGroup.enabled = v;
-      },
-
-      get Shadows() {
-        return knotClippingGroup.clipShadows;
-      },
-      set Shadows(v) {
-        knotClippingGroup.clipShadows = v;
-      },
-
-      get Intersection() {
-        return knotClippingGroup.clipIntersection;
-      },
-
-      set Intersection(v) {
-        knotClippingGroup.clipIntersection = v;
-      },
-
-      get Plane() {
-        return localPlane1.constant;
-      },
-      set Plane(v) {
-        localPlane1.constant = v;
-      },
+    set Enabled(v) {
+      knotClippingGroup.enabled = v;
     },
-    folderGlobal = gui.addFolder("Global Clipping Group"),
-    propsGlobal = {
-      get Enabled() {
-        return globalClippingGroup.enabled;
-      },
-      set Enabled(v) {
-        globalClippingGroup.enabled = v;
-      },
 
-      get Plane() {
-        return globalPlane.constant;
-      },
-      set Plane(v) {
-        globalPlane.constant = v;
-      },
-    };
+    get Shadows() {
+      return knotClippingGroup.clipShadows;
+    },
+    set Shadows(v) {
+      knotClippingGroup.clipShadows = v;
+    },
+
+    get Intersection() {
+      return knotClippingGroup.clipIntersection;
+    },
+
+    set Intersection(v) {
+      knotClippingGroup.clipIntersection = v;
+    },
+
+    get Plane() {
+      return localPlane1.constant;
+    },
+    set Plane(v) {
+      localPlane1.constant = v;
+    },
+  };
+
+  const folderGlobal = gui.addFolder("Global Clipping Group");
+  const propsGlobal = {
+    get Enabled() {
+      return globalClippingGroup.enabled;
+    },
+    set Enabled(v) {
+      globalClippingGroup.enabled = v;
+    },
+
+    get Plane() {
+      return globalPlane.constant;
+    },
+    set Plane(v) {
+      globalPlane.constant = v;
+    },
+  };
 
   gui.add(props, "alphaToCoverage").onChange(function (value) {
     ground.material.alphaToCoverage = value;
@@ -215,7 +211,5 @@ function animate(currentTime) {
   object.rotation.y = time * 0.2;
   object.scale.setScalar(Math.cos(time) * 0.125 + 0.875);
 
-  stats.begin();
   renderer.render(scene, camera);
-  stats.end();
 }

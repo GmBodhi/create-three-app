@@ -8,14 +8,13 @@ import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 let camera, scene, renderer;
 
 init();
 
 async function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -69,8 +68,9 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = LinearToneMapping;
+  renderer.inspector = new Inspector();
   renderer.setAnimationLoop(render);
-  container.appendChild(renderer.domElement);
+  document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 2;

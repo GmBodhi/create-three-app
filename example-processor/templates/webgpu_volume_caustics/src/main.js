@@ -284,8 +284,11 @@ async function init() {
 
   // Scene Pass
 
-  const scenePass = pass(scene, camera);
+  const scenePass = pass(scene, camera).toInspector();
+  scenePass.name = "Scene";
+
   const sceneDepth = scenePass.getTextureNode("depth");
+  sceneDepth.name = "Scene Depth";
 
   // Material - Apply occlusion depth of volumetric lighting based on the scene depth
 
@@ -293,14 +296,20 @@ async function init() {
 
   // Volumetric Lighting Pass
 
-  const volumetricPass = pass(scene, camera, { depthBuffer: false });
+  const volumetricPass = pass(scene, camera, {
+    depthBuffer: false,
+    samples: 0,
+  }).toInspector("Volumetric Lighting / Raw");
   volumetricPass.name = "Volumetric Lighting";
   volumetricPass.setLayers(volumetricLayer);
   volumetricPass.setResolutionScale(0.5);
 
   // Compose and Denoise
 
-  const bloomPass = bloom(volumetricPass, 1, 1, 0);
+  const bloomPass = bloom(volumetricPass, 1, 1, 0).toInspector(
+    "Volumetric Lighting / Mip-Chain Gaussian Blur"
+  );
+  bloomPass.name = "Bloom";
 
   const scenePassColor = scenePass.add(
     bloomPass.mul(volumetricLightingIntensity)
