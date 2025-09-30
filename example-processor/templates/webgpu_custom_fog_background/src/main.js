@@ -14,9 +14,6 @@ let postProcessing;
 init();
 
 function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -31,7 +28,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = NoToneMapping; // apply tone mapping in post processing, instead
-  container.appendChild(renderer.domElement);
+  document.body.appendChild(renderer.domElement);
 
   // post processing
 

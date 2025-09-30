@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 import { pass, uv, uniform } from "three/tsl";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 import { afterImage } from "three/addons/tsl/display/AfterImageNode.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import {
   ExtendedSRGBColorSpace,
@@ -47,6 +47,7 @@ const renderer = new WebGPURenderer({
 renderer.outputColorSpace = ExtendedSRGBColorSpace;
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.inspector = new Inspector();
 document.body.appendChild(renderer.domElement);
 
 const camera = new OrthographicCamera(
@@ -115,24 +116,19 @@ renderer.domElement.addEventListener("touchend", (e) => e.preventDefault(), {
 });
 
 // GUI setup
-const gui = new GUI();
+const gui = renderer.inspector.createParameters("Settings");
 
 const colorFolder = gui.addFolder("HDR");
 colorFolder.add(params.intensity, "value", 0, 10, 0.1).name("Intensity");
-colorFolder.open();
 
 const brushFolder = gui.addFolder("Brush Settings");
 brushFolder.add(params.hardness, "value", 0, 0.99, 0.01).name("Hardness");
 brushFolder.add(params.radius, "value", 0.1, 2.0, 0.01).name("Radius");
-brushFolder.open();
 
 const effectFolder = gui.addFolder("Effects");
 effectFolder
   .add(params.afterImageDecay, "value", 0.9, 0.999, 0.001)
   .name("After Image Decay");
-effectFolder.open();
-
-gui.open();
 
 // Resize handling
 function onResize() {

@@ -302,7 +302,6 @@ async function initBitonicSort() {
 
   const bitonicSortModule = new BitonicSort(renderer, currentElementsStorage, {
     workgroupSize: 64,
-    sideEffectBuffers: [2, 3],
   });
 
   scene.add(
@@ -314,20 +313,6 @@ async function initBitonicSort() {
   const computeReset = computeResetBuffersFn().compute(size);
 
   await renderer.computeAsync(computeInit);
-
-  gui.add(effectController, "stepBitonic").onChange(async () => {
-    if (currentStep < bitonicSortModule.stepCount) {
-      await bitonicSortModule.computeStep(renderer);
-
-      currentStep++;
-    } else {
-      await renderer.computeAsync(computeReset);
-
-      currentStep = 0;
-    }
-
-    timestamps["local_swap"].innerHTML = constructInnerHTML(false, localColors);
-  });
 
   const stepAnimation = async function () {
     renderer.info.reset();

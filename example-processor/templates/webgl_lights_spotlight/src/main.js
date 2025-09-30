@@ -2,16 +2,17 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
+  NeutralToneMapping,
   PCFSoftShadowMap,
-  ACESFilmicToneMapping,
   Scene,
   PerspectiveCamera,
-  HemisphereLight,
   TextureLoader,
   LinearFilter,
   SRGBColorSpace,
+  HemisphereLight,
   SpotLight,
   SpotLightHelper,
+  CameraHelper,
   PlaneGeometry,
   MeshLambertMaterial,
   Mesh,
@@ -24,22 +25,24 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let renderer, scene, camera;
 
-let spotLight, lightHelper;
+let spotLight;
 
 init();
 
 function init() {
+  // Renderer
+
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
+  renderer.toneMapping = NeutralToneMapping;
+  renderer.toneMappingExposure = 1;
+
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
-
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1;
 
   scene = new Scene();
 
@@ -51,6 +54,8 @@ function init() {
   );
   camera.position.set(7, 4, 1);
 
+  // Controls
+
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 2;
   controls.maxDistance = 10;
@@ -58,8 +63,7 @@ function init() {
   controls.target.set(0, 1, 0);
   controls.update();
 
-  const ambient = new HemisphereLight(0xffffff, 0x8d8d8d, 0.15);
-  scene.add(ambient);
+  // Textures
 
   const loader = new TextureLoader().setPath("textures/");
   const filenames = ["disturb.jpg", "colors.png", "uv_grid_opengl.jpg"];
@@ -78,28 +82,41 @@ function init() {
     textures[filename] = texture;
   }
 
+  // Lights
+
+  const ambient = new HemisphereLight(0xffffff, 0x8d8d8d, 0.25);
+  scene.add(ambient);
+
   spotLight = new SpotLight(0xffffff, 100);
+  spotLight.name = "spotLight";
+  spotLight.map = textures["disturb.jpg"];
   spotLight.position.set(2.5, 5, 2.5);
   spotLight.angle = Math.PI / 6;
   spotLight.penumbra = 1;
   spotLight.decay = 2;
   spotLight.distance = 0;
-  spotLight.map = textures["disturb.jpg"];
 
   spotLight.castShadow = true;
   spotLight.shadow.mapSize.width = 1024;
   spotLight.shadow.mapSize.height = 1024;
-  spotLight.shadow.camera.near = 1;
+  spotLight.shadow.camera.near = 2;
   spotLight.shadow.camera.far = 10;
   spotLight.shadow.focus = 1;
+  spotLight.shadow.bias = -0.003;
+  spotLight.shadow.intensity = 1;
   scene.add(spotLight);
 
-  lightHelper = new SpotLightHelper(spotLight);
-  scene.add(lightHelper);
+  spotLight.lightHelper = new SpotLightHelper(spotLight);
+  spotLight.lightHelper.visible = false;
+  scene.add(spotLight.lightHelper);
+
+  spotLight.shadowCameraHelper = new CameraHelper(spotLight.shadow.camera); // colored lines
+  spotLight.shadowCameraHelper.visible = false;
+  scene.add(spotLight.shadowCameraHelper);
 
   //
 
-  const geometry = new PlaneGeometry(200, 200);
+  const geometry = new PlaneGeometry(10, 10);
   const material = new MeshLambertMaterial({ color: 0xbcbcbc });
 
   const mesh = new Mesh(geometry, material);
@@ -108,7 +125,7 @@ function init() {
   mesh.receiveShadow = true;
   scene.add(mesh);
 
-  //
+  // Model
 
   new PLYLoader().load("models/ply/binary/Lucy100k.ply", function (geometry) {
     geometry.scale(0.0024, 0.0024, 0.0024);
@@ -123,6 +140,8 @@ function init() {
     mesh.receiveShadow = true;
     scene.add(mesh);
   });
+
+  //
 
   window.addEventListener("resize", onWindowResize);
 
@@ -139,7 +158,8 @@ function init() {
     penumbra: spotLight.penumbra,
     decay: spotLight.decay,
     focus: spotLight.shadow.focus,
-    shadows: true,
+    shadowIntensity: spotLight.shadow.intensity,
+    helpers: false,
   };
 
   gui.add(params, "map", textures).onChange(function (val) {
@@ -174,14 +194,13 @@ function init() {
     spotLight.shadow.focus = val;
   });
 
-  gui.add(params, "shadows").onChange(function (val) {
-    renderer.shadowMap.enabled = val;
+  gui.add(params, "shadowIntensity", 0, 1).onChange(function (val) {
+    spotLight.shadow.intensity = val;
+  });
 
-    scene.traverse(function (child) {
-      if (child.material) {
-        child.material.needsUpdate = true;
-      }
-    });
+  gui.add(params, "helpers").onChange(function (val) {
+    spotLight.lightHelper.visible = val;
+    spotLight.shadowCameraHelper.visible = val;
   });
 
   gui.open();
@@ -200,7 +219,7 @@ function animate() {
   spotLight.position.x = Math.cos(time) * 2.5;
   spotLight.position.z = Math.sin(time) * 2.5;
 
-  lightHelper.update();
+  spotLight.lightHelper.update();
 
   renderer.render(scene, camera);
 }

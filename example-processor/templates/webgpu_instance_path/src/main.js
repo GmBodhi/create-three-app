@@ -4,6 +4,7 @@ import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import {
   abs,
@@ -150,6 +151,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = NeutralToneMapping;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   await renderer.init();

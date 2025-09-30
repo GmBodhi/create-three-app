@@ -13,6 +13,7 @@ import {
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let controls;
@@ -126,6 +127,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // controls

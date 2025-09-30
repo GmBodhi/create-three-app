@@ -7,7 +7,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 class InstanceUniformNode extends Node {
   constructor() {
@@ -30,8 +30,6 @@ class InstanceUniformNode extends Node {
     return this.uniformNode;
   }
 }
-
-let stats;
 
 let camera, scene, renderer;
 let controls;
@@ -98,6 +96,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   //
@@ -105,11 +104,6 @@ function init() {
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 400;
   controls.maxDistance = 2000;
-
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
 
   //
 
@@ -151,6 +145,4 @@ function animate() {
   }
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

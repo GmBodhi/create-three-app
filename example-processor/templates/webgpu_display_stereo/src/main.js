@@ -6,7 +6,7 @@ import { stereoPass } from "three/addons/tsl/display/StereoPassNode.js";
 import { anaglyphPass } from "three/addons/tsl/display/AnaglyphPassNode.js";
 import { parallaxBarrierPass } from "three/addons/tsl/display/ParallaxBarrierPassNode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, postProcessing;
 
@@ -81,6 +81,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   postProcessing = new PostProcessing(renderer);
@@ -90,7 +91,7 @@ function init() {
 
   postProcessing.outputNode = stereo;
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Stereo Settings");
   gui.add(params, "effect", effects).onChange(update);
   gui.add(params, "eyeSep", 0.001, 0.15, 0.001).onChange(function (value) {
     stereo.stereo.eyeSep = value;

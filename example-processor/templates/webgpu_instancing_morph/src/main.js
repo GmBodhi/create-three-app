@@ -3,10 +3,9 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import Stats from "three/addons/libs/stats.module.js";
-
-let camera, scene, renderer, stats, mesh, mixer, dummy;
+let camera, scene, renderer, mesh, mixer, dummy;
 
 const offset = 5000;
 
@@ -35,9 +34,6 @@ function init() {
   scene.fog = new Fog(0x99ddff, 5000, 10000);
 
   //
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   const light = new DirectionalLight(0xffffff, 1);
 
@@ -123,6 +119,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
@@ -159,6 +156,4 @@ function animate() {
   }
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

@@ -3,9 +3,8 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { texture, equirectUV } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let controls;
@@ -35,13 +34,20 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(render);
+  renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.autoRotate = true;
   controls.rotateSpeed = -0.125; // negative, to track mouse pointer
   controls.autoRotateSpeed = 1.0;
+
+  // GUI
+
+  const gui = renderer.inspector.createParameters("Settings");
+
+  gui.add(scene, "backgroundIntensity", 0, 1).name("background intensity");
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -53,18 +59,8 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function render() {
+function animate() {
   controls.update();
 
   renderer.render(scene, camera);
 }
-
-const gui = new GUI();
-
-const params = {
-  intensity: 1.0,
-};
-gui.add(params, "intensity", 0, 1).onChange(function (value) {
-  scene.backgroundIntensity = value;
-  render();
-});

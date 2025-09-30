@@ -2,8 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import {
   uniform,
@@ -12,7 +11,7 @@ import {
   instancedBufferAttribute,
 } from "three/tsl";
 
-let camera, scene, renderer, stats, material;
+let camera, scene, renderer, material;
 let mouseX = 0,
   mouseY = 0;
 
@@ -83,23 +82,17 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   //
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
-  //
-
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   gui.add(material, "sizeAttenuation").onChange(function () {
     material.needsUpdate = true;
     material.scaleNode.value = material.sizeAttenuation ? 15 : 0.03;
   });
-
-  gui.open();
 
   //
 
@@ -132,7 +125,6 @@ function onPointerMove(event) {
 
 function animate() {
   render();
-  stats.update();
 }
 
 function render() {

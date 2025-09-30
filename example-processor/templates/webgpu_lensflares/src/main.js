@@ -2,15 +2,14 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-
 import { FlyControls } from "three/addons/controls/FlyControls.js";
 import {
   LensflareMesh,
   LensflareElement,
 } from "three/addons/objects/LensflareMesh.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let container, stats;
+let container;
 
 let camera, scene, renderer;
 let controls;
@@ -106,10 +105,11 @@ function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: false });
+  renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   //
@@ -121,11 +121,6 @@ function init() {
   controls.rollSpeed = Math.PI / 6;
   controls.autoForward = false;
   controls.dragToLook = false;
-
-  // stats
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
 
   // events
 
@@ -145,7 +140,6 @@ function onWindowResize() {
 
 function animate() {
   render();
-  stats.update();
 }
 
 function render() {
