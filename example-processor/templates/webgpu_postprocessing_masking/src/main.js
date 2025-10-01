@@ -2,6 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 import { pass, texture } from "three/tsl";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, postProcessing, renderer;
 let box, torus;
@@ -52,6 +53,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);

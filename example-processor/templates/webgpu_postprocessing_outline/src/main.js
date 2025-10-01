@@ -4,13 +4,11 @@ import * as THREE from "three/webgpu";
 import { pass, uniform, time, oscSine } from "three/tsl";
 import { outline } from "three/addons/tsl/display/OutlineNode.js";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
-let container, stats;
 let camera, scene, renderer, controls;
 let postProcessing, outlinePass;
 
@@ -25,17 +23,15 @@ const group = new Group();
 init();
 
 function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
-
   const width = window.innerWidth;
   const height = window.innerHeight;
 
   renderer = new WebGPURenderer();
-  renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(width, height);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
+  renderer.shadowMap.enabled = true;
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -138,11 +134,6 @@ function init() {
   torus.receiveShadow = true;
   torus.castShadow = true;
 
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
   // outline pass
 
   const edgeStrength = uniform(3.0);
@@ -173,14 +164,14 @@ function init() {
 
   // postprocessing
 
-  const scenePass = pass(scene, camera);
+  const scenePass = pass(scene, camera).toInspector("Color");
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = outlinePulse.add(scenePass);
 
   // gui
 
-  const gui = new GUI({ width: 280 });
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(edgeStrength, "value", 0.01, 10).name("edgeStrength");
   gui.add(edgeGlow, "value", 0.0, 1).name("edgeGlow");
   gui.add(edgeThickness, "value", 1, 4).name("edgeThickness");
@@ -245,11 +236,7 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.begin();
-
   controls.update();
 
   postProcessing.render();
-
-  stats.end();
 }

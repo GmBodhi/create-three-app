@@ -27,7 +27,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { LUTCubeLoader } from "three/addons/loaders/LUTCubeLoader.js";
 import { LUT3dlLoader } from "three/addons/loaders/LUT3dlLoader.js";
 import { LUTImageLoader } from "three/addons/loaders/LUTImageLoader.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const params = {
   lut: "Bourbon 64.CUBE",
@@ -176,6 +176,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // post processing
@@ -212,9 +213,9 @@ async function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(params, "lut", Object.keys(lutMap));
-  gui.add(params, "intensity").min(0).max(1);
+  gui.add(params, "intensity", 0, 1);
 
   window.addEventListener("resize", onWindowResize);
 }

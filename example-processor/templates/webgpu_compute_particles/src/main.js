@@ -14,10 +14,9 @@ import {
   instanceIndex,
 } from "three/tsl";
 
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 const particleCount = 200000;
 
@@ -29,12 +28,10 @@ const size = uniform(0.12);
 const clickPosition = uniform(new Vector3());
 
 let camera, scene, renderer;
-let controls, stats;
+let controls;
 let computeParticles;
 
 let isOrbitControlsActive;
-
-const timestamps = document.getElementById("timestamps");
 
 init();
 
@@ -70,7 +67,9 @@ function init() {
 
     color.x = hash(instanceIndex);
     color.y = hash(instanceIndex.add(2));
-  })().compute(particleCount);
+  })()
+    .compute(particleCount)
+    .setName("Init Particles");
 
   //
 
@@ -96,7 +95,9 @@ function init() {
     });
   });
 
-  computeParticles = computeUpdate().compute(particleCount);
+  computeParticles = computeUpdate()
+    .compute(particleCount)
+    .setName("Update Particles");
 
   // create particles
 
@@ -129,14 +130,12 @@ function init() {
 
   //
 
-  renderer = new WebGPURenderer({ antialias: true, trackTimestamp: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   //
 
@@ -156,7 +155,9 @@ function init() {
     const relativePower = power.mul(hash(instanceIndex).mul(1.5).add(0.5));
 
     velocity.assign(velocity.add(direction.mul(relativePower)));
-  })().compute(particleCount);
+  })()
+    .compute(particleCount)
+    .setName("Hit Particles");
 
   //
 
@@ -215,7 +216,7 @@ function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   gui.add(gravity, "value", -0.0098, 0, 0.0001).name("gravity");
   gui.add(bounce, "value", 0.1, 1, 0.01).name("bounce");
@@ -232,31 +233,9 @@ function onWindowResize() {
   renderer.setSize(innerWidth, innerHeight);
 }
 
-async function animate() {
-  stats.update();
-
+function animate() {
   controls.update();
 
-  await renderer.computeAsync(computeParticles);
-  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
-
-  await renderer.renderAsync(scene, camera);
-  renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
-
-  // throttle the logging
-
-  if (renderer.hasFeature("timestamp-query")) {
-    if (renderer.info.render.calls % 5 === 0) {
-      timestamps.innerHTML = `
-
-							Compute ${
-                renderer.info.compute.frameCalls
-              } pass in ${renderer.info.compute.timestamp.toFixed(6)}ms<br>
-							Draw ${
-                renderer.info.render.drawCalls
-              } pass in ${renderer.info.render.timestamp.toFixed(6)}ms`;
-    }
-  } else {
-    timestamps.innerHTML = "Timestamp queries not supported";
-  }
+  renderer.compute(computeParticles);
+  renderer.render(scene, camera);
 }

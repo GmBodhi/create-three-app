@@ -5,6 +5,8 @@ import { reflector, uv, texture, color } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 let camera, scene, renderer;
 
 let cameraControls;
@@ -90,8 +92,8 @@ function init() {
 
   // reflectors / mirrors
 
-  const groundReflector = reflector();
-  const verticalReflector = reflector();
+  const groundReflector = reflector().toInspector("Ground Reflector");
+  const verticalReflector = reflector().toInspector("Vertical Reflector");
 
   const groundNormalScale = -0.08;
   const verticalNormalScale = 0.1;
@@ -202,6 +204,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // controls

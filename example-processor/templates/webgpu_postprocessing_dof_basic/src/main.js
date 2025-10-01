@@ -10,7 +10,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 import TWEEN from "three/addons/libs/tween.module.js";
 
 let camera,
@@ -81,6 +81,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   renderer.toneMapping = NeutralToneMapping;
   document.body.appendChild(renderer.domElement);
 
@@ -100,7 +101,7 @@ async function init() {
 
   const scenePass = pass(scene, camera);
 
-  const scenePassColor = scenePass.getTextureNode();
+  const scenePassColor = scenePass.getTextureNode().toInspector("Color");
   const scenePassViewZ = scenePass.getViewZNode();
   const scenePassBlurred = boxBlur(scenePassColor, {
     size: blurSize,
@@ -123,7 +124,7 @@ async function init() {
 
   // GUI
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(minDistance, "value", 0, 3).name("min distance");
   gui.add(maxDistance, "value", 0, 5).name("max distance");
   gui.add(blurSize, "value", 1, 3, 1).name("blur size");

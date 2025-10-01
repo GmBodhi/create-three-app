@@ -12,13 +12,11 @@ import {
 import { dof } from "three/addons/tsl/display/DepthOfFieldNode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 //
 
-let camera, scene, renderer, mesh, controls, stats;
+let camera, scene, renderer, mesh, controls;
 
 let width = window.innerWidth;
 let height = window.innerHeight;
@@ -85,6 +83,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   const effectController = {
@@ -99,7 +98,7 @@ function init() {
 
   const scenePass = pass(scene, camera);
 
-  const scenePassColor = scenePass.getTextureNode();
+  const scenePassColor = scenePass.getTextureNode().toInspector("Color");
   const scenePassViewZ = scenePass.getViewZNode();
 
   const dofPass = dof(
@@ -119,14 +118,9 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 
-  // stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui
     .add(effectController.focusDistance, "value", 10.0, 3000.0)
     .name("focus distance");
@@ -148,6 +142,4 @@ function animate() {
   controls.update();
 
   postProcessing.render();
-
-  stats.update();
 }

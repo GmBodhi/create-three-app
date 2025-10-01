@@ -17,10 +17,9 @@ import {
 } from "three/tsl";
 import { afterImage } from "three/addons/tsl/display/AfterImageNode.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, particles, stats;
+let camera, scene, renderer, particles;
 let postProcessing, afterImagePass, scenePass;
 
 const params = {
@@ -35,6 +34,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -128,14 +128,9 @@ function init() {
 
   //
 
-  const gui = new GUI({ title: "Damp setting" });
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(afterImagePass.damp, "value", 0.25, 1);
   gui.add(params, "enabled").onChange(updatePassChain);
-
-  //
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -174,6 +169,4 @@ function animate(time) {
   particles.rotation.z = time * 0.001;
 
   postProcessing.render();
-
-  stats.update();
 }

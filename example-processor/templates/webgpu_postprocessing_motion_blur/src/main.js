@@ -7,7 +7,6 @@ import {
   uniform,
   output,
   mrt,
-  mix,
   velocity,
   uv,
   screenUV,
@@ -18,15 +17,12 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let boxLeft, boxRight, model, mixer, clock;
 let postProcessing;
 let controls;
-let stats;
 
 const params = {
   speed: 1.0,
@@ -151,10 +147,8 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 1;
@@ -170,7 +164,6 @@ function init() {
   // post-processing
 
   const blurAmount = uniform(1);
-  const showVelocity = uniform(0);
 
   const scenePass = pass(scene, camera);
 
@@ -181,8 +174,11 @@ function init() {
     })
   );
 
-  const beauty = scenePass.getTextureNode();
-  const vel = scenePass.getTextureNode("velocity").mul(blurAmount);
+  const beauty = scenePass.getTextureNode().toInspector("Color");
+  const vel = scenePass
+    .getTextureNode("velocity")
+    .toInspector("Velocity")
+    .mul(blurAmount);
 
   const mBlur = motionBlur(beauty, vel);
 
@@ -194,16 +190,14 @@ function init() {
     .oneMinus();
 
   postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = mix(mBlur, vel, showVelocity).mul(vignette);
+  postProcessing.outputNode = mBlur.mul(vignette);
 
   //
 
-  const gui = new GUI();
-  gui.title("Motion Blur Settings");
+  const gui = renderer.inspector.createParameters("Motion Blur Settings");
   gui.add(controls, "autoRotate");
   gui.add(blurAmount, "value", 0, 3).name("blur amount");
   gui.add(params, "speed", 0, 2);
-  gui.add(showVelocity, "value", 0, 1).name("show velocity");
 
   //
 
@@ -218,8 +212,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   controls.update();
 
   const delta = clock.getDelta();

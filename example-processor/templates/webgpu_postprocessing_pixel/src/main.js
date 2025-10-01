@@ -3,13 +3,13 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { uniform } from "three/tsl";
 import { pixelationPass } from "three/addons/tsl/display/PixelationPassNode.js";
 
 let camera, scene, renderer, postProcessing, crystalMesh, clock;
-let gui, effectController;
+let effectController;
 
 init();
 
@@ -99,10 +99,11 @@ function init() {
   scene.add(spotLight);
 
   renderer = new WebGPURenderer();
-  renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = BasicShadowMap;
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = BasicShadowMap;
   document.body.appendChild(renderer.domElement);
 
   effectController = {
@@ -129,7 +130,7 @@ function init() {
 
   // gui
 
-  gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(effectController.pixelSize, "value", 1, 16, 1).name("Pixel Size");
   gui
     .add(effectController.normalEdgeStrength, "value", 0, 2, 0.05)

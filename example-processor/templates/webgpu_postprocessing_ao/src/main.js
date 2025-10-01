@@ -10,10 +10,9 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing, controls, stats;
+let camera, scene, renderer, postProcessing, controls;
 
 let aoPass, traaPass, blendPassAO, scenePassColor;
 
@@ -44,10 +43,8 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.domElement);
 
   await renderer.init();
 
@@ -82,14 +79,22 @@ async function init() {
     })
   );
 
-  scenePassColor = scenePass.getTextureNode("output");
-  const scenePassNormal = scenePass.getTextureNode("normal");
-  const scenePassDepth = scenePass.getTextureNode("depth");
-  const scenePassVelocity = scenePass.getTextureNode("velocity");
+  scenePassColor = scenePass.getTextureNode("output").toInspector("Color");
+  const scenePassDepth = scenePass
+    .getTextureNode("depth")
+    .toInspector("Depth", () => {
+      return scenePass.getLinearDepthNode();
+    });
+  const scenePassNormal = scenePass
+    .getTextureNode("normal")
+    .toInspector("Normal");
+  const scenePassVelocity = scenePass
+    .getTextureNode("velocity")
+    .toInspector("Velocity");
 
   // ao
 
-  aoPass = ao(scenePassDepth, scenePassNormal, camera);
+  aoPass = ao(scenePassDepth, scenePassNormal, camera).toInspector("AO");
   aoPass.resolutionScale = 0.5; // running AO in half resolution is often sufficient
   blendPassAO = vec4(scenePassColor.rgb.mul(aoPass.r), scenePassColor.a); // the AO is stored only in the red channel
 
@@ -128,18 +133,13 @@ async function init() {
 
   //
 
-  const gui = new GUI();
-  gui.title("AO settings");
-  gui.add(params, "samples").min(4).max(32).step(1).onChange(updateParameters);
-  gui.add(params, "distanceExponent").min(1).max(2).onChange(updateParameters);
-  gui
-    .add(params, "distanceFallOff")
-    .min(0.01)
-    .max(1)
-    .onChange(updateParameters);
-  gui.add(params, "radius").min(0.1).max(1).onChange(updateParameters);
-  gui.add(params, "scale").min(0.01).max(2).onChange(updateParameters);
-  gui.add(params, "thickness").min(0.01).max(2).onChange(updateParameters);
+  const gui = renderer.inspector.createParameters("Settings");
+  gui.add(params, "samples", 4, 32).step(1).onChange(updateParameters);
+  gui.add(params, "distanceExponent", 1, 2).onChange(updateParameters);
+  gui.add(params, "distanceFallOff", 0.01, 1).onChange(updateParameters);
+  gui.add(params, "radius", 0.1, 1).onChange(updateParameters);
+  gui.add(params, "scale", 0.01, 2).onChange(updateParameters);
+  gui.add(params, "thickness", 0.01, 2).onChange(updateParameters);
   gui.add(params, "aoOnly").onChange((value) => {
     if (value === true) {
       postProcessing.outputNode = vec4(vec3(aoPass.r), 1);
@@ -172,8 +172,6 @@ function onWindowResize() {
 
 function animate() {
   controls.update();
-
-  stats.update();
 
   postProcessing.render();
 }

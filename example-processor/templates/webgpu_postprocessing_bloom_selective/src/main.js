@@ -6,7 +6,7 @@ import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 // scene
 
@@ -49,6 +49,7 @@ const renderer = new WebGPURenderer();
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setAnimationLoop(animate);
+renderer.inspector = new Inspector();
 renderer.toneMapping = NeutralToneMapping;
 document.body.appendChild(renderer.domElement);
 
@@ -62,8 +63,10 @@ scenePass.setMRT(
   })
 );
 
-const outputPass = scenePass.getTextureNode();
-const bloomIntensityPass = scenePass.getTextureNode("bloomIntensity");
+const outputPass = scenePass.getTextureNode().toInspector("Color");
+const bloomIntensityPass = scenePass
+  .getTextureNode("bloomIntensity")
+  .toInspector("Bloom Intensity");
 
 const bloomPass = bloom(outputPass.mul(bloomIntensityPass));
 
@@ -101,14 +104,14 @@ window.addEventListener("pointerdown", (event) => {
 
 // gui
 
-const gui = new GUI();
+const gui = renderer.inspector.createParameters("Settings");
 
-const bloomFolder = gui.addFolder("bloom");
+const bloomFolder = gui.addFolder("Bloom");
 bloomFolder.add(bloomPass.threshold, "value", 0.0, 1.0).name("threshold");
 bloomFolder.add(bloomPass.strength, "value", 0.0, 3).name("strength");
 bloomFolder.add(bloomPass.radius, "value", 0.0, 1.0).name("radius");
 
-const toneMappingFolder = gui.addFolder("tone mapping");
+const toneMappingFolder = gui.addFolder("Tone Mapping");
 toneMappingFolder.add(renderer, "toneMappingExposure", 0.1, 3).name("exposure");
 
 // events

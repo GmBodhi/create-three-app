@@ -23,8 +23,7 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const params = {
   quality: 0.5,
@@ -37,7 +36,7 @@ const params = {
 };
 
 let camera, scene, model, renderer, postProcessing, ssrPass;
-let gui, stats, controls;
+let controls;
 
 init();
 
@@ -87,6 +86,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   await renderer.init();
@@ -111,10 +111,20 @@ async function init() {
     })
   );
 
-  const scenePassColor = scenePass.getTextureNode("output");
-  const scenePassNormal = scenePass.getTextureNode("normal");
-  const scenePassDepth = scenePass.getTextureNode("depth");
-  const scenePassMetalRough = scenePass.getTextureNode("metalrough");
+  const scenePassColor = scenePass
+    .getTextureNode("output")
+    .toInspector("Color");
+  const scenePassNormal = scenePass
+    .getTextureNode("normal")
+    .toInspector("Normal");
+  const scenePassDepth = scenePass
+    .getTextureNode("depth")
+    .toInspector("Depth", () => {
+      return scenePass.getLinearDepthNode();
+    });
+  const scenePassMetalRough = scenePass
+    .getTextureNode("metalrough")
+    .toInspector("Metalness-Roughness");
 
   // optional: optimize bandwidth by reducing the texture precision for normals and metal/roughness
 
@@ -136,7 +146,7 @@ async function init() {
     sceneNormal,
     scenePassMetalRough.r,
     scenePassMetalRough.g
-  );
+  ).toInspector("SSR");
 
   // blend SSR over beauty
 
@@ -150,31 +160,17 @@ async function init() {
   controls.enableDamping = true;
   controls.update();
 
-  // stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   window.addEventListener("resize", onWindowResize);
 
   // GUI
 
-  gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   const ssrFolder = gui.addFolder("SSR");
-  ssrFolder.add(params, "quality").min(0).max(1).onChange(updateParameters);
-  ssrFolder
-    .add(params, "blurQuality")
-    .min(1)
-    .max(3)
-    .step(1)
-    .onChange(updateParameters);
-  ssrFolder.add(params, "maxDistance").min(0).max(1).onChange(updateParameters);
-  ssrFolder.add(params, "opacity").min(0).max(1).onChange(updateParameters);
-  ssrFolder
-    .add(params, "thickness")
-    .min(0)
-    .max(0.05)
-    .onChange(updateParameters);
+  ssrFolder.add(params, "quality", 0, 1).onChange(updateParameters);
+  ssrFolder.add(params, "blurQuality", 1, 3).step(1).onChange(updateParameters);
+  ssrFolder.add(params, "maxDistance", 0, 1).onChange(updateParameters);
+  ssrFolder.add(params, "opacity", 0, 1).onChange(updateParameters);
+  ssrFolder.add(params, "thickness", 0, 0.05).onChange(updateParameters);
   ssrFolder.add(params, "enabled").onChange(() => {
     if (params.enabled === true) {
       postProcessing.outputNode = outputNode;
@@ -185,17 +181,13 @@ async function init() {
     postProcessing.needsUpdate = true;
   });
   const modelFolder = gui.addFolder("Model");
-  modelFolder
-    .add(params, "roughness")
-    .min(0)
-    .max(1)
-    .onChange((value) => {
-      model.traverse(function (object) {
-        if (object.material) {
-          object.material.roughness = value;
-        }
-      });
+  modelFolder.add(params, "roughness", 0, 1).onChange((value) => {
+    model.traverse(function (object) {
+      if (object.material) {
+        object.material.roughness = value;
+      }
     });
+  });
 
   updateParameters();
 }
@@ -216,11 +208,7 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.begin();
-
   controls.update();
 
   postProcessing.render();
-
-  stats.end();
 }

@@ -4,13 +4,12 @@ import * as THREE from "three/webgpu";
 import { pass } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-let camera, stats;
+let camera;
 let postProcessing, renderer, mixer, clock;
 
 const params = {
@@ -60,23 +59,21 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ReinhardToneMapping;
-  container.appendChild(renderer.domElement);
+  renderer.inspector = new Inspector();
+  document.body.appendChild(renderer.domElement);
 
   //
 
   postProcessing = new PostProcessing(renderer);
 
   const scenePass = pass(scene, camera);
-  const scenePassColor = scenePass.getTextureNode("output");
+  const scenePassColor = scenePass
+    .getTextureNode("output")
+    .toInspector("Color");
 
-  const bloomPass = bloom(scenePassColor);
+  const bloomPass = bloom(scenePassColor).toInspector("Bloom");
 
   postProcessing.outputNode = scenePassColor.add(bloomPass);
-
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
 
   //
 
@@ -87,7 +84,7 @@ async function init() {
 
   //
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   const bloomFolder = gui.addFolder("bloom");
 
@@ -131,6 +128,4 @@ function animate() {
   mixer.update(delta);
 
   postProcessing.render();
-
-  stats.update();
 }
