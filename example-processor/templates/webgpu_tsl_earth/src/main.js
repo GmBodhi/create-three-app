@@ -20,7 +20,8 @@ import {
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, controls, globe, clock;
 
@@ -157,9 +158,29 @@ function init() {
   atmosphere.scale.setScalar(1.04);
   scene.add(atmosphere);
 
+  // renderer
+
+  renderer = new WebGPURenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
+  document.body.appendChild(renderer.domElement);
+
+  // controls
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+  controls.minDistance = 0.1;
+  controls.maxDistance = 50;
+
+  // events
+
+  window.addEventListener("resize", onWindowResize);
+
   // debug
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui
     .addColor(
@@ -183,23 +204,6 @@ function init() {
 
   gui.add(roughnessLow, "value", 0, 1, 0.001).name("roughnessLow");
   gui.add(roughnessHigh, "value", 0, 1, 0.001).name("roughnessHigh");
-
-  // renderer
-
-  renderer = new WebGPURenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
-  document.body.appendChild(renderer.domElement);
-
-  // controls
-
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.enableDamping = true;
-  controls.minDistance = 0.1;
-  controls.maxDistance = 50;
-
-  window.addEventListener("resize", onWindowResize);
 }
 
 function onWindowResize() {

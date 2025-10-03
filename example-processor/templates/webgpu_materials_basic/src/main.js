@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 
@@ -82,11 +82,12 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   //
 
-  const gui = new GUI({ width: 300 });
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui.addColor(params, "color").onChange((value) => material.color.set(value));
   gui.add(params, "mapping", mappings).onChange((value) => {
@@ -94,22 +95,15 @@ function init() {
     material.needsUpdate = true;
   });
   gui
-    .add(params, "refractionRatio")
-    .min(0.0)
-    .max(1.0)
-    .step(0.01)
+    .add(params, "refractionRatio", 0, 1, 0.01)
     .onChange((value) => (material.refractionRatio = value));
   gui.add(params, "transparent").onChange((value) => {
     material.transparent = value;
     material.needsUpdate = true;
   });
   gui
-    .add(params, "opacity")
-    .min(0.0)
-    .max(1.0)
-    .step(0.01)
+    .add(params, "opacity", 0, 1, 0.01)
     .onChange((value) => (material.opacity = value));
-  gui.open();
 
   //
 

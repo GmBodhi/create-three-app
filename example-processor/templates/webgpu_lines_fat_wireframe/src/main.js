@@ -3,9 +3,8 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { color } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Wireframe } from "three/addons/lines/webgpu/Wireframe.js";
 import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
@@ -13,7 +12,6 @@ import { WireframeGeometry2 } from "three/addons/lines/WireframeGeometry2.js";
 let wireframe, renderer, scene, camera, camera2, controls, backgroundNode;
 let wireframe1;
 let matLine, matLineBasic, matLineDashed;
-let stats;
 let gui;
 
 // viewport
@@ -28,6 +26,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000000, 0.0);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -83,9 +82,6 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   initGui();
 }
 
@@ -135,14 +131,12 @@ function animate() {
   renderer.render(scene, camera2);
 
   renderer.setScissorTest(false);
-
-  stats.update();
 }
 
 //
 
 function initGui() {
-  gui = new GUI();
+  gui = renderer.inspector.createParameters("Settings");
 
   const param = {
     "line type": 0,

@@ -13,7 +13,7 @@ import {
   normalMap,
 } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
@@ -128,6 +128,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // controls
@@ -136,10 +137,7 @@ function init() {
   controls.minDistance = 3;
   controls.maxDistance = 25;
 
-  // stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+  //
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -172,6 +170,4 @@ function animate() {
   light4.position.z = Math.sin(lightTime * 0.5) * 3;
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

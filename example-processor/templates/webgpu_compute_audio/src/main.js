@@ -12,7 +12,7 @@ import {
   color,
 } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let computeNode;
@@ -135,14 +135,6 @@ async function init() {
 
   computeNode = computeShaderFn().compute(waveBuffer.length);
 
-  // gui
-
-  const gui = new GUI();
-
-  gui.add(pitch, "value", 0.5, 2, 0.01).name("pitch");
-  gui.add(delayVolume, "value", 0, 1, 0.01).name("delayVolume");
-  gui.add(delayOffset, "value", 0.1, 1, 0.01).name("delayOffset");
-
   // renderer
 
   const container = document.createElement("div");
@@ -178,10 +170,21 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
   document.addEventListener("click", playAudioBuffer);
+
+  // gui
+
+  const gui = renderer.inspector.createParameters("Audio");
+
+  gui.add(pitch, "value", 0.5, 2, 0.01).name("pitch");
+  gui.add(delayVolume, "value", 0, 1, 0.01).name("delayVolume");
+  gui.add(delayOffset, "value", 0.1, 1, 0.01).name("delayOffset");
+
+  //
 
   playAudioBuffer();
 }

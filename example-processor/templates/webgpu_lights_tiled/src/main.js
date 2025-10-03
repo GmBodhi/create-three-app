@@ -6,9 +6,7 @@ import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { TiledLighting } from "three/addons/lighting/TiledLighting.js";
 
-import Stats from "three/addons/libs/stats.module.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -19,7 +17,6 @@ let camera,
   renderer,
   lights,
   lightDummy,
-  stats,
   controls,
   compose,
   tileInfluence,
@@ -134,6 +131,7 @@ function init() {
   renderer.lighting = lighting; // set lighting system
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 5;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // controls
@@ -141,10 +139,7 @@ function init() {
   controls = new OrbitControls(camera, renderer.domElement);
   controls.maxDistance = 400;
 
-  // stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+  // events
 
   window.addEventListener("resize", onWindowResize);
 
@@ -164,7 +159,7 @@ function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(tileInfluence, "value", 0, 1).name("tile indexes debug");
 }
 
@@ -210,6 +205,4 @@ function animate() {
   }
 
   postProcessing.render();
-
-  stats.update();
 }

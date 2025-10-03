@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { texture } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 const mouse = new Vector2();
@@ -37,11 +37,11 @@ const positions = new Array(count).fill().map((_, i) => {
   );
 });
 
-initGUI();
 init();
+initGUI();
 
 function initGUI() {
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(params, "samples", 0, 4).step(1);
   gui.add(params, "animated");
 }
@@ -81,6 +81,7 @@ function init() {
   //
 
   renderer = new WebGPURenderer({ antialias: true });
+  renderer.inspector = new Inspector();
   renderer.setPixelRatio(dpr);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

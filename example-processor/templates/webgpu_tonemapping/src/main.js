@@ -2,7 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
@@ -38,6 +39,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   renderer.toneMapping = toneMappingOptions[params.toneMapping];
@@ -97,7 +99,7 @@ async function init() {
 
   //
 
-  gui = new GUI();
+  gui = renderer.inspector.createParameters("Settings");
   const toneMappingFolder = gui.addFolder("Tone Mapping");
 
   toneMappingFolder
@@ -105,12 +107,10 @@ async function init() {
 
     .name("type")
     .onChange(function () {
-      updateGUI();
-
       renderer.toneMapping = toneMappingOptions[params.toneMapping];
     });
 
-  guiExposure = toneMappingFolder
+  toneMappingFolder
     .add(params, "exposure", 0, 2)
 
     .onChange(function (value) {
@@ -132,18 +132,6 @@ async function init() {
     .onChange(function (value) {
       scene.backgroundIntensity = value;
     });
-
-  updateGUI();
-
-  gui.open();
-}
-
-function updateGUI() {
-  if (params.toneMapping === "None") {
-    guiExposure.hide();
-  } else {
-    guiExposure.show();
-  }
 }
 
 function onWindowResize() {

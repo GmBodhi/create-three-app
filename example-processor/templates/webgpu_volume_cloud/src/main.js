@@ -18,7 +18,7 @@ import { RaymarchingBox } from "three/addons/tsl/utils/Raymarching.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let renderer, scene, camera;
 let mesh;
@@ -30,6 +30,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -178,7 +179,7 @@ function init() {
 
   //
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
   gui.add(threshold, "value", 0, 1, 0.01).name("threshold");
   gui.add(opacity, "value", 0, 1, 0.01).name("opacity");
   gui.add(range, "value", 0, 1, 0.01).name("range");

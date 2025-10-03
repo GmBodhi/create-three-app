@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js";
@@ -20,6 +20,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animation);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -74,9 +75,6 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 }
 
 function onWindowResize() {
@@ -89,6 +87,4 @@ function animation(time) {
   meshKnot.rotation.y = time / 1000;
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

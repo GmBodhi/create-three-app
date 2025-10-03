@@ -2,6 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { LightProbeHelper } from "three/addons/helpers/LightProbeHelperGPU.js";
 import { LightProbeGenerator } from "three/addons/lights/LightProbeGenerator.js";
@@ -17,6 +19,7 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // scene

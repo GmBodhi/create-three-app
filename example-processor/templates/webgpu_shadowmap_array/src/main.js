@@ -8,10 +8,10 @@ import { TileShadowNodeHelper } from "three/addons/tsl/shadows/TileShadowNodeHel
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import Stats from "stats-gl";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, clock;
-let dirLight, stats;
+let dirLight;
 let torusKnot, dirGroup;
 let tsmHelper;
 
@@ -24,6 +24,8 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
 
+  renderer.inspector = new Inspector();
+
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = BasicShadowMap;
   // renderer.shadowMap.type = PCFSoftShadowMap;
@@ -33,6 +35,7 @@ async function init() {
   document.body.appendChild(renderer.domElement);
 
   await renderer.init();
+
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -110,14 +113,6 @@ async function init() {
   controls.maxDistance = 400;
   controls.maxPolarAngle = Math.PI / 2 - 0.1; // Prevent camera from going below ground
   controls.update();
-
-  stats = new Stats({
-    precision: 3,
-    horizontal: false,
-    trackGPU: true,
-  });
-  stats.init(renderer);
-  document.body.appendChild(stats.dom);
 
   clock = new Clock();
 
@@ -354,7 +349,4 @@ async function animate(time) {
   renderer.render(scene, camera);
 
   tsmHelper.update();
-
-  await renderer.resolveTimestampsAsync();
-  stats.update();
 }

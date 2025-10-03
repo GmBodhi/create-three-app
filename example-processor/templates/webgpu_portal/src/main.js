@@ -17,6 +17,8 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 let camera, sceneMain, scenePortal, renderer;
 let clock;
 
@@ -38,6 +40,7 @@ function init() {
   scenePortal.backgroundNode = mx_worley_noise_float(
     normalWorld.mul(20).add(vec2(0, time.oneMinus()))
   ).mul(color(0x0066ff));
+  scenePortal.name = "Portal Scene";
 
   //
 
@@ -132,6 +135,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = LinearToneMapping;
   renderer.toneMappingExposure = 0.15;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   //

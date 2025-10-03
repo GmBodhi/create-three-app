@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "stats-gl";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import {
   Fn,
@@ -14,9 +14,7 @@ import {
   instanceIndex,
 } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-let camera, scene, renderer, stats;
+let camera, scene, renderer;
 let computeNode;
 
 const pointerVector = new Vector2(-10.0, -10.0); // Out of bounds first
@@ -69,7 +67,9 @@ function init() {
 
   // compute
 
-  computeNode = computeShaderFn().compute(particlesCount);
+  computeNode = computeShaderFn()
+    .compute(particlesCount)
+    .setName("Update Particles");
   computeNode.onInit(({ renderer }) => {
     const precomputeShaderNode = Fn(() => {
       const particleIndex = float(instanceIndex);
@@ -111,27 +111,15 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats({
-    precision: 4,
-    horizontal: false,
-    trackGPU: true,
-    trackCPT: true,
-    logsPerSecond: 10,
-    graphsPerSecond: 60,
-    samplesGraph: 30,
-  });
-  stats.init(renderer);
-  document.body.appendChild(stats.dom);
-  stats.dom.style.position = "absolute";
 
   window.addEventListener("resize", onWindowResize);
   window.addEventListener("mousemove", onMouseMove);
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   gui.add(scaleVector, "x", 0, 1, 0.01);
   gui.add(scaleVector, "y", 0, 1, 0.01);
@@ -155,11 +143,5 @@ function onMouseMove(event) {
 
 function animate() {
   renderer.compute(computeNode);
-  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
-
   renderer.render(scene, camera);
-
-  renderer.resolveTimestampsAsync().then(() => {
-    stats.update();
-  });
 }

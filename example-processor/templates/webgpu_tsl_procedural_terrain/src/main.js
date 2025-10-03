@@ -19,7 +19,8 @@ import {
   Loop,
 } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
@@ -38,8 +39,6 @@ function init() {
 
   scene = new Scene();
   scene.background = new Color(0x201919);
-
-  const gui = new GUI();
 
   // environment
 
@@ -198,35 +197,6 @@ function init() {
   terrain.castShadow = true;
   scene.add(terrain);
 
-  // debug
-
-  const terrainGui = gui.addFolder("🏔️ terrain");
-
-  terrainGui.add(noiseIterations, "value", 0, 10, 1).name("noiseIterations");
-  terrainGui
-    .add(positionFrequency, "value", 0, 1, 0.001)
-    .name("positionFrequency");
-  terrainGui.add(strength, "value", 0, 20, 0.001).name("strength");
-  terrainGui.add(warpFrequency, "value", 0, 20, 0.001).name("warpFrequency");
-  terrainGui.add(warpStrength, "value", 0, 2, 0.001).name("warpStrength");
-
-  terrainGui
-    .addColor({ color: colorSand.value.getHexString(SRGBColorSpace) }, "color")
-    .name("colorSand")
-    .onChange((value) => colorSand.value.set(value));
-  terrainGui
-    .addColor({ color: colorGrass.value.getHexString(SRGBColorSpace) }, "color")
-    .name("colorGrass")
-    .onChange((value) => colorGrass.value.set(value));
-  terrainGui
-    .addColor({ color: colorSnow.value.getHexString(SRGBColorSpace) }, "color")
-    .name("colorSnow")
-    .onChange((value) => colorSnow.value.set(value));
-  terrainGui
-    .addColor({ color: colorRock.value.getHexString(SRGBColorSpace) }, "color")
-    .name("colorRock")
-    .onChange((value) => colorRock.value.set(value));
-
   // water
 
   const water = new Mesh(
@@ -241,37 +211,6 @@ function init() {
   water.rotation.x = -Math.PI * 0.5;
   water.position.y = -0.1;
   scene.add(water);
-
-  const waterGui = gui.addFolder("💧 water");
-
-  waterGui.add(water.material, "roughness", 0, 1, 0.01);
-  waterGui.add(water.material, "ior").min(1).max(2).step(0.001);
-  waterGui
-    .addColor(
-      { color: water.material.color.getHexString(SRGBColorSpace) },
-      "color"
-    )
-    .name("color")
-    .onChange((value) => water.material.color.set(value));
-
-  // renderer
-
-  renderer = new WebGPURenderer({ antialias: true });
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.shadowMap.enabled = true;
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
-  document.body.appendChild(renderer.domElement);
-
-  // controls
-
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.maxPolarAngle = Math.PI * 0.45;
-  controls.target.y = -0.5;
-  controls.enableDamping = true;
-  controls.minDistance = 0.1;
-  controls.maxDistance = 50;
 
   // drag
 
@@ -322,12 +261,63 @@ function init() {
     drag.prevWorldCoords.copy(drag.worldCoords);
   };
 
+  // renderer
+
+  renderer = new WebGPURenderer({ antialias: true });
+  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.shadowMap.enabled = true;
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  document.body.appendChild(renderer.domElement);
+
+  // inspector
+
+  renderer.inspector = new Inspector();
+  document.body.appendChild(renderer.inspector.domElement);
+
+  // controls
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.maxPolarAngle = Math.PI * 0.45;
+  controls.target.y = -0.5;
+  controls.enableDamping = true;
+  controls.minDistance = 0.1;
+  controls.maxDistance = 50;
+
+  // debug
+
+  const gui = renderer.inspector.createParameters("Parameters");
+
+  const terrainGui = gui.addFolder("🏔️ terrain");
+
+  terrainGui.add(noiseIterations, "value", 0, 10, 1).name("noiseIterations");
+  terrainGui
+    .add(positionFrequency, "value", 0, 1, 0.001)
+    .name("positionFrequency");
+  terrainGui.add(strength, "value", 0, 20, 0.001).name("strength");
+  terrainGui.add(warpFrequency, "value", 0, 20, 0.001).name("warpFrequency");
+  terrainGui.add(warpStrength, "value", 0, 2, 0.001).name("warpStrength");
+
+  terrainGui.addColor({ color: colorSand.value }, "color").name("colorSand");
+  terrainGui.addColor({ color: colorGrass.value }, "color").name("colorGrass");
+  terrainGui.addColor({ color: colorSnow.value }, "color").name("colorSnow");
+  terrainGui.addColor({ color: colorRock.value }, "color").name("colorRock");
+
+  const waterGui = gui.addFolder("💧 water");
+
+  waterGui.add(water.material, "roughness", 0, 1, 0.01);
+  waterGui.add(water.material, "ior", 1, 2, 0.001);
+  waterGui.addColor({ color: water.material.color }, "color").name("color");
+
+  // events
+
   window.addEventListener("pointermove", (event) => {
     drag.screenCoords.x = (event.clientX / window.innerWidth - 0.5) * 2;
     drag.screenCoords.y = -(event.clientY / window.innerHeight - 0.5) * 2;
   });
 
-  window.addEventListener("pointerdown", () => {
+  renderer.domElement.addEventListener("pointerdown", () => {
     if (drag.hover) {
       renderer.domElement.style.cursor = "grabbing";
       controls.enabled = false;

@@ -3,13 +3,12 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { texture, uniform, vec3 } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 
-let container, stats;
+let container;
 let camera, scene, renderer;
 let model;
 
@@ -60,13 +59,15 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
+  renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
   //
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
+  renderer.inspector = new Inspector();
+  document.body.appendChild(renderer.inspector.domElement);
+
+  //
 
   const controls = new OrbitControls(camera, container);
   controls.minDistance = 500;
@@ -112,7 +113,7 @@ function initMaterial() {
 }
 
 function initGUI(material) {
-  const gui = new GUI({ title: "Thickness Control" });
+  const gui = renderer.inspector.createParameters("Parameters");
 
   const ThicknessControls = function () {
     this.distortion = material.thicknessDistortionNode.value;
@@ -124,51 +125,27 @@ function initGUI(material) {
 
   const thicknessControls = new ThicknessControls();
 
-  gui
-    .add(thicknessControls, "distortion")
-    .min(0.01)
-    .max(1)
-    .step(0.01)
-    .onChange(function () {
-      material.thicknessDistortionNode.value = thicknessControls.distortion;
-      console.log("distortion");
-    });
+  gui.add(thicknessControls, "distortion", 0.01, 1, 0.01).onChange(function () {
+    material.thicknessDistortionNode.value = thicknessControls.distortion;
+  });
+
+  gui.add(thicknessControls, "ambient", 0.01, 5.0, 0.05).onChange(function () {
+    material.thicknessAmbientNode.value = thicknessControls.ambient;
+  });
 
   gui
-    .add(thicknessControls, "ambient")
-    .min(0.01)
-    .max(5.0)
-    .step(0.05)
-    .onChange(function () {
-      material.thicknessAmbientNode.value = thicknessControls.ambient;
-    });
-
-  gui
-    .add(thicknessControls, "attenuation")
-    .min(0.01)
-    .max(5.0)
-    .step(0.05)
+    .add(thicknessControls, "attenuation", 0.01, 5.0, 0.05)
     .onChange(function () {
       material.thicknessAttenuationNode.value = thicknessControls.attenuation;
     });
 
-  gui
-    .add(thicknessControls, "power")
-    .min(0.01)
-    .max(16.0)
-    .step(0.1)
-    .onChange(function () {
-      material.thicknessPowerNode.value = thicknessControls.power;
-    });
+  gui.add(thicknessControls, "power", 0.01, 16.0, 0.1).onChange(function () {
+    material.thicknessPowerNode.value = thicknessControls.power;
+  });
 
-  gui
-    .add(thicknessControls, "scale")
-    .min(0.01)
-    .max(50.0)
-    .step(0.1)
-    .onChange(function () {
-      material.thicknessScaleNode.value = thicknessControls.scale;
-    });
+  gui.add(thicknessControls, "scale", 0.01, 50.0, 0.1).onChange(function () {
+    material.thicknessScaleNode.value = thicknessControls.scale;
+  });
 }
 
 function onWindowResize() {
@@ -179,12 +156,6 @@ function onWindowResize() {
 }
 
 //
-
-function animate() {
-  render();
-
-  stats.update();
-}
 
 function render() {
   if (model) model.rotation.y = performance.now() / 5000;

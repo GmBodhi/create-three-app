@@ -2,15 +2,21 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let camera, scene, renderer, clock, stats;
+let camera, scene, renderer, clock;
 let dirLight, spotLight;
 let torusKnot, dirGroup;
-let config;
+
+const config = {
+  spotlightRadius: 4,
+  spotlightSamples: 8,
+  dirlightRadius: 4,
+  dirlightSamples: 8,
+  animate: true,
+};
 
 init();
 
@@ -19,22 +25,12 @@ function init() {
   initMisc();
 
   // Init gui
-  const gui = new GUI();
-
-  config = {
-    spotlightRadius: 4,
-    spotlightSamples: 8,
-    dirlightRadius: 4,
-    dirlightSamples: 8,
-    animate: true,
-  };
+  const gui = renderer.inspector.createParameters("Settings");
 
   const spotlightFolder = gui.addFolder("Spotlight");
   spotlightFolder
-    .add(config, "spotlightRadius")
+    .add(config, "spotlightRadius", 0, 25)
     .name("radius")
-    .min(0)
-    .max(25)
     .onChange(function (value) {
       spotLight.shadow.radius = value;
     });
@@ -45,14 +41,11 @@ function init() {
     .onChange(function (value) {
       spotLight.shadow.blurSamples = value;
     });
-  spotlightFolder.open();
 
   const dirlightFolder = gui.addFolder("Directional Light");
   dirlightFolder
-    .add(config, "dirlightRadius")
+    .add(config, "dirlightRadius", 0, 25)
     .name("radius")
-    .min(0)
-    .max(25)
     .onChange(function (value) {
       dirLight.shadow.radius = value;
     });
@@ -63,7 +56,6 @@ function init() {
     .onChange(function (value) {
       dirLight.shadow.blurSamples = value;
     });
-  dirlightFolder.open();
 
   gui.add(config, "animate");
 
@@ -174,6 +166,7 @@ function initMisc() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = VSMShadowMap;
 
@@ -183,9 +176,6 @@ function initMisc() {
   controls.update();
 
   clock = new Clock();
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 }
 
 function onWindowResize() {
@@ -208,6 +198,4 @@ function animate(time) {
   }
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

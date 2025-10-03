@@ -2,19 +2,19 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "stats-gl";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { LineSegments2 } from "three/addons/lines/webgpu/LineSegments2.js";
 import { LineSegmentsGeometry } from "three/addons/lines/LineSegmentsGeometry.js";
 import { Line2 } from "three/addons/lines/webgpu/Line2.js";
 import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 
+//
+
 let line, thresholdLine, segments, thresholdSegments;
 let renderer, scene, camera, controls;
 let sphereInter, sphereOnLine;
-let stats;
 let gui;
 let clock;
 
@@ -72,6 +72,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000000, 0.0);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -172,10 +173,6 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
 
-  stats = new Stats({ horizontal: false, trackGPU: true });
-  stats.init(renderer);
-  document.body.appendChild(stats.dom);
-
   initGui();
 }
 
@@ -232,9 +229,7 @@ async function animate() {
     renderer.domElement.style.cursor = "";
   }
 
-  await renderer.renderAsync(scene, camera);
-
-  stats.update();
+  renderer.render(scene, camera);
 }
 
 //
@@ -262,7 +257,7 @@ function switchLine(val) {
 }
 
 function initGui() {
-  gui = new GUI();
+  gui = renderer.inspector.createParameters("Settings");
 
   gui
     .add(params, "line type", { LineGeometry: 0, LineSegmentsGeometry: 1 })

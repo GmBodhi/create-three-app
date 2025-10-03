@@ -16,11 +16,10 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let controls;
-let stats;
 
 init();
 
@@ -80,7 +79,7 @@ async function init() {
   // reflection
 
   const reflection = reflector({
-    resolution: 0.5,
+    resolutionScale: 0.5,
     bounces: false,
     generateMipmaps: true,
   }); // 0.5 is half of the rendering view
@@ -118,10 +117,8 @@ async function init() {
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 1.5;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 1;
@@ -144,9 +141,7 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function animate(time) {
-  stats.update();
-
+function animate() {
   controls.update();
 
   renderer.render(scene, camera);

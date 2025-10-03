@@ -2,9 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "stats-gl";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -12,7 +10,7 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
-let camera, scene, renderer, stats;
+let camera, scene, renderer;
 let model;
 
 const options = { static: true };
@@ -46,20 +44,11 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;
-
+  renderer.inspector = new Inspector();
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
   //
-
-  stats = new Stats({
-    precision: 3,
-    horizontal: false,
-    trackGPU: true,
-  });
-  stats.init(renderer);
-
-  document.body.appendChild(stats.dom);
 
   new HDRLoader()
     .setPath("textures/equirectangular/")
@@ -99,7 +88,7 @@ function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(options, "static").onChange(() => {
     setStatic(model, options.static);
   });
@@ -116,9 +105,6 @@ function onWindowResize() {
 
 //
 
-async function render() {
-  await renderer.renderAsync(scene, camera);
-  renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
-
-  stats.update();
+function render() {
+  renderer.render(scene, camera);
 }

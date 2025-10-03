@@ -22,7 +22,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { MaterialXLoader } from "three/addons/loaders/MaterialXLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const SAMPLE_PATH =
   "https://raw.githubusercontent.com/materialx/MaterialX/main/resources/Materials/Examples/StandardSurface/";
@@ -89,6 +89,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = LinearToneMapping;
   renderer.toneMappingExposure = 0.5;
+  renderer.inspector = new Inspector();
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
@@ -249,23 +250,21 @@ async function addSample(sample, path) {
 }
 
 function addGUI() {
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("MaterialX Loader");
 
   const API = {
     showCalibrationMesh: true,
     showPreviewMesh: true,
   };
 
-  const folder = gui.addFolder("SHOW");
-
-  folder
+  gui
     .add(API, "showCalibrationMesh")
     .name("Calibration Mesh")
     .onChange(function (value) {
       setVisibility("Calibration_Mesh", value);
     });
 
-  folder
+  gui
     .add(API, "showPreviewMesh")
     .name("Preview Mesh")
     .onChange(function (value) {

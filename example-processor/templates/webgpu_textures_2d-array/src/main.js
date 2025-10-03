@@ -3,10 +3,11 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { texture, uv, time, oscTriangle } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
 import { unzipSync } from "three/addons/libs/fflate.module.js";
 
-let camera, scene, mesh, renderer, stats;
+//
+
+let camera, scene, mesh, renderer;
 
 const planeWidth = 50;
 const planeHeight = 50;
@@ -61,11 +62,8 @@ function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
+  renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -75,11 +73,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animate() {
-  render();
-  stats.update();
 }
 
 function render() {

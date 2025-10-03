@@ -23,7 +23,7 @@ import {
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let renderer, camera, scene;
 const dpr = window.devicePixelRatio;
@@ -250,11 +250,12 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.outputColorSpace = LinearSRGBColorSpace;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui.add(cellSizeUniform, "value", 6, 50, 1).name("Cell Size");
   gui.add(cellOffsetUniform, "value", 0, 1, 0.1).name("Cell Offset");

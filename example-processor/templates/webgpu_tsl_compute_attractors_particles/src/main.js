@@ -22,7 +22,8 @@ import {
   vec4,
 } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 
@@ -59,6 +60,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.setClearColor("#000000");
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -273,7 +275,7 @@ function init() {
       mod(position.add(halfHalfExtent), boundHalfExtent).sub(halfHalfExtent)
     );
   });
-  updateCompute = update().compute(count);
+  updateCompute = update().compute(count).setName("Update Particles");
 
   // nodes
 
@@ -298,7 +300,7 @@ function init() {
 
   // debug
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui
     .add(
@@ -335,8 +337,11 @@ function init() {
     .name("colorB")
     .onChange((value) => colorB.value.set(value));
   gui
-    .add({ controlsMode: attractors[0].controls.mode }, "controlsMode")
-    .options(["translate", "rotate", "none"])
+    .add({ controlsMode: attractors[0].controls.mode }, "controlsMode", [
+      "translate",
+      "rotate",
+      "none",
+    ])
     .onChange((value) => {
       for (const attractor of attractors) {
         if (value === "none") {
@@ -353,7 +358,9 @@ function init() {
   gui
     .add({ helperVisible: attractors[0].helper.visible }, "helperVisible")
     .onChange((value) => {
-      for (const attractor of attractors) attractor.helper.visible = value;
+      for (const attractor of attractors) {
+        attractor.helper.visible = value;
+      }
     });
 
   gui.add({ reset }, "reset");

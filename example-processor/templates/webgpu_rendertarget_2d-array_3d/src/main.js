@@ -12,12 +12,12 @@ import {
   vec3,
   vec4,
 } from "three/tsl";
-import Stats from "three/addons/libs/stats.module.js";
+
 import { TextureHelper } from "three/addons/helpers/TextureHelperGPU.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { unzipSync } from "three/addons/libs/fflate.module.js";
 
-let renderer, stats;
+let renderer;
 let views = [];
 
 class View {
@@ -240,9 +240,6 @@ async function init() {
       loop();
     });
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -275,8 +272,6 @@ function animate() {
     renderer.clear();
     renderer.render(view.scene, view.camera);
   });
-
-  stats.update();
 }
 
 init();

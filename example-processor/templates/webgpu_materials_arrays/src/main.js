@@ -3,7 +3,8 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let renderer, scene, camera, controls;
 let planeMesh, boxMesh, boxMeshWireframe, planeMeshWireframe;
@@ -30,6 +31,7 @@ function init(forceWebGL = false) {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // scene
@@ -119,7 +121,7 @@ function animate() {
 
 // gui
 
-const gui = new GUI();
+const gui = renderer.inspector.createParameters("Parameters");
 
 gui.add(api, "webgpu").onChange(() => {
   init(!api.webgpu);

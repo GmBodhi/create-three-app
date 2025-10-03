@@ -34,7 +34,9 @@ import {
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 let camera, scene, renderer, postProcessing, controls, timer, light;
@@ -99,6 +101,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 
@@ -333,7 +336,9 @@ function init() {
         linksColors.element(secondLinkIndex.add(i)).w.assign(l2);
       });
     });
-  })().compute(nbParticles);
+  })()
+    .compute(nbParticles)
+    .setName("Update Particles");
 
   spawnParticles = /*#__PURE__*/ Fn(() => {
     const particleIndex = spawnIndex
@@ -365,7 +370,9 @@ function init() {
 
     // start in that direction
     velocity.assign(rDir.mul(5.0));
-  })().compute(nbToSpawn.value);
+  })()
+    .compute(nbToSpawn.value)
+    .setName("Spawn Particles");
 
   // background , an inverted icosahedron
   const backgroundGeom = new IcosahedronGeometry(100, 5).applyMatrix4(
@@ -409,7 +416,7 @@ function init() {
 
   // GUI
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui.add(controls, "autoRotate").name("Auto Rotate");
   gui

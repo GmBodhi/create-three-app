@@ -46,7 +46,7 @@ function init() {
     //
 
     const gui = renderer.inspector.createParameters("Settings");
-    gui.add(mesh, "count", 1, count).step(1).name("instance count");
+    gui.add(mesh, "count", 1, count, 1).name("instance count");
   });
 
   //

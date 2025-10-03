@@ -6,7 +6,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
 
 import { IESLoader } from "three/addons/loaders/IESLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let renderer, scene, camera;
 let lights;
@@ -115,6 +115,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   camera = new PerspectiveCamera(
@@ -142,11 +143,8 @@ async function init() {
 
   //
 
-  const gui = new GUI();
-
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add({ helper: false }, "helper").onChange((v) => setHelperVisible(v));
-
-  gui.open();
 
   //
 

@@ -15,6 +15,8 @@ import {
   Fn,
 } from "three/tsl";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -66,6 +68,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   // post processing

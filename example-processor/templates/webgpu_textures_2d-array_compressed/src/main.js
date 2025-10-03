@@ -4,10 +4,11 @@ import * as THREE from "three/webgpu";
 
 import { texture, uniform, uv } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 
-let camera, scene, mesh, renderer, stats, clock;
+//
+
+let camera, scene, mesh, renderer, clock;
 
 const depth = uniform(0);
 
@@ -58,9 +59,6 @@ async function init() {
     scene.add(mesh);
   });
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -83,7 +81,6 @@ function animate() {
   }
 
   render();
-  stats.update();
 }
 
 function render() {

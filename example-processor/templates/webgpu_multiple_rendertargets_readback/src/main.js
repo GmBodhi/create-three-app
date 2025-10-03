@@ -15,7 +15,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, torus;
 let quadMesh,
@@ -27,13 +27,9 @@ let quadMesh,
   pixelBuffer,
   pixelBufferTexture;
 
-const gui = new GUI();
-
 const options = {
   selection: "mrt",
 };
-
-gui.add(options, "selection", ["mrt", "diffuse", "normal"]);
 
 init();
 
@@ -43,6 +39,15 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   document.body.appendChild(renderer.domElement);
+
+  //
+
+  renderer.inspector = new Inspector();
+
+  //
+
+  const gui = renderer.inspector.createParameters("Settings");
+  gui.add(options, "selection", ["mrt", "diffuse", "normal"]);
 
   // Create a multi render target with Float buffers
 

@@ -21,7 +21,8 @@ import { RaymarchingBox } from "three/addons/tsl/utils/Raymarching.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 let renderer, scene, camera;
@@ -41,6 +42,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -190,7 +192,7 @@ async function init() {
   await renderer.init();
   await renderer.computeAsync(computeNode);
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(threshold, "value", 0, 1, 0.01).name("threshold");
   gui.add(opacity, "value", 0, 1, 0.01).name("opacity");
   gui.add(range, "value", 0, 1, 0.01).name("range");
