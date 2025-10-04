@@ -42,7 +42,7 @@ initGUI();
 
 function initGUI() {
   const gui = renderer.inspector.createParameters("Settings");
-  gui.add(params, "samples", 0, 4).step(1);
+  gui.add(params, "samples", 0, 4, 1);
   gui.add(params, "animated");
 }
 

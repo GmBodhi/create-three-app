@@ -172,8 +172,7 @@ function init() {
   });
 
   gui
-    .add(params, "maxFar", 1, 5000)
-    .step(1)
+    .add(params, "maxFar", 1, 5000, 1)
     .name("max shadow far")
     .onChange(function (value) {
       csm.maxFar = value;

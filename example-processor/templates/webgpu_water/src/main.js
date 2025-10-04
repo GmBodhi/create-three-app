@@ -176,20 +176,14 @@ async function init() {
   gui.add(params, "scale", 1, 10).onChange(function (value) {
     waterNode.scale.value = value;
   });
-  gui
-    .add(params, "flowX", -1, 1)
-    .step(0.01)
-    .onChange(function (value) {
-      waterNode.flowDirection.value.x = value;
-      waterNode.flowDirection.value.normalize();
-    });
-  gui
-    .add(params, "flowY", -1, 1)
-    .step(0.01)
-    .onChange(function (value) {
-      waterNode.flowDirection.value.y = value;
-      waterNode.flowDirection.value.normalize();
-    });
+  gui.add(params, "flowX", -1, 1, 0.01).onChange(function (value) {
+    waterNode.flowDirection.value.x = value;
+    waterNode.flowDirection.value.normalize();
+  });
+  gui.add(params, "flowY", -1, 1, 0.01).onChange(function (value) {
+    waterNode.flowDirection.value.y = value;
+    waterNode.flowDirection.value.normalize();
+  });
 
   //
 

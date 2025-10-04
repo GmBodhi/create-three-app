@@ -96,12 +96,9 @@ async function init() {
     bloomPass.strength.value = value;
   });
 
-  gui
-    .add(params, "radius", 0.0, 1.0)
-    .step(0.01)
-    .onChange(function (value) {
-      bloomPass.radius.value = value;
-    });
+  gui.add(params, "radius", 0.0, 1.0, 0.01).onChange(function (value) {
+    bloomPass.radius.value = value;
+  });
 
   const toneMappingFolder = gui.addFolder("tone mapping");
 

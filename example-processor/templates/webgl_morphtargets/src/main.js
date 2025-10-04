@@ -127,18 +127,12 @@ function initGUI() {
   };
   const gui = new GUI({ title: "Morph Targets" });
 
-  gui
-    .add(params, "Spherify", 0, 1)
-    .step(0.01)
-    .onChange(function (value) {
-      mesh.morphTargetInfluences[0] = value;
-    });
-  gui
-    .add(params, "Twist", 0, 1)
-    .step(0.01)
-    .onChange(function (value) {
-      mesh.morphTargetInfluences[1] = value;
-    });
+  gui.add(params, "Spherify", 0, 1, 0.01).onChange(function (value) {
+    mesh.morphTargetInfluences[0] = value;
+  });
+  gui.add(params, "Twist", 0, 1, 0.01).onChange(function (value) {
+    mesh.morphTargetInfluences[1] = value;
+  });
 }
 
 function onWindowResize() {

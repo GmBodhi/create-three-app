@@ -108,6 +108,9 @@ function animate() {
   renderer.autoClear = true;
 
   scene.backgroundNode = null;
+
+  scene.name = "Scene";
+
   renderer.render(scene, camera);
 
   // inset scene
@@ -128,6 +131,9 @@ function animate() {
   renderer.autoClear = false;
 
   scene.backgroundNode = backgroundNode;
+
+  scene.name = "Scene [ Scissor ]";
+
   renderer.render(scene, camera2);
 
   renderer.setScissorTest(false);

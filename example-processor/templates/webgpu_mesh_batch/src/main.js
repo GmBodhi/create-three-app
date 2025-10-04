@@ -189,8 +189,8 @@ function init(forceWebGL = false) {
   gui.add(api, "webgpu").onChange(() => {
     init(!api.webgpu);
   });
-  gui.add(api, "count", 1, MAX_GEOMETRY_COUNT).step(1).onChange(initMesh);
-  gui.add(api, "dynamic", 0, MAX_GEOMETRY_COUNT).step(1);
+  gui.add(api, "count", 1, MAX_GEOMETRY_COUNT, 1).onChange(initMesh);
+  gui.add(api, "dynamic", 0, MAX_GEOMETRY_COUNT, 1);
 
   gui.add(api, "opacity", 0, 1).onChange((v) => {
     if (v < 1) {
@@ -207,7 +207,7 @@ function init(forceWebGL = false) {
   gui.add(api, "sortObjects");
   gui.add(api, "perObjectFrustumCulled");
   gui.add(api, "useCustomSort");
-  gui.add(api, "randomizeGeometry");
+  gui.add(api, "randomizeGeometry").name("randomize geometry");
 
   // listeners
 
