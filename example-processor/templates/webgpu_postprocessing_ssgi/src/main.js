@@ -230,8 +230,8 @@ async function init() {
   gui.add(giPass.expFactor, "value", 1, 3).name("exp factor");
   gui.add(giPass.thickness, "value", 0.01, 10).name("thickness");
   gui.add(giPass.backfaceLighting, "value", 0, 1).name("backface lighting");
-  gui.add(giPass.aoIntensity, "value", 0, 4).name("AO intenstiy");
-  gui.add(giPass.giIntensity, "value", 0, 100).name("GI intenstiy");
+  gui.add(giPass.aoIntensity, "value", 0, 4).name("AO intensity");
+  gui.add(giPass.giIntensity, "value", 0, 100).name("GI intensity");
   gui.add(giPass.useLinearThickness, "value").name("use linear thickness");
   gui.add(giPass.useScreenSpaceSampling, "value").name("screen-space sampling");
   gui

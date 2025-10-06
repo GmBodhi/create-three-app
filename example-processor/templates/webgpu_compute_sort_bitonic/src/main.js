@@ -360,7 +360,7 @@ async function initGlobalSwapOnly() {
 
   const scene = new Scene();
 
-  const infoArray = new Uint32Array(3, 2, 2);
+  const infoArray = new Uint32Array([3, 2, 2]);
   const infoBuffer = new StorageInstancedBufferAttribute(infoArray, 1);
   const infoStorage = storage(infoBuffer, "uint", infoBuffer.count)
     .setPBO(true)
