@@ -9,7 +9,7 @@ import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js
 import { RectAreaLightTexturesLib } from "three/addons/lights/RectAreaLightTexturesLib.js";
 
 let renderer, scene, camera;
-let stats, meshKnot;
+let meshKnot;
 
 init();
 

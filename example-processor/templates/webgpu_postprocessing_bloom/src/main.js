@@ -22,8 +22,6 @@ const params = {
 init();
 
 async function init() {
-  const container = document.getElementById("container");
-
   clock = new Clock();
 
   const scene = new Scene();

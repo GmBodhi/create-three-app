@@ -18,7 +18,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
+let camera, scene, renderer, light1, light2, light3, light4, controls;
 
 init();
 
