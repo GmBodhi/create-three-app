@@ -22,7 +22,7 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(render);
+  renderer.setAnimationLoop(animate);
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
@@ -44,26 +44,22 @@ function init() {
 
   // controls
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render);
   controls.enableZoom = false;
   controls.enablePan = false;
 
-  // manager
-  const manager = new LoadingManager(render);
-
   // matcap
-  const loaderEXR = new EXRLoader(manager);
+  const loaderEXR = new EXRLoader();
   const matcap = loaderEXR.load("textures/matcaps/040full.exr");
 
   // normalmap
-  const loader = new TextureLoader(manager);
+  const loader = new TextureLoader();
 
   const normalmap = loader.load(
     "models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg"
   );
 
   // model
-  new GLTFLoader(manager).load(
+  new GLTFLoader().load(
     "models/gltf/LeePerrySmith/LeePerrySmith.glb",
     function (gltf) {
       mesh = gltf.scene.children[0];
@@ -109,8 +105,8 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 }
 
-function render() {
-  renderer.renderAsync(scene, camera);
+function animate() {
+  renderer.render(scene, camera);
 }
 
 //

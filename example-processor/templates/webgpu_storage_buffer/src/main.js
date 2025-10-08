@@ -145,6 +145,8 @@ async function init(forceWebGL = false) {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
 
+  await renderer.init();
+
   document.body.appendChild(renderer.domElement);
   renderer.domElement.style.position = "absolute";
   renderer.domElement.style.top = "0";
@@ -170,7 +172,7 @@ async function init(forceWebGL = false) {
     renderer.info.reset();
 
     await renderer.computeAsync(compute);
-    await renderer.renderAsync(scene, camera);
+    renderer.render(scene, camera);
 
     renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
     renderer.resolveTimestampsAsync(TimestampQuery.RENDER);

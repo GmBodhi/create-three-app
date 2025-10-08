@@ -9,10 +9,9 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer;
 
-init();
-render();
+init().then(render);
 
-function init() {
+async function init() {
   const container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -58,6 +57,8 @@ function init() {
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.addEventListener("change", render); // use if there is no animation loop
   controls.minDistance = 2;
@@ -80,5 +81,5 @@ function onWindowResize() {
 //
 
 function render() {
-  renderer.renderAsync(scene, camera);
+  renderer.render(scene, camera);
 }

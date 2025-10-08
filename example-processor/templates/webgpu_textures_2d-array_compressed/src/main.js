@@ -42,11 +42,13 @@ async function init() {
   renderer.setAnimationLoop(animate);
   container.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   //
 
   const ktx2Loader = new KTX2Loader();
   ktx2Loader.setTranscoderPath("jsm/libs/basis/");
-  await ktx2Loader.detectSupportAsync(renderer);
+  ktx2Loader.detectSupport(renderer);
 
   ktx2Loader.load("textures/spiritedaway.ktx2", function (texturearray) {
     const material = new NodeMaterial();

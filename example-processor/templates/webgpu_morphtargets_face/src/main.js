@@ -46,7 +46,7 @@ async function init() {
 
   const ktx2Loader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
-    .detectSupportAsync(renderer);
+    .detectSupport(renderer);
 
   new GLTFLoader()
     .setKTX2Loader(ktx2Loader)

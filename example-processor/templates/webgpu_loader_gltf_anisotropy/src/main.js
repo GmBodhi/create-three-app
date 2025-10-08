@@ -14,7 +14,7 @@ async function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(render);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.35;
   document.body.appendChild(renderer.domElement);
@@ -33,7 +33,6 @@ async function init() {
   controls.target.set(0, -0.08, 0.11);
   controls.minDistance = 0.1;
   controls.maxDistance = 2;
-  controls.addEventListener("change", render);
   controls.update();
 
   const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
@@ -67,6 +66,6 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function render() {
-  renderer.renderAsync(scene, camera);
+function animate() {
+  renderer.render(scene, camera);
 }

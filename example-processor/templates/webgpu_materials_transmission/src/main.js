@@ -32,14 +32,13 @@ const hdrEquirect = new HDRLoader()
     hdrEquirect.mapping = EquirectangularReflectionMapping;
 
     init();
-    render();
   });
 
 function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(render);
+  renderer.setAnimationLoop(animate);
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
@@ -179,6 +178,6 @@ function generateTexture() {
   return canvas;
 }
 
-function render() {
-  renderer.renderAsync(scene, camera);
+function animate() {
+  renderer.render(scene, camera);
 }

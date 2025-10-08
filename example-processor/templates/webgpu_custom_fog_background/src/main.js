@@ -27,6 +27,7 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = NoToneMapping; // apply tone mapping in post processing, instead
   document.body.appendChild(renderer.domElement);
 
@@ -61,7 +62,6 @@ function init() {
     .setPath("textures/equirectangular/")
     .load("royal_esplanade_1k.hdr", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
-
       scene.environment = texture;
 
       // model
@@ -71,8 +71,6 @@ function init() {
       );
       loader.load("DamagedHelmet.gltf", function (gltf) {
         scene.add(gltf.scene);
-
-        render();
       });
     });
 
@@ -83,7 +81,6 @@ function init() {
   controls.maxDistance = 5;
   controls.target.set(0, -0.1, -0.2);
   controls.update();
-  controls.addEventListener("change", render); // use if there is no animation loop
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -93,12 +90,10 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
 //
 
-function render() {
-  postProcessing.renderAsync();
+function animate() {
+  postProcessing.render();
 }

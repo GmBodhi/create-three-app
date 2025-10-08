@@ -41,6 +41,8 @@ async function init() {
   renderer.toneMappingExposure = 1;
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 3;
   controls.maxDistance = 6;
@@ -48,7 +50,7 @@ async function init() {
 
   const ktx2Loader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
-    .detectSupportAsync(renderer);
+    .detectSupport(renderer);
 
   const loader = new GLTFLoader();
   loader.setKTX2Loader(ktx2Loader);

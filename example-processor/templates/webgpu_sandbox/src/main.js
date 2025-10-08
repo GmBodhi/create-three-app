@@ -43,9 +43,10 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
-  renderer.inspector = new Inspector();
+  await renderer.init();
 
   // textures
 
@@ -65,7 +66,7 @@ async function init() {
 
   const ktxLoader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
-    .detectSupportAsync(renderer);
+    .detectSupport(renderer);
 
   const ktxTexture = await ktxLoader.loadAsync(
     "three/examples/textures/ktx2/2d_uastc.ktx2"
