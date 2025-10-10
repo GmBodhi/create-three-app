@@ -19,7 +19,6 @@ import {
   positionLocal,
   modelWorldMatrix,
   sqrt,
-  property,
   float,
   Fn,
   If,
@@ -264,7 +263,7 @@ function init() {
     // Define consts
     const PI = float(3.141592653589793);
     const PI_2 = PI.mul(2.0);
-    const limit = property("float", "limit").assign(SPEED_LIMIT);
+    const limit = float(SPEED_LIMIT).toVar("limit");
 
     // Destructure uniforms
     const {
