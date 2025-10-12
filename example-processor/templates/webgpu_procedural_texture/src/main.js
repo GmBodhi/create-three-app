@@ -9,7 +9,6 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 let camera, scene, renderer;
 
 init();
-render();
 
 function init() {
   const aspect = window.innerWidth / window.innerHeight;

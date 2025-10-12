@@ -30,7 +30,7 @@ async function playAudioBuffer() {
 
   // compute audio
 
-  await renderer.computeAsync(computeNode);
+  renderer.compute(computeNode);
 
   const wave = new Float32Array(
     await renderer.getArrayBufferAsync(waveArray.value)
@@ -172,6 +172,8 @@ async function init() {
   renderer.setAnimationLoop(render);
   renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
+
+  await renderer.init();
 
   window.addEventListener("resize", onWindowResize);
   document.addEventListener("click", playAudioBuffer);

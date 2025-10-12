@@ -23,7 +23,7 @@ const seed = uniform(new Vector2());
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -163,11 +163,13 @@ function init() {
   renderer.setAnimationLoop(render);
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   window.addEventListener("resize", onWindowResize);
 
   // compute init
 
-  renderer.computeAsync(computeInitNode);
+  renderer.compute(computeInitNode);
 }
 
 function onWindowResize() {

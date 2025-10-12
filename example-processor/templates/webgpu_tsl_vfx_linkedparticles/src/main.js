@@ -74,7 +74,7 @@ const turbFriction = uniform(0.01);
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -105,9 +105,11 @@ function init() {
   renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   // TSL function
   // current color from index
-  getInstanceColor = /*#__PURE__*/ Fn(([i]) => {
+  getInstanceColor = Fn(([i]) => {
     return hue(
       color(0x0000ff),
       colorOffset.add(
@@ -130,8 +132,8 @@ function init() {
   );
 
   // init particles buffers
-  renderer.computeAsync(
-    /*#__PURE__*/ Fn(() => {
+  renderer.compute(
+    Fn(() => {
       particlePositions.element(instanceIndex).xyz.assign(vec3(10000.0));
       particlePositions.element(instanceIndex).w.assign(vec3(-1.0)); // life is stored in w component; x<0 means dead
     })().compute(nbParticles)
@@ -151,7 +153,7 @@ function init() {
     particleVelocities.toAttribute().x
   );
 
-  particleMaterial.colorNode = /*#__PURE__*/ Fn(() => {
+  particleMaterial.colorNode = Fn(() => {
     const life = particlePositions.toAttribute().w;
     const modLife = pcurve(life.oneMinus(), 8.0, 1.0);
     const pulse = pcurve(
@@ -167,7 +169,7 @@ function init() {
     return getInstanceColor(instanceIndex).mul(pulse.mul(modLife));
   })();
 
-  particleMaterial.opacityNode = /*#__PURE__*/ Fn(() => {
+  particleMaterial.opacityNode = Fn(() => {
     const circle = step(uv().xy.sub(0.5).length(), 0.5);
     const life = particlePositions.toAttribute().w;
 
@@ -231,7 +233,7 @@ function init() {
   scene.add(linksMesh);
 
   // compute nodes
-  updateParticles = /*#__PURE__*/ Fn(() => {
+  updateParticles = Fn(() => {
     const position = particlePositions.element(instanceIndex).xyz;
     const life = particlePositions.element(instanceIndex).w;
     const velocity = particleVelocities.element(instanceIndex).xyz;
@@ -340,7 +342,7 @@ function init() {
     .compute(nbParticles)
     .setName("Update Particles");
 
-  spawnParticles = /*#__PURE__*/ Fn(() => {
+  spawnParticles = Fn(() => {
     const particleIndex = spawnIndex
       .add(instanceIndex)
       .mod(nbParticles)

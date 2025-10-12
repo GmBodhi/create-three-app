@@ -162,7 +162,7 @@ async function init(forceWebGL = false) {
     scene.background = new Color(0x313131);
   }
 
-  await renderer.computeAsync(computeInit);
+  renderer.compute(computeInit);
 
   //
 
@@ -171,7 +171,7 @@ async function init(forceWebGL = false) {
   const stepAnimation = async function () {
     renderer.info.reset();
 
-    await renderer.computeAsync(compute);
+    renderer.compute(compute);
     renderer.render(scene, camera);
 
     renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);

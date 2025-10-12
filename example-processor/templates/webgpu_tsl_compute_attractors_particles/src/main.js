@@ -31,7 +31,7 @@ let camera, scene, renderer, controls, updateCompute;
 
 init();
 
-function init() {
+async function init() {
   camera = new PerspectiveCamera(
     25,
     window.innerWidth / window.innerHeight,
@@ -62,6 +62,8 @@ function init() {
   renderer.setClearColor("#000000");
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
+
+  await renderer.init();
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
@@ -205,7 +207,7 @@ function init() {
   const initCompute = init().compute(count);
 
   const reset = () => {
-    renderer.computeAsync(initCompute);
+    renderer.compute(initCompute);
   };
 
   reset();

@@ -138,7 +138,10 @@ async function init() {
     const rippleOnSurface = texture(
       collisionPosRT.texture,
       getCoord(position.xz)
-    );
+    ).toInspector("Collision Test", () => {
+      return texture(collisionPosRT.texture).y; // .div( collisionCamera.position.y );
+    });
+
     const rippleFloorArea = rippleOnSurface.y.add(scale.x.mul(surfaceOffset));
 
     If(position.y.greaterThan(rippleFloorArea), () => {
@@ -274,6 +277,8 @@ async function init() {
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   //
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -301,17 +306,19 @@ async function init() {
 
   // compose
 
-  let totalPass = scenePass;
+  let totalPass = scenePass.toInspector("Scene");
   totalPass = totalPass.add(scenePassColorBlurred.mul(0.1));
   totalPass = totalPass.mul(vignette);
-  totalPass = totalPass.add(teapotTreePass.mul(10).add(teapotTreePassBlurred));
+  totalPass = totalPass.add(
+    teapotTreePass.mul(10).add(teapotTreePassBlurred).toInspector("Teapot Blur")
+  );
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = totalPass;
 
   //
 
-  await renderer.computeAsync(computeInit);
+  renderer.compute(computeInit);
 
   //
 

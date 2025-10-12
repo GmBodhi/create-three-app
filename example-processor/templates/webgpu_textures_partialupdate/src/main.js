@@ -24,7 +24,7 @@ function init() {
   clock = new Clock();
 
   const loader = new TextureLoader();
-  diffuseMap = loader.load("textures/carbon/Carbon.png", animate);
+  diffuseMap = loader.load("textures/carbon/Carbon.png");
   diffuseMap.colorSpace = SRGBColorSpace;
   diffuseMap.minFilter = LinearFilter;
   diffuseMap.generateMipmaps = false;
@@ -49,7 +49,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-
   document.body.appendChild(renderer.domElement);
 
   //

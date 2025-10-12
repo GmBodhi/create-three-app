@@ -292,6 +292,8 @@ async function initBitonicSort() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
 
+  await renderer.init();
+
   const animate = () => {
     renderer.render(scene, camera);
   };
@@ -312,7 +314,7 @@ async function initBitonicSort() {
   const computeInit = computeInitFn().compute(size);
   const computeReset = computeResetBuffersFn().compute(size);
 
-  await renderer.computeAsync(computeInit);
+  renderer.compute(computeInit);
 
   const stepAnimation = async function () {
     renderer.info.reset();
@@ -523,6 +525,8 @@ async function initGlobalSwapOnly() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
 
+  await renderer.init();
+
   const animate = () => {
     renderer.render(scene, camera);
   };
@@ -532,7 +536,7 @@ async function initGlobalSwapOnly() {
   renderer.domElement.style.left = "50%";
   scene.background = new Color(0x212121);
 
-  await renderer.computeAsync(computeInit);
+  renderer.compute(computeInit);
 
   const stepAnimation = async function () {
     if (currentStep !== MAX_STEPS) {

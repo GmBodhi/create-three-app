@@ -38,7 +38,7 @@ let collisionBoxPos, collisionBoxPosUI;
 
 init();
 
-function init() {
+async function init() {
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 110);
@@ -295,9 +295,11 @@ function init() {
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   //
 
-  renderer.computeAsync(computeInit);
+  renderer.compute(computeInit);
 
   //
 

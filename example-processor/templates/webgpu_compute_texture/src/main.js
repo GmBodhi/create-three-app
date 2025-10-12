@@ -83,7 +83,7 @@ async function init() {
   await renderer.init();
 
   // compute texture
-  renderer.computeAsync(computeNode);
+  renderer.compute(computeNode);
 
   window.addEventListener("resize", onWindowResize);
 }

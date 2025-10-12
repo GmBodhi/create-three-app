@@ -2,14 +2,12 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "stats-gl";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, renderer;
-let controls, stats;
+let controls;
 let gui;
 let geometries, group;
 
@@ -127,7 +125,6 @@ async function init(forceWebGL = false) {
   if (renderer) {
     renderer.dispose();
     controls.dispose();
-    document.body.removeChild(stats.dom);
     document.body.removeChild(renderer.domElement);
   }
 
@@ -143,7 +140,7 @@ async function init(forceWebGL = false) {
   renderer = new WebGPURenderer({ antialias: true, forceWebGL });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
+  renderer.inspector = new Inspector();
   renderer.setAnimationLoop(animate);
 
   // scene
@@ -165,23 +162,15 @@ async function init(forceWebGL = false) {
   controls.autoRotate = true;
   controls.autoRotateSpeed = 1.0;
 
-  // stats
-
-  stats = new Stats({
-    precision: 3,
-    horizontal: false,
-    trackGPU: true,
-  });
-  stats.init(renderer);
-  document.body.appendChild(stats.dom);
-  stats.dom.style.position = "absolute";
-
   // gui
 
-  gui = new GUI();
-  gui.add(api, "renderBundle").onChange(() => {
-    init(!api.webgpu);
-  });
+  gui = renderer.inspector.createParameters("Settings");
+  gui
+    .add(api, "renderBundle")
+    .name("render bundle")
+    .onChange(() => {
+      init(!api.webgpu);
+    });
 
   gui.add(api, "webgpu").onChange(() => {
     init(!api.webgpu);
@@ -220,9 +209,6 @@ async function init(forceWebGL = false) {
 
     const average =
       renderTimeAverages.reduce((a, b) => a + b, 0) / renderTimeAverages.length;
-
-    renderer.resolveTimestampsAsync();
-    stats.update();
 
     document.getElementById("backend").innerText =
       `Average Render Time ${api.renderBundle ? "(Bundle)" : ""}: ` +

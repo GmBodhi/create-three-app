@@ -22,7 +22,7 @@ const scaleVector = new Vector2(1, 1);
 
 init();
 
-function init() {
+async function init() {
   camera = new OrthographicCamera(-1.0, 1.0, 1.0, -1.0, 0, 1);
   camera.position.z = 1;
 
@@ -85,7 +85,7 @@ function init() {
       velocity.xy = vec2(velX, velY);
     });
 
-    renderer.computeAsync(precomputeShaderNode().compute(particlesCount));
+    renderer.compute(precomputeShaderNode().compute(particlesCount));
   });
 
   // use a compute shader to animate the point cloud's vertex data.
@@ -113,6 +113,8 @@ function init() {
   renderer.setAnimationLoop(animate);
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
+
+  await renderer.init();
 
   window.addEventListener("resize", onWindowResize);
   window.addEventListener("mousemove", onMouseMove);

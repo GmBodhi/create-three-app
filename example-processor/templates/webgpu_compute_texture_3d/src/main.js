@@ -45,6 +45,8 @@ async function init() {
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   scene = new Scene();
 
   camera = new PerspectiveCamera(
@@ -189,8 +191,7 @@ async function init() {
 
   //
 
-  await renderer.init();
-  await renderer.computeAsync(computeNode);
+  renderer.compute(computeNode);
 
   const gui = renderer.inspector.createParameters("Settings");
   gui.add(threshold, "value", 0, 1, 0.01).name("threshold");
@@ -209,6 +210,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  renderer.computeAsync(computeNode);
+  renderer.compute(computeNode);
   renderer.render(scene, camera);
 }
