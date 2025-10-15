@@ -63,7 +63,7 @@ function init() {
     descriptionElement.innerText = "Scene " + (i + 1);
     element.appendChild(descriptionElement);
 
-    const canvasTarget = new CanvasTarget(sceneCanvas, { antialias: true });
+    const canvasTarget = new CanvasTarget(sceneCanvas);
     canvasTarget.setPixelRatio(window.devicePixelRatio);
     canvasTarget.setSize(200, 200);
 
