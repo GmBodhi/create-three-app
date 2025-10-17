@@ -48,7 +48,7 @@ const matThresholdLine = new Line2NodeMaterial({
 });
 
 const params = {
-  "line type": 0,
+  "line type": 1,
   "world units": matLine.worldUnits,
   "visualize threshold": matThresholdLine.visible,
   width: matLine.linewidth,
@@ -145,13 +145,11 @@ function init() {
   segments.computeLineDistances();
   segments.scale.set(1, 1, 1);
   scene.add(segments);
-  segments.visible = false;
 
   thresholdSegments = new LineSegments2(segmentsGeometry, matThresholdLine);
   thresholdSegments.computeLineDistances();
   thresholdSegments.scale.set(1, 1, 1);
   scene.add(thresholdSegments);
-  thresholdSegments.visible = false;
 
   line = new Line2(lineGeometry, matLine);
   line.computeLineDistances();
@@ -166,6 +164,10 @@ function init() {
   const geo = new BufferGeometry();
   geo.setAttribute("position", new Float32BufferAttribute(positions, 3));
   geo.setAttribute("color", new Float32BufferAttribute(colors, 3));
+
+  //
+
+  switchLine(params["line type"]);
 
   //
 
@@ -263,8 +265,7 @@ function initGui() {
     .add(params, "line type", { LineGeometry: 0, LineSegmentsGeometry: 1 })
     .onChange(function (val) {
       switchLine(val);
-    })
-    .setValue(1);
+    });
 
   gui.add(params, "world units").onChange(function (val) {
     matLine.worldUnits = val;

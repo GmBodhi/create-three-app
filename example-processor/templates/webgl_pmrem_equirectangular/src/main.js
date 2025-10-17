@@ -1,7 +1,16 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three/webgpu";
-import { normalWorldGeometry, uniform, pmremTexture } from "three/tsl";
+import {
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+  ACESFilmicToneMapping,
+  EquirectangularReflectionMapping,
+  PMREMGenerator,
+  SphereGeometry,
+  MeshPhysicalMaterial,
+  Mesh,
+} from "three";
 
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
@@ -25,15 +34,11 @@ async function init() {
 
   scene = new Scene();
 
-  const forceWebGL = false;
-
-  renderer = new WebGPURenderer({ antialias: true, forceWebGL });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
-
-  await renderer.init();
 
   container.appendChild(renderer.domElement);
 
@@ -47,20 +52,22 @@ async function init() {
     .load("royal_esplanade_1k.hdr", function (map) {
       map.mapping = EquirectangularReflectionMapping;
 
-      scene.backgroundNode = pmremTexture(
-        map,
-        normalWorldGeometry,
-        uniform(0.5)
-      );
+      const pmremGenerator = new PMREMGenerator(renderer);
+      const envMap = pmremGenerator.fromEquirectangular(map).texture;
+
+      scene.background = envMap;
+      scene.backgroundBlurriness = 0.5;
+
+      pmremGenerator.dispose();
 
       const geometry = new SphereGeometry(0.4, 64, 64);
 
       for (let i = 0; i < 6; i++) {
         for (let j = 0; j < 5; j++) {
-          const material = new MeshPhysicalNodeMaterial({
+          const material = new MeshPhysicalMaterial({
             roughness: i / 5,
             metalness: j / 4,
-            envMap: map,
+            envMap: envMap,
           });
 
           const mesh = new Mesh(geometry, material);

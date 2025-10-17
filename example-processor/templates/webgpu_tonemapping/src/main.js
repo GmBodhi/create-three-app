@@ -10,7 +10,7 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let renderer, scene, camera, controls;
-let gui = null;
+let gui;
 
 const params = {
   exposure: 1.0,

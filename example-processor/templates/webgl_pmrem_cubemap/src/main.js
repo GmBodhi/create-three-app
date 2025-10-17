@@ -1,7 +1,15 @@
 import "./style.css"; // For webpack support
 
-import * as THREE from "three/webgpu";
-import { normalWorldGeometry, uniform, pmremTexture } from "three/tsl";
+import {
+  PerspectiveCamera,
+  Scene,
+  WebGLRenderer,
+  ACESFilmicToneMapping,
+  PMREMGenerator,
+  SphereGeometry,
+  MeshPhysicalMaterial,
+  Mesh,
+} from "three";
 
 import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
@@ -25,15 +33,11 @@ async function init() {
 
   scene = new Scene();
 
-  const forceWebGL = false;
-
-  renderer = new WebGPURenderer({ antialias: true, forceWebGL });
+  renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
-
-  await renderer.init();
 
   container.appendChild(renderer.domElement);
 
@@ -47,20 +51,22 @@ async function init() {
     .load(
       ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"],
       function (map) {
-        scene.backgroundNode = pmremTexture(
-          map,
-          normalWorldGeometry,
-          uniform(0.5)
-        );
+        const pmremGenerator = new PMREMGenerator(renderer);
+        const envMap = pmremGenerator.fromCubemap(map).texture;
+
+        scene.background = envMap;
+        scene.backgroundBlurriness = 0.5;
+
+        pmremGenerator.dispose();
 
         const geometry = new SphereGeometry(0.4, 64, 64);
 
         for (let i = 0; i < 6; i++) {
           for (let j = 0; j < 5; j++) {
-            const material = new MeshPhysicalNodeMaterial({
+            const material = new MeshPhysicalMaterial({
               roughness: i / 5,
               metalness: j / 4,
-              envMap: map,
+              envMap: envMap,
             });
 
             const mesh = new Mesh(geometry, material);
