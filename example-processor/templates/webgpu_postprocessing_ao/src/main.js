@@ -96,6 +96,7 @@ async function init() {
 
   aoPass = ao(scenePassDepth, scenePassNormal, camera).toInspector("AO");
   aoPass.resolutionScale = 0.5; // running AO in half resolution is often sufficient
+  aoPass.useTemporalFiltering = true;
   blendPassAO = vec4(scenePassColor.rgb.mul(aoPass.r), scenePassColor.a); // the AO is stored only in the red channel
 
   // traa
@@ -140,6 +141,7 @@ async function init() {
   gui.add(params, "radius", 0.1, 1).onChange(updateParameters);
   gui.add(params, "scale", 0.01, 2).onChange(updateParameters);
   gui.add(params, "thickness", 0.01, 2).onChange(updateParameters);
+  gui.add(aoPass, "useTemporalFiltering").name("temporal filtering");
   gui.add(params, "aoOnly").onChange((value) => {
     if (value === true) {
       postProcessing.outputNode = vec4(vec3(aoPass.r), 1);
