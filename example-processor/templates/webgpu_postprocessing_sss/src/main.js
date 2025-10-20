@@ -149,7 +149,7 @@ async function init() {
   };
 
   const types = {
-    "Sceen with Shadow Maps + SSS": 0,
+    "Scene with Shadow Maps + SSS": 0,
     "Scene with Shadow Maps": 1,
     SSS: 2,
   };
@@ -165,10 +165,10 @@ async function init() {
     .name("temporal filtering")
     .onChange(updatePostprocessing);
 
-  function updatePostprocessing(value) {
-    if (value === 1) {
+  function updatePostprocessing() {
+    if (params.output === 1) {
       postProcessing.outputNode = scenePassColor;
-    } else if (value === 2) {
+    } else if (params.output === 2) {
       postProcessing.outputNode = vec4(vec3(sssPass.r), 1);
     } else {
       postProcessing.outputNode = sssPass.useTemporalFiltering
