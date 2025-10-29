@@ -104,6 +104,7 @@ const mixPass = new ShaderPass(
     uniforms: {
       baseTexture: { value: null },
       bloomTexture: { value: bloomComposer.renderTarget2.texture },
+      bloomStrength: { value: params.strength },
     },
     vertexShader: vertexshader_,
     fragmentShader: fragmentshader_,
@@ -142,6 +143,8 @@ bloomFolder.add(params, "threshold", 0.0, 1.0).onChange(function (value) {
 
 bloomFolder.add(params, "strength", 0.0, 3).onChange(function (value) {
   bloomPass.strength = Number(value);
+  mixPass.material.uniforms.bloomStrength.value = bloomPass.strength;
+
   render();
 });
 
