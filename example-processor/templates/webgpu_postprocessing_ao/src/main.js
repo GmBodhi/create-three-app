@@ -1,7 +1,16 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass, mrt, output, normalView, velocity, vec3, vec4 } from "three/tsl";
+import {
+  pass,
+  mrt,
+  output,
+  normalView,
+  velocity,
+  vec3,
+  vec4,
+  directionToColor,
+} from "three/tsl";
 import { ao } from "three/addons/tsl/display/GTAONode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 
@@ -87,17 +96,22 @@ async function init() {
     });
   const scenePassNormal = scenePass
     .getTextureNode("normal")
-    .toInspector("Normal");
+    .toInspector("Normal", () => {
+      return directionToColor(scenePassNormal.sample());
+    });
   const scenePassVelocity = scenePass
     .getTextureNode("velocity")
     .toInspector("Velocity");
 
   // ao
 
-  aoPass = ao(scenePassDepth, scenePassNormal, camera).toInspector("AO");
+  aoPass = ao(scenePassDepth, scenePassNormal, camera);
   aoPass.resolutionScale = 0.5; // running AO in half resolution is often sufficient
   aoPass.useTemporalFiltering = true;
-  blendPassAO = vec4(scenePassColor.rgb.mul(aoPass.r), scenePassColor.a); // the AO is stored only in the red channel
+  blendPassAO = vec4(
+    scenePassColor.rgb.mul(aoPass.r.toInspector("AO")),
+    scenePassColor.a
+  ); // the AO is stored only in the red channel
 
   // traa
 
