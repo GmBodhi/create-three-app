@@ -10,6 +10,7 @@ import {
   vec3,
   vec4,
   directionToColor,
+  colorSpaceToWorking,
 } from "three/tsl";
 import { ao } from "three/addons/tsl/display/GTAONode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
@@ -97,7 +98,10 @@ async function init() {
   const scenePassNormal = scenePass
     .getTextureNode("normal")
     .toInspector("Normal", () => {
-      return directionToColor(scenePassNormal.sample());
+      return colorSpaceToWorking(
+        directionToColor(scenePassNormal),
+        SRGBColorSpace
+      );
     });
   const scenePassVelocity = scenePass
     .getTextureNode("velocity")
