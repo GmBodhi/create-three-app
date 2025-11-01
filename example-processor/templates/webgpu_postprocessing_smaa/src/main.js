@@ -4,10 +4,9 @@ import * as THREE from "three/webgpu";
 import { pass } from "three/tsl";
 import { smaa } from "three/addons/tsl/display/SMAANode.js";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing, stats;
+let camera, scene, renderer, postProcessing;
 
 const params = {
   enabled: true,
@@ -21,10 +20,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   //
 
@@ -58,7 +55,7 @@ function init() {
 
   postProcessing = new PostProcessing(renderer);
 
-  const scenePass = pass(scene, camera);
+  const scenePass = pass(scene, camera).toInspector("Color");
   const smaaPass = smaa(scenePass);
 
   postProcessing.outputNode = smaaPass;
@@ -67,7 +64,7 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   const smaaFolder = gui.addFolder("SMAA");
   smaaFolder.add(params, "enabled").onChange((value) => {
@@ -95,8 +92,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.begin();
-
   if (params.autoRotate === true) {
     for (let i = 0; i < scene.children.length; i++) {
       const child = scene.children[i];
@@ -107,6 +102,4 @@ function animate() {
   }
 
   postProcessing.render();
-
-  stats.end();
 }

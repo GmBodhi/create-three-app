@@ -2,13 +2,11 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
-let stats;
 let camera, scene, renderer, controls;
 
 const settings = {
@@ -34,63 +32,35 @@ initGui();
 
 // Init gui
 function initGui() {
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("settings");
 
-  gui
-    .add(settings, "metalness")
-    .min(0)
-    .max(1)
-    .onChange(function (value) {
-      material.metalness = value;
-    });
+  gui.add(settings, "metalness", 0, 1).onChange(function (value) {
+    material.metalness = value;
+  });
 
-  gui
-    .add(settings, "roughness")
-    .min(0)
-    .max(1)
-    .onChange(function (value) {
-      material.roughness = value;
-    });
+  gui.add(settings, "roughness", 0, 1).onChange(function (value) {
+    material.roughness = value;
+  });
 
-  gui
-    .add(settings, "aoMapIntensity")
-    .min(0)
-    .max(1)
-    .onChange(function (value) {
-      material.aoMapIntensity = value;
-    });
+  gui.add(settings, "aoMapIntensity", 0, 1).onChange(function (value) {
+    material.aoMapIntensity = value;
+  });
 
-  gui
-    .add(settings, "ambientIntensity")
-    .min(0)
-    .max(1)
-    .onChange(function (value) {
-      ambientLight.intensity = value;
-    });
+  gui.add(settings, "ambientIntensity", 0, 1).onChange(function (value) {
+    ambientLight.intensity = value;
+  });
 
-  gui
-    .add(settings, "envMapIntensity")
-    .min(0)
-    .max(3)
-    .onChange(function (value) {
-      material.envMapIntensity = value;
-    });
+  gui.add(settings, "envMapIntensity", 0, 3).onChange(function (value) {
+    material.envMapIntensity = value;
+  });
 
-  gui
-    .add(settings, "displacementScale")
-    .min(0)
-    .max(3.0)
-    .onChange(function (value) {
-      material.displacementScale = value;
-    });
+  gui.add(settings, "displacementScale", 0, 3.0).onChange(function (value) {
+    material.displacementScale = value;
+  });
 
-  gui
-    .add(settings, "normalScale")
-    .min(-1)
-    .max(1)
-    .onChange(function (value) {
-      material.normalScale.set(1, -1).multiplyScalar(value);
-    });
+  gui.add(settings, "normalScale", -1, 1).onChange(function (value) {
+    material.normalScale.set(1, -1).multiplyScalar(value);
+  });
 }
 
 function init() {
@@ -101,6 +71,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   //
@@ -201,11 +172,6 @@ function init() {
 
   //
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
-  //
-
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -227,9 +193,7 @@ function onWindowResize() {
 function animate() {
   controls.update();
 
-  stats.begin();
   render();
-  stats.end();
 }
 
 function render() {

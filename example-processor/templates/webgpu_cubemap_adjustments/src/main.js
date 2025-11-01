@@ -20,7 +20,7 @@ import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 
@@ -147,6 +147,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = LinearToneMapping;
+  renderer.inspector = new Inspector();
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
@@ -158,7 +159,7 @@ async function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   gui
     .add({ blurBackground: blurNode.value }, "blurBackground", 0, 1, 0.01)

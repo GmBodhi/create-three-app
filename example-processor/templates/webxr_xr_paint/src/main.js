@@ -2,8 +2,8 @@ import "./style.css"; // For webpack support
 
 import {
   Vector3,
-  Scene,
   Color,
+  Scene,
   PerspectiveCamera,
   GridHelper,
   HemisphereLight,
@@ -21,6 +21,7 @@ let camera, scene, renderer;
 let controller1, controller2;
 
 const cursor = new Vector3();
+const color = new Color();
 
 let controls;
 
@@ -94,7 +95,9 @@ function init() {
   function onSqueezeStart() {
     this.userData.isSqueezing = true;
     this.userData.positionAtSqueezeStart = this.position.y;
-    this.userData.scaleAtSqueezeStart = this.scale.x;
+
+    const pivot = this.getObjectByName("pivot");
+    this.userData.scaleAtSqueezeStart = pivot.scale.x;
   }
 
   function onSqueezeEnd() {
@@ -162,6 +165,10 @@ function handleController(controller) {
   cursor.setFromMatrixPosition(pivot.matrixWorld);
 
   if (userData.isSelecting === true) {
+    const hue = (performance.now() * 0.001) % 1;
+    color.setHSL(hue, 1.0, 0.5);
+    painter.setColor(color);
+
     painter.lineTo(cursor);
     painter.update();
   }

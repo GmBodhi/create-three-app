@@ -2,7 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
@@ -31,14 +32,14 @@ const hdrEquirect = new HDRLoader()
     hdrEquirect.mapping = EquirectangularReflectionMapping;
 
     init();
-    render();
   });
 
 function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(render);
+  renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   renderer.toneMapping = ACESFilmicToneMapping;
@@ -97,7 +98,7 @@ function init() {
 
   //
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   gui.addColor(params, "color").onChange(function () {
     material.color.set(params.color);
@@ -127,13 +128,19 @@ function init() {
     material.thickness = params.thickness;
   });
 
-  gui.add(params, "specularIntensity", 0, 1, 0.01).onChange(function () {
-    material.specularIntensity = params.specularIntensity;
-  });
+  gui
+    .add(params, "specularIntensity", 0, 1, 0.01)
+    .name("specular intensity")
+    .onChange(function () {
+      material.specularIntensity = params.specularIntensity;
+    });
 
-  gui.addColor(params, "specularColor").onChange(function () {
-    material.specularColor.set(params.specularColor);
-  });
+  gui
+    .addColor(params, "specularColor")
+    .name("specular color")
+    .onChange(function () {
+      material.specularColor.set(params.specularColor);
+    });
 
   gui
     .add(params, "envMapIntensity", 0, 1, 0.01)
@@ -145,8 +152,6 @@ function init() {
   gui.add(params, "exposure", 0, 1, 0.01).onChange(function () {
     renderer.toneMappingExposure = params.exposure;
   });
-
-  gui.open();
 }
 
 function onWindowResize() {
@@ -173,6 +178,6 @@ function generateTexture() {
   return canvas;
 }
 
-function render() {
-  renderer.renderAsync(scene, camera);
+function animate() {
+  renderer.render(scene, camera);
 }

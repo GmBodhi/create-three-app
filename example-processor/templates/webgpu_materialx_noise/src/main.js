@@ -10,12 +10,12 @@ import {
   mx_fractal_noise_vec3,
 } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
-let container, stats;
+let container;
 
 let camera, scene, renderer;
 
@@ -108,22 +108,16 @@ function init() {
   particleLight.add(new PointLight(0xffffff, 1000));
 
   renderer = new WebGPURenderer({ antialias: true });
-  renderer.setAnimationLoop(animate);
+  renderer.setAnimationLoop(render);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   //
 
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.25;
-
-  //
-
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
 
   // EVENTS
 
@@ -145,12 +139,6 @@ function onWindowResize() {
 }
 
 //
-
-function animate() {
-  render();
-
-  stats.update();
-}
 
 function render() {
   const timer = Date.now() * 0.00025;

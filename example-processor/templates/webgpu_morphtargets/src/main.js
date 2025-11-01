@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -40,9 +40,8 @@ function init() {
   mesh = new Mesh(geometry, material);
   scene.add(mesh);
 
-  initGUI();
-
   renderer = new WebGPURenderer({ antialias: true });
+  renderer.inspector = new Inspector();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(function () {
@@ -54,6 +53,8 @@ function init() {
   controls.enableZoom = false;
 
   window.addEventListener("resize", onWindowResize);
+
+  initGUI();
 }
 
 function createGeometry() {
@@ -114,20 +115,15 @@ function initGUI() {
     Spherify: 0,
     Twist: 0,
   };
-  const gui = new GUI({ title: "Morph Targets" });
 
-  gui
-    .add(params, "Spherify", 0, 1)
-    .step(0.01)
-    .onChange(function (value) {
-      mesh.morphTargetInfluences[0] = value;
-    });
-  gui
-    .add(params, "Twist", 0, 1)
-    .step(0.01)
-    .onChange(function (value) {
-      mesh.morphTargetInfluences[1] = value;
-    });
+  const gui = renderer.inspector.createParameters("Morph Targets");
+
+  gui.add(params, "Spherify", 0, 1, 0.01).onChange(function (value) {
+    mesh.morphTargetInfluences[0] = value;
+  });
+  gui.add(params, "Twist", 0, 1, 0.01).onChange(function (value) {
+    mesh.morphTargetInfluences[1] = value;
+  });
 }
 
 function onWindowResize() {

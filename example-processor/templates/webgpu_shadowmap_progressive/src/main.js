@@ -1,7 +1,9 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
@@ -40,6 +42,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // camera
@@ -157,12 +160,12 @@ function init() {
 }
 
 function createGUI() {
-  const gui = new GUI({ title: "Accumulation Settings" });
+  const gui = renderer.inspector.createParameters("Accumulation Settings");
   gui.add(params, "Enable");
   gui.add(params, "Blur Edges");
-  gui.add(params, "Blend Window", 1, 500).step(1);
-  gui.add(params, "Light Radius", 0, 200).step(10);
-  gui.add(params, "Ambient Weight", 0, 1).step(0.1);
+  gui.add(params, "Blend Window", 1, 500, 1);
+  gui.add(params, "Light Radius", 0, 200, 10);
+  gui.add(params, "Ambient Weight", 0, 1, 0.1);
   gui
     .add(params, "Debug Lightmap")
     .onChange((value) => progressiveSurfacemap.showDebugLightmap(value));

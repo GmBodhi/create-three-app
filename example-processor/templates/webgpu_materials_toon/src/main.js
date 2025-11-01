@@ -3,13 +3,13 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { toonOutlinePass } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
-let container, stats;
+let container;
 
 let camera, scene, renderer, postProcessing;
 let particleLight;
@@ -42,6 +42,7 @@ function init(font) {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   //
@@ -132,9 +133,6 @@ function init(font) {
 
   //
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 200;
   controls.maxDistance = 2000;
@@ -158,9 +156,5 @@ function render() {
   particleLight.position.y = Math.cos(timer * 5) * 400;
   particleLight.position.z = Math.cos(timer * 3) * 300;
 
-  stats.begin();
-
   postProcessing.render();
-
-  stats.end();
 }

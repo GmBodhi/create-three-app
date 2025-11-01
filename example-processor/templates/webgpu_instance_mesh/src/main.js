@@ -3,11 +3,9 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { mix, range, normalWorld, oscSine, time } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-let camera, scene, renderer, stats;
+let camera, scene, renderer;
 
 let mesh;
 const amount = parseInt(window.location.search.slice(1)) || 10;
@@ -47,8 +45,8 @@ function init() {
 
     //
 
-    const gui = new GUI();
-    gui.add(mesh, "count", 1, count);
+    const gui = renderer.inspector.createParameters("Settings");
+    gui.add(mesh, "count", 1, count, 1).name("instance count");
   });
 
   //
@@ -57,12 +55,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  //
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   //
 
@@ -80,8 +74,6 @@ function onWindowResize() {
 
 function animate() {
   render();
-
-  stats.update();
 }
 
 async function render() {

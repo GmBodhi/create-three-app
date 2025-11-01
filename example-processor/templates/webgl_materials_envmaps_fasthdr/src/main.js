@@ -48,7 +48,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.backgroundBlurryness = params.backgroundBlurryness;
 
   container.appendChild(renderer.domElement);
 
@@ -132,6 +131,7 @@ function init() {
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 0.1;
   controls.maxDistance = 20;
+  controls.enableDamping = true;
 
   window.addEventListener("resize", onWindowResize);
 
@@ -157,11 +157,14 @@ function init() {
     .onChange(() => {
       loadTexture(params.image);
     });
+
   gui.add(params, "exposure", 0, 2, 0.01);
+
   gui.add(params, "fov", 10, 100).onChange(() => {
     camera.fov = params.fov;
     camera.updateProjectionMatrix();
   });
+
   gui
     .add(params, "backgroundBlurriness", 0, 1, 0.01)
     .name("background blurriness");
@@ -188,6 +191,8 @@ function animate() {
 function render() {
   renderer.toneMappingExposure = params.exposure;
   scene.backgroundBlurriness = params.backgroundBlurriness;
+
+  controls.update();
 
   renderer.render(scene, camera);
 }

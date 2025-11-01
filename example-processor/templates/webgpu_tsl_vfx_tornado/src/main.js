@@ -10,7 +10,7 @@ import {
   uniform,
   pass,
   PI,
-  PI2,
+  TWO_PI,
   color,
   positionLocal,
   sin,
@@ -24,7 +24,8 @@ import {
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, postProcessing, controls;
 
@@ -56,7 +57,7 @@ function init() {
     const centeredUv = uv.sub(0.5).toVar();
     const distanceToCenter = centeredUv.length();
     const angle = atan(centeredUv.y, centeredUv.x);
-    const radialUv = vec2(angle.add(PI).div(PI2), distanceToCenter).toVar();
+    const radialUv = vec2(angle.add(PI).div(TWO_PI), distanceToCenter).toVar();
     radialUv.mulAssign(multiplier);
     radialUv.x.addAssign(rotation);
     radialUv.y.addAssign(offset);
@@ -268,6 +269,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // post processing
@@ -293,7 +295,7 @@ function init() {
 
   // debug
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui
     .addColor(

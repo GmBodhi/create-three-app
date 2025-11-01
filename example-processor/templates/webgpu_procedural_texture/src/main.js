@@ -4,12 +4,11 @@ import * as THREE from "three/webgpu";
 import { checker, uv, uniform, convertToTexture } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 
 init();
-render();
 
 function init() {
   const aspect = window.innerWidth / window.innerHeight;
@@ -47,13 +46,14 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResize);
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Procedural Texture");
   gui.add(uvScale, "value", 1, 10).name("uv scale ( before rtt )");
   gui.add(blurAmount, "value", 0, 2).name("blur amount ( after rtt )");
   gui.add(proceduralToTexture, "autoUpdate").name("auto update");
@@ -73,5 +73,5 @@ function onWindowResize() {
 }
 
 function render() {
-  renderer.renderAsync(scene, camera);
+  renderer.render(scene, camera);
 }

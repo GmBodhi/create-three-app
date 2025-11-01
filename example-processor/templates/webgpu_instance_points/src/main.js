@@ -16,17 +16,13 @@ import {
   vec3,
 } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
 let renderer, scene, camera, camera2, controls, backgroundNode;
 let material;
-let stats;
-let gui;
 let effectController;
 
 // viewport
@@ -58,7 +54,6 @@ async function init() {
     pulseSpeed: uniform(6),
     minWidth: uniform(6),
     maxWidth: uniform(20),
-    alphaToCoverage: true,
   };
 
   // Position and Color Data
@@ -162,7 +157,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  //renderer.logarithmicDepthBuffer = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
@@ -175,14 +170,9 @@ async function init() {
 
   // GUI
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+  const gui = renderer.inspector.createParameters("Settings");
 
-  gui = new GUI();
-
-  gui.add(effectController, "alphaToCoverage").onChange(function (val) {
-    material.alphaToCoverage = val;
-  });
+  gui.add(material, "alphaToCoverage");
 
   gui.add(effectController.minWidth, "value", 1, 30, 1).name("minWidth");
   gui.add(effectController.maxWidth, "value", 2, 30, 1).name("maxWidth");
@@ -203,8 +193,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   // compute
 
   renderer.compute(computeSize);

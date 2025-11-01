@@ -10,11 +10,10 @@ import {
   positionWorld,
 } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
@@ -41,9 +40,6 @@ const [sourceModel, targetModel] = await Promise.all([
 //
 
 const clock = new Clock();
-
-const stats = new Stats();
-document.body.appendChild(stats.dom);
 
 // scene
 
@@ -97,10 +93,11 @@ const mixer = retargetModel(source, targetModel);
 
 // renderer
 const renderer = new WebGPURenderer({ antialias: true });
-renderer.toneMapping = NeutralToneMapping;
-renderer.setAnimationLoop(animate);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
+renderer.inspector = new Inspector();
+renderer.toneMapping = NeutralToneMapping;
 document.body.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -187,8 +184,6 @@ function animate() {
   mixer.update(delta);
 
   controls.update();
-
-  stats.update();
 
   renderer.render(scene, camera);
 }

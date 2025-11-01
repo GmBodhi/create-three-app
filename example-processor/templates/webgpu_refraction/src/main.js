@@ -11,6 +11,8 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 let camera, scene, renderer;
 
 let cameraControls;
@@ -62,7 +64,9 @@ function init() {
     .mul(verticalNormalScale);
 
   const refractorUV = screenUV.add(verticalUVOffset);
-  const verticalRefractor = viewportSharedTexture(viewportSafeUV(refractorUV));
+  const verticalRefractor = viewportSharedTexture(
+    viewportSafeUV(refractorUV)
+  ).toInspector("Viewport Texture");
 
   const planeGeo = new PlaneGeometry(100.1, 100.1);
 
@@ -143,6 +147,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // controls

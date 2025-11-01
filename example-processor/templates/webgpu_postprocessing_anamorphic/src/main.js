@@ -9,7 +9,7 @@ import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let postProcessing;
@@ -57,6 +57,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = LinearToneMapping;
   renderer.toneMappingExposure = 1;
+  renderer.inspector = new Inspector();
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
@@ -74,11 +75,11 @@ async function init() {
   const samples = 64;
 
   const anamorphicPass = anamorphic(
-    scenePass.getTextureNode(),
+    scenePass.getTextureNode().toInspector("Color"),
     threshold,
     scaleNode,
     samples
-  );
+  ).toInspector("Anamorphic");
   anamorphicPass.resolutionScale = params.resolutionScale; // 1 = full resolution
 
   postProcessing = new PostProcessing(renderer);
@@ -87,7 +88,7 @@ async function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(intensity, "value", 0, 4, 0.1).name("intensity");
   gui.add(threshold, "value", 0.8, 3, 0.001).name("threshold");
   gui.add(scaleNode, "value", 1, 10, 0.1).name("scale");

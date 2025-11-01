@@ -30,7 +30,8 @@ import {
   step,
 } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
@@ -64,8 +65,6 @@ if (WebGPU.isAvailable() === false) {
   throw new Error("No WebGPU support");
 }
 
-const gui = new GUI();
-
 const params = {
   particleCount: 8192 * 4,
 };
@@ -78,6 +77,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.35;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -106,6 +106,8 @@ async function init() {
   scene.environment = hdrTexture;
 
   setupParticles();
+
+  const gui = renderer.inspector.createParameters("Settings");
 
   gui
     .add(params, "particleCount", 4096, maxParticles, 4096)
@@ -195,7 +197,9 @@ function setupComputeShaders() {
     atomicStore(cellBuffer.element(instanceIndex).get("y"), 0);
     atomicStore(cellBuffer.element(instanceIndex).get("z"), 0);
     atomicStore(cellBuffer.element(instanceIndex).get("mass"), 0);
-  })().compute(cellCount);
+  })()
+    .compute(cellCount)
+    .setName("clearGridKernel");
 
   p2g1Kernel = Fn(() => {
     If(instanceIndex.greaterThanEqual(particleCountUniform), () => {
@@ -264,7 +268,9 @@ function setupComputeShaders() {
         );
       }
     );
-  })().compute(params.particleCount);
+  })()
+    .compute(params.particleCount)
+    .setName("p2g1Kernel");
 
   p2g2Kernel = Fn(() => {
     If(instanceIndex.greaterThanEqual(particleCountUniform), () => {
@@ -377,7 +383,9 @@ function setupComputeShaders() {
         );
       }
     );
-  })().compute(params.particleCount);
+  })()
+    .compute(params.particleCount)
+    .setName("p2g2Kernel");
 
   updateGridKernel = Fn(() => {
     If(instanceIndex.greaterThanEqual(uint(cellCount)), () => {
@@ -422,7 +430,9 @@ function setupComputeShaders() {
     );
 
     cellBufferFloat.element(instanceIndex).assign(vec4(vx, vy, vz, mass));
-  })().compute(cellCount);
+  })()
+    .compute(cellCount)
+    .setName("updateGridKernel");
 
   const clampToRoundedBox = (pos, box, radius) => {
     const result = pos.sub(0.5).toVar();
@@ -565,7 +575,9 @@ function setupComputeShaders() {
       .element(instanceIndex)
       .get("velocity")
       .assign(particleVelocity);
-  })().compute(params.particleCount);
+  })()
+    .compute(params.particleCount)
+    .setName("g2pKernel");
 }
 
 function setupMesh() {
@@ -643,13 +655,12 @@ async function render() {
 
   prevMouseCoord.copy(mouseCoord);
 
-  await renderer.computeAsync([
-    clearGridKernel,
-    p2g1Kernel,
-    p2g2Kernel,
-    updateGridKernel,
-    g2pKernel,
-  ]);
+  //renderer.compute( [ clearGridKernel, p2g1Kernel, p2g2Kernel, updateGridKernel, g2pKernel ] );
+  renderer.compute(clearGridKernel);
+  renderer.compute(p2g1Kernel);
+  renderer.compute(p2g2Kernel);
+  renderer.compute(updateGridKernel);
+  renderer.compute(g2pKernel);
 
-  await renderer.renderAsync(scene, camera);
+  renderer.render(scene, camera);
 }

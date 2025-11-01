@@ -3,7 +3,9 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { CSMShadowNode } from "three/addons/csm/CSMShadowNode.js";
 import { CSMHelper } from "three/addons/csm/CSMHelper.js";
 
@@ -64,9 +66,13 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  document.body.appendChild(renderer.domElement);
+
   renderer.shadowMap.enabled = params.shadows;
   renderer.shadowMap.type = PCFSoftShadowMap;
+
+  renderer.inspector = new Inspector();
+
+  document.body.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.maxPolarAngle = Math.PI / 2;
@@ -146,7 +152,7 @@ function init() {
     cube2.scale.y = Math.random() * 2 + 6;
   }
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   gui.add(params, "orthographic").onChange(function (value) {
     csm.camera = value ? orthoCamera : camera;
@@ -166,8 +172,7 @@ function init() {
   });
 
   gui
-    .add(params, "maxFar", 1, 5000)
-    .step(1)
+    .add(params, "maxFar", 1, 5000, 1)
     .name("max shadow far")
     .onChange(function (value) {
       csm.maxFar = value;
@@ -258,8 +263,6 @@ function init() {
   helperFolder.add(params, "autoUpdateHelper").name("auto update");
 
   helperFolder.add(params, "updateHelper").name("update");
-
-  helperFolder.open();
 
   window.addEventListener("resize", function () {
     camera.aspect = window.innerWidth / window.innerHeight;

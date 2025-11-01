@@ -3,12 +3,11 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { ssaaPass } from "three/addons/tsl/display/SSAAPassNode.js";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let scene, mesh, renderer, postProcessing;
 let camera, ssaaRenderPass;
-let gui, stats, timer;
+let timer;
 
 const params = {
   sampleLevel: 3,
@@ -21,29 +20,6 @@ const params = {
 
 init();
 
-clearGui();
-
-function clearGui() {
-  if (gui) gui.destroy();
-
-  gui = new GUI();
-
-  gui.add(params, "sampleLevel", {
-    "Level 0: 1 Sample": 0,
-    "Level 1: 2 Samples": 1,
-    "Level 2: 4 Samples": 2,
-    "Level 3: 8 Samples": 3,
-    "Level 4: 16 Samples": 4,
-    "Level 5: 32 Samples": 5,
-  });
-  gui.add(params, "clearColor", ["black", "white", "blue", "green", "red"]);
-  gui.add(params, "clearAlpha", 0, 1);
-  gui.add(params, "viewOffsetX", -100, 100);
-  gui.add(params, "autoRotate");
-
-  gui.open();
-}
-
 function init() {
   const width = window.innerWidth;
   const height = window.innerHeight;
@@ -52,10 +28,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   timer = new Timer();
   timer.connect(document);
@@ -127,6 +101,23 @@ function init() {
   postProcessing.outputNode = scenePassColor;
 
   window.addEventListener("resize", onWindowResize);
+
+  // GUI
+
+  const gui = renderer.inspector.createParameters("Settings");
+
+  gui.add(params, "sampleLevel", {
+    "Level 0: 1 Sample": 0,
+    "Level 1: 2 Samples": 1,
+    "Level 2: 4 Samples": 2,
+    "Level 3: 8 Samples": 3,
+    "Level 4: 16 Samples": 4,
+    "Level 5: 32 Samples": 5,
+  });
+  gui.add(params, "clearColor", ["black", "white", "blue", "green", "red"]);
+  gui.add(params, "clearAlpha", 0, 1);
+  gui.add(params, "viewOffsetX", -100, 100);
+  gui.add(params, "autoRotate");
 }
 
 function onWindowResize() {
@@ -178,6 +169,4 @@ function animate() {
   camera.view.offsetX = params.viewOffsetX;
 
   postProcessing.render();
-
-  stats.update();
 }

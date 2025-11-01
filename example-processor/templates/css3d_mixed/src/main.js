@@ -15,8 +15,6 @@ import {
   MeshBasicMaterial,
   NoBlending,
   Mesh,
-  Raycaster,
-  Vector2,
   Group,
   MeshStandardMaterial,
   Shape,
@@ -36,6 +34,13 @@ let controls;
 init();
 
 function init() {
+  const controlsDomElement = document.createElement("div");
+  controlsDomElement.style.position = "absolute";
+  controlsDomElement.style.top = "0";
+  controlsDomElement.style.width = "100%";
+  controlsDomElement.style.height = "100%";
+  document.body.appendChild(controlsDomElement);
+
   rendererCSS3D = new CSS3DRenderer();
   rendererCSS3D.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(rendererCSS3D.domElement);
@@ -43,6 +48,7 @@ function init() {
   rendererWebGL = new WebGLRenderer({ antialias: true, alpha: true });
   rendererWebGL.domElement.style.position = "absolute";
   rendererWebGL.domElement.style.top = "0";
+  rendererWebGL.domElement.style.pointerEvents = "none";
   rendererWebGL.setPixelRatio(window.devicePixelRatio);
   rendererWebGL.setSize(window.innerWidth, window.innerHeight);
   rendererWebGL.toneMapping = NeutralToneMapping;
@@ -86,7 +92,6 @@ function init() {
     premultipliedAlpha: true,
   });
   const mesh = new Mesh(geometry, material);
-  mesh.name = "cutout";
   scene.add(mesh);
 
   // Add frame
@@ -98,43 +103,19 @@ function init() {
   iframe.style.width = "1028px";
   iframe.style.height = "768px";
   iframe.style.border = "0px";
-  iframe.src = "https://threejs.org/examples/#webgl_animation_keyframes";
+  iframe.style.backfaceVisibility = "hidden";
+  iframe.src = "three/examples/#webgl_animation_keyframes";
   scene.add(new CSS3DObject(iframe));
 
   // Add controls
   controls = new OrbitControls(camera);
-  controls.connect(rendererWebGL.domElement);
+  controls.connect(controlsDomElement);
+  controls.addEventListener(
+    "start",
+    () => (iframe.style.pointerEvents = "none")
+  );
+  controls.addEventListener("end", () => (iframe.style.pointerEvents = "auto"));
   controls.enableDamping = true;
-
-  // Track OrbitControls state
-  let isDragging = false;
-  controls.addEventListener("start", () => (isDragging = true));
-  controls.addEventListener("end", () => (isDragging = false));
-
-  // raycast to find CSS3DObject
-  const raycaster = new Raycaster();
-  const pointer = new Vector2();
-  document.addEventListener("pointermove", (event) => {
-    // Skip raycasting when dragging
-    if (isDragging) return;
-
-    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    raycaster.setFromCamera(pointer, camera);
-
-    const intersects = raycaster.intersectObjects(scene.children, true);
-
-    rendererWebGL.domElement.style.pointerEvents = "";
-
-    if (intersects.length > 0) {
-      const object = intersects[0].object;
-
-      if (object.name === "cutout") {
-        rendererWebGL.domElement.style.pointerEvents = "none";
-      }
-    }
-  });
 
   window.addEventListener("resize", onWindowResize);
 }

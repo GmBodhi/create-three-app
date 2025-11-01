@@ -1,27 +1,27 @@
+#backend,
 #info,
 #overlay {
   position: absolute;
-  top: 0;
   width: 100%;
 }
-#info {
+#backend,
+body {
+  color: #fff;
+  font-size: 13px;
+}
+#backend {
+  top: 70px;
+  left: 0;
   background-color: rgba(0, 0, 0, 0.75);
-  padding: 10px;
-  box-sizing: border-box;
+  padding: 5px;
   text-align: center;
-  -moz-user-select: none;
-  -webkit-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  pointer-events: none;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   z-index: 1;
 }
 body {
   margin: 0;
   background-color: #000;
-  color: #fff;
   font-family: Monospace;
-  font-size: 13px;
   line-height: 24px;
   overscroll-behavior: none;
 }
@@ -37,6 +37,21 @@ a:hover {
 button {
   text-transform: uppercase;
   cursor: pointer;
+}
+#info,
+#overlay {
+  top: 0;
+}
+#info {
+  padding: 10px;
+  box-sizing: border-box;
+  text-align: center;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  pointer-events: none;
+  z-index: 1;
 }
 button,
 input,

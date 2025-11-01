@@ -18,11 +18,9 @@ import {
   If,
 } from "three/tsl";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-import Stats from "three/addons/libs/stats.module.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 
@@ -30,7 +28,7 @@ const maxParticleCount = 50000;
 const instanceCount = maxParticleCount / 2;
 
 let camera, scene, renderer;
-let controls, stats;
+let controls;
 let computeParticles;
 let monkey;
 let clock;
@@ -40,7 +38,7 @@ let collisionBoxPos, collisionBoxPosUI;
 
 init();
 
-function init() {
+async function init() {
   const { innerWidth, innerHeight } = window;
 
   camera = new PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 110);
@@ -171,7 +169,9 @@ function init() {
     });
   });
 
-  computeParticles = computeUpdate().compute(maxParticleCount);
+  computeParticles = computeUpdate()
+    .compute(maxParticleCount)
+    .setName("Particles");
 
   // rain
 
@@ -292,13 +292,14 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+
+  await renderer.init();
 
   //
 
-  renderer.computeAsync(computeInit);
+  renderer.compute(computeInit);
 
   //
 
@@ -313,7 +314,7 @@ function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   // use lerp to smooth the movement
   collisionBoxPosUI = new Vector3().copy(collisionBox.position);
@@ -337,8 +338,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   const delta = clock.getDelta();
 
   if (monkey) {
@@ -356,6 +355,7 @@ function animate() {
   // position
 
   scene.overrideMaterial = collisionPosMaterial;
+  scene.name = "Collision Scene";
   renderer.setRenderTarget(collisionPosRT);
   renderer.render(scene, collisionCamera);
 
@@ -366,6 +366,7 @@ function animate() {
   // result
 
   scene.overrideMaterial = null;
+  scene.name = "Scene";
   renderer.setRenderTarget(null);
   renderer.render(scene, camera);
 }

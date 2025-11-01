@@ -2,7 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { EXRLoader } from "three/addons/loaders/EXRLoader.js";
@@ -21,6 +22,8 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // tone mapping
@@ -41,26 +44,22 @@ function init() {
 
   // controls
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render);
   controls.enableZoom = false;
   controls.enablePan = false;
 
-  // manager
-  const manager = new LoadingManager(render);
-
   // matcap
-  const loaderEXR = new EXRLoader(manager);
+  const loaderEXR = new EXRLoader();
   const matcap = loaderEXR.load("textures/matcaps/040full.exr");
 
   // normalmap
-  const loader = new TextureLoader(manager);
+  const loader = new TextureLoader();
 
   const normalmap = loader.load(
     "models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg"
   );
 
   // model
-  new GLTFLoader(manager).load(
+  new GLTFLoader().load(
     "models/gltf/LeePerrySmith/LeePerrySmith.glb",
     function (gltf) {
       mesh = gltf.scene.children[0];
@@ -77,22 +76,21 @@ function init() {
   );
 
   // gui
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui
     .addColor(API, "color")
     .listen()
     .onChange(function () {
       mesh.material.color.set(API.color);
-      render();
     });
 
-  gui.add(API, "exposure", 0, 2).onChange(function () {
-    renderer.toneMappingExposure = API.exposure;
-    render();
-  });
-
-  gui.domElement.style.webkitUserSelect = "none";
+  gui
+    .add(API, "exposure", 0, 2)
+    .listen()
+    .onChange(function () {
+      renderer.toneMappingExposure = API.exposure;
+    });
 
   // drag 'n drop
   initDragAndDrop();
@@ -105,12 +103,10 @@ function onWindowResize() {
 
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
-
-  render();
 }
 
-function render() {
-  renderer.renderAsync(scene, camera);
+function animate() {
+  renderer.render(scene, camera);
 }
 
 //
@@ -127,8 +123,6 @@ function updateMatcap(texture) {
   texture.needsUpdate = true;
 
   mesh.material.needsUpdate = true; // because the color space can change
-
-  render();
 }
 
 function handleJPG(event) {

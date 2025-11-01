@@ -16,7 +16,7 @@ import {
 } from "three/tsl";
 import { hashBlur } from "three/addons/tsl/display/hashBlur.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -130,6 +130,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 0.9;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -147,13 +148,12 @@ function init() {
     pixel: pixelMaterial,
   };
 
-  const gui = new GUI();
   const options = { material: "blurred" };
-
   box.material = materials[options.material];
 
-  gui.add(box.scale, "x", 0.1, 2, 0.01);
-  gui.add(box.scale, "z", 0.1, 2, 0.01);
+  const gui = renderer.inspector.createParameters("Scene settings");
+  gui.add(box.scale, "x", 0.1, 2, 0.01).name("box scale x");
+  gui.add(box.scale, "y", 0.1, 2, 0.01).name("box scale y");
   gui.add(options, "material", Object.keys(materials)).onChange((name) => {
     box.material = materials[name];
   });

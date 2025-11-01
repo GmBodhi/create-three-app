@@ -20,12 +20,9 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, controls;
-let stats;
 let gltf;
 
 init();
@@ -163,21 +160,6 @@ async function init() {
   glass.visible = false;
   scene.add(glass);
 
-  // gui
-
-  const gui = new GUI();
-  gui.add(causticOcclusion, "value", 0, 20).name("caustic occlusion");
-  gui.addColor(duck.material, "color").name("material color");
-  gui.add({ model: "duck" }, "model", ["duck", "glass"]).onChange((model) => {
-    duck.visible = glass.visible = false;
-
-    if (model === "duck") {
-      duck.visible = true;
-    } else if (model === "glass") {
-      glass.visible = true;
-    }
-  });
-
   // ground
 
   const map = textureLoader.load("textures/hardwood2_diffuse.jpg");
@@ -195,16 +177,27 @@ async function init() {
   // renderer
 
   renderer = new WebGPURenderer({ antialias: true });
-  renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
-  // stats
+  // gui
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+  const gui = renderer.inspector.createParameters("Settings");
+  gui.add(causticOcclusion, "value", 0, 20).name("caustic occlusion");
+  gui.addColor(duck.material, "color").name("material color");
+  gui.add({ model: "duck" }, "model", ["duck", "glass"]).onChange((model) => {
+    duck.visible = glass.visible = false;
+
+    if (model === "duck") {
+      duck.visible = true;
+    } else if (model === "glass") {
+      glass.visible = true;
+    }
+  });
 
   // controls
 
@@ -223,8 +216,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   for (const mesh of gltf.children) {
     mesh.rotation.y -= 0.01;
   }

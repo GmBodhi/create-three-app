@@ -92,6 +92,7 @@ async function init(forceWebGL = false) {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
+  renderer.setAnimationLoop(animate);
 
   document.body.appendChild(renderer.domElement);
   renderer.domElement.style.position = "absolute";
@@ -110,11 +111,9 @@ async function init(forceWebGL = false) {
 
   //
 
-  const animate = async function () {
-    await renderer.renderAsync(scene, camera);
-  };
-
-  renderer.setAnimationLoop(animate);
+  function animate() {
+    renderer.render(scene, camera);
+  }
 
   window.addEventListener("resize", onWindowResize);
 

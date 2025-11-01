@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 import { pass, renderOutput } from "three/tsl";
 import { fxaa } from "three/addons/tsl/display/FXAANode.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const params = {
   enabled: true,
@@ -72,6 +72,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // post processing
@@ -85,7 +86,7 @@ async function init() {
 
   // scene pass
 
-  const scenePass = pass(scene, camera);
+  const scenePass = pass(scene, camera).toInspector("Color");
   const outputPass = renderOutput(scenePass);
 
   // FXAA must be computed in sRGB color space (so after tone mapping and color space conversion)
@@ -99,8 +100,7 @@ async function init() {
 
   //
 
-  const gui = new GUI();
-  gui.title("FXAA settings");
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(params, "enabled").onChange((value) => {
     if (value === true) {
       postProcessing.outputNode = fxaaPass;

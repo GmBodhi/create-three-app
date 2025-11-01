@@ -15,10 +15,9 @@ import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 let camera, scene, renderer;
 
-init();
-render();
+init().then(render);
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -81,8 +80,10 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   // compute texture
-  renderer.computeAsync(computeNode);
+  renderer.compute(computeNode);
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -103,5 +104,5 @@ function onWindowResize() {
 }
 
 function render() {
-  renderer.renderAsync(scene, camera);
+  renderer.render(scene, camera);
 }

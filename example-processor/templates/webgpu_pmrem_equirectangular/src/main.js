@@ -1,20 +1,11 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import {
-  normalWorldGeometry,
-  uniform,
-  normalView,
-  positionViewDirection,
-  cameraViewMatrix,
-  pmremTexture,
-} from "three/tsl";
+import { normalWorldGeometry, uniform, pmremTexture } from "three/tsl";
 
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer;
 
@@ -30,7 +21,7 @@ async function init() {
     0.25,
     20
   );
-  camera.position.set(-1.8, 0.6, 2.7);
+  camera.position.set(0, 0, 8);
 
   scene = new Scene();
 
@@ -39,6 +30,7 @@ async function init() {
   renderer = new WebGPURenderer({ antialias: true, forceWebGL });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
 
   await renderer.init();
@@ -46,7 +38,6 @@ async function init() {
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render); // use if there is no animation loop
   controls.minDistance = 2;
   controls.maxDistance = 10;
   controls.update();
@@ -56,36 +47,28 @@ async function init() {
     .load("royal_esplanade_1k.hdr", function (map) {
       map.mapping = EquirectangularReflectionMapping;
 
-      const reflectVec = positionViewDirection
-        .negate()
-        .reflect(normalView)
-        .transformDirection(cameraViewMatrix);
-
-      const pmremRoughness = uniform(0.5);
-      const pmremNode = pmremTexture(map, reflectVec, pmremRoughness);
-
       scene.backgroundNode = pmremTexture(
         map,
         normalWorldGeometry,
-        pmremRoughness
+        uniform(0.5)
       );
 
-      scene.add(
-        new Mesh(
-          new SphereGeometry(0.5, 64, 64),
-          new MeshBasicNodeMaterial({ colorNode: pmremNode })
-        )
-      );
+      const geometry = new SphereGeometry(0.4, 64, 64);
 
-      // gui
+      for (let i = 0; i < 6; i++) {
+        for (let j = 0; j < 5; j++) {
+          const material = new MeshPhysicalNodeMaterial({
+            roughness: i / 5,
+            metalness: j / 4,
+            envMap: map,
+          });
 
-      const gui = new GUI();
-      gui
-        .add(pmremRoughness, "value", 0, 1, 0.001)
-        .name("roughness")
-        .onChange(() => render());
-
-      render();
+          const mesh = new Mesh(geometry, material);
+          mesh.position.x = i - 2.5;
+          mesh.position.y = j - 2;
+          scene.add(mesh);
+        }
+      }
     });
 
   window.addEventListener("resize", onWindowResize);
@@ -96,8 +79,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
 //

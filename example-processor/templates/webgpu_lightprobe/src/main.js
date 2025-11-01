@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -32,6 +32,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // tone mapping
@@ -109,7 +110,7 @@ function init() {
   });
 
   // gui
-  gui = new GUI({ title: "Intensity" });
+  gui = renderer.inspector.createParameters("Intensity");
 
   gui
     .add(API, "lightProbeIntensity", 0, 1, 0.02)

@@ -20,7 +20,8 @@ import {
   time,
 } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -79,6 +80,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 1;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -107,7 +109,7 @@ async function init() {
 
   setupCloth();
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(stiffnessUniform, "value", 0.1, 0.5, 0.01).name("stiffness");
   gui.add(params, "wireframe");
   gui.add(params, "sphere");
@@ -294,7 +296,9 @@ function setupComputeShaders() {
       .mul(0.5)
       .div(dist);
     springForceBuffer.element(instanceIndex).assign(force);
-  })().compute(springCount);
+  })()
+    .compute(springCount)
+    .setName("Spring Forces");
 
   // 2. computeVertexForces:
   // This shader accumulates the force for each vertex.
@@ -364,7 +368,9 @@ function setupComputeShaders() {
 
     vertexForceBuffer.element(instanceIndex).assign(force);
     vertexPositionBuffer.element(instanceIndex).addAssign(force);
-  })().compute(vertexCount);
+  })()
+    .compute(vertexCount)
+    .setName("Vertex Forces");
 }
 
 function setupWireframe() {
@@ -569,9 +575,9 @@ async function render() {
     timestamp += timePerStep;
     timeSinceLastStep -= timePerStep;
     updateSphere();
-    await renderer.computeAsync(computeSpringForces);
-    await renderer.computeAsync(computeVertexForces);
+    renderer.compute(computeSpringForces);
+    renderer.compute(computeVertexForces);
   }
 
-  await renderer.renderAsync(scene, camera);
+  renderer.render(scene, camera);
 }

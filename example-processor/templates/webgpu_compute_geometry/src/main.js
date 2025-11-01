@@ -18,13 +18,10 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let raycaster, pointer;
-let stats;
 
 let mesh;
 
@@ -102,7 +99,9 @@ const jelly = Fn(({ renderer, geometry, object }) => {
     currentSpeed.mulAssign(damping);
 
     currentPosition.addAssign(currentSpeed);
-  })().compute(count);
+  })()
+    .compute(count)
+    .setName("Update Jelly");
 
   // initialize the storage buffer with the base position
 
@@ -163,20 +162,18 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 0.7;
   controls.maxDistance = 2;
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(elasticity, "value", 0, 0.5).name("elasticity");
   gui.add(damping, "value", 0.9, 0.98).name("damping");
   gui.add(brushSize, "value", 0.1, 0.5).name("brush size");
   gui.add(brushStrength, "value", 0.1, 0.3).name("brush strength");
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   window.addEventListener("resize", onWindowResize);
   window.addEventListener("pointermove", onPointerMove);
@@ -210,7 +207,5 @@ function onWindowResize() {
 }
 
 async function animate() {
-  stats.update();
-
   renderer.render(scene, camera);
 }

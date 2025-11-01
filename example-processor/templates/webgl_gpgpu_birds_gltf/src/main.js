@@ -7,6 +7,7 @@ import "./style.css"; // For webpack support
 
 import {
   BufferGeometry,
+  MathUtils,
   DataTexture,
   RGBAFormat,
   FloatType,
@@ -45,11 +46,6 @@ function nextPowerOf2(n) {
   return Math.pow(2, Math.ceil(Math.log(n) / Math.log(2)));
 }
 
-Math.lerp = function (value1, value2, amount) {
-  amount = Math.max(Math.min(amount, 1), 0);
-  return value1 + (value2 - value1) * amount;
-};
-
 const gltfs = ["models/gltf/Parrot.glb", "models/gltf/Flamingo.glb"];
 const colors = [0xccffff, 0xffdeff];
 const sizes = [0.2, 0.1];
@@ -83,19 +79,19 @@ new GLTFLoader().load(gltfs[selectModel], function (gltf) {
         d1 = morphAttributes[nextMorph].array[i * 3];
 
         if (d0 !== undefined && d1 !== undefined)
-          tData[offset + i * 4] = Math.lerp(d0, d1, lerpAmount);
+          tData[offset + i * 4] = MathUtils.lerp(d0, d1, lerpAmount);
 
         d0 = morphAttributes[curMorph].array[i * 3 + 1];
         d1 = morphAttributes[nextMorph].array[i * 3 + 1];
 
         if (d0 !== undefined && d1 !== undefined)
-          tData[offset + i * 4 + 1] = Math.lerp(d0, d1, lerpAmount);
+          tData[offset + i * 4 + 1] = MathUtils.lerp(d0, d1, lerpAmount);
 
         d0 = morphAttributes[curMorph].array[i * 3 + 2];
         d1 = morphAttributes[nextMorph].array[i * 3 + 2];
 
         if (d0 !== undefined && d1 !== undefined)
-          tData[offset + i * 4 + 2] = Math.lerp(d0, d1, lerpAmount);
+          tData[offset + i * 4 + 2] = MathUtils.lerp(d0, d1, lerpAmount);
 
         tData[offset + i * 4 + 3] = 1;
       }

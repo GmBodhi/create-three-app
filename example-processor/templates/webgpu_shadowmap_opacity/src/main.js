@@ -3,6 +3,8 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { Fn, mix } from "three/tsl";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -29,6 +31,7 @@ async function init() {
   renderer.toneMapping = AgXToneMapping;
   renderer.toneMappingExposure = 1.5;
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   scene = new Scene();

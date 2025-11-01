@@ -22,7 +22,10 @@ import {
   max,
   positionLocal,
   transformNormalToView,
+  globalId,
 } from "three/tsl";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -30,8 +33,6 @@ import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 // Dimensions of simulation grid.
@@ -44,7 +45,7 @@ const limit = BOUNDS_HALF - 0.2;
 
 const waterMaxHeight = 0.1;
 
-let container, stats;
+let container;
 let camera, scene, renderer, controls;
 
 let mouseDown = false;
@@ -216,9 +217,10 @@ async function init() {
 
     const newHeight = neighborHeight.mul(viscosity);
 
-    // Get 2-D compute coordinate from one-dimensional instanceIndex.
-    const x = float(instanceIndex.mod(WIDTH)).mul(1 / WIDTH);
-    const y = float(instanceIndex.div(WIDTH)).mul(1 / WIDTH);
+    // Get x and y position of the coordinate in the water plane
+
+    const x = float(globalId.x).mul(1 / WIDTH);
+    const y = float(globalId.y).mul(1 / WIDTH);
 
     // Mouse influence
     const centerVec = vec2(0.5);
@@ -239,7 +241,9 @@ async function init() {
 
     prevHeightStorage.element(instanceIndex).assign(height);
     heightStorage.element(instanceIndex).assign(newHeight);
-  })().compute(WIDTH * WIDTH);
+  })()
+    .compute(WIDTH * WIDTH, [16, 16])
+    .setName("Update Height");
 
   // Water Geometry corresponds with buffered compute grid.
   const waterGeometry = new PlaneGeometry(BOUNDS, BOUNDS, WIDTH - 1, WIDTH - 1);
@@ -338,7 +342,7 @@ async function init() {
     const linearDamping = float(0.92);
     const bounceDamping = float(-0.4);
 
-    // Get 2-D compute coordinate from one-dimensional instanceIndex. The calculation will
+    // Get 2-D compute coordinate from one-dimensional instanceIndex.
     const instancePosition = duckInstanceDataStorage
       .element(instanceIndex)
       .get("position")
@@ -412,7 +416,9 @@ async function init() {
       .element(instanceIndex)
       .get("velocity")
       .assign(velocity);
-  })().compute(NUM_DUCKS);
+  })()
+    .compute(NUM_DUCKS)
+    .setName("Update Ducks");
 
   // Models / Textures
 
@@ -457,17 +463,17 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
-  renderer.setAnimationLoop(animate);
+  renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
+
+  renderer.inspector = new Inspector();
+  document.body.appendChild(renderer.inspector.domElement);
 
   controls = new OrbitControls(camera, container);
 
   container.style.touchAction = "none";
 
-  // Stats
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
+  //
 
   container.style.touchAction = "none";
   container.addEventListener("pointermove", onPointerMove);
@@ -478,7 +484,7 @@ async function init() {
 
   // GUI
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(effectController.mouseSize, "value", 0.1, 0.3).name("Mouse Size");
   gui.add(effectController.mouseDeep, "value", 0.1, 1).name("Mouse Deep");
   gui
@@ -531,11 +537,6 @@ function onPointerMove(event) {
   setMouseCoords(event.clientX, event.clientY);
 }
 
-function animate() {
-  render();
-  stats.update();
-}
-
 function raycast() {
   if (mouseDown && (firstClick || !controls.enabled)) {
     raycaster.setFromCamera(mouseCoords, camera);
@@ -581,10 +582,10 @@ function render() {
   frame++;
 
   if (frame >= 7 - effectController.speed) {
-    renderer.computeAsync(computeHeight);
+    renderer.compute(computeHeight, [8, 8, 1]);
 
     if (effectController.ducksEnabled) {
-      renderer.computeAsync(computeDucks);
+      renderer.compute(computeDucks);
     }
 
     frame = 0;

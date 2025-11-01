@@ -32,9 +32,7 @@ import {
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
-import Stats from "three/addons/libs/stats.module.js";
-
-let stats;
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 
@@ -386,12 +384,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
-
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
 
   //
 
@@ -475,6 +469,4 @@ function animate() {
   }
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

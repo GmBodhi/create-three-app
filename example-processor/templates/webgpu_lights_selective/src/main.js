@@ -10,14 +10,12 @@ import {
   normalMap,
 } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
+let camera, scene, renderer, light1, light2, light3, light4, controls;
 
 init();
 
@@ -35,7 +33,7 @@ function init() {
 
   const sphereGeometry = new SphereGeometry(0.1, 16, 8);
 
-  //textures
+  // textures
 
   const textureLoader = new TextureLoader();
 
@@ -51,7 +49,7 @@ function init() {
   alphaTexture.wrapS = RepeatWrapping;
   alphaTexture.wrapT = RepeatWrapping;
 
-  //lights
+  // lights
 
   const addLight = (hexColor, power = 1700, distance = 100) => {
     const material = new MeshStandardNodeMaterial();
@@ -74,12 +72,12 @@ function init() {
   light3 = addLight(0x80ff80);
   light4 = addLight(0xffaa00);
 
-  //light nodes ( selective lights )
+  // light nodes ( selective lights )
 
   const redLightsNode = lights([light1]);
   const blueLightsNode = lights([light2]);
 
-  //models
+  // models
 
   const geometryTeapot = new TeapotGeometry(0.8, 18);
 
@@ -117,30 +115,28 @@ function init() {
       Math.PI * -0.5;
   leftObject.position.y = centerObject.position.y = rightObject.position.y = -1;
 
-  //renderer
+  // renderer
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
-  //controls
+  // controls
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 3;
   controls.maxDistance = 25;
 
-  //stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+  // events
 
   window.addEventListener("resize", onWindowResize);
 
-  //gui
+  // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Material");
 
   gui.add(centerObject.material, "roughness", 0, 1, 0.01);
   gui.add(centerObject.material, "metalness", 0, 1, 0.01);
@@ -181,6 +177,4 @@ function animate() {
 				if ( time > 3.5 && light4.parent === null ) scene.add( light4 );
 				*/
   renderer.render(scene, camera);
-
-  stats.update();
 }

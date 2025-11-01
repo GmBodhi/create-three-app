@@ -9,14 +9,18 @@ import {
   Layers,
   MeshBasicMaterial,
   WebGLRenderer,
-  ReinhardToneMapping,
+  NeutralToneMapping,
   Scene,
+  PMREMGenerator,
   PerspectiveCamera,
   Vector2,
+  WebGLRenderTarget,
+  HalfFloatType,
   ShaderMaterial,
   Raycaster,
   IcosahedronGeometry,
   Color,
+  MeshStandardMaterial,
   Mesh,
 } from "three";
 
@@ -28,6 +32,7 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
+import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 const BLOOM_SCENE = 1;
 
@@ -44,13 +49,18 @@ const params = {
 const darkMaterial = new MeshBasicMaterial({ color: "black" });
 const materials = {};
 
-const renderer = new WebGLRenderer({ antialias: true });
+const renderer = new WebGLRenderer({ antialias: false });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.toneMapping = ReinhardToneMapping;
+renderer.toneMapping = NeutralToneMapping;
 document.body.appendChild(renderer.domElement);
 
 const scene = new Scene();
+const pmremGenerator = new PMREMGenerator(renderer);
+scene.environment = pmremGenerator.fromScene(
+  new RoomEnvironment(),
+  0.04
+).texture;
 
 const camera = new PerspectiveCamera(
   40,
@@ -79,7 +89,12 @@ bloomPass.threshold = params.threshold;
 bloomPass.strength = params.strength;
 bloomPass.radius = params.radius;
 
-const bloomComposer = new EffectComposer(renderer);
+const bloomRenderTarget = new WebGLRenderTarget(
+  window.innerWidth,
+  window.innerHeight,
+  { type: HalfFloatType }
+);
+const bloomComposer = new EffectComposer(renderer, bloomRenderTarget);
 bloomComposer.renderToScreen = false;
 bloomComposer.addPass(renderScene);
 bloomComposer.addPass(bloomPass);
@@ -89,6 +104,7 @@ const mixPass = new ShaderPass(
     uniforms: {
       baseTexture: { value: null },
       bloomTexture: { value: bloomComposer.renderTarget2.texture },
+      bloomStrength: { value: params.strength },
     },
     vertexShader: vertexshader_,
     fragmentShader: fragmentshader_,
@@ -100,7 +116,12 @@ mixPass.needsSwap = true;
 
 const outputPass = new OutputPass();
 
-const finalComposer = new EffectComposer(renderer);
+const finalRenderTarget = new WebGLRenderTarget(
+  window.innerWidth,
+  window.innerHeight,
+  { type: HalfFloatType, samples: 4 }
+);
+const finalComposer = new EffectComposer(renderer, finalRenderTarget);
 finalComposer.addPass(renderScene);
 finalComposer.addPass(mixPass);
 finalComposer.addPass(outputPass);
@@ -122,6 +143,8 @@ bloomFolder.add(params, "threshold", 0.0, 1.0).onChange(function (value) {
 
 bloomFolder.add(params, "strength", 0.0, 3).onChange(function (value) {
   bloomPass.strength = Number(value);
+  mixPass.material.uniforms.bloomStrength.value = bloomPass.strength;
+
   render();
 });
 
@@ -180,7 +203,11 @@ function setupScene() {
     const color = new Color();
     color.setHSL(Math.random(), 0.7, Math.random() * 0.2 + 0.05);
 
-    const material = new MeshBasicMaterial({ color: color });
+    const material = new MeshStandardMaterial({
+      color: color,
+      roughness: 1,
+      metalness: 1,
+    });
     const sphere = new Mesh(geometry, material);
     sphere.position.x = Math.random() * 10 - 5;
     sphere.position.y = Math.random() * 10 - 5;

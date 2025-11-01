@@ -22,11 +22,9 @@ import {
   normalWorldGeometry,
 } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 
@@ -53,9 +51,6 @@ const [sourceModel, targetModel] = await Promise.all([
 //
 
 const clock = new Clock();
-
-const stats = new Stats();
-document.body.appendChild(stats.dom);
 
 export const lightSpeed = /*#__PURE__*/ Fn(([suv_immutable]) => {
   // forked from https://www.shadertoy.com/view/7ly3D1
@@ -182,10 +177,11 @@ scene.add(floor);
 
 // renderer
 const renderer = new WebGPURenderer({ antialias: true });
-renderer.toneMapping = NeutralToneMapping;
-renderer.setAnimationLoop(animate);
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setAnimationLoop(animate);
+renderer.toneMapping = NeutralToneMapping;
+renderer.inspector = new Inspector();
 document.body.appendChild(renderer.domElement);
 
 const controls = new OrbitControls(camera, renderer.domElement);
@@ -194,8 +190,8 @@ controls.maxDistance = 12;
 controls.target.set(0, 1, 0);
 controls.maxPolarAngle = Math.PI / 2;
 
-const gui = new GUI();
-gui.add(helpers, "visible").name("helpers");
+const gui = renderer.inspector.createParameters("Scene settings");
+gui.add(helpers, "visible").name("show helpers");
 
 //
 
@@ -324,8 +320,6 @@ function animate() {
   mixer.update(delta);
 
   controls.update();
-
-  stats.update();
 
   renderer.render(scene, camera);
 }

@@ -25,17 +25,15 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
-import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
-import { FXAAShader } from "three/addons/shaders/FXAAShader.js";
+import { TAARenderPass } from "three/addons/postprocessing/TAARenderPass.js";
 
 let composer, camera, scene, renderer;
-let gui, dirLight, pointLight, controls, bloomPass, fxaaPass;
+let gui, dirLight, pointLight, controls, bloomPass, taaPass;
 let ready = false;
 
-const meshs = {};
+const meshes = {};
 const materials = {};
 const torad = Math.PI / 180;
 
@@ -104,13 +102,13 @@ function init() {
               }
             }
 
-            meshs[child.name] = child;
+            meshes[child.name] = child;
           }
         });
 
         scene.add(gltf.scene);
 
-        meshs.glass.material = new MeshPhysicalMaterial({
+        meshes.glass.material = new MeshPhysicalMaterial({
           color: 0x020205,
           transparent: true,
           opacity: setting.opacity,
@@ -192,9 +190,6 @@ function postProcess(b) {
   if (b) {
     if (composer) return;
 
-    const renderPass = new RenderPass(scene, camera);
-    const outputPass = new OutputPass();
-
     bloomPass = new UnrealBloomPass(
       new Vector2(window.innerWidth, window.innerHeight),
       1.5,
@@ -205,28 +200,23 @@ function postProcess(b) {
     bloomPass.strength = setting.strength;
     bloomPass.radius = setting.radius;
 
-    fxaaPass = new ShaderPass(FXAAShader);
-    const pixelRatio = renderer.getPixelRatio();
-    fxaaPass.material.uniforms["resolution"].value.set(
-      1 / (window.innerWidth * pixelRatio),
-      1 / (window.innerHeight * pixelRatio)
-    );
+    taaPass = new TAARenderPass(scene, camera);
+    taaPass.sampleLevel = 2;
+    taaPass.unbiased = false;
 
     composer = new EffectComposer(renderer);
-    composer.setPixelRatio(pixelRatio);
+    composer.setPixelRatio(window.devicePixelRatio);
+    composer.setSize(window.innerWidth, window.innerHeight);
 
-    composer.addPass(renderPass);
+    composer.addPass(taaPass);
     composer.addPass(bloomPass);
-    composer.addPass(fxaaPass);
-    composer.addPass(outputPass);
-    composer.addPass(fxaaPass);
-    composer.addPass(fxaaPass);
+    composer.addPass(new OutputPass());
   } else {
     if (!composer) return;
     composer.dispose();
     composer = null;
     bloomPass = null;
-    fxaaPass = null;
+    taaPass = null;
   }
 }
 
@@ -247,7 +237,7 @@ function createGUI() {
 function upMaterial() {
   materials.Gold.metalness = materials.Silver.metalness = setting.metalness;
   materials.Gold.roughness = materials.Silver.roughness = setting.roughness;
-  meshs.glass.material.opacity = setting.opacity;
+  meshes.glass.material.opacity = setting.opacity;
 }
 
 function upBloom() {
@@ -268,12 +258,12 @@ function getTime() {
   if (hour >= 12) hour -= 12;
   if (day > 30) day = 30;
 
-  meshs.hour.rotation.y = -hour * 30 * torad;
-  meshs.minute.rotation.y = -minute * 6 * torad;
-  meshs.second.rotation.y = -second * 6 * torad;
-  meshs.mini_03.rotation.y = -day * 12 * torad;
-  meshs.mini_02.rotation.y = -month * 30 * torad;
-  meshs.mini_01.rotation.y = -milli * 0.36 * torad;
+  meshes.hour.rotation.y = -hour * 30 * torad;
+  meshes.minute.rotation.y = -minute * 6 * torad;
+  meshes.second.rotation.y = -second * 6 * torad;
+  meshes.mini_03.rotation.y = -day * 12 * torad;
+  meshes.mini_02.rotation.y = -month * 30 * torad;
+  meshes.mini_01.rotation.y = -milli * 0.36 * torad;
 }
 
 function onWindowResize() {
@@ -285,13 +275,6 @@ function onWindowResize() {
   renderer.setSize(width, height);
   if (composer) {
     composer.setSize(width, height);
-    if (fxaaPass) {
-      const pr = renderer.getPixelRatio();
-      fxaaPass.material.uniforms["resolution"].value.set(
-        1 / (width * pr),
-        1 / (height * pr)
-      );
-    }
   }
 }
 

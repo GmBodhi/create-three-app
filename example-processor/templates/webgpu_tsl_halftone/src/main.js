@@ -14,7 +14,8 @@ import {
   screenSize,
 } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
@@ -35,7 +36,20 @@ function init() {
 
   clock = new Clock();
 
-  const gui = new GUI();
+  // renderer
+
+  renderer = new WebGPURenderer({ antialias: true });
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  renderer.setClearColor("#000000");
+  document.body.appendChild(renderer.domElement);
+
+  // inspector/gui
+
+  renderer.inspector = new Inspector();
+
+  const gui = renderer.inspector.createParameters("Parameters");
 
   // lights
 
@@ -49,10 +63,10 @@ function init() {
   const lightsFolder = gui.addFolder("💡 lights");
   lightsFolder
     .add(ambientLight, "intensity", 0, 10, 0.001)
-    .name("ambientIntensity");
+    .name("ambient intensity");
   lightsFolder
     .add(directionalLight, "intensity", 0, 20, 0.001)
-    .name("directionalIntensity");
+    .name("directional intensity");
 
   // halftone settings
 
@@ -106,20 +120,15 @@ function init() {
 
     const folder = gui.addFolder(`⚪️ halftone ${index}`);
 
-    folder
-      .addColor(
-        { color: uniforms.color.value.getHexString(SRGBColorSpace) },
-        "color"
-      )
-      .onChange((value) => uniforms.color.value.set(value));
+    folder.addColor({ color: uniforms.color.value }, "color");
     folder.add(uniforms.count, "value", 1, 200, 1).name("count");
     folder.add(uniforms.direction.value, "x", -1, 1, 0.01).listen();
     folder.add(uniforms.direction.value, "y", -1, 1, 0.01).listen();
     folder.add(uniforms.direction.value, "z", -1, 1, 0.01).listen();
     folder.add(uniforms.start, "value", -1, 1, 0.01).name("start");
     folder.add(uniforms.end, "value", -1, 1, 0.01).name("end");
-    folder.add(uniforms.mixLow, "value", 0, 1, 0.01).name("mixLow");
-    folder.add(uniforms.mixHigh, "value", 0, 1, 0.01).name("mixHigh");
+    folder.add(uniforms.mixLow, "value", 0, 1, 0.01).name("mix low");
+    folder.add(uniforms.mixHigh, "value", 0, 1, 0.01).name("mix high");
     folder.add(uniforms.radius, "value", 0, 1, 0.01).name("radius");
   }
 
@@ -178,12 +187,7 @@ function init() {
   defaultMaterial.outputNode = halftones(output);
 
   const folder = gui.addFolder("🎨 default material");
-  folder
-    .addColor(
-      { color: defaultMaterial.color.getHexString(SRGBColorSpace) },
-      "color"
-    )
-    .onChange((value) => defaultMaterial.color.set(value));
+  folder.addColor({ color: defaultMaterial.color }, "color");
 
   // objects
 
@@ -210,14 +214,7 @@ function init() {
     scene.add(model);
   });
 
-  // renderer
-
-  renderer = new WebGPURenderer({ antialias: true });
-  renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
-  renderer.setClearColor("#000000");
-  document.body.appendChild(renderer.domElement);
+  // controls
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;

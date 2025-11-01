@@ -19,8 +19,6 @@ import {
   positionLocal,
   modelWorldMatrix,
   sqrt,
-  attribute,
-  property,
   float,
   Fn,
   If,
@@ -30,15 +28,16 @@ import {
   normalize,
   instanceIndex,
   length,
+  vertexIndex,
 } from "three/tsl";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import Stats from "stats-gl";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
-let container, stats;
+let container;
 let camera, scene, renderer;
 
 let last = performance.now();
@@ -56,17 +55,11 @@ class BirdGeometry extends BufferGeometry {
   constructor() {
     super();
 
-    const trianglesPerBird = 3;
-    const triangles = BIRDS * trianglesPerBird;
-    const points = triangles * 3;
+    const points = 3 * 3;
 
     const vertices = new BufferAttribute(new Float32Array(points * 3), 3);
-    const references = new BufferAttribute(new Uint32Array(points), 1);
-    const birdVertex = new BufferAttribute(new Uint32Array(points), 1);
 
     this.setAttribute("position", vertices);
-    this.setAttribute("reference", references);
-    this.setAttribute("birdVertex", birdVertex);
 
     let v = 0;
 
@@ -78,24 +71,14 @@ class BirdGeometry extends BufferGeometry {
 
     const wingsSpan = 20;
 
-    for (let f = 0; f < BIRDS; f++) {
-      // Body
-      verts_push(0, 0, -20, 0, -8, 10, 0, 0, 30);
+    // Body
+    verts_push(0, 0, -20, 0, -8, 10, 0, 0, 30);
 
-      // Wings
-      verts_push(0, 0, -15, -wingsSpan, 0, 5, 0, 0, 15);
+    // Left Wing
+    verts_push(0, 0, -15, -wingsSpan, 0, 5, 0, 0, 15);
 
-      verts_push(0, 0, 15, wingsSpan, 0, 5, 0, 0, -15);
-    }
-
-    for (let v = 0; v < triangles * 3; v++) {
-      const triangleIndex = ~~(v / 3);
-      const birdIndex = ~~(triangleIndex / trianglesPerBird);
-
-      references.array[v] = birdIndex;
-
-      birdVertex.array[v] = v % 9;
-    }
+    // Right Wing
+    verts_push(0, 0, 15, wingsSpan, 0, 5, 0, 0, -15);
 
     this.scale(0.2, 0.2, 0.2);
   }
@@ -155,8 +138,9 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
+  renderer.setAnimationLoop(render);
   renderer.toneMapping = NeutralToneMapping;
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera);
@@ -228,14 +212,13 @@ function init() {
   // Animate bird mesh within vertex shader, then apply position offset to vertices.
 
   const birdVertexTSL = Fn(() => {
-    const reference = attribute("reference");
-    const birdVertex = attribute("birdVertex");
-
     const position = positionLocal.toVar();
-    const newPhase = phaseStorage.element(reference).toVar();
-    const newVelocity = normalize(velocityStorage.element(reference)).toVar();
+    const newPhase = phaseStorage.element(instanceIndex).toVar();
+    const newVelocity = normalize(
+      velocityStorage.element(instanceIndex)
+    ).toVar();
 
-    If(birdVertex.equal(4).or(birdVertex.equal(7)), () => {
+    If(vertexIndex.equal(4).or(vertexIndex.equal(7)), () => {
       // flap wings
       position.y = sin(newPhase).mul(5.0);
     });
@@ -259,7 +242,7 @@ function init() {
     const matz = mat3(cosrz, sinrz, 0, negate(sinrz), cosrz, 0, 0, 0, 1);
 
     const finalVert = maty.mul(matz).mul(newPosition);
-    finalVert.addAssign(positionStorage.element(reference));
+    finalVert.addAssign(positionStorage.element(instanceIndex));
 
     return cameraProjectionMatrix.mul(cameraViewMatrix).mul(finalVert);
   });
@@ -267,7 +250,7 @@ function init() {
   birdMaterial.vertexNode = birdVertexTSL();
   birdMaterial.side = DoubleSide;
 
-  const birdMesh = new Mesh(birdGeometry, birdMaterial);
+  const birdMesh = new InstancedMesh(birdGeometry, birdMaterial, BIRDS);
   birdMesh.rotation.y = Math.PI / 2;
   birdMesh.matrixAutoUpdate = false;
   birdMesh.frustumCulled = false;
@@ -280,7 +263,7 @@ function init() {
     // Define consts
     const PI = float(3.141592653589793);
     const PI_2 = PI.mul(2.0);
-    const limit = property("float", "limit").assign(SPEED_LIMIT);
+    const limit = float(SPEED_LIMIT).toVar("limit");
 
     // Destructure uniforms
     const {
@@ -407,7 +390,10 @@ function init() {
 
     // Write back the final velocity to storage
     velocityStorage.element(birdIndex).assign(velocity);
-  })().compute(BIRDS);
+  })()
+    .compute(BIRDS)
+    .setName("Birds Velocity");
+
   computePosition = Fn(() => {
     const { deltaTime } = effectController;
     positionStorage
@@ -424,26 +410,18 @@ function init() {
       .add(length(velocity.xz).mul(deltaTime).mul(3.0))
       .add(max(velocity.y, 0.0).mul(deltaTime).mul(6.0));
     phaseStorage.element(instanceIndex).assign(modValue.mod(62.83));
-  })().compute(BIRDS);
+  })()
+    .compute(BIRDS)
+    .setName("Birds Position");
 
   scene.add(birdMesh);
-
-  stats = new Stats({
-    precision: 3,
-    horizontal: false,
-    trackGPU: true,
-    trackCPT: true,
-  });
-  stats.init(renderer);
-  container.appendChild(stats.dom);
 
   container.style.touchAction = "none";
   container.addEventListener("pointermove", onPointerMove);
 
   window.addEventListener("resize", onWindowResize);
 
-  const gui = new GUI();
-
+  const gui = renderer.inspector.createParameters("Birds settings");
   gui
     .add(effectController.separation, "value", 0.0, 100.0, 1.0)
     .name("Separation");
@@ -451,7 +429,6 @@ function init() {
     .add(effectController.alignment, "value", 0.0, 100, 0.001)
     .name("Alignment ");
   gui.add(effectController.cohesion, "value", 0.0, 100, 0.025).name("Cohesion");
-  gui.close();
 }
 
 function onWindowResize() {
@@ -466,12 +443,6 @@ function onPointerMove(event) {
 
   pointer.x = (event.clientX / window.innerWidth) * 2.0 - 1.0;
   pointer.y = 1.0 - (event.clientY / window.innerHeight) * 2.0;
-}
-
-function animate() {
-  render();
-  renderer.resolveTimestampsAsync();
-  stats.update();
 }
 
 function render() {
@@ -490,7 +461,7 @@ function render() {
 
   renderer.compute(computeVelocity);
   renderer.compute(computePosition);
-  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
+
   renderer.render(scene, camera);
 
   // Move pointer away so we only affect birds when moving the mouse

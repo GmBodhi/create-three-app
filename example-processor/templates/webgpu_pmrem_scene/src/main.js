@@ -5,7 +5,7 @@ import { normalWorld, uniform, pmremTexture } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 
@@ -30,6 +30,8 @@ async function init() {
   renderer = new WebGPURenderer({ antialias: true, forceWebGL });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(render);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   await renderer.init();
@@ -116,13 +118,11 @@ async function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui
     .add(pmremRoughness, "value", 0, 1, 0.001)
     .name("roughness")
     .onChange(() => render());
-
-  render();
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -132,8 +132,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
 //

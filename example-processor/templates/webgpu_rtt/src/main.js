@@ -3,6 +3,8 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { texture, uniform, saturation, hue } from "three/tsl";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 let camera, scene, renderer;
 const mouse = new Vector2();
 
@@ -48,6 +50,8 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
+  renderer.inspector = new Inspector();
+
   renderTarget = new RenderTarget(
     window.innerWidth * dpr,
     window.innerHeight * dpr
@@ -63,12 +67,17 @@ function init() {
   const screenFXNode = uniform(mouse);
 
   const materialFX = new MeshBasicNodeMaterial();
+
+  const scenePassTexture = texture(renderTarget.texture).toInspector(
+    "Scene Pass"
+  );
   materialFX.colorNode = hue(
-    saturation(texture(renderTarget.texture).rgb, screenFXNode.x.oneMinus()),
+    saturation(scenePassTexture.rgb, screenFXNode.x.oneMinus()),
     screenFXNode.y
   );
 
   quadMesh = new QuadMesh(materialFX);
+  quadMesh.name = "Post-Processing";
 }
 
 function onWindowMouseMove(e) {

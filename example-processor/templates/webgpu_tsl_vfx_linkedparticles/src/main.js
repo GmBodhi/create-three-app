@@ -9,7 +9,7 @@ import {
   min,
   mix,
   PI,
-  PI2,
+  TWO_PI,
   sin,
   vec2,
   vec3,
@@ -34,17 +34,10 @@ import {
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import WebGPU from "three/addons/capabilities/WebGPU.js";
-
-import {
-  ExtendedSRGBColorSpace,
-  ExtendedSRGBColorSpaceImpl,
-} from "three/addons/math/ColorSpaces.js";
-
-ColorManagement.define({
-  [ExtendedSRGBColorSpace]: ExtendedSRGBColorSpaceImpl,
-});
 
 let camera, scene, renderer, postProcessing, controls, timer, light;
 
@@ -81,7 +74,7 @@ const turbFriction = uniform(0.01);
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -103,20 +96,20 @@ function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: true, outputType: HalfFloatType });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setClearColor(0x14171a);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-
-  renderer.outputColorSpace = ExtendedSRGBColorSpace;
-  // TODO: Add support for tone mapping #29573
-  // renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.inspector = new Inspector();
+  renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
+
+  await renderer.init();
 
   // TSL function
   // current color from index
-  getInstanceColor = /*#__PURE__*/ Fn(([i]) => {
+  getInstanceColor = Fn(([i]) => {
     return hue(
       color(0x0000ff),
       colorOffset.add(
@@ -139,8 +132,8 @@ function init() {
   );
 
   // init particles buffers
-  renderer.computeAsync(
-    /*#__PURE__*/ Fn(() => {
+  renderer.compute(
+    Fn(() => {
       particlePositions.element(instanceIndex).xyz.assign(vec3(10000.0));
       particlePositions.element(instanceIndex).w.assign(vec3(-1.0)); // life is stored in w component; x<0 means dead
     })().compute(nbParticles)
@@ -160,11 +153,11 @@ function init() {
     particleVelocities.toAttribute().x
   );
 
-  particleMaterial.colorNode = /*#__PURE__*/ Fn(() => {
+  particleMaterial.colorNode = Fn(() => {
     const life = particlePositions.toAttribute().w;
     const modLife = pcurve(life.oneMinus(), 8.0, 1.0);
     const pulse = pcurve(
-      sin(hash(instanceIndex).mul(PI2).add(time.mul(0.5).mul(PI2)))
+      sin(hash(instanceIndex).mul(TWO_PI).add(time.mul(0.5).mul(TWO_PI)))
         .mul(0.5)
         .add(0.5),
       0.25,
@@ -176,7 +169,7 @@ function init() {
     return getInstanceColor(instanceIndex).mul(pulse.mul(modLife));
   })();
 
-  particleMaterial.opacityNode = /*#__PURE__*/ Fn(() => {
+  particleMaterial.opacityNode = Fn(() => {
     const circle = step(uv().xy.sub(0.5).length(), 0.5);
     const life = particlePositions.toAttribute().w;
 
@@ -240,7 +233,7 @@ function init() {
   scene.add(linksMesh);
 
   // compute nodes
-  updateParticles = /*#__PURE__*/ Fn(() => {
+  updateParticles = Fn(() => {
     const position = particlePositions.element(instanceIndex).xyz;
     const life = particlePositions.element(instanceIndex).w;
     const velocity = particleVelocities.element(instanceIndex).xyz;
@@ -345,9 +338,11 @@ function init() {
         linksColors.element(secondLinkIndex.add(i)).w.assign(l2);
       });
     });
-  })().compute(nbParticles);
+  })()
+    .compute(nbParticles)
+    .setName("Update Particles");
 
-  spawnParticles = /*#__PURE__*/ Fn(() => {
+  spawnParticles = Fn(() => {
     const particleIndex = spawnIndex
       .add(instanceIndex)
       .mod(nbParticles)
@@ -360,7 +355,7 @@ function init() {
 
     // random spherical direction
     const rRange = float(0.01);
-    const rTheta = hash(particleIndex).mul(PI2);
+    const rTheta = hash(particleIndex).mul(TWO_PI);
     const rPhi = hash(particleIndex.add(1)).mul(PI);
     const rx = sin(rTheta).mul(cos(rPhi));
     const ry = sin(rTheta).mul(sin(rPhi));
@@ -377,7 +372,9 @@ function init() {
 
     // start in that direction
     velocity.assign(rDir.mul(5.0));
-  })().compute(nbToSpawn.value);
+  })()
+    .compute(nbToSpawn.value)
+    .setName("Spawn Particles");
 
   // background , an inverted icosahedron
   const backgroundGeom = new IcosahedronGeometry(100, 5).applyMatrix4(
@@ -421,7 +418,7 @@ function init() {
 
   // GUI
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui.add(controls, "autoRotate").name("Auto Rotate");
   gui

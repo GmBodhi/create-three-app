@@ -2,9 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-
-let container, stats;
+let container;
 
 let camera, scene1, scene2, renderer;
 
@@ -26,7 +24,7 @@ function init() {
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-  renderer.setAnimationLoop(animate);
+  renderer.setAnimationLoop(render);
   renderer.autoClear = false;
 
   renderer.domElement.style.position = "relative";
@@ -99,10 +97,7 @@ function init() {
   scene1.add(mesh1);
   scene2.add(mesh2);
 
-  // STATS1
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
+  //
 
   document.addEventListener("mousemove", onDocumentMouseMove);
 
@@ -122,11 +117,6 @@ function onDocumentMouseMove(event) {
 
   mouseX = event.clientX - windowHalfX;
   mouseY = event.clientY - windowHalfY;
-}
-
-function animate() {
-  render();
-  stats.update();
 }
 
 function render() {

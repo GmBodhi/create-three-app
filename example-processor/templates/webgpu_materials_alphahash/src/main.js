@@ -2,14 +2,14 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { ssaaPass } from "three/addons/tsl/display/SSAAPassNode.js";
 
-let camera, scene, renderer, controls, stats, mesh, material, postProcessing;
+let camera, scene, renderer, controls, mesh, material, postProcessing;
 
 const amount = parseInt(window.location.search.slice(1)) || 3;
 const count = Math.pow(amount, 3);
@@ -71,6 +71,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   await renderer.init();
@@ -101,7 +102,7 @@ async function init() {
 
   //
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui.add(params, "alpha", 0, 1).onChange(onMaterialUpdate);
   gui.add(params, "alphaHash").onChange(onMaterialUpdate);
@@ -110,9 +111,6 @@ async function init() {
   ssaaFolder.add(scenePass, "sampleLevel", 0, 4, 1);
 
   //
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -135,6 +133,4 @@ function onMaterialUpdate() {
 
 function animate() {
   postProcessing.render();
-
-  stats.update();
 }

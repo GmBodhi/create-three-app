@@ -2,9 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { radixSort } from "three/addons/utils/SortUtils.js";
@@ -12,7 +10,7 @@ import { radixSort } from "three/addons/utils/SortUtils.js";
 import { normalView, directionToColor, diffuseColor } from "three/tsl";
 
 let camera, scene, renderer;
-let controls, stats;
+let controls;
 let gui;
 let geometries, mesh, material;
 const ids = [];
@@ -151,7 +149,6 @@ function init(forceWebGL = false) {
   if (renderer) {
     renderer.dispose();
     controls.dispose();
-    document.body.removeChild(stats.dom);
     document.body.removeChild(renderer.domElement);
   }
 
@@ -167,7 +164,7 @@ function init(forceWebGL = false) {
   renderer = new WebGPURenderer({ antialias: true, forceWebGL });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
+  renderer.inspector = new Inspector();
   renderer.setAnimationLoop(animate);
 
   // scene
@@ -186,19 +183,14 @@ function init(forceWebGL = false) {
   controls.autoRotate = true;
   controls.autoRotateSpeed = 1.0;
 
-  // stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   // gui
 
-  gui = new GUI();
+  gui = renderer.inspector.createParameters("Settings");
   gui.add(api, "webgpu").onChange(() => {
     init(!api.webgpu);
   });
-  gui.add(api, "count", 1, MAX_GEOMETRY_COUNT).step(1).onChange(initMesh);
-  gui.add(api, "dynamic", 0, MAX_GEOMETRY_COUNT).step(1);
+  gui.add(api, "count", 1, MAX_GEOMETRY_COUNT, 1).onChange(initMesh);
+  gui.add(api, "dynamic", 0, MAX_GEOMETRY_COUNT, 1);
 
   gui.add(api, "opacity", 0, 1).onChange((v) => {
     if (v < 1) {
@@ -215,7 +207,7 @@ function init(forceWebGL = false) {
   gui.add(api, "sortObjects");
   gui.add(api, "perObjectFrustumCulled");
   gui.add(api, "useCustomSort");
-  gui.add(api, "randomizeGeometry");
+  gui.add(api, "randomizeGeometry").name("randomize geometry");
 
   // listeners
 
@@ -242,9 +234,7 @@ function init(forceWebGL = false) {
       mesh.setCustomSort(api.useCustomSort ? sortFunction : null);
     }
 
-    await renderer.renderAsync(scene, camera);
-
-    stats.update();
+    renderer.render(scene, camera);
   }
 
   function animateMeshes() {

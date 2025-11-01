@@ -2,7 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SkyMesh } from "three/addons/objects/SkyMesh.js";
 
@@ -48,7 +49,7 @@ function initSky() {
     renderer.toneMappingExposure = effectController.exposure;
   }
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   gui.add(effectController, "turbidity", 0.0, 20.0, 0.1).onChange(guiChanged);
   gui.add(effectController, "rayleigh", 0.0, 4, 0.001).onChange(guiChanged);
@@ -82,6 +83,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

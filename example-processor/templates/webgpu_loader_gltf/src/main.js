@@ -9,10 +9,9 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer;
 
-init();
-render();
+init().then(render);
 
-function init() {
+async function init() {
   const container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -35,31 +34,25 @@ function init() {
 
       scene.background = texture;
       scene.environment = texture;
-
-      render();
-
-      // model
-
-      const loader = new GLTFLoader().setPath(
-        "models/gltf/DamagedHelmet/glTF/"
-      );
-      loader.load("DamagedHelmet.gltf", function (gltf) {
-        scene.add(gltf.scene);
-
-        render();
-      });
     });
+
+  const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
+  loader.load("DamagedHelmet.gltf", function (gltf) {
+    scene.add(gltf.scene);
+  });
 
   renderer = new WebGPURenderer({
     antialias: true /*, compatibilityMode: true*/,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
+  await renderer.init();
+
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render); // use if there is no animation loop
   controls.minDistance = 2;
   controls.maxDistance = 10;
   controls.target.set(0, 0, -0.2);
@@ -73,12 +66,10 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
 //
 
 function render() {
-  renderer.renderAsync(scene, camera);
+  renderer.render(scene, camera);
 }

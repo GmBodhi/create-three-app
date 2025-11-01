@@ -24,7 +24,7 @@ function init() {
   clock = new Clock();
 
   const loader = new TextureLoader();
-  diffuseMap = loader.load("textures/carbon/Carbon.png", animate);
+  diffuseMap = loader.load("textures/carbon/Carbon.png");
   diffuseMap.colorSpace = SRGBColorSpace;
   diffuseMap.minFilter = LinearFilter;
   diffuseMap.generateMipmaps = false;
@@ -48,7 +48,7 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-
+  renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
   //
@@ -63,12 +63,10 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-async function animate() {
-  requestAnimationFrame(animate);
-
+function animate() {
   const elapsedTime = clock.getElapsedTime();
 
-  await renderer.renderAsync(scene, camera);
+  renderer.render(scene, camera);
 
   if (elapsedTime - last > 0.1) {
     last = elapsedTime;

@@ -12,6 +12,7 @@ import {
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 if (WebGPU.isAvailable() === false) {

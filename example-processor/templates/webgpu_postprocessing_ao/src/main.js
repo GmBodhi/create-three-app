@@ -1,7 +1,17 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass, mrt, output, normalView, velocity } from "three/tsl";
+import {
+  pass,
+  mrt,
+  output,
+  normalView,
+  velocity,
+  vec3,
+  vec4,
+  directionToColor,
+  colorSpaceToWorking,
+} from "three/tsl";
 import { ao } from "three/addons/tsl/display/GTAONode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 
@@ -10,25 +20,20 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing, controls, stats;
+let camera, scene, renderer, postProcessing, controls;
 
 let aoPass, traaPass, blendPassAO, scenePassColor;
 
 const params = {
+  samples: 16,
   distanceExponent: 1,
   distanceFallOff: 1,
   radius: 0.25,
   scale: 1,
   thickness: 1,
-  denoised: false,
-  enabled: true,
-  denoiseRadius: 5,
-  lumaPhi: 5,
-  depthPhi: 5,
-  normalPhi: 5,
+  aoOnly: false,
 };
 
 init();
@@ -48,10 +53,8 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.domElement);
 
   await renderer.init();
 
@@ -86,21 +89,37 @@ async function init() {
     })
   );
 
-  scenePassColor = scenePass.getTextureNode("output");
-  const scenePassNormal = scenePass.getTextureNode("normal");
-  const scenePassDepth = scenePass.getTextureNode("depth");
-  const scenePassVelocity = scenePass.getTextureNode("velocity");
+  scenePassColor = scenePass.getTextureNode("output").toInspector("Color");
+  const scenePassDepth = scenePass
+    .getTextureNode("depth")
+    .toInspector("Depth", () => {
+      return scenePass.getLinearDepthNode();
+    });
+  const scenePassNormal = scenePass
+    .getTextureNode("normal")
+    .toInspector("Normal", () => {
+      return colorSpaceToWorking(
+        directionToColor(scenePassNormal),
+        SRGBColorSpace
+      );
+    });
+  const scenePassVelocity = scenePass
+    .getTextureNode("velocity")
+    .toInspector("Velocity");
 
   // ao
 
   aoPass = ao(scenePassDepth, scenePassNormal, camera);
   aoPass.resolutionScale = 0.5; // running AO in half resolution is often sufficient
-  blendPassAO = aoPass.getTextureNode().mul(scenePassColor);
+  aoPass.useTemporalFiltering = true;
+  blendPassAO = vec4(
+    scenePassColor.rgb.mul(aoPass.r.toInspector("AO")),
+    scenePassColor.a
+  ); // the AO is stored only in the red channel
 
   // traa
 
   traaPass = traa(blendPassAO, scenePassDepth, scenePassVelocity, camera);
-
   postProcessing.outputNode = traaPass;
 
   //
@@ -133,20 +152,27 @@ async function init() {
 
   //
 
-  const gui = new GUI();
-  gui.title("AO settings");
-  gui.add(params, "distanceExponent").min(1).max(4).onChange(updateParameters);
-  gui
-    .add(params, "distanceFallOff")
-    .min(0.01)
-    .max(1)
-    .onChange(updateParameters);
-  gui.add(params, "radius").min(0.1).max(1).onChange(updateParameters);
-  gui.add(params, "scale").min(0.01).max(2).onChange(updateParameters);
-  gui.add(params, "thickness").min(0.01).max(2).onChange(updateParameters);
+  const gui = renderer.inspector.createParameters("Settings");
+  gui.add(params, "samples", 4, 32, 1).onChange(updateParameters);
+  gui.add(params, "distanceExponent", 1, 2).onChange(updateParameters);
+  gui.add(params, "distanceFallOff", 0.01, 1).onChange(updateParameters);
+  gui.add(params, "radius", 0.1, 1).onChange(updateParameters);
+  gui.add(params, "scale", 0.01, 2).onChange(updateParameters);
+  gui.add(params, "thickness", 0.01, 2).onChange(updateParameters);
+  gui.add(aoPass, "useTemporalFiltering").name("temporal filtering");
+  gui.add(params, "aoOnly").onChange((value) => {
+    if (value === true) {
+      postProcessing.outputNode = vec4(vec3(aoPass.r), 1);
+    } else {
+      postProcessing.outputNode = traaPass;
+    }
+
+    postProcessing.needsUpdate = true;
+  });
 }
 
 function updateParameters() {
+  aoPass.samples.value = params.samples;
   aoPass.distanceExponent.value = params.distanceExponent;
   aoPass.distanceFallOff.value = params.distanceFallOff;
   aoPass.radius.value = params.radius;
@@ -166,8 +192,6 @@ function onWindowResize() {
 
 function animate() {
   controls.update();
-
-  stats.update();
 
   postProcessing.render();
 }

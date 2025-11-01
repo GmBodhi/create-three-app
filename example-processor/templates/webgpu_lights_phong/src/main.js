@@ -13,12 +13,12 @@ import {
   normalMap,
 } from "three/tsl";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-let camera, scene, renderer, light1, light2, light3, light4, stats, controls;
+let camera, scene, renderer, light1, light2, light3, light4, controls;
 
 init();
 
@@ -128,6 +128,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // controls
@@ -136,10 +137,7 @@ function init() {
   controls.minDistance = 3;
   controls.maxDistance = 25;
 
-  // stats
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
+  //
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -172,6 +170,4 @@ function animate() {
   light4.position.z = Math.sin(lightTime * 0.5) * 3;
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

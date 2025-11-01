@@ -4,10 +4,9 @@ import * as THREE from "three/webgpu";
 import { mrt, output, pass, velocity } from "three/tsl";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, postProcessing;
-let stats;
 let index = 0;
 
 init();
@@ -17,10 +16,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   camera = new PerspectiveCamera(
     70,
@@ -62,9 +59,17 @@ function init() {
     })
   );
 
-  const scenePassColor = scenePass.getTextureNode("output");
-  const scenePassDepth = scenePass.getTextureNode("depth");
-  const scenePassVelocity = scenePass.getTextureNode("velocity");
+  const scenePassColor = scenePass
+    .getTextureNode("output")
+    .toInspector("Color");
+  const scenePassDepth = scenePass
+    .getTextureNode("depth")
+    .toInspector("Depth", () => {
+      return scenePass.getLinearDepthNode();
+    });
+  const scenePassVelocity = scenePass
+    .getTextureNode("velocity")
+    .toInspector("Velocity");
 
   const traaNode = traa(
     scenePassColor,
@@ -103,6 +108,4 @@ function animate() {
   }
 
   postProcessing.render();
-
-  stats.update();
 }

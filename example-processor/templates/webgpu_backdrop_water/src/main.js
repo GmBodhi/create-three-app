@@ -20,20 +20,17 @@ import {
 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import Stats from "three/addons/libs/stats.module.js";
 
 let camera, scene, renderer;
 let mixer, objects, clock;
 let model, floor, floorPosition;
 let postProcessing;
 let controls;
-let stats;
 
 init();
 
@@ -142,10 +139,14 @@ function init() {
 
   // linearDepth() returns the linear depth of the mesh
   const depth = linearDepth();
-  const depthWater = viewportLinearDepth.sub(depth);
+  const depthWater = viewportLinearDepth
+    .sub(depth)
+    .toInspector("Water / Depth", (node) => node.oneMinus());
   const depthEffect = depthWater.remapClamp(-0.002, 0.04);
 
-  const refractionUV = screenUV.add(vec2(0, waterIntensity.mul(0.1)));
+  const refractionUV = screenUV
+    .add(vec2(0, waterIntensity.mul(0.1)))
+    .toInspector("Water / Refraction UV");
 
   // linearDepth( viewportDepthTexture( uv ) ) return the linear depth of the scene
   const depthTestForRefraction = linearDepth(
@@ -158,10 +159,12 @@ function init() {
     .lessThan(0)
     .select(screenUV, refractionUV);
 
-  const viewportTexture = viewportSharedTexture(finalUV);
+  const viewportTexture = viewportSharedTexture(finalUV).toInspector(
+    "Water / Viewport Texture + Refraction UV"
+  );
 
   const waterMaterial = new MeshBasicNodeMaterial();
-  waterMaterial.colorNode = waterColor;
+  waterMaterial.colorNode = waterColor.toInspector("Water / Color");
   waterMaterial.backdropNode = depthEffect.mix(
     viewportSharedTexture(),
     viewportTexture.mul(depthRefraction.mix(1, waterColor))
@@ -206,10 +209,8 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 1;
@@ -222,11 +223,11 @@ function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   floorPosition = new Vector3(0, 0.2, 0);
 
-  gui.add(floorPosition, "y", -1, 1, 0.001).name("position");
+  gui.add(floorPosition, "y", -1, 1, 0.001).name("floor position");
 
   // post processing
 
@@ -234,17 +235,23 @@ function init() {
   const scenePassColor = scenePass.getTextureNode();
   const scenePassDepth = scenePass.getLinearDepthNode().remapClamp(0.3, 0.5);
 
-  const waterMask = objectPosition(camera).y.greaterThan(
-    screenUV.y.sub(0.5).mul(camera.near)
-  );
+  const waterMask = objectPosition(camera)
+    .y.greaterThan(screenUV.y.sub(0.5).mul(camera.near))
+    .toInspector("Post-Processing / Water Mask");
 
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
-  scenePassColorBlurred.directionNode = waterMask.select(
-    scenePassDepth,
-    scenePass.getLinearDepthNode().mul(5)
-  );
+  scenePassColorBlurred.directionNode = waterMask
+    .select(scenePassDepth, scenePass.getLinearDepthNode().mul(5))
+    .toInspector("Post-Processing / Blur Strength [ Depth ]", (node) =>
+      node.toFloat()
+    );
 
-  const vignette = screenUV.distance(0.5).mul(1.35).clamp().oneMinus();
+  const vignette = screenUV
+    .distance(0.5)
+    .mul(1.35)
+    .clamp()
+    .oneMinus()
+    .toInspector("Post-Processing / Vignette");
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = waterMask.select(
@@ -265,8 +272,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   controls.update();
 
   const delta = clock.getDelta();

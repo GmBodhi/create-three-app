@@ -2,11 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-
 let camera, scene, renderer;
 let mesh;
-let stats;
 
 const AMOUNT = 6;
 
@@ -64,11 +61,6 @@ function init() {
   //
 
   window.addEventListener("resize", onWindowResize);
-
-  //
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 }
 
 function updateCameras() {
@@ -114,6 +106,4 @@ function animate() {
   mesh.rotation.z += 0.01;
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

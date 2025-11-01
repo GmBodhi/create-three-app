@@ -2,8 +2,6 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
@@ -11,7 +9,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 init();
 
@@ -35,6 +33,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   await renderer.init();
@@ -47,7 +46,7 @@ async function init() {
 
   const ktx2Loader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
-    .detectSupportAsync(renderer);
+    .detectSupport(renderer);
 
   new GLTFLoader()
     .setKTX2Loader(ktx2Loader)
@@ -66,8 +65,7 @@ async function init() {
       const head = mesh.getObjectByName("mesh_2");
       const influences = head.morphTargetInfluences;
 
-      const gui = new GUI();
-      gui.close();
+      const gui = renderer.inspector.createParameters("Morph Targets");
 
       for (const [key, value] of Object.entries(head.morphTargetDictionary)) {
         gui
@@ -88,9 +86,6 @@ async function init() {
   controls.maxPolarAngle = Math.PI / 1.8;
   controls.target.set(0, 0.15, -0.2);
 
-  const stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   function animate() {
     const delta = clock.getDelta();
 
@@ -101,8 +96,6 @@ async function init() {
     renderer.render(scene, camera);
 
     controls.update();
-
-    stats.update();
   }
 
   window.addEventListener("resize", () => {

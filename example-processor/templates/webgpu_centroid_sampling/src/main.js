@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { varying, uv, texture, Fn } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let rendererAntialiasingEnabled;
 let rendererAntialiasingDisabled;
@@ -165,6 +165,7 @@ function init() {
     window.innerHeight
   );
   rendererAntialiasingEnabled.setAnimationLoop(animateAliased);
+  rendererAntialiasingEnabled.inspector = new Inspector();
 
   document.body
     .querySelector("#antialiasing-disabled")
@@ -177,7 +178,7 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 
-  gui = new GUI();
+  gui = rendererAntialiasingEnabled.inspector.createParameters("Settings");
   gui
     .add(effectController, "sampling", [
       InterpolationSamplingMode.NORMAL,

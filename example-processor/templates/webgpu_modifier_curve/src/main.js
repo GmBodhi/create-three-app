@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 import { TransformControls } from "three/addons/controls/TransformControls.js";
-import Stats from "three/addons/libs/stats.module.js";
+
 import { Flow } from "three/addons/modifiers/CurveModifierGPU.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
@@ -12,7 +12,6 @@ const ACTION_SELECT = 1,
 const curveHandles = [];
 const mouse = new Vector2();
 
-let stats;
 let scene,
   camera,
   renderer,
@@ -124,9 +123,6 @@ function init() {
     }
   });
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   window.addEventListener("resize", onWindowResize);
 }
 
@@ -164,6 +160,4 @@ function animate() {
 
 function render() {
   renderer.render(scene, camera);
-
-  stats.update();
 }

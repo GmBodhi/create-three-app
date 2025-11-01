@@ -787,7 +787,7 @@ async function init(leftSideDisplay = true) {
   );
 
   // Represents array of data as uints in compute shader.
-  const inputStorage = instancedArray(array, "uint", size)
+  const inputStorage = instancedArray(array, "uint")
     .setPBO(true)
     .setName(`Current_${leftSideDisplay ? "Left" : "Right"}`);
   // Represents array of data as vec4s in compute shader;
@@ -809,15 +809,11 @@ async function init(leftSideDisplay = true) {
   const rowSize = divRoundUp(size, numRows);
 
   const workgroupSumsArray = new Uint32Array(numRows);
-  const workgroupSumsStorage = instancedArray(
-    workgroupSumsArray,
-    "uint",
-    numRows
-  )
+  const workgroupSumsStorage = instancedArray(workgroupSumsArray, "uint")
     .setPBO(true)
     .setName(`WorkgroupSums_${leftSideDisplay ? "Left" : "Right"}`);
   const debugArray = new Uint32Array(1024);
-  const debugStorage = instancedArray(debugArray, "uint", 1024)
+  const debugStorage = instancedArray(debugArray, "uint")
     .setPBO(true)
     .setName(`Debug_${leftSideDisplay ? "Left" : "Right"}`);
 
@@ -861,8 +857,10 @@ async function init(leftSideDisplay = true) {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
 
+  await renderer.init();
+
   // Unfortunately, need to arbitrarily run compute shader to get access to device limits
-  await renderer.computeAsync(computeResetBuffer);
+  renderer.compute(computeResetBuffer);
 
   if (renderer.backend.device !== null) {
     maxWorkgroupSize = renderer.backend.device.limits.maxComputeWorkgroupSizeX;
@@ -1115,8 +1113,8 @@ async function init(leftSideDisplay = true) {
       : stateRightController;
 
     if (state === "Reset") {
-      renderer.computeAsync(computeResetBuffer);
-      renderer.computeAsync(computeResetWorkgroupSums);
+      renderer.compute(computeResetBuffer);
+      renderer.compute(computeResetWorkgroupSums);
     } else if (state === "Run Algo") {
       renderer.info.reset();
 
@@ -1131,7 +1129,7 @@ async function init(leftSideDisplay = true) {
 
             const reduce0 = reduce0Calls[i];
             // Do a reduction step
-            renderer.computeAsync(reduce0);
+            renderer.compute(reduce0);
             renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
 
             m /= 2;
@@ -1144,7 +1142,7 @@ async function init(leftSideDisplay = true) {
           const currentAlgoCalls = calls[currentAlgorithm];
 
           for (let i = 0; i < currentAlgoCalls.length; i++) {
-            renderer.computeAsync(currentAlgoCalls[i]);
+            renderer.compute(currentAlgoCalls[i]);
             renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
           }
 

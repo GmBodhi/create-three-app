@@ -9,7 +9,7 @@ import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let postProcessing;
@@ -57,6 +57,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   //
@@ -69,8 +70,10 @@ function init() {
     })
   );
 
-  const outputPass = scenePass.getTextureNode();
-  const emissivePass = scenePass.getTextureNode("emissive");
+  const outputPass = scenePass.getTextureNode().toInspector("Color");
+  const emissivePass = scenePass
+    .getTextureNode("emissive")
+    .toInspector("Emissive");
 
   const bloomPass = bloom(emissivePass, 2.5, 0.5);
 
@@ -83,18 +86,19 @@ function init() {
   controls.minDistance = 2;
   controls.maxDistance = 10;
   controls.target.set(0, 0, -0.2);
+  controls.update();
 
   window.addEventListener("resize", onWindowResize);
 
   //
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
-  const bloomFolder = gui.addFolder("bloom");
+  const bloomFolder = gui.addFolder("Bloom");
   bloomFolder.add(bloomPass.strength, "value", 0.0, 5.0).name("strength");
   bloomFolder.add(bloomPass.radius, "value", 0.0, 1.0).name("radius");
 
-  const toneMappingFolder = gui.addFolder("tone mapping");
+  const toneMappingFolder = gui.addFolder("Tone Mapping");
   toneMappingFolder
     .add(renderer, "toneMappingExposure", 0.1, 2)
     .name("exposure");

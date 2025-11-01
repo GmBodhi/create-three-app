@@ -2,7 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let controls, camera, scene, renderer;
@@ -61,6 +62,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   //
@@ -72,18 +74,7 @@ function init() {
   //
 
   params = {
-    Cube: function () {
-      scene.background = textureCube;
-
-      sphereMaterial.envMap = textureCube;
-      sphereMaterial.needsUpdate = true;
-    },
-    Equirectangular: function () {
-      scene.background = textureEquirec;
-
-      sphereMaterial.envMap = textureEquirec;
-      sphereMaterial.needsUpdate = true;
-    },
+    Type: "Cube",
     Refraction: false,
     backgroundRotationX: false,
     backgroundRotationY: false,
@@ -91,9 +82,22 @@ function init() {
     syncMaterial: false,
   };
 
-  const gui = new GUI({ width: 300 });
-  gui.add(params, "Cube");
-  gui.add(params, "Equirectangular");
+  const gui = renderer.inspector.createParameters("Parameters");
+  gui
+    .add(params, "Type", ["Cube", "Equirectangular"])
+    .onChange(function (value) {
+      if (value === "Cube") {
+        scene.background = textureCube;
+
+        sphereMaterial.envMap = textureCube;
+        sphereMaterial.needsUpdate = true;
+      } else if (value === "Equirectangular") {
+        scene.background = textureEquirec;
+
+        sphereMaterial.envMap = textureEquirec;
+        sphereMaterial.needsUpdate = true;
+      }
+    });
   gui.add(params, "Refraction").onChange(function (value) {
     if (value) {
       textureEquirec.mapping = EquirectangularRefractionMapping;
@@ -109,7 +113,6 @@ function init() {
   gui.add(params, "backgroundRotationY");
   gui.add(params, "backgroundRotationZ");
   gui.add(params, "syncMaterial");
-  gui.open();
 
   window.addEventListener("resize", onWindowResize);
 }

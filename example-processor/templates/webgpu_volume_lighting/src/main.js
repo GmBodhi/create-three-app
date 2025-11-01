@@ -12,6 +12,8 @@ import {
   pass,
 } from "three/tsl";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
@@ -19,14 +21,9 @@ import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 import { bayer16 } from "three/addons/tsl/math/Bayer.js";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
-import Stats from "three/addons/libs/stats.module.js";
-
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
 let renderer, scene, camera;
 let volumetricMesh, teapot, pointLight, spotLight;
 let postProcessing;
-let stats;
 
 init();
 
@@ -72,9 +69,6 @@ function createTexture3D() {
 function init() {
   const LAYER_VOLUMETRIC_LIGHTING = 10;
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -82,6 +76,7 @@ function init() {
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 2;
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   scene = new Scene();
@@ -203,8 +198,9 @@ function init() {
   // Volumetric Lighting Pass
 
   const volumetricPass = pass(scene, camera, { depthBuffer: false });
+  volumetricPass.name = "Volumetric Lighting";
   volumetricPass.setLayers(volumetricLayer);
-  volumetricPass.setResolution(0.25);
+  volumetricPass.setResolutionScale(0.25);
 
   // Compose and Denoise
 
@@ -221,15 +217,15 @@ function init() {
   // GUI
 
   const params = {
-    resolution: volumetricPass.getResolution(),
+    resolution: volumetricPass.getResolutionScale(),
     denoise: true,
   };
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Volumetric Lighting");
 
-  const rayMarching = gui.addFolder("Ray Marching").close();
+  const rayMarching = gui.addFolder("Ray Marching");
   rayMarching.add(params, "resolution", 0.1, 0.5).onChange((resolution) => {
-    volumetricPass.setResolution(resolution);
+    volumetricPass.setResolutionScale(resolution);
   });
   rayMarching.add(volumetricMaterial, "steps", 2, 12).name("step count");
   rayMarching.add(denoiseStrength, "value", 0, 1).name("denoise strength");
@@ -244,7 +240,7 @@ function init() {
     postProcessing.needsUpdate = true;
   });
 
-  const lighting = gui.addFolder("Lighting / Scene").close();
+  const lighting = gui.addFolder("Lighting / Scene");
   lighting.add(pointLight, "intensity", 0, 6).name("light intensity");
   lighting.add(spotLight, "intensity", 0, 200).name("spot intensity");
   lighting
@@ -263,8 +259,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   const time = performance.now() * 0.001;
   const scale = 2.4;
 

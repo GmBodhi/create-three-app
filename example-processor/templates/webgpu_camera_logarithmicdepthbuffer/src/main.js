@@ -2,10 +2,10 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-
-import Stats from "three/addons/libs/stats.module.js";
 
 // 1 micrometer to 100 billion light years in one scene, with 1 unit = 1 meter?  preposterous!  and yet...
 const NEAR = 1e-6,
@@ -19,7 +19,7 @@ let zoompos = -100,
   minzoomspeed = 0.015;
 let zoomspeed = minzoomspeed;
 
-let container, border, stats;
+let container, border;
 const objects = {};
 
 // Generate a number of text labels, from 1µm in size up to 100,000,000 light years
@@ -57,9 +57,6 @@ async function init() {
   objects.normal = await initView(scene, "normal", false);
   objects.logzbuf = await initView(scene, "logzbuf", true);
 
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
   // Resize border allows the user to easily compare effects of logarithmic depth buffer over the whole scene
   border = document.getElementById("renderer_border");
   border.addEventListener("pointerdown", onBorderPointerDown);
@@ -88,6 +85,7 @@ async function initView(scene, name, logDepthBuf) {
   renderer.setSize(SCREEN_WIDTH / 2, SCREEN_HEIGHT);
   renderer.domElement.style.position = "relative";
   renderer.domElement.id = "renderer_" + name;
+  renderer.inspector = new Inspector();
   framecontainer.appendChild(renderer.domElement);
 
   await renderer.init();
@@ -244,8 +242,6 @@ function animate() {
     objects.logzbuf.scene,
     objects.logzbuf.camera
   );
-
-  stats.update();
 }
 
 function onWindowResize() {

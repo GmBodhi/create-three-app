@@ -7,7 +7,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { chromaticAberration } from "three/addons/tsl/display/ChromaticAberrationNode.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const params = {
   enabled: true,
@@ -29,6 +29,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   await renderer.init();
@@ -100,8 +101,7 @@ async function init() {
 
   // GUI
 
-  const gui = new GUI();
-  gui.title("Chromatic Aberration");
+  const gui = renderer.inspector.createParameters("Settings");
 
   gui.add(params, "enabled").onChange((value) => {
     postProcessing.outputNode = value ? caPass : outputPass;

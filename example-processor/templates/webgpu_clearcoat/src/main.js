@@ -2,14 +2,12 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
 
 import { FlakesTexture } from "three/addons/textures/FlakesTexture.js";
-
-let container, stats;
 
 let camera, scene, renderer;
 
@@ -19,9 +17,6 @@ let group;
 init();
 
 function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
-
   camera = new PerspectiveCamera(
     27,
     window.innerWidth / window.innerHeight,
@@ -162,17 +157,13 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  container.appendChild(renderer.domElement);
+  document.body.appendChild(renderer.domElement);
 
   //
 
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.25;
-
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
+  renderer.inspector = new Inspector();
 
   // EVENTS
 
@@ -199,8 +190,6 @@ function onWindowResize() {
 
 function animate() {
   render();
-
-  stats.update();
 }
 
 function render() {

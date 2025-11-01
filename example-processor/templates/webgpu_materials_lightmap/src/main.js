@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { vec4, color, positionLocal, mix } from "three/tsl";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -70,6 +70,7 @@ async function init() {
   renderer.setAnimationLoop(animate);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(innerWidth, innerHeight);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   // CONTROLS
@@ -80,7 +81,7 @@ async function init() {
 
   // GUI
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Parameters");
 
   gui
     .add(params, "intensity", 0, 1)
@@ -90,7 +91,6 @@ async function init() {
         material.lightMapIntensity = value;
       }
     });
-  gui.open();
 
   //
 

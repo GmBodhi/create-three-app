@@ -20,16 +20,16 @@ import {
 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import Stats from "stats-gl";
-
 const maxParticleCount = 100000;
 
 let camera, scene, renderer;
-let controls, stats;
+let controls;
 let computeParticles;
 let postProcessing;
 
@@ -116,7 +116,9 @@ async function init() {
     particleData.x = position.x;
     particleData.z = position.z;
     particleData.w = randX;
-  })().compute(maxParticleCount);
+  })()
+    .compute(maxParticleCount)
+    .setName("Init Particles");
 
   //
 
@@ -136,7 +138,10 @@ async function init() {
     const rippleOnSurface = texture(
       collisionPosRT.texture,
       getCoord(position.xz)
-    );
+    ).toInspector("Collision Test", () => {
+      return texture(collisionPosRT.texture).y; // .div( collisionCamera.position.y );
+    });
+
     const rippleFloorArea = rippleOnSurface.y.add(scale.x.mul(surfaceOffset));
 
     If(position.y.greaterThan(rippleFloorArea), () => {
@@ -154,6 +159,7 @@ async function init() {
   });
 
   computeParticles = computeUpdate().compute(maxParticleCount);
+  computeParticles.name = "Update Particles";
 
   // rain
 
@@ -248,6 +254,7 @@ async function init() {
     })
   );
 
+  teapotTree.name = "Teapot Pass";
   teapotTree.position.y = 18;
 
   scene.add(tree());
@@ -267,16 +274,10 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
-  stats = new Stats({
-    precision: 3,
-    horizontal: false,
-    trackGPU: true,
-    trackCPT: true,
-  });
-  stats.init(renderer);
-  document.body.appendChild(stats.dom);
+  await renderer.init();
 
   //
 
@@ -305,17 +306,19 @@ async function init() {
 
   // compose
 
-  let totalPass = scenePass;
+  let totalPass = scenePass.toInspector("Scene");
   totalPass = totalPass.add(scenePassColorBlurred.mul(0.1));
   totalPass = totalPass.mul(vignette);
-  totalPass = totalPass.add(teapotTreePass.mul(10).add(teapotTreePassBlurred));
+  totalPass = totalPass.add(
+    teapotTreePass.mul(10).add(teapotTreePassBlurred).toInspector("Teapot Blur")
+  );
 
   postProcessing = new PostProcessing(renderer);
   postProcessing.outputNode = totalPass;
 
   //
 
-  await renderer.computeAsync(computeInit);
+  renderer.compute(computeInit);
 
   //
 
@@ -331,11 +334,12 @@ function onWindowResize() {
   renderer.setSize(innerWidth, innerHeight);
 }
 
-async function animate() {
+function animate() {
   controls.update();
 
   // position
 
+  scene.name = "Collider Position";
   scene.overrideMaterial = collisionPosMaterial;
   renderer.setRenderTarget(collisionPosRT);
   renderer.render(scene, collisionCamera);
@@ -343,15 +347,12 @@ async function animate() {
   // compute
 
   renderer.compute(computeParticles);
-  renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
 
   // result
 
+  scene.name = "Scene";
   scene.overrideMaterial = null;
   renderer.setRenderTarget(null);
 
-  await postProcessing.renderAsync();
-
-  renderer.resolveTimestampsAsync();
-  stats.update();
+  postProcessing.render();
 }

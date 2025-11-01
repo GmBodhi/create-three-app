@@ -16,13 +16,16 @@ import {
   Vector3,
 } from "three";
 import * as TSL from "three/tsl";
-import Stats from "three/addons/libs/stats.module.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import WebGPU from "three/addons/capabilities/WebGPU.js";
+
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import {
   WoodNodeMaterial,
@@ -30,7 +33,7 @@ import {
   Finishes,
 } from "three/addons/materials/WoodNodeMaterial.js";
 
-let scene, base, camera, renderer, controls, stats, font, blockGeometry, gui;
+let scene, base, camera, renderer, controls, font, blockGeometry, gui;
 
 // Helper function to get grid position
 function getGridPosition(woodIndex, finishIndex) {
@@ -159,16 +162,14 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 1.0;
+  renderer.inspector = new Inspector();
   renderer.setAnimationLoop(render);
   document.body.appendChild(renderer.domElement);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 0, 0.548);
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
-  gui = new GUI();
+  gui = renderer.inspector.createParameters("Parameters");
 
   font = await new FontLoader().loadAsync(
     "three/examples/fonts/helvetiker_regular.typeface.json"
@@ -230,7 +231,6 @@ async function init() {
 
 function render() {
   controls.update();
-  stats.update();
 
   renderer.render(scene, camera);
 }

@@ -7,9 +7,6 @@ body {
   line-height: 24px;
   overscroll-behavior: none;
 }
-#info a {
-  color: #1cdfe2;
-}
 a {
   color: #ff0;
   text-decoration: none;

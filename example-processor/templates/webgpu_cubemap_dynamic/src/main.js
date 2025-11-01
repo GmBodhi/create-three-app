@@ -4,11 +4,9 @@ import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
-
-let camera, scene, renderer, stats;
+let camera, scene, renderer;
 let cube, sphere, torus, material;
 
 let cubeCamera, cubeRenderTarget;
@@ -18,9 +16,6 @@ let controls;
 init();
 
 async function init() {
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
   camera = new PerspectiveCamera(
     60,
     window.innerWidth / window.innerHeight,
@@ -89,11 +84,12 @@ async function init() {
 
   //
 
-  renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animation);
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   window.addEventListener("resize", onWindowResized);
@@ -101,7 +97,7 @@ async function init() {
   controls = new OrbitControls(camera, renderer.domElement);
   controls.autoRotate = true;
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(material, "roughness", 0, 1);
   gui.add(material, "metalness", 0, 1);
   gui.add(renderer, "toneMappingExposure", 0, 2).name("exposure");
@@ -142,6 +138,4 @@ function animation(msTime) {
   controls.update();
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

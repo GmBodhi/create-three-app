@@ -8,7 +8,7 @@ import {
   PointLight,
   AnimationMixer,
   WebGLRenderer,
-  ReinhardToneMapping,
+  ACESFilmicToneMapping,
   Vector2,
 } from "three";
 
@@ -28,7 +28,7 @@ let composer, renderer, mixer, clock;
 const params = {
   threshold: 0,
   strength: 1,
-  radius: 0,
+  radius: 0.5,
   exposure: 1,
 };
 
@@ -71,7 +71,7 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMapping = ReinhardToneMapping;
+  renderer.toneMapping = ACESFilmicToneMapping;
   container.appendChild(renderer.domElement);
 
   //

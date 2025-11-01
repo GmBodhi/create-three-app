@@ -30,13 +30,13 @@ import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 import TWEEN from "three/addons/libs/tween.module.js";
 
 let camera, scene, renderer;
 let postProcessing;
 let controls;
-let stats;
 
 // below uniforms will be animated via TWEEN.js
 
@@ -108,7 +108,7 @@ async function init() {
     .sub(1)
     .mul(0.02);
 
-  const reflection = reflector({ resolution: 0.2 });
+  const reflection = reflector({ resolutionScale: 0.2 });
   reflection.target.rotateX(-Math.PI / 2);
   reflection.uvNode = reflection.uvNode.add(floorNormalOffset);
   scene.add(reflection.target);
@@ -132,10 +132,8 @@ async function init() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = PCFSoftShadowMap;
   renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   // controls
 
@@ -191,8 +189,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   controls.update();
 
   TWEEN.update();

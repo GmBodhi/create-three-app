@@ -4,6 +4,7 @@ import * as THREE from "three/webgpu";
 import { pass } from "three/tsl";
 import { dotScreen } from "three/addons/tsl/display/DotScreenNode.js";
 import { rgbShift } from "three/addons/tsl/display/RGBShiftNode.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, renderer, postProcessing;
 let object;
@@ -15,6 +16,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   //
@@ -61,7 +63,7 @@ function init() {
   postProcessing = new PostProcessing(renderer);
 
   const scenePass = pass(scene, camera);
-  const scenePassColor = scenePass.getTextureNode();
+  const scenePassColor = scenePass.getTextureNode().toInspector("Scene Color");
 
   const dotScreenPass = dotScreen(scenePassColor);
   dotScreenPass.scale.value = 0.3;

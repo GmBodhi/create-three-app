@@ -2,12 +2,11 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let camera, scene, renderer, bulbLight, bulbMat, hemiLight, stats;
+let camera, scene, renderer, bulbLight, bulbMat, hemiLight;
 let ballMat, cubeMat, floorMat;
 
 let previousShadowMap = false;
@@ -50,9 +49,6 @@ init();
 
 function init() {
   const container = document.getElementById("container");
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
 
   //
 
@@ -199,6 +195,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = ReinhardToneMapping;
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -209,13 +206,11 @@ function init() {
 
   //
 
-  const gui = new GUI();
-
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(params, "hemiIrradiance", Object.keys(hemiLuminousIrradiances));
   gui.add(params, "bulbPower", Object.keys(bulbLuminousPowers));
   gui.add(params, "exposure", 0, 1);
   gui.add(params, "shadows");
-  gui.open();
 }
 
 function onWindowResize() {
@@ -248,6 +243,4 @@ function animate() {
   bulbLight.position.y = Math.cos(time) * 0.75 + 1.25;
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

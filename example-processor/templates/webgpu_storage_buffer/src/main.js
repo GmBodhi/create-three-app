@@ -145,6 +145,8 @@ async function init(forceWebGL = false) {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
 
+  await renderer.init();
+
   document.body.appendChild(renderer.domElement);
   renderer.domElement.style.position = "absolute";
   renderer.domElement.style.top = "0";
@@ -160,7 +162,7 @@ async function init(forceWebGL = false) {
     scene.background = new Color(0x313131);
   }
 
-  await renderer.computeAsync(computeInit);
+  renderer.compute(computeInit);
 
   //
 
@@ -169,8 +171,8 @@ async function init(forceWebGL = false) {
   const stepAnimation = async function () {
     renderer.info.reset();
 
-    await renderer.computeAsync(compute);
-    await renderer.renderAsync(scene, camera);
+    renderer.compute(compute);
+    renderer.render(scene, camera);
 
     renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
     renderer.resolveTimestampsAsync(TimestampQuery.RENDER);

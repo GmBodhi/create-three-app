@@ -322,10 +322,10 @@ function initPostprocessing() {
     window.innerWidth / 2,
     window.innerHeight / 2,
     window.innerHeight / -2,
-    -10000,
-    10000
+    1,
+    10
   );
-  postprocessing.camera.position.z = 100;
+  postprocessing.camera.position.z = 2;
 
   postprocessing.scene.add(postprocessing.camera);
 
@@ -365,7 +365,6 @@ function initPostprocessing() {
     new PlaneGeometry(window.innerWidth, window.innerHeight),
     postprocessing.materialBokeh
   );
-  postprocessing.quad.position.z = -500;
   postprocessing.scene.add(postprocessing.quad);
 }
 

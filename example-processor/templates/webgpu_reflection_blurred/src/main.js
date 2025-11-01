@@ -28,14 +28,11 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let model, mixer, clock;
 let controls;
-let stats;
 let gui;
 
 init();
@@ -206,17 +203,15 @@ async function init() {
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 1.3;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
-  gui = new GUI();
+  gui = renderer.inspector.createParameters("Settings");
   gui.add(roughness, "value", 0, 1).name("roughness");
   gui.add(radius, "value", 0, 1).name("radius");
   gui
     .add(reflection.reflector, "resolutionScale", 0.25, 1)
     .name("resolution scale");
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 1;
@@ -240,8 +235,6 @@ function onWindowResize() {
 }
 
 function animate() {
-  stats.update();
-
   controls.update();
 
   const delta = clock.getDelta();

@@ -6,7 +6,7 @@ import { pass, mrt, output, emissive, renderOutput } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 import { fxaa } from "three/addons/tsl/display/FXAANode.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
@@ -139,6 +139,7 @@ async function init() {
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   // postprocessing
@@ -166,7 +167,7 @@ async function init() {
 
   // gui
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Water");
   const waterNode = water.material.colorNode;
 
   gui.addColor(params, "color").onChange(function (value) {
@@ -175,22 +176,14 @@ async function init() {
   gui.add(params, "scale", 1, 10).onChange(function (value) {
     waterNode.scale.value = value;
   });
-  gui
-    .add(params, "flowX", -1, 1)
-    .step(0.01)
-    .onChange(function (value) {
-      waterNode.flowDirection.value.x = value;
-      waterNode.flowDirection.value.normalize();
-    });
-  gui
-    .add(params, "flowY", -1, 1)
-    .step(0.01)
-    .onChange(function (value) {
-      waterNode.flowDirection.value.y = value;
-      waterNode.flowDirection.value.normalize();
-    });
-
-  gui.open();
+  gui.add(params, "flowX", -1, 1, 0.01).onChange(function (value) {
+    waterNode.flowDirection.value.x = value;
+    waterNode.flowDirection.value.normalize();
+  });
+  gui.add(params, "flowY", -1, 1, 0.01).onChange(function (value) {
+    waterNode.flowDirection.value.y = value;
+    waterNode.flowDirection.value.normalize();
+  });
 
   //
 

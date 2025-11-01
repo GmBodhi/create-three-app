@@ -11,18 +11,14 @@ import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, controls, stats;
+let camera, scene, renderer, controls;
 let postProcessing;
 
 init();
 
 async function init() {
-  const container = document.createElement("div");
-  document.body.appendChild(container);
-
   //
 
   camera = new PerspectiveCamera(
@@ -70,7 +66,8 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
-  container.appendChild(renderer.domElement);
+  renderer.inspector = new Inspector();
+  document.body.appendChild(renderer.domElement);
 
   //
 
@@ -82,10 +79,12 @@ async function init() {
     })
   );
 
-  const outputPass = scenePass.getTextureNode();
-  const emissivePass = scenePass.getTextureNode("emissive");
+  const outputPass = scenePass.getTextureNode().toInspector("Color");
+  const emissivePass = scenePass
+    .getTextureNode("emissive")
+    .toInspector("Emissive");
 
-  const bloomPass = bloom(emissivePass, 1, 1);
+  const bloomPass = bloom(emissivePass, 1, 1).toInspector("Bloom");
 
   const threshold = uniform(0.5);
   const ghostAttenuationFactor = uniform(25);
@@ -116,12 +115,7 @@ async function init() {
 
   //
 
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
-
-  //
-
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   const bloomFolder = gui.addFolder("bloom");
   bloomFolder.add(bloomPass.strength, "value", 0.0, 2.0).name("strength");
@@ -150,8 +144,6 @@ function onWindowResize() {
 //
 
 function render() {
-  stats.update();
-
   controls.update();
 
   postProcessing.render();

@@ -1,3 +1,13 @@
+.swap_area {
+  position: absolute;
+  top: 150px;
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  font-family: monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  text-align: left;
+}
 body {
   margin: 0;
   background-color: #000;
@@ -26,15 +36,18 @@ button {
   top: 0;
   width: 100%;
 }
-#info {
+#info,
+.swap_area {
   padding: 10px;
+  pointer-events: none;
+}
+#info {
   box-sizing: border-box;
   text-align: center;
   -moz-user-select: none;
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  pointer-events: none;
   z-index: 1;
 }
 button,

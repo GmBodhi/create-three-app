@@ -2,14 +2,13 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import Stats from "three/addons/libs/stats.module.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { WaterMesh } from "three/addons/objects/WaterMesh.js";
 import { SkyMesh } from "three/addons/objects/SkyMesh.js";
 
-let container, stats;
+let container;
 let camera, scene, renderer;
 let controls, water, sun, mesh;
 
@@ -23,9 +22,10 @@ function init() {
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
+  renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   //
@@ -121,26 +121,19 @@ function init() {
   controls.maxDistance = 200.0;
   controls.update();
 
-  //
-
-  stats = new Stats();
-  container.appendChild(stats.dom);
-
   // GUI
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
 
   const folderSky = gui.addFolder("Sky");
   folderSky.add(parameters, "elevation", 0, 90, 0.1).onChange(updateSun);
   folderSky.add(parameters, "azimuth", -180, 180, 0.1).onChange(updateSun);
-  folderSky.open();
 
   const folderWater = gui.addFolder("Water");
   folderWater
     .add(water.distortionScale, "value", 0, 8, 0.1)
     .name("distortionScale");
   folderWater.add(water.size, "value", 0.1, 10, 0.1).name("size");
-  folderWater.open();
 
   //
 
@@ -152,11 +145,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-}
-
-function animate() {
-  render();
-  stats.update();
 }
 
 function render() {

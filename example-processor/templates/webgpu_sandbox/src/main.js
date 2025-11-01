@@ -17,6 +17,8 @@ import {
 
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 let camera, scene, renderer;
 
 let box;
@@ -41,7 +43,10 @@ async function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
+
+  await renderer.init();
 
   // textures
 
@@ -61,7 +66,7 @@ async function init() {
 
   const ktxLoader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
-    .detectSupportAsync(renderer);
+    .detectSupport(renderer);
 
   const ktxTexture = await ktxLoader.loadAsync(
     "three/examples/textures/ktx2/2d_uastc.ktx2"

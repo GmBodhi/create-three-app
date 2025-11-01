@@ -5,7 +5,7 @@ import { pass, luminance, saturation } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const params = {
   speed: 0,
@@ -21,6 +21,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   renderer.toneMapping = NeutralToneMapping;
   document.body.appendChild(renderer.domElement);
 
@@ -77,7 +78,7 @@ function init() {
 
   //
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
   gui.add(params, "speed", 0, 2);
 }
 
