@@ -125,16 +125,16 @@ async function init() {
     const causticProjection = vec3(
       texture(
         causticMap,
-        textureUV.add(vec2(chromaticAberrationOffset.x.negate(), 0))
+        textureUV.add(vec2(chromaticAberrationOffset.negate(), 0))
       ).r,
       texture(
         causticMap,
-        textureUV.add(vec2(0, chromaticAberrationOffset.y.negate()))
+        textureUV.add(vec2(0, chromaticAberrationOffset.negate()))
       ).g,
       texture(
         causticMap,
         textureUV.add(
-          vec2(chromaticAberrationOffset.x, chromaticAberrationOffset.y)
+          vec2(chromaticAberrationOffset, chromaticAberrationOffset)
         )
       ).b
     );
