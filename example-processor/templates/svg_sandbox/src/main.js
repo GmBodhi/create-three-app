@@ -24,12 +24,13 @@ import {
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { SVGRenderer, SVGObject } from "three/addons/renderers/SVGRenderer.js";
 
 ColorManagement.enabled = false;
 
-let camera, scene, renderer, stats;
+let camera, scene, renderer, stats, controls;
 
 let group;
 
@@ -225,6 +226,9 @@ function init() {
   renderer.setQuality("low");
   document.body.appendChild(renderer.domElement);
 
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
+
   stats = new Stats();
   document.body.appendChild(stats.dom);
 
@@ -252,11 +256,9 @@ function animate() {
 function render() {
   const time = Date.now() * 0.0002;
 
-  camera.position.x = Math.sin(time) * 500;
-  camera.position.z = Math.cos(time) * 500;
-  camera.lookAt(scene.position);
-
   group.rotation.x += 0.01;
+
+  controls.update();
 
   renderer.render(scene, camera);
 }
