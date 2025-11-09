@@ -1,27 +1,9 @@
-#backend,
-#info,
-#overlay {
-  position: absolute;
-  width: 100%;
-}
-#backend,
-body {
-  color: #fff;
-  font-size: 13px;
-}
-#backend {
-  top: 70px;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.75);
-  padding: 5px;
-  text-align: center;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  z-index: 1;
-}
 body {
   margin: 0;
   background-color: #000;
+  color: #fff;
   font-family: Monospace;
+  font-size: 13px;
   line-height: 24px;
   overscroll-behavior: none;
 }
@@ -40,7 +22,9 @@ button {
 }
 #info,
 #overlay {
+  position: absolute;
   top: 0;
+  width: 100%;
 }
 #info {
   padding: 10px;
