@@ -8,7 +8,8 @@ import {
   FogExp2,
   ConeGeometry,
   MeshPhongMaterial,
-  Mesh,
+  InstancedMesh,
+  Object3D,
   DirectionalLight,
   AmbientLight,
   WebGLRenderer,
@@ -57,15 +58,19 @@ function init() {
     flatShading: true,
   });
 
+  const mesh = new InstancedMesh(geometry, material, 500);
+  const dummy = new Object3D();
+
   for (let i = 0; i < 500; i++) {
-    const mesh = new Mesh(geometry, material);
-    mesh.position.x = (Math.random() - 0.5) * 1000;
-    mesh.position.y = (Math.random() - 0.5) * 1000;
-    mesh.position.z = (Math.random() - 0.5) * 1000;
-    mesh.updateMatrix();
-    mesh.matrixAutoUpdate = false;
-    scene.add(mesh);
+    dummy.position.x = (Math.random() - 0.5) * 1000;
+    dummy.position.y = (Math.random() - 0.5) * 1000;
+    dummy.position.z = (Math.random() - 0.5) * 1000;
+
+    dummy.updateMatrix();
+    mesh.setMatrixAt(i, dummy.matrix);
   }
+
+  scene.add(mesh);
 
   // lights
 

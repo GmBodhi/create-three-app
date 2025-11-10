@@ -23,6 +23,8 @@ import {
   Scene,
   TorusKnotGeometry,
   MeshBasicMaterial,
+  InstancedMesh,
+  Object3D,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -147,16 +149,22 @@ function setupScene() {
   const count = 50;
   const scale = 5;
 
+  const mesh = new InstancedMesh(geometry, material, count);
+  const dummy = new Object3D();
+
   for (let i = 0; i < count; i++) {
     const r = Math.random() * 2.0 * Math.PI;
     const z = Math.random() * 2.0 - 1.0;
     const zScale = Math.sqrt(1.0 - z * z) * scale;
 
-    const mesh = new Mesh(geometry, material);
-    mesh.position.set(Math.cos(r) * zScale, Math.sin(r) * zScale, z * scale);
-    mesh.rotation.set(Math.random(), Math.random(), Math.random());
-    scene.add(mesh);
+    dummy.position.set(Math.cos(r) * zScale, Math.sin(r) * zScale, z * scale);
+    dummy.rotation.set(Math.random(), Math.random(), Math.random());
+
+    dummy.updateMatrix();
+    mesh.setMatrixAt(i, dummy.matrix);
   }
+
+  scene.add(mesh);
 }
 
 function onWindowResize() {
