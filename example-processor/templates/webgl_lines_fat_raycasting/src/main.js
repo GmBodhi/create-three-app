@@ -18,8 +18,6 @@ import {
   Float32BufferAttribute,
 } from "three";
 
-import Stats from "stats-gl";
-
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { LineMaterial } from "three/addons/lines/LineMaterial.js";
@@ -31,7 +29,6 @@ import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 let line, thresholdLine, segments, thresholdSegments;
 let renderer, scene, camera, controls;
 let sphereInter, sphereOnLine;
-let stats;
 let gui;
 let clock;
 
@@ -185,10 +182,6 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
 
-  stats = new Stats({ horizontal: false, trackGPU: true });
-  stats.init(renderer);
-  document.body.appendChild(stats.dom);
-
   initGui();
 }
 
@@ -246,8 +239,6 @@ function animate() {
   }
 
   renderer.render(scene, camera);
-
-  stats.update();
 }
 
 //
