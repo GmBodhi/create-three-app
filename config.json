@@ -4964,6 +4964,16 @@
         "/src/shaders"
       ]
     },
+    "webgpu_shadow_contact": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_shadowmap": {
       "files": {
         "index.html": "src",
