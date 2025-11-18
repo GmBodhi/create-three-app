@@ -680,10 +680,10 @@ globals@^13.6.0, globals@^13.9.0:
   dependencies:
     type-fest "^0.20.2"
 
-glslx@^0.2.13:
-  version "0.2.13"
-  resolved "https://registry.yarnpkg.com/glslx/-/glslx-0.2.13.tgz#9ecd348b1b072a6f990217409d001742ac3f0200"
-  integrity sha512-AjvDqcG3JGHFphnDpPraIiIVuNigblOGofr8EZFGlHUbpCuPzS43H3oqgd3m8h0+8a4Wf59fG5AMC1XirJjXfg==
+glslx@^0.3.0:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/glslx/-/glslx-0.3.1.tgz#f850c2fa8e4cdf87cf216a0d8ac201b842283b0b"
+  integrity sha512-F3+QsQRol9JNv3N6Jw4K7cSeIFwy7/UqiGb0x8J3Q7IvEuBSfj+o59cbKdPQLnBY0LsyqfArAyxldax1FbPb6w==
 
 has-flag@^3.0.0:
   version "3.0.0"
