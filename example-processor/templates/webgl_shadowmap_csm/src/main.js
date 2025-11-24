@@ -6,7 +6,7 @@ import {
   PerspectiveCamera,
   OrthographicCamera,
   WebGLRenderer,
-  PCFSoftShadowMap,
+  PCFShadowMap,
   Vector3,
   AmbientLight,
   DirectionalLight,
@@ -73,7 +73,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = params.shadows;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.maxPolarAngle = Math.PI / 2;

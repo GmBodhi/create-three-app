@@ -20,6 +20,7 @@ import {
   BoxGeometry,
   ShaderChunk,
   WebGLRenderer,
+  BasicShadowMap,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -129,8 +130,11 @@ function init() {
   );
 
   shader = shader.replace(
-    "#if defined( SHADOWMAP_TYPE_PCF )",
-    PCSSGetShadow_ + "#if defined( SHADOWMAP_TYPE_PCF )"
+    "\t\t\tif ( frustumTest ) {\n\t\t\t\tfloat depth = texture2D( shadowMap, shadowCoord.xy ).r;",
+    "\t\t\tif ( frustumTest ) {\n" +
+      PCSSGetShadow_ +
+      "\n" +
+      "\t\t\t\tfloat depth = texture2D( shadowMap, shadowCoord.xy ).r;"
   );
 
   ShaderChunk.shadowmap_pars_fragment = shader;
@@ -146,6 +150,7 @@ function init() {
   container.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = BasicShadowMap; // PCSS requires reading raw depth values
 
   // controls
   const controls = new OrbitControls(camera, renderer.domElement);

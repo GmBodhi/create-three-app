@@ -13,7 +13,7 @@ import {
   CameraHelper,
   WebGLRenderer,
   ACESFilmicToneMapping,
-  PCFSoftShadowMap,
+  PCFShadowMap,
   EquirectangularReflectionMapping,
   TextureLoader,
   SRGBColorSpace,
@@ -107,7 +107,7 @@ function init() {
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
   container.appendChild(renderer.domElement);
 
   orbitControls = new OrbitControls(camera, renderer.domElement);

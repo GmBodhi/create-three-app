@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import {
   WebGLRenderer,
   NeutralToneMapping,
-  PCFSoftShadowMap,
+  PCFShadowMap,
   Scene,
   PerspectiveCamera,
   TextureLoader,
@@ -42,7 +42,7 @@ function init() {
   renderer.toneMappingExposure = 1;
 
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
 
   scene = new Scene();
 

@@ -140,6 +140,7 @@ async function init() {
   // final output + traa
 
   traaPass = traa(scenePass, prePassDepth, prePassVelocity, camera);
+  traaPass.useSubpixelCorrection = false;
 
   postProcessing.outputNode = traaPass;
 

@@ -38,7 +38,7 @@ float findBlocker(sampler2D shadowMap, const in vec2 uv, const in float zReceive
   int numBlockers = 0;
 
   for (int i = 0; i < BLOCKER_SEARCH_NUM_SAMPLES; i++) {
-    float shadowMapDepth = unpackRGBAToDepth(texture2D(shadowMap, uv + poissonDisk[i] * searchRadius));
+    float shadowMapDepth = texture2D(shadowMap, uv + poissonDisk[i] * searchRadius).r;
     if (shadowMapDepth < zReceiver) {
       blockerDepthSum += shadowMapDepth;
       numBlockers++;
@@ -55,13 +55,13 @@ float PCF_Filter(sampler2D shadowMap, vec2 uv, float zReceiver, float filterRadi
   float depth;
   #pragma unroll_loop_start
   for (int i = 0; i < 17; i++) {
-    depth = unpackRGBAToDepth(texture2D(shadowMap, uv + poissonDisk[i] * filterRadius));
+    depth = texture2D(shadowMap, uv + poissonDisk[i] * filterRadius).r;
     if (zReceiver <= depth) sum += 1.0;
   }
   #pragma unroll_loop_end
   #pragma unroll_loop_start
   for (int i = 0; i < 17; i++) {
-    depth = unpackRGBAToDepth(texture2D(shadowMap, uv + -poissonDisk[i].yx * filterRadius));
+    depth = texture2D(shadowMap, uv + -poissonDisk[i].yx * filterRadius).r;
     if (zReceiver <= depth) sum += 1.0;
   }
   #pragma unroll_loop_end
