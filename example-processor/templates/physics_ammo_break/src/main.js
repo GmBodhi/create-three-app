@@ -400,9 +400,10 @@ function createRigidBody(object, physicsShape, mass, pos, quat, vel, angVel) {
     physicsShape,
     localInertia
   );
-  const body = new Ammo.btRigidBody(rbInfo);
+  rbInfo.set_m_restitution(0.5);
+  rbInfo.set_m_friction(0.5);
 
-  body.setFriction(0.5);
+  const body = new Ammo.btRigidBody(rbInfo);
 
   if (vel) {
     body.setLinearVelocity(new Ammo.btVector3(vel.x, vel.y, vel.z));
