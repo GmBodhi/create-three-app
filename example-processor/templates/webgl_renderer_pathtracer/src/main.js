@@ -23,7 +23,7 @@ import {
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import { LDrawLoader } from "three/addons/loaders/LDrawLoader.js";
 import { LDrawUtils } from "three/addons/utils/LDrawUtils.js";
 import { LDrawConditionalLineMaterial } from "three/addons/materials/LDrawConditionalLineMaterial.js";
@@ -172,9 +172,9 @@ async function loadModel() {
     })
     .catch(onError);
 
-  const envMapPromise = new HDRLoader()
+  const envMapPromise = new UltraHDRLoader()
     .setPath("textures/equirectangular/")
-    .loadAsync("royal_esplanade_1k.hdr")
+    .loadAsync("royal_esplanade_2k.hdr.jpg")
     .then((tex) => {
       const envMapGenerator = new BlurredEnvMapGenerator(renderer);
       const blurredEnvMap = envMapGenerator.generate(tex, 0);

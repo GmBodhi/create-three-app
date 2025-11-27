@@ -8,7 +8,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
 let camera, scene, renderer;
 let model;
@@ -50,9 +50,9 @@ function init() {
 
   //
 
-  new HDRLoader()
+  new UltraHDRLoader()
     .setPath("textures/equirectangular/")
-    .load("royal_esplanade_1k.hdr", function (texture) {
+    .load("royal_esplanade_2k.hdr.jpg", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
 
       scene.environment = texture;

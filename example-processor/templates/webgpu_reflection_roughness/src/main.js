@@ -35,7 +35,6 @@ async function init() {
   scene = new Scene();
 
   const loader = new UltraHDRLoader();
-  loader.setDataType(HalfFloatType);
   loader.load(
     "textures/equirectangular/spruit_sunrise_2k.hdr.jpg",
     function (texture) {

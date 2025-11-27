@@ -1,7 +1,15 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass, vec3, vec4, mrt, screenUV, velocity, context } from "three/tsl";
+import {
+  pass,
+  vec3,
+  vec4,
+  mrt,
+  screenUV,
+  velocity,
+  builtinShadowContext,
+} from "three/tsl";
 import { sss } from "three/addons/tsl/display/SSSNode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 
@@ -130,14 +138,7 @@ async function init() {
   // scene context
 
   const sssSample = sssPass.getTextureNode().sample(screenUV).r;
-
-  const sssContext = context({
-    getShadow: (light) => {
-      if (light === dirLight) return sssSample;
-
-      return null;
-    },
-  });
+  const sssContext = builtinShadowContext(sssSample, dirLight);
 
   scenePass.contextNode = sssContext;
 

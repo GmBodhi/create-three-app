@@ -11,7 +11,7 @@ import {
   MeshStandardMaterial,
   Mesh,
 } from "three";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import { ARButton } from "three/addons/webxr/ARButton.js";
 import { XREstimatedLight } from "three/addons/webxr/XREstimatedLight.js";
 
@@ -74,9 +74,9 @@ function init() {
 
   //
 
-  new HDRLoader()
+  new UltraHDRLoader()
     .setPath("textures/equirectangular/")
-    .load("royal_esplanade_1k.hdr", function (texture) {
+    .load("royal_esplanade_2k.hdr.jpg", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
 
       defaultEnvironment = texture;

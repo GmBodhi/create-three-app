@@ -23,7 +23,7 @@ import {
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 let renderer, scene, camera, controls;
@@ -99,9 +99,9 @@ async function init() {
   controls.target.set(0, -0.1, 0);
   controls.update();
 
-  const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
+  const hdrLoader = new UltraHDRLoader().setPath("textures/equirectangular/");
 
-  const hdrTexture = await hdrLoader.loadAsync("royal_esplanade_1k.hdr");
+  const hdrTexture = await hdrLoader.loadAsync("royal_esplanade_2k.hdr.jpg");
   hdrTexture.mapping = EquirectangularReflectionMapping;
   scene.background = hdrTexture;
   scene.backgroundBlurriness = 0.5;

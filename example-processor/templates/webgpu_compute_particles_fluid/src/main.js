@@ -33,7 +33,7 @@ import {
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import * as BufferGeometryUtils from "three/addons/utils/BufferGeometryUtils.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
@@ -97,9 +97,9 @@ async function init() {
   controls.maxPolarAngle = Math.PI * 0.35;
   controls.touches = { TWO: TOUCH.DOLLY_ROTATE };
 
-  const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
+  const hdrLoader = new UltraHDRLoader().setPath("textures/equirectangular/");
 
-  const hdrTexture = await hdrLoader.loadAsync("royal_esplanade_1k.hdr");
+  const hdrTexture = await hdrLoader.loadAsync("royal_esplanade_2k.hdr.jpg");
   hdrTexture.mapping = EquirectangularReflectionMapping;
   scene.background = hdrTexture;
   scene.backgroundBlurriness = 0.5;

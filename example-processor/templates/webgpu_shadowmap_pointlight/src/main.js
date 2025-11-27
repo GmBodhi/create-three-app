@@ -11,11 +11,11 @@ import {
   CanvasTexture,
   NearestFilter,
   RepeatWrapping,
-  MeshPhongMaterial,
+  MeshPhongNodeMaterial,
   DoubleSide,
   BoxGeometry,
   BackSide,
-  WebGLRenderer,
+  WebGPURenderer,
   BasicShadowMap,
 } from "three";
 
@@ -28,7 +28,7 @@ let pointLight, pointLight2;
 
 init();
 
-function init() {
+async function init() {
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
@@ -64,7 +64,7 @@ function init() {
     texture.repeat.set(1, 4.5);
 
     geometry = new SphereGeometry(2, 32, 8);
-    material = new MeshPhongMaterial({
+    material = new MeshPhongNodeMaterial({
       side: DoubleSide,
       alphaMap: texture,
       alphaTest: 0.5,
@@ -87,7 +87,7 @@ function init() {
 
   const geometry = new BoxGeometry(30, 30, 30);
 
-  const material = new MeshPhongMaterial({
+  const material = new MeshPhongNodeMaterial({
     color: 0xa0adaf,
     shininess: 10,
     specular: 0x111111,
@@ -101,12 +101,13 @@ function init() {
 
   //
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   // renderer.shadowMap.type = BasicShadowMap;
+  await renderer.init();
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

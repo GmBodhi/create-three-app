@@ -30,7 +30,6 @@ async function init() {
   scene = new Scene();
 
   const loader = new UltraHDRLoader();
-  loader.setDataType(HalfFloatType);
   loader.load(
     "textures/equirectangular/moonless_golf_2k.hdr.jpg",
     function (texture) {

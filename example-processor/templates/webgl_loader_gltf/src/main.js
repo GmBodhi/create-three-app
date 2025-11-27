@@ -12,7 +12,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 let camera, scene, renderer, controls;
@@ -34,9 +34,9 @@ function init() {
 
   scene = new Scene();
 
-  new HDRLoader()
+  new UltraHDRLoader()
     .setPath("textures/equirectangular/")
-    .load("royal_esplanade_1k.hdr", function (texture) {
+    .load("royal_esplanade_2k.hdr.jpg", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
 
       scene.background = texture;
@@ -132,8 +132,9 @@ function fitCameraToSelection(camera, controls, selection, fitOffset = 1.3) {
   const maxSize = Math.max(size.x, size.y, size.z);
   const fitHeightDistance =
     maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
-  const fitWidthDistance = fitHeightDistance / camera.aspect;
-  const distance = fitOffset * Math.max(fitHeightDistance, fitWidthDistance);
+  // const fitWidthDistance = fitHeightDistance / camera.aspect;
+  // const distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );
+  const distance = fitOffset * fitHeightDistance;
 
   const direction = controls.target
     .clone()

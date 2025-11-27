@@ -17,7 +17,7 @@ import {
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
 const params = {
   color: 0xffffff,
@@ -39,9 +39,9 @@ let camera, scene, renderer;
 
 let mesh;
 
-const hdrEquirect = new HDRLoader()
+const hdrEquirect = new UltraHDRLoader()
   .setPath("textures/equirectangular/")
-  .load("royal_esplanade_1k.hdr", function () {
+  .load("royal_esplanade_2k.hdr.jpg", function () {
     hdrEquirect.mapping = EquirectangularReflectionMapping;
 
     init();

@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
@@ -52,9 +52,9 @@ function init() {
 
   scene.background = new Color(0xaaaaaa);
 
-  new HDRLoader()
+  new UltraHDRLoader()
     .setPath("textures/equirectangular/")
-    .load("royal_esplanade_1k.hdr", function (texture) {
+    .load("royal_esplanade_2k.hdr.jpg", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
 
       scene.background = texture;

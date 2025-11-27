@@ -129,7 +129,7 @@ async function init() {
   aoPass.resolutionScale = 0.5; // running AO in half resolution is often sufficient
   aoPass.useTemporalFiltering = true;
 
-  const aoPassOutput = aoPass.getTextureNode("output");
+  const aoPassOutput = aoPass.getTextureNode();
 
   // scene context
 
