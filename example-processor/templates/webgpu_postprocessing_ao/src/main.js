@@ -5,7 +5,6 @@ import {
   sample,
   pass,
   mrt,
-  context,
   screenUV,
   normalView,
   velocity,
@@ -14,6 +13,7 @@ import {
   directionToColor,
   colorToDirection,
   colorSpaceToWorking,
+  builtinAOContext,
 } from "three/tsl";
 import { ao } from "three/addons/tsl/display/GTAONode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
@@ -27,7 +27,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, postProcessing, controls;
 
-let aoPass, traaPass;
+let aoPass, traaPass, transparentMesh;
 
 const params = {
   samples: 16,
@@ -37,6 +37,7 @@ const params = {
   scale: 1,
   thickness: 1,
   aoOnly: false,
+  transparentOpacity: 0.3,
 };
 
 init();
@@ -133,9 +134,7 @@ async function init() {
 
   // scene context
 
-  scenePass.contextNode = context({
-    ao: aoPassOutput.sample(screenUV).r,
-  });
+  scenePass.contextNode = builtinAOContext(aoPassOutput.sample(screenUV).r);
 
   // final output + traa
 
@@ -161,11 +160,13 @@ async function init() {
 
   //
 
-  const transparentMesh = new Mesh(
+  transparentMesh = new Mesh(
     new PlaneGeometry(1.8, 2),
-    new MeshStandardNodeMaterial({ transparent: true, opacity: 0.1 })
+    new MeshStandardNodeMaterial({
+      transparent: true,
+      opacity: params.transparentOpacity,
+    })
   );
-  transparentMesh.material.transparent = true;
   transparentMesh.position.z = 0;
   transparentMesh.position.y = 0.5;
   transparentMesh.visible = false;
@@ -186,6 +187,10 @@ async function init() {
   gui.add(params, "thickness", 0.01, 2).onChange(updateParameters);
   gui.add(aoPass, "useTemporalFiltering").name("temporal filtering");
   gui.add(transparentMesh, "visible").name("show transparent mesh");
+  gui
+    .add(params, "transparentOpacity", 0, 1, 0.01)
+    .name("transparent opacity")
+    .onChange(updateParameters);
   gui.add(params, "aoOnly").onChange((value) => {
     if (value === true) {
       postProcessing.outputNode = vec4(vec3(aoPass.r), 1);
@@ -204,6 +209,8 @@ function updateParameters() {
   aoPass.radius.value = params.radius;
   aoPass.scale.value = params.scale;
   aoPass.thickness.value = params.thickness;
+
+  transparentMesh.material.opacity = params.transparentOpacity;
 }
 
 function onWindowResize() {
