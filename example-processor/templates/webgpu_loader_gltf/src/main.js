@@ -10,7 +10,10 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, controls;
-let currentModel;
+let currentModel, mixer;
+let currentLoadId = 0;
+
+const timer = new Timer();
 
 init().then(render);
 
@@ -58,6 +61,8 @@ async function init() {
             loadModel(modelInfo);
           });
 
+          gui.add(scene, "backgroundBlurriness", 0, 1);
+
           const initialModel = models.find((m) => m.name === params.model);
           if (initialModel) loadModel(initialModel);
         });
@@ -76,6 +81,7 @@ async function init() {
   await renderer.init();
 
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
   controls.minDistance = 2;
   controls.maxDistance = 10;
   controls.target.set(0, 0, -0.2);
@@ -96,24 +102,38 @@ function loadModel(modelInfo) {
     currentModel = null;
   }
 
+  if (mixer) {
+    mixer.stopAllAction();
+    mixer = null;
+  }
+
+  const loadId = ++currentLoadId;
+
   const loader = new GLTFLoader();
   loader.load(url, async function (gltf) {
+    if (loadId !== currentLoadId) return;
+
     currentModel = gltf.scene;
 
     // wait until the model can be added to the scene without blocking due to shader compilation
 
     await renderer.compileAsync(currentModel, camera, scene);
 
+    if (loadId !== currentLoadId) return;
+
     scene.add(currentModel);
 
-    // scale to 1.0
-
-    const box = new Box3().setFromObject(currentModel);
-    const size = box.getSize(new Vector3());
-    const maxSize = Math.max(size.x, size.y, size.z);
-    currentModel.scale.multiplyScalar(1.0 / maxSize);
-
     fitCameraToSelection(camera, controls, currentModel);
+
+    // animations
+
+    if (gltf.animations.length > 0) {
+      mixer = new AnimationMixer(currentModel);
+
+      for (const animation of gltf.animations) {
+        mixer.clipAction(animation).play();
+      }
+    }
   });
 }
 
@@ -160,5 +180,11 @@ function onWindowResize() {
 //
 
 function render() {
+  timer.update();
+
+  controls.update();
+
+  if (mixer) mixer.update(timer.getDelta());
+
   renderer.render(scene, camera);
 }
