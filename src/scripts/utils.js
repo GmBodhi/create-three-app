@@ -70,14 +70,13 @@ module.exports.dirIsEmpty = (dir) => fs.readdirSync(dir).length === 0;
 //
 
 module.exports.checkForUpdates = async function checkForUpdates() {
-  // Temporarily disabled for local testing
-  // const res = await fetch(
-  //   "https://registry.npmjs.org/-/package/create-three-app/dist-tags"
-  // ).then((r) => r.json());
-  // const current = require("../../package.json").version;
-  // if (res.latest !== current)
-  //   return error(
-  //     `You current version (${current}) need to be updated to ${res.latest}\n We don't support global installs.`
-  //   );
+  const res = await fetch(
+    "https://registry.npmjs.org/-/package/create-three-app/dist-tags"
+  ).then((r) => r.json());
+  const current = require("../../package.json").version;
+  if (res.latest !== current)
+    return error(
+      `You current version (${current}) need to be updated to ${res.latest}\n We don't support global installs.`
+    );
   return;
 };

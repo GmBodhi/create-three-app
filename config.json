@@ -4544,7 +4544,7 @@
     }
   },
   "basic": {
-    "Basic (with orbitcontrols)": {
+    "basic-orbitcontrols": {
       "files": {
         "index.html": "src",
         "main.js": "src",

@@ -17,7 +17,7 @@ module.exports = async function (name, targetDir, type) {
       : "utils/";
   };
 
-  const repoPath = `GmBodhi/create-three-app/master/${basePath()}${name}`;
+  const repoPath = `github:GmBodhi/create-three-app/${basePath()}${name}#dev`;
 
   const emitter = degit(repoPath, {
     cache: false,
