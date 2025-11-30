@@ -4,9 +4,7 @@ const path = require("path");
 const { error } = require("./utils");
 
 async function installDeps(manager, dir, isExample) {
-  console.log(
-    dim(green(`Installing dependencies using ${manager}..!`))
-  );
+  console.log(dim(green(`Installing dependencies using ${manager}..!`)));
   spawn(manager === "npm" ? "npm" : "yarn", ["install"], {
     stdio: "inherit",
     cwd: path.join(process.cwd(), dir),
@@ -30,9 +28,7 @@ async function installDeps(manager, dir, isExample) {
       );
       if (isExample)
         console.log(
-          yellowBright(
-            "You can find some info about assets in assets.json"
-          )
+          yellowBright("You can find some info about assets in assets.json")
         );
     })
     .on("error", (e) => {

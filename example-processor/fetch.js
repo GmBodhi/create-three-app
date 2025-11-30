@@ -27,8 +27,7 @@ module.exports.launch = async ({ urls, json, port }) => {
     let url =
       request.frame()?.url()?.split("/").at(-1)?.split(".")[0] ?? "unknown";
 
-    let reqUrl =
-      request.url()?.split("/").at(-1) ?? "unknown";
+    let reqUrl = request.url()?.split("/").at(-1) ?? "unknown";
 
     if (json.includes(url)) return;
 

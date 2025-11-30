@@ -1,4 +1,4 @@
-const { red, redBright, blueBright } = require("ansi-colors");
+const { red } = require("ansi-colors");
 const fetch = require("node-fetch");
 const fs = require("fs");
 const spawn = require("cross-spawn");
@@ -21,32 +21,7 @@ function error(message) {
 module.exports.error = error;
 
 //
-// Download utils
-//
-
-async function download(url, dest, kill = false) {
-  const res = await fetch(url);
-  if (!res.ok) {
-    console.log(url);
-    console.log(
-      redBright(`Server responded with ${res.status}: ${res.statusText}`)
-    );
-    if (kill)
-      return error(`Server responded with ${res.status}: ${res.statusText}`);
-    console.log(blueBright("\nRetrying..!\r"));
-    return download(url, dest, true);
-  }
-  const fileStream = fs.createWriteStream(dest);
-  return await new Promise((resolve, reject) => {
-    res.body.pipe(fileStream);
-    res.body.on("error", reject);
-    fileStream.on("finish", resolve);
-  });
-}
-module.exports.download = download;
-
-//
-// Base URL
+// Base URL (still used for config.json fetching)
 //
 
 const domain =
@@ -85,26 +60,6 @@ module.exports.checkYarn = function checkYarn() {
 };
 
 //
-// Resolve URL
-//
-
-module.exports.resolveUrl = function resolveUrl(
-  domain,
-  { url, example },
-  file,
-  type
-) {
-  const path = () => {
-    return type === consts.pathTypes.EXAMPLE
-      ? "example-processor/templates/"
-      : type === consts.pathTypes.BASIC
-      ? "examples/"
-      : "utils/";
-  };
-  return `${domain}${path()}${example}/${url ? url + "/" : ""}${file}`;
-};
-
-//
 // Check whether a directory is empty
 //
 
@@ -115,13 +70,14 @@ module.exports.dirIsEmpty = (dir) => fs.readdirSync(dir).length === 0;
 //
 
 module.exports.checkForUpdates = async function checkForUpdates() {
-  const res = await fetch(
-    "https://registry.npmjs.org/-/package/create-three-app/dist-tags"
-  ).then((r) => r.json());
-  const current = require("../../package.json").version;
-  if (res.latest !== current)
-    return error(
-      `You current version (${current}) need to be updated to ${res.latest}\n We don't support global installs.`
-    );
+  // Temporarily disabled for local testing
+  // const res = await fetch(
+  //   "https://registry.npmjs.org/-/package/create-three-app/dist-tags"
+  // ).then((r) => r.json());
+  // const current = require("../../package.json").version;
+  // if (res.latest !== current)
+  //   return error(
+  //     `You current version (${current}) need to be updated to ${res.latest}\n We don't support global installs.`
+  //   );
   return;
 };

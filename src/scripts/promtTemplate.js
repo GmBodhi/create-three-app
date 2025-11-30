@@ -29,10 +29,7 @@ async function selectFromExamples(template = "Not_an_example") {
 
 async function selectFromBasic({ isExample, template, interactive }) {
   const { basic: config } = await getConfig().catch((e) =>
-    console.log(
-      red("An error occurred while fetching the config file"),
-      e
-    )
+    console.log(red("An error occurred while fetching the config file"), e)
   );
   const threeExamples = Object.keys(config);
 

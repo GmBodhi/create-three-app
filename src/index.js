@@ -6,29 +6,23 @@
 // Externals
 //
 
-const { mkdirSync, existsSync, mkdtempSync } = require("fs");
+const { mkdirSync, existsSync } = require("fs");
 const rimraf = require("rimraf");
 const { redBright } = require("ansi-colors");
-const path = require("path");
-const { tmpdir } = require("os");
 
 //
 
 const {
-  domain,
   checkYarn,
   dirIsEmpty,
   error,
-  getConfig,
   checkForUpdates,
 } = require("./scripts/utils");
 const resolveArgs = require("./scripts/parse");
 const init = require("./scripts/initenv");
-const manageDir = require("./scripts/movedir");
-const downloadFiles = require("./scripts/downloadfiles");
+const degitFiles = require("./scripts/degitfiles");
 const { selectTemplate } = require("./scripts/promtTemplate");
 const consts = require("./scripts/constants");
-const { promtBundler } = require("./scripts/promtBundler");
 
 //
 
@@ -39,7 +33,6 @@ const { promtBundler } = require("./scripts/promtBundler");
     dir,
     isExample: _isExample,
     example: _example,
-    bundler: _bundler,
     force,
     useNpm,
     interactive,
@@ -48,13 +41,11 @@ const { promtBundler } = require("./scripts/promtBundler");
   await checkForUpdates();
 
   // Ask for the template; will consider the cli arg if present
-  const { isExample, example, name } = await selectTemplate({
+  const { isExample, name } = await selectTemplate({
     isExample: _isExample,
     template: _example,
     interactive,
   });
-
-  const bundler = interactive ? await promtBundler() : _bundler;
 
   console.log(`Downloading ${name}`);
 
@@ -82,49 +73,26 @@ const { promtBundler } = require("./scripts/promtBundler");
   }
 
   //
-
-  let tempDir = mkdtempSync(path.join(tmpdir(), "create-three-app-cache-"));
-  const bundlerConfigs = (await getConfig()).utils;
-
-  //
-  // Downloads
+  // Downloads using degit
   //
 
   //Download the common files
+  console.log("Downloading common files...");
+  await degitFiles("common", dir, consts.pathTypes.UTILS);
 
-  await downloadFiles(
-    "common",
-    bundlerConfigs["common"],
-    tempDir,
-    domain,
-    consts.pathTypes.UTILS
-  );
-
-  //Download the bundler files
-
-  await downloadFiles(
-    bundler,
-    bundlerConfigs[bundler],
-    tempDir,
-    domain,
-    consts.pathTypes.UTILS
-  );
+  //Download Vite configuration
+  console.log("Downloading Vite configuration...");
+  await degitFiles("vite", dir, consts.pathTypes.UTILS);
 
   // Download template
-
-  await downloadFiles(
+  console.log(`Downloading ${name} template...`);
+  await degitFiles(
     name,
-    example,
-    tempDir,
-    domain,
+    dir,
     isExample ? consts.pathTypes.EXAMPLE : consts.pathTypes.BASIC
   );
 
-  manageDir(tempDir, dir);
-
   await init(useNpm ? "npm" : await checkYarn(), dir, isExample);
-
-  rimraf.sync(tempDir);
 
   //
 })();

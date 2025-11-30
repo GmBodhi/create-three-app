@@ -13,6 +13,7 @@
   "dependencies": {
     "ansi-colors": "^4.1.1",
     "cross-spawn": "^7.0.3",
+    "degit": "^2.8.4",
     "enquirer": "^2.3.6",
     "node-fetch": "^2.6.1",
     "rimraf": "^3.0.2",
