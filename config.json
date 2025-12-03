@@ -5124,6 +5124,16 @@
         "/src"
       ]
     },
+    "webgpu_test_memory": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_texturegrad": {
       "files": {
         "index.html": "src",
