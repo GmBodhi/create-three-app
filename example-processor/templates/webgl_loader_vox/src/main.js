@@ -41,16 +41,11 @@ function init() {
   scene.add(dirLight2);
 
   const loader = new VOXLoader();
-  loader.load("models/vox/monu10.vox", function (chunks) {
-    for (let i = 0; i < chunks.length; i++) {
-      const chunk = chunks[i];
-
-      // displayPalette( chunk.palette );
-
-      const mesh = new VOXMesh(chunk);
-      mesh.scale.setScalar(0.0015);
-      scene.add(mesh);
-    }
+  loader.load("models/vox/monu10.vox", function (result) {
+    const mesh = result.scene.children[0];
+    mesh.position.y = 0;
+    mesh.scale.setScalar(0.0015);
+    scene.add(mesh);
   });
 
   // renderer
