@@ -1,6 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
+  Timer,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -9,6 +10,9 @@ import {
   MeshStandardMaterial,
   Mesh,
   TorusKnotGeometry,
+  CanvasTexture,
+  NearestFilter,
+  RepeatWrapping,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -18,11 +22,14 @@ import { RectAreaLightHelper } from "three/addons/helpers/RectAreaLightHelper.js
 import { RectAreaLightUniformsLib } from "three/addons/lights/RectAreaLightUniformsLib.js";
 
 let renderer, scene, camera;
-let stats, meshKnot;
+let rectLight1, rectLight2, rectLight3;
+let timer, stats;
 
 init();
 
 function init() {
+  timer = new Timer();
+
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -41,16 +48,16 @@ function init() {
 
   RectAreaLightUniformsLib.init();
 
-  const rectLight1 = new RectAreaLight(0xff0000, 5, 4, 10);
-  rectLight1.position.set(-5, 5, 5);
+  rectLight1 = new RectAreaLight(0xff0000, 5, 4, 10);
+  rectLight1.position.set(-5, 6, 5);
   scene.add(rectLight1);
 
-  const rectLight2 = new RectAreaLight(0x00ff00, 5, 4, 10);
-  rectLight2.position.set(0, 5, 5);
+  rectLight2 = new RectAreaLight(0x00ff00, 5, 4, 10);
+  rectLight2.position.set(0, 6, 5);
   scene.add(rectLight2);
 
-  const rectLight3 = new RectAreaLight(0x0000ff, 5, 4, 10);
-  rectLight3.position.set(5, 5, 5);
+  rectLight3 = new RectAreaLight(0x0000ff, 5, 4, 10);
+  rectLight3.position.set(5, 6, 5);
   scene.add(rectLight3);
 
   scene.add(new RectAreaLightHelper(rectLight1));
@@ -58,11 +65,8 @@ function init() {
   scene.add(new RectAreaLightHelper(rectLight3));
 
   const geoFloor = new BoxGeometry(2000, 0.1, 2000);
-  const matStdFloor = new MeshStandardMaterial({
-    color: 0xbcbcbc,
-    roughness: 0.1,
-    metalness: 0,
-  });
+  const matStdFloor = new MeshStandardMaterial({ color: 0x444444 });
+  matStdFloor.roughnessMap = createCheckerTexture(400);
   const mshStdFloor = new Mesh(geoFloor, matStdFloor);
   scene.add(mshStdFloor);
 
@@ -72,8 +76,8 @@ function init() {
     roughness: 0,
     metalness: 0,
   });
-  meshKnot = new Mesh(geoKnot, matKnot);
-  meshKnot.position.set(0, 5, 0);
+  const meshKnot = new Mesh(geoKnot, matKnot);
+  meshKnot.position.set(0, 5.5, 0);
   scene.add(meshKnot);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -88,14 +92,41 @@ function init() {
   document.body.appendChild(stats.dom);
 }
 
+function createCheckerTexture(repeat = 1) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 2;
+  canvas.height = 2;
+
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#000";
+  ctx.fillRect(0, 0, 2, 2);
+  ctx.fillStyle = "#fff";
+  ctx.fillRect(0, 0, 1, 1);
+  ctx.fillRect(1, 1, 1, 1);
+
+  const texture = new CanvasTexture(canvas);
+  texture.repeat.set(repeat, repeat);
+  texture.magFilter = NearestFilter;
+  texture.wrapS = RepeatWrapping;
+  texture.wrapT = RepeatWrapping;
+
+  return texture;
+}
+
 function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
 }
 
-function animation(time) {
-  meshKnot.rotation.y = time / 1000;
+function animation() {
+  timer.update();
+
+  const delta = timer.getDelta();
+
+  rectLight1.rotation.y += -delta;
+  rectLight2.rotation.y += delta * 0.5;
+  rectLight3.rotation.y += delta;
 
   renderer.render(scene, camera);
 

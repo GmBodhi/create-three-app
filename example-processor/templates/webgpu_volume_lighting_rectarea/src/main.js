@@ -10,6 +10,8 @@ import {
   uniform,
   screenCoordinate,
   pass,
+  checker,
+  uv,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -22,9 +24,9 @@ import { bayer16 } from "three/addons/tsl/math/Bayer.js";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 let renderer, scene, camera;
-let volumetricMesh, meshKnot;
+let volumetricMesh;
 let rectLight1, rectLight2, rectLight3;
-let clock;
+let timer;
 let postProcessing;
 
 init();
@@ -73,7 +75,7 @@ function init() {
 
   const LAYER_VOLUMETRIC_LIGHTING = 10;
 
-  clock = new Clock();
+  timer = new Timer();
 
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -134,17 +136,17 @@ function init() {
 
   rectLight1 = new RectAreaLight(0xff0000, 5, 4, 10);
   rectLight1.layers.enable(LAYER_VOLUMETRIC_LIGHTING);
-  rectLight1.position.set(-5, 5, 5);
+  rectLight1.position.set(-5, 6, 5);
   scene.add(rectLight1);
 
   rectLight2 = new RectAreaLight(0x00ff00, 5, 4, 10);
   rectLight2.layers.enable(LAYER_VOLUMETRIC_LIGHTING);
-  rectLight2.position.set(0, 5, 5);
+  rectLight2.position.set(0, 6, 5);
   scene.add(rectLight2);
 
   rectLight3 = new RectAreaLight(0x0000ff, 5, 4, 10);
   rectLight3.layers.enable(LAYER_VOLUMETRIC_LIGHTING);
-  rectLight3.position.set(5, 5, 5);
+  rectLight3.position.set(5, 6, 5);
   scene.add(rectLight3);
 
   //
@@ -174,11 +176,8 @@ function init() {
   //
 
   const geoFloor = new BoxGeometry(2000, 0.1, 2000);
-  const matStdFloor = new MeshStandardMaterial({
-    color: 0xbcbcbc,
-    roughness: 0.1,
-    metalness: 0,
-  });
+  const matStdFloor = new MeshStandardMaterial({ color: 0x444444 });
+  matStdFloor.roughnessNode = checker(uv().mul(400));
   const mshStdFloor = new Mesh(geoFloor, matStdFloor);
   scene.add(mshStdFloor);
 
@@ -188,8 +187,8 @@ function init() {
     roughness: 0,
     metalness: 0,
   });
-  meshKnot = new Mesh(geoKnot, matKnot);
-  meshKnot.position.set(0, 5, 0);
+  const meshKnot = new Mesh(geoKnot, matKnot);
+  meshKnot.position.set(0, 5.5, 0);
   scene.add(meshKnot);
 
   const controls = new OrbitControls(camera, renderer.domElement);
@@ -280,7 +279,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   rectLight1.rotation.y += -delta;
   rectLight2.rotation.y += delta * 0.5;

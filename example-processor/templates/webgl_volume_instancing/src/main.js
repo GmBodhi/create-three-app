@@ -14,7 +14,10 @@ import {
   Object3D,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { VOXLoader, VOXData3DTexture } from "three/addons/loaders/VOXLoader.js";
+import {
+  VOXLoader,
+  buildData3DTexture,
+} from "three/addons/loaders/VOXLoader.js";
 
 let renderer, scene, camera, controls, clock;
 
@@ -191,7 +194,7 @@ function init() {
       const material = new RawShaderMaterial({
         glslVersion: GLSL3,
         uniforms: {
-          map: { value: new VOXData3DTexture(chunk) },
+          map: { value: buildData3DTexture(chunk) },
           cameraPos: { value: new Vector3() },
         },
         vertexShader,

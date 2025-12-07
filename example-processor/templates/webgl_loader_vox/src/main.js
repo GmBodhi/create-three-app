@@ -9,7 +9,7 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { VOXLoader, VOXMesh } from "three/addons/loaders/VOXLoader.js";
+import { VOXLoader } from "three/addons/loaders/VOXLoader.js";
 
 let camera, controls, scene, renderer;
 
