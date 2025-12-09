@@ -16,7 +16,7 @@ let mesh, material, geometry;
 const renderer = new WebGPURenderer({
   antialias: true,
   forceWebGL: true,
-  colorBufferType: UnsignedByteType,
+  outputBufferType: UnsignedByteType,
   multiview: false,
 });
 renderer.setPixelRatio(window.devicePixelRatio);
