@@ -780,7 +780,7 @@ async function init(leftSideDisplay = true) {
   const scene = new Scene();
 
   const array = new Uint32Array(
-    Array.from({ length: size }, (_, i) => {
+    Array.from({ length: size }, () => {
       return 1;
     })
   );

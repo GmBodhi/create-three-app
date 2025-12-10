@@ -19,7 +19,7 @@ let zoompos = -100,
   minzoomspeed = 0.015;
 let zoomspeed = minzoomspeed;
 
-let container, border;
+let border;
 const objects = {};
 
 // Generate a number of text labels, from 1µm in size up to 100,000,000 light years
@@ -46,8 +46,6 @@ const labeldata = [
 init().then(animate);
 
 async function init() {
-  container = document.getElementById("container");
-
   const loader = new FontLoader();
   const font = await loader.loadAsync("fonts/helvetiker_regular.typeface.json");
 

@@ -66,7 +66,7 @@ let poolBorder;
 let meshRay;
 let gpuCompute;
 let heightmapVariable;
-let smoothShader;
+// let smoothShader;
 let readWaterLevelShader;
 let readWaterLevelRenderTarget;
 let readWaterLevelImage;
@@ -270,9 +270,7 @@ function initWater() {
   if (error !== null) console.error(error);
 
   // Create compute shader to smooth the water surface and velocity
-  smoothShader = gpuCompute.createShaderMaterial(smoothFragmentShader_, {
-    smoothTexture: { value: null },
-  });
+  //smoothShader = gpuCompute.createShaderMaterial( smoothFragmentShader_, { smoothTexture: { value: null } } );
 
   // Create compute shader to read water level
   readWaterLevelShader = gpuCompute.createShaderMaterial(
@@ -357,21 +355,22 @@ function addShadow(v) {
   //scene.add(  new CameraHelper(shadowCam) );
 }
 
-function smoothWater() {
-  const currentRenderTarget =
-    gpuCompute.getCurrentRenderTarget(heightmapVariable);
-  const alternateRenderTarget =
-    gpuCompute.getAlternateRenderTarget(heightmapVariable);
+// function smoothWater() {
 
-  for (let i = 0; i < 10; i++) {
-    smoothShader.uniforms["smoothTexture"].value = currentRenderTarget.texture;
-    gpuCompute.doRenderTarget(smoothShader, alternateRenderTarget);
+// 	const currentRenderTarget = gpuCompute.getCurrentRenderTarget( heightmapVariable );
+// 	const alternateRenderTarget = gpuCompute.getAlternateRenderTarget( heightmapVariable );
 
-    smoothShader.uniforms["smoothTexture"].value =
-      alternateRenderTarget.texture;
-    gpuCompute.doRenderTarget(smoothShader, currentRenderTarget);
-  }
-}
+// 	for ( let i = 0; i < 10; i ++ ) {
+
+// 		smoothShader.uniforms[ 'smoothTexture' ].value = currentRenderTarget.texture;
+// 		gpuCompute.doRenderTarget( smoothShader, alternateRenderTarget );
+
+// 		smoothShader.uniforms[ 'smoothTexture' ].value = alternateRenderTarget.texture;
+// 		gpuCompute.doRenderTarget( smoothShader, currentRenderTarget );
+
+// 	}
+
+// }
 
 function createducks() {
   for (let i = 0; i < NUM_DUCK; i++) {

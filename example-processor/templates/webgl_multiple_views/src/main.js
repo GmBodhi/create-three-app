@@ -22,8 +22,7 @@ let stats;
 
 let scene, renderer;
 
-let mouseX = 0,
-  mouseY = 0;
+let mouseX = 0;
 
 let windowWidth, windowHeight;
 
@@ -234,7 +233,6 @@ function init() {
 
 function onDocumentMouseMove(event) {
   mouseX = event.clientX - windowWidth / 2;
-  mouseY = event.clientY - windowHeight / 2;
 }
 
 function updateSize() {

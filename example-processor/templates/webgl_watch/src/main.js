@@ -4,8 +4,10 @@ import {
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
+  HalfFloatType,
   ACESFilmicToneMapping,
   VSMShadowMap,
+  Vector2,
   EquirectangularReflectionMapping,
   MeshPhysicalMaterial,
   AdditiveBlending,
@@ -13,7 +15,6 @@ import {
   CameraHelper,
   PointLight,
   Spherical,
-  Vector2,
 } from "three";
 import * as TWEEN from "tween";
 
@@ -24,12 +25,10 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
-import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { TAARenderPass } from "three/addons/postprocessing/TAARenderPass.js";
 
-let composer, camera, scene, renderer;
+let camera, scene, renderer;
 let gui, dirLight, pointLight, controls, bloomPass, taaPass;
 let ready = false;
 
@@ -42,7 +41,7 @@ const setting = {
   metalness: 1.0,
   opacity: 0.4,
   threshold: 0,
-  strength: 0.08,
+  strength: 0.007,
   radius: 0.0,
   postProcess: false,
 };
@@ -62,7 +61,10 @@ function init() {
 
   scene = new Scene();
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({
+    antialias: true,
+    outputBufferType: HalfFloatType,
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -71,6 +73,19 @@ function init() {
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = VSMShadowMap;
   container.appendChild(renderer.domElement);
+
+  taaPass = new TAARenderPass(scene, camera);
+  taaPass.sampleLevel = 2;
+
+  bloomPass = new UnrealBloomPass(
+    new Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+  );
+  bloomPass.threshold = setting.threshold;
+  bloomPass.strength = setting.strength;
+  bloomPass.radius = setting.radius;
 
   new HDRLoader()
     .setPath("textures/equirectangular/")
@@ -188,35 +203,9 @@ function moveCamera() {
 
 function postProcess(b) {
   if (b) {
-    if (composer) return;
-
-    bloomPass = new UnrealBloomPass(
-      new Vector2(window.innerWidth, window.innerHeight),
-      1.5,
-      0.4,
-      0.85
-    );
-    bloomPass.threshold = setting.threshold;
-    bloomPass.strength = setting.strength;
-    bloomPass.radius = setting.radius;
-
-    taaPass = new TAARenderPass(scene, camera);
-    taaPass.sampleLevel = 2;
-    taaPass.unbiased = false;
-
-    composer = new EffectComposer(renderer);
-    composer.setPixelRatio(window.devicePixelRatio);
-    composer.setSize(window.innerWidth, window.innerHeight);
-
-    composer.addPass(taaPass);
-    composer.addPass(bloomPass);
-    composer.addPass(new OutputPass());
+    renderer.setEffects([taaPass, bloomPass]);
   } else {
-    if (!composer) return;
-    composer.dispose();
-    composer = null;
-    bloomPass = null;
-    taaPass = null;
+    renderer.setEffects(null);
   }
 }
 
@@ -230,7 +219,7 @@ function createGUI() {
 
   gui.add(setting, "postProcess").onChange(postProcess);
   gui.add(setting, "threshold", 0, 1, 0.01).onChange(upBloom);
-  gui.add(setting, "strength", 0, 3, 0.01).onChange(upBloom);
+  gui.add(setting, "strength", 0, 0.1, 0.001).onChange(upBloom);
   gui.add(setting, "radius", 0, 1, 0.01).onChange(upBloom);
 }
 
@@ -273,9 +262,6 @@ function onWindowResize() {
   camera.aspect = width / height;
   camera.updateProjectionMatrix();
   renderer.setSize(width, height);
-  if (composer) {
-    composer.setSize(width, height);
-  }
 }
 
 //
@@ -285,8 +271,7 @@ function animate() {
 
   TWEEN.update();
 
-  if (composer) composer.render();
-  else renderer.render(scene, camera);
+  renderer.render(scene, camera);
 
   if (ready) getTime();
 }

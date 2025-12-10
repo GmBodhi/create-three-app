@@ -254,8 +254,6 @@ function animate() {
 }
 
 function render() {
-  const time = Date.now() * 0.0002;
-
   group.rotation.x += 0.01;
 
   controls.update();
