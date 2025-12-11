@@ -8,7 +8,8 @@ import {
   Object3D,
   SphereGeometry,
   MeshPhongMaterial,
-  Mesh,
+  InstancedMesh,
+  Color,
   AmbientLight,
   DirectionalLight,
 } from "three";
@@ -60,22 +61,30 @@ function init() {
   scene.add(object);
 
   const geometry = new SphereGeometry(1, 4, 4);
+  const material = new MeshPhongMaterial({ flatShading: true });
+
+  const mesh = new InstancedMesh(geometry, material, 100);
+  const dummy = new Object3D();
+  const color = new Color();
 
   for (let i = 0; i < 100; i++) {
-    const material = new MeshPhongMaterial({
-      color: 0xffffff * Math.random(),
-      flatShading: true,
-    });
-
-    const mesh = new Mesh(geometry, material);
-    mesh.position
+    dummy.position
       .set(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5)
       .normalize();
-    mesh.position.multiplyScalar(Math.random() * 400);
-    mesh.rotation.set(Math.random() * 2, Math.random() * 2, Math.random() * 2);
-    mesh.scale.x = mesh.scale.y = mesh.scale.z = Math.random() * 50;
-    object.add(mesh);
+    dummy.position.multiplyScalar(Math.random() * 400);
+    dummy.rotation.set(Math.random() * 2, Math.random() * 2, Math.random() * 2);
+
+    const scale = Math.random() * 50;
+    dummy.scale.set(scale, scale, scale);
+
+    dummy.updateMatrix();
+    mesh.setMatrixAt(i, dummy.matrix);
+
+    color.setHex(0xffffff * Math.random());
+    mesh.setColorAt(i, color);
   }
+
+  object.add(mesh);
 
   scene.add(new AmbientLight(0xcccccc));
 

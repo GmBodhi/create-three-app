@@ -1,5 +1,3 @@
-#include < packing >
-
 varying vec2 vUv;
 uniform sampler2D tDiffuse;
 uniform sampler2D tDepth;
@@ -8,8 +6,8 @@ uniform float cameraFar;
 
 float readDepth(sampler2D depthSampler, vec2 coord) {
   float fragCoordZ = texture2D(depthSampler, coord).x;
-  float viewZ = perspectiveDepthToViewZ(fragCoordZ, cameraNear, cameraFar);
-  return viewZToOrthographicDepth(viewZ, cameraNear, cameraFar);
+  float viewZ = (cameraNear * cameraFar) / ((cameraFar - cameraNear) * fragCoordZ - cameraFar);
+  return (viewZ + cameraNear) / (cameraNear - cameraFar);
 }
 
 void main() {

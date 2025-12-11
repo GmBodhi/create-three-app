@@ -67,7 +67,6 @@ async function init() {
   //
 
   const hdrLoader = new UltraHDRLoader();
-  hdrLoader.setDataType(HalfFloatType);
   const envMap = await hdrLoader.loadAsync(
     "textures/equirectangular/spruit_sunrise_2k.hdr.jpg"
   );

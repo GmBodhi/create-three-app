@@ -50,22 +50,25 @@ async function init() {
     flatShading: true,
   });
 
+  const mesh = new InstancedMesh(geometry, material, 100);
+  const dummy = new Object3D();
+
   for (let i = 0; i < 100; i++) {
-    const mesh = new Mesh(geometry, material);
+    dummy.position.x = Math.random() * 50 - 25;
+    dummy.position.y = Math.random() * 50 - 25;
+    dummy.position.z = Math.random() * 50 - 25;
 
-    mesh.position.x = Math.random() * 50 - 25;
-    mesh.position.y = Math.random() * 50 - 25;
-    mesh.position.z = Math.random() * 50 - 25;
+    dummy.scale.setScalar(Math.random() * 2 + 1);
 
-    mesh.scale.setScalar(Math.random() * 2 + 1);
+    dummy.rotation.x = Math.random() * Math.PI;
+    dummy.rotation.y = Math.random() * Math.PI;
+    dummy.rotation.z = Math.random() * Math.PI;
 
-    mesh.rotation.x = Math.random() * Math.PI;
-    mesh.rotation.y = Math.random() * Math.PI;
-    mesh.rotation.z = Math.random() * Math.PI;
-
-    group.add(mesh);
+    dummy.updateMatrix();
+    mesh.setMatrixAt(i, dummy.matrix);
   }
 
+  group.add(mesh);
   scene.add(group);
 
   renderer = new WebGPURenderer();

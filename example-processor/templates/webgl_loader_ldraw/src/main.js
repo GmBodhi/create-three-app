@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   WebGLRenderer,
+  HalfFloatType,
   ACESFilmicToneMapping,
   PMREMGenerator,
   Scene,
@@ -64,7 +65,10 @@ function init() {
 
   //
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({
+    antialias: true,
+    outputBufferType: HalfFloatType,
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

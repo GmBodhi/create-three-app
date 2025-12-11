@@ -8,7 +8,8 @@ import {
   PerspectiveCamera,
   ConeGeometry,
   MeshPhongMaterial,
-  Mesh,
+  InstancedMesh,
+  Object3D,
   DirectionalLight,
   AmbientLight,
 } from "three";
@@ -64,15 +65,19 @@ function init() {
     flatShading: true,
   });
 
+  const mesh = new InstancedMesh(geometry, material, 500);
+  const dummy = new Object3D();
+
   for (let i = 0; i < 500; i++) {
-    const mesh = new Mesh(geometry, material);
-    mesh.position.x = Math.random() * 1600 - 800;
-    mesh.position.y = 0;
-    mesh.position.z = Math.random() * 1600 - 800;
-    mesh.updateMatrix();
-    mesh.matrixAutoUpdate = false;
-    scene.add(mesh);
+    dummy.position.x = Math.random() * 1600 - 800;
+    dummy.position.y = 0;
+    dummy.position.z = Math.random() * 1600 - 800;
+
+    dummy.updateMatrix();
+    mesh.setMatrixAt(i, dummy.matrix);
   }
+
+  scene.add(mesh);
 
   // lights
 

@@ -10,7 +10,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
 let renderer, scene, camera, controls;
 
@@ -41,11 +41,11 @@ async function init() {
   controls.addEventListener("change", render);
   controls.update();
 
-  const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
+  const hdrLoader = new UltraHDRLoader().setPath("textures/equirectangular/");
   const gltfLoader = new GLTFLoader().setPath("models/gltf/");
 
   const [texture, gltf] = await Promise.all([
-    hdrLoader.loadAsync("royal_esplanade_1k.hdr"),
+    hdrLoader.loadAsync("royal_esplanade_2k.hdr.jpg"),
     gltfLoader.loadAsync("AnisotropyBarnLamp.glb"),
   ]);
 

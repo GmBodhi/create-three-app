@@ -15,6 +15,7 @@ import {
   directionToColor,
   colorToDirection,
   vec2,
+  colorSpaceToWorking,
 } from "three/tsl";
 import { ssr } from "three/addons/tsl/display/SSRNode.js";
 import { smaa } from "three/addons/tsl/display/SMAANode.js";
@@ -116,7 +117,9 @@ async function init() {
     .toInspector("Color");
   const scenePassNormal = scenePass
     .getTextureNode("normal")
-    .toInspector("Normal");
+    .toInspector("Normal", (node) => {
+      return colorSpaceToWorking(node, SRGBColorSpace);
+    });
   const scenePassDepth = scenePass
     .getTextureNode("depth")
     .toInspector("Depth", () => {

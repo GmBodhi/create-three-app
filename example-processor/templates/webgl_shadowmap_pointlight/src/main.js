@@ -48,6 +48,8 @@ function init() {
     const light = new PointLight(color, intensity, 20);
     light.castShadow = true;
     light.shadow.bias = -0.005; // reduces self-shadowing on double-sided objects
+    light.shadow.mapSize.width = 128;
+    light.shadow.radius = 10;
 
     let geometry = new SphereGeometry(0.3, 12, 6);
     let material = new MeshBasicMaterial({ color: color });
@@ -104,7 +106,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = BasicShadowMap;
+  // renderer.shadowMap.type = BasicShadowMap;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);

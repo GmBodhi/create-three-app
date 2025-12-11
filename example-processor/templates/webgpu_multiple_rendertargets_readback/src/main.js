@@ -143,23 +143,23 @@ async function render(time) {
 
   torus.rotation.y = (time / 1000) * 0.4;
 
-  const isMRT = selection === "mrt";
+  const isReadback = selection !== "mrt";
 
   // render scene into target
-  renderer.setMRT(isMRT ? sceneMRT : null);
-  renderer.setRenderTarget(isMRT ? renderTarget : readbackTarget);
+  renderer.setMRT(sceneMRT);
+  renderer.setRenderTarget(isReadback ? readbackTarget : renderTarget);
   renderer.render(scene, camera);
 
   // render post FX
   renderer.setMRT(null);
   renderer.setRenderTarget(null);
 
-  if (isMRT) {
-    quadMesh.material = material;
-  } else {
+  if (isReadback) {
     quadMesh.material = readbackMaterial;
 
     await readback();
+  } else {
+    quadMesh.material = material;
   }
 
   quadMesh.render(renderer);

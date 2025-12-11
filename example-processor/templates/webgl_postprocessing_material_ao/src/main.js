@@ -20,7 +20,7 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
@@ -61,7 +61,7 @@ function init() {
   renderer.shadowMap.enabled = sceneParameters.shadow;
 
   const plyLoader = new PLYLoader();
-  const hdrLoader = new HDRLoader();
+  const hdrLoader = new UltraHDRLoader();
 
   camera = new PerspectiveCamera(
     40,
@@ -92,7 +92,7 @@ function init() {
   composer.addPass(outputPass);
 
   hdrLoader.load(
-    "textures/equirectangular/royal_esplanade_1k.hdr",
+    "textures/equirectangular/royal_esplanade_2k.hdr.jpg",
     function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
       scene.environment = texture;

@@ -9,7 +9,7 @@ import {
   BoxGeometry,
   Mesh,
   AmbientLight,
-  PCFSoftShadowMap,
+  PCFShadowMap,
   SpotLightHelper,
   SpotLight,
 } from "three";
@@ -52,7 +52,7 @@ let lightHelper1, lightHelper2, lightHelper3;
 
 function init() {
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
 
   camera.position.set(4.6, 2.2, -2.1);
 

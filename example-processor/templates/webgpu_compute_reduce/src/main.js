@@ -27,7 +27,7 @@ import {
   workgroupArray,
   subgroupSize,
   select,
-  log2,
+  countTrailingZeros,
 } from "three/tsl";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -675,14 +675,13 @@ const createReduce4Fn = (props) => {
 
     // Multiple approaches here
     // log2(subgroupSize) -> TSL log2 function
-    // countTrailingZeros/findLSB(subgroupSize) -> Currently unsupported function in TSL that counts trailing zeros in number bit representation
+    // countTrailingZeros/findLSB(subgroupSize) -> TSL function that counts trailing zeros in number bit representation
     // Can technically petition GPU for subgroupSize in shader and calculate logs on CPU at cost of shader being generalizable across devices
     // May also break if subgroupSize changes when device is lost or if program is rerun on lower power device
-    const subgroupSizeLog = uint(log2(float(subgroupSize))).toVar(
-      "subgroupSizeLog"
-    );
+    const subgroupSizeLog =
+      countTrailingZeros(subgroupSize).toVar("subgroupSizeLog");
     const spineSize = uint(workgroupSize).shiftRight(subgroupSizeLog);
-    const spineSizeLog = uint(log2(float(spineSize))).toVar("spineSizeLog");
+    const spineSizeLog = countTrailingZeros(spineSize).toVar("spineSizeLog");
 
     // Align size to powers of subgroupSize
     const squaredSubgroupLog = spineSizeLog.add(subgroupSizeLog).sub(1);
@@ -781,7 +780,7 @@ async function init(leftSideDisplay = true) {
   const scene = new Scene();
 
   const array = new Uint32Array(
-    Array.from({ length: size }, (_, i) => {
+    Array.from({ length: size }, () => {
       return 1;
     })
   );

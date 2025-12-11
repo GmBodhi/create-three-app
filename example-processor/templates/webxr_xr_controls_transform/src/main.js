@@ -18,6 +18,9 @@ import {
   TorusGeometry,
   MeshStandardMaterial,
   WebGLRenderer,
+  HalfFloatType,
+  ACESFilmicToneMapping,
+  Vector2,
   BufferGeometry,
   Vector3,
   Line,
@@ -26,9 +29,11 @@ import {
 import { TransformControls } from "three/addons/controls/TransformControls.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
 let container;
 let camera, scene, renderer;
+let bloomPass;
 let controller1, controller2, line;
 let controllerGrip1, controllerGrip2;
 
@@ -115,13 +120,27 @@ function init() {
 
   //
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGLRenderer({
+    antialias: true,
+    outputBufferType: HalfFloatType,
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.xr.enabled = true;
   container.appendChild(renderer.domElement);
+
+  // post-processing
+
+  bloomPass = new UnrealBloomPass(
+    new Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
+  );
+  renderer.setEffects([bloomPass]);
 
   document.body.appendChild(XRButton.createButton(renderer));
 

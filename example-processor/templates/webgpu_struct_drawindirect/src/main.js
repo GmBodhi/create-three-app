@@ -4,11 +4,20 @@ import * as THREE from "three/webgpu";
 import {
   struct,
   storage,
-  wgslFn,
-  instanceIndex,
+  sin,
+  cross,
+  normalize,
+  abs,
+  mix,
+  Fn,
+  vec4,
+  max,
+  pow,
   time,
   varyingProperty,
   attribute,
+  uint,
+  atomicStore,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -132,43 +141,27 @@ async function init() {
     "DrawBuffer"
   );
 
-  const writeDrawBuffer = wgslFn(`
-					fn compute(
-						index: u32,
-						drawBuffer: ptr<storage, DrawBuffer, read_write>,
-						instances: f32,
-						time: f32,
-					) -> void {
+  const drawStorage = storage(drawBuffer, drawBufferStruct, drawBuffer.count);
 
-						let instanceCount = max( instances * pow( sin( time * 0.5 ) + 1, 4.0 ), 100 );
+  computeDrawBuffer = Fn(() => {
+    const halfTime = sin(time.mul(0.5));
 
-						atomicStore( &drawBuffer.instanceCount, u32( instanceCount ) );
-					}
-				`);
+    const instanceCount = max(
+      pow(halfTime.add(1), 4.0).mul(instances),
+      100
+    ).toVar("instanceCount");
+    atomicStore(drawStorage.get("instanceCount"), instanceCount);
+  })().compute(instances);
 
-  computeDrawBuffer = writeDrawBuffer({
-    drawBuffer: storage(drawBuffer, drawBufferStruct, drawBuffer.count),
-    instances: instances,
-    index: instanceIndex,
-    time: time,
-  }).compute(instances); // not necessary in this case but normally one wants to run through all instances
+  computeInitDrawBuffer = Fn(() => {
+    const drawInfo = drawStorage;
 
-  const initDrawBuffer = wgslFn(`
-					fn compute(
-						drawBuffer: ptr< storage, DrawBuffer, read_write >,
-					) -> void {
-
-						drawBuffer.vertexCount = 3u;
-						atomicStore(&drawBuffer.instanceCount, 0u);
-						drawBuffer.firstVertex = 0u;
-						drawBuffer.firstInstance = 0u;
-						drawBuffer.offset = 0u;
-					}
-				`);
-
-  computeInitDrawBuffer = initDrawBuffer({
-    drawBuffer: storage(drawBuffer, drawBufferStruct, drawBuffer.count),
-  }).compute(1);
+    drawInfo.get("vertexCount").assign(3);
+    atomicStore(drawInfo.get("instanceCount"), uint(0));
+    drawInfo.get("firstVertex").assign(0);
+    drawInfo.get("firstInstance").assign(0);
+    drawInfo.get("offset").assign(0);
+  })().compute(1);
 
   const vPosition = varyingProperty("vec3", "vPosition");
   const vColor = varyingProperty("vec4", "vColor");
@@ -182,54 +175,40 @@ async function init() {
     time: time,
   };
 
-  const positionShader = wgslFn(
-    `
-					fn main_vertex(
-						position: vec3<f32>,
-						offset: vec3<f32>,
-						color: vec4<f32>,
-						orientationStart: vec4<f32>,
-						orientationEnd: vec4<f32>,
-						time: f32
-					) -> vec4<f32> {
+  const positionFn = Fn(() => {
+    const { position, offset, color, orientationStart, orientationEnd } =
+      positionShaderParams;
 
-						var vPosition = offset * max( abs( sin( time * 0.5 ) * 2.0 + 1.0 ), 0.5 ) + position;
-						var orientation = normalize( mix( orientationStart, orientationEnd, sin( time * 0.5 ) ) );
-						var vcV = cross( orientation.xyz, vPosition );
-						vPosition = vcV * ( 2.0 * orientation.w ) + ( cross( orientation.xyz, vcV ) * 2.0 + vPosition );
+    const halfTime = sin(time.mul(0.5));
 
-						var vColor = color;
+    // Convert slowed sign range of (-1 to 1) to range of (1 -> 0 / 0.5 -> 3)
+    const oscilationRange = max(abs(halfTime.mul(2.0).add(1.0)), 0.5);
 
-						var outPosition = vec4f(vPosition, 1);
+    const sphereOscilation = offset.mul(oscilationRange).add(position).toVar();
 
-						varyings.vPosition = vPosition;
-						varyings.vColor = vColor;
+    const orientation = normalize(
+      mix(orientationStart, orientationEnd, halfTime)
+    );
+    const vcV = cross(orientation.xyz, sphereOscilation);
+    const crossvcV = cross(orientation.xyz, vcV);
 
-						return outPosition;
-					}
-				`,
-    [vPosition, vColor]
-  );
+    vPosition.assign(
+      vcV
+        .mul(orientation.w.mul(2.0))
+        .add(crossvcV.mul(2.0).add(sphereOscilation))
+    );
+    vColor.assign(color);
 
-  const fragmentShaderParams = {
-    time: time,
-    vPosition: vPosition,
-    vColor: vColor,
-  };
+    return vPosition;
+  })();
 
-  const fragmentShader = wgslFn(`
-					fn main_fragment(
-						time: f32,
-						vPosition: vec3<f32>,
-						vColor: vec4<f32>
-					) -> vec4<f32> {
+  const fragmentFn = Fn(() => {
+    const color = vec4(vColor).toVar();
 
-						var color = vec4f( vColor );
-						color.r += sin( vPosition.x * 10.0 + time ) * 0.5;
+    color.r.addAssign(sin(vPosition.x.mul(10.0).add(time)).mul(0.5));
 
-						return color;
-					}
-				`);
+    return color;
+  })();
 
   const material = new MeshBasicNodeMaterial({
     side: DoubleSide,
@@ -237,8 +216,8 @@ async function init() {
     transparent: true,
   });
 
-  material.positionNode = positionShader(positionShaderParams);
-  material.fragmentNode = fragmentShader(fragmentShaderParams);
+  material.positionNode = positionFn;
+  material.fragmentNode = fragmentFn;
 
   const mesh = new Mesh(geometry, material);
   scene.add(mesh);

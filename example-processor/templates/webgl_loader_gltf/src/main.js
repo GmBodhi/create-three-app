@@ -1,18 +1,27 @@
 import "./style.css"; // For webpack support
 
 import {
+  Timer,
   PerspectiveCamera,
   Scene,
   EquirectangularReflectionMapping,
   WebGLRenderer,
   ACESFilmicToneMapping,
+  AnimationMixer,
+  Box3,
+  Vector3,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer;
+let camera, scene, renderer, controls;
+let currentModel, mixer;
+let currentLoadId = 0;
+
+const timer = new Timer();
 
 init();
 
@@ -30,9 +39,9 @@ function init() {
 
   scene = new Scene();
 
-  new HDRLoader()
+  new UltraHDRLoader()
     .setPath("textures/equirectangular/")
-    .load("royal_esplanade_1k.hdr", function (texture) {
+    .load("royal_esplanade_2k.hdr.jpg", function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
 
       scene.background = texture;
@@ -42,37 +51,126 @@ function init() {
 
       // model
 
-      const loader = new GLTFLoader().setPath(
-        "models/gltf/DamagedHelmet/glTF/"
-      );
-      loader.load("DamagedHelmet.gltf", async function (gltf) {
-        const model = gltf.scene;
+      fetch(
+        "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/model-index.json"
+      )
+        .then((response) => response.json())
+        .then((models) => {
+          const gui = new GUI();
+          const modelNames = models.map((m) => m.name);
+          const params = { model: "DamagedHelmet" };
 
-        // wait until the model can be added to the scene without blocking due to shader compilation
+          if (!modelNames.includes(params.model) && modelNames.length > 0) {
+            params.model = modelNames[0];
+          }
 
-        await renderer.compileAsync(model, camera, scene);
+          gui.add(params, "model", modelNames).onChange((name) => {
+            const modelInfo = models.find((m) => m.name === name);
+            loadModel(modelInfo);
+          });
 
-        scene.add(model);
+          gui.add(scene, "backgroundBlurriness", 0, 1);
 
-        render();
-      });
+          const initialModel = models.find((m) => m.name === params.model);
+          if (initialModel) loadModel(initialModel);
+        });
     });
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1;
   container.appendChild(renderer.domElement);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render); // use if there is no animation loop
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableDamping = true;
   controls.minDistance = 2;
   controls.maxDistance = 10;
   controls.target.set(0, 0, -0.2);
   controls.update();
 
   window.addEventListener("resize", onWindowResize);
+}
+
+function loadModel(modelInfo) {
+  const variants = modelInfo.variants;
+  const variant = variants["glTF-Binary"] || variants["glTF"];
+  const url = `https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/${
+    modelInfo.name
+  }/${variant.endsWith(".glb") ? "glTF-Binary" : "glTF"}/${variant}`;
+
+  if (currentModel) {
+    scene.remove(currentModel);
+    currentModel = null;
+  }
+
+  if (mixer) {
+    mixer.stopAllAction();
+    mixer = null;
+  }
+
+  const loadId = ++currentLoadId;
+
+  const loader = new GLTFLoader();
+  loader.load(url, async function (gltf) {
+    if (loadId !== currentLoadId) return;
+
+    currentModel = gltf.scene;
+
+    // wait until the model can be added to the scene without blocking due to shader compilation
+
+    await renderer.compileAsync(currentModel, camera, scene);
+
+    if (loadId !== currentLoadId) return;
+
+    scene.add(currentModel);
+
+    fitCameraToSelection(camera, controls, currentModel);
+
+    // animations
+
+    if (gltf.animations.length > 0) {
+      mixer = new AnimationMixer(currentModel);
+
+      for (const animation of gltf.animations) {
+        mixer.clipAction(animation).play();
+      }
+    }
+  });
+}
+
+function fitCameraToSelection(camera, controls, selection, fitOffset = 1.3) {
+  const box = new Box3();
+  box.setFromObject(selection);
+
+  const size = box.getSize(new Vector3());
+  const center = box.getCenter(new Vector3());
+
+  const maxSize = Math.max(size.x, size.y, size.z);
+  const fitHeightDistance =
+    maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
+  // const fitWidthDistance = fitHeightDistance / camera.aspect;
+  // const distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );
+  const distance = fitOffset * fitHeightDistance;
+
+  const direction = controls.target
+    .clone()
+    .sub(camera.position)
+    .normalize()
+    .multiplyScalar(distance);
+
+  controls.maxDistance = distance * 10;
+  controls.minDistance = distance / 10;
+  controls.target.copy(center);
+
+  camera.near = distance / 100;
+  camera.far = distance * 100;
+  camera.updateProjectionMatrix();
+
+  camera.position.copy(controls.target).sub(direction);
+
+  controls.update();
 }
 
 function onWindowResize() {
@@ -87,5 +185,11 @@ function onWindowResize() {
 //
 
 function render() {
+  timer.update();
+
+  controls.update();
+
+  if (mixer) mixer.update(timer.getDelta());
+
   renderer.render(scene, camera);
 }

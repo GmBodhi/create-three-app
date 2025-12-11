@@ -12,7 +12,7 @@ import {
   Mesh,
 } from "three";
 
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -47,9 +47,9 @@ async function init() {
   controls.maxDistance = 10;
   controls.update();
 
-  new HDRLoader()
+  new UltraHDRLoader()
     .setPath("textures/equirectangular/")
-    .load("royal_esplanade_1k.hdr", function (map) {
+    .load("royal_esplanade_2k.hdr.jpg", function (map) {
       map.mapping = EquirectangularReflectionMapping;
 
       const pmremGenerator = new PMREMGenerator(renderer);

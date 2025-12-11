@@ -13,7 +13,7 @@ import {
   PlaneGeometry,
   MeshPhongMaterial,
   WebGLRenderer,
-  PCFSoftShadowMap,
+  PCFShadowMap,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -95,7 +95,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
   document.body.appendChild(renderer.domElement);
 
   //

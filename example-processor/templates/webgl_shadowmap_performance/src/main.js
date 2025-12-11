@@ -9,7 +9,7 @@ import {
   AmbientLight,
   DirectionalLight,
   WebGLRenderer,
-  PCFSoftShadowMap,
+  PCFShadowMap,
   PlaneGeometry,
   MeshPhongMaterial,
   Mesh,
@@ -101,7 +101,7 @@ function init() {
   //
 
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
 
   // CONTROLS
 

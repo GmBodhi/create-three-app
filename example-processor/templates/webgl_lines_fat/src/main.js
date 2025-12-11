@@ -15,8 +15,6 @@ import {
   LineDashedMaterial,
 } from "three";
 
-import Stats from "stats-gl";
-
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Line2 } from "three/addons/lines/Line2.js";
@@ -27,7 +25,6 @@ import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 let line, renderer, scene, camera, camera2, controls;
 let line1;
 let matLine, matLineBasic, matLineDashed;
-let stats;
 let gui;
 
 // viewport
@@ -140,10 +137,6 @@ function init() {
   window.addEventListener("resize", onWindowResize);
   onWindowResize();
 
-  stats = new Stats({ horizontal: false, trackGPU: true });
-  stats.init(renderer);
-  document.body.appendChild(stats.dom);
-
   initGui();
 }
 
@@ -189,8 +182,6 @@ function animate() {
   renderer.render(scene, camera2);
 
   renderer.setScissorTest(false);
-
-  stats.update();
 }
 
 //

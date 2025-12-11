@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { nodeObject, uniform, cubeTexture } from "three/tsl";
+import { uniform, cubeTexture } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -75,7 +75,7 @@ function init() {
 
   // Materials
 
-  const instanceUniform = nodeObject(new InstanceUniformNode());
+  const instanceUniform = new InstanceUniformNode();
   const cubeTextureNode = cubeTexture(cTexture);
 
   const material = new MeshBasicNodeMaterial();

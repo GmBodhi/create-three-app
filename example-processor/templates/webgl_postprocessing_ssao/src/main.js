@@ -10,7 +10,8 @@ import {
   Group,
   BoxGeometry,
   MeshLambertMaterial,
-  Mesh,
+  InstancedMesh,
+  Object3D,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -55,23 +56,30 @@ function init() {
   scene.add(group);
 
   const geometry = new BoxGeometry(10, 10, 10);
+  const material = new MeshLambertMaterial();
+
+  const mesh = new InstancedMesh(geometry, material, 100);
+  const dummy = new Object3D();
+  const color = new Color();
 
   for (let i = 0; i < 100; i++) {
-    const material = new MeshLambertMaterial({
-      color: Math.random() * 0xffffff,
-    });
+    dummy.position.x = Math.random() * 400 - 200;
+    dummy.position.y = Math.random() * 400 - 200;
+    dummy.position.z = Math.random() * 400 - 200;
+    dummy.rotation.x = Math.random();
+    dummy.rotation.y = Math.random();
+    dummy.rotation.z = Math.random();
 
-    const mesh = new Mesh(geometry, material);
-    mesh.position.x = Math.random() * 400 - 200;
-    mesh.position.y = Math.random() * 400 - 200;
-    mesh.position.z = Math.random() * 400 - 200;
-    mesh.rotation.x = Math.random();
-    mesh.rotation.y = Math.random();
-    mesh.rotation.z = Math.random();
+    dummy.scale.setScalar(Math.random() * 10 + 2);
 
-    mesh.scale.setScalar(Math.random() * 10 + 2);
-    group.add(mesh);
+    dummy.updateMatrix();
+    mesh.setMatrixAt(i, dummy.matrix);
+
+    color.setHex(Math.random() * 0xffffff);
+    mesh.setColorAt(i, color);
   }
+
+  group.add(mesh);
 
   stats = new Stats();
   container.appendChild(stats.dom);

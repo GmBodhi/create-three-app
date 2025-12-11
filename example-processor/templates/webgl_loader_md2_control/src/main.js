@@ -16,7 +16,7 @@ import {
   RepeatWrapping,
   SRGBColorSpace,
   WebGLRenderer,
-  PCFSoftShadowMap,
+  PCFShadowMap,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -120,7 +120,7 @@ function init() {
   //
 
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
+  renderer.shadowMap.type = PCFShadowMap;
 
   // STATS
 

@@ -4791,6 +4791,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_radial_blur": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_smaa": {
       "files": {
         "index.html": "src",
@@ -4964,6 +4974,16 @@
         "/src/shaders"
       ]
     },
+    "webgpu_shadow_contact": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_shadowmap": {
       "files": {
         "index.html": "src",
@@ -4995,6 +5015,16 @@
       ]
     },
     "webgpu_shadowmap_opacity": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_shadowmap_pointlight": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -5085,6 +5115,16 @@
       ]
     },
     "webgpu_struct_drawindirect": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_test_memory": {
       "files": {
         "index.html": "src",
         "main.js": "src",

@@ -14,7 +14,10 @@ import {
   Object3D,
 } from "three";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { VOXLoader, VOXData3DTexture } from "three/addons/loaders/VOXLoader.js";
+import {
+  VOXLoader,
+  buildData3DTexture,
+} from "three/addons/loaders/VOXLoader.js";
 
 let renderer, scene, camera, controls, clock;
 
@@ -82,9 +85,6 @@ function init() {
 
 					uniform sampler3D map;
 
-					uniform float threshold;
-					uniform float steps;
-
 					vec2 hitBox( vec3 orig, vec3 dir ) {
 						const vec3 box_min = vec3( - 0.5 );
 						const vec3 box_max = vec3( 0.5 );
@@ -149,25 +149,24 @@ function init() {
 
 						bounds.x = max( bounds.x, 0.0 );
 
-						vec3 p = instRayOrigin + bounds.x * instRayDirection;
-						vec3 inc = 1.0 / abs( instRayDirection );
-						float delta = min( inc.x, min( inc.y, inc.z ) );
-						delta /= 50.0;
+						float stepSize = ( bounds.y - bounds.x ) / 100.0;
+
+						vec3 p;
 
 						// march through the volume
-						for ( float t = bounds.x; t < bounds.y; t += delta ) {
+						for ( float i = 0.0; i < 100.0; i += 1.0 ) {
 
+							float t = bounds.x + i * stepSize;
+							p = instRayOrigin + t * instRayDirection;
 							float d = sample1( p + 0.5 );
 
 							if ( d > 0.5 ) {
 
-								color.rgb = p * 2.0; // normal( p + 0.5 ); // * 0.5 + ( p * 1.5 + 0.25 );
+								color.rgb = p * 2.0;
 								color.a = 1.;
 								break;
 
 							}
-
-							p += instRayDirection * delta;
 
 						}
 
@@ -195,7 +194,7 @@ function init() {
       const material = new RawShaderMaterial({
         glslVersion: GLSL3,
         uniforms: {
-          map: { value: new VOXData3DTexture(chunk) },
+          map: { value: buildData3DTexture(chunk) },
           cameraPos: { value: new Vector3() },
         },
         vertexShader,

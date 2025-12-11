@@ -169,7 +169,7 @@ function controllerConnected(event) {
   this.add(audio);
 }
 
-function controllerDisconnected(event) {
+function controllerDisconnected() {
   const audio = this.userData.audio;
   audio.source.stop();
 

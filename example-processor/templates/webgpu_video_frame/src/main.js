@@ -24,7 +24,6 @@ function init() {
   const videoTexture = new VideoFrameTexture();
   videoTexture.colorSpace = SRGBColorSpace;
 
-  // eslint-disable-next-line compat/compat
   const decoder = new VideoDecoder({
     output(frame) {
       // To avoid video decoder stalls, we should close the VideoFrame which is no longer needed. https://w3c.github.io/webcodecs/#dom-videodecoder-decode

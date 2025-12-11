@@ -26,7 +26,7 @@ let groundPlane, wallMat;
 
 init();
 
-function init() {
+async function init() {
   RectAreaLightNode.setLTC(RectAreaLightTexturesLib.init());
 
   // scene
@@ -89,9 +89,11 @@ function init() {
 
   // walls
 
-  const diffuseTex = loader.load("textures/brick_diffuse.jpg");
+  const [diffuseTex, bumpTex] = await Promise.all([
+    loader.loadAsync("textures/brick_diffuse.jpg"),
+    loader.loadAsync("textures/brick_bump.jpg"),
+  ]);
   diffuseTex.colorSpace = SRGBColorSpace;
-  const bumpTex = loader.load("textures/brick_bump.jpg");
 
   wallMat = new MeshStandardNodeMaterial();
 
@@ -163,6 +165,10 @@ function init() {
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
+  await renderer.init();
+
+  updateCubeMap();
+
   window.addEventListener("resize", onWindowResize);
 
   // controls
@@ -203,7 +209,5 @@ function updateCubeMap() {
 }
 
 function animate() {
-  updateCubeMap();
-
   renderer.render(scene, camera);
 }

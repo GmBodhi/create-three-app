@@ -11,7 +11,6 @@ let controls;
 let gui;
 let geometries, group;
 
-let renderTimeAverages = [];
 //
 
 const position = new Vector3();
@@ -21,17 +20,15 @@ const scale = new Vector3();
 
 //
 
-const MAX_GEOMETRY_COUNT = 4000;
-
 const api = {
   webgpu: true,
   renderBundle: true,
-  count: MAX_GEOMETRY_COUNT,
+  count: 4000,
   opacity: 1,
   dynamic: false,
 };
 
-init(!api.webgpu);
+init();
 
 //
 
@@ -46,11 +43,7 @@ function randomizeMatrix(matrix) {
 
   quaternion.setFromEuler(rotation);
 
-  const factorScale = api.webgpu ? 1 : 2.0;
-  scale.x =
-    scale.y =
-    scale.z =
-      0.35 * factorScale + Math.random() * 0.5 * factorScale;
+  scale.x = scale.y = scale.z = 0.35 + Math.random() * 0.5;
 
   return matrix.compose(position, quaternion, scale);
 }
@@ -82,18 +75,7 @@ function initGeometries() {
   ];
 }
 
-function cleanup() {
-  if (group) {
-    group.parent.remove(group);
-
-    if (group.dispose) {
-      group.dispose();
-    }
-  }
-}
-
 function initMesh(count) {
-  cleanup();
   initRegularMesh(count);
 }
 
@@ -117,16 +99,13 @@ function initRegularMesh(count) {
   scene.add(group);
 }
 
-async function init(forceWebGL = false) {
-  const count = api.count / (api.webgpu ? 1 : 10);
+function init() {
+  const searchParams = new URLSearchParams(window.location.search);
+  api.webgpu = searchParams.get("backend") !== "webgl";
+  api.renderBundle = searchParams.get("renderBundle") !== "false";
+  api.count = parseFloat(searchParams.get("count") || 4000);
 
-  renderTimeAverages = [];
-
-  if (renderer) {
-    renderer.dispose();
-    controls.dispose();
-    document.body.removeChild(renderer.domElement);
-  }
+  const count = api.count;
 
   // camera
 
@@ -137,7 +116,7 @@ async function init(forceWebGL = false) {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: true, forceWebGL });
+  renderer = new WebGPURenderer({ antialias: true, forceWebGL: !api.webgpu });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.inspector = new Inspector();
@@ -153,8 +132,6 @@ async function init(forceWebGL = false) {
 
   document.body.appendChild(renderer.domElement);
 
-  await renderer.init();
-
   initGeometries();
   initMesh(count);
 
@@ -165,16 +142,9 @@ async function init(forceWebGL = false) {
   // gui
 
   gui = renderer.inspector.createParameters("Settings");
-  gui
-    .add(api, "renderBundle")
-    .name("render bundle")
-    .onChange(() => {
-      init(!api.webgpu);
-    });
+  gui.add(api, "renderBundle").name("render bundle").onChange(reload);
 
-  gui.add(api, "webgpu").onChange(() => {
-    init(!api.webgpu);
-  });
+  gui.add(api, "webgpu").onChange(reload);
 
   gui.add(api, "dynamic").onChange(() => {
     group.static = !group.static;
@@ -195,29 +165,26 @@ async function init(forceWebGL = false) {
     group.needsUpdate = true;
   }
 
-  async function animate() {
+  function reload() {
+    const backendParam = "backend=" + (api.webgpu ? "webgpu" : "webgl");
+    const renderBundleParam =
+      "&renderBundle=" + (api.renderBundle ? "true" : "false");
+    const countParam = "&count=" + api.count;
+
+    location.href =
+      location.pathname + "?" + backendParam + renderBundleParam + countParam; // relative redirect with parameters
+  }
+
+  function animate() {
     animateMeshes();
 
     controls.update();
 
-    const renderTimeAverage = performance.now();
     renderer.render(scene, camera);
-
-    // push only the last 60 render times
-    renderTimeAverages.push(performance.now() - renderTimeAverage);
-    if (renderTimeAverages.length > 60) renderTimeAverages.shift();
-
-    const average =
-      renderTimeAverages.reduce((a, b) => a + b, 0) / renderTimeAverages.length;
-
-    document.getElementById("backend").innerText =
-      `Average Render Time ${api.renderBundle ? "(Bundle)" : ""}: ` +
-      average.toFixed(2) +
-      "ms";
   }
 
   function animateMeshes() {
-    const count = api.count / (api.webgpu ? 1 : 10);
+    const count = api.count;
     const loopNum = api.dynamic ? count : 0;
 
     for (let i = 0; i < loopNum; i++) {

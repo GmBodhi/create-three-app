@@ -18,7 +18,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, renderer, controls;
@@ -38,9 +38,9 @@ function init() {
 
   // environment
 
-  const hdrLoader = new HDRLoader();
+  const hdrLoader = new UltraHDRLoader();
   hdrLoader.load(
-    "three/examples/textures/equirectangular/royal_esplanade_1k.hdr",
+    "textures/equirectangular/royal_esplanade_2k.hdr.jpg",
     (environmentMap) => {
       environmentMap.mapping = EquirectangularReflectionMapping;
 

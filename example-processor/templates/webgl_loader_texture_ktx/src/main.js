@@ -4,11 +4,14 @@ import {
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
+  AmbientLight,
+  PointLight,
   BoxGeometry,
   MeshBasicMaterial,
   SRGBColorSpace,
   DoubleSide,
   Mesh,
+  MeshStandardMaterial,
 } from "three";
 
 import { KTXLoader } from "three/addons/loaders/KTXLoader.js";
@@ -43,6 +46,7 @@ function init() {
   const formats = {
     astc: renderer.extensions.has("WEBGL_compressed_texture_astc"),
     etc1: renderer.extensions.has("WEBGL_compressed_texture_etc1"),
+    etc2: renderer.extensions.has("WEBGL_compressed_texture_etc"),
     s3tc: renderer.extensions.has("WEBGL_compressed_texture_s3tc"),
     pvrtc: renderer.extensions.has("WEBGL_compressed_texture_pvrtc"),
   };
@@ -57,8 +61,15 @@ function init() {
 
   scene = new Scene();
 
+  const ambientLight = new AmbientLight(0xffffff, 0.02);
+  scene.add(ambientLight);
+
+  const pointLight = new PointLight(0xffffff, 2, 0, 0);
+  pointLight.position.z = -300;
+  scene.add(pointLight);
+
   const geometry = new BoxGeometry(200, 200, 200);
-  let material1, material2;
+  let material1, material2, material3;
 
   // TODO: add cubemap support
   const loader = new KTXLoader();
@@ -92,14 +103,26 @@ function init() {
       side: DoubleSide,
     });
     material2.map.colorSpace = SRGBColorSpace;
+    material3 = new MeshStandardMaterial({
+      normalMap: loader.load("textures/compressed/normal.bc5.ktx"),
+    });
 
     meshes.push(new Mesh(geometry, material1));
     meshes.push(new Mesh(geometry, material2));
+    meshes.push(new Mesh(geometry, material3));
   }
 
   if (formats.etc1) {
     material1 = new MeshBasicMaterial({
       map: loader.load("textures/compressed/disturb_ETC1.ktx"),
+    });
+
+    meshes.push(new Mesh(geometry, material1));
+  }
+
+  if (formats.etc2) {
+    material1 = new MeshStandardMaterial({
+      normalMap: loader.load("textures/compressed/normal.eac_rg.ktx"),
     });
 
     meshes.push(new Mesh(geometry, material1));
@@ -122,11 +145,19 @@ function init() {
     meshes.push(new Mesh(geometry, material2));
   }
 
-  let x = (-meshes.length / 2) * 150;
-  for (let i = 0; i < meshes.length; ++i, x += 300) {
+  let x0 = (-Math.min(4, meshes.length) * 300) / 2 + 150;
+  for (let i = 0; i < Math.min(4, meshes.length); ++i, x0 += 300) {
     const mesh = meshes[i];
-    mesh.position.x = x;
-    mesh.position.y = 0;
+    mesh.position.x = x0;
+    mesh.position.y = 150;
+    scene.add(mesh);
+  }
+
+  let x1 = (-(meshes.length - 4) * 300) / 2 + 150;
+  for (let i = 4; i < meshes.length; ++i, x1 += 300) {
+    const mesh = meshes[i];
+    mesh.position.x = x1;
+    mesh.position.y = -150;
     scene.add(mesh);
   }
 
