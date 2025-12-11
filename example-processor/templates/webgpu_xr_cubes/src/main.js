@@ -79,7 +79,7 @@ function init() {
   renderer = new WebGPURenderer({
     antialias: true,
     forceWebGL: true,
-    colorBufferType: UnsignedByteType,
+    outputBufferType: UnsignedByteType,
     multiview: true,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
