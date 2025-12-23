@@ -181,6 +181,7 @@ async function init() {
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.colored = true;
   renderer.inspector = new Inspector();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

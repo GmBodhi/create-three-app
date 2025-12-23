@@ -97,13 +97,16 @@ function init() {
   const sliceArc = uniform(1.25);
   const sliceColor = uniform(color("#b62f58"));
 
+  // mask
+
+  const mask = inAngle(positionLocal.xy, sliceStart, sliceArc).not();
+
+  slicedMaterial.maskNode = mask;
+  //slicedMaterial.maskShadowNode = mask; // optional: custom mask shadows
+
   // output
 
   slicedMaterial.outputNode = Fn(() => {
-    // discard
-
-    inAngle(positionLocal.xy, sliceStart, sliceArc).discard();
-
     // backface color
 
     const finalOutput = output;
@@ -112,16 +115,6 @@ function init() {
     });
 
     return finalOutput;
-  })();
-
-  // shadow
-
-  slicedMaterial.castShadowNode = Fn(() => {
-    // discard
-
-    inAngle(positionLocal.xy, sliceStart, sliceArc).discard();
-
-    return vec4(0, 0, 0, 1);
   })();
 
   // model

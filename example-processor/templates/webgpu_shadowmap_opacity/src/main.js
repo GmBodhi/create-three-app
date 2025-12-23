@@ -31,6 +31,7 @@ async function init() {
   renderer.toneMapping = AgXToneMapping;
   renderer.toneMappingExposure = 1.5;
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.colored = true;
   renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 

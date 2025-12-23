@@ -85,17 +85,7 @@ function init() {
 
   const discardNode = hash(vertexIndex).greaterThan(0.5);
 
-  materialCustomShadow.colorNode = Fn(() => {
-    discardNode.discard();
-
-    return materialColor;
-  })();
-
-  materialCustomShadow.castShadowNode = Fn(() => {
-    discardNode.discard();
-
-    return materialColor;
-  })();
+  materialCustomShadow.maskNode = discardNode;
 
   torusKnot = new Mesh(geometry, materialCustomShadow);
   torusKnot.scale.multiplyScalar(1 / 18);

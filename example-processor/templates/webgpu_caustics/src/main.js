@@ -181,6 +181,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.colored = true;
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
