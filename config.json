@@ -3861,6 +3861,16 @@
         "/src"
       ]
     },
+    "webgpu_custom_fog_scattering": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_depth_texture": {
       "files": {
         "index.html": "src",

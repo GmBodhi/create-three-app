@@ -2,13 +2,12 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 import {
+  mx_fractal_noise_float,
   mx_fractal_noise_vec3,
+  positionLocal,
   positionWorld,
-  vec4,
   Fn,
   color,
-  vertexIndex,
-  hash,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -81,9 +80,9 @@ function init() {
   const materialCustomShadow = material.clone();
   materialCustomShadow.transparent = true;
 
-  const materialColor = vec4(1, 0, 1, 0.5);
-
-  const discardNode = hash(vertexIndex).greaterThan(0.5);
+  const discardNode = mx_fractal_noise_float(
+    positionLocal.mul(0.1)
+  ).x.greaterThan(0.0);
 
   materialCustomShadow.maskNode = discardNode;
 
