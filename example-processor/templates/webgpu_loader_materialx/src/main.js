@@ -4,15 +4,16 @@ import * as THREE from "three/webgpu";
 
 import {
   Fn,
-  length,
+  abs,
   fract,
+  fwidth,
+  length,
+  max,
+  saturate,
+  smoothstep,
   vec4,
   positionWorld,
-  smoothstep,
-  max,
-  abs,
   float,
-  fwidth,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -108,57 +109,35 @@ function init() {
 
   const material = new MeshBasicNodeMaterial();
 
-  const gridXZ = Fn(
-    ([
-      gridSize = float(1.0),
-      dotWidth = float(0.1),
-      lineWidth = float(0.02),
-    ]) => {
-      const coord = positionWorld.xz.div(gridSize);
-      const grid = fract(coord);
+  const grid = Fn(([coord, lineWidth = float(0.01), dotSize = float(0.03)]) => {
+    // https://bgolus.medium.com/the-best-darn-grid-shader-yet-727f9278b9d8
 
-      // Screen-space derivative for automatic antialiasing
-      const fw = fwidth(coord);
-      const smoothing = max(fw.x, fw.y).mul(0.5);
+    const g = fract(coord);
+    const fw = fwidth(coord);
+    const gx = abs(g.x.sub(0.5));
+    const gy = abs(g.y.sub(0.5));
 
-      // Create squares at cell centers
-      const squareDist = max(abs(grid.x.sub(0.5)), abs(grid.y.sub(0.5)));
-      const dots = smoothstep(
-        dotWidth.add(smoothing),
-        dotWidth.sub(smoothing),
-        squareDist
-      );
+    const lineX = saturate(lineWidth.sub(gx).div(fw.x).add(0.5));
+    const lineY = saturate(lineWidth.sub(gy).div(fw.y).add(0.5));
+    const lines = max(lineX, lineY);
 
-      // Create grid lines
-      const lineX = smoothstep(
-        lineWidth.add(smoothing),
-        lineWidth.sub(smoothing),
-        abs(grid.x.sub(0.5))
-      );
-      const lineZ = smoothstep(
-        lineWidth.add(smoothing),
-        lineWidth.sub(smoothing),
-        abs(grid.y.sub(0.5))
-      );
-      const lines = max(lineX, lineZ);
+    const squareDist = max(gx, gy);
+    const aa = max(fw.x, fw.y);
+    const dots = smoothstep(dotSize.add(aa), dotSize.sub(aa), squareDist);
 
-      return max(dots, lines);
-    }
-  );
+    return max(dots, lines);
+  });
 
-  const radialGradient = Fn(([radius = float(10.0), falloff = float(1.0)]) => {
+  const fade = Fn(([radius = float(10.0), falloff = float(1.0)]) => {
     return smoothstep(radius, radius.sub(falloff), length(positionWorld));
   });
 
-  // Create grid pattern
-  const gridPattern = gridXZ(1.0, 0.03, 0.005);
-  const baseColor = vec4(1.0, 1.0, 1.0, 0.0);
   const gridColor = vec4(0.5, 0.5, 0.5, 1.0);
+  const baseColor = vec4(1.0, 1.0, 1.0, 0.0);
 
-  // Mix base color with grid lines
-  material.colorNode = gridPattern
+  material.colorNode = grid(positionWorld.xz, 0.007, 0.03)
     .mix(baseColor, gridColor)
-    .mul(radialGradient(30.0, 20.0));
+    .mul(fade(30.0, 20.0));
   material.transparent = true;
 
   const plane = new Mesh(new CircleGeometry(40), material);

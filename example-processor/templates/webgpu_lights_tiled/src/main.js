@@ -167,7 +167,7 @@ function updatePostProcessing() {
   // tile indexes debug, needs to be updated every time the renderer size changes
 
   const debugBlockIndexes = lighting
-    .getNode(scene, camera)
+    .getNode(scene)
     .setSize(
       window.innerWidth * window.devicePixelRatio,
       window.innerHeight * window.devicePixelRatio
