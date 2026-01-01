@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass, mrt, output, emissive } from "three/tsl";
+import { pass, mrt, output, emissive, vec4 } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
@@ -63,12 +63,24 @@ function init() {
   //
 
   const scenePass = pass(scene, camera);
-  scenePass.setMRT(
-    mrt({
-      output,
-      emissive,
-    })
-  );
+
+  // set up MRT with emissive
+
+  const mrtNode = mrt({
+    output: output,
+    emissive: vec4(emissive, output.a),
+  });
+
+  mrtNode.setBlendMode("emissive", new BlendMode(NormalBlending));
+
+  scenePass.setMRT(mrtNode);
+
+  // optimize the bandwidth
+
+  const emissiveTexture = scenePass.getTexture("emissive");
+  emissiveTexture.type = UnsignedByteType;
+
+  //
 
   const outputPass = scenePass.getTextureNode().toInspector("Color");
   const emissivePass = scenePass
