@@ -81,7 +81,10 @@ function init() {
 
   scene = new Scene();
   scene.background = new Color(0xdeebed);
-  scene.environment = pmremGenerator.fromScene(new RoomEnvironment()).texture;
+  scene.environment = pmremGenerator.fromScene(
+    new RoomEnvironment(),
+    0.04
+  ).texture;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;

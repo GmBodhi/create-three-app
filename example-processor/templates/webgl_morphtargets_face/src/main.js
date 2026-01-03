@@ -87,7 +87,7 @@ function init() {
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.background = new Color(0x666666);
-  scene.environment = pmremGenerator.fromScene(environment).texture;
+  scene.environment = pmremGenerator.fromScene(environment, 0.04).texture;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;

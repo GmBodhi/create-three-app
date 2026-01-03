@@ -53,7 +53,7 @@ async function init() {
   const environment = new RoomEnvironment();
   const pmremGenerator = new PMREMGenerator(renderer);
 
-  scene.environment = pmremGenerator.fromScene(environment).texture;
+  scene.environment = pmremGenerator.fromScene(environment, 0.04).texture;
   pmremGenerator.dispose();
 
   //
