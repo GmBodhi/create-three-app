@@ -3901,6 +3901,16 @@
         "/src"
       ]
     },
+    "webgpu_fog_height": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_hdr": {
       "files": {
         "index.html": "src",
