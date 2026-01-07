@@ -2,7 +2,9 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
+  HalfFloatType,
   ACESFilmicToneMapping,
+  Vector2,
   Scene,
   PerspectiveCamera,
   Vector3,
@@ -22,10 +24,11 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Water } from "three/addons/objects/Water.js";
 import { Sky } from "three/addons/objects/Sky.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
 let container, stats;
 let camera, scene, renderer;
-let controls, water, sun, mesh;
+let controls, water, sun, mesh, bloomPass;
 
 init();
 
@@ -34,13 +37,21 @@ function init() {
 
   //
 
-  renderer = new WebGLRenderer();
+  renderer = new WebGLRenderer({ outputBufferType: HalfFloatType });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.5;
+  renderer.toneMappingExposure = 0.1;
   container.appendChild(renderer.domElement);
+
+  bloomPass = new UnrealBloomPass(
+    new Vector2(window.innerWidth, window.innerHeight)
+  );
+  bloomPass.threshold = 0;
+  bloomPass.strength = 0.1;
+  bloomPass.radius = 0;
+  renderer.setEffects([bloomPass]);
 
   //
 
@@ -98,6 +109,7 @@ function init() {
   const parameters = {
     elevation: 2,
     azimuth: 180,
+    exposure: 0.1,
   };
 
   const pmremGenerator = new PMREMGenerator(renderer);
@@ -154,6 +166,11 @@ function init() {
   const folderSky = gui.addFolder("Sky");
   folderSky.add(parameters, "elevation", 0, 90, 0.1).onChange(updateSun);
   folderSky.add(parameters, "azimuth", -180, 180, 0.1).onChange(updateSun);
+  folderSky
+    .add(parameters, "exposure", 0, 1, 0.0001)
+    .onChange(function (value) {
+      renderer.toneMappingExposure = value;
+    });
   folderSky.open();
 
   const waterUniforms = water.material.uniforms;
@@ -164,6 +181,11 @@ function init() {
     .name("distortionScale");
   folderWater.add(waterUniforms.size, "value", 0.1, 10, 0.1).name("size");
   folderWater.open();
+
+  const folderBloom = gui.addFolder("Bloom");
+  folderBloom.add(bloomPass, "strength", 0, 3, 0.01);
+  folderBloom.add(bloomPass, "radius", 0, 1, 0.01);
+  folderBloom.open();
 
   //
 
