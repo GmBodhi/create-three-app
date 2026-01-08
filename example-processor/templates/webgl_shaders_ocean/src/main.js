@@ -28,7 +28,7 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 
 let container, stats;
 let camera, scene, renderer;
-let controls, water, sun, mesh, bloomPass;
+let controls, water, sun, sky, mesh, bloomPass;
 
 init();
 
@@ -95,7 +95,7 @@ function init() {
 
   // Skybox
 
-  const sky = new Sky();
+  sky = new Sky();
   sky.scale.setScalar(10000);
   scene.add(sky);
 
@@ -105,6 +105,9 @@ function init() {
   skyUniforms["rayleigh"].value = 2;
   skyUniforms["mieCoefficient"].value = 0.005;
   skyUniforms["mieDirectionalG"].value = 0.8;
+  skyUniforms["cloudCoverage"].value = 0.4;
+  skyUniforms["cloudDensity"].value = 0.5;
+  skyUniforms["cloudElevation"].value = 0.5;
 
   const parameters = {
     elevation: 2,
@@ -187,6 +190,18 @@ function init() {
   folderBloom.add(bloomPass, "radius", 0, 1, 0.01);
   folderBloom.open();
 
+  const folderClouds = gui.addFolder("Clouds");
+  folderClouds
+    .add(skyUniforms.cloudCoverage, "value", 0, 1, 0.01)
+    .name("coverage");
+  folderClouds
+    .add(skyUniforms.cloudDensity, "value", 0, 1, 0.01)
+    .name("density");
+  folderClouds
+    .add(skyUniforms.cloudElevation, "value", 0, 1, 0.01)
+    .name("elevation");
+  folderClouds.open();
+
   //
 
   window.addEventListener("resize", onWindowResize);
@@ -212,6 +227,7 @@ function render() {
   mesh.rotation.z = time * 0.51;
 
   water.material.uniforms["time"].value += 1.0 / 60.0;
+  sky.material.uniforms["time"].value = time;
 
   renderer.render(scene, camera);
 }

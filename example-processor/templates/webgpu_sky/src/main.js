@@ -31,6 +31,9 @@ function initSky() {
     elevation: 2,
     azimuth: 180,
     exposure: renderer.toneMappingExposure,
+    cloudCoverage: 0.4,
+    cloudDensity: 0.4,
+    cloudElevation: 0.5,
   };
 
   function guiChanged() {
@@ -38,6 +41,9 @@ function initSky() {
     sky.rayleigh.value = effectController.rayleigh;
     sky.mieCoefficient.value = effectController.mieCoefficient;
     sky.mieDirectionalG.value = effectController.mieDirectionalG;
+    sky.cloudCoverage.value = effectController.cloudCoverage;
+    sky.cloudDensity.value = effectController.cloudDensity;
+    sky.cloudElevation.value = effectController.cloudElevation;
 
     const phi = MathUtils.degToRad(90 - effectController.elevation);
     const theta = MathUtils.degToRad(effectController.azimuth);
@@ -62,6 +68,20 @@ function initSky() {
   gui.add(effectController, "elevation", 0, 90, 0.1).onChange(guiChanged);
   gui.add(effectController, "azimuth", -180, 180, 0.1).onChange(guiChanged);
   gui.add(effectController, "exposure", 0, 1, 0.0001).onChange(guiChanged);
+
+  const folderClouds = gui.addFolder("Clouds");
+  folderClouds
+    .add(effectController, "cloudCoverage", 0, 1, 0.01)
+    .name("coverage")
+    .onChange(guiChanged);
+  folderClouds
+    .add(effectController, "cloudDensity", 0, 1, 0.01)
+    .name("density")
+    .onChange(guiChanged);
+  folderClouds
+    .add(effectController, "cloudElevation", 0, 1, 0.01)
+    .name("elevation")
+    .onChange(guiChanged);
 
   guiChanged();
 }
