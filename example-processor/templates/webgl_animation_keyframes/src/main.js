@@ -3,9 +3,9 @@ import "./style.css"; // For webpack support
 import {
   Clock,
   WebGLRenderer,
-  PMREMGenerator,
+  ACESFilmicToneMapping,
   Scene,
-  Color,
+  PMREMGenerator,
   PerspectiveCamera,
   AnimationMixer,
 } from "three";
@@ -13,7 +13,7 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { Sky } from "three/addons/objects/Sky.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
@@ -29,16 +29,26 @@ container.appendChild(stats.dom);
 const renderer = new WebGLRenderer({ antialias: true });
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.toneMapping = ACESFilmicToneMapping;
 container.appendChild(renderer.domElement);
 
-const pmremGenerator = new PMREMGenerator(renderer);
-
 const scene = new Scene();
-scene.background = new Color(0xbfe3dd);
-scene.environment = pmremGenerator.fromScene(
-  new RoomEnvironment(),
-  0.04
-).texture;
+
+// Sky
+
+const sky = new Sky();
+
+const uniforms = sky.material.uniforms;
+uniforms["turbidity"].value = 0;
+uniforms["rayleigh"].value = 3;
+uniforms["mieDirectionalG"].value = 0.7;
+uniforms["cloudElevation"].value = 1;
+uniforms["sunPosition"].value.set(-0.8, 0.19, 0.56); // elevation: 11, azimuth: -55
+
+const pmremGenerator = new PMREMGenerator(renderer);
+const environment = pmremGenerator.fromScene(sky).texture;
+scene.background = environment;
+scene.environment = environment;
 
 const camera = new PerspectiveCamera(
   40,
@@ -49,10 +59,9 @@ const camera = new PerspectiveCamera(
 camera.position.set(5, 2, 8);
 
 const controls = new OrbitControls(camera, renderer.domElement);
-controls.target.set(0, 0.5, 0);
-controls.update();
-controls.enablePan = false;
 controls.enableDamping = true;
+controls.target.set(0, 0.7, 0);
+controls.update();
 
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
