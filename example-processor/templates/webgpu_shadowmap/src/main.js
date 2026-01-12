@@ -46,7 +46,6 @@ function init() {
   spotLight.shadow.camera.far = 200;
   spotLight.shadow.mapSize.width = 2048;
   spotLight.shadow.mapSize.height = 2048;
-  spotLight.shadow.bias = -0.002;
   spotLight.shadow.radius = 4;
   scene.add(spotLight);
 
@@ -62,7 +61,6 @@ function init() {
   dirLight.shadow.mapSize.width = 2048;
   dirLight.shadow.mapSize.height = 2048;
   dirLight.shadow.radius = 4;
-  dirLight.shadow.bias = -0.0005;
 
   dirGroup = new Group();
   dirGroup.add(dirLight);

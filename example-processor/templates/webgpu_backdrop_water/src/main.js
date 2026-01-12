@@ -49,16 +49,6 @@ function init() {
   camera.lookAt(0, 1, 0);
 
   const sunLight = new DirectionalLight(0xffe499, 5);
-  sunLight.castShadow = true;
-  sunLight.shadow.camera.near = 0.1;
-  sunLight.shadow.camera.far = 5;
-  sunLight.shadow.camera.right = 2;
-  sunLight.shadow.camera.left = -2;
-  sunLight.shadow.camera.top = 1;
-  sunLight.shadow.camera.bottom = -2;
-  sunLight.shadow.mapSize.width = 2048;
-  sunLight.shadow.mapSize.height = 2048;
-  sunLight.shadow.bias = -0.001;
   sunLight.position.set(0.5, 3, 0.5);
 
   const waterAmbientLight = new HemisphereLight(0x333366, 0x74ccf4, 5);
@@ -75,7 +65,6 @@ function init() {
   const loader = new GLTFLoader();
   loader.load("models/gltf/Michelle.glb", function (gltf) {
     model = gltf.scene;
-    model.children[0].children[0].castShadow = true;
 
     mixer = new AnimationMixer(model);
 

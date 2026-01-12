@@ -49,8 +49,6 @@ function init() {
   light.shadow.camera.bottom = -5000;
   light.shadow.camera.far = 2000;
 
-  light.shadow.bias = -0.01;
-
   light.shadow.camera.updateProjectionMatrix();
 
   scene.add(light);

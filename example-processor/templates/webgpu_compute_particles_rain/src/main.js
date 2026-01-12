@@ -48,20 +48,9 @@ async function init() {
   scene = new Scene();
 
   const dirLight = new DirectionalLight(0xffffff, 0.5);
-  dirLight.castShadow = true;
   dirLight.position.set(3, 17, 17);
-  dirLight.castShadow = true;
-  dirLight.shadow.camera.near = 1;
-  dirLight.shadow.camera.far = 50;
-  dirLight.shadow.camera.right = 25;
-  dirLight.shadow.camera.left = -25;
-  dirLight.shadow.camera.top = 25;
-  dirLight.shadow.camera.bottom = -25;
-  dirLight.shadow.mapSize.width = 2048;
-  dirLight.shadow.mapSize.height = 2048;
-  dirLight.shadow.bias = -0.01;
-
   scene.add(dirLight);
+
   scene.add(new AmbientLight(0x111111));
 
   //
@@ -260,7 +249,6 @@ async function init() {
   collisionBox.position.y = 12;
   collisionBox.scale.x = 3.5;
   collisionBox.layers.enable(1);
-  collisionBox.castShadow = true;
   scene.add(collisionBox);
 
   //
@@ -273,7 +261,6 @@ async function init() {
       geometry,
       new MeshStandardMaterial({ roughness: 1, metalness: 0 })
     );
-    monkey.receiveShadow = true;
     monkey.scale.setScalar(5);
     monkey.rotation.y = Math.PI / 2;
     monkey.position.y = 4.5;

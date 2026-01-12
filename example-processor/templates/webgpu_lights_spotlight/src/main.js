@@ -88,7 +88,6 @@ function init() {
   spotLight.shadow.camera.near = 2;
   spotLight.shadow.camera.far = 10;
   spotLight.shadow.focus = 1;
-  spotLight.shadow.bias = -0.003;
   spotLight.shadow.intensity = 1;
   scene.add(spotLight);
 

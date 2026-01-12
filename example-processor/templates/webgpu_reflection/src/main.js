@@ -67,7 +67,7 @@ async function init() {
   sunLight.castShadow = true;
   sunLight.shadow.camera.zoom = 1.5;
   sunLight.shadow.mapSize.set(1024, 1024);
-  sunLight.shadow.bias = -0.0001;
+  sunLight.shadow.bias = -0.0001; // remove self-shadowing artifacts
   scene.add(sunLight);
 
   const backLight = new DirectionalLight(0x0487e2, 0.5);

@@ -86,7 +86,6 @@ function init() {
   directionalLight.position.set(100, 100, 100);
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.set(2048, 2048);
-  directionalLight.shadow.bias = -0.0001;
   scene.add(directionalLight);
 
   const spotLight = new SpotLight(0xffc100, 10, 10, Math.PI / 16, 0.02, 2);
@@ -95,7 +94,6 @@ function init() {
   scene.add(target);
   target.position.set(0, 0, 0);
   spotLight.castShadow = true;
-  spotLight.shadow.bias = -0.001;
   scene.add(spotLight);
 
   renderer = new WebGPURenderer();

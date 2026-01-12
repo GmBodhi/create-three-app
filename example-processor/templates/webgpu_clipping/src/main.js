@@ -35,7 +35,6 @@ function init() {
   spotLight.shadow.camera.far = 10;
   spotLight.shadow.mapSize.width = 2048;
   spotLight.shadow.mapSize.height = 2048;
-  spotLight.shadow.bias = -0.002;
   spotLight.shadow.radius = 4;
   scene.add(spotLight);
 

@@ -49,18 +49,7 @@ async function init() {
   scene.fog = new Fog(0x0f3c37, 5, 40);
 
   const dirLight = new DirectionalLight(0xf9ff9b, 9);
-  dirLight.castShadow = true;
   dirLight.position.set(10, 10, 0);
-  dirLight.castShadow = true;
-  dirLight.shadow.camera.near = 1;
-  dirLight.shadow.camera.far = 30;
-  dirLight.shadow.camera.right = 30;
-  dirLight.shadow.camera.left = -30;
-  dirLight.shadow.camera.top = 30;
-  dirLight.shadow.camera.bottom = -30;
-  dirLight.shadow.mapSize.width = 2048;
-  dirLight.shadow.mapSize.height = 2048;
-  dirLight.shadow.bias = -0.009;
   scene.add(dirLight);
 
   scene.add(new HemisphereLight(0x0f3c37, 0x080d10, 100));
@@ -181,7 +170,6 @@ async function init() {
 
     const rainParticles = new Mesh(geometry, staticMaterial);
     rainParticles.count = maxParticleCount;
-    rainParticles.castShadow = true;
     rainParticles.layers.disableAll();
     rainParticles.layers.enable(layer);
 
@@ -234,7 +222,6 @@ async function init() {
       const coneGeometry = new ConeGeometry(radius * 0.95, radius * 1.25, 32);
 
       const cone = new Mesh(coneGeometry, coneMaterial);
-      cone.castShadow = true;
       cone.position.y = (count - i) * 1.5 + count * 0.6;
       object.add(cone);
     }

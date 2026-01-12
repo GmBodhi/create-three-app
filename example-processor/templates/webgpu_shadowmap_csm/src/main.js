@@ -101,7 +101,6 @@ function init() {
   csmDirectionalLight.shadow.camera.bottom = -1000;
   csmDirectionalLight.shadow.camera.left = -1000;
   csmDirectionalLight.shadow.camera.right = 1000;
-  csmDirectionalLight.shadow.bias = -0.001;
 
   csm = new CSMShadowNode(csmDirectionalLight, {
     cascades: 4,

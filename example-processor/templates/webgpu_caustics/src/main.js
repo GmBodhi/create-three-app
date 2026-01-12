@@ -52,7 +52,6 @@ async function init() {
   spotLight.shadow.mapSize.height = 1024;
   spotLight.shadow.camera.near = 0.1;
   spotLight.shadow.camera.far = 1;
-  spotLight.shadow.bias = -0.003;
   spotLight.shadow.intensity = 0.95;
   scene.add(spotLight);
 

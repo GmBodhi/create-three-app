@@ -44,13 +44,13 @@ async function init() {
   const dirLight = new DirectionalLight(0xffffff, 3);
   dirLight.position.set(-3, 10, -10);
   dirLight.castShadow = true;
+  dirLight.shadow.bias = -0.001; // remove self-shadowing artifacts
   dirLight.shadow.camera.top = 4;
   dirLight.shadow.camera.bottom = -4;
   dirLight.shadow.camera.left = -4;
   dirLight.shadow.camera.right = 4;
   dirLight.shadow.camera.near = 0.1;
   dirLight.shadow.camera.far = 40;
-  dirLight.shadow.bias = -0.001;
   dirLight.shadow.mapSize.width = 1024;
   dirLight.shadow.mapSize.height = 1024;
   scene.add(dirLight);

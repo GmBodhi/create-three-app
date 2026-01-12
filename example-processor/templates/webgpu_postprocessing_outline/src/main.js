@@ -55,7 +55,6 @@ function init() {
   light.castShadow = true;
   light.shadow.mapSize.width = 2048;
   light.shadow.mapSize.height = 2048;
-  light.shadow.bias = -0.005;
 
   const d = 10;
 

@@ -169,7 +169,6 @@ function init() {
   spotLight.shadow.camera.near = 1;
   spotLight.shadow.camera.far = 15;
   spotLight.shadow.focus = 1;
-  spotLight.shadow.bias = -0.003;
   spotLight.layers.enable(LAYER_VOLUMETRIC_LIGHTING);
   //sunLight.add( new Mesh( new SphereGeometry( 0.1, 16, 16 ), new MeshBasicMaterial( { color: 0xffffff } ) ) );
   scene.add(spotLight);

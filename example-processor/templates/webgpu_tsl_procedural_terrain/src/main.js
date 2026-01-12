@@ -67,7 +67,6 @@ function init() {
   directionalLight.shadow.camera.bottom = -8;
   directionalLight.shadow.camera.left = -8;
   directionalLight.shadow.normalBias = 0.05;
-  directionalLight.shadow.bias = 0;
   scene.add(directionalLight);
 
   // terrain
