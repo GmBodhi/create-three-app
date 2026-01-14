@@ -46,7 +46,10 @@ function init() {
   container.appendChild(renderer.domElement);
 
   bloomPass = new UnrealBloomPass(
-    new Vector2(window.innerWidth, window.innerHeight)
+    new Vector2(window.innerWidth, window.innerHeight),
+    1.5,
+    0.4,
+    0.85
   );
   bloomPass.threshold = 0;
   bloomPass.strength = 0.1;
