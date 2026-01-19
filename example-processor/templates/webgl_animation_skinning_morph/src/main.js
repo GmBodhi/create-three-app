@@ -5,7 +5,7 @@ import {
   Scene,
   Color,
   Fog,
-  Clock,
+  Timer,
   HemisphereLight,
   DirectionalLight,
   Mesh,
@@ -22,7 +22,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-let container, stats, clock, gui, mixer, actions, activeAction, previousAction;
+let container, stats, timer, gui, mixer, actions, activeAction, previousAction;
 let camera, scene, renderer, model, face;
 
 const api = { state: "Walking" };
@@ -46,7 +46,8 @@ function init() {
   scene.background = new Color(0xe0e0e0);
   scene.fog = new Fog(0xe0e0e0, 20, 100);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // lights
 
@@ -214,7 +215,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  const dt = clock.getDelta();
+  timer.update();
+
+  const dt = timer.getDelta();
 
   if (mixer) mixer.update(dt);
 

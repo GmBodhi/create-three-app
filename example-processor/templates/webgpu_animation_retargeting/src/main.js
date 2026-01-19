@@ -50,7 +50,8 @@ const [sourceModel, targetModel] = await Promise.all([
 
 //
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 export const lightSpeed = /*#__PURE__*/ Fn(([suv_immutable]) => {
   // forked from https://www.shadertoy.com/view/7ly3D1
@@ -314,7 +315,9 @@ window.onresize = function () {
 };
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   source.mixer.update(delta);
   mixer.update(delta);

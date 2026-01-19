@@ -51,7 +51,8 @@ const verletVertices = [];
 const verletSprings = [];
 const verletVertexColumns = [];
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 const params = {
   wireframe: false,
@@ -557,6 +558,8 @@ function updateSphere() {
 }
 
 async function render() {
+  timer.update();
+
   sphere.visible = params.sphere;
   sphereUniform.value = params.sphere ? 1 : 0;
   windUniform.value = params.wind;
@@ -564,7 +567,7 @@ async function render() {
   vertexWireframeObject.visible = params.wireframe;
   springWireframeObject.visible = params.wireframe;
 
-  const deltaTime = Math.min(clock.getDelta(), 1 / 60); // don't advance the time too far, for example when the window is out of focus
+  const deltaTime = Math.min(timer.getDelta(), 1 / 60); // don't advance the time too far, for example when the window is out of focus
   const stepsPerSecond = 360; // ensure the same amount of simulation steps per second on all systems, independent of refresh rate
   const timePerStep = 1 / stepsPerSecond;
 

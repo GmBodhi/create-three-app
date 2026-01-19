@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -31,7 +31,8 @@ for (let i = 0; i < 1024; i++) {
   timeOffsets[i] = Math.random() * 3;
 }
 
-const clock = new Clock(true);
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -147,13 +148,15 @@ function onWindowResize() {
 //
 
 function animate() {
+  timer.update();
+
   render();
 
   stats.update();
 }
 
 function render() {
-  const time = clock.getElapsedTime();
+  const time = timer.getElapsed();
 
   const r = 3000;
   camera.position.set(

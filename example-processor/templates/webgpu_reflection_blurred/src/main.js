@@ -31,7 +31,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
-let model, mixer, clock;
+let model, mixer, timer;
 let controls;
 let gui;
 
@@ -56,7 +56,8 @@ async function init() {
   const waterAmbientLight = new HemisphereLight(0xffffff, 0x0066ff, 10);
   scene.add(waterAmbientLight);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // animated model
 
@@ -235,9 +236,11 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   controls.update();
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   if (model) {
     mixer.update(delta);

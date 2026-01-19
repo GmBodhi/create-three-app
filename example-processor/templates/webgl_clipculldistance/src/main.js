@@ -8,7 +8,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
+  Timer,
   WebGLRenderer,
   BufferGeometry,
   Float32BufferAttribute,
@@ -20,7 +20,7 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import Stats from "three/addons/libs/stats.module.js";
 
-let camera, controls, clock, scene, renderer, stats;
+let camera, controls, timer, scene, renderer, stats;
 
 let material;
 
@@ -37,7 +37,8 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   //
 
@@ -124,10 +125,12 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   controls.update();
   stats.update();
 
-  material.uniforms.time.value = clock.getElapsedTime();
+  material.uniforms.time.value = timer.getElapsed();
 
   renderer.render(scene, camera);
 }

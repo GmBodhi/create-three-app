@@ -12,7 +12,8 @@ import { transition } from "three/addons/tsl/display/TransitionNode.js";
 let renderer, postProcessing, transitionController, transitionPass;
 
 const textures = [];
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 const effectController = {
   animateScene: true,
@@ -207,6 +208,8 @@ new TWEEN.Tween(effectController)
   .start();
 
 function animate() {
+  timer.update();
+
   if (effectController.animateTransition) TWEEN.update();
 
   if (textures[effectController.texture]) {
@@ -214,7 +217,7 @@ function animate() {
     transitionPass.mixTextureNode.value = mixTexture;
   }
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
   fxSceneA.update(delta);
   fxSceneB.update(delta);
 

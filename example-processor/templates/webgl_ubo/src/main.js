@@ -10,7 +10,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
+  Timer,
   TetrahedronGeometry,
   BoxGeometry,
   TextureLoader,
@@ -25,7 +25,7 @@ import {
   WebGLRenderer,
 } from "three";
 
-let camera, scene, renderer, clock;
+let camera, scene, renderer, timer;
 
 init();
 
@@ -43,7 +43,8 @@ function init() {
   scene = new Scene();
   camera.lookAt(scene.position);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // geometry
 
@@ -160,7 +161,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   scene.traverse(function (child) {
     if (child.isMesh) {

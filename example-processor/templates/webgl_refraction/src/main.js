@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   Scene,
   PerspectiveCamera,
   PlaneGeometry,
@@ -18,7 +18,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Refractor } from "three/addons/objects/Refractor.js";
 import { WaterRefractionShader } from "three/addons/shaders/WaterRefractionShader.js";
 
-let camera, scene, renderer, clock;
+let camera, scene, renderer, timer;
 
 let refractor, smallSphere;
 
@@ -27,7 +27,8 @@ init();
 async function init() {
   const container = document.getElementById("container");
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // scene
   scene = new Scene();
@@ -161,7 +162,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const time = clock.getElapsedTime();
+  timer.update();
+
+  const time = timer.getElapsed();
 
   refractor.material.uniforms.time.value = time;
 

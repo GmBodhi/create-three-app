@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   Vector2,
   Raycaster,
   MeshPhongMaterial,
@@ -32,7 +32,8 @@ import { ConvexGeometry } from "three/addons/geometries/ConvexGeometry.js";
 let container, stats;
 let camera, controls, scene, renderer;
 let textureLoader;
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 const mouseCoords = new Vector2();
 const raycaster = new Raycaster();
@@ -476,12 +477,14 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  const deltaTime = clock.getDelta();
+  const deltaTime = timer.getDelta();
 
   updatePhysics(deltaTime);
 

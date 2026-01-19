@@ -12,7 +12,7 @@ let camera, scene, renderer;
 let postProcessing;
 let spheres,
   rotate = true;
-let mixer, clock;
+let mixer, timer;
 
 init();
 
@@ -31,7 +31,8 @@ function init() {
     .mul(0.05);
   camera.lookAt(0, 1, 0);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // lights
 
@@ -134,7 +135,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) mixer.update(delta);
 

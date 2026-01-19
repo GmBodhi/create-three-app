@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-let camera, scene, renderer, clock, dataTexture, diffuseMap;
+let camera, scene, renderer, timer, dataTexture, diffuseMap;
 
 let last = 0;
 const position = new Vector2();
@@ -21,7 +21,8 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const loader = new TextureLoader();
   diffuseMap = loader.load("textures/carbon/Carbon.png");
@@ -64,7 +65,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const elapsedTime = clock.getElapsedTime();
+  timer.update();
+
+  const elapsedTime = timer.getElapsed();
 
   renderer.render(scene, camera);
 

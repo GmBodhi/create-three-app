@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   Scene,
   Color,
   AmbientLight,
@@ -18,14 +18,15 @@ import {
 } from "three";
 import { VRButton } from "three/addons/webxr/VRButton.js";
 
-let camera, scene, renderer, sphere, clock;
+let camera, scene, renderer, sphere, timer;
 
 init();
 
 function init() {
   const container = document.getElementById("container");
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   scene = new Scene();
   scene.background = new Color(0x101010);
@@ -98,10 +99,12 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   // If we are not presenting move the camera a little so the effect is visible
 
   if (renderer.xr.isPresenting === false) {
-    const time = clock.getElapsedTime();
+    const time = timer.getElapsed();
 
     sphere.rotation.y += 0.001;
     sphere.position.x = Math.sin(time) * 0.2;

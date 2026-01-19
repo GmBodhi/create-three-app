@@ -9,7 +9,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 let camera, scene, renderer;
 let postProcessing;
 
-let mixer, clock;
+let mixer, timer;
 
 init();
 
@@ -25,7 +25,8 @@ function init() {
   scene = new Scene();
   camera.lookAt(0, 1, 0);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // lights
 
@@ -130,7 +131,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) mixer.update(delta);
 

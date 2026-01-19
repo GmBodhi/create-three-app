@@ -11,7 +11,7 @@ const params = {
   animated: false,
 };
 
-let camera, scene, renderer, clock, group;
+let camera, scene, renderer, timer, group;
 let postProcessing;
 
 init();
@@ -28,7 +28,8 @@ async function init() {
   scene = new Scene();
   scene.background = new Color(0xffffff);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   //
 
@@ -126,7 +127,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (params.animated === true) {
     group.rotation.y += delta * 0.1;

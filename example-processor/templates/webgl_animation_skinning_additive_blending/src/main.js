@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   Scene,
   Color,
   Fog,
@@ -23,7 +23,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let scene, renderer, camera, stats;
-let model, skeleton, mixer, clock;
+let model, skeleton, mixer, timer;
 
 const crossFadeControls = [];
 
@@ -46,7 +46,8 @@ init();
 
 function init() {
   const container = document.getElementById("container");
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   scene = new Scene();
   scene.background = new Color(0xa0a0a0);
@@ -313,6 +314,8 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   // Render loop
 
   for (let i = 0; i !== numAnimations; ++i) {
@@ -324,7 +327,7 @@ function animate() {
 
   // Get the time elapsed since the last frame, used for mixer update
 
-  const mixerUpdateDelta = clock.getDelta();
+  const mixerUpdateDelta = timer.getDelta();
 
   // Update the animation mixer, the stats panel, and render this frame
 

@@ -19,7 +19,7 @@ const params = {
   cameraDistance: 40,
 };
 
-let camera, scene, renderer, clock, mainGroup;
+let camera, scene, renderer, timer, mainGroup;
 let controls, postProcessing;
 
 init();
@@ -59,7 +59,8 @@ async function init() {
     0.04
   ).texture;
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // Create main group
   mainGroup = new Group();
@@ -256,7 +257,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const time = clock.getElapsedTime();
+  timer.update();
+
+  const time = timer.getElapsed();
 
   controls.update();
 

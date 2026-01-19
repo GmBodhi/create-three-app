@@ -27,7 +27,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, renderer;
-let mixer, objects, clock;
+let mixer, objects, timer;
 let model, floor, floorPosition;
 let postProcessing;
 let controls;
@@ -58,7 +58,8 @@ function init() {
   scene.add(skyAmbientLight);
   scene.add(waterAmbientLight);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // animated model
 
@@ -115,11 +116,11 @@ function init() {
 
   // water
 
-  const timer = time.mul(0.8);
+  const t = time.mul(0.8);
   const floorUV = positionWorld.xzy;
 
-  const waterLayer0 = mx_worley_noise_float(floorUV.mul(4).add(timer));
-  const waterLayer1 = mx_worley_noise_float(floorUV.mul(2).add(timer));
+  const waterLayer0 = mx_worley_noise_float(floorUV.mul(4).add(t));
+  const waterLayer1 = mx_worley_noise_float(floorUV.mul(2).add(t));
 
   const waterIntensity = waterLayer0.mul(waterLayer1);
   const waterColor = waterIntensity
@@ -261,9 +262,11 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   controls.update();
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   floor.position.y = floorPosition.y - 5;
 
@@ -274,7 +277,7 @@ function animate() {
   }
 
   for (const object of objects.children) {
-    object.position.y = Math.sin(clock.elapsedTime + object.id) * 0.3;
+    object.position.y = Math.sin(timer.getElapsed() + object.id) * 0.3;
     object.rotation.y += delta * 0.3;
   }
 

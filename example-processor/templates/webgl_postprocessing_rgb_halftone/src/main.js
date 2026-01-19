@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   WebGLRenderer,
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -22,7 +22,7 @@ import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { HalftonePass } from "three/addons/postprocessing/HalftonePass.js";
 
-let renderer, clock, camera, stats;
+let renderer, timer, camera, stats;
 
 const rotationSpeed = Math.PI / 64;
 
@@ -36,7 +36,8 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   camera = new PerspectiveCamera(
     75,
@@ -201,7 +202,9 @@ function init() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
   stats.update();
   group.rotation.y += delta * rotationSpeed;
   composer.render(delta);

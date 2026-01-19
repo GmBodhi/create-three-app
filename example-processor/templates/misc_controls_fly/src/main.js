@@ -29,7 +29,8 @@ const textureLoader = new TextureLoader();
 let d, dPlanet, dMoon;
 const dMoonVec = new Vector3();
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -191,6 +192,8 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
@@ -198,7 +201,7 @@ function animate() {
 function render() {
   // rotate the planet and clouds
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   meshPlanet.rotation.y += rotationSpeed * delta;
   meshClouds.rotation.y += 1.25 * rotationSpeed * delta;

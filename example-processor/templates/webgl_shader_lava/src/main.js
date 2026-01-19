@@ -8,7 +8,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
+  Timer,
   TextureLoader,
   SRGBColorSpace,
   RepeatWrapping,
@@ -25,7 +25,7 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { BloomPass } from "three/addons/postprocessing/BloomPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-let camera, renderer, composer, clock;
+let camera, renderer, composer, timer;
 
 let uniforms, mesh;
 
@@ -44,7 +44,8 @@ function init() {
 
   const scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const textureLoader = new TextureLoader();
 
@@ -114,7 +115,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  const delta = 5 * clock.getDelta();
+  timer.update();
+
+  const delta = 5 * timer.getDelta();
 
   uniforms["time"].value += 0.2 * delta;
 

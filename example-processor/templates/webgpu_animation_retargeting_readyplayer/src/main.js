@@ -39,7 +39,8 @@ const [sourceModel, targetModel] = await Promise.all([
 
 //
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 // scene
 
@@ -178,7 +179,9 @@ window.onresize = function () {
 };
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   source.mixer.update(delta);
   mixer.update(delta);

@@ -20,7 +20,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
-let boxLeft, boxRight, model, mixer, clock;
+let boxLeft, boxRight, model, mixer, timer;
 let postProcessing;
 let controls;
 
@@ -61,7 +61,8 @@ function init() {
   scene.add(skyAmbientLight);
   scene.add(waterAmbientLight);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // animated model
 
@@ -211,13 +212,15 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   controls.update();
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
   const speed = params.speed;
 
   boxRight.rotation.y += delta * 4 * speed;
-  boxLeft.scale.setScalar(1 + Math.sin(clock.elapsedTime * 10 * speed) * 0.2);
+  boxLeft.scale.setScalar(1 + Math.sin(timer.getElapsed() * 10 * speed) * 0.2);
 
   if (model) {
     mixer.update(delta * speed);

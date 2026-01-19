@@ -23,12 +23,13 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, controls, globe, clock;
+let camera, scene, renderer, controls, globe, timer;
 
 init();
 
 function init() {
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   camera = new PerspectiveCamera(
     25,
@@ -214,7 +215,9 @@ function onWindowResize() {
 }
 
 async function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
   globe.rotation.y += delta * 0.025;
 
   controls.update();

@@ -10,7 +10,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera;
-let postProcessing, renderer, mixer, clock;
+let postProcessing, renderer, mixer, timer;
 
 const params = {
   threshold: 0,
@@ -22,7 +22,8 @@ const params = {
 init();
 
 async function init() {
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const scene = new Scene();
 
@@ -118,7 +119,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   mixer.update(delta);
 

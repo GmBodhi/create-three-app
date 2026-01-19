@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -36,7 +36,8 @@ const meshes = [],
 
 let composer, effectFocus;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 let stats;
 
@@ -216,12 +217,14 @@ function createMesh(positions, scene, scale, x, y, z, color) {
 }
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  let delta = 10 * clock.getDelta();
+  let delta = 10 * timer.getDelta();
 
   delta = delta < 2 ? delta : 2;
 

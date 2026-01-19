@@ -8,7 +8,7 @@ import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 
 //
 
-let camera, scene, mesh, renderer, clock;
+let camera, scene, mesh, renderer, timer;
 
 const depth = uniform(0);
 
@@ -34,7 +34,8 @@ async function init() {
   scene = new Scene();
 
   //
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -72,8 +73,10 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   if (mesh) {
-    const delta = clock.getDelta() * 10;
+    const delta = timer.getDelta() * 10;
 
     depthStep += delta;
 

@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   SkeletonHelper,
   AnimationMixer,
   PerspectiveCamera,
@@ -14,7 +14,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { BVHLoader } from "three/addons/loaders/BVHLoader.js";
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 let camera, controls, scene, renderer;
 let mixer;
@@ -69,7 +70,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) mixer.update(delta);
 

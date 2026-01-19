@@ -14,7 +14,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, clock;
+let camera, scene, renderer, timer;
 let dirLight, spotLight;
 let torusKnot, dirGroup;
 
@@ -156,7 +156,8 @@ function init() {
   controls.maxDistance = 40;
   controls.update();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   window.addEventListener("resize", resize);
 }
@@ -169,7 +170,9 @@ function resize() {
 }
 
 function animate(time) {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   torusKnot.rotation.x += 0.25 * delta;
   torusKnot.rotation.y += 0.5 * delta;

@@ -14,7 +14,8 @@ let container;
 let camera, scene, renderer;
 let controls;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -139,11 +140,13 @@ function onWindowResize() {
 //
 
 function animate() {
+  timer.update();
+
   render();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   controls.update(delta);
   renderer.render(scene, camera);

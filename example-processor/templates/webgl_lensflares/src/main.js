@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -26,7 +26,8 @@ let container, stats;
 let camera, scene, renderer;
 let controls;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -152,12 +153,14 @@ function onWindowResize() {
 //
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   controls.update(delta);
   renderer.render(scene, camera);

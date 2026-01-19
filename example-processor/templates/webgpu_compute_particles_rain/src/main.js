@@ -31,7 +31,7 @@ let camera, scene, renderer;
 let controls;
 let computeParticles;
 let monkey;
-let clock;
+let timer;
 
 let collisionBox, collisionCamera, collisionPosRT, collisionPosMaterial;
 let collisionBoxPos, collisionBoxPosUI;
@@ -271,7 +271,8 @@ async function init() {
 
   //
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   //
 
@@ -325,7 +326,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (monkey) {
     monkey.rotation.y += delta;

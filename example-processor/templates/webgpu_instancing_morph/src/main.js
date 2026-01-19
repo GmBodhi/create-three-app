@@ -15,7 +15,8 @@ for (let i = 0; i < 1024; i++) {
   timeOffsets[i] = Math.random() * 3;
 }
 
-const clock = new Clock(true);
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -133,7 +134,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  const time = clock.getElapsedTime();
+  timer.update();
+
+  const time = timer.getElapsed();
 
   const r = 3000;
   camera.position.set(

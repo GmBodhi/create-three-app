@@ -8,7 +8,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
+  Timer,
   SphereGeometry,
   UniformsGroup,
   Color,
@@ -25,7 +25,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, clock, stats;
+let camera, scene, renderer, timer, stats;
 
 let lightingUniformsGroup, lightCenters;
 
@@ -51,7 +51,8 @@ function init() {
   scene = new Scene();
   camera.lookAt(scene.position);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // geometry
 
@@ -173,7 +174,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  const elapsedTime = clock.getElapsedTime();
+  timer.update();
+
+  const elapsedTime = timer.getElapsed();
 
   const lights = lightingUniformsGroup.uniforms[0];
 

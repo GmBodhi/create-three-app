@@ -16,7 +16,8 @@ init();
 async function init() {
   let mixer;
 
-  const clock = new Clock();
+  const timer = new Timer();
+  timer.connect(document);
 
   const camera = new PerspectiveCamera(
     45,
@@ -87,7 +88,9 @@ async function init() {
   controls.target.set(0, 0.15, -0.2);
 
   function animate() {
-    const delta = clock.getDelta();
+    timer.update();
+
+    const delta = timer.getDelta();
 
     if (mixer) {
       mixer.update(delta);

@@ -20,7 +20,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, sceneMain, scenePortal, renderer;
-let clock;
+let timer;
 
 const mixers = [];
 
@@ -54,7 +54,8 @@ function init() {
   camera.position.multiplyScalar(0.8);
   camera.lookAt(0, 1, 0);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // lights
 
@@ -155,7 +156,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   for (const mixer of mixers) {
     mixer.update(delta);

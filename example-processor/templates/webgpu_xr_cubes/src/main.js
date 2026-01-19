@@ -6,7 +6,8 @@ import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 let container;
 let camera, scene, raycaster, renderer;
@@ -167,7 +168,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  const delta = clock.getDelta() * 60;
+  timer.update();
+
+  const delta = timer.getDelta() * 60;
 
   if (controller.userData.isSelecting === true) {
     const cube = room.children[0];

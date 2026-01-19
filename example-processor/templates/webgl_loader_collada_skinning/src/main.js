@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
+  Timer,
   AnimationMixer,
   GridHelper,
   AmbientLight,
@@ -16,7 +16,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { ColladaLoader } from "three/addons/loaders/ColladaLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let container, stats, clock, controls;
+let container, stats, timer, controls;
 let camera, scene, renderer, mixer;
 
 init();
@@ -34,7 +34,8 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // collada
 
@@ -101,12 +102,14 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   if (mixer !== undefined) {
     mixer.update(delta);

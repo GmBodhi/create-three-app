@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   WebGLRenderer,
   ACESFilmicToneMapping,
   Scene,
@@ -20,7 +20,8 @@ import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 let mixer;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 const container = document.getElementById("container");
 
 const stats = new Stats();
@@ -95,7 +96,9 @@ window.onresize = function () {
 };
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   mixer.update(delta);
 

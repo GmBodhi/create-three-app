@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   WebGLRenderer,
   PMREMGenerator,
   Scene,
@@ -21,7 +21,7 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { GTAOPass } from "three/addons/postprocessing/GTAOPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
-let camera, scene, renderer, composer, controls, clock, stats, mixer;
+let camera, scene, renderer, composer, controls, timer, stats, mixer;
 
 init();
 
@@ -33,7 +33,8 @@ function init() {
   loader.setDRACOLoader(dracoLoader);
   loader.setPath("models/gltf/");
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
   const container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -237,7 +238,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) {
     mixer.update(delta);

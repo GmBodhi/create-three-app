@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   Scene,
   PerspectiveCamera,
   HemisphereLight,
@@ -12,7 +12,8 @@ import {
 } from "three";
 import { ARButton } from "three/addons/webxr/ARButton.js";
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 let camera, scene, renderer;
 let cube;
@@ -104,7 +105,9 @@ function setCameraTexture() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   setCameraTexture();
 

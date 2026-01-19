@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -47,7 +47,8 @@ let effectController;
 
 let time = 0;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -349,12 +350,14 @@ function updateCubes(object, time, numblobs, floor, wallx, wallz) {
 //
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   time += delta * effectController.speed * 0.5;
 

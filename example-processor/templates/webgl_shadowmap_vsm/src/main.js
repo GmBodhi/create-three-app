@@ -16,7 +16,7 @@ import {
   PlaneGeometry,
   WebGLRenderer,
   VSMShadowMap,
-  Clock,
+  Timer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -24,7 +24,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let camera, scene, renderer, clock, stats;
+let camera, scene, renderer, timer, stats;
 let dirLight, spotLight;
 let torusKnot, dirGroup;
 
@@ -195,7 +195,8 @@ function initMisc() {
   controls.target.set(0, 2, 0);
   controls.update();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
@@ -209,7 +210,9 @@ function onWindowResize() {
 }
 
 function animate(time) {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   torusKnot.rotation.x += 0.25 * delta;
   torusKnot.rotation.y += 0.5 * delta;

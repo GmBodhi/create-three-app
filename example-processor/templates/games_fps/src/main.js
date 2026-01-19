@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   Scene,
   Color,
   Fog,
@@ -29,7 +29,8 @@ import { Capsule } from "three/addons/math/Capsule.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 const scene = new Scene();
 scene.background = new Color(0x88ccee);
@@ -395,7 +396,9 @@ function teleportPlayerIfOob() {
 }
 
 function animate() {
-  const deltaTime = Math.min(0.05, clock.getDelta()) / STEPS_PER_FRAME;
+  timer.update();
+
+  const deltaTime = Math.min(0.05, timer.getDelta()) / STEPS_PER_FRAME;
 
   // we look for collisions in substeps to mitigate the risk of
   // an object traversing another too quickly for detection.

@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   WebGLRenderer,
@@ -23,12 +23,13 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, stats, mixer, clock, controls;
+let camera, scene, renderer, stats, mixer, timer, controls;
 
 init();
 
 function init() {
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const container = document.createElement("div");
   document.body.appendChild(container);
@@ -112,7 +113,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) {
     mixer.update(delta);

@@ -8,7 +8,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import { uniform } from "three/tsl";
 import { pixelationPass } from "three/addons/tsl/display/PixelationPassNode.js";
 
-let camera, scene, renderer, postProcessing, crystalMesh, clock;
+let camera, scene, renderer, postProcessing, crystalMesh, timer;
 let effectController;
 
 init();
@@ -23,7 +23,8 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0x151729);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // textures
 
@@ -149,7 +150,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const t = clock.getElapsedTime();
+  timer.update();
+
+  const t = timer.getElapsed();
 
   crystalMesh.material.emissiveIntensity = Math.sin(t * 3) * 0.5 + 0.5;
   crystalMesh.position.y = 0.7 + Math.sin(t * 2) * 0.05;
