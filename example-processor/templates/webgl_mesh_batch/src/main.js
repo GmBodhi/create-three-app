@@ -8,14 +8,18 @@ import {
   ConeGeometry,
   BoxGeometry,
   SphereGeometry,
-  MeshNormalMaterial,
-  Group,
+  BufferAttribute,
+  MeshPhongMaterial,
   Mesh,
+  Group,
+  Color,
+  Vector4,
   BatchedMesh,
   PerspectiveCamera,
   WebGLRenderer,
   Scene,
-  Color,
+  AmbientLight,
+  DirectionalLight,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -26,7 +30,7 @@ import { radixSort } from "three/addons/utils/SortUtils.js";
 
 let stats, gui, guiStatsEl;
 let camera, controls, scene, renderer;
-let geometries, mesh, material;
+let geometries, mesh;
 const ids = [];
 const matrix = new Matrix4();
 
@@ -51,9 +55,9 @@ const api = {
   count: 256,
   dynamic: 16,
 
+  transparent: true,
   sortObjects: true,
   perObjectFrustumCulled: true,
-  opacity: 1,
   useCustomSort: true,
 };
 
@@ -86,24 +90,50 @@ function randomizeRotationSpeed(rotation) {
   return rotation;
 }
 
+function randomizeColor(color) {
+  return color.setHSL(Math.random() * 0.5, 0.6, 0.5);
+}
+
+function randomizeAlpha() {
+  // make ~20% of all objects transparent
+  return Math.random() > 0.8 ? 0.5 : 1.0;
+}
+
 function initGeometries() {
-  geometries = [
-    new ConeGeometry(1.0, 2.0),
-    new BoxGeometry(2.0, 2.0, 2.0),
-    new SphereGeometry(1.0, 16, 8),
-  ];
+  const cone = new ConeGeometry(1.0, 2.0);
+  const box = new BoxGeometry(2.0, 2.0, 2.0);
+  const sphere = new SphereGeometry(1.0, 16, 8);
+
+  geometries = [cone, box, sphere];
+
+  for (const geometry of geometries) {
+    // add vertex colors for testing
+    const count = geometry.getAttribute("position").count;
+    const attribute = new BufferAttribute(new Float32Array(count * 3), 3);
+    geometry.setAttribute("color", attribute);
+
+    for (let i = 0, l = attribute.array.length; i < l; ++i) {
+      attribute.array[i] = 1.0;
+    }
+  }
 }
 
 function createMaterial() {
-  if (!material) {
-    material = new MeshNormalMaterial();
-  }
-
-  return material;
+  return new MeshPhongMaterial({
+    vertexColors: true,
+    transparent: api.transparent,
+    depthWrite: !api.transparent,
+  });
 }
 
 function cleanup() {
   if (mesh) {
+    mesh.traverse((node) => {
+      if (node instanceof Mesh) {
+        node.material.dispose();
+      }
+    });
+
     mesh.parent.remove(mesh);
 
     if (mesh.dispose) {
@@ -124,9 +154,12 @@ function initMesh() {
 
 function initRegularMesh() {
   mesh = new Group();
-  const material = createMaterial();
 
   for (let i = 0; i < api.count; i++) {
+    const material = createMaterial();
+    randomizeColor(material.color);
+    material.opacity = randomizeAlpha();
+
     const child = new Mesh(geometries[i % geometries.length], material);
     randomizeMatrix(child.matrix);
     child.matrix.decompose(child.position, child.quaternion, child.scale);
@@ -144,6 +177,8 @@ function initBatchedMesh() {
 
   const euler = new Euler();
   const matrix = new Matrix4();
+  const color = new Color();
+  const colorWithAlpha = new Vector4();
   mesh = new BatchedMesh(
     geometryCount,
     vertexCount,
@@ -164,8 +199,12 @@ function initBatchedMesh() {
   ];
 
   for (let i = 0; i < api.count; i++) {
+    randomizeColor(color);
+    colorWithAlpha.set(color.r, color.g, color.b, randomizeAlpha());
+
     const id = mesh.addInstance(geometryIds[i % geometryIds.length]);
     mesh.setMatrixAt(id, randomizeMatrix(matrix));
+    mesh.setColorAt(id, colorWithAlpha);
 
     const rotationMatrix = new Matrix4();
     rotationMatrix.makeRotationFromEuler(randomizeRotationSpeed(euler));
@@ -205,6 +244,13 @@ function init() {
   controls.autoRotate = true;
   controls.autoRotateSpeed = 1.0;
 
+  // light
+
+  const ambientLight = new AmbientLight(0xffffff, 2);
+  const directionalLight = new DirectionalLight(0xffffff, 2);
+  directionalLight.position.set(1, 1, 1);
+  scene.add(directionalLight, ambientLight);
+
   // stats
 
   stats = new Stats();
@@ -216,18 +262,18 @@ function init() {
   gui.add(api, "count", 1, MAX_GEOMETRY_COUNT).step(1).onChange(initMesh);
   gui.add(api, "dynamic", 0, MAX_GEOMETRY_COUNT).step(1);
   gui.add(api, "method", Method).onChange(initMesh);
-  gui.add(api, "opacity", 0, 1).onChange((v) => {
-    if (v < 1) {
-      material.transparent = true;
-      material.depthWrite = false;
-    } else {
-      material.transparent = false;
-      material.depthWrite = true;
-    }
 
-    material.opacity = v;
-    material.needsUpdate = true;
-  });
+  gui.add(api, "transparent").onChange((v) =>
+    mesh.traverse((node) => {
+      if (node instanceof Mesh) {
+        const material = node.material;
+        material.transparent = v;
+        material.depthWrite = !v;
+        material.needsUpdate = true;
+      }
+    })
+  );
+
   gui.add(api, "sortObjects");
   gui.add(api, "perObjectFrustumCulled");
   gui.add(api, "useCustomSort");
