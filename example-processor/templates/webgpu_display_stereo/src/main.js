@@ -8,7 +8,7 @@ import { parallaxBarrierPass } from "three/addons/tsl/display/ParallaxBarrierPas
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing;
+let camera, scene, renderer, renderPipeline;
 
 let stereo, anaglyph, parallaxBarrier;
 
@@ -84,12 +84,12 @@ function init() {
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
   stereo = stereoPass(scene, camera);
   anaglyph = anaglyphPass(scene, camera);
   parallaxBarrier = parallaxBarrierPass(scene, camera);
 
-  postProcessing.outputNode = stereo;
+  renderPipeline.outputNode = stereo;
 
   const gui = renderer.inspector.createParameters("Stereo Settings");
   gui.add(params, "effect", effects).onChange(update);
@@ -109,14 +109,14 @@ function init() {
 
 function update(value) {
   if (value === "stereo") {
-    postProcessing.outputNode = stereo;
+    renderPipeline.outputNode = stereo;
   } else if (value === "anaglyph") {
-    postProcessing.outputNode = anaglyph;
+    renderPipeline.outputNode = anaglyph;
   } else if (value === "parallaxBarrier") {
-    postProcessing.outputNode = parallaxBarrier;
+    renderPipeline.outputNode = parallaxBarrier;
   }
 
-  postProcessing.needsUpdate = true;
+  renderPipeline.needsUpdate = true;
 }
 
 function onWindowResize() {
@@ -152,5 +152,5 @@ function animate() {
     mesh.instanceMatrix.needsUpdate = true;
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

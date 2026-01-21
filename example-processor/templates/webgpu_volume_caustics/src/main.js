@@ -34,7 +34,7 @@ import { bayer16 } from "three/addons/tsl/math/Bayer.js";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 let camera, scene, renderer, controls;
-let postProcessing;
+let renderPipeline;
 let gltf;
 
 init();
@@ -195,7 +195,7 @@ async function init() {
 
   // Post-Processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // Layers
 
@@ -315,7 +315,7 @@ async function init() {
     bloomPass.mul(volumetricLightingIntensity)
   );
 
-  postProcessing.outputNode = scenePassColor;
+  renderPipeline.outputNode = scenePassColor;
 
   // Controls
 
@@ -341,5 +341,5 @@ function animate() {
 
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

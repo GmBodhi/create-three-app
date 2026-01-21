@@ -70,9 +70,9 @@ const bloomIntensityPass = scenePass
 
 const bloomPass = bloom(outputPass.mul(bloomIntensityPass));
 
-const postProcessing = new PostProcessing(renderer);
-postProcessing.outputColorTransform = false;
-postProcessing.outputNode = outputPass.add(bloomPass).renderOutput();
+const renderPipeline = new RenderPipeline(renderer);
+renderPipeline.outputColorTransform = false;
+renderPipeline.outputNode = outputPass.add(bloomPass).renderOutput();
 
 // controls
 
@@ -129,5 +129,5 @@ window.onresize = function () {
 // animate
 
 function animate() {
-  postProcessing.render();
+  renderPipeline.render();
 }

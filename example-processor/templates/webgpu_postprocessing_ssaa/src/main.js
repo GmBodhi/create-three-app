@@ -5,7 +5,7 @@ import { ssaaPass } from "three/addons/tsl/display/SSAAPassNode.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let scene, mesh, renderer, postProcessing;
+let scene, mesh, renderer, renderPipeline;
 let camera, ssaaRenderPass;
 let timer;
 
@@ -93,12 +93,12 @@ function init() {
 
   // postprocessing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   ssaaRenderPass = ssaaPass(scene, camera);
   const scenePassColor = ssaaRenderPass.getTextureNode();
 
-  postProcessing.outputNode = scenePassColor;
+  renderPipeline.outputNode = scenePassColor;
 
   window.addEventListener("resize", onWindowResize);
 
@@ -168,5 +168,5 @@ function animate() {
 
   camera.view.offsetX = params.viewOffsetX;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

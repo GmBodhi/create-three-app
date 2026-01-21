@@ -22,7 +22,7 @@ let camera, controls, scene, renderer, stats;
 let geometry, meshPlanet, meshClouds, meshMoon;
 let dirLight;
 
-let postProcessing;
+let renderPipeline;
 
 const textureLoader = new TextureLoader();
 
@@ -173,12 +173,12 @@ function init() {
 
   // postprocessing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
 
-  postProcessing.outputNode = film(scenePassColor);
+  renderPipeline.outputNode = film(scenePassColor);
 }
 
 function onWindowResize() {
@@ -222,5 +222,5 @@ function render() {
   controls.movementSpeed = 0.33 * d;
   controls.update(delta);
 
-  postProcessing.render();
+  renderPipeline.render();
 }

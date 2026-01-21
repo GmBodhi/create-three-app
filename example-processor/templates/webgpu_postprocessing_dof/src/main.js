@@ -21,7 +21,7 @@ let camera, scene, renderer, mesh, controls;
 let width = window.innerWidth;
 let height = window.innerHeight;
 
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -94,7 +94,7 @@ function init() {
 
   // post processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
 
@@ -109,7 +109,7 @@ function init() {
     effectController.bokehScale
   );
 
-  postProcessing.outputNode = dofPass;
+  renderPipeline.outputNode = dofPass;
 
   // controls
 
@@ -141,5 +141,5 @@ function onWindowResize() {
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

@@ -18,7 +18,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing, controls;
+let camera, scene, renderer, renderPipeline, controls;
 
 init();
 
@@ -104,7 +104,7 @@ async function init() {
 
   // post-processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // pre-pass
 
@@ -145,7 +145,7 @@ async function init() {
   // traa
 
   const traaPass = traa(scenePass, prePassDepth, prePassVelocity, camera);
-  postProcessing.outputNode = traaPass;
+  renderPipeline.outputNode = traaPass;
 
   //
 
@@ -183,14 +183,14 @@ async function init() {
     scenePass.contextNode = params.output !== 1 ? sssContext : null;
 
     if (params.output === 2) {
-      postProcessing.outputNode = vec4(vec3(sssPass.r), 1);
+      renderPipeline.outputNode = vec4(vec3(sssPass.r), 1);
     } else {
-      postProcessing.outputNode = sssPass.useTemporalFiltering
+      renderPipeline.outputNode = sssPass.useTemporalFiltering
         ? traaPass
         : scenePass;
     }
 
-    postProcessing.needsUpdate = true;
+    renderPipeline.needsUpdate = true;
   }
 
   window.addEventListener("resize", onWindowResize);
@@ -209,5 +209,5 @@ function onWindowResize() {
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

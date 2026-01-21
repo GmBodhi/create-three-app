@@ -22,7 +22,7 @@ let camera,
   tileInfluence,
   lighting,
   count,
-  postProcessing;
+  renderPipeline;
 
 init();
 
@@ -153,7 +153,7 @@ function init() {
   compose = scenePass.add(bloomPass);
   tileInfluence = uniform(0);
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   updatePostProcessing();
 
@@ -176,8 +176,8 @@ function updatePostProcessing() {
     .toColor()
     .div(count * 2);
 
-  postProcessing.outputNode = compose.add(debugBlockIndexes.mul(tileInfluence));
-  postProcessing.needsUpdate = true;
+  renderPipeline.outputNode = compose.add(debugBlockIndexes.mul(tileInfluence));
+  renderPipeline.needsUpdate = true;
 }
 
 function onWindowResize() {
@@ -204,5 +204,5 @@ function animate() {
     lightDummy.setMatrixAt(i, light.matrixWorld);
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

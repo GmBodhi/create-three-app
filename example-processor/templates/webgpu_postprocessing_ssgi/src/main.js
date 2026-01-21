@@ -22,7 +22,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing, controls;
+let camera, scene, renderer, renderPipeline, controls;
 
 init();
 
@@ -57,7 +57,7 @@ async function init() {
 
   //
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   scenePass.setMRT(
@@ -123,7 +123,7 @@ async function init() {
     scenePassVelocity,
     camera
   );
-  postProcessing.outputNode = traaPass;
+  renderPipeline.outputNode = traaPass;
 
   // Cornell Box inspired scene
 
@@ -240,18 +240,18 @@ async function init() {
 
   function updatePostprocessing(value) {
     if (value === 1) {
-      postProcessing.outputNode = vec4(vec3(ao), 1);
+      renderPipeline.outputNode = vec4(vec3(ao), 1);
     } else if (value === 2) {
-      postProcessing.outputNode = vec4(gi, 1);
+      renderPipeline.outputNode = vec4(gi, 1);
     } else if (value === 3) {
-      postProcessing.outputNode = scenePassColor;
+      renderPipeline.outputNode = scenePassColor;
     } else {
-      postProcessing.outputNode = giPass.useTemporalFiltering
+      renderPipeline.outputNode = giPass.useTemporalFiltering
         ? traaPass
         : compositePass;
     }
 
-    postProcessing.needsUpdate = true;
+    renderPipeline.needsUpdate = true;
   }
 }
 
@@ -268,5 +268,5 @@ function onWindowResize() {
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

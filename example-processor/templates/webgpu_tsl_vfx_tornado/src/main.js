@@ -27,7 +27,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing, controls;
+let camera, scene, renderer, renderPipeline, controls;
 
 init();
 
@@ -274,14 +274,14 @@ function init() {
 
   // post processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode("output");
 
   const bloomPass = bloom(scenePassColor, 1, 0.1, 1);
 
-  postProcessing.outputNode = scenePassColor.add(bloomPass);
+  renderPipeline.outputNode = scenePassColor.add(bloomPass);
 
   // controls
 
@@ -324,5 +324,5 @@ function onWindowResize() {
 async function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

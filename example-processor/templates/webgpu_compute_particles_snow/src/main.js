@@ -31,7 +31,7 @@ const maxParticleCount = 100000;
 let camera, scene, renderer;
 let controls;
 let computeParticles;
-let postProcessing;
+let renderPipeline;
 
 let collisionCamera, collisionPosRT, collisionPosMaterial;
 
@@ -300,8 +300,8 @@ async function init() {
     teapotTreePass.mul(10).add(teapotTreePassBlurred).toInspector("Teapot Blur")
   );
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = totalPass;
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = totalPass;
 
   //
 
@@ -341,5 +341,5 @@ function animate() {
   scene.overrideMaterial = null;
   renderer.setRenderTarget(null);
 
-  postProcessing.render();
+  renderPipeline.render();
 }

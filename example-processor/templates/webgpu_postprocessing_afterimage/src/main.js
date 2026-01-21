@@ -20,7 +20,7 @@ import { afterImage } from "three/addons/tsl/display/AfterImageNode.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, particles;
-let postProcessing, afterImagePass, scenePass;
+let renderPipeline, afterImagePass, scenePass;
 
 const params = {
   damp: uniform(0.8, "float").setName("damp"),
@@ -118,13 +118,13 @@ function init() {
 
   // postprocessing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   scenePass = pass(scene, camera);
 
   afterImagePass = afterImage(scenePass, params.damp);
 
-  postProcessing.outputNode = afterImagePass;
+  renderPipeline.outputNode = afterImagePass;
 
   //
 
@@ -137,12 +137,12 @@ function init() {
 
 function updatePassChain() {
   if (params.enabled === true) {
-    postProcessing.outputNode = afterImagePass;
+    renderPipeline.outputNode = afterImagePass;
   } else {
-    postProcessing.outputNode = scenePass;
+    renderPipeline.outputNode = scenePass;
   }
 
-  postProcessing.needsUpdate = true;
+  renderPipeline.needsUpdate = true;
 }
 
 function getRandomPointOnSphere(r, v) {
@@ -168,5 +168,5 @@ function onWindowResize() {
 function animate(time) {
   particles.rotation.z = time * 0.001;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

@@ -8,7 +8,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import { uniform } from "three/tsl";
 import { pixelationPass } from "three/addons/tsl/display/PixelationPassNode.js";
 
-let camera, scene, renderer, postProcessing, crystalMesh, timer;
+let camera, scene, renderer, renderPipeline, crystalMesh, timer;
 let effectController;
 
 init();
@@ -112,7 +112,7 @@ function init() {
     pixelAlignedPanning: true,
   };
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
   const scenePass = pixelationPass(
     scene,
     camera,
@@ -120,7 +120,7 @@ function init() {
     effectController.normalEdgeStrength,
     effectController.depthEdgeStrength
   );
-  postProcessing.outputNode = scenePass;
+  renderPipeline.outputNode = scenePass;
 
   window.addEventListener("resize", onWindowResize);
 
@@ -179,7 +179,7 @@ function animate() {
     camera.updateProjectionMatrix();
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }
 
 // Helper functions

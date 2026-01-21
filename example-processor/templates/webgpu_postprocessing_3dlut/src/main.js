@@ -46,7 +46,7 @@ const lutMap = {
   NightLUT: null,
 };
 
-let camera, scene, renderer, postProcessing, controls, lutPass;
+let camera, scene, renderer, renderPipeline, controls, lutPass;
 
 init();
 
@@ -181,12 +181,12 @@ async function init() {
 
   // post processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // ignore default output color transform ( toneMapping and outputColorSpace )
   // use renderOutput() for control the sequence
 
-  postProcessing.outputColorTransform = false;
+  renderPipeline.outputColorTransform = false;
 
   // scene pass
 
@@ -201,7 +201,7 @@ async function init() {
     uniform(1)
   );
 
-  postProcessing.outputNode = lutPass;
+  renderPipeline.outputNode = lutPass;
 
   // controls
 
@@ -238,5 +238,5 @@ async function animate() {
     lutPass.size.value = lut.texture3D.image.width;
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

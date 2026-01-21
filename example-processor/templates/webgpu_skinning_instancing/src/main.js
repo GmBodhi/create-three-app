@@ -7,7 +7,7 @@ import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer;
-let postProcessing;
+let renderPipeline;
 
 let mixer, timer;
 
@@ -115,8 +115,8 @@ function init() {
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = scenePassDepth;
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = scenePassColorBlurred;
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = scenePassColorBlurred;
 
   // events
 
@@ -137,5 +137,5 @@ function animate() {
 
   if (mixer) mixer.update(delta);
 
-  postProcessing.render();
+  renderPipeline.render();
 }

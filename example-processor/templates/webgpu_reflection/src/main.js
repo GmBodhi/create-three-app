@@ -35,7 +35,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import TWEEN from "three/addons/libs/tween.module.js";
 
 let camera, scene, renderer;
-let postProcessing;
+let renderPipeline;
 let controls;
 
 // below uniforms will be animated via TWEEN.js
@@ -158,8 +158,8 @@ async function init() {
 
   const vignette = screenUV.distance(0.5).mul(1.25).clamp().oneMinus().sub(0.2);
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = blendOverlay(scenePassColorBlurred, vignette);
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = blendOverlay(scenePassColorBlurred, vignette);
 
   // tweens
 
@@ -193,7 +193,7 @@ function animate() {
 
   TWEEN.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }
 
 function random() {

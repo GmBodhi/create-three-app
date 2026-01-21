@@ -39,7 +39,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
-let camera, scene, renderer, postProcessing, controls, timer, light;
+let camera, scene, renderer, renderPipeline, controls, timer, light;
 
 let updateParticles, spawnParticles; // TSL compute nodes
 let getInstanceColor; // TSL function
@@ -395,14 +395,14 @@ async function init() {
 
   // post processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode("output");
 
   const bloomPass = bloom(scenePassColor, 0.75, 0.1, 0.5);
 
-  postProcessing.outputNode = scenePassColor.add(bloomPass);
+  renderPipeline.outputNode = scenePassColor.add(bloomPass);
 
   // controls
 
@@ -500,5 +500,5 @@ function animate() {
 
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

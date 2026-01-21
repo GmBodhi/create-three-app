@@ -29,7 +29,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let camera, scene, renderer;
 let mixer, objects, timer;
 let model, floor, floorPosition;
-let postProcessing;
+let renderPipeline;
 let controls;
 
 init();
@@ -243,8 +243,8 @@ function init() {
     .oneMinus()
     .toInspector("Post-Processing / Vignette");
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = waterMask.select(
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = waterMask.select(
     scenePassColorBlurred,
     scenePassColorBlurred.mul(color(0x74ccf4)).mul(vignette)
   );
@@ -281,5 +281,5 @@ function animate() {
     object.rotation.y += delta * 0.3;
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

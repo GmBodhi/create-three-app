@@ -9,7 +9,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer;
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -52,9 +52,9 @@ function init() {
   // mix fog using fog factor and fog color
   const compose = fogFactor.mix(scenePassTM, fogColor);
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = true; // no tone mapping will be applied, only the default color space transform
-  postProcessing.outputNode = compose;
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputColorTransform = true; // no tone mapping will be applied, only the default color space transform
+  renderPipeline.outputNode = compose;
 
   //
 
@@ -95,5 +95,5 @@ function onWindowResize() {
 //
 
 function animate() {
-  postProcessing.render();
+  renderPipeline.render();
 }

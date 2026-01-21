@@ -11,7 +11,7 @@ import { WaterMesh } from "three/addons/objects/WaterMesh.js";
 import { SkyMesh } from "three/addons/objects/SkyMesh.js";
 
 let container;
-let camera, scene, renderer, postProcessing;
+let camera, scene, renderer, renderPipeline;
 let controls, water, sun, sky, mesh, bloomPass;
 
 init();
@@ -44,7 +44,7 @@ function init() {
 
   // Post-processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode("output");
@@ -54,7 +54,7 @@ function init() {
   bloomPass.strength.value = 0.1;
   bloomPass.radius.value = 0;
 
-  postProcessing.outputNode = scenePassColor.add(bloomPass);
+  renderPipeline.outputNode = scenePassColor.add(bloomPass);
 
   //
 
@@ -188,5 +188,5 @@ function render() {
   mesh.rotation.x = time * 0.5;
   mesh.rotation.z = time * 0.51;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

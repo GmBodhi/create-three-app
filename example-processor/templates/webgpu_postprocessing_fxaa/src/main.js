@@ -12,7 +12,7 @@ const params = {
 };
 
 let camera, scene, renderer, timer, group;
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -81,12 +81,12 @@ async function init() {
 
   // post processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // ignore default output color transform ( toneMapping and outputColorSpace )
   // use renderOutput() for control the sequence
 
-  postProcessing.outputColorTransform = false;
+  renderPipeline.outputColorTransform = false;
 
   // scene pass
 
@@ -96,7 +96,7 @@ async function init() {
   // FXAA must be computed in sRGB color space (so after tone mapping and color space conversion)
 
   const fxaaPass = fxaa(outputPass);
-  postProcessing.outputNode = fxaaPass;
+  renderPipeline.outputNode = fxaaPass;
 
   //
 
@@ -107,12 +107,12 @@ async function init() {
   const gui = renderer.inspector.createParameters("Settings");
   gui.add(params, "enabled").onChange((value) => {
     if (value === true) {
-      postProcessing.outputNode = fxaaPass;
+      renderPipeline.outputNode = fxaaPass;
     } else {
-      postProcessing.outputNode = outputPass;
+      renderPipeline.outputNode = outputPass;
     }
 
-    postProcessing.needsUpdate = true;
+    renderPipeline.needsUpdate = true;
   });
   gui.add(params, "animated");
 }
@@ -135,5 +135,5 @@ function animate() {
     group.rotation.y += delta * 0.1;
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

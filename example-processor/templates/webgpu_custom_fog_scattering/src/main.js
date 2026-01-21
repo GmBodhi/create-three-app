@@ -15,7 +15,7 @@ import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing, controls;
+let camera, scene, renderer, renderPipeline, controls;
 
 const params = {
   scatteringEnabled: true,
@@ -116,7 +116,7 @@ async function init() {
 
   //
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // uniforms
 
@@ -144,7 +144,7 @@ async function init() {
 
   const compositeNode = mix(scenePassColor, sceneColorBlurred, fogFactor);
 
-  postProcessing.outputNode = compositeNode;
+  renderPipeline.outputNode = compositeNode;
 
   // gui
 
@@ -162,12 +162,12 @@ async function init() {
     .name("enable scattering")
     .onChange((value) => {
       if (value === true) {
-        postProcessing.outputNode = compositeNode;
+        renderPipeline.outputNode = compositeNode;
       } else {
-        postProcessing.outputNode = scenePassColor;
+        renderPipeline.outputNode = scenePassColor;
       }
 
-      postProcessing.needsUpdate = true;
+      renderPipeline.needsUpdate = true;
     });
 
   window.addEventListener("resize", resize);
@@ -183,5 +183,5 @@ function resize() {
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

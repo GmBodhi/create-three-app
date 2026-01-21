@@ -36,7 +36,7 @@ const params = {
   enabled: true,
 };
 
-let camera, scene, model, renderer, postProcessing, ssrPass;
+let camera, scene, model, renderer, renderPipeline, ssrPass;
 let controls;
 
 init();
@@ -101,7 +101,7 @@ async function init() {
 
   //
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   scenePass.setMRT(
@@ -155,7 +155,7 @@ async function init() {
 
   const outputNode = smaa(blendColor(scenePassColor, ssrPass));
 
-  postProcessing.outputNode = outputNode;
+  renderPipeline.outputNode = outputNode;
 
   //
 
@@ -176,12 +176,12 @@ async function init() {
   ssrFolder.add(params, "thickness", 0, 0.05).onChange(updateParameters);
   ssrFolder.add(params, "enabled").onChange(() => {
     if (params.enabled === true) {
-      postProcessing.outputNode = outputNode;
+      renderPipeline.outputNode = outputNode;
     } else {
-      postProcessing.outputNode = scenePass;
+      renderPipeline.outputNode = scenePass;
     }
 
-    postProcessing.needsUpdate = true;
+    renderPipeline.needsUpdate = true;
   });
   const modelFolder = gui.addFolder("Model");
   modelFolder.add(params, "roughness", 0, 1).onChange((value) => {
@@ -213,5 +213,5 @@ function onWindowResize() {
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

@@ -10,7 +10,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, controls;
-let postProcessing;
+let renderPipeline;
 
 const params = {
   enabled: true,
@@ -66,12 +66,12 @@ async function init() {
 
   // postprocessing
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = false;
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputColorTransform = false;
 
   const scenePass = pass(scene, camera);
 
-  postProcessing.outputNode = sobel(renderOutput(scenePass));
+  renderPipeline.outputNode = sobel(renderOutput(scenePass));
 
   //
 
@@ -94,7 +94,7 @@ function animate() {
   controls.update();
 
   if (params.enabled === true) {
-    postProcessing.render();
+    renderPipeline.render();
   } else {
     renderer.render(scene, camera);
   }

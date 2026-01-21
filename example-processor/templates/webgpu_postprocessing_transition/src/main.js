@@ -9,7 +9,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import { uniform, pass } from "three/tsl";
 import { transition } from "three/addons/tsl/display/TransitionNode.js";
 
-let renderer, postProcessing, transitionController, transitionPass;
+let renderer, renderPipeline, transitionController, transitionPass;
 
 const textures = [];
 const timer = new Timer();
@@ -136,7 +136,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePassA = pass(fxSceneA.scene, fxSceneA.camera);
   const scenePassB = pass(fxSceneB.scene, fxSceneB.camera);
@@ -150,7 +150,7 @@ function init() {
     effectController._useTexture
   );
 
-  postProcessing.outputNode = transitionPass;
+  renderPipeline.outputNode = transitionPass;
 
   const gui = renderer.inspector.createParameters("Settings");
 
@@ -231,7 +231,7 @@ function render() {
   } else if (effectController.transition === 1) {
     renderer.render(fxSceneA.scene, fxSceneA.camera);
   } else {
-    postProcessing.render();
+    renderPipeline.render();
   }
 }
 

@@ -6,7 +6,7 @@ import { dotScreen } from "three/addons/tsl/display/DotScreenNode.js";
 import { rgbShift } from "three/addons/tsl/display/RGBShiftNode.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, renderer, postProcessing;
+let camera, renderer, renderPipeline;
 let object;
 
 init();
@@ -60,7 +60,7 @@ function init() {
 
   // postprocessing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode().toInspector("Scene Color");
@@ -71,7 +71,7 @@ function init() {
   const rgbShiftPass = rgbShift(dotScreenPass);
   rgbShiftPass.amount.value = 0.001;
 
-  postProcessing.outputNode = rgbShiftPass;
+  renderPipeline.outputNode = rgbShiftPass;
 
   //
 
@@ -89,5 +89,5 @@ function animate() {
   object.rotation.x += 0.005;
   object.rotation.y += 0.01;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

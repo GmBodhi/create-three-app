@@ -21,7 +21,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 let boxLeft, boxRight, model, mixer, timer;
-let postProcessing;
+let renderPipeline;
 let controls;
 
 const params = {
@@ -189,8 +189,8 @@ function init() {
     .clamp()
     .oneMinus();
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = mBlur.mul(vignette);
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = mBlur.mul(vignette);
 
   //
 
@@ -226,5 +226,5 @@ function animate() {
     mixer.update(delta * speed);
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

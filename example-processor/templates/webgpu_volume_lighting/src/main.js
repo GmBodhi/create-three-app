@@ -23,7 +23,7 @@ import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 let renderer, scene, camera;
 let volumetricMesh, teapot, pointLight, spotLight;
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -175,7 +175,7 @@ function init() {
 
   // Post-Processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // Layers
 
@@ -211,7 +211,7 @@ function init() {
     blurredVolumetricPass.mul(volumetricLightingIntensity)
   );
 
-  postProcessing.outputNode = scenePassColor;
+  renderPipeline.outputNode = scenePassColor;
 
   // GUI
 
@@ -235,8 +235,8 @@ function init() {
       volumetric.mul(volumetricLightingIntensity)
     );
 
-    postProcessing.outputNode = scenePassColor;
-    postProcessing.needsUpdate = true;
+    renderPipeline.outputNode = scenePassColor;
+    renderPipeline.needsUpdate = true;
   });
 
   const lighting = gui.addFolder("Lighting / Scene");
@@ -270,5 +270,5 @@ function animate() {
 
   teapot.rotation.y = time * 0.2;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

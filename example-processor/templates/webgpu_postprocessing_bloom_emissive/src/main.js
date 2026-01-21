@@ -12,7 +12,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -89,8 +89,8 @@ function init() {
 
   const bloomPass = bloom(emissivePass, 2.5, 0.5);
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = outputPass.add(bloomPass);
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = outputPass.add(bloomPass);
 
   //
 
@@ -126,5 +126,5 @@ function onWindowResize() {
 //
 
 function render() {
-  postProcessing.render();
+  renderPipeline.render();
 }

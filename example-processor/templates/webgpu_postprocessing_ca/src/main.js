@@ -20,7 +20,7 @@ const params = {
 };
 
 let camera, scene, renderer, timer, mainGroup;
-let controls, postProcessing;
+let controls, renderPipeline;
 
 init();
 
@@ -75,8 +75,8 @@ async function init() {
   scene.add(gridHelper);
 
   // post processing
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = false;
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputColorTransform = false;
 
   // scene pass
   const scenePass = pass(scene, camera);
@@ -96,7 +96,7 @@ async function init() {
   );
 
   // Set initial output based on params
-  postProcessing.outputNode = params.enabled ? caPass : outputPass;
+  renderPipeline.outputNode = params.enabled ? caPass : outputPass;
 
   window.addEventListener("resize", onWindowResize);
 
@@ -105,8 +105,8 @@ async function init() {
   const gui = renderer.inspector.createParameters("Settings");
 
   gui.add(params, "enabled").onChange((value) => {
-    postProcessing.outputNode = value ? caPass : outputPass;
-    postProcessing.needsUpdate = true;
+    renderPipeline.outputNode = value ? caPass : outputPass;
+    renderPipeline.needsUpdate = true;
   });
 
   const staticFolder = gui.addFolder("Static Parameters");
@@ -284,5 +284,5 @@ function animate() {
     });
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

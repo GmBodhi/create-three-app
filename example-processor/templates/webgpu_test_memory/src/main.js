@@ -19,7 +19,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 let camera, scene, renderer, light;
 let generateMeshes = true;
 let mesh;
-let postProcessing;
+let renderPipeline;
 let aoNode, outlineNode, scenePass, prePass;
 const selectedObjects = [];
 
@@ -123,9 +123,9 @@ async function init() {
 }
 
 function updatePostProcessing() {
-  if (postProcessing) {
-    postProcessing.dispose();
-    postProcessing = null;
+  if (renderPipeline) {
+    renderPipeline.dispose();
+    renderPipeline = null;
   }
 
   if (scenePass) {
@@ -149,7 +149,7 @@ function updatePostProcessing() {
   }
 
   if (params.enablePP) {
-    postProcessing = new PostProcessing(renderer);
+    renderPipeline = new RenderPipeline(renderer);
 
     scenePass = pass(scene, camera);
     let colorNode = scenePass;
@@ -181,7 +181,7 @@ function updatePostProcessing() {
       colorNode = colorNode.add(outlineNode);
     }
 
-    postProcessing.outputNode = colorNode;
+    renderPipeline.outputNode = colorNode;
   }
 }
 
@@ -246,8 +246,8 @@ function animate() {
     }
   }
 
-  if (postProcessing) {
-    postProcessing.render();
+  if (renderPipeline) {
+    renderPipeline.render();
   } else {
     renderer.render(scene, camera);
   }

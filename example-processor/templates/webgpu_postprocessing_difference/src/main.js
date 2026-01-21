@@ -11,7 +11,7 @@ const params = {
   speed: 0,
 };
 
-let camera, renderer, postProcessing;
+let camera, renderer, renderPipeline;
 let timer, mesh, controls;
 
 init();
@@ -53,7 +53,7 @@ function init() {
 
   // post processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
 
@@ -64,7 +64,7 @@ function init() {
 
   const saturationAmount = luminance(frameDiff).mul(1000).clamp(0, 3);
 
-  postProcessing.outputNode = saturation(currentTexture, saturationAmount);
+  renderPipeline.outputNode = saturation(currentTexture, saturationAmount);
 
   //
 
@@ -96,5 +96,5 @@ function animate() {
 
   mesh.rotation.y += timer.getDelta() * 5 * params.speed;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

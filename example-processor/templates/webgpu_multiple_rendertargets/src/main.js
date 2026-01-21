@@ -16,7 +16,7 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, renderer, torus;
-let postProcessing, renderTarget;
+let renderPipeline, renderTarget;
 
 init();
 
@@ -77,8 +77,8 @@ function init() {
 
   // Post Processing
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = mix(
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = mix(
     texture(renderTarget.textures[0]),
     texture(renderTarget.textures[1]),
     step(0.5, screenUV.x)
@@ -110,5 +110,5 @@ function render(time) {
 
   // render post FX
   renderer.setRenderTarget(null);
-  postProcessing.render();
+  renderPipeline.render();
 }
