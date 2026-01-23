@@ -41,7 +41,7 @@
     "csso": "^4.2.0",
     "eslint": "^7.32.0",
     "glslx": "^0.2.13",
-    "jsdom": "^17.0.0",
+    "jsdom": "^27.0.0",
     "portfinder-sync": "^0.0.2",
     "prettier": "^2.3.2",
     "puppeteer": "^10.2.0",
