@@ -29,13 +29,6 @@ loader.load(
   function (collada) {
     dae = collada.scene;
 
-    dae.traverse(function (child) {
-      if (child.isMesh) {
-        // model does not have normals
-        child.material.flatShading = true;
-      }
-    });
-
     dae.scale.x = dae.scale.y = dae.scale.z = 10.0;
     dae.updateMatrix();
 
