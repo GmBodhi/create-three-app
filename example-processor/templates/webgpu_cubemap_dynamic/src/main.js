@@ -44,7 +44,7 @@ async function init() {
 
   //
 
-  cubeRenderTarget = new WebGLCubeRenderTarget(256);
+  cubeRenderTarget = new CubeRenderTarget(256);
   cubeRenderTarget.texture.type = HalfFloatType;
   cubeRenderTarget.texture.minFilter = LinearMipmapLinearFilter;
   cubeRenderTarget.texture.magFilter = LinearFilter;

@@ -45,7 +45,7 @@ async function init() {
 
   // cube camera for environment map
 
-  const renderTarget = new WebGLCubeRenderTarget(512);
+  const renderTarget = new CubeRenderTarget(512);
   renderTarget.texture.type = HalfFloatType;
   renderTarget.texture.minFilter = LinearMipmapLinearFilter;
   renderTarget.texture.magFilter = LinearFilter;
