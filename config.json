@@ -4761,6 +4761,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_godrays": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_lensflare": {
       "files": {
         "index.html": "src",
