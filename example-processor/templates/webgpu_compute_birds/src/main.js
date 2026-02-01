@@ -135,7 +135,11 @@ function init() {
 
   //
 
-  renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
+  renderer = new WebGPURenderer({
+    antialias: true,
+    forceWebGL: false,
+    requiredLimits: { maxStorageBuffersInVertexStage: 3 },
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
