@@ -25,6 +25,7 @@ const position = new Vector3();
 const params = {
   effect: "stereo",
   eyeSep: 0.064,
+  screenDistance: 3,
   anaglyphAlgorithm: "dubois",
   anaglyphColorMode: "redCyan",
 };
@@ -113,14 +114,17 @@ function init() {
   anaglyph = anaglyphPass(scene, camera);
   parallaxBarrier = parallaxBarrierPass(scene, camera);
 
+  // Configure anaglyph for physically-correct stereo with zero parallax at scene center
+  anaglyph.eyeSep = params.eyeSep;
+  anaglyph.screenDistance = params.screenDistance;
+
   renderPipeline.outputNode = stereo;
 
   const gui = renderer.inspector.createParameters("Stereo Settings");
   gui.add(params, "effect", effects).onChange(update);
   gui.add(params, "eyeSep", 0.001, 0.15, 0.001).onChange(function (value) {
     stereo.stereo.eyeSep = value;
-
-    anaglyph.stereo.eyeSep = value;
+    anaglyph.eyeSep = value; // Anaglyph has direct eyeSep property
     parallaxBarrier.stereo.eyeSep = value;
   });
 
@@ -137,6 +141,12 @@ function init() {
     .name("Color Mode")
     .onChange(function (value) {
       anaglyph.colorMode = value;
+    });
+  anaglyphFolder
+    .add(params, "screenDistance", 0.5, 10, 0.1)
+    .name("Screen Distance")
+    .onChange(function (value) {
+      anaglyph.screenDistance = value;
     });
   anaglyphFolder.paramList.domElement.style.display = "none";
 
