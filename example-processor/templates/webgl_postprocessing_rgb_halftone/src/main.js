@@ -180,7 +180,13 @@ function init() {
 
   const gui = new GUI();
   gui
-    .add(controller, "shape", { Dot: 1, Ellipse: 2, Line: 3, Square: 4 })
+    .add(controller, "shape", {
+      Dot: 1,
+      Ellipse: 2,
+      Line: 3,
+      Square: 4,
+      Diamond: 5,
+    })
     .onChange(onGUIChange);
   gui.add(controller, "radius", 1, 25).onChange(onGUIChange);
   gui.add(controller, "rotateR", 0, 90).onChange(onGUIChange);
