@@ -2,15 +2,23 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 import {
+  vec2,
   vec3,
   Fn,
-  time,
   texture3D,
   screenUV,
   uniform,
   screenCoordinate,
   pass,
+  depthPass,
+  mrt,
+  output,
+  velocity,
+  fract,
+  interleavedGradientNoise,
 } from "three/tsl";
+
+import { traa } from "three/addons/tsl/display/TRAANode.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
@@ -18,12 +26,32 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ImprovedNoise } from "three/addons/math/ImprovedNoise.js";
 import { TeapotGeometry } from "three/addons/geometries/TeapotGeometry.js";
 
-import { bayer16 } from "three/addons/tsl/math/Bayer.js";
-import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
+// Halton sequence for temporal offset - matches TRAA's 32-sample Halton jitter
+// This creates optimal low-discrepancy distribution that accumulates well with TRAA
+function halton(index, base) {
+  let result = 0;
+  let f = 1;
+
+  while (index > 0) {
+    f /= base;
+    result += f * (index % base);
+    index = Math.floor(index / base);
+  }
+
+  return result;
+}
+
+// Generate 32 Halton offsets (base 2, 3) - same length as TRAA
+const _haltonOffsets = Array.from({ length: 32 }, (_, i) => [
+  halton(i + 1, 2),
+  halton(i + 1, 3),
+]);
 
 let renderer, scene, camera;
 let volumetricMesh, teapot, pointLight, spotLight;
 let renderPipeline;
+let temporalOffset, temporalRotation, shaderTime;
+let params;
 
 init();
 
@@ -67,10 +95,8 @@ function createTexture3D() {
 }
 
 function init() {
-  const LAYER_VOLUMETRIC_LIGHTING = 10;
-
   renderer = new WebGPURenderer();
-  renderer.setPixelRatio(window.devicePixelRatio);
+  // renderer.setPixelRatio( window.devicePixelRatio ); // Disable DPR for performance
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = NeutralToneMapping;
@@ -101,11 +127,22 @@ function init() {
 
   const volumetricMaterial = new VolumeNodeMaterial();
   volumetricMaterial.steps = 12;
-  volumetricMaterial.offsetNode = bayer16(screenCoordinate); // Add dithering to reduce banding
-  volumetricMaterial.scatteringNode = Fn(({ positionRay }) => {
-    // Return the amount of fog based on the noise texture
+  volumetricMaterial.transparent = true;
+  volumetricMaterial.blending = AdditiveBlending;
 
-    const timeScaled = vec3(time, 0, time.mul(0.3));
+  // Temporal dithering using Interleaved Gradient Noise (IGN) + Halton sequence
+  temporalOffset = uniform(0);
+  temporalRotation = uniform(0);
+  shaderTime = uniform(0);
+
+  const temporalJitter2D = vec2(temporalOffset, temporalRotation);
+  volumetricMaterial.offsetNode = fract(
+    interleavedGradientNoise(
+      screenCoordinate.add(temporalJitter2D.mul(100))
+    ).add(temporalOffset)
+  );
+  volumetricMaterial.scatteringNode = Fn(({ positionRay }) => {
+    const timeScaled = vec3(shaderTime, 0, shaderTime.mul(0.3));
 
     const sampleGrain = (scale, timeScale = 1) =>
       texture3D(
@@ -124,8 +161,6 @@ function init() {
   volumetricMesh = new Mesh(new BoxGeometry(20, 10, 20), volumetricMaterial);
   volumetricMesh.receiveShadow = true;
   volumetricMesh.position.y = 2;
-  volumetricMesh.layers.disableAll();
-  volumetricMesh.layers.enable(LAYER_VOLUMETRIC_LIGHTING);
   scene.add(volumetricMesh);
 
   // Objects
@@ -151,8 +186,6 @@ function init() {
   pointLight = new PointLight(0xf9bb50, 3, 100);
   pointLight.castShadow = true;
   pointLight.position.set(0, 1.4, 0);
-  pointLight.layers.enable(LAYER_VOLUMETRIC_LIGHTING);
-  //lightBase.add( new Mesh( new SphereGeometry( 0.1, 16, 16 ), new MeshBasicMaterial( { color: 0xf9bb50 } ) ) );
   scene.add(pointLight);
 
   spotLight = new SpotLight(0xffffff, 100);
@@ -169,82 +202,79 @@ function init() {
   spotLight.shadow.camera.near = 1;
   spotLight.shadow.camera.far = 15;
   spotLight.shadow.focus = 1;
-  spotLight.layers.enable(LAYER_VOLUMETRIC_LIGHTING);
-  //sunLight.add( new Mesh( new SphereGeometry( 0.1, 16, 16 ), new MeshBasicMaterial( { color: 0xffffff } ) ) );
   scene.add(spotLight);
 
-  // Post-Processing
+  // Render Pipeline
 
   renderPipeline = new RenderPipeline(renderer);
 
-  // Layers
+  const volumetricIntensity = uniform(1);
 
-  const volumetricLightingIntensity = uniform(1);
+  // Pre-Pass: Opaque objects only (volumetric is transparent, excluded automatically)
 
-  const volumetricLayer = new Layers();
-  volumetricLayer.disableAll();
-  volumetricLayer.enable(LAYER_VOLUMETRIC_LIGHTING);
+  const prePass = depthPass(scene, camera);
+  prePass.name = "Pre Pass";
+  prePass.transparent = false;
 
-  // Scene Pass
+  const prePassDepth = prePass
+    .getTextureNode("depth")
+    .toInspector("Depth", () => prePass.getLinearDepthNode());
 
-  const scenePass = pass(scene, camera);
-  const sceneDepth = scenePass.getTextureNode("depth");
+  // Apply depth to volumetric material for proper occlusion
 
-  // Material - Apply occlusion depth of volumetric lighting based on the scene depth
+  volumetricMaterial.depthNode = prePassDepth.sample(screenUV);
 
-  volumetricMaterial.depthNode = sceneDepth.sample(screenUV);
+  // Scene Pass: Full scene including volumetric with MRT
 
-  // Volumetric Lighting Pass
-
-  const volumetricPass = pass(scene, camera, { depthBuffer: false });
-  volumetricPass.name = "Volumetric Lighting";
-  volumetricPass.setLayers(volumetricLayer);
-  volumetricPass.setResolutionScale(0.25);
-
-  // Compose and Denoise
-
-  const denoiseStrength = uniform(0.6);
-
-  const blurredVolumetricPass = gaussianBlur(volumetricPass, denoiseStrength);
-
-  const scenePassColor = scenePass.add(
-    blurredVolumetricPass.mul(volumetricLightingIntensity)
+  const scenePass = pass(scene, camera).toInspector("Scene");
+  scenePass.name = "Scene Pass";
+  scenePass.setMRT(
+    mrt({
+      output: output,
+      velocity: velocity,
+    })
   );
 
-  renderPipeline.outputNode = scenePassColor;
+  const scenePassColor = scenePass.getTextureNode().toInspector("Output");
+  const scenePassVelocity = scenePass
+    .getTextureNode("velocity")
+    .toInspector("Velocity");
+
+  // TRAA with scene pass depth/velocity (includes volumetric)
+
+  const traaPass = traa(
+    scenePassColor,
+    prePassDepth,
+    scenePassVelocity,
+    camera
+  );
+
+  renderPipeline.outputNode = traaPass;
 
   // GUI
 
-  const params = {
-    resolution: volumetricPass.getResolutionScale(),
-    denoise: true,
+  params = {
+    traa: true,
+    animated: true,
   };
 
   const gui = renderer.inspector.createParameters("Volumetric Lighting");
 
+  gui.add(params, "animated");
+  gui.add(params, "traa").name("TRAA").onChange(updatePostProcessing);
+
   const rayMarching = gui.addFolder("Ray Marching");
-  rayMarching.add(params, "resolution", 0.1, 1).onChange((resolution) => {
-    volumetricPass.setResolutionScale(resolution);
-  });
-  rayMarching.add(volumetricMaterial, "steps", 2, 16).name("step count");
-  rayMarching.add(denoiseStrength, "value", 0, 1).name("denoise strength");
-  rayMarching.add(params, "denoise").onChange((denoise) => {
-    const volumetric = denoise ? blurredVolumetricPass : volumetricPass;
+  rayMarching.add(volumetricMaterial, "steps", 2, 16, 1).name("step count");
 
-    const scenePassColor = scenePass.add(
-      volumetric.mul(volumetricLightingIntensity)
-    );
-
-    renderPipeline.outputNode = scenePassColor;
+  function updatePostProcessing() {
+    renderPipeline.outputNode = params.traa ? traaPass : scenePassColor;
     renderPipeline.needsUpdate = true;
-  });
+  }
 
   const lighting = gui.addFolder("Lighting / Scene");
   lighting.add(pointLight, "intensity", 0, 6).name("light intensity");
   lighting.add(spotLight, "intensity", 0, 200).name("spot intensity");
-  lighting
-    .add(volumetricLightingIntensity, "value", 0, 2)
-    .name("fog intensity");
+  lighting.add(volumetricIntensity, "value", 0, 2).name("volumetric intensity");
   lighting.add(smokeAmount, "value", 0, 3).name("smoke amount");
 
   window.addEventListener("resize", onWindowResize);
@@ -257,18 +287,37 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+let frameCount = 0;
+let animationTime = 0;
+let lastTime = performance.now();
+
 function animate() {
-  const time = performance.now() * 0.001;
+  const currentTime = performance.now();
+  const delta = (currentTime - lastTime) * 0.001;
+  lastTime = currentTime;
+
+  // Update temporal uniforms - synced with TRAA's Halton sequence for optimal accumulation
+  const haltonIndex = frameCount % 32;
+  temporalOffset.value = _haltonOffsets[haltonIndex][0];
+  temporalRotation.value = _haltonOffsets[haltonIndex][1];
+  frameCount++;
+
+  if (params.animated) {
+    animationTime += delta;
+  }
+
+  shaderTime.value = animationTime;
+
   const scale = 2.4;
 
-  pointLight.position.x = Math.sin(time * 0.7) * scale;
-  pointLight.position.y = Math.cos(time * 0.5) * scale;
-  pointLight.position.z = Math.cos(time * 0.3) * scale;
+  pointLight.position.x = Math.sin(animationTime * 0.7) * scale;
+  pointLight.position.y = Math.cos(animationTime * 0.5) * scale;
+  pointLight.position.z = Math.cos(animationTime * 0.3) * scale;
 
-  spotLight.position.x = Math.cos(time * 0.3) * scale;
+  spotLight.position.x = Math.cos(animationTime * 0.3) * scale;
   spotLight.lookAt(0, 0, 0);
 
-  teapot.rotation.y = time * 0.2;
+  teapot.rotation.y = animationTime * 0.2;
 
   renderPipeline.render();
 }

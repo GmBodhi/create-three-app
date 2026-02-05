@@ -29,6 +29,7 @@ import {
   length,
   atan,
   replaceDefaultUV,
+  screenSize,
 } from "three/tsl";
 import { retroPass } from "three/addons/tsl/display/RetroPassNode.js";
 import { bayerDither } from "three/addons/tsl/math/Bayer.js";
@@ -42,10 +43,13 @@ import { circle } from "three/addons/tsl/display/Shape.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, renderPipeline, controls;
+let environment;
+let currentModel;
 
 init();
 
@@ -150,12 +154,72 @@ async function init() {
   const gltfLoader = new GLTFLoader();
   const textureLoader = new TextureLoader();
 
-  // baked model
+  // Model
 
-  gltfLoader.load("three/examples/models/gltf/coffeeMug.glb", (gltf) => {
-    gltf.scene.getObjectByName("baked").material.map.anisotropy = 8;
-    scene.add(gltf.scene);
-  });
+  const models = {
+    "Coffee Mug": "models/gltf/coffeeMug.glb",
+    "Damaged Helmet": "models/gltf/DamagedHelmet/glTF/DamagedHelmet.gltf",
+  };
+
+  function loadModel(name) {
+    function loadEnvironment() {
+      if (environment) return;
+
+      environment = new HDRLoader()
+        .setPath("textures/equirectangular/")
+        .load("venice_sunset_1k.hdr", (texture) => {
+          texture.mapping = EquirectangularReflectionMapping;
+          scene.environment = texture;
+
+          // re-invalidate retro pass textures
+
+          retro.dispose();
+        });
+    }
+
+    if (currentModel) {
+      scene.remove(currentModel);
+      currentModel.traverse((child) => {
+        if (child.isMesh) {
+          child.geometry.dispose();
+          child.material.dispose();
+        }
+      });
+    }
+
+    gltfLoader.load(models[name], (gltf) => {
+      currentModel = gltf.scene;
+      currentModel.position.set(0, 0, 0);
+
+      smoke.visible = false;
+
+      if (name === "Damaged Helmet") {
+        loadEnvironment();
+
+        currentModel.scale.setScalar(3);
+        currentModel.position.y = 1;
+      } else if (name === "Coffee Mug") {
+        smoke.visible = true;
+      }
+
+      scene.add(currentModel);
+    });
+  }
+
+  loadModel("Coffee Mug");
+
+  // lighting
+
+  const ambientLight = new AmbientLight(0x404040, 2);
+  scene.add(ambientLight);
+
+  const directionalLight = new DirectionalLight(0xffffff, 3);
+  directionalLight.position.set(5, 10, 5);
+  scene.add(directionalLight);
+
+  const pointLight = new PointLight(0xff6600, 5, 20);
+  pointLight.position.set(-3, 3, 2);
+  scene.add(pointLight);
 
   // geometry
 
@@ -246,9 +310,9 @@ async function init() {
   const colorDepthSteps = uniform(32);
 
   // CRT effect parameters (subtle for PS1 look)
-  const scanlineIntensity = uniform(0.08); // subtle scanlines
-  const scanlineCount = uniform(60); // match vertical resolution
-  const scanlineSpeed = uniform(0.05); // slow scroll
+  const scanlineIntensity = uniform(0.3); // subtle scanlines
+  const scanlineDensity = uniform(1); // 0.1-1: normalized scanline density (1 = full screen resolution)
+  const scanlineSpeed = uniform(0.0); // no scanline movement
   const vignetteIntensity = uniform(0.3); // subtle vignette
   const bleeding = uniform(0.001); // minimal bleeding
   const curvature = uniform(0.02); // subtle curve
@@ -265,7 +329,9 @@ async function init() {
     .mul(curvature)
     .mul(0.05);
 
-  let retroPipeline = retroPass(scene, camera, { affineDistortion });
+  const retro = retroPass(scene, camera, { affineDistortion });
+
+  let retroPipeline = retro;
   retroPipeline = replaceDefaultUV(distortedUV, retroPipeline);
   retroPipeline = colorBleeding(retroPipeline, bleeding.add(distortedDelta));
   retroPipeline = bayerDither(retroPipeline, colorDepthSteps);
@@ -274,7 +340,7 @@ async function init() {
   retroPipeline = scanlines(
     retroPipeline,
     scanlineIntensity,
-    scanlineCount,
+    screenSize.y.mul(scanlineDensity),
     scanlineSpeed
   );
 
@@ -297,6 +363,11 @@ async function init() {
   const gui = renderer.inspector.createParameters("Settings");
 
   gui
+    .add({ model: "Coffee Mug" }, "model", Object.keys(models))
+    .name("Model")
+    .onChange(loadModel);
+
+  gui
     .add({ enabled: true }, "enabled")
     .onChange((v) => {
       renderPipeline.outputNode = v ? retroPipeline : defaultPass;
@@ -307,11 +378,17 @@ async function init() {
   gui.add(curvature, "value", 0, 0.2, 0.01).name("Curvature");
   gui.add(colorDepthSteps, "value", 4, 32, 1).name("Color Depth");
   gui.add(scanlineIntensity, "value", 0, 1, 0.01).name("Scanlines");
-  gui.add(scanlineCount, "value", 20, 480, 1).name("Scanline Count");
+  gui.add(scanlineDensity, "value", 0.02, 1, 0.01).name("Scanline Density");
   gui.add(scanlineSpeed, "value", 0, 0.1, 0.01).name("Scanline Speed");
   gui.add(vignetteIntensity, "value", 0, 1, 0.01).name("Vignette");
   gui.add(bleeding, "value", 0, 0.005, 0.001).name("Color Bleeding");
   gui.add(affineDistortion, "value", 0, 1).name("Affine Distortion");
+  gui
+    .add(retro, "filterTextures")
+    .name("Filter Textures")
+    .onChange(() => {
+      retro.dispose();
+    });
 
   window.addEventListener("resize", onWindowResize);
 }

@@ -246,10 +246,10 @@ function init() {
   const gui = renderer.inspector.createParameters("Volumetric Lighting");
 
   const rayMarching = gui.addFolder("Ray Marching");
-  rayMarching.add(params, "resolution", 0.1, 0.5).onChange((resolution) => {
+  rayMarching.add(params, "resolution", 0.1, 1).onChange((resolution) => {
     volumetricPass.setResolutionScale(resolution);
   });
-  rayMarching.add(volumetricMaterial, "steps", 2, 12).name("step count");
+  rayMarching.add(volumetricMaterial, "steps", 2, 16).name("step count");
   rayMarching.add(denoiseStrength, "value", 0, 1).name("denoise strength");
   rayMarching.add(params, "denoise").onChange((denoise) => {
     const volumetric = denoise ? blurredVolumetricPass : volumetricPass;
