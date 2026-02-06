@@ -280,10 +280,7 @@ function initGui() {
 
   gui.add(params, "world units").onChange(function (val) {
     matLine.worldUnits = val;
-    matLine.needsUpdate = true;
-
     matThresholdLine.worldUnits = val;
-    matThresholdLine.needsUpdate = true;
   });
 
   gui.add(params, "visualize threshold").onChange(function (val) {
