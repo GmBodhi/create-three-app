@@ -1,9 +1,19 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { texture, parallaxUV, blendOverlay, uv } from "three/tsl";
+import {
+  texture,
+  parallaxUV,
+  blendOverlay,
+  uv,
+  normalMap,
+  uniform,
+} from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 
@@ -22,25 +32,21 @@ async function init() {
     45,
     window.innerWidth / window.innerHeight,
     0.1,
-    50
+    100
   );
-  camera.position.set(10, 14, 10);
+  camera.position.set(15, 7, 15);
 
   // environment
 
-  const environmentTexture = await new CubeTextureLoader()
-    .setPath("three/examples/textures/cube/Park2/")
-    .loadAsync([
-      "posx.jpg",
-      "negx.jpg",
-      "posy.jpg",
-      "negy.jpg",
-      "posz.jpg",
-      "negz.jpg",
-    ]);
+  const environmentTexture = await new HDRLoader().loadAsync(
+    "three/examples/textures/equirectangular/752-hdri-skies-com_1k.hdr"
+  );
+
+  environmentTexture.mapping = EquirectangularReflectionMapping;
 
   scene.environment = environmentTexture;
   scene.background = environmentTexture;
+  scene.backgroundBlurriness = 0.4;
 
   // textures
 
@@ -50,21 +56,29 @@ async function init() {
     "textures/ambientcg/Ice002_1K-JPG_Color.jpg"
   );
   topTexture.colorSpace = SRGBColorSpace;
+  topTexture.wrapS = RepeatWrapping;
+  topTexture.wrapT = RepeatWrapping;
 
   const roughnessTexture = await loader.loadAsync(
     "textures/ambientcg/Ice002_1K-JPG_Roughness.jpg"
   );
   roughnessTexture.colorSpace = NoColorSpace;
+  roughnessTexture.wrapS = RepeatWrapping;
+  roughnessTexture.wrapT = RepeatWrapping;
 
   const normalTexture = await loader.loadAsync(
     "textures/ambientcg/Ice002_1K-JPG_NormalGL.jpg"
   );
   normalTexture.colorSpace = NoColorSpace;
+  normalTexture.wrapS = RepeatWrapping;
+  normalTexture.wrapT = RepeatWrapping;
 
   const displaceTexture = await loader.loadAsync(
     "textures/ambientcg/Ice002_1K-JPG_Displacement.jpg"
   );
   displaceTexture.colorSpace = NoColorSpace;
+  displaceTexture.wrapS = RepeatWrapping;
+  displaceTexture.wrapT = RepeatWrapping;
 
   //
 
@@ -77,23 +91,26 @@ async function init() {
 
   // parallax effect
 
-  const parallaxScale = 0.3;
-  const offsetUV = texture(displaceTexture).mul(parallaxScale);
+  const scaleUV = uniform(3);
+  const scaledUV = uv().mul(scaleUV);
 
-  const parallaxUVOffset = parallaxUV(uv(), offsetUV);
+  const parallaxScale = uniform(0.5); // parallax scale
+  const offsetUV = texture(displaceTexture, scaledUV).mul(parallaxScale);
+
+  const parallaxUVOffset = parallaxUV(scaledUV, offsetUV);
   const parallaxResult = texture(bottomTexture, parallaxUVOffset);
 
-  const iceNode = blendOverlay(texture(topTexture), parallaxResult);
+  const iceNode = blendOverlay(texture(topTexture, scaledUV), parallaxResult);
 
   // material
 
   const material = new MeshStandardNodeMaterial();
   material.colorNode = iceNode.mul(5); // increase the color intensity to 5 ( contrast )
-  material.roughnessNode = texture(roughnessTexture);
-  material.normalMap = normalTexture;
+  material.roughnessNode = texture(roughnessTexture, scaledUV);
+  material.normalNode = normalMap(texture(normalTexture, scaledUV));
   material.metalness = 0;
 
-  const geometry = new BoxGeometry(10, 10, 10);
+  const geometry = new CircleGeometry(25, 64);
 
   const ground = new Mesh(geometry, material);
   ground.rotateX(-Math.PI / 2);
@@ -107,7 +124,15 @@ async function init() {
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ReinhardToneMapping;
   renderer.toneMappingExposure = 6;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
+
+  // gui
+
+  const gui = renderer.inspector.createParameters("Scene");
+  gui.add(scene, "backgroundBlurriness", 0, 1).name("Background Blurriness");
+  gui.add(parallaxScale, "value", 0.2, 0.5).name("Parallax Scale");
+  gui.add(scaleUV, "value", 1, 5).name("UV Scale");
 
   // controls
 
