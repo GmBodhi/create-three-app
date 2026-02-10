@@ -8,7 +8,6 @@ import {
   normalView,
   metalness,
   roughness,
-  blendColor,
   screenUV,
   color,
   sample,
@@ -28,10 +27,10 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const params = {
   quality: 0.5,
-  blurQuality: 2,
-  maxDistance: 0.5,
+  blurQuality: 1,
+  maxDistance: 1,
   opacity: 1,
-  thickness: 0.015,
+  thickness: 0.03,
   roughness: 1,
   enabled: true,
 };
@@ -79,6 +78,19 @@ async function init() {
     model.position.y = 0.1;
     scene.add(model);
   });
+
+  // Add a reflective plane under the camera
+
+  const floorGeometry = new CircleGeometry(2, 64);
+  const floorMaterial = new MeshStandardMaterial({
+    color: 0xffffff,
+    metalness: 1,
+    roughness: 0.5,
+  });
+  const floor = new Mesh(floorGeometry, floorMaterial);
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.y = -0.8;
+  scene.add(floor);
 
   //
 
@@ -151,9 +163,9 @@ async function init() {
     scenePassMetalRough.g
   ).toInspector("SSR");
 
-  // blend SSR over beauty
+  // blend SSR over beauty (SSR outputs premultiplied color, so use additive blending)
 
-  const outputNode = smaa(blendColor(scenePassColor, ssrPass));
+  const outputNode = smaa(scenePassColor.add(ssrPass.rgb));
 
   renderPipeline.outputNode = outputNode;
 
