@@ -72,6 +72,7 @@ function init() {
           .mul(5)
           .add(1);
         materialPoints.sizeAttenuation = false;
+        materialPoints.alphaTest = 0.5;
 
         const updateSkinningPoints = Fn(() => {
           const pointPosition = pointPositionArray.element(instanceIndex);
