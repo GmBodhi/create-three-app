@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { nodeObject, uniform } from "three/tsl";
+import { uniform } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -70,8 +70,10 @@ async function init() {
     new MeshPhongNodeMaterial({ color: 0xffff00 })
   );
 
-  const instanceUniform = nodeObject(
-    new OcclusionNode(sphere, new Color(0x0000ff), new Color(0x00ff00))
+  const instanceUniform = new OcclusionNode(
+    sphere,
+    new Color(0x0000ff),
+    new Color(0x00ff00)
   );
 
   plane.material.colorNode = instanceUniform;
