@@ -1,0 +1,61 @@
+<html>
+  <head>
+    <title>three.js webgpu - reverse depth buffer</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+  <body style="overflow: hidden">
+    <div id="container">
+      <div id="container_normal">
+        <h2 class="container_label">normal z-buffer</h2>
+      </div>
+      <div id="container_logarithmic">
+        <h2 class="container_label">logarithmic z-buffer</h2>
+      </div>
+      <div id="container_reverse">
+        <h2 class="container_label">reverse z-buffer</h2>
+      </div>
+    </div>
+
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>Reverse Depth Buffer</span>
+      </div>
+
+      <small>
+        Note: For best results, a floating-point depth buffer should be used
+        with post-processing. See
+        <a
+          href="https://developer.nvidia.com/blog/visualizing-depth-precision"
+          target="_blank"
+          rel="noopener"
+          >Visualizing Depth Precision</a
+        >.
+      </small>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

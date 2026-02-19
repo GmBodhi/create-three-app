@@ -19,8 +19,8 @@ const params = {
   cameraDistance: 40,
 };
 
-let camera, scene, renderer, clock, mainGroup;
-let controls, postProcessing;
+let camera, scene, renderer, timer, mainGroup;
+let controls, renderPipeline;
 
 init();
 
@@ -59,7 +59,8 @@ async function init() {
     0.04
   ).texture;
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // Create main group
   mainGroup = new Group();
@@ -74,8 +75,8 @@ async function init() {
   scene.add(gridHelper);
 
   // post processing
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = false;
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputColorTransform = false;
 
   // scene pass
   const scenePass = pass(scene, camera);
@@ -95,7 +96,7 @@ async function init() {
   );
 
   // Set initial output based on params
-  postProcessing.outputNode = params.enabled ? caPass : outputPass;
+  renderPipeline.outputNode = params.enabled ? caPass : outputPass;
 
   window.addEventListener("resize", onWindowResize);
 
@@ -104,8 +105,8 @@ async function init() {
   const gui = renderer.inspector.createParameters("Settings");
 
   gui.add(params, "enabled").onChange((value) => {
-    postProcessing.outputNode = value ? caPass : outputPass;
-    postProcessing.needsUpdate = true;
+    renderPipeline.outputNode = value ? caPass : outputPass;
+    renderPipeline.needsUpdate = true;
   });
 
   const staticFolder = gui.addFolder("Static Parameters");
@@ -256,7 +257,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const time = clock.getElapsedTime();
+  timer.update();
+
+  const time = timer.getElapsed();
 
   controls.update();
 
@@ -281,5 +284,5 @@ function animate() {
     });
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

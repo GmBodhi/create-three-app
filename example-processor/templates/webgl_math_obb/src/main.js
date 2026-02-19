@@ -5,7 +5,7 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
-  Clock,
+  Timer,
   Raycaster,
   HemisphereLight,
   Vector3,
@@ -21,7 +21,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import Stats from "three/addons/libs/stats.module.js";
 
-let camera, scene, renderer, clock, controls, stats, raycaster, hitbox;
+let camera, scene, renderer, timer, controls, stats, raycaster, hitbox;
 
 const objects = [],
   mouse = new Vector2();
@@ -40,7 +40,8 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xffffff);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   raycaster = new Raycaster();
 
@@ -166,11 +167,13 @@ function onWindowResize() {
 //
 
 function animate() {
+  timer.update();
+
   controls.update();
 
   // transform cubes
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   for (let i = 0, il = objects.length; i < il; i++) {
     const object = objects[i];

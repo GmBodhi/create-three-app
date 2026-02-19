@@ -28,10 +28,11 @@ const radius = 0.08;
 let normal = new Vector3();
 const relativeVelocity = new Vector3();
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 const funfairs = [];
 const train = new Object3D();
-const rcdelta = clock.getDelta() * 0.8; // slow down simulation
+const rcdelta = timer.getDelta() * 0.8; // slow down simulation
 const PI2 = Math.PI * 2;
 let rccamera = null;
 let rcscene = null;
@@ -155,7 +156,7 @@ function init() {
   renderer = new WebGPURenderer({
     antialias: true,
     forceWebGL: true,
-    colorBufferType: UnsignedByteType,
+    outputBufferType: UnsignedByteType,
     multiview: true,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -600,6 +601,8 @@ function handleController(controller) {
 //
 
 function render() {
+  timer.update();
+
   renderer.xr.renderLayers();
 
   handleController(controller1);
@@ -609,7 +612,7 @@ function render() {
   horseLayer.rotation.y -= 0.02;
 
   //
-  const delta = clock.getDelta() * 0.8;
+  const delta = timer.getDelta() * 0.8;
 
   const range = 3 - radius;
 

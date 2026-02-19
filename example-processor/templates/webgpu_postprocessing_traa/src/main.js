@@ -6,7 +6,7 @@ import { traa } from "three/addons/tsl/display/TRAANode.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing;
+let camera, scene, renderer, renderPipeline;
 let index = 0;
 
 init();
@@ -50,7 +50,7 @@ function init() {
 
   // postprocessing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
   const scenePass = pass(scene, camera);
   scenePass.setMRT(
     mrt({
@@ -78,7 +78,7 @@ function init() {
     camera
   );
 
-  postProcessing.outputNode = traaNode;
+  renderPipeline.outputNode = traaNode;
 
   //
 
@@ -107,5 +107,5 @@ function animate() {
     }
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

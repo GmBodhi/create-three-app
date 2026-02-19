@@ -8,12 +8,13 @@ import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
-let camera, scene, renderer, controls, clock, mixer;
+let camera, scene, renderer, controls, timer, mixer;
 
 init();
 
 function init() {
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const container = document.createElement("div");
   document.body.appendChild(container);
@@ -83,7 +84,9 @@ function onWindowResize() {
 //
 
 function render() {
-  if (mixer) mixer.update(clock.getDelta());
+  timer.update();
+
+  if (mixer) mixer.update(timer.getDelta());
 
   controls.update();
 

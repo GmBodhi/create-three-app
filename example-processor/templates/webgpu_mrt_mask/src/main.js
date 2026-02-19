@@ -9,10 +9,10 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, renderer;
-let postProcessing;
+let renderPipeline;
 let spheres,
   rotate = true;
-let mixer, clock;
+let mixer, timer;
 
 init();
 
@@ -31,7 +31,8 @@ function init() {
     .mul(0.05);
   camera.lookAt(0, 1, 0);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // lights
 
@@ -109,9 +110,9 @@ function init() {
   const colorPass = scenePass.getTextureNode();
   const maskPass = scenePass.getTextureNode("mask");
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = false;
-  postProcessing.outputNode = colorPass
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputColorTransform = false;
+  renderPipeline.outputNode = colorPass
     .add(gaussianBlur(maskPass, 1, 20).mul(0.3))
     .renderOutput();
 
@@ -134,11 +135,13 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) mixer.update(delta);
 
   if (rotate) spheres.rotation.y += delta * 0.5;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   Scene,
-  Clock,
+  Timer,
   PerspectiveCamera,
   AmbientLight,
   DirectionalLight,
@@ -18,7 +18,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let scene, camera, renderer, clock;
+let scene, camera, renderer, timer;
 
 const objects = [];
 
@@ -37,7 +37,8 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   //
 
@@ -148,7 +149,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const time = clock.getElapsedTime();
+  timer.update();
+
+  const time = timer.getElapsed();
 
   for (let i = 0; i < objects.length; i++) {
     const ball = objects[i];

@@ -25,7 +25,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing, controls;
+let camera, scene, renderer, renderPipeline, controls;
 
 let aoPass, traaPass, transparentMesh;
 
@@ -78,13 +78,13 @@ async function init() {
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.background = new Color(0x666666);
-  scene.environment = pmremGenerator.fromScene(environment).texture;
+  scene.environment = pmremGenerator.fromScene(environment, 0.04).texture;
   environment.dispose();
   pmremGenerator.dispose();
 
   // post-processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // pre-pass
 
@@ -141,7 +141,7 @@ async function init() {
   traaPass = traa(scenePass, prePassDepth, prePassVelocity, camera);
   traaPass.useSubpixelCorrection = false;
 
-  postProcessing.outputNode = traaPass;
+  renderPipeline.outputNode = traaPass;
 
   // models
 
@@ -193,12 +193,12 @@ async function init() {
     .onChange(updateParameters);
   gui.add(params, "aoOnly").onChange((value) => {
     if (value === true) {
-      postProcessing.outputNode = vec4(vec3(aoPass.r), 1);
+      renderPipeline.outputNode = vec4(vec3(aoPass.r), 1);
     } else {
-      postProcessing.outputNode = traaPass;
+      renderPipeline.outputNode = traaPass;
     }
 
-    postProcessing.needsUpdate = true;
+    renderPipeline.needsUpdate = true;
   });
 }
 
@@ -226,5 +226,5 @@ function onWindowResize() {
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

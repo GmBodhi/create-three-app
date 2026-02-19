@@ -12,7 +12,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
-let postProcessing;
+let renderPipeline;
 
 const params = {
   resolutionScale: 0.2,
@@ -82,9 +82,9 @@ async function init() {
   ).toInspector("Anamorphic");
   anamorphicPass.resolutionScale = params.resolutionScale; // 1 = full resolution
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = scenePass.add(anamorphicPass.mul(intensity));
-  //postProcessing.outputNode = scenePass.add( anamorphicPass.getTextureNode().gaussianBlur() );
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = scenePass.add(anamorphicPass.mul(intensity));
+  //renderPipeline.outputNode = scenePass.add( anamorphicPass.getTextureNode().gaussianBlur() );
 
   // gui
 
@@ -112,5 +112,5 @@ function onWindowResize() {
 //
 
 function render() {
-  postProcessing.render();
+  renderPipeline.render();
 }

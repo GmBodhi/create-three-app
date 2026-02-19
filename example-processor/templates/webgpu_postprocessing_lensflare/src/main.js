@@ -14,7 +14,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, controls;
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -98,8 +98,8 @@ async function init() {
 
   const blurPass = gaussianBlur(flarePass, 8); // optional (blurring produces better flare quality but also adds some overhead)
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = outputPass.add(bloomPass).add(blurPass);
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = outputPass.add(bloomPass).add(blurPass);
 
   //
 
@@ -146,5 +146,5 @@ function onWindowResize() {
 function render() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

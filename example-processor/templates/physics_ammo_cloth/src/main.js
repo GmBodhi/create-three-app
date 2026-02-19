@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -29,7 +29,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let container, stats;
 let camera, controls, scene, renderer;
 let textureLoader;
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 // Physics variables
 const gravityConstant = -9.8;
@@ -442,12 +443,14 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  const deltaTime = clock.getDelta();
+  const deltaTime = timer.getDelta();
 
   updatePhysics(deltaTime);
 

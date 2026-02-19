@@ -3,28 +3,53 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 
 import { stereoPass } from "three/addons/tsl/display/StereoPassNode.js";
-import { anaglyphPass } from "three/addons/tsl/display/AnaglyphPassNode.js";
+import {
+  anaglyphPass,
+  AnaglyphAlgorithm,
+  AnaglyphColorMode,
+} from "three/addons/tsl/display/AnaglyphPassNode.js";
 import { parallaxBarrierPass } from "three/addons/tsl/display/ParallaxBarrierPassNode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing;
+let camera, scene, renderer, renderPipeline;
 
 let stereo, anaglyph, parallaxBarrier;
 
 let mesh, dummy, timer;
+
+let anaglyphFolder;
 
 const position = new Vector3();
 
 const params = {
   effect: "stereo",
   eyeSep: 0.064,
+  planeDistance: 3,
+  anaglyphAlgorithm: "dubois",
+  anaglyphColorMode: "redCyan",
 };
 
 const effects = {
   Stereo: "stereo",
   Anaglyph: "anaglyph",
   ParallaxBarrier: "parallaxBarrier",
+};
+
+const anaglyphAlgorithms = {
+  True: AnaglyphAlgorithm.TRUE,
+  Grey: AnaglyphAlgorithm.GREY,
+  Colour: AnaglyphAlgorithm.COLOUR,
+  "Half-Colour": AnaglyphAlgorithm.HALF_COLOUR,
+  Dubois: AnaglyphAlgorithm.DUBOIS,
+  Optimised: AnaglyphAlgorithm.OPTIMISED,
+  Compromise: AnaglyphAlgorithm.COMPROMISE,
+};
+
+const anaglyphColorModes = {
+  "Red / Cyan": AnaglyphColorMode.RED_CYAN,
+  "Magenta / Cyan": AnaglyphColorMode.MAGENTA_CYAN,
+  "Magenta / Green": AnaglyphColorMode.MAGENTA_GREEN,
 };
 
 init();
@@ -84,21 +109,46 @@ function init() {
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
   stereo = stereoPass(scene, camera);
   anaglyph = anaglyphPass(scene, camera);
   parallaxBarrier = parallaxBarrierPass(scene, camera);
 
-  postProcessing.outputNode = stereo;
+  // Configure anaglyph for physically-correct stereo with zero parallax at scene center
+  anaglyph.eyeSep = params.eyeSep;
+  anaglyph.planeDistance = params.planeDistance;
+
+  renderPipeline.outputNode = stereo;
 
   const gui = renderer.inspector.createParameters("Stereo Settings");
   gui.add(params, "effect", effects).onChange(update);
   gui.add(params, "eyeSep", 0.001, 0.15, 0.001).onChange(function (value) {
     stereo.stereo.eyeSep = value;
-
-    anaglyph.stereo.eyeSep = value;
+    anaglyph.eyeSep = value; // Anaglyph has direct eyeSep property
     parallaxBarrier.stereo.eyeSep = value;
   });
+
+  // Anaglyph-specific settings folder
+  anaglyphFolder = gui.addFolder("Anaglyph Options");
+  anaglyphFolder
+    .add(params, "anaglyphAlgorithm", anaglyphAlgorithms)
+    .name("Algorithm")
+    .onChange(function (value) {
+      anaglyph.algorithm = value;
+    });
+  anaglyphFolder
+    .add(params, "anaglyphColorMode", anaglyphColorModes)
+    .name("Color Mode")
+    .onChange(function (value) {
+      anaglyph.colorMode = value;
+    });
+  anaglyphFolder
+    .add(params, "planeDistance", 0.5, 10, 0.1)
+    .name("Plane Distance")
+    .onChange(function (value) {
+      anaglyph.planeDistance = value;
+    });
+  anaglyphFolder.paramList.domElement.style.display = "none";
 
   window.addEventListener("resize", onWindowResize);
 
@@ -109,14 +159,17 @@ function init() {
 
 function update(value) {
   if (value === "stereo") {
-    postProcessing.outputNode = stereo;
+    renderPipeline.outputNode = stereo;
+    anaglyphFolder.paramList.domElement.style.display = "none";
   } else if (value === "anaglyph") {
-    postProcessing.outputNode = anaglyph;
+    renderPipeline.outputNode = anaglyph;
+    anaglyphFolder.paramList.domElement.style.display = "";
   } else if (value === "parallaxBarrier") {
-    postProcessing.outputNode = parallaxBarrier;
+    renderPipeline.outputNode = parallaxBarrier;
+    anaglyphFolder.paramList.domElement.style.display = "none";
   }
 
-  postProcessing.needsUpdate = true;
+  renderPipeline.needsUpdate = true;
 }
 
 function onWindowResize() {
@@ -152,5 +205,5 @@ function animate() {
     mesh.instanceMatrix.needsUpdate = true;
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

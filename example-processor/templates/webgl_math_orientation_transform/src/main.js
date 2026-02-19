@@ -4,7 +4,7 @@ import {
   Spherical,
   Matrix4,
   Quaternion,
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   ConeGeometry,
@@ -22,7 +22,8 @@ let camera, scene, renderer, mesh, target;
 const spherical = new Spherical();
 const rotationMatrix = new Matrix4();
 const targetQuaternion = new Quaternion();
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 const speed = Math.PI / 2;
 
 const params = {
@@ -100,7 +101,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mesh.quaternion.equals(targetQuaternion) === false) {
     if (params.useLookAt === true) {

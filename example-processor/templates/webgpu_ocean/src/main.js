@@ -1,6 +1,8 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
+import { pass } from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
@@ -9,8 +11,8 @@ import { WaterMesh } from "three/addons/objects/WaterMesh.js";
 import { SkyMesh } from "three/addons/objects/SkyMesh.js";
 
 let container;
-let camera, scene, renderer;
-let controls, water, sun, mesh;
+let camera, scene, renderer, renderPipeline;
+let controls, water, sun, sky, mesh, bloomPass;
 
 init();
 
@@ -24,7 +26,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.5;
+  renderer.toneMappingExposure = 0.1;
   renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
@@ -39,6 +41,20 @@ function init() {
     20000
   );
   camera.position.set(30, 30, 100);
+
+  // Post-processing
+
+  renderPipeline = new RenderPipeline(renderer);
+
+  const scenePass = pass(scene, camera);
+  const scenePassColor = scenePass.getTextureNode("output");
+
+  bloomPass = bloom(scenePassColor);
+  bloomPass.threshold.value = 0;
+  bloomPass.strength.value = 0.1;
+  bloomPass.radius.value = 0;
+
+  renderPipeline.outputNode = scenePassColor.add(bloomPass);
 
   //
 
@@ -65,7 +81,7 @@ function init() {
 
   // Skybox
 
-  const sky = new SkyMesh();
+  sky = new SkyMesh();
   sky.scale.setScalar(10000);
   scene.add(sky);
 
@@ -73,10 +89,14 @@ function init() {
   sky.rayleigh.value = 2;
   sky.mieCoefficient.value = 0.005;
   sky.mieDirectionalG.value = 0.8;
+  sky.cloudCoverage.value = 0.4;
+  sky.cloudDensity.value = 0.5;
+  sky.cloudElevation.value = 0.5;
 
   const parameters = {
     elevation: 2,
     azimuth: 180,
+    exposure: 0.1,
   };
 
   const pmremGenerator = new PMREMGenerator(renderer);
@@ -128,12 +148,26 @@ function init() {
   const folderSky = gui.addFolder("Sky");
   folderSky.add(parameters, "elevation", 0, 90, 0.1).onChange(updateSun);
   folderSky.add(parameters, "azimuth", -180, 180, 0.1).onChange(updateSun);
+  folderSky
+    .add(parameters, "exposure", 0, 1, 0.0001)
+    .onChange(function (value) {
+      renderer.toneMappingExposure = value;
+    });
 
   const folderWater = gui.addFolder("Water");
   folderWater
     .add(water.distortionScale, "value", 0, 8, 0.1)
     .name("distortionScale");
   folderWater.add(water.size, "value", 0.1, 10, 0.1).name("size");
+
+  const folderBloom = gui.addFolder("Bloom");
+  folderBloom.add(bloomPass.strength, "value", 0, 3, 0.01).name("strength");
+  folderBloom.add(bloomPass.radius, "value", 0, 1, 0.01).name("radius");
+
+  const folderClouds = gui.addFolder("Clouds");
+  folderClouds.add(sky.cloudCoverage, "value", 0, 1, 0.01).name("coverage");
+  folderClouds.add(sky.cloudDensity, "value", 0, 1, 0.01).name("density");
+  folderClouds.add(sky.cloudElevation, "value", 0, 1, 0.01).name("elevation");
 
   //
 
@@ -154,5 +188,5 @@ function render() {
   mesh.rotation.x = time * 0.5;
   mesh.rotation.z = time * 0.51;
 
-  renderer.render(scene, camera);
+  renderPipeline.render();
 }

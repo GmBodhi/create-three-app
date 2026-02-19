@@ -10,7 +10,7 @@ import {
   Color,
   Euler,
   AnimationMixer,
-  Clock,
+  Timer,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -148,11 +148,14 @@ function onWindowResize() {
 
 //
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 let time = 0;
 
 function animate() {
-  const dt = clock.getDelta();
+  timer.update();
+
+  const dt = timer.getDelta();
   time += dt;
 
   mixer.update(dt);

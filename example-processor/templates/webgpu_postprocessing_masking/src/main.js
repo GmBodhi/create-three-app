@@ -4,7 +4,7 @@ import * as THREE from "three/webgpu";
 import { pass, texture } from "three/tsl";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, postProcessing, renderer;
+let camera, renderPipeline, renderer;
 let box, torus;
 
 init();
@@ -68,8 +68,8 @@ function init() {
   compose = sceneMask1.mix(compose, texture(texture1));
   compose = sceneMask2.mix(compose, texture(texture2));
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = compose;
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = compose;
 }
 
 function onWindowResize() {
@@ -95,5 +95,5 @@ function animate() {
   torus.rotation.x = time;
   torus.rotation.y = time / 2;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

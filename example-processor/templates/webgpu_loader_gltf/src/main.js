@@ -68,9 +68,7 @@ async function init() {
         });
     });
 
-  renderer = new WebGPURenderer({
-    antialias: true /*, compatibilityMode: true*/,
-  });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);

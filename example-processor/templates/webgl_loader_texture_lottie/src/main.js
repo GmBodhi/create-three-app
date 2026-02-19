@@ -12,6 +12,7 @@ import {
   MeshStandardMaterial,
   Mesh,
   WebGLRenderer,
+  ACESFilmicToneMapping,
   PMREMGenerator,
 } from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
@@ -75,11 +76,8 @@ function init() {
       // texture = new TextureLoader().load( 'textures/uv_grid_directx.jpg' );
       // texture.colorSpace = SRGBColorSpace;
 
-      const geometry = new RoundedBoxGeometry(1, 1, 1, 7, 0.2);
-      const material = new MeshStandardMaterial({
-        roughness: 0.1,
-        map: texture,
-      });
+      const geometry = new RoundedBoxGeometry(1, 1, 1, 7, 0.1);
+      const material = new MeshStandardMaterial({ roughness: 0, map: texture });
       mesh = new Mesh(geometry, material);
       scene.add(mesh);
     }
@@ -89,12 +87,13 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
+  renderer.toneMapping = ACESFilmicToneMapping;
   document.body.appendChild(renderer.domElement);
 
   const environment = new RoomEnvironment();
   const pmremGenerator = new PMREMGenerator(renderer);
 
-  scene.environment = pmremGenerator.fromScene(environment).texture;
+  scene.environment = pmremGenerator.fromScene(environment, 0.04).texture;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.autoRotate = true;

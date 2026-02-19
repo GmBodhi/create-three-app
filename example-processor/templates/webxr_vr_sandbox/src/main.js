@@ -9,10 +9,9 @@ import {
   DoubleSide,
   Mesh,
   CylinderGeometry,
-  MeshStandardMaterial,
+  MeshLambertMaterial,
   PlaneGeometry,
   BoxGeometry,
-  MeshPhongMaterial,
   WebGLRenderer,
   ACESFilmicToneMapping,
   BufferGeometry,
@@ -84,7 +83,7 @@ function init() {
   scene.add(torus);
 
   const cylinderGeometry = new CylinderGeometry(1, 1, 0.1, 50);
-  const cylinderMaterial = new MeshStandardMaterial();
+  const cylinderMaterial = new MeshLambertMaterial();
   const cylinder = new Mesh(cylinderGeometry, cylinderMaterial);
   cylinder.position.z = -2;
   scene.add(cylinder);
@@ -102,7 +101,7 @@ function init() {
   scene.add(reflector);
 
   const frameGeometry = new BoxGeometry(2.1, 2.1, 0.1);
-  const frameMaterial = new MeshPhongMaterial();
+  const frameMaterial = new MeshLambertMaterial({ color: 0x888888 });
   const frame = new Mesh(frameGeometry, frameMaterial);
   frame.position.z = -0.07;
   reflector.add(frame);

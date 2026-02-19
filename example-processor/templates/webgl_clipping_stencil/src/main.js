@@ -9,7 +9,7 @@ import {
   Mesh,
   FrontSide,
   DecrementWrapStencilOp,
-  Clock,
+  Timer,
   Scene,
   PerspectiveCamera,
   AmbientLight,
@@ -32,7 +32,7 @@ import Stats from "three/addons/libs/stats.module.js";
 
 let camera, scene, renderer, object, stats;
 let planes, planeObjects, planeHelpers;
-let clock;
+let timer;
 
 const params = {
   animate: true,
@@ -93,7 +93,8 @@ function createPlaneStencilGroup(geometry, plane, renderOrder) {
 }
 
 function init() {
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   scene = new Scene();
 
@@ -278,7 +279,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (params.animate) {
     object.rotation.x += delta * 0.5;

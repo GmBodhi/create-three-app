@@ -45,7 +45,7 @@ let last = performance.now();
 let pointer, raycaster;
 let computeVelocity, computePosition, effectController;
 
-const BIRDS = 16384;
+const BIRDS = 8192;
 const SPEED_LIMIT = 9.0;
 const BOUNDS = 800,
   BOUNDS_HALF = BOUNDS / 2;
@@ -135,7 +135,11 @@ function init() {
 
   //
 
-  renderer = new WebGPURenderer({ antialias: true, forceWebGL: false });
+  renderer = new WebGPURenderer({
+    antialias: true,
+    forceWebGL: false,
+    requiredLimits: { maxStorageBuffersInVertexStage: 3 },
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);

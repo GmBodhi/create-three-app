@@ -27,9 +27,9 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 let camera, scene, renderer;
-let mixer, objects, clock;
+let mixer, objects, timer;
 let model, floor, floorPosition;
-let postProcessing;
+let renderPipeline;
 let controls;
 
 init();
@@ -49,16 +49,6 @@ function init() {
   camera.lookAt(0, 1, 0);
 
   const sunLight = new DirectionalLight(0xffe499, 5);
-  sunLight.castShadow = true;
-  sunLight.shadow.camera.near = 0.1;
-  sunLight.shadow.camera.far = 5;
-  sunLight.shadow.camera.right = 2;
-  sunLight.shadow.camera.left = -2;
-  sunLight.shadow.camera.top = 1;
-  sunLight.shadow.camera.bottom = -2;
-  sunLight.shadow.mapSize.width = 2048;
-  sunLight.shadow.mapSize.height = 2048;
-  sunLight.shadow.bias = -0.001;
   sunLight.position.set(0.5, 3, 0.5);
 
   const waterAmbientLight = new HemisphereLight(0x333366, 0x74ccf4, 5);
@@ -68,14 +58,14 @@ function init() {
   scene.add(skyAmbientLight);
   scene.add(waterAmbientLight);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // animated model
 
   const loader = new GLTFLoader();
   loader.load("models/gltf/Michelle.glb", function (gltf) {
     model = gltf.scene;
-    model.children[0].children[0].castShadow = true;
 
     mixer = new AnimationMixer(model);
 
@@ -126,11 +116,11 @@ function init() {
 
   // water
 
-  const timer = time.mul(0.8);
+  const t = time.mul(0.8);
   const floorUV = positionWorld.xzy;
 
-  const waterLayer0 = mx_worley_noise_float(floorUV.mul(4).add(timer));
-  const waterLayer1 = mx_worley_noise_float(floorUV.mul(2).add(timer));
+  const waterLayer0 = mx_worley_noise_float(floorUV.mul(4).add(t));
+  const waterLayer1 = mx_worley_noise_float(floorUV.mul(2).add(t));
 
   const waterIntensity = waterLayer0.mul(waterLayer1);
   const waterColor = waterIntensity
@@ -253,8 +243,8 @@ function init() {
     .oneMinus()
     .toInspector("Post-Processing / Vignette");
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = waterMask.select(
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = waterMask.select(
     scenePassColorBlurred,
     scenePassColorBlurred.mul(color(0x74ccf4)).mul(vignette)
   );
@@ -272,9 +262,11 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   controls.update();
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   floor.position.y = floorPosition.y - 5;
 
@@ -285,9 +277,9 @@ function animate() {
   }
 
   for (const object of objects.children) {
-    object.position.y = Math.sin(clock.elapsedTime + object.id) * 0.3;
+    object.position.y = Math.sin(timer.getElapsed() + object.id) * 0.3;
     object.rotation.y += delta * 0.3;
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

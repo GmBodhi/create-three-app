@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
@@ -37,7 +37,8 @@ const terrainMinHeight = -2;
 let container, stats;
 let camera, scene, renderer;
 let terrainMesh;
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 // Physics variables
 let collisionConfiguration;
@@ -402,12 +403,14 @@ function createObjectMaterial() {
 }
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  const deltaTime = clock.getDelta();
+  const deltaTime = timer.getDelta();
 
   if (dynamicObjects.length < maxNumObjects && time > timeNextSpawn) {
     generateObject();

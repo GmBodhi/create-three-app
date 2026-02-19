@@ -6,7 +6,7 @@ import { smaa } from "three/addons/tsl/display/SMAANode.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, postProcessing;
+let camera, scene, renderer, renderPipeline;
 
 const params = {
   enabled: true,
@@ -53,12 +53,12 @@ function init() {
 
   // post processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera).toInspector("Color");
   const smaaPass = smaa(scenePass);
 
-  postProcessing.outputNode = smaaPass;
+  renderPipeline.outputNode = smaaPass;
 
   //
 
@@ -69,12 +69,12 @@ function init() {
   const smaaFolder = gui.addFolder("SMAA");
   smaaFolder.add(params, "enabled").onChange((value) => {
     if (value === true) {
-      postProcessing.outputNode = smaaPass;
+      renderPipeline.outputNode = smaaPass;
     } else {
-      postProcessing.outputNode = scenePass;
+      renderPipeline.outputNode = scenePass;
     }
 
-    postProcessing.needsUpdate = true;
+    renderPipeline.needsUpdate = true;
   });
 
   const sceneFolder = gui.addFolder("Scene");
@@ -101,5 +101,5 @@ function animate() {
     }
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

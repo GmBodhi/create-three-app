@@ -14,7 +14,7 @@ import {
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer;
-let mixer, clock;
+let mixer, timer;
 
 init();
 
@@ -33,7 +33,8 @@ function init() {
 
   scene.add(new AmbientLight(0xffffff, 10));
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const loader = new GLTFLoader();
   loader.load("models/gltf/Michelle.glb", function (gltf) {
@@ -71,6 +72,7 @@ function init() {
           .mul(5)
           .add(1);
         materialPoints.sizeAttenuation = false;
+        materialPoints.alphaTest = 0.5;
 
         const updateSkinningPoints = Fn(() => {
           const pointPosition = pointPositionArray.element(instanceIndex);
@@ -128,7 +130,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) mixer.update(delta);
 

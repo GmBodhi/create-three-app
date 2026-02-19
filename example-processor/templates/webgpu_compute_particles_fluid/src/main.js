@@ -40,7 +40,8 @@ import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 let renderer, scene, camera, controls;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 const maxParticles = 8192 * 16;
 const gridSize1d = 64;
@@ -82,7 +83,10 @@ const params = {
 init();
 
 async function init() {
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer({
+    antialias: true,
+    requiredLimits: { maxStorageBuffersInVertexStage: 1 },
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
@@ -678,7 +682,9 @@ function onWindowResize() {
 }
 
 async function render() {
-  const deltaTime = MathUtils.clamp(clock.getDelta(), 0.00001, 1 / 60); // don't advance the time too far, for example when the window is out of focus
+  timer.update();
+
+  const deltaTime = MathUtils.clamp(timer.getDelta(), 0.00001, 1 / 60); // don't advance the time too far, for example when the window is out of focus
   dtUniform.value = deltaTime;
 
   mouseForceUniform.value

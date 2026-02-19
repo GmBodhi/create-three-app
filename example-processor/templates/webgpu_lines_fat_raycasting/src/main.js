@@ -16,7 +16,7 @@ let line, thresholdLine, segments, thresholdSegments;
 let renderer, scene, camera, controls;
 let sphereInter, sphereOnLine;
 let gui;
-let clock;
+let timer;
 
 const color = new Color();
 
@@ -61,7 +61,8 @@ const params = {
 init();
 
 function init() {
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   renderer = new WebGPURenderer({
     antialias: true,
@@ -191,7 +192,9 @@ function onPointerMove(event) {
 }
 
 async function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   const obj = line.visible ? line : segments;
   thresholdLine.position.copy(line.position);

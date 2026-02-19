@@ -4,7 +4,7 @@ import {
   Vector3,
   Quaternion,
   PerspectiveCamera,
-  Clock,
+  Timer,
   Scene,
   Color,
   Fog,
@@ -35,7 +35,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let scene, renderer, camera, floor, orbitControls;
-let group, followGroup, model, skeleton, mixer, clock;
+let group, followGroup, model, skeleton, mixer, timer;
 
 let actions;
 
@@ -74,7 +74,8 @@ function init() {
   );
   camera.position.set(0, 2, -5);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   scene = new Scene();
   scene.background = new Color(0x5e5d5d);
@@ -412,9 +413,11 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   // Render loop
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   updateCharacter(delta);
 

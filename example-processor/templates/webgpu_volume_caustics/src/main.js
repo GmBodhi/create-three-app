@@ -34,7 +34,7 @@ import { bayer16 } from "three/addons/tsl/math/Bayer.js";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 let camera, scene, renderer, controls;
-let postProcessing;
+let renderPipeline;
 let gltf;
 
 init();
@@ -66,7 +66,6 @@ async function init() {
   spotLight.shadow.mapSize.height = 1024;
   spotLight.shadow.camera.near = 0.1;
   spotLight.shadow.camera.far = 1;
-  spotLight.shadow.bias = -0.003;
   spotLight.shadow.intensity = 0.95;
   spotLight.layers.enable(LAYER_VOLUMETRIC_LIGHTING);
   scene.add(spotLight);
@@ -181,6 +180,7 @@ async function init() {
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.shadowMap.enabled = true;
+  renderer.shadowMap.transmitted = true;
   renderer.inspector = new Inspector();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -195,7 +195,7 @@ async function init() {
 
   // Post-Processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // Layers
 
@@ -315,7 +315,7 @@ async function init() {
     bloomPass.mul(volumetricLightingIntensity)
   );
 
-  postProcessing.outputNode = scenePassColor;
+  renderPipeline.outputNode = scenePassColor;
 
   // Controls
 
@@ -341,5 +341,5 @@ function animate() {
 
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

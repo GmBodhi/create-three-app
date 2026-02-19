@@ -8,7 +8,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
+  Timer,
   WebGLRenderer,
   ShaderMaterial,
   Vector2,
@@ -20,7 +20,7 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 
-let camera, scene, mesh, renderer, stats, clock;
+let camera, scene, mesh, renderer, stats, timer;
 
 const planeWidth = 50;
 const planeHeight = 25;
@@ -44,7 +44,8 @@ function init() {
   scene = new Scene();
 
   //
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -91,8 +92,10 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   if (mesh) {
-    const delta = clock.getDelta() * 10;
+    const delta = timer.getDelta() * 10;
 
     depthStep += delta;
 

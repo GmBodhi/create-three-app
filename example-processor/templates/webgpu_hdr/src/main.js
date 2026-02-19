@@ -70,11 +70,11 @@ brushMat.depthTest = false;
 brushMat.depthWrite = false;
 brushMat.blending = AdditiveBlending; // additive to build HDR energy
 
-const postProcessing = new PostProcessing(renderer);
+const renderPipeline = new RenderPipeline(renderer);
 const brushPass = pass(brushScene, camera, { type: HalfFloatType });
 brushPass.renderTarget.texture.colorSpace = ExtendedSRGBColorSpace;
 
-postProcessing.outputNode = afterImage(brushPass, params.afterImageDecay);
+renderPipeline.outputNode = afterImage(brushPass, params.afterImageDecay);
 
 // HDR brush uniforms
 const uColor = params.intensity;
@@ -142,5 +142,5 @@ window.addEventListener("resize", onResize);
 
 // Main loop
 renderer.setAnimationLoop(async () => {
-  postProcessing.render();
+  renderPipeline.render();
 });

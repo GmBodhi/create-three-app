@@ -16,7 +16,8 @@ init();
 async function init() {
   let mixer;
 
-  const clock = new Clock();
+  const timer = new Timer();
+  timer.connect(document);
 
   const camera = new PerspectiveCamera(
     45,
@@ -42,7 +43,7 @@ async function init() {
   const pmremGenerator = new PMREMGenerator(renderer);
 
   scene.background = new Color(0x666666);
-  scene.environment = pmremGenerator.fromScene(environment).texture;
+  scene.environment = pmremGenerator.fromScene(environment, 0.04).texture;
 
   const ktx2Loader = await new KTX2Loader()
     .setTranscoderPath("jsm/libs/basis/")
@@ -87,7 +88,9 @@ async function init() {
   controls.target.set(0, 0.15, -0.2);
 
   function animate() {
-    const delta = clock.getDelta();
+    timer.update();
+
+    const delta = timer.getDelta();
 
     if (mixer) {
       mixer.update(delta);

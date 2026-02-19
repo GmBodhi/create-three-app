@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   PerspectiveCamera,
-  Clock,
+  Timer,
   Scene,
   Color,
   Fog,
@@ -22,7 +22,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, clock;
+let camera, scene, renderer, timer;
 let model, animations;
 
 const mixers = [],
@@ -44,7 +44,8 @@ function init() {
   camera.position.set(2, 3, -6);
   camera.lookAt(0, 1, 0);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   scene = new Scene();
   scene.background = new Color(0xa0a0a0);
@@ -212,7 +213,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   for (const mixer of mixers) mixer.update(delta);
 

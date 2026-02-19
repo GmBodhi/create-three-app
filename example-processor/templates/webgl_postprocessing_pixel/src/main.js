@@ -4,7 +4,7 @@ import {
   OrthographicCamera,
   Scene,
   Color,
-  Clock,
+  Timer,
   WebGLRenderer,
   TextureLoader,
   MeshPhongMaterial,
@@ -30,7 +30,7 @@ import { RenderPixelatedPass } from "three/addons/postprocessing/RenderPixelated
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, composer, crystalMesh, clock;
+let camera, scene, renderer, composer, crystalMesh, timer;
 let gui, params;
 
 init();
@@ -45,7 +45,8 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0x151729);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   renderer = new WebGLRenderer();
   renderer.shadowMap.enabled = true;
@@ -170,7 +171,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const t = clock.getElapsedTime();
+  timer.update();
+
+  const t = timer.getElapsed();
 
   crystalMesh.material.emissiveIntensity = Math.sin(t * 3) * 0.5 + 0.5;
   crystalMesh.position.y = 0.7 + Math.sin(t * 2) * 0.05;

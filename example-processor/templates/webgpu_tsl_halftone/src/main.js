@@ -19,7 +19,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-let camera, scene, renderer, controls, clock, halftoneSettings;
+let camera, scene, renderer, controls, timer, halftoneSettings;
 
 init();
 
@@ -34,7 +34,8 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // renderer
 
@@ -232,9 +233,11 @@ function onWindowResize() {
 }
 
 async function animate() {
+  timer.update();
+
   controls.update();
 
-  const time = clock.getElapsedTime();
+  const time = timer.getElapsed();
   halftoneSettings[1].uniforms.direction.value.x = Math.cos(time);
   halftoneSettings[1].uniforms.direction.value.y = Math.sin(time);
 

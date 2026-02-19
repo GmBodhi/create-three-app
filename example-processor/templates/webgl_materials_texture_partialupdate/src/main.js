@@ -5,7 +5,7 @@ import {
   Color,
   PerspectiveCamera,
   Scene,
-  Clock,
+  Timer,
   TextureLoader,
   SRGBColorSpace,
   LinearFilter,
@@ -17,7 +17,7 @@ import {
   MathUtils,
 } from "three";
 
-let camera, scene, renderer, clock, dataTexture, diffuseMap;
+let camera, scene, renderer, timer, dataTexture, diffuseMap;
 
 let last = 0;
 const position = new Vector2();
@@ -36,7 +36,8 @@ async function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const loader = new TextureLoader();
   diffuseMap = await loader.loadAsync(
@@ -81,7 +82,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const elapsedTime = clock.getElapsedTime();
+  timer.update();
+
+  const elapsedTime = timer.getElapsed();
 
   if (elapsedTime - last > 0.1) {
     last = elapsedTime;

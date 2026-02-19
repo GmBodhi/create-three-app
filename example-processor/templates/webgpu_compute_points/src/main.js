@@ -107,7 +107,10 @@ async function init() {
   mesh.count = particlesCount;
   scene.add(mesh);
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer({
+    antialias: true,
+    requiredLimits: { maxStorageBuffersInVertexStage: 1 },
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

@@ -9,10 +9,11 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import { uniform, pass } from "three/tsl";
 import { transition } from "three/addons/tsl/display/TransitionNode.js";
 
-let renderer, postProcessing, transitionController, transitionPass;
+let renderer, renderPipeline, transitionController, transitionPass;
 
 const textures = [];
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 const effectController = {
   animateScene: true,
@@ -135,7 +136,7 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePassA = pass(fxSceneA.scene, fxSceneA.camera);
   const scenePassB = pass(fxSceneB.scene, fxSceneB.camera);
@@ -149,7 +150,7 @@ function init() {
     effectController._useTexture
   );
 
-  postProcessing.outputNode = transitionPass;
+  renderPipeline.outputNode = transitionPass;
 
   const gui = renderer.inspector.createParameters("Settings");
 
@@ -207,6 +208,8 @@ new TWEEN.Tween(effectController)
   .start();
 
 function animate() {
+  timer.update();
+
   if (effectController.animateTransition) TWEEN.update();
 
   if (textures[effectController.texture]) {
@@ -214,7 +217,7 @@ function animate() {
     transitionPass.mixTextureNode.value = mixTexture;
   }
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
   fxSceneA.update(delta);
   fxSceneB.update(delta);
 
@@ -228,7 +231,7 @@ function render() {
   } else if (effectController.transition === 1) {
     renderer.render(fxSceneA.scene, fxSceneA.camera);
   } else {
-    postProcessing.render();
+    renderPipeline.render();
   }
 }
 

@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   AudioListener,
   Scene,
@@ -27,7 +27,8 @@ let material1, material2, material3;
 
 let analyser1, analyser2, analyser3;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 const startButton = document.getElementById("startButton");
 startButton.addEventListener("click", init);
@@ -252,7 +253,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   controls.update(delta);
 

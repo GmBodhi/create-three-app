@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import {
   Scene,
   PerspectiveCamera,
-  Clock,
+  Timer,
   BoxGeometry,
   MeshNormalMaterial,
   Mesh,
@@ -13,7 +13,7 @@ import {
 
 import { MDDLoader } from "three/addons/loaders/MDDLoader.js";
 
-let camera, scene, renderer, mixer, clock;
+let camera, scene, renderer, mixer, timer;
 
 init();
 
@@ -29,7 +29,8 @@ function init() {
   camera.position.set(8, 8, 8);
   camera.lookAt(scene.position);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   //
 
@@ -70,7 +71,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) mixer.update(delta);
 

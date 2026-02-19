@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   LoadingManager,
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -29,7 +29,8 @@ const manager = new LoadingManager();
 let camera, scene, renderer, stats, object, loader, guiMorphsFolder;
 let mixer;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 const params = {
   asset: "Samba Dancing",
@@ -195,7 +196,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) mixer.update(delta);
 

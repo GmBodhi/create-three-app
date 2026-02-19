@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -27,7 +27,8 @@ let mesh, texture;
 
 const worldWidth = 256,
   worldDepth = 256;
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -191,11 +192,13 @@ function generateTexture(data, width, height) {
 //
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  controls.update(clock.getDelta());
+  controls.update(timer.getDelta());
   renderer.render(scene, camera);
 }

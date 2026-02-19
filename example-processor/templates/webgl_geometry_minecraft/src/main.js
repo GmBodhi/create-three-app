@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -34,7 +34,8 @@ const worldHalfWidth = worldWidth / 2;
 const worldHalfDepth = worldDepth / 2;
 const data = generateHeight(worldWidth, worldDepth);
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -203,11 +204,13 @@ function getY(x, z) {
 //
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  controls.update(clock.getDelta());
+  controls.update(timer.getDelta());
   renderer.render(scene, camera);
 }

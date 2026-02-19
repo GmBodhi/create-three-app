@@ -8,7 +8,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import { uniform } from "three/tsl";
 import { pixelationPass } from "three/addons/tsl/display/PixelationPassNode.js";
 
-let camera, scene, renderer, postProcessing, crystalMesh, clock;
+let camera, scene, renderer, renderPipeline, crystalMesh, timer;
 let effectController;
 
 init();
@@ -23,7 +23,8 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0x151729);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // textures
 
@@ -86,7 +87,6 @@ function init() {
   directionalLight.position.set(100, 100, 100);
   directionalLight.castShadow = true;
   directionalLight.shadow.mapSize.set(2048, 2048);
-  directionalLight.shadow.bias = -0.0001;
   scene.add(directionalLight);
 
   const spotLight = new SpotLight(0xffc100, 10, 10, Math.PI / 16, 0.02, 2);
@@ -95,7 +95,6 @@ function init() {
   scene.add(target);
   target.position.set(0, 0, 0);
   spotLight.castShadow = true;
-  spotLight.shadow.bias = -0.001;
   scene.add(spotLight);
 
   renderer = new WebGPURenderer();
@@ -113,7 +112,7 @@ function init() {
     pixelAlignedPanning: true,
   };
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
   const scenePass = pixelationPass(
     scene,
     camera,
@@ -121,7 +120,7 @@ function init() {
     effectController.normalEdgeStrength,
     effectController.depthEdgeStrength
   );
-  postProcessing.outputNode = scenePass;
+  renderPipeline.outputNode = scenePass;
 
   window.addEventListener("resize", onWindowResize);
 
@@ -151,7 +150,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const t = clock.getElapsedTime();
+  timer.update();
+
+  const t = timer.getElapsed();
 
   crystalMesh.material.emissiveIntensity = Math.sin(t * 3) * 0.5 + 0.5;
   crystalMesh.position.y = 0.7 + Math.sin(t * 2) * 0.05;
@@ -178,7 +179,7 @@ function animate() {
     camera.updateProjectionMatrix();
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }
 
 // Helper functions

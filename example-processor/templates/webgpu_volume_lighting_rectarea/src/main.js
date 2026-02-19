@@ -27,7 +27,7 @@ let renderer, scene, camera;
 let volumetricMesh;
 let rectLight1, rectLight2, rectLight3;
 let timer;
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -199,7 +199,7 @@ function init() {
 
   // Post-Processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // Layers
 
@@ -234,7 +234,7 @@ function init() {
     blurredVolumetricPass.mul(volumetricLightingIntensity)
   );
 
-  postProcessing.outputNode = scenePassColor;
+  renderPipeline.outputNode = scenePassColor;
 
   // GUI
 
@@ -246,10 +246,10 @@ function init() {
   const gui = renderer.inspector.createParameters("Volumetric Lighting");
 
   const rayMarching = gui.addFolder("Ray Marching");
-  rayMarching.add(params, "resolution", 0.1, 0.5).onChange((resolution) => {
+  rayMarching.add(params, "resolution", 0.1, 1).onChange((resolution) => {
     volumetricPass.setResolutionScale(resolution);
   });
-  rayMarching.add(volumetricMaterial, "steps", 2, 12).name("step count");
+  rayMarching.add(volumetricMaterial, "steps", 2, 16).name("step count");
   rayMarching.add(denoiseStrength, "value", 0, 1).name("denoise strength");
   rayMarching.add(params, "denoise").onChange((denoise) => {
     const volumetric = denoise ? blurredVolumetricPass : volumetricPass;
@@ -258,8 +258,8 @@ function init() {
       volumetric.mul(volumetricLightingIntensity)
     );
 
-    postProcessing.outputNode = scenePassColor;
-    postProcessing.needsUpdate = true;
+    renderPipeline.outputNode = scenePassColor;
+    renderPipeline.needsUpdate = true;
   });
 
   const lighting = gui.addFolder("Lighting / Scene");
@@ -287,5 +287,5 @@ function animate() {
   rectLight2.rotation.y += delta * 0.5;
   rectLight3.rotation.y += delta;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

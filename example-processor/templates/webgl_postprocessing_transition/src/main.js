@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   BoxGeometry,
   Vector3,
   IcosahedronGeometry,
@@ -28,7 +28,8 @@ let stats;
 let renderer, composer, renderTransitionPass;
 
 const textures = [];
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 const params = {
   sceneAnimate: true,
@@ -109,10 +110,12 @@ new TWEEN.Tween(params)
   .start();
 
 function animate() {
+  timer.update();
+
   // Transition animation
   if (params.transitionAnimate) TWEEN.update();
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
   fxSceneA.update(delta);
   fxSceneB.update(delta);
 

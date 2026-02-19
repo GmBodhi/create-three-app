@@ -80,7 +80,6 @@ function init() {
   projectorLight.shadow.camera.near = 1;
   projectorLight.shadow.camera.far = 10;
   projectorLight.shadow.focus = 1;
-  projectorLight.shadow.bias = -0.003;
   scene.add(projectorLight);
 
   lightHelper = new SpotLightHelper(projectorLight);

@@ -8,7 +8,6 @@ import {
   normalView,
   metalness,
   roughness,
-  blendColor,
   screenUV,
   color,
   sample,
@@ -28,15 +27,15 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const params = {
   quality: 0.5,
-  blurQuality: 2,
-  maxDistance: 0.5,
+  blurQuality: 1,
+  maxDistance: 1,
   opacity: 1,
-  thickness: 0.015,
+  thickness: 0.03,
   roughness: 1,
   enabled: true,
 };
 
-let camera, scene, model, renderer, postProcessing, ssrPass;
+let camera, scene, model, renderer, renderPipeline, ssrPass;
 let controls;
 
 init();
@@ -80,6 +79,19 @@ async function init() {
     scene.add(model);
   });
 
+  // Add a reflective plane under the camera
+
+  const floorGeometry = new CircleGeometry(2, 64);
+  const floorMaterial = new MeshStandardMaterial({
+    color: 0xffffff,
+    metalness: 1,
+    roughness: 0.5,
+  });
+  const floor = new Mesh(floorGeometry, floorMaterial);
+  floor.rotation.x = -Math.PI / 2;
+  floor.position.y = -0.8;
+  scene.add(floor);
+
   //
 
   renderer = new WebGPURenderer();
@@ -95,13 +107,13 @@ async function init() {
   const environment = new RoomEnvironment();
   const pmremGenerator = new PMREMGenerator(renderer);
 
-  scene.environment = pmremGenerator.fromScene(environment).texture;
+  scene.environment = pmremGenerator.fromScene(environment, 0.04).texture;
   scene.environmentIntensity = 1.25;
   pmremGenerator.dispose();
 
   //
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   scenePass.setMRT(
@@ -151,11 +163,11 @@ async function init() {
     scenePassMetalRough.g
   ).toInspector("SSR");
 
-  // blend SSR over beauty
+  // blend SSR over beauty (SSR outputs premultiplied color, so use additive blending)
 
-  const outputNode = smaa(blendColor(scenePassColor, ssrPass));
+  const outputNode = smaa(scenePassColor.add(ssrPass.rgb));
 
-  postProcessing.outputNode = outputNode;
+  renderPipeline.outputNode = outputNode;
 
   //
 
@@ -176,12 +188,12 @@ async function init() {
   ssrFolder.add(params, "thickness", 0, 0.05).onChange(updateParameters);
   ssrFolder.add(params, "enabled").onChange(() => {
     if (params.enabled === true) {
-      postProcessing.outputNode = outputNode;
+      renderPipeline.outputNode = outputNode;
     } else {
-      postProcessing.outputNode = scenePass;
+      renderPipeline.outputNode = scenePass;
     }
 
-    postProcessing.needsUpdate = true;
+    renderPipeline.needsUpdate = true;
   });
   const modelFolder = gui.addFolder("Model");
   modelFolder.add(params, "roughness", 0, 1).onChange((value) => {
@@ -213,5 +225,5 @@ function onWindowResize() {
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

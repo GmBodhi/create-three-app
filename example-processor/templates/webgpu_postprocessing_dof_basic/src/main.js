@@ -21,7 +21,7 @@ let camera,
   model,
   mixer,
   raycaster,
-  postProcessing;
+  renderPipeline;
 
 const pointerCoords = new Vector2();
 const focusPoint = new Vector3(1, 1.75, -0.4);
@@ -86,8 +86,8 @@ async function init() {
 
   // post processing
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = false;
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputColorTransform = false;
 
   // DOF uniforms
 
@@ -119,7 +119,7 @@ async function init() {
   const outputPass = renderOutput(dofPass);
   const fxaaPass = fxaa(outputPass);
 
-  postProcessing.outputNode = fxaaPass;
+  renderPipeline.outputNode = fxaaPass;
 
   // GUI
 
@@ -180,5 +180,5 @@ function animate() {
   camera.updateMatrixWorld();
   focusPointView.value.copy(focusPoint).applyMatrix4(camera.matrixWorldInverse);
 
-  postProcessing.render();
+  renderPipeline.render();
 }

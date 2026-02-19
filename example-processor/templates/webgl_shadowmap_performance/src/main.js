@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -46,7 +46,8 @@ let morph, mixer;
 const morphs = [],
   animGroups = [];
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -301,13 +302,15 @@ function createScene() {
 //
 
 function animate() {
+  timer.update();
+
   stats.begin();
   render();
   stats.end();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   if (mixer) mixer.update(delta);
 

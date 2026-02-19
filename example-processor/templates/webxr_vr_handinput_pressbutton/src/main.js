@@ -4,7 +4,7 @@ import {
   AudioListener,
   Audio,
   AudioLoader,
-  Clock,
+  Timer,
   BoxGeometry,
   MeshPhongMaterial,
   Mesh,
@@ -261,7 +261,8 @@ CalibrationSystem.queries = {
 };
 
 const world = new World();
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 let camera, scene, renderer;
 
 init();
@@ -509,8 +510,10 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
-  const elapsedTime = clock.elapsedTime;
+  timer.update();
+
+  const delta = timer.getDelta();
+  const elapsedTime = timer.getElapsed();
   renderer.xr.updateCamera(camera);
   world.execute(delta, elapsedTime);
   renderer.render(scene, camera);

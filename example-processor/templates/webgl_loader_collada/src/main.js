@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
+  Timer,
   LoadingManager,
   AmbientLight,
   DirectionalLight,
@@ -14,7 +14,7 @@ import Stats from "three/addons/libs/stats.module.js";
 
 import { ColladaLoader } from "three/addons/loaders/ColladaLoader.js";
 
-let container, stats, clock;
+let container, stats, timer;
 let camera, scene, renderer, elf;
 
 init();
@@ -33,7 +33,8 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // loading manager
 
@@ -83,12 +84,14 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   if (elf !== undefined) {
     elf.rotation.z += delta * 0.5;

@@ -19,7 +19,6 @@ let camera, scene, renderer;
 let sky, sun;
 
 init();
-render();
 
 function initSky() {
   // Add Sky
@@ -39,6 +38,9 @@ function initSky() {
     elevation: 2,
     azimuth: 180,
     exposure: renderer.toneMappingExposure,
+    cloudCoverage: 0.4,
+    cloudDensity: 0.4,
+    cloudElevation: 0.5,
   };
 
   function guiChanged() {
@@ -47,6 +49,9 @@ function initSky() {
     uniforms["rayleigh"].value = effectController.rayleigh;
     uniforms["mieCoefficient"].value = effectController.mieCoefficient;
     uniforms["mieDirectionalG"].value = effectController.mieDirectionalG;
+    uniforms["cloudCoverage"].value = effectController.cloudCoverage;
+    uniforms["cloudDensity"].value = effectController.cloudDensity;
+    uniforms["cloudElevation"].value = effectController.cloudElevation;
 
     const phi = MathUtils.degToRad(90 - effectController.elevation);
     const theta = MathUtils.degToRad(effectController.azimuth);
@@ -56,7 +61,6 @@ function initSky() {
     uniforms["sunPosition"].value.copy(sun);
 
     renderer.toneMappingExposure = effectController.exposure;
-    renderer.render(scene, camera);
   }
 
   const gui = new GUI();
@@ -72,6 +76,20 @@ function initSky() {
   gui.add(effectController, "elevation", 0, 90, 0.1).onChange(guiChanged);
   gui.add(effectController, "azimuth", -180, 180, 0.1).onChange(guiChanged);
   gui.add(effectController, "exposure", 0, 1, 0.0001).onChange(guiChanged);
+
+  const folderClouds = gui.addFolder("Clouds");
+  folderClouds
+    .add(effectController, "cloudCoverage", 0, 1, 0.01)
+    .name("coverage")
+    .onChange(guiChanged);
+  folderClouds
+    .add(effectController, "cloudDensity", 0, 1, 0.01)
+    .name("density")
+    .onChange(guiChanged);
+  folderClouds
+    .add(effectController, "cloudElevation", 0, 1, 0.01)
+    .name("elevation")
+    .onChange(guiChanged);
 
   guiChanged();
 }
@@ -93,12 +111,12 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   document.body.appendChild(renderer.domElement);
 
   const controls = new OrbitControls(camera, renderer.domElement);
-  controls.addEventListener("change", render);
   //controls.maxPolarAngle = Math.PI / 2;
   controls.enableZoom = false;
   controls.enablePan = false;
@@ -113,10 +131,9 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
-
-  render();
 }
 
-function render() {
+function animate() {
+  sky.material.uniforms["time"].value = performance.now() * 0.001;
   renderer.render(scene, camera);
 }

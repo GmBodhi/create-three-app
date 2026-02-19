@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -43,7 +43,8 @@ const controls = {
   moveRight: false,
 };
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -297,13 +298,15 @@ function onKeyUp(event) {
 //
 
 function animate() {
+  timer.update();
+
   render();
 
   stats.update();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   for (let i = 0; i < nCharacters; i++) {
     characters[i].update(delta);

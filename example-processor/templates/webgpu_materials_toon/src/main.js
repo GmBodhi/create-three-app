@@ -11,7 +11,7 @@ import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 
 let container;
 
-let camera, scene, renderer, postProcessing;
+let camera, scene, renderer, renderPipeline;
 let particleLight;
 
 const loader = new FontLoader();
@@ -47,9 +47,9 @@ function init(font) {
 
   //
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
-  postProcessing.outputNode = toonOutlinePass(scene, camera);
+  renderPipeline.outputNode = toonOutlinePass(scene, camera);
 
   // Materials
 
@@ -156,5 +156,5 @@ function render() {
   particleLight.position.y = Math.cos(timer * 5) * 400;
   particleLight.position.z = Math.cos(timer * 3) * 300;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

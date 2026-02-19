@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import {
   PerspectiveCamera,
   Scene,
-  Clock,
+  Timer,
   PointsMaterial,
   Points,
   WebGLRenderer,
@@ -11,7 +11,7 @@ import {
 
 import { XYZLoader } from "three/addons/loaders/XYZLoader.js";
 
-let camera, scene, renderer, clock;
+let camera, scene, renderer, timer;
 
 let points;
 
@@ -30,7 +30,8 @@ function init() {
   scene.add(camera);
   camera.lookAt(scene.position);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const loader = new XYZLoader();
   loader.load("models/xyz/helix_201.xyz", function (geometry) {
@@ -68,7 +69,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (points) {
     points.rotation.x += delta * 0.2;

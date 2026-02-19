@@ -35,6 +35,7 @@ const assets = [
   "meshWithTexture",
   "pixelTexture",
   "points",
+  "camera",
 ];
 
 let vrmlScene;

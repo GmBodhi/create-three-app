@@ -6,7 +6,7 @@ import fragmentShader_ from "./shaders/fragmentShader.glsl";
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -34,7 +34,8 @@ let camera, scene, renderer;
 const mixers = [];
 let stats;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -204,12 +205,14 @@ function onWindowResize() {
 //
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   for (let i = 0; i < mixers.length; i++) {
     mixers[i].update(delta);

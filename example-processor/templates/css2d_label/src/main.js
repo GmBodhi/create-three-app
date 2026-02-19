@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   TextureLoader,
   PerspectiveCamera,
   Scene,
@@ -43,7 +43,8 @@ const layers = {
   },
 };
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 const textureLoader = new TextureLoader();
 
 let moon;
@@ -183,9 +184,11 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   requestAnimationFrame(animate);
 
-  const elapsed = clock.getElapsedTime();
+  const elapsed = timer.getElapsed();
 
   moon.position.set(Math.sin(elapsed) * 5, 0, Math.cos(elapsed) * 5);
 

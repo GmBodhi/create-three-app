@@ -5,8 +5,8 @@ import {
   ACESFilmicToneMapping,
   PerspectiveCamera,
   Scene,
-  PMREMGenerator,
   Color,
+  AmbientLight,
   MathUtils,
   MeshNormalMaterial,
   VideoTexture,
@@ -18,7 +18,6 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
@@ -105,13 +104,10 @@ const camera = new PerspectiveCamera(
 camera.position.z = 5;
 
 const scene = new Scene();
+scene.background = new Color(0x666666);
 scene.scale.x = -1;
 
-const environment = new RoomEnvironment();
-const pmremGenerator = new PMREMGenerator(renderer);
-
-scene.background = new Color(0x666666);
-scene.environment = pmremGenerator.fromScene(environment).texture;
+scene.add(new AmbientLight(0xffffff, 5));
 
 const controls = new OrbitControls(camera, renderer.domElement);
 
@@ -133,6 +129,9 @@ new GLTFLoader()
 
     const head = mesh.getObjectByName("mesh_2");
     head.material = new MeshNormalMaterial();
+
+    const teeth = mesh.getObjectByName("mesh_3");
+    teeth.material = new MeshNormalMaterial();
 
     face = mesh.getObjectByName("mesh_2");
     eyeL = mesh.getObjectByName("eyeLeft");

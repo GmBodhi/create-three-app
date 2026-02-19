@@ -484,7 +484,10 @@ async function init() {
   );
   scene.add(duckMesh);
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer({
+    antialias: true,
+    requiredLimits: { maxStorageBuffersInVertexStage: 2 },
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;

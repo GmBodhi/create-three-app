@@ -23,7 +23,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera, scene, renderer;
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -63,7 +63,10 @@ function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer({
+    antialias: true,
+    requiredLimits: { maxColorAttachments: 5 },
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
@@ -99,9 +102,9 @@ function init() {
 
   // post processing - mrt
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = false;
-  postProcessing.outputNode = Fn(() => {
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputColorTransform = false;
+  renderPipeline.outputNode = Fn(() => {
     const output = scenePass.getTextureNode("output"); // output name is optional here
     const normal = scenePass.getTextureNode("normal");
     const diffuse = scenePass.getTextureNode("diffuse");
@@ -136,5 +139,5 @@ function onWindowResize() {
 //
 
 function render() {
-  postProcessing.render();
+  renderPipeline.render();
 }

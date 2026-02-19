@@ -4,7 +4,7 @@ import {
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
-  Clock,
+  Timer,
   BoxGeometry,
   RawShaderMaterial,
   GLSL3,
@@ -19,7 +19,7 @@ import {
   buildData3DTexture,
 } from "three/addons/loaders/VOXLoader.js";
 
-let renderer, scene, camera, controls, clock;
+let renderer, scene, camera, controls, timer;
 
 init();
 
@@ -45,7 +45,8 @@ function init() {
   controls.autoRotateSpeed = -1.0;
   controls.enableDamping = true;
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // Material
 
@@ -234,7 +235,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
   controls.update(delta);
 
   renderer.render(scene, camera);

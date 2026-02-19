@@ -20,8 +20,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
-let boxLeft, boxRight, model, mixer, clock;
-let postProcessing;
+let boxLeft, boxRight, model, mixer, timer;
+let renderPipeline;
 let controls;
 
 const params = {
@@ -50,9 +50,8 @@ function init() {
   sunLight.shadow.camera.left = -2;
   sunLight.shadow.camera.top = 2;
   sunLight.shadow.camera.bottom = -2;
-  sunLight.shadow.mapSize.width = 2048;
-  sunLight.shadow.mapSize.height = 2048;
-  sunLight.shadow.bias = -0.001;
+  sunLight.shadow.mapSize.width = 1024;
+  sunLight.shadow.mapSize.height = 1024;
   sunLight.position.set(4, 4, 2);
 
   const waterAmbientLight = new HemisphereLight(0x333366, 0x74ccf4, 5);
@@ -62,7 +61,8 @@ function init() {
   scene.add(skyAmbientLight);
   scene.add(waterAmbientLight);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   // animated model
 
@@ -189,8 +189,8 @@ function init() {
     .clamp()
     .oneMinus();
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = mBlur.mul(vignette);
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = mBlur.mul(vignette);
 
   //
 
@@ -212,17 +212,19 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   controls.update();
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
   const speed = params.speed;
 
   boxRight.rotation.y += delta * 4 * speed;
-  boxLeft.scale.setScalar(1 + Math.sin(clock.elapsedTime * 10 * speed) * 0.2);
+  boxLeft.scale.setScalar(1 + Math.sin(timer.getElapsed() * 10 * speed) * 0.2);
 
   if (model) {
     mixer.update(delta * speed);
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

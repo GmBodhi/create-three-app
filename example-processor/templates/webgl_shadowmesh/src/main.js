@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import {
   Scene,
   PerspectiveCamera,
-  Clock,
+  Timer,
   WebGLRenderer,
   DirectionalLight,
   Vector3,
@@ -28,7 +28,8 @@ let SCREEN_HEIGHT = window.innerHeight;
 
 const scene = new Scene();
 const camera = new PerspectiveCamera(55, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 3000);
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 const renderer = new WebGLRenderer({ stencil: true });
 
 const sunLight = new DirectionalLight("rgb(255,255,255)", 3);
@@ -212,7 +213,9 @@ function init() {
 }
 
 function animate() {
-  frameTime = clock.getDelta();
+  timer.update();
+
+  frameTime = timer.getDelta();
 
   cube.rotation.x += 1.0 * frameTime;
   cube.rotation.y += 1.0 * frameTime;

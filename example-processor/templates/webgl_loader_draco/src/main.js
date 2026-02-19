@@ -7,7 +7,7 @@ import {
   Fog,
   Mesh,
   PlaneGeometry,
-  MeshPhongMaterial,
+  MeshLambertMaterial,
   HemisphereLight,
   SpotLight,
   MeshStandardMaterial,
@@ -43,7 +43,7 @@ function init() {
   // Ground
   const plane = new Mesh(
     new PlaneGeometry(8, 8),
-    new MeshPhongMaterial({ color: 0xcbcbcb, specular: 0x101010 })
+    new MeshLambertMaterial({ color: 0xcbcbcb })
   );
   plane.rotation.x = -Math.PI / 2;
   plane.position.y = 0.03;
@@ -59,6 +59,7 @@ function init() {
   spotLight.angle = Math.PI / 16;
   spotLight.penumbra = 0.5;
   spotLight.castShadow = true;
+  spotLight.shadow.radius = 8;
   spotLight.position.set(-1, 1, 1);
   scene.add(spotLight);
 

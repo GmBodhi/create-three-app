@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Fog,
@@ -20,7 +20,8 @@ let container;
 
 let camera, scene, renderer, controls;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -104,7 +105,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  controls.update(clock.getDelta());
+  timer.update();
+
+  controls.update(timer.getDelta());
 
   renderer.render(scene, camera);
 }

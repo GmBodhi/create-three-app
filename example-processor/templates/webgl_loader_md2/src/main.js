@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   PerspectiveCamera,
   Scene,
   Color,
@@ -41,7 +41,8 @@ const playbackConfig = {
 
 let controls;
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 let stats;
 
@@ -286,13 +287,15 @@ function setupGUIAnimations(character) {
 //
 
 function animate() {
+  timer.update();
+
   render();
 
   stats.update();
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   character.update(delta);
 

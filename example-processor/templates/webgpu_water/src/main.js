@@ -15,7 +15,7 @@ import { WaterMesh } from "three/addons/objects/Water2Mesh.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
-let scene, camera, renderer, water, postProcessing, controls;
+let scene, camera, renderer, water, renderPipeline, controls;
 
 const params = {
   color: "#99e0ff",
@@ -143,8 +143,8 @@ async function init() {
 
   // postprocessing
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputColorTransform = false;
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputColorTransform = false;
 
   const scenePass = pass(scene, camera);
   scenePass.setMRT(
@@ -162,7 +162,7 @@ async function init() {
   const outputPass = renderOutput(beautyPass.add(bloomPass));
 
   const fxaaPass = fxaa(outputPass);
-  postProcessing.outputNode = fxaaPass;
+  renderPipeline.outputNode = fxaaPass;
 
   // gui
 
@@ -205,5 +205,5 @@ function onWindowResize() {
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

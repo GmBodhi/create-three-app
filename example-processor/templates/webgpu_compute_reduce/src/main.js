@@ -512,7 +512,7 @@ const createReduce3Fn = (createReduce3FnProps) => {
   } = createReduce3FnProps;
 
   const fnDef = Fn(() => {
-    const inputSize = uint(inputBuffer.bufferCount.length);
+    const inputSize = uint(inputBuffer.bufferCount);
     const rowOffset = workgroupId.x.mul(rowSize);
 
     // If the current rows elements exceed the bounds of the input

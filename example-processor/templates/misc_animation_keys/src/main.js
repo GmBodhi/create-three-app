@@ -17,12 +17,12 @@ import {
   AnimationClip,
   AnimationMixer,
   WebGLRenderer,
-  Clock,
+  Timer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
 
-let stats, clock;
+let stats, timer;
 let scene, camera, renderer, mixer;
 
 init();
@@ -148,7 +148,8 @@ function init() {
 
   //
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   //
 
@@ -163,7 +164,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   if (mixer) {
     mixer.update(delta);

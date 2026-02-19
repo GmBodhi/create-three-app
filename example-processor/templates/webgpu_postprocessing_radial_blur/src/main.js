@@ -12,7 +12,7 @@ const params = {
 };
 
 let camera, scene, renderer, timer, group;
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -94,7 +94,7 @@ async function init() {
 
   // post processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
 
@@ -110,7 +110,7 @@ async function init() {
     exposure: exposureUniform,
   });
 
-  postProcessing.outputNode = blurPass;
+  renderPipeline.outputNode = blurPass;
 
   //
 
@@ -125,12 +125,12 @@ async function init() {
   gui.add(exposureUniform, "value", 1, 10).name("exposure");
   gui.add(params, "enabled").onChange((value) => {
     if (value === true) {
-      postProcessing.outputNode = blurPass;
+      renderPipeline.outputNode = blurPass;
     } else {
-      postProcessing.outputNode = scenePass;
+      renderPipeline.outputNode = scenePass;
     }
 
-    postProcessing.needsUpdate = true;
+    renderPipeline.needsUpdate = true;
   });
   gui.add(params, "animated");
 }
@@ -152,5 +152,5 @@ function animate() {
     group.rotation.y += delta * 0.1;
   }
 
-  postProcessing.render();
+  renderPipeline.render();
 }

@@ -8,7 +8,7 @@ import {
   PointsMaterial,
   Points,
   Scene,
-  Clock,
+  Timer,
   PerspectiveCamera,
   Color,
   SphereGeometry,
@@ -25,7 +25,7 @@ let pointclouds;
 let raycaster;
 let intersection = null;
 let spheresIndex = 0;
-let clock;
+let timer;
 let toggle = 0;
 
 const pointer = new Vector2();
@@ -131,7 +131,8 @@ function init() {
 
   scene = new Scene();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   camera = new PerspectiveCamera(
     45,
@@ -218,6 +219,8 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
@@ -245,7 +248,7 @@ function render() {
     sphere.scale.clampScalar(0.01, 1);
   }
 
-  toggle += clock.getDelta();
+  toggle += timer.getDelta();
 
   renderer.render(scene, camera);
 }

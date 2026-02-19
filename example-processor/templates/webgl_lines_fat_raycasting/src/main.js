@@ -4,7 +4,7 @@ import {
   Color,
   Vector2,
   Raycaster,
-  Clock,
+  Timer,
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
@@ -30,7 +30,7 @@ let line, thresholdLine, segments, thresholdSegments;
 let renderer, scene, camera, controls;
 let sphereInter, sphereOnLine;
 let gui;
-let clock;
+let timer;
 
 const color = new Color();
 
@@ -75,7 +75,8 @@ const params = {
 init();
 
 function init() {
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   renderer = new WebGLRenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -198,7 +199,9 @@ function onPointerMove(event) {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   const obj = line.visible ? line : segments;
   thresholdLine.position.copy(line.position);
@@ -277,10 +280,7 @@ function initGui() {
 
   gui.add(params, "world units").onChange(function (val) {
     matLine.worldUnits = val;
-    matLine.needsUpdate = true;
-
     matThresholdLine.worldUnits = val;
-    matThresholdLine.needsUpdate = true;
   });
 
   gui.add(params, "visualize threshold").onChange(function (val) {

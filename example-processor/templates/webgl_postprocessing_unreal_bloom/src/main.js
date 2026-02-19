@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  Clock,
+  Timer,
   Scene,
   PerspectiveCamera,
   AmbientLight,
@@ -23,7 +23,7 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 
 let camera, stats;
-let composer, renderer, mixer, clock;
+let composer, renderer, mixer, timer;
 
 const params = {
   threshold: 0,
@@ -37,7 +37,8 @@ init();
 async function init() {
   const container = document.getElementById("container");
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const scene = new Scene();
 
@@ -149,7 +150,9 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   mixer.update(delta);
 

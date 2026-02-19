@@ -10,7 +10,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let camera;
-let postProcessing, renderer, mixer, clock;
+let renderPipeline, renderer, mixer, timer;
 
 const params = {
   threshold: 0,
@@ -22,7 +22,8 @@ const params = {
 init();
 
 async function init() {
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   const scene = new Scene();
 
@@ -62,7 +63,7 @@ async function init() {
 
   //
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass
@@ -71,7 +72,7 @@ async function init() {
 
   const bloomPass = bloom(scenePassColor).toInspector("Bloom");
 
-  postProcessing.outputNode = scenePassColor.add(bloomPass);
+  renderPipeline.outputNode = scenePassColor.add(bloomPass);
 
   //
 
@@ -118,9 +119,11 @@ function onWindowResize() {
 }
 
 function animate() {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   mixer.update(delta);
 
-  postProcessing.render();
+  renderPipeline.render();
 }

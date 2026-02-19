@@ -2,7 +2,7 @@ import "./style.css"; // For webpack support
 
 import {
   PerspectiveCamera,
-  Clock,
+  Timer,
   Scene,
   Color,
   Fog,
@@ -23,7 +23,7 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let scene, renderer, camera, stats;
-let model, skeleton, mixer, clock;
+let model, skeleton, mixer, timer;
 
 const crossFadeControls = [];
 
@@ -48,7 +48,8 @@ function init() {
   camera.position.set(1, 2, -3);
   camera.lookAt(0, 1, 0);
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   scene = new Scene();
   scene.background = new Color(0xa0a0a0);
@@ -374,6 +375,8 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   idleWeight = idleAction.getEffectiveWeight();
   walkWeight = walkAction.getEffectiveWeight();
   runWeight = runAction.getEffectiveWeight();
@@ -388,7 +391,7 @@ function animate() {
 
   // Get the time elapsed since the last frame, used for mixer update (if not in single step mode)
 
-  let mixerUpdateDelta = clock.getDelta();
+  let mixerUpdateDelta = timer.getDelta();
 
   // If in single step mode, make one step and then do nothing (until the user clicks again)
 

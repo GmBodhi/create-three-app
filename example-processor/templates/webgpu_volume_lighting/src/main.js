@@ -23,7 +23,7 @@ import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 let renderer, scene, camera;
 let volumetricMesh, teapot, pointLight, spotLight;
-let postProcessing;
+let renderPipeline;
 
 init();
 
@@ -169,14 +169,13 @@ function init() {
   spotLight.shadow.camera.near = 1;
   spotLight.shadow.camera.far = 15;
   spotLight.shadow.focus = 1;
-  spotLight.shadow.bias = -0.003;
   spotLight.layers.enable(LAYER_VOLUMETRIC_LIGHTING);
   //sunLight.add( new Mesh( new SphereGeometry( 0.1, 16, 16 ), new MeshBasicMaterial( { color: 0xffffff } ) ) );
   scene.add(spotLight);
 
   // Post-Processing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   // Layers
 
@@ -212,7 +211,7 @@ function init() {
     blurredVolumetricPass.mul(volumetricLightingIntensity)
   );
 
-  postProcessing.outputNode = scenePassColor;
+  renderPipeline.outputNode = scenePassColor;
 
   // GUI
 
@@ -224,10 +223,10 @@ function init() {
   const gui = renderer.inspector.createParameters("Volumetric Lighting");
 
   const rayMarching = gui.addFolder("Ray Marching");
-  rayMarching.add(params, "resolution", 0.1, 0.5).onChange((resolution) => {
+  rayMarching.add(params, "resolution", 0.1, 1).onChange((resolution) => {
     volumetricPass.setResolutionScale(resolution);
   });
-  rayMarching.add(volumetricMaterial, "steps", 2, 12).name("step count");
+  rayMarching.add(volumetricMaterial, "steps", 2, 16).name("step count");
   rayMarching.add(denoiseStrength, "value", 0, 1).name("denoise strength");
   rayMarching.add(params, "denoise").onChange((denoise) => {
     const volumetric = denoise ? blurredVolumetricPass : volumetricPass;
@@ -236,8 +235,8 @@ function init() {
       volumetric.mul(volumetricLightingIntensity)
     );
 
-    postProcessing.outputNode = scenePassColor;
-    postProcessing.needsUpdate = true;
+    renderPipeline.outputNode = scenePassColor;
+    renderPipeline.needsUpdate = true;
   });
 
   const lighting = gui.addFolder("Lighting / Scene");
@@ -271,5 +270,5 @@ function animate() {
 
   teapot.rotation.y = time * 0.2;
 
-  postProcessing.render();
+  renderPipeline.render();
 }

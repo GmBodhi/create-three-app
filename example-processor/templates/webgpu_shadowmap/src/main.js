@@ -2,20 +2,19 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 import {
+  mx_fractal_noise_float,
   mx_fractal_noise_vec3,
+  positionLocal,
   positionWorld,
-  vec4,
   Fn,
   color,
-  vertexIndex,
-  hash,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, clock;
+let camera, scene, renderer, timer;
 let dirLight, spotLight;
 let torusKnot, dirGroup;
 
@@ -47,7 +46,6 @@ function init() {
   spotLight.shadow.camera.far = 200;
   spotLight.shadow.mapSize.width = 2048;
   spotLight.shadow.mapSize.height = 2048;
-  spotLight.shadow.bias = -0.002;
   spotLight.shadow.radius = 4;
   scene.add(spotLight);
 
@@ -63,7 +61,6 @@ function init() {
   dirLight.shadow.mapSize.width = 2048;
   dirLight.shadow.mapSize.height = 2048;
   dirLight.shadow.radius = 4;
-  dirLight.shadow.bias = -0.0005;
 
   dirGroup = new Group();
   dirGroup.add(dirLight);
@@ -81,21 +78,11 @@ function init() {
   const materialCustomShadow = material.clone();
   materialCustomShadow.transparent = true;
 
-  const materialColor = vec4(1, 0, 1, 0.5);
+  const discardNode = mx_fractal_noise_float(
+    positionLocal.mul(0.1)
+  ).x.greaterThan(0.0);
 
-  const discardNode = hash(vertexIndex).greaterThan(0.5);
-
-  materialCustomShadow.colorNode = Fn(() => {
-    discardNode.discard();
-
-    return materialColor;
-  })();
-
-  materialCustomShadow.castShadowNode = Fn(() => {
-    discardNode.discard();
-
-    return materialColor;
-  })();
+  materialCustomShadow.maskNode = discardNode;
 
   torusKnot = new Mesh(geometry, materialCustomShadow);
   torusKnot.scale.multiplyScalar(1 / 18);
@@ -169,7 +156,8 @@ function init() {
   controls.maxDistance = 40;
   controls.update();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   window.addEventListener("resize", resize);
 }
@@ -182,7 +170,9 @@ function resize() {
 }
 
 function animate(time) {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   torusKnot.rotation.x += 0.25 * delta;
   torusKnot.rotation.y += 0.5 * delta;

@@ -1,0 +1,228 @@
+import "./style.css"; // For webpack support
+
+import * as THREE from "three/webgpu";
+import { pass, uniform, float, int, color } from "three/tsl";
+import { godrays } from "three/addons/tsl/display/GodraysNode.js";
+import { bilateralBlur } from "three/addons/tsl/display/BilateralBlurNode.js";
+import { depthAwareBlend } from "three/addons/tsl/display/depthAwareBlend.js";
+
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
+let camera, controls, scene, renderer, renderPipeline;
+
+const params = {
+  enabledBlur: true,
+};
+
+init();
+
+async function init() {
+  camera = new PerspectiveCamera(
+    60,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+  camera.position.set(-175, 50, 0);
+
+  scene = new Scene();
+  scene.background = new Color(0x000000);
+
+  // asset
+
+  const loader = new GLTFLoader();
+  const gltf = await loader.loadAsync("models/gltf/godrays_demo.glb");
+  scene.add(gltf.scene);
+
+  const pillars = gltf.scene.getObjectByName("concrete");
+  pillars.material = new MeshStandardMaterial({
+    color: 0x333333,
+  });
+
+  const base = gltf.scene.getObjectByName("base");
+  base.material = new MeshStandardMaterial({
+    color: 0x333333,
+    side: DoubleSide,
+  });
+
+  // lights
+
+  const lightPos = new Vector3(0, 50, 0);
+  const lightSphereMaterial = new MeshBasicMaterial({
+    color: 0xffffff,
+  });
+  const lightSphere = new Mesh(
+    new SphereGeometry(0.5, 16, 16),
+    lightSphereMaterial
+  );
+  lightSphere.position.copy(lightPos);
+  scene.add(lightSphere);
+
+  scene.add(new AmbientLight(0xcccccc, 0.4));
+
+  const pointLight = new PointLight(0xf6287d, 10000);
+  pointLight.castShadow = true;
+  pointLight.shadow.bias = -0.00001;
+  pointLight.shadow.mapSize.width = 2048;
+  pointLight.shadow.mapSize.height = 2048;
+  pointLight.position.copy(lightPos);
+  scene.add(pointLight);
+
+  setupBackdrop();
+
+  // shadow setup
+
+  scene.traverse((obj) => {
+    if (obj.isMesh === true) {
+      obj.castShadow = true;
+      obj.receiveShadow = true;
+    }
+  });
+
+  lightSphere.castShadow = false;
+  lightSphere.receiveShadow = false;
+
+  // renderer
+
+  renderer = new WebGPURenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
+  renderer.shadowMap.enabled = true;
+  document.body.appendChild(renderer.domElement);
+
+  // post processing
+
+  renderPipeline = new RenderPipeline(renderer);
+
+  // beauty
+
+  const scenePass = pass(scene, camera);
+  const scenePassColor = scenePass.getTextureNode("output");
+  const scenePassDepth = scenePass.getTextureNode("depth");
+
+  // godrays
+
+  const godraysPass = godrays(scenePassDepth, camera, pointLight);
+  const godraysPassColor = godraysPass.getTextureNode();
+
+  // blur
+
+  const blurPass = bilateralBlur(godraysPassColor);
+  const blurPassColor = blurPass.getTextureNode();
+
+  // composite
+
+  const blendColor = uniform(color(0xf6287d));
+  const edgeRadius = uniform(int(2));
+  const edgeStrength = uniform(float(2));
+
+  const outputBlurred = depthAwareBlend(
+    scenePassColor,
+    blurPassColor,
+    scenePassDepth,
+    camera,
+    { blendColor, edgeRadius, edgeStrength }
+  );
+  const outputRaw = depthAwareBlend(
+    scenePassColor,
+    godraysPassColor,
+    scenePassDepth,
+    camera,
+    { blendColor, edgeRadius, edgeStrength }
+  );
+
+  renderPipeline.outputNode = outputBlurred;
+
+  // GUI
+
+  const gui = renderer.inspector.createParameters("Settings");
+  const godraysFolder = gui.addFolder("Godrays");
+  godraysFolder
+    .add(godraysPass.raymarchSteps, "value", 24, 120)
+    .step(1)
+    .name("raymarch steps");
+  godraysFolder.add(godraysPass.density, "value", 0, 1).name("density");
+  godraysFolder.add(godraysPass.maxDensity, "value", 0, 1).name("max density");
+  godraysFolder
+    .add(godraysPass.distanceAttenuation, "value", 0, 5)
+    .name("distance attenuation");
+
+  const compositeFolder = gui.addFolder("composite");
+  compositeFolder.add(edgeRadius, "value", 0, 5, 1).name("edge radius");
+  compositeFolder.add(edgeStrength, "value", 0, 5).name("edge strength");
+
+  const blurFolder = gui.addFolder("blur");
+  blurFolder
+    .add(params, "enabledBlur")
+    .name("enabled")
+    .onChange((value) => {
+      if (value === true) {
+        renderPipeline.outputNode = outputBlurred;
+      } else {
+        renderPipeline.outputNode = outputRaw;
+      }
+
+      renderPipeline.needsUpdate = true;
+    });
+
+  //
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 0.5, 0);
+  controls.enableDamping = true;
+  controls.maxDistance = 200;
+  controls.update();
+
+  window.addEventListener("resize", onWindowResize);
+}
+
+function setupBackdrop() {
+  const backdropDistance = 200;
+  // Add backdrop walls `backdropDistance` units away from the origin
+  const backdropGeometry = new PlaneGeometry(400, 200);
+  const backdropMaterial = new MeshBasicMaterial({
+    color: 0x000000,
+    side: DoubleSide,
+  });
+  const backdropLeft = new Mesh(backdropGeometry, backdropMaterial);
+  backdropLeft.position.set(-backdropDistance, 100, 0);
+  backdropLeft.rotateY(Math.PI / 2);
+  scene.add(backdropLeft);
+
+  const backdropRight = new Mesh(backdropGeometry, backdropMaterial);
+  backdropRight.position.set(backdropDistance, 100, 0);
+  backdropRight.rotateY(Math.PI / 2);
+  scene.add(backdropRight);
+
+  const backdropFront = new Mesh(backdropGeometry, backdropMaterial);
+  backdropFront.position.set(0, 100, -backdropDistance);
+  scene.add(backdropFront);
+
+  const backdropBack = new Mesh(backdropGeometry, backdropMaterial);
+  backdropBack.position.set(0, 100, backdropDistance);
+  scene.add(backdropBack);
+
+  const backdropTop = new Mesh(backdropGeometry, backdropMaterial);
+  backdropTop.position.set(0, 200, 0);
+  backdropTop.rotateX(Math.PI / 2);
+  backdropTop.scale.set(3, 6, 1);
+  scene.add(backdropTop);
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function animate() {
+  controls.update();
+
+  renderPipeline.render();
+}

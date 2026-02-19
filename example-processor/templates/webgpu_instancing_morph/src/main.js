@@ -15,7 +15,8 @@ for (let i = 0; i < 1024; i++) {
   timeOffsets[i] = Math.random() * 3;
 }
 
-const clock = new Clock(true);
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -48,8 +49,6 @@ function init() {
   light.shadow.camera.top = 5000;
   light.shadow.camera.bottom = -5000;
   light.shadow.camera.far = 2000;
-
-  light.shadow.bias = -0.01;
 
   light.shadow.camera.updateProjectionMatrix();
 
@@ -135,7 +134,9 @@ function onWindowResize() {
 //
 
 function animate() {
-  const time = clock.getElapsedTime();
+  timer.update();
+
+  const time = timer.getElapsed();
 
   const r = 3000;
   camera.position.set(

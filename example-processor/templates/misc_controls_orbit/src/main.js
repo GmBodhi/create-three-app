@@ -55,6 +55,8 @@ function init() {
   controls.minDistance = 100;
   controls.maxDistance = 500;
 
+  controls.cursorStyle = "grab";
+
   controls.maxPolarAngle = Math.PI / 2;
 
   // world

@@ -15,7 +15,7 @@ import {
   reflectVector,
 } from "three/tsl";
 
-import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
+import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -46,30 +46,23 @@ async function init() {
 
   scene = new Scene();
 
-  // cube textures
+  // HDR textures
 
-  const hdrUrls = ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"];
-  const cube1Texture = await new HDRCubeTextureLoader()
-    .setPath("three/examples/textures/cube/pisaHDR/")
-    .loadAsync(hdrUrls);
+  const hdr1Texture = await new HDRLoader().loadAsync(
+    "three/examples/textures/equirectangular/pedestrian_overpass_1k.hdr"
+  );
 
-  cube1Texture.generateMipmaps = true;
-  cube1Texture.minFilter = LinearMipmapLinearFilter;
+  hdr1Texture.mapping = EquirectangularReflectionMapping;
+  hdr1Texture.generateMipmaps = true;
+  hdr1Texture.minFilter = LinearMipmapLinearFilter;
 
-  const cube2Urls = [
-    "posx.jpg",
-    "negx.jpg",
-    "posy.jpg",
-    "negy.jpg",
-    "posz.jpg",
-    "negz.jpg",
-  ];
-  const cube2Texture = await new CubeTextureLoader()
-    .setPath("three/examples/textures/cube/Park2/")
-    .loadAsync(cube2Urls);
+  const hdr2Texture = await new HDRLoader().loadAsync(
+    "three/examples/textures/equirectangular/752-hdri-skies-com_1k.hdr"
+  );
 
-  cube2Texture.generateMipmaps = true;
-  cube2Texture.minFilter = LinearMipmapLinearFilter;
+  hdr2Texture.mapping = EquirectangularReflectionMapping;
+  hdr2Texture.generateMipmaps = true;
+  hdr2Texture.minFilter = LinearMipmapLinearFilter;
 
   // nodes and environment
 
@@ -94,8 +87,8 @@ async function init() {
     const custom1UV = reflectNode.xyz.mul(uniform(rotateY1Matrix));
     const custom2UV = reflectNode.xyz.mul(uniform(rotateY2Matrix));
     const mixCubeMaps = mix(
-      pmremTexture(cube1Texture, custom1UV),
-      pmremTexture(cube2Texture, custom2UV),
+      pmremTexture(hdr1Texture, custom1UV),
+      pmremTexture(hdr2Texture, custom2UV),
       positionNode.y.add(mixNode).clamp()
     );
 
@@ -160,23 +153,22 @@ async function init() {
   // gui
 
   const gui = renderer.inspector.createParameters("Settings");
-
+  gui.add(adjustments, "mix", -1, 2, 0.01);
   gui
     .add({ blurBackground: blurNode.value }, "blurBackground", 0, 1, 0.01)
     .onChange((value) => {
       blurNode.value = value;
     });
   gui
-    .add({ offsetCube1: 0 }, "offsetCube1", 0, Math.PI * 2, 0.01)
+    .add({ offsetHDR1: 0 }, "offsetHDR1", 0, Math.PI * 2, 0.01)
     .onChange((value) => {
       rotateY1Matrix.makeRotationY(value);
     });
   gui
-    .add({ offsetCube2: 0 }, "offsetCube2", 0, Math.PI * 2, 0.01)
+    .add({ offsetHDR2: 0 }, "offsetHDR2", 0, Math.PI * 2, 0.01)
     .onChange((value) => {
       rotateY2Matrix.makeRotationY(value);
     });
-  gui.add(adjustments, "mix", -1, 2, 0.01);
   gui.add(adjustments, "procedural", 0, 1, 0.01);
   gui.add(adjustments, "intensity", 0, 5, 0.01);
   gui.add(adjustments, "hue", 0, Math.PI * 2, 0.01);

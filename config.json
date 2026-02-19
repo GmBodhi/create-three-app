@@ -220,6 +220,16 @@
         "/src"
       ]
     },
+    "misc_exporter_gcode": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "misc_exporter_gltf": {
       "files": {
         "index.html": "src",
@@ -2898,16 +2908,6 @@
         "/src"
       ]
     },
-    "webgl_postprocessing_material_ao": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_postprocessing_outline": {
       "files": {
         "index.html": "src",
@@ -3861,6 +3861,16 @@
         "/src"
       ]
     },
+    "webgpu_custom_fog_scattering": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_depth_texture": {
       "files": {
         "index.html": "src",
@@ -3882,6 +3892,16 @@
       ]
     },
     "webgpu_equirectangular": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_fog_height": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4741,6 +4761,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_godrays": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_lensflare": {
       "files": {
         "index.html": "src",
@@ -4792,6 +4822,16 @@
       ]
     },
     "webgpu_postprocessing_radial_blur": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_retro": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4932,6 +4972,16 @@
       ]
     },
     "webgpu_rendertarget_2d-array_3d": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_reversed_depth_buffer": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -5385,6 +5435,16 @@
       ]
     },
     "webgpu_volume_lighting_rectarea": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_volume_lighting_traa": {
       "files": {
         "index.html": "src",
         "main.js": "src",

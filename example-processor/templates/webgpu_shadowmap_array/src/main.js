@@ -10,7 +10,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, clock;
+let camera, scene, renderer, timer;
 let dirLight;
 let torusKnot, dirGroup;
 let tsmHelper;
@@ -64,7 +64,6 @@ async function init() {
   dirLight.shadow.mapSize.width = 1024 * 4;
   dirLight.shadow.mapSize.height = 1024 * 4;
   dirLight.shadow.radius = 1;
-  dirLight.shadow.bias = -0.005;
 
   // Set up the tile shadow mapping
   const tsm = new TileShadowNode(dirLight, {
@@ -114,7 +113,8 @@ async function init() {
   controls.maxPolarAngle = Math.PI / 2 - 0.1; // Prevent camera from going below ground
   controls.update();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   window.addEventListener("resize", resize);
 }
@@ -336,7 +336,9 @@ function resize() {
 }
 
 async function animate(time) {
-  const delta = clock.getDelta();
+  timer.update();
+
+  const delta = timer.getDelta();
 
   // Rotate the central torus knot
   torusKnot.rotation.x += 0.25 * delta;

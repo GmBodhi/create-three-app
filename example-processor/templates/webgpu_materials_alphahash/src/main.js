@@ -9,7 +9,7 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { ssaaPass } from "three/addons/tsl/display/SSAAPassNode.js";
 
-let camera, scene, renderer, controls, mesh, material, postProcessing;
+let camera, scene, renderer, controls, mesh, material, renderPipeline;
 
 const amount = parseInt(window.location.search.slice(1)) || 3;
 const count = Math.pow(amount, 3);
@@ -81,18 +81,18 @@ async function init() {
   const environment = new RoomEnvironment();
   const pmremGenerator = new PMREMGenerator(renderer);
 
-  scene.environment = pmremGenerator.fromScene(environment).texture;
+  scene.environment = pmremGenerator.fromScene(environment, 0.04).texture;
   environment.dispose();
 
   //
 
   // postprocessing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
   const scenePass = ssaaPass(scene, camera);
   scenePass.sampleLevel = 3;
 
-  postProcessing.outputNode = scenePass;
+  renderPipeline.outputNode = scenePass;
 
   //
 
@@ -132,5 +132,5 @@ function onMaterialUpdate() {
 }
 
 function animate() {
-  postProcessing.render();
+  renderPipeline.render();
 }

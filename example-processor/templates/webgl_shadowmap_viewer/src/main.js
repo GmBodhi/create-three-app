@@ -13,7 +13,7 @@ import {
   BoxGeometry,
   WebGLRenderer,
   BasicShadowMap,
-  Clock,
+  Timer,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -21,7 +21,7 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ShadowMapViewer } from "three/addons/utils/ShadowMapViewer.js";
 
-let camera, scene, renderer, clock, stats;
+let camera, scene, renderer, timer, stats;
 let dirLight, spotLight;
 let torusKnot, cube;
 let dirLightShadowMapViewer, spotLightShadowMapViewer;
@@ -137,7 +137,8 @@ function initMisc() {
   controls.target.set(0, 2, 0);
   controls.update();
 
-  clock = new Clock();
+  timer = new Timer();
+  timer.connect(document);
 
   stats = new Stats();
   document.body.appendChild(stats.dom);
@@ -169,6 +170,8 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   render();
 
   stats.update();
@@ -184,7 +187,7 @@ function renderShadowMapViewers() {
 }
 
 function render() {
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   renderScene();
   renderShadowMapViewers();

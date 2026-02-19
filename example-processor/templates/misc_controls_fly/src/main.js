@@ -22,14 +22,15 @@ let camera, controls, scene, renderer, stats;
 let geometry, meshPlanet, meshClouds, meshMoon;
 let dirLight;
 
-let postProcessing;
+let renderPipeline;
 
 const textureLoader = new TextureLoader();
 
 let d, dPlanet, dMoon;
 const dMoonVec = new Vector3();
 
-const clock = new Clock();
+const timer = new Timer();
+timer.connect(document);
 
 init();
 
@@ -172,12 +173,12 @@ function init() {
 
   // postprocessing
 
-  postProcessing = new PostProcessing(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
   const scenePassColor = scenePass.getTextureNode();
 
-  postProcessing.outputNode = film(scenePassColor);
+  renderPipeline.outputNode = film(scenePassColor);
 }
 
 function onWindowResize() {
@@ -191,6 +192,8 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
+
   render();
   stats.update();
 }
@@ -198,7 +201,7 @@ function animate() {
 function render() {
   // rotate the planet and clouds
 
-  const delta = clock.getDelta();
+  const delta = timer.getDelta();
 
   meshPlanet.rotation.y += rotationSpeed * delta;
   meshClouds.rotation.y += 1.25 * rotationSpeed * delta;
@@ -219,5 +222,5 @@ function render() {
   controls.movementSpeed = 0.33 * d;
   controls.update(delta);
 
-  postProcessing.render();
+  renderPipeline.render();
 }

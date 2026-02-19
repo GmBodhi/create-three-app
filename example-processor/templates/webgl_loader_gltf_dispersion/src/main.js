@@ -43,7 +43,7 @@ async function init() {
   scene = new Scene();
   scene.backgroundBlurriness = 0.5;
 
-  const env = pmremGenerator.fromScene(environment).texture;
+  const env = pmremGenerator.fromScene(environment, 0.04).texture;
   scene.background = env;
   scene.environment = env;
   environment.dispose();

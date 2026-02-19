@@ -3,10 +3,16 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import {
   storageTexture,
-  wgslFn,
-  code,
+  textureStore,
+  Fn,
   instanceIndex,
   uniform,
+  float,
+  vec2,
+  vec4,
+  uvec2,
+  ivec2,
+  int,
   NodeAccess,
 } from "three/tsl";
 
@@ -18,6 +24,9 @@ let pingTexture, pongTexture;
 let material;
 let phase = true;
 let lastUpdate = -1;
+
+const width = 512,
+  height = 512;
 
 const seed = uniform(new Vector2());
 
@@ -39,8 +48,6 @@ async function init() {
   // texture
 
   const hdr = true;
-  const width = 512,
-    height = 512;
 
   pingTexture = new StorageTexture(width, height);
   pongTexture = new StorageTexture(width, height);
@@ -50,105 +57,59 @@ async function init() {
     pongTexture.type = HalfFloatType;
   }
 
-  const wgslFormat = hdr ? "rgba16float" : "rgba8unorm";
+  const rand2 = Fn(([n]) => {
+    return n.dot(vec2(12.9898, 4.1414)).sin().mul(43758.5453).fract();
+  });
 
-  const readPing = storageTexture(pingTexture).setAccess(NodeAccess.READ_ONLY);
+  // Create storage texture nodes with proper access
   const writePing = storageTexture(pingTexture).setAccess(
     NodeAccess.WRITE_ONLY
   );
-  const readPong = storageTexture(pongTexture).setAccess(NodeAccess.READ_ONLY);
+  const readPing = storageTexture(pingTexture).setAccess(NodeAccess.READ_ONLY);
   const writePong = storageTexture(pongTexture).setAccess(
     NodeAccess.WRITE_ONLY
   );
+  const readPong = storageTexture(pongTexture).setAccess(NodeAccess.READ_ONLY);
 
-  // compute init
+  const computeInit = Fn(() => {
+    const posX = instanceIndex.mod(width);
+    const posY = instanceIndex.div(width);
+    const indexUV = uvec2(posX, posY);
+    const uv = vec2(float(posX).div(width), float(posY).div(height));
 
-  const rand2 = code(`
-					fn rand2( n: vec2f ) -> f32 {
+    const r = rand2(uv.add(seed.mul(100))).sub(rand2(uv.add(seed.mul(300))));
+    const g = rand2(uv.add(seed.mul(200))).sub(rand2(uv.add(seed.mul(300))));
+    const b = rand2(uv.add(seed.mul(200))).sub(rand2(uv.add(seed.mul(100))));
 
-						return fract( sin( dot( n, vec2f( 12.9898, 4.1414 ) ) ) * 43758.5453 );
+    textureStore(writePing, indexUV, vec4(r, g, b, 1));
+  });
 
-					}
+  computeInitNode = computeInit().compute(width * height);
 
-					fn blur( image : texture_storage_2d<${wgslFormat}, read>, uv : vec2i ) -> vec4f {
+  // compute ping-pong: blur function using .load() for textureLoad
+  const blur = Fn(([readTex, uv]) => {
+    const c0 = readTex.load(uv.add(ivec2(-1, 1)));
+    const c1 = readTex.load(uv.add(ivec2(-1, -1)));
+    const c2 = readTex.load(uv.add(ivec2(0, 0)));
+    const c3 = readTex.load(uv.add(ivec2(1, -1)));
+    const c4 = readTex.load(uv.add(ivec2(1, 1)));
 
-						var color = vec4f( 0.0 );
+    return c0.add(c1).add(c2).add(c3).add(c4).div(5.0);
+  });
 
-						color += textureLoad( image, uv + vec2i( - 1, 1 ));
-						color += textureLoad( image, uv + vec2i( - 1, - 1 ));
-						color += textureLoad( image, uv + vec2i( 0, 0 ));
-						color += textureLoad( image, uv + vec2i( 1, - 1 ));
-						color += textureLoad( image, uv + vec2i( 1, 1 ));
+  // compute loop: read from one texture, blur, write to another
+  const computePingPong = Fn(([readTex, writeTex]) => {
+    const posX = instanceIndex.mod(width);
+    const posY = instanceIndex.div(width);
+    const indexUV = ivec2(int(posX), int(posY));
 
-						return color / 5.0; 
-					}
+    const color = blur(readTex, indexUV);
 
-					fn getUV( posX: u32, posY: u32 ) -> vec2f {
+    textureStore(writeTex, indexUV, vec4(color.rgb.mul(1.05), 1));
+  });
 
-						let uv = vec2f( f32( posX ) / ${width}.0, f32( posY ) / ${height}.0 );
-
-						return uv;
-
-					}
-				`);
-
-  const computeInitWGSL = wgslFn(
-    `
-					fn computeInitWGSL( writeTex: texture_storage_2d<${wgslFormat}, write>, index: u32, seed: vec2f ) -> void {
-
-						let posX = index % ${width};
-						let posY = index / ${width};
-						let indexUV = vec2u( posX, posY );
-						let uv = getUV( posX, posY );
-
-						let r = rand2( uv + seed * 100 ) - rand2( uv + seed * 300 );
-						let g = rand2( uv + seed * 200 ) - rand2( uv + seed * 300 );
-						let b = rand2( uv + seed * 200 ) - rand2( uv + seed * 100 );
-
-						textureStore( writeTex, indexUV, vec4( r, g, b, 1 ) );
-
-					}
-				`,
-    [rand2]
-  );
-
-  computeInitNode = computeInitWGSL({
-    writeTex: storageTexture(pingTexture),
-    index: instanceIndex,
-    seed,
-  }).compute(width * height);
-
-  // compute loop
-
-  const computePingPongWGSL = wgslFn(
-    `
-					fn computePingPongWGSL( readTex: texture_storage_2d<${wgslFormat}, read>, writeTex: texture_storage_2d<${wgslFormat}, write>, index: u32 ) -> void {
-
-						let posX = index % ${width};
-						let posY = index / ${width};
-						let indexUV = vec2i( i32( posX ), i32( posY ) );
-
-						let color = blur( readTex, indexUV ).rgb;
-
-						textureStore( writeTex, indexUV, vec4f( color * 1.05, 1 ) );
-
-					}
-				`,
-    [rand2]
-  );
-
-  //
-
-  computeToPong = computePingPongWGSL({
-    readTex: readPing,
-    writeTex: writePong,
-    index: instanceIndex,
-  }).compute(width * height);
-  computeToPing = computePingPongWGSL({
-    readTex: readPong,
-    writeTex: writePing,
-    index: instanceIndex,
-  }).compute(width * height);
+  computeToPong = computePingPong(readPing, writePong).compute(width * height);
+  computeToPing = computePingPong(readPong, writePing).compute(width * height);
 
   //
 

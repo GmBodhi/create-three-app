@@ -10,7 +10,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 
 let camera, scene, renderer, controls;
-let postProcessing, outlinePass;
+let renderPipeline, outlinePass;
 
 let selectedObjects = [];
 
@@ -55,7 +55,6 @@ function init() {
   light.castShadow = true;
   light.shadow.mapSize.width = 2048;
   light.shadow.mapSize.height = 2048;
-  light.shadow.bias = -0.005;
 
   const d = 10;
 
@@ -166,8 +165,8 @@ function init() {
 
   const scenePass = pass(scene, camera).toInspector("Color");
 
-  postProcessing = new PostProcessing(renderer);
-  postProcessing.outputNode = outlinePulse.add(scenePass);
+  renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputNode = outlinePulse.add(scenePass);
 
   // gui
 
@@ -238,5 +237,5 @@ function onWindowResize() {
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }
