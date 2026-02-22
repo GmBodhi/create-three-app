@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>three.js webgpu - async node compilation</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>Async Node Compilation</span>
+      </div>
+
+      <small id="description"
+        >NodeMaterial shaders compile asynchronously without blocking the render
+        loop. Animation stays smooth while
+        <span id="materialCount">256</span> unique TSL materials build in the
+        background.</small
+      >
+    </div>
+
+    <div id="stats">
+      <div>
+        <span class="label">Longest frame: </span
+        ><span id="longestFrame" class="value">-</span>
+      </div>
+      <div>
+        <span class="label">Meshes added: </span
+        ><span id="meshCount" class="value">0 / 256</span>
+      </div>
+      <div>
+        <span class="label">Mode: </span
+        ><span id="compileMode" class="value">-</span>
+      </div>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -3661,6 +3661,16 @@
         "/src"
       ]
     },
+    "webgpu_compile_async": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_audio": {
       "files": {
         "index.html": "src",

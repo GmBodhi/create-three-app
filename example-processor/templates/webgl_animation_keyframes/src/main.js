@@ -38,6 +38,8 @@ const scene = new Scene();
 // Sky
 
 const sky = new Sky();
+sky.scale.setScalar(10000);
+scene.add(sky);
 
 const uniforms = sky.material.uniforms;
 uniforms["turbidity"].value = 0;
@@ -48,7 +50,6 @@ uniforms["sunPosition"].value.set(-0.8, 0.19, 0.56); // elevation: 11, azimuth: 
 
 const pmremGenerator = new PMREMGenerator(renderer);
 const environment = pmremGenerator.fromScene(sky).texture;
-scene.background = environment;
 scene.environment = environment;
 
 const camera = new PerspectiveCamera(
