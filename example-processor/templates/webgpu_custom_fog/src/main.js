@@ -33,8 +33,11 @@ function init() {
 
   // custom fog
 
-  const skyColor = color(0xf0f5f5);
-  const groundColor = color(0xd0dee7);
+  const skyColorValue = 0xf0f5f5;
+  const groundColorValue = 0xd0dee7;
+
+  const skyColor = color(skyColorValue);
+  const groundColor = color(groundColorValue);
 
   const fogNoiseDistance = positionView.z
     .negate()
@@ -105,7 +108,7 @@ function init() {
 
   // lights
 
-  scene.add(new HemisphereLight(skyColor.value, groundColor.value, 0.5));
+  scene.add(new HemisphereLight(skyColorValue, groundColorValue, 0.5));
 
   // geometry
 
