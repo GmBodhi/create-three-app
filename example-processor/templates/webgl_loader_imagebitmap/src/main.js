@@ -21,7 +21,7 @@ let group, cubes;
 init();
 
 function addImageBitmap() {
-  new ImageBitmapLoader().load(
+  new ImageBitmapLoader().setOptions({ imageOrientation: "flipY" }).load(
     "textures/planets/earth_atmos_2048.jpg?" + performance.now(),
     function (imageBitmap) {
       const texture = new CanvasTexture(imageBitmap);
