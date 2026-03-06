@@ -43,6 +43,7 @@ import {
   Color,
   WebGLRenderer,
   ACESFilmicToneMapping,
+  CanvasTexture,
 } from "three";
 
 import { GLTFExporter } from "three/addons/exporters/GLTFExporter.js";
@@ -102,7 +103,7 @@ function saveArrayBuffer(buffer, filename) {
 let container;
 
 let camera, object, object2, material, geometry, scene1, scene2, renderer;
-let gridHelper, sphere, model, coffeemat;
+let gridHelper, sphere, model, coffeemat, webpBox;
 
 const params = {
   trs: false,
@@ -116,6 +117,7 @@ const params = {
   exportObjects: exportObjects,
   exportSceneObject: exportSceneObject,
   exportCompressedObject: exportCompressedObject,
+  exportWebPModel: exportWebPModel,
 };
 
 init();
@@ -506,6 +508,30 @@ function init() {
     coffeemat = gltf.scene;
   });
 
+  // ---------------------------------------------------------------------
+  // Box with WebP texture (EXT_texture_webp)
+  // ---------------------------------------------------------------------
+  const canvas = document.createElement("canvas");
+  canvas.width = 64;
+  canvas.height = 64;
+  const ctx = canvas.getContext("2d");
+  ctx.fillStyle = "#005BBB";
+  ctx.fillRect(0, 0, 64, 64);
+  ctx.fillStyle = "#FFD500";
+  ctx.fillRect(16, 16, 32, 32);
+
+  const webpTexture = new CanvasTexture(canvas);
+  webpTexture.userData.mimeType = "image/webp";
+  webpTexture.colorSpace = SRGBColorSpace;
+
+  webpBox = new Mesh(
+    new BoxGeometry(100, 100, 100),
+    new MeshBasicMaterial({ map: webpTexture })
+  );
+  webpBox.position.set(400, 0, 0);
+  webpBox.name = "WebPBox";
+  scene1.add(webpBox);
+
   //
 
   const gui = new GUI();
@@ -526,6 +552,7 @@ function init() {
   h.add(params, "exportCompressedObject").name(
     "Export Coffeemat (from compressed data)"
   );
+  h.add(params, "exportWebPModel").name("Export WebP Model (EXT_texture_webp)");
 
   gui.open();
 }
@@ -556,6 +583,10 @@ function exportSceneObject() {
 
 function exportCompressedObject() {
   exportGLTF([coffeemat]);
+}
+
+function exportWebPModel() {
+  exportGLTF(webpBox);
 }
 
 function onWindowResize() {

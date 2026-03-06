@@ -226,6 +226,8 @@ async function addSample(sample, path) {
     calibrationMesh.renderOrder = 1;
     previewMesh.renderOrder = 2;
   }
+
+  await renderer.compileAsync(model, camera, scene);
 }
 
 function addGUI() {
