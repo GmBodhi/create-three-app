@@ -24,8 +24,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-import { TSLGraphLoader } from "three/addons/inspector/addons/tsl-graph/TSLGraphLoader.js";
-import { TSLGraphEditor } from "three/addons/inspector/addons/tsl-graph/TSLGraphEditor.js";
+import { TSLGraphLoader } from "three/addons/inspector/extensions/tsl-graph/TSLGraphLoader.js";
 
 let camera, scene, renderer;
 let controls;
@@ -34,13 +33,6 @@ let prefab;
 init();
 
 async function initTSLGraph() {
-  // TSL Graph Editor
-
-  const tslGraph = new TSLGraphEditor();
-
-  renderer.inspector.addTab(tslGraph);
-  renderer.inspector.setActiveTab(tslGraph);
-
   // Create Materials
 
   const m1 = new MeshPhysicalNodeMaterial();
@@ -64,100 +56,33 @@ async function initTSLGraph() {
     );
   }
 
-  // Initialize
+  // TSL Graph Editor
 
-  // Load and apply TSL Graph from a file or from Local Storage if exists
-  // Every time a TSL Graph is changed, it will be stored in the local storage
+  renderer.inspector.onExtension("TSL Graph", async (tslGraph) => {
+    renderer.inspector.setActiveTab(tslGraph);
 
-  if (tslGraph.hasGraphs) {
-    tslGraph.apply(scene);
-  } else {
-    // Load a TSL Graph from a file
+    // Apply TSL Graph from Local Storage if exists
+    // Every time a TSL Graph is changed, it will be stored in the local storage
 
-    const tslLoader = new TSLGraphLoader();
-    const applier = await tslLoader
-      .setPath("three/examples/shaders/")
-      .loadAsync("tsl-graphs.json");
+    if (tslGraph.hasGraphs) {
+      tslGraph.apply(scene);
+    } else {
+      // Load a TSL Graph from a file
+      // Use it for production
 
-    applier.apply(scene);
-  }
+      const tslLoader = new TSLGraphLoader();
+      const applier = await tslLoader
+        .setPath("three/examples/shaders/")
+        .loadAsync("tsl-graphs.json");
 
-  // Picker a Material
-
-  let boundingBox = null;
-
-  const raycaster = new Raycaster();
-  const pointer = new Vector2();
-
-  function removeBoundingBox() {
-    scene.remove(boundingBox);
-    boundingBox.dispose();
-  }
-
-  tslGraph.addEventListener("change", ({ material }) => {
-    if (material === null && boundingBox) {
-      removeBoundingBox();
-
-      boundingBox = null;
+      applier.apply(scene);
     }
   });
 
-  tslGraph.addEventListener("remove", ({ graphId }) => {
-    scene.traverse((object) => {
-      if (
-        object.material &&
-        object.material.userData &&
-        object.material.userData.graphId === graphId
-      ) {
-        tslGraph.restoreMaterial(object.material);
-      }
-    });
-  });
+  // Active TSL Graph Editor
+  // Only is needed if you don't activate it from the GUI
 
-  const pointerDownPosition = new Vector2();
-
-  renderer.domElement.addEventListener("pointerdown", (e) => {
-    pointerDownPosition.set(e.clientX, e.clientY);
-  });
-
-  renderer.domElement.addEventListener("pointerup", (e) => {
-    if (pointerDownPosition.distanceTo(pointer.set(e.clientX, e.clientY)) > 2)
-      return;
-
-    const rect = renderer.domElement.getBoundingClientRect();
-    pointer.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
-    pointer.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
-
-    raycaster.setFromCamera(pointer, camera);
-
-    const intersects = raycaster.intersectObjects(scene.children, true);
-
-    let graphMaterial = null;
-
-    if (intersects.length > 0) {
-      for (const intersect of intersects) {
-        const object = intersect.object;
-        const material = object.material;
-
-        if (material.userData && material.userData.graphId) {
-          if (boundingBox) {
-            removeBoundingBox();
-          }
-
-          boundingBox = new BoxHelper(object, 0xffff00);
-          scene.add(boundingBox);
-
-          graphMaterial = material;
-        }
-
-        if (object.isMesh || object.isSprite) {
-          break;
-        }
-      }
-    }
-
-    tslGraph.setMaterial(graphMaterial);
-  });
+  renderer.inspector.setActiveExtension("TSL Graph", true);
 }
 
 async function init() {
