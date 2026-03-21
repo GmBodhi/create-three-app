@@ -10,7 +10,6 @@ import {
   instanceIndex,
   uniform,
   attribute,
-  uint,
   float,
   clamp,
   struct,
@@ -157,6 +156,9 @@ async function init() {
     .add(params, "particleCount", 4096, maxParticles, 4096)
     .onChange((value) => {
       particleMesh.count = value;
+      p2g1Kernel.count = value;
+      p2g2Kernel.count = value;
+      g2pKernel.count = value;
       particleCountUniform.value = value;
     });
 
@@ -230,10 +232,6 @@ function setupComputeShaders() {
 
   const cellCount = gridSize.x * gridSize.y * gridSize.z;
   clearGridKernel = Fn(() => {
-    If(instanceIndex.greaterThanEqual(uint(cellCount)), () => {
-      Return();
-    });
-
     atomicStore(cellBuffer.element(instanceIndex).get("x"), 0);
     atomicStore(cellBuffer.element(instanceIndex).get("y"), 0);
     atomicStore(cellBuffer.element(instanceIndex).get("z"), 0);
@@ -243,9 +241,6 @@ function setupComputeShaders() {
     .setName("clearGridKernel");
 
   p2g1Kernel = Fn(() => {
-    If(instanceIndex.greaterThanEqual(particleCountUniform), () => {
-      Return();
-    });
     const particlePosition = particleBuffer
       .element(instanceIndex)
       .get("position")
@@ -314,9 +309,6 @@ function setupComputeShaders() {
     .setName("p2g1Kernel");
 
   p2g2Kernel = Fn(() => {
-    If(instanceIndex.greaterThanEqual(particleCountUniform), () => {
-      Return();
-    });
     const particlePosition = particleBuffer
       .element(instanceIndex)
       .get("position")
@@ -429,9 +421,6 @@ function setupComputeShaders() {
     .setName("p2g2Kernel");
 
   updateGridKernel = Fn(() => {
-    If(instanceIndex.greaterThanEqual(uint(cellCount)), () => {
-      Return();
-    });
     const cell = cellBuffer.element(instanceIndex);
     const mass = decodeFixedPoint(atomicLoad(cell.get("mass"))).toConst();
     If(mass.lessThanEqual(0), () => {
@@ -490,9 +479,6 @@ function setupComputeShaders() {
   };
 
   g2pKernel = Fn(() => {
-    If(instanceIndex.greaterThanEqual(particleCountUniform), () => {
-      Return();
-    });
     const particlePosition = particleBuffer
       .element(instanceIndex)
       .get("position")
