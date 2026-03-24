@@ -43,6 +43,7 @@ function init() {
 
   const data = new Uint8Array(width * height * 4);
   dataTexture = new DataTexture(data, width, height);
+  dataTexture.colorSpace = SRGBColorSpace;
 
   //
 
