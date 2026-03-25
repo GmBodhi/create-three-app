@@ -71,7 +71,7 @@ async function init() {
     "textures/equirectangular/spruit_sunrise_2k.hdr.jpg"
   );
   envMap.mapping = EquirectangularReflectionMapping;
-  scene.environmentRotation.y = Math.PI * 0.5;
+  scene.environmentRotation.y = Math.PI * -0.5;
   scene.environment = envMap;
 
   // renderer
