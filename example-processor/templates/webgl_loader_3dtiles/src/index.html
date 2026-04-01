@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js loader - 3d tiles</title>
+    <title>three.js loader - 3d tiles + clouds</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -11,23 +11,20 @@
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      3d tiles -
+      -
       <a
         href="https://github.com/NASA-AMMOS/3DTilesRendererJS"
         target="_blank"
         rel="noopener"
         >3d-tiles-renderer</a
-      ><br />
-      See
+      >
+      +
       <a
-        href="https://github.com/NASA-AMMOS/3DTilesRendererJS"
+        href="https://github.com/takram-design-engineering/three-geospatial"
         target="_blank"
         rel="noopener"
-        >main project repository</a
-      >
-      for more information and examples on loading 3d tiles
-      <br />
-      and other tiled data formats.
+        >three-clouds</a
+      ><br />
       <a
         href="https://developers.google.com/maps/documentation/tile/3d-tiles"
         target="_blank"
@@ -37,7 +34,18 @@
       token courtesy of
       <a href="https://ion.cesium.com/" target="_blank" rel="noopener"
         >Cesium Ion</a
-      >.
+      >.<br />
+      <label
+        >time of day:
+        <input
+          id="hour"
+          type="range"
+          min="0"
+          max="24"
+          value="0"
+          step="0.01"
+          style="pointer-events: all; vertical-align: middle"
+      /></label>
     </div>
 
     <div id="credits">
@@ -47,13 +55,23 @@
       /></a>
     </div>
 
+    <!-- "three/examples/" import map entry required by 3d-tiles-renderer -->
     <script type="importmap">
       {
         "imports": {
           "three": "../build/three.module.js",
+          "three/addons/": "./jsm/",
           "three/examples/": "./",
-          "3d-tiles-renderer": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.4.8/src/index.js",
-          "3d-tiles-renderer/plugins": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.4.8/src/plugins/index.js"
+          "3d-tiles-renderer": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.4.23/build/index.js",
+          "3d-tiles-renderer/core/plugins": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.4.23/build/index.core-plugins.js",
+          "3d-tiles-renderer/three/plugins": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.4.23/build/index.three-plugins.js",
+          "postprocessing": "https://cdn.jsdelivr.net/npm/postprocessing@6.39.0/build/index.js",
+          "@takram/three-clouds": "https://cdn.jsdelivr.net/npm/@takram/three-clouds@0.7.3/build/index.js",
+          "@takram/three-atmosphere": "https://cdn.jsdelivr.net/npm/@takram/three-atmosphere@0.17.1/build/index.js",
+          "@takram/three-geospatial": "https://cdn.jsdelivr.net/npm/@takram/three-geospatial@0.7.1/build/index.js",
+          "@takram/three-geospatial/shaders": "https://cdn.jsdelivr.net/npm/@takram/three-geospatial@0.7.1/build/shaders.js",
+          "@takram/three-geospatial-effects": "https://cdn.jsdelivr.net/npm/@takram/three-geospatial-effects@0.6.1/build/index.js",
+          "@takram/three-atmosphere/shaders/bruneton": "https://cdn.jsdelivr.net/npm/@takram/three-atmosphere@0.17.1/build/shaders/bruneton.js"
         }
       }
     </script>
