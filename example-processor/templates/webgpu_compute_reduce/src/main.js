@@ -827,9 +827,17 @@ async function init(leftSideDisplay = true) {
   const functionObj = {};
   functionObj[logFunctionName] = async () => {
     const selectedBuffer = buffers[unifiedEffectController.loggedBuffer];
-    console.log(
-      new Uint32Array(await renderer.getArrayBufferAsync(selectedBuffer.value))
+    const readbackBuffer = new ReadbackBuffer(selectedBuffer.value);
+
+    const result = new Uint32Array(
+      await renderer.getArrayBufferAsync(readbackBuffer)
     );
+
+    console.log(result);
+
+    // Remove GPU/CPU readback buffer from memory
+
+    readbackBuffer.dispose();
   };
 
   debugFolder.add(

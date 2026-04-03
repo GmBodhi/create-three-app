@@ -42,7 +42,16 @@ const assets = [
   "monkey",
   "monkey_embedded_texture",
   "vCube",
+  "archer/ArcherRi01",
+  "warrior/Warrior",
+  "stanford-bunny",
+  "mixamo",
 ];
+
+const scales = new Map();
+scales.set("warrior/Warrior", 100);
+scales.set("archer/ArcherRi01", 100);
+scales.set("stanford-bunny", 0.001);
 
 init();
 
@@ -146,6 +155,9 @@ function loadAsset(asset) {
     //
 
     object = group;
+
+    const scale = scales.get(asset);
+    object.scale.setScalar(scale || 1);
 
     if (object.animations && object.animations.length) {
       mixer = new AnimationMixer(object);
