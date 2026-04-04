@@ -46,12 +46,16 @@ const assets = [
   "warrior/Warrior",
   "stanford-bunny",
   "mixamo",
+  "RotationTest",
+  "exampleWindow",
+  "Head_69",
 ];
 
 const scales = new Map();
 scales.set("warrior/Warrior", 100);
 scales.set("archer/ArcherRi01", 100);
 scales.set("stanford-bunny", 0.001);
+scales.set("Head_69", 100);
 
 init();
 
