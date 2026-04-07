@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <title>three.js webgpu - fsr1</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info" class="invert">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>FSR 1</span>
+      </div>
+
+      <small>
+        Web Port of
+        <a
+          href="https://gpuopen.com/fidelityfx-superresolution/"
+          target="_blank"
+          rel="noopener"
+          >AMD FidelityFX Super Resolution 1</a
+        >.<br />
+        Model:
+        <a
+          href="https://artstation.com/artwork/1AGwX"
+          target="_blank"
+          rel="noopener"
+          >Littlest Tokyo</a
+        >
+        by
+        <a
+          href="https://artstation.com/glenatron"
+          target="_blank"
+          rel="noopener"
+          >Glen Fox</a
+        >, CC Attribution.
+      </small>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>
