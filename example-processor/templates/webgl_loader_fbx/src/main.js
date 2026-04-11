@@ -49,6 +49,7 @@ const assets = [
   "RotationTest",
   "exampleWindow",
   "Head_69",
+  "morph-translation",
 ];
 
 const scales = new Map();
