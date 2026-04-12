@@ -1,8 +1,9 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass } from "three/tsl";
-import { fsr1 } from "three/addons/tsl/display/FSR1Node.js";
+import { mrt, output, pass, velocity } from "three/tsl";
+import { taau } from "three/addons/tsl/display/TAAUNode.js";
+import { sharpen } from "three/addons/tsl/display/SharpenNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -11,8 +12,10 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
 
 const params = {
-  upscaleMethod: "FSR1",
+  upscaleMethod: "TAAU",
   resolutionScale: 0.5,
+  sharpening: true,
+  sharpness: 0.2,
 };
 
 let camera, scene, renderer, renderPipeline, controls, mixer, timer;
@@ -52,7 +55,7 @@ async function init() {
 
   // renderer
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -79,19 +82,38 @@ async function init() {
   // render pipeline
 
   renderPipeline = new RenderPipeline(renderer);
-
-  const scenePass = pass(scene, camera).toInspector("Color");
+  const scenePass = pass(scene, camera);
   scenePass.setResolutionScale(params.resolutionScale);
+  scenePass.setMRT(
+    mrt({
+      output: output,
+      velocity: velocity,
+    })
+  );
 
-  // FSR 1
+  const scenePassColor = scenePass
+    .getTextureNode("output")
+    .toInspector("Color");
+  const scenePassDepth = scenePass
+    .getTextureNode("depth")
+    .toInspector("Depth", () => {
+      return scenePass.getLinearDepthNode();
+    });
+  const scenePassVelocity = scenePass
+    .getTextureNode("velocity")
+    .toInspector("Velocity");
 
-  const fsr1Node = fsr1(scenePass).toInspector("FSR1");
-
-  //
+  const taauNode = taau(
+    scenePassColor,
+    scenePassDepth,
+    scenePassVelocity,
+    camera
+  );
+  const sharpenNode = sharpen(taauNode.getTextureNode(), params.sharpness);
 
   function updatePipeline() {
-    if (params.upscaleMethod === "FSR1") {
-      renderPipeline.outputNode = fsr1Node;
+    if (params.upscaleMethod === "TAAU") {
+      renderPipeline.outputNode = params.sharpening ? sharpenNode : taauNode;
     } else {
       renderPipeline.outputNode = scenePass;
     }
@@ -103,22 +125,31 @@ async function init() {
 
   const gui = renderer.inspector.createParameters("Settings");
   gui
-    .add(params, "upscaleMethod", ["Bilinear", "FSR1"])
+    .add(params, "upscaleMethod", ["Bilinear", "TAAU"])
     .onChange(updatePipeline);
   gui.add(params, "resolutionScale", 0.25, 1.0, 0.25).onChange((value) => {
     scenePass.setResolutionScale(value);
   });
+  gui.add(params, "sharpening").onChange(updatePipeline);
+  gui.add(params, "sharpness", 0, 2, 0.05).onChange((value) => {
+    sharpenNode.sharpness.value = value;
+  });
 
   updatePipeline();
+
+  //
 
   window.addEventListener("resize", onWindowResize);
 }
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
+  const width = window.innerWidth;
+  const height = window.innerHeight;
+
+  camera.aspect = width / height;
   camera.updateProjectionMatrix();
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setSize(width, height);
 }
 
 function animate() {

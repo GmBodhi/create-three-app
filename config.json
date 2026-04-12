@@ -5494,6 +5494,16 @@
         "/src"
       ]
     },
+    "webgpu_upscaling_taau": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_video_frame": {
       "files": {
         "index.html": "src",
