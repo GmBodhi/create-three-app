@@ -2064,16 +2064,6 @@
         "/src"
       ]
     },
-    "webgl_loader_vtk": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_xyz": {
       "files": {
         "index.html": "src",

@@ -9,8 +9,6 @@ import {
   MeshBasicMaterial,
   Mesh,
   BoxHelper,
-  MeshLambertMaterial,
-  DoubleSide,
   WebGLRenderer,
 } from "three";
 
@@ -19,7 +17,6 @@ import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { TrackballControls } from "three/addons/controls/TrackballControls.js";
 import { NRRDLoader } from "three/addons/loaders/NRRDLoader.js";
-import { VTKLoader } from "three/addons/loaders/VTKLoader.js";
 
 let stats, camera, controls, scene, renderer;
 
@@ -129,29 +126,6 @@ function init() {
       });
   });
 
-  const vtkmaterial = new MeshLambertMaterial({
-    wireframe: false,
-    side: DoubleSide,
-    color: 0xff0000,
-  });
-
-  const vtkloader = new VTKLoader();
-  vtkloader.load("models/vtk/liver.vtk", function (geometry) {
-    geometry.computeVertexNormals();
-
-    const mesh = new Mesh(geometry, vtkmaterial);
-    scene.add(mesh);
-    const visibilityControl = {
-      visible: true,
-    };
-    gui
-      .add(visibilityControl, "visible")
-      .name("Model Visible")
-      .onChange(function () {
-        mesh.visible = visibilityControl.visible;
-        renderer.render(scene, camera);
-      });
-  });
   // renderer
 
   renderer = new WebGLRenderer({ antialias: true });
