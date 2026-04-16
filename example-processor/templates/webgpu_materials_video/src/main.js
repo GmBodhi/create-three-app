@@ -21,15 +21,9 @@ const meshes = [],
   xgrid = 20,
   ygrid = 10;
 
-const startButton = document.getElementById("startButton");
-startButton.addEventListener("click", function () {
-  init();
-});
+init();
 
 function init() {
-  const overlay = document.getElementById("overlay");
-  overlay.remove();
-
   container = document.createElement("div");
   document.body.appendChild(container);
 
