@@ -11,7 +11,6 @@ import {
   uniform,
   select,
   attribute,
-  uint,
   Loop,
   float,
   transformNormalToView,
@@ -279,12 +278,6 @@ function setupComputeShaders() {
   // 1. computeSpringForces:
   // This shader computes a force for each spring, depending on the distance between the two vertices connected by that spring and the targeted rest length
   computeSpringForces = Fn(() => {
-    If(instanceIndex.greaterThanEqual(uint(springCount)), () => {
-      // compute Shaders are executed in groups of 64, so instanceIndex might be bigger than the amount of springs.
-      // in that case, return.
-      Return();
-    });
-
     const vertexIds = springVertexIdBuffer.element(instanceIndex);
     const restLength = springRestLengthBuffer.element(instanceIndex);
 
@@ -310,12 +303,6 @@ function setupComputeShaders() {
   // Then it adds a gravital force, wind force, and the collision with the sphere.
   // In the end it adds the force to the vertex' position.
   computeVertexForces = Fn(() => {
-    If(instanceIndex.greaterThanEqual(uint(vertexCount)), () => {
-      // compute Shaders are executed in groups of 64, so instanceIndex might be bigger than the amount of vertices.
-      // in that case, return.
-      Return();
-    });
-
     const params = vertexParamsBuffer.element(instanceIndex).toVar();
     const isFixed = params.x;
     const springCount = params.y;

@@ -47,6 +47,7 @@ const modelFileList = {
   "Star fighter": "models/6966-1-JediStarfighter-Mini.mpd_Packed.mpd",
   "X-Wing": "models/7140-1-X-wingFighter.mpd_Packed.mpd",
   "AT-ST": "models/10174-1-ImperialAT-ST-UCS.mpd_Packed.mpd",
+  Window: "models/6156-1-WindowBrick.mpd_Packed.mpd",
 };
 
 init();

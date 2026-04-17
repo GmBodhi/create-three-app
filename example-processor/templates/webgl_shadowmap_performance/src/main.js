@@ -132,8 +132,6 @@ function onWindowResize() {
   camera.updateProjectionMatrix();
 
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-  controls.handleResize();
 }
 
 function createScene() {

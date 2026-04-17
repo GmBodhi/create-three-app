@@ -186,7 +186,9 @@ function playerCollisions() {
   playerOnFloor = false;
 
   if (result) {
-    playerOnFloor = result.normal.y > 0;
+    // determine if the surface we bumped into is something we can stand on
+
+    playerOnFloor = result.normal.y >= 0.15; // allow slopes up to ~81° but ignore sheer vertical walls
 
     if (!playerOnFloor) {
       playerVelocity.addScaledVector(

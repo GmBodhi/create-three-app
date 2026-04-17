@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <title>three.js webgpu - dynamic lights</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>Dynamic Lights</span>
+      </div>
+
+      <small>
+        Opt-in DynamicLighting avoids shader recompilation when adding/removing
+        supported lights.<br />
+        100 meshes with 50 unique PBR materials. Use the Inspector to explore
+        the scene.
+      </small>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

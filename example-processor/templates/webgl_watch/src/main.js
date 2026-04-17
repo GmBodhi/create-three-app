@@ -5,8 +5,7 @@ import {
   Scene,
   WebGLRenderer,
   HalfFloatType,
-  ACESFilmicToneMapping,
-  VSMShadowMap,
+  NeutralToneMapping,
   Vector2,
   EquirectangularReflectionMapping,
   MeshPhysicalMaterial,
@@ -37,9 +36,9 @@ const materials = {};
 const torad = Math.PI / 180;
 
 const setting = {
-  roughness: 0.09,
+  roughness: 0.1,
   metalness: 1.0,
-  opacity: 0.4,
+  opacity: 0.8,
   threshold: 0,
   strength: 0.007,
   radius: 0.0,
@@ -68,10 +67,9 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
-  renderer.toneMapping = ACESFilmicToneMapping;
+  renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 0.7;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = VSMShadowMap;
   container.appendChild(renderer.domElement);
 
   taaPass = new TAARenderPass(scene, camera);
@@ -110,8 +108,10 @@ function init() {
           if (child.isMesh || child.isGroup) {
             if (child.isMesh) {
               child.material.vertexColors = false;
-              materials[child.material.name] = child.material;
-              if (child.name !== "glass") {
+              if (materials[child.material.name])
+                child.material = materials[child.material.name];
+              else materials[child.material.name] = child.material;
+              if (child.name !== "glass" && child.name !== "floor") {
                 child.receiveShadow = true;
                 child.castShadow = true;
               }
@@ -149,11 +149,11 @@ function init() {
   controls.update();
 
   dirLight = new DirectionalLight(0xffffff, 6);
-  dirLight.position.set(-0.1, 0.6, 0.4);
+  dirLight.position.set(0.2, 0.6, 0.4);
   dirLight.castShadow = true;
   scene.add(dirLight);
   const shadow = dirLight.shadow;
-  shadow.mapSize.width = shadow.mapSize.height = 1024;
+  shadow.mapSize.width = shadow.mapSize.height = 2048;
   shadow.radius = 8;
   shadow.bias = -0.0005;
   const shadowCam = shadow.camera,
@@ -166,7 +166,7 @@ function init() {
   //scene.add(  new CameraHelper(shadowCam) );
 
   pointLight = new PointLight(0x7b8cad, 1, 0, 2);
-  pointLight.position.set(0.3, -0.2, -0.2);
+  pointLight.position.set(-0.3, -0.2, -0.2);
   scene.add(pointLight);
 
   window.addEventListener("resize", onWindowResize);

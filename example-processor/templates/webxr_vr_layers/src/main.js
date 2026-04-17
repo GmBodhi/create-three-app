@@ -382,7 +382,7 @@ function animate(t, frame) {
   if (session && quadLayerPlain && quadLayerPlain.needsRedraw) {
     const glayer = xr.getBinding().getSubImage(quadLayerPlain, frame);
     renderer.state.bindTexture(gl.TEXTURE_2D, glayer.colorTexture);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    renderer.state.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texSubImage2D(
       gl.TEXTURE_2D,
       0,
@@ -400,7 +400,7 @@ function animate(t, frame) {
   if (session && quadLayerMips && quadLayerMips.needsRedraw) {
     const glayer = xr.getBinding().getSubImage(quadLayerMips, frame);
     renderer.state.bindTexture(gl.TEXTURE_2D, glayer.colorTexture);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    renderer.state.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texSubImage2D(
       gl.TEXTURE_2D,
       0,
@@ -419,7 +419,7 @@ function animate(t, frame) {
   if (session && guiLayer && (guiLayer.needsRedraw || guiLayer.needsUpdate)) {
     const glayer = xr.getBinding().getSubImage(guiLayer, frame);
     renderer.state.bindTexture(gl.TEXTURE_2D, glayer.colorTexture);
-    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    renderer.state.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     const canvas = guiMesh.material.map.image;
     gl.texSubImage2D(
       gl.TEXTURE_2D,

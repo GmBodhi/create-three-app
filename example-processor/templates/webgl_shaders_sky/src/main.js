@@ -41,6 +41,7 @@ function initSky() {
     cloudCoverage: 0.4,
     cloudDensity: 0.4,
     cloudElevation: 0.5,
+    showSunDisc: true,
   };
 
   function guiChanged() {
@@ -52,6 +53,7 @@ function initSky() {
     uniforms["cloudCoverage"].value = effectController.cloudCoverage;
     uniforms["cloudDensity"].value = effectController.cloudDensity;
     uniforms["cloudElevation"].value = effectController.cloudElevation;
+    uniforms["showSunDisc"].value = effectController.showSunDisc;
 
     const phi = MathUtils.degToRad(90 - effectController.elevation);
     const theta = MathUtils.degToRad(effectController.azimuth);
@@ -76,6 +78,7 @@ function initSky() {
   gui.add(effectController, "elevation", 0, 90, 0.1).onChange(guiChanged);
   gui.add(effectController, "azimuth", -180, 180, 0.1).onChange(guiChanged);
   gui.add(effectController, "exposure", 0, 1, 0.0001).onChange(guiChanged);
+  gui.add(effectController, "showSunDisc").onChange(guiChanged);
 
   const folderClouds = gui.addFolder("Clouds");
   folderClouds

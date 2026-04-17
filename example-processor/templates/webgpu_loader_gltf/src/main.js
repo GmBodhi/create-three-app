@@ -96,6 +96,19 @@ function loadModel(modelInfo) {
   }/${variant.endsWith(".glb") ? "glTF-Binary" : "glTF"}/${variant}`;
 
   if (currentModel) {
+    currentModel.traverse((model) => {
+      if (model.isMesh) {
+        model.geometry.dispose();
+        model.material.dispose();
+
+        for (const value of Object.values(model.material)) {
+          if (value && value.isTexture) {
+            value.dispose();
+          }
+        }
+      }
+    });
+
     scene.remove(currentModel);
     currentModel = null;
   }

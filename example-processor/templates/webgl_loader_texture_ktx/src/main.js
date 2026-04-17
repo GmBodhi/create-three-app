@@ -65,7 +65,7 @@ function init() {
   scene.add(ambientLight);
 
   const pointLight = new PointLight(0xffffff, 2, 0, 0);
-  pointLight.position.z = -300;
+  pointLight.position.z = 300;
   scene.add(pointLight);
 
   const geometry = new BoxGeometry(200, 200, 200);
