@@ -11,9 +11,16 @@ import {
   HTMLTexture,
   Mesh,
 } from "three";
+import { installHtmlInCanvasPolyfill } from "three-html-render/polyfill";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { InteractionManager } from "three/addons/interaction/InteractionManager.js";
+
+if (!("requestPaint" in HTMLCanvasElement.prototype)) {
+  installHtmlInCanvasPolyfill();
+  info.innerHTML +=
+    '<br><a href="https://github.com/WICG/html-in-canvas" target="_blank">HTML-in-Canvas API</a> not available. Using <a href="https://github.com/repalash/three-html-render" target="_blank">polyfill</a>.';
+}
 
 let camera, scene, renderer, mesh, interactions;
 
@@ -21,11 +28,6 @@ init();
 
 function init() {
   renderer = new WebGLRenderer({ antialias: true });
-
-  if (renderer.getContext().texElementImage2D === undefined) {
-    info.innerHTML +=
-      '<br>This browser does not support the <a href="https://github.com/WICG/html-in-canvas" target="_blank">HTML-in-Canvas API</a>.';
-  }
 
   renderer.toneMapping = NeutralToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);
