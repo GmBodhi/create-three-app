@@ -103,6 +103,7 @@ function createGUI() {
       singlePointTest2: "models/svg/singlePointTest2.svg",
       singlePointTest3: "models/svg/singlePointTest3.svg",
       emptyPath: "models/svg/emptyPath.svg",
+      emoji: "models/svg/emoji.svg",
     })
     .name("SVG File")
     .onChange(update);
