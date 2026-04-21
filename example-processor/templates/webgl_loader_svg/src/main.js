@@ -7,8 +7,6 @@ import {
   Color,
   GridHelper,
   Group,
-  MeshBasicMaterial,
-  DoubleSide,
   ShapeGeometry,
   Mesh,
 } from "three";
@@ -157,60 +155,42 @@ function loadSVG(url) {
     let renderOrder = 0;
 
     for (const path of data.paths) {
-      const fillColor = path.userData.style.fill;
+      if (guiData.drawFillShapes) {
+        const material = SVGLoader.createFillMaterial(path);
 
-      if (
-        guiData.drawFillShapes &&
-        fillColor !== undefined &&
-        fillColor !== "none"
-      ) {
-        const material = new MeshBasicMaterial({
-          color: new Color().setStyle(fillColor),
-          opacity: path.userData.style.fillOpacity,
-          transparent: true,
-          side: DoubleSide,
-          depthWrite: false,
-          wireframe: guiData.fillShapesWireframe,
-        });
+        if (material) {
+          material.wireframe = guiData.fillShapesWireframe;
 
-        const shapes = SVGLoader.createShapes(path);
+          const shapes = SVGLoader.createShapes(path);
 
-        for (const shape of shapes) {
-          const geometry = new ShapeGeometry(shape);
-          const mesh = new Mesh(geometry, material);
-          mesh.renderOrder = renderOrder++;
-
-          group.add(mesh);
-        }
-      }
-
-      const strokeColor = path.userData.style.stroke;
-
-      if (
-        guiData.drawStrokes &&
-        strokeColor !== undefined &&
-        strokeColor !== "none"
-      ) {
-        const material = new MeshBasicMaterial({
-          color: new Color().setStyle(strokeColor),
-          opacity: path.userData.style.strokeOpacity,
-          transparent: true,
-          side: DoubleSide,
-          depthWrite: false,
-          wireframe: guiData.strokesWireframe,
-        });
-
-        for (const subPath of path.subPaths) {
-          const geometry = SVGLoader.pointsToStroke(
-            subPath.getPoints(),
-            path.userData.style
-          );
-
-          if (geometry) {
+          for (const shape of shapes) {
+            const geometry = new ShapeGeometry(shape);
             const mesh = new Mesh(geometry, material);
             mesh.renderOrder = renderOrder++;
 
             group.add(mesh);
+          }
+        }
+      }
+
+      if (guiData.drawStrokes) {
+        const material = SVGLoader.createStrokeMaterial(path);
+
+        if (material) {
+          material.wireframe = guiData.strokesWireframe;
+
+          for (const subPath of path.subPaths) {
+            const geometry = SVGLoader.pointsToStroke(
+              subPath.getPoints(),
+              path.userData.style
+            );
+
+            if (geometry) {
+              const mesh = new Mesh(geometry, material);
+              mesh.renderOrder = renderOrder++;
+
+              group.add(mesh);
+            }
           }
         }
       }
