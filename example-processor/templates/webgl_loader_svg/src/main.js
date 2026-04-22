@@ -102,6 +102,7 @@ function createGUI() {
       singlePointTest3: "models/svg/singlePointTest3.svg",
       emptyPath: "models/svg/emptyPath.svg",
       emoji: "models/svg/emoji.svg",
+      blueprint: "models/svg/blueprint.svg",
     })
     .name("SVG File")
     .onChange(update);
@@ -218,6 +219,7 @@ function disposeScene(scene) {
   scene.traverse(function (object) {
     if (object.isMesh || object.isLine) {
       object.geometry.dispose();
+      if (object.material.map) object.material.map.dispose();
       object.material.dispose();
     }
   });
