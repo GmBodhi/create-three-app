@@ -103,6 +103,7 @@ function createGUI() {
       emptyPath: "models/svg/emptyPath.svg",
       emoji: "models/svg/emoji.svg",
       blueprint: "models/svg/blueprint.svg",
+      wideStroke: "models/svg/tests/wideStroke.svg",
     })
     .name("SVG File")
     .onChange(update);
