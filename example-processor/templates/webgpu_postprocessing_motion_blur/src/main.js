@@ -10,6 +10,7 @@ import {
   velocity,
   uv,
   screenUV,
+  vec4,
 } from "three/tsl";
 import { motionBlur } from "three/addons/tsl/display/MotionBlur.js";
 
@@ -190,7 +191,7 @@ function init() {
     .oneMinus();
 
   renderPipeline = new RenderPipeline(renderer);
-  renderPipeline.outputNode = mBlur.mul(vignette);
+  renderPipeline.outputNode = vec4(mBlur.mul(vignette).rgb, mBlur.a);
 
   //
 
