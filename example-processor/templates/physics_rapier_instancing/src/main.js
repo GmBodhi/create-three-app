@@ -143,6 +143,30 @@ async function init() {
   controls.target.y = 0.5;
   controls.update();
 
+  document.querySelector("button#shake").addEventListener("click", () => {
+    const impulse = new Vector3();
+
+    for (let i = 0; i < spheres.count; i++) {
+      impulse.set(
+        (Math.random() - 0.5) * 5,
+        Math.random() * 5,
+        (Math.random() - 0.5) * 5
+      );
+
+      physics.applyImpulse(spheres, impulse, i);
+    }
+
+    for (let i = 0; i < boxes.count; i++) {
+      impulse.set(
+        (Math.random() - 0.5) * 5,
+        Math.random() * 5,
+        (Math.random() - 0.5) * 5
+      );
+
+      physics.applyImpulse(boxes, impulse, i);
+    }
+  });
+
   setInterval(() => {
     let index = Math.floor(Math.random() * boxes.count);
 
