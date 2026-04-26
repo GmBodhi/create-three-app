@@ -30,6 +30,7 @@ function init() {
   camera.position.z = 400;
 
   const scene = new Scene();
+  scene.background = new Color(0x000000);
   scene.fog = new Fog(0x000000, 1, 1000);
 
   object = new Object3D();

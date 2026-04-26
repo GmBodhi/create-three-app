@@ -34,6 +34,7 @@ async function init() {
   camera.lookAt(0, 0, 0);
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   const geometry = new IcosahedronGeometry(0.5, 3);
 

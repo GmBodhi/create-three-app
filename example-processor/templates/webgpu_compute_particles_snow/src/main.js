@@ -260,6 +260,7 @@ async function init() {
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setClearColor(0x000000);
   renderer.setAnimationLoop(animate);
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);

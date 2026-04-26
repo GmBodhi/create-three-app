@@ -46,6 +46,7 @@ async function init() {
   camera.lookAt(0, 0, 0);
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   const dirLight = new DirectionalLight(0xffffff, 0.5);
   dirLight.position.set(3, 17, 17);

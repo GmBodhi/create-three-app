@@ -98,6 +98,7 @@ async function initView(scene, name, logDepthBuf) {
 
 function initScene(font) {
   const scene = new Scene();
+  scene.background = new Color(0x000000);
 
   scene.add(new AmbientLight(0x777777));
 

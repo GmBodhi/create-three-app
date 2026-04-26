@@ -26,7 +26,7 @@ init();
 function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
-  renderer.setClearColor(0x000000, 0.0);
+  renderer.setClearColor(0x000000);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
@@ -150,7 +150,7 @@ function animate() {
 
   // main scene
 
-  renderer.setClearColor(0x000000, 0);
+  renderer.setClearColor(0x000000);
 
   renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
 
