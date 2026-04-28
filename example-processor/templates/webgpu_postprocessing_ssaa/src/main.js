@@ -161,8 +161,7 @@ function animate() {
       break;
   }
 
-  ssaaRenderPass.clearColor.set(newColor);
-  ssaaRenderPass.clearAlpha = params.clearAlpha;
+  renderer.setClearColor(newColor, params.clearAlpha);
 
   ssaaRenderPass.sampleLevel = params.sampleLevel;
 
