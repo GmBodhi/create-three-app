@@ -7,6 +7,7 @@ import {
   Vector2,
   Scene,
   PerspectiveCamera,
+  Timer,
   Vector3,
   PlaneGeometry,
   TextureLoader,
@@ -26,7 +27,7 @@ import { Water } from "three/addons/objects/Water.js";
 import { Sky } from "three/addons/objects/Sky.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 
-let container, stats;
+let container, stats, timer;
 let camera, scene, renderer;
 let controls, water, sun, sky, mesh, bloomPass;
 
@@ -67,6 +68,8 @@ function init() {
     20000
   );
   camera.position.set(30, 30, 100);
+
+  timer = new Timer();
 
   //
 
@@ -218,6 +221,7 @@ function onWindowResize() {
 }
 
 function animate() {
+  timer.update();
   render();
   stats.update();
 }
@@ -229,7 +233,9 @@ function render() {
   mesh.rotation.x = time * 0.5;
   mesh.rotation.z = time * 0.51;
 
-  water.material.uniforms["time"].value += 1.0 / 60.0;
+  const delta = timer.getDelta();
+
+  water.material.uniforms["time"].value += delta;
   sky.material.uniforms["time"].value = time;
 
   renderer.render(scene, camera);

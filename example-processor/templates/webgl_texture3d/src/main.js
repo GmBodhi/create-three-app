@@ -34,7 +34,7 @@ function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   document.body.appendChild(renderer.domElement);
 
-  // Create camera (The volume renderer does not work very well with perspective yet)
+  // Create camera
   const h = 512; // frustum height
   const aspect = window.innerWidth / window.innerHeight;
   camera = new OrthographicCamera(

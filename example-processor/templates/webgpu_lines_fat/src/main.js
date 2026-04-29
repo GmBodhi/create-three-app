@@ -96,7 +96,7 @@ function init() {
     linewidth: 5, // in world units with size attenuation, pixels otherwise
     vertexColors: true,
     dashed: false,
-    alphaToCoverage: true,
+    alphaToCoverage: false,
   });
 
   line = new Line2(geometry, matLine);
@@ -193,7 +193,7 @@ function initGui() {
     "line type": 0,
     "world units": false,
     width: 5,
-    alphaToCoverage: true,
+    alphaToCoverage: false,
     dashed: false,
     "dash offset": 0,
     "dash scale": 1,

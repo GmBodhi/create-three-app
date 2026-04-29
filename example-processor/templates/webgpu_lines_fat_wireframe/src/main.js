@@ -101,8 +101,6 @@ function onWindowResize() {
 function animate() {
   // main scene
 
-  renderer.setClearColor(0x000000, 0);
-
   renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
 
   renderer.autoClear = true;
