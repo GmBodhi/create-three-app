@@ -163,7 +163,7 @@ function loadSVG(url) {
         if (material) {
           material.wireframe = guiData.fillShapesWireframe;
 
-          const shapes = SVGLoader.createShapes(path);
+          const shapes = path.toShapes();
 
           for (const shape of shapes) {
             const geometry = new ShapeGeometry(shape);
