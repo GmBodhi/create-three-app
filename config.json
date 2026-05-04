@@ -3991,6 +3991,16 @@
         "/src"
       ]
     },
+    "webgpu_furnace_test": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_hdr": {
       "files": {
         "index.html": "src",
@@ -5295,6 +5305,16 @@
       ]
     },
     "webgpu_test_memory": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_texturegather": {
       "files": {
         "index.html": "src",
         "main.js": "src",

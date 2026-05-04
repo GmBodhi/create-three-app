@@ -1,7 +1,7 @@
 import "./style.css"; // For webpack support
 
 import {
-  WebGLRenderer,
+  WebGPURenderer,
   Scene,
   PerspectiveCamera,
   SphereGeometry,
@@ -19,23 +19,26 @@ let gui;
 
 const COLOR = 0xcccccc;
 
-function init() {
+async function init() {
   const width = window.innerWidth;
   const height = window.innerHeight;
   const aspect = width / height;
 
   // renderer
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setSize(width, height);
   renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
+
+  await renderer.init();
 
   // scene
 
   scene = new Scene();
 
   // camera
+
   camera = new PerspectiveCamera(40, aspect, 1, 30);
   camera.position.set(0, 0, 18);
 
