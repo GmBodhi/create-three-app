@@ -104,6 +104,8 @@ function init() {
   line.scale.set(1, 1, 1);
   scene.add(line);
 
+  // Line ( BufferGeometry, LineBasicNodeMaterial ) - rendered with gl.LINE_STRIP
+
   const geo = new BufferGeometry();
   geo.setAttribute("position", new Float32BufferAttribute(positions, 3));
   geo.setAttribute("color", new Float32BufferAttribute(colors, 3));
@@ -192,7 +194,7 @@ function initGui() {
   const param = {
     "line type": 0,
     "world units": false,
-    width: 5,
+    width: 10,
     alphaToCoverage: false,
     dashed: false,
     "dash offset": 0,
@@ -223,11 +225,24 @@ function initGui() {
   gui.add(param, "world units").onChange(function (val) {
     matLine.worldUnits = val;
     matLine.needsUpdate = true;
+
+    if (val) {
+      widthController
+        .name("width (world units)")
+        .min(0.1)
+        .max(0.5)
+        .setValue(0.5);
+    } else {
+      widthController.name("width (pixels)").min(1).max(10).setValue(10);
+    }
   });
 
-  gui.add(param, "width", 1, 10).onChange(function (val) {
-    matLine.linewidth = val;
-  });
+  const widthController = gui
+    .add(param, "width", 1, 10)
+    .name("width (pixels)")
+    .onChange(function (val) {
+      matLine.linewidth = val;
+    });
 
   gui.add(param, "alphaToCoverage").onChange(function (val) {
     matLine.alphaToCoverage = val;
