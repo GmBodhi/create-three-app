@@ -192,8 +192,8 @@ function initGui() {
   const param = {
     "line type": 0,
     "world units": false,
-    width: 5,
-    alphaToCoverage: true,
+    width: 10,
+    alphaToCoverage: false,
     dashed: false,
     "dash scale": 1,
     "dash / gap": 1,
@@ -221,11 +221,25 @@ function initGui() {
 
   gui.add(param, "world units").onChange(function (val) {
     matLine.worldUnits = val;
+    matLine.needsUpdate = true;
+
+    if (val) {
+      widthController
+        .name("width (world units)")
+        .min(0.1)
+        .max(0.5)
+        .setValue(0.5);
+    } else {
+      widthController.name("width (pixels)").min(1).max(10).setValue(10);
+    }
   });
 
-  gui.add(param, "width", 1, 10).onChange(function (val) {
-    matLine.linewidth = val;
-  });
+  const widthController = gui
+    .add(param, "width", 1, 10)
+    .name("width (pixels)")
+    .onChange(function (val) {
+      matLine.linewidth = val;
+    });
 
   gui.add(param, "alphaToCoverage").onChange(function (val) {
     matLine.alphaToCoverage = val;
