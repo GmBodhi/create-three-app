@@ -10,25 +10,50 @@ import {
   SkyGeometry,
 } from "three/addons/misc/RollerCoaster.js";
 import { VRButton } from "three/addons/webxr/VRButton.js";
+import { setupWebGLXRFallback } from "three/addons/webxr/WebGLXRFallback.js";
 
 let mesh, material, geometry;
+let renderer;
 
-const renderer = new WebGPURenderer({
+const rendererParameters = {
   antialias: true,
-  forceWebGL: true,
   outputBufferType: UnsignedByteType,
   multiview: false,
-});
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setAnimationLoop(animate);
-renderer.xr.enabled = true;
-renderer.xr.setReferenceSpaceType("local");
-document.body.appendChild(renderer.domElement);
+};
+
+renderer = createRenderer();
+setRenderer(renderer);
+setupWebGLXRFallback(renderer, () => createRenderer(true), setRenderer);
 
 document.body.appendChild(VRButton.createButton(renderer));
 
 //
+
+function createRenderer(forceWebGL = false) {
+  const parameters = { ...rendererParameters };
+
+  if (forceWebGL === true) parameters.forceWebGL = true;
+
+  const renderer = new WebGPURenderer(parameters);
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  renderer.xr.enabled = true;
+  renderer.xr.setReferenceSpaceType("local");
+
+  return renderer;
+}
+
+function setRenderer(newRenderer, oldRenderer = null) {
+  if (oldRenderer === null) {
+    document.body.appendChild(newRenderer.domElement);
+  } else {
+    document.body.replaceChild(newRenderer.domElement, oldRenderer.domElement);
+    oldRenderer.dispose();
+  }
+
+  renderer = newRenderer;
+}
 
 const scene = new Scene();
 scene.background = new Color(0xf0f0ff);
