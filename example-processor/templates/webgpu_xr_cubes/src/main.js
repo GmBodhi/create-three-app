@@ -95,7 +95,9 @@ function init() {
 
   //
 
-  document.body.appendChild(XRButton.createButton(renderer));
+  document.body.appendChild(
+    XRButton.createButton(renderer, { optionalFeatures: ["webgpu"] })
+  );
 }
 
 function createRenderer(forceWebGL = false) {

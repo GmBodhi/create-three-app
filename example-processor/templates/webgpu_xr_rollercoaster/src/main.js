@@ -25,7 +25,9 @@ renderer = createRenderer();
 setRenderer(renderer);
 setupWebGLXRFallback(renderer, () => createRenderer(true), setRenderer);
 
-document.body.appendChild(VRButton.createButton(renderer));
+document.body.appendChild(
+  VRButton.createButton(renderer, { optionalFeatures: ["webgpu"] })
+);
 
 //
 
