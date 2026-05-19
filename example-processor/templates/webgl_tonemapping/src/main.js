@@ -106,8 +106,6 @@ async function init() {
   const hdrLoader = new HDRLoader().setPath("textures/equirectangular/");
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
-
   const gltfLoader = new GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);
   gltfLoader.setPath("models/gltf/");
