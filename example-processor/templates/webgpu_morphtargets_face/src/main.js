@@ -45,9 +45,7 @@ async function init() {
   scene.background = new Color(0x666666);
   scene.environment = pmremGenerator.fromScene(environment, 0.04).texture;
 
-  const ktx2Loader = await new KTX2Loader()
-    .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+  const ktx2Loader = await new KTX2Loader().detectSupport(renderer);
 
   new GLTFLoader()
     .setKTX2Loader(ktx2Loader)

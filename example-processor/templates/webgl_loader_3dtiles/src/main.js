@@ -87,7 +87,6 @@ async function init() {
   // loader
   const dracoLoader = new DRACOLoader();
   dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
-  dracoLoader.setDecoderConfig({ type: "js" });
 
   const DEG2RAD = Math.PI / 180;
 

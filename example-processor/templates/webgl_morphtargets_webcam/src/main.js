@@ -116,9 +116,7 @@ const controls = new OrbitControls(camera, renderer.domElement);
 let face, eyeL, eyeR;
 const eyeRotationLimit = MathUtils.degToRad(30);
 
-const ktx2Loader = new KTX2Loader()
-  .setTranscoderPath("jsm/libs/basis/")
-  .detectSupport(renderer);
+const ktx2Loader = new KTX2Loader().detectSupport(renderer);
 
 new GLTFLoader()
   .setKTX2Loader(ktx2Loader)

@@ -48,9 +48,7 @@ async function init() {
   controls.maxDistance = 6;
   controls.update();
 
-  const ktx2Loader = await new KTX2Loader()
-    .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+  const ktx2Loader = await new KTX2Loader().detectSupport(renderer);
 
   const loader = new GLTFLoader();
   loader.setKTX2Loader(ktx2Loader);

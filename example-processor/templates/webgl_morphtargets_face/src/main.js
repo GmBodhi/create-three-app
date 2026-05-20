@@ -52,9 +52,7 @@ function init() {
 
   container.appendChild(renderer.domElement);
 
-  const ktx2Loader = new KTX2Loader()
-    .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+  const ktx2Loader = new KTX2Loader().detectSupport(renderer);
 
   new GLTFLoader()
     .setKTX2Loader(ktx2Loader)

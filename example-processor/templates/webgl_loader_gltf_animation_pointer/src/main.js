@@ -60,9 +60,7 @@ controls.enableDamping = true;
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
 
-const ktx2Loader = new KTX2Loader()
-  .setTranscoderPath("jsm/libs/basis/")
-  .detectSupport(renderer);
+const ktx2Loader = new KTX2Loader().detectSupport(renderer);
 
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader);

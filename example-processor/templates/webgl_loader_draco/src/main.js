@@ -22,8 +22,6 @@ const container = document.querySelector("#container");
 
 // Configure and create Draco decoder.
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("jsm/libs/draco/");
-dracoLoader.setDecoderConfig({ type: "js" });
 
 init();
 

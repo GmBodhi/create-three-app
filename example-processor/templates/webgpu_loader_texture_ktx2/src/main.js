@@ -72,7 +72,6 @@ async function init() {
   await renderer.init();
 
   const loader = new KTX2Loader()
-    .setTranscoderPath("jsm/libs/basis/")
     .setPath("textures/ktx2/")
     .detectSupport(renderer);
 

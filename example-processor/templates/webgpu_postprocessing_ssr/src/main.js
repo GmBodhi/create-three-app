@@ -56,8 +56,6 @@ async function init() {
     .mix(color(0x888877), color(0x776666));
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/");
-  dracoLoader.setDecoderConfig({ type: "js" });
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);

@@ -57,10 +57,8 @@ function init() {
     0.04
   ).texture;
 
-  const ktx2loader = new KTX2Loader()
-    .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
-  const dracoLoader = new DRACOLoader().setDecoderPath("jsm/libs/draco/");
+  const ktx2loader = new KTX2Loader().detectSupport(renderer);
+  const dracoLoader = new DRACOLoader();
   const gltfLoader = new GLTFLoader();
 
   gltfLoader.setDRACOLoader(dracoLoader);

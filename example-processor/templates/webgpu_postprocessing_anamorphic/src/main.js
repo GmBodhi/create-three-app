@@ -1,22 +1,37 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass, cubeTexture, screenUV, grayscale, uniform } from "three/tsl";
-import { anamorphic } from "three/addons/tsl/display/AnamorphicNode.js";
-
-import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
+import {
+  pass,
+  screenUV,
+  uniform,
+  uv,
+  vec2,
+  vec3,
+  color,
+  Fn,
+  vec4,
+  Loop,
+  float,
+  mix,
+  luminance,
+  smoothstep,
+  rtt,
+  time,
+  viewportSize,
+  instanceIndex,
+  positionLocal,
+} from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer;
+let camera, scene, renderer, instancedMesh, controls;
 let renderPipeline;
 
-const params = {
-  resolutionScale: 0.2,
-};
+const _dummy = new Object3D();
 
 init();
 
@@ -28,74 +43,127 @@ async function init() {
     45,
     window.innerWidth / window.innerHeight,
     0.25,
-    20
+    250
   );
-  camera.position.set(-1.8, -0.6, 2.7);
+  camera.position.set(0, 0, 20);
 
   scene = new Scene();
+  scene.backgroundNode = Fn(() => {
+    const dist = screenUV.distance(0.5).mul(2.0);
+    return mix(color(0x111111), color(0x000000), dist);
+  })();
 
-  const hdrUrls = ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"];
-  const cube1Texture = await new HDRCubeTextureLoader()
-    .setPath("three/examples/textures/cube/pisaHDR/")
-    .loadAsync(hdrUrls);
+  const timeScale = uniform(0.5);
 
-  scene.environment = cube1Texture;
-  scene.backgroundNode = grayscale(
-    cubeTexture(cube1Texture).mul(
-      screenUV.distance(0.5).oneMinus().remapClamp(0.1, 4)
-    )
+  const material = new MeshBasicNodeMaterial({
+    color: 0xffffff,
+    // Animate the spheres up and down continuously using TSL and their instanceIndex as a phase offset
+    positionNode: positionLocal.add(
+      vec3(
+        0,
+        time.add(float(instanceIndex).mul(0.5)).mul(timeScale).sin().mul(5.0),
+        0
+      )
+    ),
+  });
+
+  const maxCount = 200;
+
+  instancedMesh = new InstancedMesh(
+    new SphereGeometry(0.1, 32, 32),
+    material,
+    maxCount
   );
 
-  const loader = new GLTFLoader().setPath("models/gltf/DamagedHelmet/glTF/");
-  loader.load("DamagedHelmet.gltf", function (gltf) {
-    scene.add(gltf.scene);
-  });
+  const _color = new Color();
+
+  for (let i = 0; i < maxCount; i++) {
+    _dummy.position.x = (Math.random() - 0.5) * 20;
+    _dummy.position.y = (Math.random() - 0.5) * 20;
+    _dummy.position.z = (Math.random() - 0.5) * 20;
+    _dummy.updateMatrix();
+    instancedMesh.setMatrixAt(i, _dummy.matrix);
+
+    _color.setHex(Math.random() * 0xffffff);
+    instancedMesh.setColorAt(i, _color);
+  }
+
+  scene.add(instancedMesh);
 
   renderer = new WebGPURenderer({ antialias: true });
 
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.toneMapping = LinearToneMapping;
+
+  renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 1;
   renderer.inspector = new Inspector();
   renderer.setAnimationLoop(render);
   container.appendChild(renderer.domElement);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
   controls.minDistance = 2;
-  controls.maxDistance = 10;
+  controls.maxDistance = 25;
 
   // post-processing
 
   const scenePass = pass(scene, camera);
 
-  const threshold = uniform(1.4);
-  const scaleNode = uniform(5);
-  const intensity = uniform(1);
-  const samples = 64;
+  const intensity = uniform(5.0);
+  const tintColor = uniform(new Color(0x7a8aff));
+  const threshold = uniform(0.3);
+  const radius = uniform(0.0);
+  const samples = uniform(80);
 
-  const anamorphicPass = anamorphic(
+  const bloomPass = bloom(
     scenePass.getTextureNode().toInspector("Color"),
-    threshold,
-    scaleNode,
-    samples
-  ).toInspector("Anamorphic");
-  anamorphicPass.resolutionScale = params.resolutionScale; // 1 = full resolution
+    intensity,
+    radius,
+    threshold
+  );
+  bloomPass.setResolutionScale(0.25);
+
+  // Custom high pass for anamorphic bloom
+  bloomPass.highPassFn = Fn(({ input, threshold, smoothWidth }) => {
+    // Extract bright areas to a texture (computed once, sampled many times)
+    const v = luminance(input.rgb);
+    const alpha = smoothstep(threshold, threshold.add(smoothWidth), v);
+    const brightPass = rtt(mix(vec4(0), input, alpha), null, null, {
+      wrapS: MirroredRepeatWrapping,
+      wrapT: MirroredRepeatWrapping,
+    });
+
+    // Horizontal blur
+    const total = vec4(0);
+    const halfSamples = samples.div(2);
+
+    const invSize = vec2(1.0).div(viewportSize);
+
+    Loop({ start: halfSamples.negate(), end: halfSamples }, ({ i }) => {
+      let softness = float(i).abs().div(halfSamples).oneMinus();
+      softness = softness.pow(2.0);
+
+      const shiftedUV = vec2(uv().x.add(invSize.x.mul(i).mul(4.0)), uv().y);
+      total.addAssign(brightPass.sample(shiftedUV).mul(softness));
+    });
+
+    return total.div(samples.div(3.0));
+  });
+
+  const anamorphicPass = bloomPass.mul(tintColor).toInspector("Anamorphic");
 
   renderPipeline = new RenderPipeline(renderer);
-  renderPipeline.outputNode = scenePass.add(anamorphicPass.mul(intensity));
-  //renderPipeline.outputNode = scenePass.add( anamorphicPass.getTextureNode().gaussianBlur() );
+  renderPipeline.outputNode = scenePass.add(anamorphicPass);
 
   // gui
 
   const gui = renderer.inspector.createParameters("Settings");
-  gui.add(intensity, "value", 0, 4, 0.1).name("intensity");
-  gui.add(threshold, "value", 0.8, 3, 0.001).name("threshold");
-  gui.add(scaleNode, "value", 1, 10, 0.1).name("scale");
-  gui
-    .add(params, "resolutionScale", 0.1, 1, 0.1)
-    .name("resolution scale")
-    .onChange((value) => (anamorphicPass.resolutionScale = value));
+  gui.add(intensity, "value", 0, 10).name("intensity");
+  gui.add(threshold, "value", 0, 0.9).name("threshold");
+  gui.add(samples, "value", 2, 128, 1).name("samples");
+  gui.addColor(tintColor, "value").name("tint color");
+  gui.add(radius, "value", 0, 1, 0.01).name("bloom radius");
+  gui.add(timeScale, "value", 0, 1).name("time scale");
 
   //
 
@@ -112,5 +180,7 @@ function onWindowResize() {
 //
 
 function render() {
+  controls.update();
+
   renderPipeline.render();
 }
