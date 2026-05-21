@@ -4431,6 +4431,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_envmaps_groundprojected": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_lightmap": {
       "files": {
         "index.html": "src",
