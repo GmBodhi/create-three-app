@@ -141,7 +141,7 @@ function animate() {
     mesh.rotation.y += delta * 0.5;
   }
 
-  let newColor = ssaaRenderPass.clearColor;
+  let newColor;
 
   switch (params.clearColor) {
     case "blue":
