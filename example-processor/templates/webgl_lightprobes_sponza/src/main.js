@@ -30,8 +30,9 @@ let probes = null,
   probesHelper = null;
 let modelSize = null;
 let dirLight = null,
-  sky = null,
-  sun = new Vector3();
+  sky = null;
+
+const sun = new Vector3();
 
 const _box = new Box3();
 const _size = new Vector3();
@@ -82,6 +83,7 @@ async function init() {
   manager.onProgress = function (url, loaded, total) {
     progressBar.value = (loaded / total) * 100;
   };
+
   manager.onLoad = function () {
     progressBar.remove();
   };
@@ -117,7 +119,7 @@ async function init() {
   let isBaking = false;
   let bakeQueued = false;
 
-  dirLight = new DirectionalLight(0xfff2dc, 50.0);
+  dirLight = new DirectionalLight(0xfff2dc, 100.0);
   dirLight.target.position.set(modelCenter.x, targetY, modelCenter.z);
   scene.add(dirLight.target);
   dirLight.castShadow = true;
@@ -134,19 +136,20 @@ async function init() {
   const params = {
     enabled: true,
     showProbes: false,
-    probeSize: 0.25,
+    probeSize: 0.2,
     boundsX: -0.5,
     boundsY: 6,
     boundsZ: -0.3,
-    sizeX: 19,
+    sizeX: 21,
     sizeY: 11,
-    sizeZ: 7,
-    countX: 7,
+    sizeZ: 9,
+    countX: 10,
     countY: 7,
-    countZ: 3,
+    countZ: 7,
+    bounces: 1,
     lightAzimuth: -45,
     lightElevation: 55,
-    lightIntensity: 50.0,
+    lightIntensity: 100.0,
     shadows: true,
   };
 
@@ -204,13 +207,17 @@ async function init() {
         params.countZ
       );
       probes.position.set(params.boundsX, params.boundsY, params.boundsZ);
+      // Add to the scene before baking so bounce passes can sample the prior pass's atlas.
+      scene.add(probes);
+      // Hide the helper spheres so they don't appear in the cubemap captures.
+      if (probesHelper) probesHelper.visible = false;
       probes.bake(renderer, scene, {
         cubemapSize: 32,
         near: 0.05,
         far: probeFar,
+        bounces: params.bounces,
       });
       probes.visible = params.enabled;
-      scene.add(probes);
 
       if (!probesHelper) {
         probesHelper = new LightProbeGridHelper(probes, params.probeSize);
@@ -251,7 +258,7 @@ async function init() {
       scheduleRebake();
     });
   gui
-    .add(params, "lightIntensity", 0, 50, 0.1)
+    .add(params, "lightIntensity", 0, 100, 0.1)
     .name("Light Intensity")
     .onChange((value) => {
       dirLight.intensity = value;
@@ -264,6 +271,11 @@ async function init() {
       setShadowsEnabled(value);
       scheduleRebake();
     });
+
+  gui.add(params, "countX", 2, 32, 1).name("Probes X").onChange(scheduleRebake);
+  gui.add(params, "countY", 2, 16, 1).name("Probes Y").onChange(scheduleRebake);
+  gui.add(params, "countZ", 2, 16, 1).name("Probes Z").onChange(scheduleRebake);
+  gui.add(params, "bounces", 0, 2, 1).name("Bounces").onChange(scheduleRebake);
 
   gui
     .add(params, "showProbes")

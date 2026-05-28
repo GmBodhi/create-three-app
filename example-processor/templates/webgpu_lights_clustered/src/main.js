@@ -1,7 +1,16 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass, uniform, vec3, float, mix, step } from "three/tsl";
+import {
+  pass,
+  uniform,
+  vec3,
+  float,
+  mix,
+  step,
+  uv,
+  instancedBufferAttribute,
+} from "three/tsl";
 
 import { ClusteredLighting } from "three/addons/lighting/ClusteredLighting.js";
 
@@ -22,6 +31,7 @@ let camera,
   renderer,
   lights,
   lightDummy,
+  lightPositionAttribute,
   controls,
   scenePass,
   clusterInfluence,
@@ -72,16 +82,41 @@ async function init() {
   const modelSize = box.getSize(new Vector3());
   const modelCenter = box.getCenter(new Vector3());
 
-  const material = new MeshBasicMaterial();
+  const lightPositions = new Float32Array(maxCount * 3);
+  const lightColors = new Float32Array(maxCount * 3);
 
-  lightDummy = new InstancedMesh(
-    new SphereGeometry(0.05, 16, 8),
-    material,
-    maxCount
+  lightPositionAttribute = new InstancedBufferAttribute(lightPositions, 3);
+  lightPositionAttribute.setUsage(DynamicDrawUsage);
+
+  const lightColorAttribute = new InstancedBufferAttribute(lightColors, 3);
+
+  // Physical 1/r² point-source falloff (Plummer profile): I = peak * r0² / ( r² + r0² )
+  // Subtract the value at r = 0.5 so the soft tail reaches exactly 0 at the sprite edge.
+  const coreRadius = 0.02;
+  const peak = 16;
+  const r0sq = coreRadius * coreRadius;
+  const edgeBias = r0sq / (0.25 + r0sq);
+
+  const offset = uv().sub(0.5);
+  const r2 = offset.dot(offset);
+  const glow = float(r0sq).div(r2.add(r0sq)).sub(edgeBias).max(0).mul(peak);
+
+  const spriteMaterial = new SpriteNodeMaterial({
+    transparent: true,
+    depthWrite: false,
+    blending: AdditiveBlending,
+  });
+  spriteMaterial.positionNode = instancedBufferAttribute(
+    lightPositionAttribute
   );
-  lightDummy.instanceMatrix.setUsage(DynamicDrawUsage);
-  lightDummy.frustumCulled = false;
+  spriteMaterial.colorNode = glow.mul(
+    instancedBufferAttribute(lightColorAttribute)
+  );
+  spriteMaterial.scaleNode = uniform(0.2);
+
+  lightDummy = new Sprite(spriteMaterial);
   lightDummy.count = count;
+  lightDummy.frustumCulled = false;
   scene.add(lightDummy);
 
   // lights
@@ -89,7 +124,7 @@ async function init() {
   lights = new Group();
   scene.add(lights);
 
-  const addLight = (hexColor, power = 30, distance = 1) => {
+  const addLight = (hexColor, power = 10, distance = 1) => {
     const light = new PointLight(hexColor, 1, distance);
     light.position.set(
       modelCenter.x + (Math.random() - 0.5) * modelSize.x * 0.7,
@@ -101,9 +136,10 @@ async function init() {
     light.userData.fixedPosition = light.position.clone();
     light.visible = lights.children.length < count;
 
-    light.updateMatrixWorld();
-
-    lightDummy.setMatrixAt(lights.children.length, light.matrixWorld);
+    const i = lights.children.length;
+    lightPositions[i * 3 + 0] = light.position.x;
+    lightPositions[i * 3 + 1] = light.position.y;
+    lightPositions[i * 3 + 2] = light.position.z;
 
     lights.add(light);
 
@@ -115,7 +151,10 @@ async function init() {
   for (let i = 0; i < maxCount; i++) {
     const hex = Math.random() * 0x888888 + 0x888888;
 
-    lightDummy.setColorAt(i, color.setHex(hex));
+    color.setHex(hex);
+    lightColors[i * 3 + 0] = color.r;
+    lightColors[i * 3 + 1] = color.g;
+    lightColors[i * 3 + 2] = color.b;
 
     addLight(hex);
   }
@@ -255,6 +294,7 @@ function onWindowResize() {
 
 function animate() {
   const time = performance.now() / 1000;
+  const positions = lightPositionAttribute.array;
 
   for (let i = 0; i < lights.children.length; i++) {
     const light = lights.children[i];
@@ -265,8 +305,12 @@ function animate() {
     light.position.y += Math.cos(lightTime * 0.5) * 0.3;
     light.position.z += Math.cos(lightTime * 0.3) * 1.5;
 
-    lightDummy.setMatrixAt(i, light.matrixWorld);
+    positions[i * 3 + 0] = light.position.x;
+    positions[i * 3 + 1] = light.position.y;
+    positions[i * 3 + 2] = light.position.z;
   }
+
+  lightPositionAttribute.needsUpdate = true;
 
   renderPipeline.render();
 }

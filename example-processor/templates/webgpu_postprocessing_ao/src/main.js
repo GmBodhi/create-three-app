@@ -563,7 +563,11 @@ async function init() {
   const fitBox = new Box3().setFromObject(bust);
   const center = new Vector3();
   fitBox.getCenter(center);
-  bust.position.set(bustX - center.x, -0.7 - fitBox.min.y, bustZ - center.z);
+  bust.position.set(
+    bustX - center.x,
+    -0.7 - fitBox.min.y,
+    bustZ - center.z + 0.1
+  );
   scene.add(bust);
 
   // events
