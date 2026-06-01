@@ -5274,6 +5274,16 @@
         "/src"
       ]
     },
+    "webgpu_skinning_instancing_individual": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_skinning_points": {
       "files": {
         "index.html": "src",

@@ -1,20 +1,23 @@
 <html>
   <head>
-    <title>three.js webgpu - SSGI Ball Pool</title>
+    <title>three.js webgpu - skinning individual instancing</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-    <meta property="og:title" content="three.js webgpu - SSGI Ball Pool" />
+    <meta
+      property="og:title"
+      content="three.js webgpu - skinning instancing individual"
+    />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://threejs.org/examples/webgpu_postprocessing_ssgi_ballpool.html"
+      content="https://threejs.org/examples/webgpu_skinning_instancing_individual.html"
     />
     <meta
       property="og:image"
-      content="https://threejs.org/examples/screenshots/webgpu_postprocessing_ssgi_ballpool.jpg"
+      content="https://threejs.org/examples/screenshots/webgpu_skinning_instancing_individual.jpg"
     />
     <link type="text/css" rel="stylesheet" href="example.css" />
   </head>
@@ -30,13 +33,12 @@
       <div class="title-wrapper">
         <a href="https://threejs.org/" target="_blank" rel="noopener"
           >three.js</a
-        ><span>SSGI Ball Pool</span>
+        ><span>Skinning Individual Instancing</span>
       </div>
 
-      <small
-        >Real-time indirect illumination with interactive physics ball
-        pool.</small
-      >
+      <small>
+        Per-instance poses are computed once and reused by every render pass.
+      </small>
     </div>
 
     <script type="importmap">
@@ -45,9 +47,7 @@
           "three": "../build/three.webgpu.js",
           "three/webgpu": "../build/three.webgpu.js",
           "three/tsl": "../build/three.tsl.js",
-          "three/addons/": "./jsm/",
-          "monomorph": "https://cdn.jsdelivr.net/npm/monomorph@2.3.1/build/monomorph.js",
-          "@perplexdotgg/bounce": "https://cdn.jsdelivr.net/npm/@perplexdotgg/bounce@1.8.1/build/bounce.js"
+          "three/addons/": "./jsm/"
         }
       }
     </script>

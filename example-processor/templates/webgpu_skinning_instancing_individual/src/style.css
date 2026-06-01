@@ -7,11 +7,6 @@ body {
   line-height: 24px;
   overscroll-behavior: none;
 }
-canvas {
-  position: absolute;
-  inset: 0;
-  margin: auto;
-}
 a {
   color: #ff0;
   text-decoration: none;

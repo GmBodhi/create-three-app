@@ -46,7 +46,7 @@ function init() {
   // editor
 
   window.require.config({
-    paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" },
+    paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs" },
   });
 
   require(["vs/editor/editor.main"], () => {
