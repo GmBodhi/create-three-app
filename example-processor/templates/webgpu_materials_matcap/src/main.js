@@ -144,27 +144,8 @@ function handleJPG(event) {
 }
 
 function handleEXR(event) {
-  const contents = event.target.result;
-
   const loader = new EXRLoader();
-
-  loader.setDataType(HalfFloatType);
-
-  const texData = loader.parse(contents);
-
-  const texture = new DataTexture();
-
-  texture.image.width = texData.width;
-  texture.image.height = texData.height;
-  texture.image.data = texData.data;
-
-  texture.format = texData.format;
-  texture.type = texData.type;
-  texture.colorSpace = LinearSRGBColorSpace;
-  texture.minFilter = LinearFilter;
-  texture.magFilter = LinearFilter;
-  texture.generateMipmaps = false;
-  texture.flipY = false;
+  const texture = loader.createDataTexture(event.target.result);
 
   updateMatcap(texture);
 }
