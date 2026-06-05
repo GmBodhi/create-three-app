@@ -10,8 +10,8 @@ import {
   velocity,
   vec3,
   vec4,
-  directionToColor,
-  colorToDirection,
+  packNormalToRGB,
+  unpackRGBToNormal,
   colorSpaceToWorking,
   builtinAOContext,
 } from "three/tsl";
@@ -97,13 +97,13 @@ async function init() {
 
   prePass.setMRT(
     mrt({
-      output: directionToColor(normalView),
+      output: packNormalToRGB(normalView),
       velocity: velocity,
     })
   );
 
   const prePassNormal = sample((uv) => {
-    return colorToDirection(prePass.getTextureNode().sample(uv));
+    return unpackRGBToNormal(prePass.getTextureNode().sample(uv));
   });
 
   const prePassDepth = prePass

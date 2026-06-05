@@ -4,12 +4,12 @@ import * as THREE from "three/webgpu";
 import {
   pass,
   mrt,
-  directionToColor,
+  packNormalToRGB,
   normalView,
   screenUV,
   context,
   sample,
-  colorToDirection,
+  unpackRGBToNormal,
 } from "three/tsl";
 import { outline } from "three/addons/tsl/display/OutlineNode.js";
 import { ao } from "three/addons/tsl/display/GTAONode.js";
@@ -158,12 +158,12 @@ function updatePostProcessing() {
       prePass = pass(scene, camera);
       prePass.setMRT(
         mrt({
-          output: directionToColor(normalView),
+          output: packNormalToRGB(normalView),
         })
       );
 
       const prePassNormal = sample((uv) => {
-        return colorToDirection(prePass.getTextureNode().sample(uv));
+        return unpackRGBToNormal(prePass.getTextureNode().sample(uv));
       });
       const prePassDepth = prePass.getTextureNode("depth");
 

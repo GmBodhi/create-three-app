@@ -11,8 +11,8 @@ import {
   screenUV,
   color,
   sample,
-  directionToColor,
-  colorToDirection,
+  packNormalToRGB,
+  unpackRGBToNormal,
   vec2,
   colorSpaceToWorking,
 } from "three/tsl";
@@ -117,7 +117,7 @@ async function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: directionToColor(normalView),
+      normal: packNormalToRGB(normalView),
       metalrough: vec2(metalness, roughness), // pack metalness and roughness into a single attachment
     })
   );
@@ -148,7 +148,7 @@ async function init() {
   metalRoughTexture.type = UnsignedByteType;
 
   const sceneNormal = sample((uv) => {
-    return colorToDirection(scenePassNormal.sample(uv));
+    return unpackRGBToNormal(scenePassNormal.sample(uv));
   });
 
   //

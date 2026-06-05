@@ -7,7 +7,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { radixSort } from "three/addons/utils/SortUtils.js";
 
-import { normalView, directionToColor, diffuseColor, vec4 } from "three/tsl";
+import { normalView, packNormalToRGB, diffuseColor, vec4 } from "three/tsl";
 
 let camera, scene, renderer;
 let controls;
@@ -83,7 +83,7 @@ function createMaterial() {
   if (!material) {
     material = new MeshBasicNodeMaterial();
     material.outputNode = vec4(
-      diffuseColor.mul(directionToColor(normalView).y.add(0.5)).rgb,
+      diffuseColor.mul(packNormalToRGB(normalView).y.add(0.5)).rgb,
       diffuseColor.a
     );
   }

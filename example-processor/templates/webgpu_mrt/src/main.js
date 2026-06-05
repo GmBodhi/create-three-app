@@ -8,7 +8,7 @@ import {
   step,
   diffuseColor,
   emissive,
-  directionToColor,
+  packNormalToRGB,
   screenUV,
   mix,
   mrt,
@@ -83,7 +83,7 @@ function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: directionToColor(normalView),
+      normal: packNormalToRGB(normalView),
       diffuse: diffuseColor,
       emissive: emissive,
     })

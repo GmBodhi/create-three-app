@@ -10,8 +10,8 @@ import {
   velocity,
   add,
   vec4,
-  directionToColor,
-  colorToDirection,
+  packNormalToRGB,
+  unpackRGBToNormal,
   sample,
 } from "three/tsl";
 import { ssgi } from "three/addons/tsl/display/SSGINode.js";
@@ -38,8 +38,8 @@ let ballsMesh = null;
 let wallMeshes = [];
 const boxSize = { w: 8, h: BOX_HEIGHT, d: BOX_DEPTH };
 
-let mouseRayOrigin = new Vector3();
-let mouseRayDir = new Vector3();
+const mouseRayOrigin = new Vector3();
+const mouseRayDir = new Vector3();
 let mouseMoving = false;
 let mouseStopTimer = 0;
 let pointerDown = false;
@@ -77,7 +77,7 @@ async function init() {
     mrt({
       output: output,
       diffuseColor: diffuseColor,
-      normal: directionToColor(normalView),
+      normal: packNormalToRGB(normalView),
       velocity: velocity,
     })
   );
@@ -97,7 +97,7 @@ async function init() {
   normalTexture.type = UnsignedByteType;
 
   const sceneNormal = sample((uv) => {
-    return colorToDirection(scenePassNormal.sample(uv));
+    return unpackRGBToNormal(scenePassNormal.sample(uv));
   });
 
   // gi
