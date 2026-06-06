@@ -8,7 +8,10 @@ import { fxaa } from "three/addons/tsl/display/FXAANode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 import TWEEN from "three/addons/libs/tween.module.js";
@@ -51,7 +54,7 @@ async function init() {
   timer = new Timer();
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+  dracoLoader.setDecoderPath(DRACO_GLTF_CONFIG);
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);

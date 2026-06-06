@@ -20,7 +20,10 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
@@ -113,7 +116,7 @@ function init() {
 
       const loader = new GLTFLoader().setPath("models/gltf/");
       loader.setDRACOLoader(
-        new DRACOLoader().setDecoderPath("jsm/libs/draco/gltf/")
+        new DRACOLoader().setDecoderPath(DRACO_GLTF_CONFIG)
       );
       loader.load("ShaderBall2.glb", function (gltf) {
         const shaderBall = gltf.scene.children[0];

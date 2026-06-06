@@ -16,7 +16,7 @@ const dpr = 1;
 
 const params = {
   animated: true,
-  samples: 4,
+  multisampling: true,
 };
 
 const mat4 = new Matrix4();
@@ -42,7 +42,7 @@ initGUI();
 
 function initGUI() {
   const gui = renderer.inspector.createParameters("Settings");
-  gui.add(params, "samples", 0, 4, 1);
+  gui.add(params, "multisampling");
   gui.add(params, "animated");
 }
 
@@ -91,7 +91,7 @@ function init() {
     window.innerWidth * dpr,
     window.innerHeight * dpr,
     {
-      samples: params.samples,
+      samples: params.multisampling ? 4 : 1,
       depthBuffer: true,
     }
   );
@@ -130,7 +130,7 @@ function animate() {
     box2.rotation.y += 0.002;
   }
 
-  renderTarget.samples = params.samples;
+  renderTarget.samples = params.multisampling ? 4 : 1;
 
   renderer.setRenderTarget(renderTarget);
   renderer.render(scene, camera);

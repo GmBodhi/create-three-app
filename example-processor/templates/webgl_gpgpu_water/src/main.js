@@ -39,7 +39,10 @@ import { GPUComputationRenderer } from "three/addons/misc/GPUComputationRenderer
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 
 // Texture width for simulation
 const WIDTH = 128;
@@ -134,9 +137,7 @@ async function init() {
     "three/examples/textures/equirectangular/"
   );
   const glbloader = new GLTFLoader().setPath("models/gltf/");
-  glbloader.setDRACOLoader(
-    new DRACOLoader().setDecoderPath("jsm/libs/draco/gltf/")
-  );
+  glbloader.setDRACOLoader(new DRACOLoader().setDecoderPath(DRACO_GLTF_CONFIG));
 
   const [env, model] = await Promise.all([
     hdrLoader.loadAsync("blouberg_sunrise_2_1k.hdr"),

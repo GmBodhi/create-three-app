@@ -15,7 +15,10 @@ import {
   Data3DTexture,
   RedFormat,
 } from "three";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
 import { TilesRenderer, GlobeControls, CAMERA_FRAME } from "3d-tiles-renderer";
 import { CesiumIonAuthPlugin } from "3d-tiles-renderer/core/plugins";
@@ -86,7 +89,7 @@ async function init() {
 
   // loader
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+  dracoLoader.setDecoderPath(DRACO_GLTF_CONFIG);
 
   const DEG2RAD = Math.PI / 180;
 

@@ -16,7 +16,10 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
 import { GLTFAnimationPointerExtension } from "@needle-tools/three-animation-pointer";
 
@@ -58,7 +61,7 @@ controls.enablePan = false;
 controls.enableDamping = true;
 
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+dracoLoader.setDecoderPath(DRACO_GLTF_CONFIG);
 
 const ktx2Loader = new KTX2Loader().detectSupport(renderer);
 

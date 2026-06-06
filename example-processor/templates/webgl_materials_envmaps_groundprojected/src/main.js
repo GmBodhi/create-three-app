@@ -20,7 +20,10 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GroundedSkybox } from "three/addons/objects/GroundedSkybox.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 const params = {
@@ -58,7 +61,7 @@ async function init() {
   scene.environment = envMap;
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+  dracoLoader.setDecoderPath(DRACO_GLTF_CONFIG);
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);
