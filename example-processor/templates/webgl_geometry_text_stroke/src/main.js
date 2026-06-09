@@ -4,7 +4,6 @@ import {
   PerspectiveCamera,
   Scene,
   Color,
-  FileLoader,
   MeshBasicMaterial,
   DoubleSide,
   WebGLRenderer,
@@ -15,8 +14,7 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SVGLoader } from "three/addons/loaders/SVGLoader.js";
-import { Font } from "three/addons/loaders/FontLoader.js";
-import { unzipSync, strFromU8 } from "three/addons/libs/fflate.module.js";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
 
 let camera, scene, renderer;
 
@@ -34,62 +32,55 @@ function init() {
   scene = new Scene();
   scene.background = new Color(0xf0f0f0);
 
-  new FileLoader()
-    .setResponseType("arraybuffer")
-    .load(
-      "fonts/MPLUSRounded1c/MPLUSRounded1c-Regular.typeface.json.zip",
-      function (data) {
-        const zip = unzipSync(new Uint8Array(data));
-        const strArray = strFromU8(
-          new Uint8Array(zip["MPLUSRounded1c-Regular.typeface.json"].buffer)
-        );
+  const loader = new FontLoader();
+  loader.load(
+    "fonts/MPLUSRounded1c/MPLUSRounded1c-Regular.typeface.json",
+    function (font) {
+      const color = new Color(0x006699);
 
-        const font = new Font(JSON.parse(strArray));
-        const color = new Color(0x006699);
+      const matDark = new MeshBasicMaterial({
+        color: color,
+        side: DoubleSide,
+      });
 
-        const matDark = new MeshBasicMaterial({
-          color: color,
-          side: DoubleSide,
-        });
+      const matLite = new MeshBasicMaterial({
+        color: color,
+        transparent: true,
+        opacity: 0.4,
+        side: DoubleSide,
+      });
 
-        const matLite = new MeshBasicMaterial({
-          color: color,
-          transparent: true,
-          opacity: 0.4,
-          side: DoubleSide,
-        });
+      const material = {
+        dark: matDark,
+        lite: matLite,
+        color: color,
+      };
 
-        const material = {
-          dark: matDark,
-          lite: matLite,
-          color: color,
-        };
+      const english = "   Three.js\nStroke text."; // Left to right
 
-        const english = "   Three.js\nStroke text."; // Left to right
+      const hebrew = "טקסט קו"; // Right to left
 
-        const hebrew = "טקסט קו"; // Right to left
+      const chinese = "文字描邊"; // Top to bottom
 
-        const chinese = "文字描邊"; // Top to bottom
+      const message1 = generateStrokeText(font, material, english, 80, "ltr");
 
-        const message1 = generateStrokeText(font, material, english, 80, "ltr");
+      const message2 = generateStrokeText(font, material, hebrew, 80, "rtl");
 
-        const message2 = generateStrokeText(font, material, hebrew, 80, "rtl");
+      const message3 = generateStrokeText(font, material, chinese, 80, "tb");
 
-        const message3 = generateStrokeText(font, material, chinese, 80, "tb");
+      message1.position.x = -100;
 
-        message1.position.x = -100;
+      message2.position.x = -100;
+      message2.position.y = -300;
 
-        message2.position.x = -100;
-        message2.position.y = -300;
+      message3.position.x = 300;
+      message3.position.y = -300;
 
-        message3.position.x = 300;
-        message3.position.y = -300;
+      scene.add(message1, message2, message3);
 
-        scene.add(message1, message2, message3);
-
-        render();
-      }
-    ); //end load function
+      render();
+    }
+  ); //end load function
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
