@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgpu - PointLight ShadowMap</title>
+    <title>three.js webgpu - point light shadow-map</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -19,17 +19,32 @@
       property="og:image"
       content="https://threejs.org/examples/screenshots/webgpu_shadowmap_pointlight.jpg"
     />
+    <link type="text/css" rel="stylesheet" href="example.css" />
   </head>
   <body style="overflow: hidden">
     <div id="info">
-      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - WebGPU - PointLight ShadowMap
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>PointLight ShadowMap</span>
+      </div>
+
+      <small>Animated point light shadows.</small>
     </div>
 
     <script type="importmap">
       {
         "imports": {
           "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
           "three/addons/": "./jsm/"
         }
       }

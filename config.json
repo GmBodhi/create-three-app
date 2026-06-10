@@ -4221,16 +4221,6 @@
         "/src"
       ]
     },
-    "webgpu_lights_tiled": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgpu_lines_fat": {
       "files": {
         "index.html": "src",
