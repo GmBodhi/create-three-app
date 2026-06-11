@@ -19,7 +19,7 @@ import {
   DRACOLoader,
   DRACO_GLTF_CONFIG,
 } from "three/addons/loaders/DRACOLoader.js";
-import { toCreasedNormals } from "three/addons/utils/BufferGeometryUtils.js";
+import { TileCreasedNormalsPlugin } from "three/addons/misc/TileCreasedNormalsPlugin.js";
 import { TilesRenderer, GlobeControls, CAMERA_FRAME } from "3d-tiles-renderer";
 import { CesiumIonAuthPlugin } from "3d-tiles-renderer/core/plugins";
 import {
@@ -94,16 +94,6 @@ async function init() {
   const DEG2RAD = Math.PI / 180;
 
   // tiles
-  class TileCreasedNormalsPlugin {
-    processTileModel(scene) {
-      scene.traverse((mesh) => {
-        if (mesh.geometry) {
-          mesh.geometry = toCreasedNormals(mesh.geometry, 30 * DEG2RAD);
-        }
-      });
-    }
-  }
-
   tiles = new TilesRenderer();
   tiles.registerPlugin(
     new CesiumIonAuthPlugin({
@@ -113,7 +103,9 @@ async function init() {
     })
   );
   tiles.registerPlugin(new GLTFExtensionsPlugin({ dracoLoader }));
-  tiles.registerPlugin(new TileCreasedNormalsPlugin());
+  tiles.registerPlugin(
+    new TileCreasedNormalsPlugin({ creaseAngle: 30 * DEG2RAD })
+  );
   tiles.registerPlugin(new TilesFadePlugin());
   tiles.registerPlugin(new UpdateOnChangePlugin());
   tiles.setCamera(camera);
