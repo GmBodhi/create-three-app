@@ -18,6 +18,8 @@ import { ssgi } from "three/addons/tsl/display/SSGINode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 import { World } from "@perplexdotgg/bounce";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 const BALL_RADIUS = 0.4;
 const FILL_RATIO = 0.4;
 const PACKING = 0.6;
@@ -66,6 +68,7 @@ async function init() {
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   //
@@ -108,8 +111,8 @@ async function init() {
 
   // composite
 
-  const gi = giPass.rgb;
-  const ao = giPass.a;
+  const gi = giPass.rgb.toInspector("SSGI");
+  const ao = giPass.a.toInspector("AO");
 
   const compositePass = vec4(
     add(scenePassColor.rgb.mul(ao), scenePassDiffuse.rgb.mul(gi)),
