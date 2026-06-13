@@ -57,17 +57,7 @@ let computeRasterize,
   computeDispatch,
   computeHWArgs;
 let quadMesh, hwScene, hwMesh;
-let cameraPos, projScreenMatrixUniform, frustumPlanesUniform;
-let cotHalfFovUniform, pixelErrorThresholdUniform, maxRasterSizeUniform;
-let workQueueCountAtomic,
-  workQueueCountRead,
-  dispatchBuffer,
-  workQueueBuffer,
-  chunkBoundsBuffer;
-let instanceWorldBuffer, instanceMvpBuffer;
-let instanceWorldAttr, instanceMvpAttr;
-let hwDrawBuffer;
-let timeScale;
+let cameraPos, projScreenMatrixUniform, frustumPlanesUniform, cotHalfFovUniform;
 
 let screenTriAttr, screenTriAtomic, screenTriRead;
 let screenInstAttr, screenInstBuffer, screenInstRead;
@@ -266,7 +256,7 @@ async function init() {
     "uvec4",
     lods.length
   ).toReadOnly();
-  chunkBoundsBuffer = storage(
+  const chunkBoundsBuffer = storage(
     new StorageBufferAttribute(chunkBoundsData, 4),
     "vec4",
     totalChunks
@@ -301,7 +291,7 @@ async function init() {
   textureMap.wrapS = RepeatWrapping;
   textureMap.wrapT = RepeatWrapping;
 
-  timeScale = uniform(1.0);
+  const timeScale = uniform(1.0);
 
   const parameterGroup = renderer.inspector.createParameters("Parameters");
   parameterGroup
@@ -321,10 +311,10 @@ async function init() {
 
   parameterGroup.add(timeScale, "value", 0.0, 1.0).name("Animation Speed");
 
-  // Atomic visibility buffers — pack depth + payload into single u32 for race-free atomicMax
-  // Buffer A: depth(18 high bits) | megaTriangleIndex(14 low bits) — triangle ID
-  // Buffer B: depth(14 high bits) | instId(18 low bits) — instance ID
-  // Since depth occupies the high bits, atomicMax picks the closest fragment AND its payload atomically
+  // Visibility buffers
+  // screenTri: 32-bit depth — the closest fragment wins via atomicMax
+  // screenInst: payload — instId (18 high bits) | megaTriangleIndex (14 low bits),
+  // written by the depth test winner (best effort; not atomic with the depth update)
   createScreenBuffers();
 
   const staticInstanceData = new Float32Array(instanceCount * 4);
@@ -348,11 +338,11 @@ async function init() {
   const instanceWorldData = new Float32Array(instanceCount * 16);
   const instanceMvpData = new Float32Array(instanceCount * 16);
 
-  instanceWorldAttr = new StorageBufferAttribute(instanceWorldData, 16);
-  instanceMvpAttr = new StorageBufferAttribute(instanceMvpData, 16);
+  const instanceWorldAttr = new StorageBufferAttribute(instanceWorldData, 16);
+  const instanceMvpAttr = new StorageBufferAttribute(instanceMvpData, 16);
 
-  instanceWorldBuffer = storage(instanceWorldAttr, "mat4", instanceCount);
-  instanceMvpBuffer = storage(instanceMvpAttr, "mat4", instanceCount);
+  const instanceWorldBuffer = storage(instanceWorldAttr, "mat4", instanceCount);
+  const instanceMvpBuffer = storage(instanceMvpAttr, "mat4", instanceCount);
   const instanceWorldRead = storage(
     instanceWorldAttr,
     "mat4",
@@ -361,17 +351,25 @@ async function init() {
 
   const workQueueCountData = new Uint32Array(1);
   const workQueueCountAttr = new StorageBufferAttribute(workQueueCountData, 1);
-  workQueueCountAtomic = storage(workQueueCountAttr, "uint", 1).toAtomic();
-  workQueueCountRead = storage(workQueueCountAttr, "uint", 1).toReadOnly();
+  const workQueueCountAtomic = storage(
+    workQueueCountAttr,
+    "uint",
+    1
+  ).toAtomic();
+  const workQueueCountRead = storage(
+    workQueueCountAttr,
+    "uint",
+    1
+  ).toReadOnly();
 
   const dispatchData = new Uint32Array(3);
   const dispatchAttr = new IndirectStorageBufferAttribute(dispatchData, 3);
-  dispatchBuffer = storage(dispatchAttr, "uint", 3);
+  const dispatchBuffer = storage(dispatchAttr, "uint", 3);
 
-  // Max work items = 60000 instances * 47 chunks = 2,820,000
+  // Work queue budget — one item is a 64-triangle chunk of one visible instance
   const MAX_WORK_ITEMS = 2820000;
   const workQueueData = new Uint32Array(MAX_WORK_ITEMS * 4);
-  workQueueBuffer = storage(
+  const workQueueBuffer = storage(
     new StorageBufferAttribute(workQueueData, 4),
     "uvec4",
     MAX_WORK_ITEMS
@@ -397,7 +395,7 @@ async function init() {
   // Draw indirect buffer: vertexCount, instanceCount, firstVertex, firstInstance
   const hwDrawData = new Uint32Array(4);
   const hwDrawAttr = new IndirectStorageBufferAttribute(hwDrawData, 4);
-  hwDrawBuffer = storage(hwDrawAttr, "uint", 4);
+  const hwDrawBuffer = storage(hwDrawAttr, "uint", 4);
 
   projScreenMatrixUniform = uniform(new Matrix4());
   frustumPlanesUniform = uniformArray(
@@ -413,8 +411,8 @@ async function init() {
   );
   cameraPos = uniform(new Vector3());
   cotHalfFovUniform = uniform(1.0);
-  pixelErrorThresholdUniform = uniform(4.0);
-  maxRasterSizeUniform = uniform(MAX_RASTER_SIZE, "int"); // Max bounding box size in pixels for SW rasterizer
+  const pixelErrorThresholdUniform = uniform(4.0);
+  const maxRasterSizeUniform = uniform(MAX_RASTER_SIZE, "int"); // Max bounding box size in pixels for SW rasterizer
 
   // Compute Clear
   computeClear = Fn(() => {
@@ -624,7 +622,6 @@ async function init() {
         const p2 = instMvpMatrix.mul(v2);
 
         // Near plane clipping
-        // If( p0.w.greaterThan( 0.5 ).and( p1.w.greaterThan( 0.5 ) ).and( p2.w.greaterThan( 0.5 ) ), () => {
         If(
           p0.w
             .greaterThan(0.0)
@@ -980,16 +977,12 @@ async function init() {
   const getPixelIndex = () => {
     const screenX = uint(floor(uv().x.mul(screenSize.x)));
     const screenY = uint(floor(uv().y.oneMinus().mul(screenSize.y)));
-    return {
-      screenX,
-      screenY,
-      pixelIndex: screenY.mul(uint(screenSize.x)).add(screenX),
-    };
+    return screenY.mul(uint(screenSize.x)).add(screenX);
   };
 
   // Output depth from the SW rasterizer so HW mesh can depth test against it
   material.depthNode = Fn(() => {
-    const { pixelIndex } = getPixelIndex();
+    const pixelIndex = getPixelIndex();
 
     // Read 32-bit depth from buffer
     const depth32 = screenTriRead.element(pixelIndex);
@@ -1002,7 +995,7 @@ async function init() {
   })();
 
   material.colorNode = Fn(() => {
-    const { pixelIndex } = getPixelIndex();
+    const pixelIndex = getPixelIndex();
 
     // Single buffer read — check for background immediately (using 32-bit depth)
     const depth32 = screenTriRead.element(pixelIndex);
@@ -1030,8 +1023,7 @@ async function init() {
       const t_uv2 = uvBuffer.element(i2);
 
       // Project Vertices to Screen Space
-      const matrixWorld = instanceWorldBuffer.element(instId);
-      const mvpMatrix = projScreenMatrixUniform.mul(matrixWorld);
+      const mvpMatrix = instanceMvpBuffer.element(instId);
 
       const p0 = mvpMatrix.mul(v0);
       const p1 = mvpMatrix.mul(v1);

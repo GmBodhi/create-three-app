@@ -310,66 +310,6 @@
         "/src"
       ]
     },
-    "physics_ammo_break": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "physics_ammo_cloth": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "physics_ammo_instancing": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "physics_ammo_rope": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "physics_ammo_terrain": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "physics_ammo_volume": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "physics_jolt_instancing": {
       "files": {
         "index.html": "src",
@@ -3771,16 +3711,6 @@
         "/src"
       ]
     },
-    "webgpu_compute_nanite-style": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgpu_compute_particles": {
       "files": {
         "index.html": "src",
@@ -3822,6 +3752,16 @@
       ]
     },
     "webgpu_compute_points": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_compute_rasterizer": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3992,6 +3932,16 @@
       ]
     },
     "webgpu_furnace_test": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_geometry_loft": {
       "files": {
         "index.html": "src",
         "main.js": "src",
