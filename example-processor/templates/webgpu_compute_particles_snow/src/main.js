@@ -62,12 +62,14 @@ async function init() {
   collisionCamera.layers.enable(1);
 
   collisionPosRT = new RenderTarget(1024, 1024);
+  collisionPosRT.texture.format = RedFormat;
   collisionPosRT.texture.type = HalfFloatType;
   collisionPosRT.texture.magFilter = NearestFilter;
   collisionPosRT.texture.minFilter = NearestFilter;
   collisionPosRT.texture.generateMipmaps = false;
 
   collisionPosMaterial = new MeshBasicNodeMaterial();
+  collisionPosMaterial.blending = NoBlending;
   collisionPosMaterial.fog = false;
   collisionPosMaterial.toneMapped = false;
   collisionPosMaterial.colorNode = positionWorld.y;
@@ -128,10 +130,10 @@ async function init() {
       collisionPosRT.texture,
       getCoord(position.xz)
     ).toInspector("Collision Test", () => {
-      return texture(collisionPosRT.texture).y; // .div( collisionCamera.position.y );
+      return texture(collisionPosRT.texture).r; // .div( collisionCamera.position.y );
     });
 
-    const rippleFloorArea = rippleOnSurface.y.add(scale.x.mul(surfaceOffset));
+    const rippleFloorArea = rippleOnSurface.r.add(scale.x.mul(surfaceOffset));
 
     If(position.y.greaterThan(rippleFloorArea), () => {
       position.x = particleData.x.add(
