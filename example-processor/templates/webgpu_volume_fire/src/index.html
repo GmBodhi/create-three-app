@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <title>three.js webgpu - volumetric fire simulation</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta
+      property="og:title"
+      content="three.js webgpu - volumetric fire simulation"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://threejs.org/examples/webgpu_volume_fire.html"
+    />
+    <meta
+      property="og:image"
+      content="https://threejs.org/examples/screenshots/webgpu_volume_fire.jpg"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>Volumetric Fire Simulation</span>
+      </div>
+
+      <small
+        >3D fluid simulation (semi-Lagrangian advection + curlNoise, buoyancy,
+        Jacobi projection) on the GPU.<br />Drag the teapot to add
+        turbulence.</small
+      >
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "../examples/jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

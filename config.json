@@ -240,6 +240,16 @@
         "/src"
       ]
     },
+    "misc_exporter_gltf_normals": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "misc_exporter_ktx2": {
       "files": {
         "index.html": "src",
@@ -5605,6 +5615,16 @@
       ]
     },
     "webgpu_volume_cloud": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_volume_fire": {
       "files": {
         "index.html": "src",
         "main.js": "src",
