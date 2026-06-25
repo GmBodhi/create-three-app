@@ -3841,6 +3841,16 @@
         "/src"
       ]
     },
+    "webgpu_compute_rasterizer_ibl": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_reduce": {
       "files": {
         "index.html": "src",
@@ -4002,6 +4012,26 @@
       ]
     },
     "webgpu_furnace_test": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_generator_building": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_generator_city": {
       "files": {
         "index.html": "src",
         "main.js": "src",
