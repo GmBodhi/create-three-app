@@ -36,6 +36,7 @@ init();
 
 async function init() {
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   camera = new PerspectiveCamera(
     40,

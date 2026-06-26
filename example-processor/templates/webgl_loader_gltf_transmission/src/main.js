@@ -14,7 +14,10 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 
 let camera, scene, renderer, controls, timer, mixer;
 
@@ -51,9 +54,7 @@ function init() {
 
       new GLTFLoader()
         .setPath("models/gltf/")
-        .setDRACOLoader(
-          new DRACOLoader().setDecoderPath("jsm/libs/draco/gltf/")
-        )
+        .setDRACOLoader(new DRACOLoader().setDecoderPath(DRACO_GLTF_CONFIG))
         .load("IridescentDishWithOlives.glb", function (gltf) {
           mixer = new AnimationMixer(gltf.scene);
           mixer.clipAction(gltf.animations[0]).play();

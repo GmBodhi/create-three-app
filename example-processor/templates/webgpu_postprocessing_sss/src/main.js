@@ -15,7 +15,10 @@ import { traa } from "three/addons/tsl/display/TRAANode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, renderPipeline, controls;
@@ -70,7 +73,7 @@ async function init() {
   //
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+  dracoLoader.setDecoderPath(DRACO_GLTF_CONFIG);
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);

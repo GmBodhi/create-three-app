@@ -24,7 +24,7 @@ function init() {
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setClearColor(0x000000, 0.0);
+  renderer.setClearColor(0x000000);
   renderer.setAnimationLoop(animate);
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
@@ -100,8 +100,6 @@ function onWindowResize() {
 
 function animate() {
   // main scene
-
-  renderer.setClearColor(0x000000, 0);
 
   renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
 

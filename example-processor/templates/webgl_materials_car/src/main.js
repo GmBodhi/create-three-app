@@ -24,7 +24,10 @@ import Stats from "three/addons/libs/stats.module.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let camera, scene, renderer;
@@ -124,7 +127,7 @@ function init() {
   const shadow = new TextureLoader().load("models/gltf/ferrari_ao.png");
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+  dracoLoader.setDecoderPath(DRACO_GLTF_CONFIG);
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);

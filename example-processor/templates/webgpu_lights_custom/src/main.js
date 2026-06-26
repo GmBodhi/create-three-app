@@ -27,6 +27,7 @@ function init() {
   camera.position.z = 1.5;
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   // lights
 

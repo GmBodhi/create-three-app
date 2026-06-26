@@ -73,8 +73,6 @@ async function init() {
   // Model / Textures
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/");
-  dracoLoader.setDecoderConfig({ type: "js" });
 
   gltf = (
     await new GLTFLoader()

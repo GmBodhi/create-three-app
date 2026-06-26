@@ -55,9 +55,7 @@ function init() {
   grid.material.transparent = true;
   scene.add(grid);
 
-  const ktx2Loader = new KTX2Loader()
-    .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+  const ktx2Loader = new KTX2Loader().detectSupport(renderer);
 
   const loader = new GLTFLoader().setPath("models/gltf/");
   loader.setKTX2Loader(ktx2Loader);

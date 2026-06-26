@@ -55,7 +55,6 @@ async function init() {
   // Configure the KTX2 loader.
 
   const ktx2Loader = new KTX2Loader();
-  ktx2Loader.setTranscoderPath("jsm/libs/basis/");
   ktx2Loader.detectSupport(renderer);
 
   // Load several KTX2 textures which will later be used to modify

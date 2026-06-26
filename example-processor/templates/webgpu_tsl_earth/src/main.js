@@ -40,6 +40,7 @@ function init() {
   camera.position.set(4.5, 2, 3);
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   // sun
 

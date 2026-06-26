@@ -141,10 +141,10 @@ async function init() {
       -1,
       LODIndexCount[i]
     );
-    batchedMesh.addGeometryLOD(geometryId, geometryLOD[1], 50);
-    batchedMesh.addGeometryLOD(geometryId, geometryLOD[2], 100);
-    batchedMesh.addGeometryLOD(geometryId, geometryLOD[3], 125);
-    batchedMesh.addGeometryLOD(geometryId, geometryLOD[4], 200);
+    batchedMesh.addGeometryLOD(geometryId, geometryLOD[1], 0.08); // used when below ~8% of the screen height
+    batchedMesh.addGeometryLOD(geometryId, geometryLOD[2], 0.04); // below ~4%
+    batchedMesh.addGeometryLOD(geometryId, geometryLOD[3], 0.033); // below ~3.3%
+    batchedMesh.addGeometryLOD(geometryId, geometryLOD[4], 0.02); // below ~2%
   }
 
   // place instances in a 2D grid with randomized rotation and color

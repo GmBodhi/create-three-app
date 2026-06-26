@@ -11,8 +11,8 @@ import {
   add,
   vec3,
   vec4,
-  directionToColor,
-  colorToDirection,
+  packNormalToRGB,
+  unpackRGBToNormal,
   sample,
 } from "three/tsl";
 import { ssgi } from "three/addons/tsl/display/SSGINode.js";
@@ -64,7 +64,7 @@ async function init() {
     mrt({
       output: output,
       diffuseColor: diffuseColor,
-      normal: directionToColor(normalView),
+      normal: packNormalToRGB(normalView),
       velocity: velocity,
     })
   );
@@ -95,7 +95,7 @@ async function init() {
   normalTexture.type = UnsignedByteType;
 
   const sceneNormal = sample((uv) => {
-    return colorToDirection(scenePassNormal.sample(uv));
+    return unpackRGBToNormal(scenePassNormal.sample(uv));
   });
 
   // gi
@@ -106,11 +106,11 @@ async function init() {
 
   // composite
 
-  const gi = giPass.rgb.toInspector("SSGI");
-  const ao = giPass.a.toInspector("AO");
+  const ao = giPass.getAONode().toInspector("SSGI.AO");
+  const gi = giPass.getGINode().toInspector("SSGI.GI");
 
   const compositePass = vec4(
-    add(scenePassColor.rgb.mul(ao), scenePassDiffuse.rgb.mul(gi)),
+    add(scenePassColor.rgb.mul(ao.r), scenePassDiffuse.rgb.mul(gi.rgb)),
     scenePassColor.a
   );
   compositePass.name = "Composite";

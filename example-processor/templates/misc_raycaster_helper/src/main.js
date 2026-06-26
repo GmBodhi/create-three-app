@@ -29,6 +29,7 @@ function init() {
   camera.position.z = 10;
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   //
 

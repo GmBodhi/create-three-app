@@ -5,9 +5,17 @@ import * as THREE from "three/webgpu";
 import { BoxLineGeometry } from "three/addons/geometries/BoxLineGeometry.js";
 import { XRButton } from "three/addons/webxr/XRButton.js";
 import { XRControllerModelFactory } from "three/addons/webxr/XRControllerModelFactory.js";
+import { setupWebGLXRFallback } from "three/addons/webxr/WebGLXRFallback.js";
 
 const timer = new Timer();
 timer.connect(document);
+
+const rendererParameters = {
+  antialias: true,
+  outputBufferType: UnsignedByteType,
+  multiview: true,
+};
+const controllerModelFactory = new XRControllerModelFactory();
 
 let container;
 let camera, scene, raycaster, renderer;
@@ -77,28 +85,51 @@ function init() {
 
   raycaster = new Raycaster();
 
-  renderer = new WebGPURenderer({
-    antialias: true,
-    forceWebGL: true,
-    outputBufferType: UnsignedByteType,
-    multiview: true,
-  });
+  renderer = createRenderer();
+  setRenderer(renderer);
+  setupWebGLXRFallback(renderer, () => createRenderer(true), setRenderer);
+
+  //
+
+  window.addEventListener("resize", onWindowResize);
+
+  //
+
+  document.body.appendChild(
+    XRButton.createButton(renderer, { optionalFeatures: ["webgpu"] })
+  );
+}
+
+function createRenderer(forceWebGL = false) {
+  const parameters = { ...rendererParameters };
+
+  if (forceWebGL === true) parameters.forceWebGL = true;
+
+  const renderer = new WebGPURenderer(parameters);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.xr.enabled = true;
-  container.appendChild(renderer.domElement);
 
-  //
+  return renderer;
+}
 
-  function onSelectStart() {
-    this.userData.isSelecting = true;
+function setRenderer(newRenderer, oldRenderer = null) {
+  if (controller !== undefined) scene.remove(controller);
+  if (controllerGrip !== undefined) scene.remove(controllerGrip);
+
+  if (oldRenderer === null) {
+    container.appendChild(newRenderer.domElement);
+  } else {
+    container.replaceChild(newRenderer.domElement, oldRenderer.domElement);
+    oldRenderer.dispose();
   }
 
-  function onSelectEnd() {
-    this.userData.isSelecting = false;
-  }
+  renderer = newRenderer;
+  setupControllers();
+}
 
+function setupControllers() {
   controller = renderer.xr.getController(0);
   controller.addEventListener("selectstart", onSelectStart);
   controller.addEventListener("selectend", onSelectEnd);
@@ -114,19 +145,19 @@ function init() {
   });
   scene.add(controller);
 
-  const controllerModelFactory = new XRControllerModelFactory();
-
   controllerGrip = renderer.xr.getControllerGrip(0);
   controllerGrip.add(
     controllerModelFactory.createControllerModel(controllerGrip)
   );
   scene.add(controllerGrip);
+}
 
-  window.addEventListener("resize", onWindowResize);
+function onSelectStart() {
+  this.userData.isSelecting = true;
+}
 
-  //
-
-  document.body.appendChild(XRButton.createButton(renderer));
+function onSelectEnd() {
+  this.userData.isSelecting = false;
 }
 
 function buildController(data) {

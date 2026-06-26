@@ -11,8 +11,8 @@ import {
   screenUV,
   color,
   sample,
-  directionToColor,
-  colorToDirection,
+  packNormalToRGB,
+  unpackRGBToNormal,
   vec2,
   colorSpaceToWorking,
 } from "three/tsl";
@@ -29,8 +29,9 @@ const params = {
   quality: 0.5,
   blurQuality: 1,
   maxDistance: 1,
-  opacity: 1,
+  intensity: 1,
   thickness: 0.03,
+  binaryRefine: false,
   roughness: 1,
   enabled: true,
 };
@@ -56,8 +57,6 @@ async function init() {
     .mix(color(0x888877), color(0x776666));
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/");
-  dracoLoader.setDecoderConfig({ type: "js" });
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);
@@ -119,7 +118,7 @@ async function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: directionToColor(normalView),
+      normal: packNormalToRGB(normalView),
       metalrough: vec2(metalness, roughness), // pack metalness and roughness into a single attachment
     })
   );
@@ -150,18 +149,15 @@ async function init() {
   metalRoughTexture.type = UnsignedByteType;
 
   const sceneNormal = sample((uv) => {
-    return colorToDirection(scenePassNormal.sample(uv));
+    return unpackRGBToNormal(scenePassNormal.sample(uv));
   });
 
   //
 
-  ssrPass = ssr(
-    scenePassColor,
-    scenePassDepth,
-    sceneNormal,
-    scenePassMetalRough.r,
-    scenePassMetalRough.g
-  ).toInspector("SSR");
+  ssrPass = ssr(scenePassColor, scenePassDepth, sceneNormal, {
+    metalnessNode: scenePassMetalRough.r,
+    roughnessNode: scenePassMetalRough.g,
+  }).toInspector("SSR");
 
   // blend SSR over beauty (SSR outputs premultiplied color, so use additive blending)
 
@@ -184,8 +180,12 @@ async function init() {
   ssrFolder.add(params, "quality", 0, 1).onChange(updateParameters);
   ssrFolder.add(params, "blurQuality", 1, 3, 1).onChange(updateParameters);
   ssrFolder.add(params, "maxDistance", 0, 1).onChange(updateParameters);
-  ssrFolder.add(params, "opacity", 0, 1).onChange(updateParameters);
+  ssrFolder.add(params, "intensity", 0, 1).onChange(updateParameters);
   ssrFolder.add(params, "thickness", 0, 0.05).onChange(updateParameters);
+  ssrFolder
+    .add(params, "binaryRefine")
+    .name("binary refine")
+    .onChange(updateParameters);
   ssrFolder.add(params, "enabled").onChange(() => {
     if (params.enabled === true) {
       renderPipeline.outputNode = outputNode;
@@ -209,10 +209,14 @@ async function init() {
 
 function updateParameters() {
   ssrPass.quality.value = params.quality;
-  ssrPass.blurQuality.value = params.blurQuality;
+  // blurQuality is a build-time constant: assigning it recompiles the blur material
+  // (the setter no-ops when the value is unchanged).
+  ssrPass.blurQuality = params.blurQuality;
   ssrPass.maxDistance.value = params.maxDistance;
-  ssrPass.opacity.value = params.opacity;
+  ssrPass.intensity.value = params.intensity;
   ssrPass.thickness.value = params.thickness;
+  // build-time constant: assigning it recompiles the SSR material (setter no-ops if unchanged)
+  ssrPass.binaryRefine = params.binaryRefine;
 }
 
 function onWindowResize() {

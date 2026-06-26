@@ -19,11 +19,11 @@ import {
   BasicShadowMap,
 } from "three";
 
-import Stats from "three/addons/libs/stats.module.js";
-
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-let camera, scene, renderer, stats;
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
+let camera, scene, renderer;
 let pointLight, pointLight2;
 
 init();
@@ -107,15 +107,14 @@ async function init() {
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   // renderer.shadowMap.type = BasicShadowMap;
-  await renderer.init();
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
+
+  await renderer.init();
 
   const controls = new OrbitControls(camera, renderer.domElement);
   controls.target.set(0, 10, 0);
   controls.update();
-
-  stats = new Stats();
-  document.body.appendChild(stats.dom);
 
   //
 
@@ -161,6 +160,4 @@ function animate() {
   pointLight2.rotation.z = time;
 
   renderer.render(scene, camera);
-
-  stats.update();
 }

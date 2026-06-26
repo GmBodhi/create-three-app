@@ -240,6 +240,16 @@
         "/src"
       ]
     },
+    "misc_exporter_gltf_normals": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "misc_exporter_ktx2": {
       "files": {
         "index.html": "src",
@@ -1835,16 +1845,6 @@
       ]
     },
     "webgl_loader_ldraw": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_loader_lwo": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3831,6 +3831,26 @@
         "/src"
       ]
     },
+    "webgpu_compute_rasterizer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_compute_rasterizer_ibl": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compute_reduce": {
       "files": {
         "index.html": "src",
@@ -3991,6 +4011,46 @@
         "/src"
       ]
     },
+    "webgpu_furnace_test": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_generator_building": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_generator_city": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_geometry_loft": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_hdr": {
       "files": {
         "index.html": "src",
@@ -4101,6 +4161,16 @@
         "/src"
       ]
     },
+    "webgpu_lights_clustered": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lights_custom": {
       "files": {
         "index.html": "src",
@@ -4192,16 +4262,6 @@
       ]
     },
     "webgpu_lights_spotlight": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgpu_lights_tiled": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4402,6 +4462,16 @@
       ]
     },
     "webgpu_materials_envmaps_bpcem": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_materials_envmaps_groundprojected": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -5001,6 +5071,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_ssr_denoise": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_sss": {
       "files": {
         "index.html": "src",
@@ -5234,6 +5314,16 @@
         "/src"
       ]
     },
+    "webgpu_skinning_instancing_individual": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_skinning_points": {
       "files": {
         "index.html": "src",
@@ -5285,6 +5375,16 @@
       ]
     },
     "webgpu_test_memory": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_texturegather": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -5555,6 +5655,16 @@
       ]
     },
     "webgpu_volume_cloud": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_volume_fire": {
       "files": {
         "index.html": "src",
         "main.js": "src",

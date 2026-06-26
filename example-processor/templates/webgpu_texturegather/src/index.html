@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>three.js webgpu - texture gather</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta property="og:title" content="three.js webgpu - texture gather" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://threejs.org/examples/webgpu_texturegather.html"
+    />
+    <meta
+      property="og:image"
+      content="https://threejs.org/examples/screenshots/webgpu_texturegather.jpg"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>Texture Gather</span>
+      </div>
+
+      <small>
+        This example demonstrates texture gather
+        <br />
+        Left canvas is using WebGPU Backend, right canvas is WebGL Backend.
+        <br />
+        The top half gathers color values and the bottom half gathers depth
+        comparison.
+      </small>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

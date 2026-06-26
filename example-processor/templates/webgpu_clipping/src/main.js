@@ -77,8 +77,6 @@ function init() {
     color: 0x80ee10,
     shininess: 0,
     side: DoubleSide,
-
-    // ***** Clipping setup (material): *****
     alphaToCoverage: true,
   });
 

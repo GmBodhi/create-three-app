@@ -7,8 +7,6 @@ import {
   Color,
   GridHelper,
   Group,
-  MeshBasicMaterial,
-  DoubleSide,
   ShapeGeometry,
   Mesh,
 } from "three";
@@ -93,6 +91,7 @@ function createGUI() {
       Defs4: "models/svg/tests/testDefs/defs4.svg",
       Defs5: "models/svg/tests/testDefs/defs5.svg",
       "Style CSS inside defs": "models/svg/style-css-inside-defs.svg",
+      "Styled Paths": "models/svg/styled-paths.svg",
       "Multiple CSS classes": "models/svg/multiple-css-classes.svg",
       "Zero Radius": "models/svg/zero-radius.svg",
       "Styles in svg tag": "models/svg/tests/styles.svg",
@@ -102,6 +101,9 @@ function createGUI() {
       singlePointTest2: "models/svg/singlePointTest2.svg",
       singlePointTest3: "models/svg/singlePointTest3.svg",
       emptyPath: "models/svg/emptyPath.svg",
+      emoji: "models/svg/emoji.svg",
+      blueprint: "models/svg/blueprint.svg",
+      wideStroke: "models/svg/tests/wideStroke.svg",
     })
     .name("SVG File")
     .onChange(update);
@@ -155,60 +157,42 @@ function loadSVG(url) {
     let renderOrder = 0;
 
     for (const path of data.paths) {
-      const fillColor = path.userData.style.fill;
+      if (guiData.drawFillShapes) {
+        const material = SVGLoader.createFillMaterial(path);
 
-      if (
-        guiData.drawFillShapes &&
-        fillColor !== undefined &&
-        fillColor !== "none"
-      ) {
-        const material = new MeshBasicMaterial({
-          color: new Color().setStyle(fillColor),
-          opacity: path.userData.style.fillOpacity,
-          transparent: true,
-          side: DoubleSide,
-          depthWrite: false,
-          wireframe: guiData.fillShapesWireframe,
-        });
+        if (material) {
+          material.wireframe = guiData.fillShapesWireframe;
 
-        const shapes = SVGLoader.createShapes(path);
+          const shapes = path.toShapes();
 
-        for (const shape of shapes) {
-          const geometry = new ShapeGeometry(shape);
-          const mesh = new Mesh(geometry, material);
-          mesh.renderOrder = renderOrder++;
-
-          group.add(mesh);
-        }
-      }
-
-      const strokeColor = path.userData.style.stroke;
-
-      if (
-        guiData.drawStrokes &&
-        strokeColor !== undefined &&
-        strokeColor !== "none"
-      ) {
-        const material = new MeshBasicMaterial({
-          color: new Color().setStyle(strokeColor),
-          opacity: path.userData.style.strokeOpacity,
-          transparent: true,
-          side: DoubleSide,
-          depthWrite: false,
-          wireframe: guiData.strokesWireframe,
-        });
-
-        for (const subPath of path.subPaths) {
-          const geometry = SVGLoader.pointsToStroke(
-            subPath.getPoints(),
-            path.userData.style
-          );
-
-          if (geometry) {
+          for (const shape of shapes) {
+            const geometry = new ShapeGeometry(shape);
             const mesh = new Mesh(geometry, material);
             mesh.renderOrder = renderOrder++;
 
             group.add(mesh);
+          }
+        }
+      }
+
+      if (guiData.drawStrokes) {
+        const material = SVGLoader.createStrokeMaterial(path);
+
+        if (material) {
+          material.wireframe = guiData.strokesWireframe;
+
+          for (const subPath of path.subPaths) {
+            const geometry = SVGLoader.pointsToStroke(
+              subPath.getPoints(),
+              path.userData.style
+            );
+
+            if (geometry) {
+              const mesh = new Mesh(geometry, material);
+              mesh.renderOrder = renderOrder++;
+
+              group.add(mesh);
+            }
           }
         }
       }
@@ -236,6 +220,7 @@ function disposeScene(scene) {
   scene.traverse(function (object) {
     if (object.isMesh || object.isLine) {
       object.geometry.dispose();
+      if (object.material.map) object.material.map.dispose();
       object.material.dispose();
     }
   });

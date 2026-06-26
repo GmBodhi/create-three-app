@@ -11,7 +11,11 @@ import {
   PMREMGenerator,
 } from "three";
 
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+
 let scene, camera, renderer, radianceMap;
+
+let gui;
 
 const COLOR = 0xcccccc;
 
@@ -27,24 +31,6 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
 
-  window.addEventListener("resize", onWindowResize);
-
-  document.body.addEventListener("mouseover", function () {
-    scene.traverse(function (child) {
-      if (child.isMesh) child.material.color.setHex(0xffffff);
-    });
-
-    render();
-  });
-
-  document.body.addEventListener("mouseout", function () {
-    scene.traverse(function (child) {
-      if (child.isMesh) child.material.color.setHex(0xccccff); // tinted for visibility
-    });
-
-    render();
-  });
-
   // scene
 
   scene = new Scene();
@@ -52,6 +38,12 @@ function init() {
   // camera
   camera = new PerspectiveCamera(40, aspect, 1, 30);
   camera.position.set(0, 0, 18);
+
+  //
+
+  initGui();
+
+  window.addEventListener("resize", onWindowResize);
 }
 
 function createObjects() {
@@ -102,6 +94,27 @@ function onWindowResize() {
 
 function render() {
   renderer.render(scene, camera);
+}
+
+function initGui() {
+  gui = new GUI();
+
+  const param = {
+    tint: false,
+  };
+
+  gui
+    .add(param, "tint")
+    .name("Tint for Visibility")
+    .onChange(function (val) {
+      scene.traverse(function (child) {
+        const tint = val ? 0xccccff : 0xffffff;
+
+        if (child.isMesh) child.material.color.setHex(tint);
+      });
+
+      render();
+    });
 }
 
 Promise.resolve()

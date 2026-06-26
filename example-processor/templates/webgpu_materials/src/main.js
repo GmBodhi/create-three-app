@@ -55,6 +55,7 @@ function init() {
   camera.position.set(0, 200, 800);
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   // Grid
 

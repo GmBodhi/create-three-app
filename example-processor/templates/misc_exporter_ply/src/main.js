@@ -12,7 +12,8 @@ import {
   MeshPhongMaterial,
   GridHelper,
   BoxGeometry,
-  BufferAttribute,
+  Uint8BufferAttribute,
+  Vector3,
   WebGLRenderer,
 } from "three";
 
@@ -81,13 +82,19 @@ function init() {
   const material = new MeshPhongMaterial({ vertexColors: true });
 
   // color vertices based on vertex positions
-  const colors = geometry.getAttribute("position").array.slice();
-  for (let i = 0, l = colors.length; i < l; i++) {
-    if (colors[i] > 0) colors[i] = 0.5;
-    else colors[i] = 0;
+  const positions = geometry.getAttribute("position");
+  const colors = new Uint8BufferAttribute(positions.array, 3, true);
+  const vertex = new Vector3();
+
+  for (let i = 0, l = positions.count; i < l; i++) {
+    vertex.fromBufferAttribute(positions, i);
+
+    colors.setX(i, vertex.x > 0 ? 0.5 : 0);
+    colors.setY(i, vertex.y > 0 ? 0.5 : 0);
+    colors.setZ(i, vertex.z > 0 ? 0.5 : 0);
   }
 
-  geometry.setAttribute("color", new BufferAttribute(colors, 3, false));
+  geometry.setAttribute("color", colors);
 
   mesh = new Mesh(geometry, material);
   mesh.castShadow = true;

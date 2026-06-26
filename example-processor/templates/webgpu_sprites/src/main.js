@@ -22,6 +22,7 @@ function init() {
   camera.position.z = 1500;
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
   scene.fogNode = fog(color(0x0000ff), rangeFogFactor(1500, 2100));
 
   // create sprites

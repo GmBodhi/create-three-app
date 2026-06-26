@@ -12,7 +12,10 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { UltraHDRLoader } from "three/addons/loaders/UltraHDRLoader.js";
 
 import { WaterMesh } from "three/addons/objects/Water2Mesh.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let scene, camera, renderer, water, renderPipeline, controls;
@@ -54,7 +57,7 @@ async function init() {
   // asset loading
 
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+  dracoLoader.setDecoderPath(DRACO_GLTF_CONFIG);
 
   const gltfLoader = new GLTFLoader();
   gltfLoader.setDRACOLoader(dracoLoader);

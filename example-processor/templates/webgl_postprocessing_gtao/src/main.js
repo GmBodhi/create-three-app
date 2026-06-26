@@ -27,8 +27,6 @@ init();
 
 function init() {
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath("jsm/libs/draco/");
-  dracoLoader.setDecoderConfig({ type: "js" });
   const loader = new GLTFLoader();
   loader.setDRACOLoader(dracoLoader);
   loader.setPath("models/gltf/");

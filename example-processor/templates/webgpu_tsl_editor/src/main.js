@@ -46,7 +46,7 @@ function init() {
   // editor
 
   window.require.config({
-    paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.52.2/min/vs" },
+    paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@0.55.1/min/vs" },
   });
 
   require(["vs/editor/editor.main"], () => {
@@ -123,6 +123,8 @@ output = vec4( finalColor, opacity );
 
         compiling = true;
 
+        mesh.visible = false;
+
         if (options.output === "WGSL") {
           rawShader = await renderer.debug.getShaderAsync(scene, camera, mesh);
         } else if (options.output === "GLSL ES 3.0") {
@@ -132,6 +134,8 @@ output = vec4( finalColor, opacity );
             mesh
           );
         }
+
+        mesh.visible = true;
 
         compiling = false;
 

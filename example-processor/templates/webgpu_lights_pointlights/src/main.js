@@ -34,6 +34,7 @@ function init() {
   camera.position.z = 100;
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   timer = new Timer();
   timer.connect(document);

@@ -8,16 +8,14 @@ import {
   Color,
   AmbientLight,
   MathUtils,
+  Object3D,
   MeshNormalMaterial,
   VideoTexture,
   SRGBColorSpace,
   PlaneGeometry,
   MeshBasicMaterial,
   Mesh,
-  Object3D,
 } from "three";
-
-import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { KTX2Loader } from "three/addons/loaders/KTX2Loader.js";
@@ -27,9 +25,10 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 // Mediapipe
 
-import vision from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0";
-
-const { FaceLandmarker, FilesetResolver } = vision;
+import {
+  FaceLandmarker,
+  FilesetResolver,
+} from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35";
 
 const blendshapesMap = {
   // '_neutral': '',
@@ -87,6 +86,18 @@ const blendshapesMap = {
   // '': 'tongueOut'
 };
 
+// MediaPipe returns the head pose in a metric 3D space that assumes a
+// fixed virtual camera: right-handed, at the origin, looking down -Z, with
+// units in centimeters and a vertical field of view of 63 degrees. The
+// camera, the video plane and the model all have to share that frame for
+// the rendered face to register with the webcam image.
+
+const MP_FOV = 63; // vertical field of view, in degrees
+const MP_NEAR = 1; // 1 cm
+const MP_FAR = 10000; // 100 m
+
+const VIDEO_DISTANCE = 100; // depth of the video plane, in cm
+
 //
 
 const renderer = new WebGLRenderer({ antialias: true });
@@ -95,47 +106,65 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.toneMapping = ACESFilmicToneMapping;
 document.body.appendChild(renderer.domElement);
 
+// The render camera matches MediaPipe's virtual camera: at the origin,
+// looking down -Z. It must not be moved, otherwise the overlay drifts. Its
+// aspect switches to the video's once the webcam is running.
 const camera = new PerspectiveCamera(
-  60,
+  MP_FOV,
   window.innerWidth / window.innerHeight,
-  1,
-  100
+  MP_NEAR,
+  MP_FAR
 );
-camera.position.z = 5;
 
 const scene = new Scene();
 scene.background = new Color(0x666666);
-scene.scale.x = -1;
+scene.scale.x = -1; // mirror the whole scene for a selfie view ( flips video and pose together )
 
 scene.add(new AmbientLight(0xffffff, 5));
-
-const controls = new OrbitControls(camera, renderer.domElement);
 
 // Face
 
 let face, eyeL, eyeR;
 const eyeRotationLimit = MathUtils.degToRad(30);
 
-const ktx2Loader = new KTX2Loader()
-  .setTranscoderPath("jsm/libs/basis/")
-  .detectSupport(renderer);
+// MediaPipe's facial transformation matrix is copied here verbatim. Until
+// the webcam delivers one, the face rests at a default frontal pose ( in
+// front of the camera, in centimeters ) so it is framed before tracking.
+const faceContainer = new Object3D();
+faceContainer.matrixAutoUpdate = false;
+faceContainer.matrix.makeTranslation(0, 0, -50);
+faceContainer.matrixWorldNeedsUpdate = true;
+scene.add(faceContainer);
+
+// The Face Cap model is not MediaPipe's canonical face mesh, so this fixed
+// transform registers it into the canonical frame ( centimeters, +Y up,
+// +Z out of the face ) before the pose matrix is applied. The values are
+// derived from the model's eye positions.
+const registration = new Object3D();
+registration.scale.setScalar(0.958);
+registration.rotation.x = Math.PI / 2;
+registration.position.set(0, 0.12, 1.18);
+faceContainer.add(registration);
+
+const ktx2Loader = new KTX2Loader().detectSupport(renderer);
 
 new GLTFLoader()
   .setKTX2Loader(ktx2Loader)
   .setMeshoptDecoder(MeshoptDecoder)
   .load("models/gltf/facecap.glb", (gltf) => {
-    const mesh = gltf.scene.children[0];
-    scene.add(mesh);
+    // Reparent the head/eyes/teeth and drop the model's own scale rig.
+    const group = gltf.scene.getObjectByName("grp_transform");
+    registration.add(group);
 
-    const head = mesh.getObjectByName("mesh_2");
+    const head = group.getObjectByName("mesh_2");
     head.material = new MeshNormalMaterial();
 
-    const teeth = mesh.getObjectByName("mesh_3");
+    const teeth = group.getObjectByName("mesh_3");
     teeth.material = new MeshNormalMaterial();
 
-    face = mesh.getObjectByName("mesh_2");
-    eyeL = mesh.getObjectByName("eyeLeft");
-    eyeR = mesh.getObjectByName("eyeRight");
+    face = head;
+    eyeL = group.getObjectByName("eyeLeft");
+    eyeR = group.getObjectByName("eyeRight");
 
     // GUI
 
@@ -162,14 +191,20 @@ const texture = new VideoTexture(video);
 texture.colorSpace = SRGBColorSpace;
 
 const geometry = new PlaneGeometry(1, 1);
-const material = new MeshBasicMaterial({ map: texture, depthWrite: false });
+const material = new MeshBasicMaterial({
+  map: texture,
+  depthTest: false,
+  depthWrite: false,
+});
 const videomesh = new Mesh(geometry, material);
+videomesh.position.z = -VIDEO_DISTANCE;
+videomesh.renderOrder = -1;
 scene.add(videomesh);
 
 // MediaPipe
 
 const filesetResolver = await FilesetResolver.forVisionTasks(
-  "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
+  "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.35/wasm"
 );
 
 const faceLandmarker = await FaceLandmarker.createFromOptions(filesetResolver, {
@@ -192,36 +227,36 @@ if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       video.play();
     })
     .catch(function (error) {
-      console.error("Unable to access the camera/webcam.", error);
+      console.warn("Unable to access the camera/webcam.", error);
     });
 }
 
-const transform = new Object3D();
+// The camera matches the video aspect; the canvas is sized to that aspect
+// and centered, so the grey body shows through as letterbox/pillarbox bars.
+
+video.addEventListener("loadedmetadata", function () {
+  const aspect = video.videoWidth / video.videoHeight;
+
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
+
+  // Size the plane so it exactly fills the frustum at its depth.
+  const height = 2 * VIDEO_DISTANCE * Math.tan(MathUtils.degToRad(MP_FOV / 2));
+  videomesh.scale.set(height * aspect, height, 1);
+
+  resize();
+});
 
 function animate() {
   if (video.readyState >= HTMLMediaElement.HAVE_METADATA) {
     const results = faceLandmarker.detectForVideo(video, Date.now());
 
     if (results.facialTransformationMatrixes.length > 0) {
-      const facialTransformationMatrixes =
-        results.facialTransformationMatrixes[0].data;
-
-      transform.matrix.fromArray(facialTransformationMatrixes);
-      transform.matrix.decompose(
-        transform.position,
-        transform.quaternion,
-        transform.scale
+      // Apply MediaPipe's metric pose matrix directly.
+      faceContainer.matrix.fromArray(
+        results.facialTransformationMatrixes[0].data
       );
-
-      const object = scene.getObjectByName("grp_transform");
-
-      object.position.x = transform.position.x;
-      object.position.y = transform.position.z + 40;
-      object.position.z = -transform.position.y;
-
-      object.rotation.x = transform.rotation.x;
-      object.rotation.y = transform.rotation.z;
-      object.rotation.z = -transform.rotation.y;
+      faceContainer.matrixWorldNeedsUpdate = true;
     }
 
     if (results.faceBlendshapes.length > 0) {
@@ -282,17 +317,21 @@ function animate() {
     }
   }
 
-  videomesh.scale.x = video.videoWidth / 100;
-  videomesh.scale.y = video.videoHeight / 100;
-
   renderer.render(scene, camera);
-
-  controls.update();
 }
 
-window.addEventListener("resize", function () {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+function resize() {
+  // Largest video-aspect rectangle that fits inside the window.
+  let width = window.innerWidth;
+  let height = window.innerHeight;
 
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
+  if (width / height > camera.aspect) {
+    width = height * camera.aspect;
+  } else {
+    height = width / camera.aspect;
+  }
+
+  renderer.setSize(width, height);
+}
+
+window.addEventListener("resize", resize);

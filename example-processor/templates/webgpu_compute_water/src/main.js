@@ -31,7 +31,10 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 import { SimplexNoise } from "three/addons/math/SimplexNoise.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
@@ -452,9 +455,7 @@ async function init() {
     "three/examples/textures/equirectangular/"
   );
   const glbloader = new GLTFLoader().setPath("models/gltf/");
-  glbloader.setDRACOLoader(
-    new DRACOLoader().setDecoderPath("jsm/libs/draco/gltf/")
-  );
+  glbloader.setDRACOLoader(new DRACOLoader().setDecoderPath(DRACO_GLTF_CONFIG));
 
   const [env, model] = await Promise.all([
     hdrLoader.loadAsync("blouberg_sunrise_2_1k.hdr"),

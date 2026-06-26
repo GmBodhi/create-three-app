@@ -9,7 +9,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 let camera, scene, renderer;
 let controls;
 let gui;
-let geometries, group;
+let geometries, group, instancedMesh;
 
 //
 
@@ -17,6 +17,9 @@ const position = new Vector3();
 const rotation = new Euler();
 const quaternion = new Quaternion();
 const scale = new Vector3();
+
+const instanceMatrix = new Matrix4();
+const rotationMatrix = new Matrix4();
 
 //
 
@@ -76,10 +79,6 @@ function initGeometries() {
 }
 
 function initMesh(count) {
-  initRegularMesh(count);
-}
-
-function initRegularMesh(count) {
   group = api.renderBundle ? new BundleGroup() : new Group();
 
   for (let i = 0; i < count; i++) {
@@ -95,6 +94,30 @@ function initRegularMesh(count) {
     child.frustumCulled = false;
     group.add(child);
   }
+
+  // instanced meshes are supported inside a bundle group, too
+
+  instancedMesh = new InstancedMesh(
+    geometries[0],
+    new MeshToonNodeMaterial(),
+    10
+  );
+  instancedMesh.userData.rotationSpeeds = [];
+
+  const matrix = new Matrix4();
+
+  for (let i = 0; i < instancedMesh.count; i++) {
+    randomizeMatrix(matrix);
+    instancedMesh.setMatrixAt(i, matrix);
+
+    instancedMesh.userData.rotationSpeeds.push(
+      randomizeRotationSpeed(new Euler())
+    );
+  }
+
+  group.add(instancedMesh);
+
+  //
 
   scene.add(group);
 }
@@ -184,10 +207,11 @@ function init() {
   }
 
   function animateMeshes() {
-    const count = api.count;
-    const loopNum = api.dynamic ? count : 0;
+    if (api.dynamic === false) return;
 
-    for (let i = 0; i < loopNum; i++) {
+    // rotate the regular meshes
+
+    for (let i = 0; i < api.count; i++) {
       const child = group.children[i];
       const rotationSpeed = child.userData.rotationSpeed;
 
@@ -197,5 +221,19 @@ function init() {
         child.rotation.z + rotationSpeed.z
       );
     }
+
+    // rotate each instance of the instanced mesh individually
+
+    const rotationSpeeds = instancedMesh.userData.rotationSpeeds;
+
+    for (let i = 0; i < instancedMesh.count; i++) {
+      rotationMatrix.makeRotationFromEuler(rotationSpeeds[i]);
+
+      instancedMesh.getMatrixAt(i, instanceMatrix);
+      instanceMatrix.multiply(rotationMatrix);
+      instancedMesh.setMatrixAt(i, instanceMatrix);
+    }
+
+    instancedMesh.instanceMatrix.needsUpdate = true;
   }
 }

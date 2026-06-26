@@ -161,9 +161,9 @@ function init() {
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  document.body.appendChild(renderer.domElement);
   renderer.setAnimationLoop(render);
   renderer.xr.enabled = true;
-  document.body.appendChild(renderer.domElement);
 
   //
 

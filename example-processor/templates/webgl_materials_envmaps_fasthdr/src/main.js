@@ -111,9 +111,7 @@ function init() {
   sphere05.position.z -= 2;
   scene.add(sphere05);
 
-  const loader = new KTX2Loader()
-    .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+  const loader = new KTX2Loader().detectSupport(renderer);
 
   function loadTexture(url) {
     loader.load(url, (texture) => {

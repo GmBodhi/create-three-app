@@ -492,9 +492,7 @@ function init() {
   // ---------------------------------------------------------------------
   // Exporting compressed textures and meshes (KTX2 / Draco / Meshopt)
   // ---------------------------------------------------------------------
-  const ktx2Loader = new KTX2Loader()
-    .setTranscoderPath("jsm/libs/basis/")
-    .detectSupport(renderer);
+  const ktx2Loader = new KTX2Loader().detectSupport(renderer);
 
   const gltfLoader = new GLTFLoader().setPath("models/gltf/");
   gltfLoader.setKTX2Loader(ktx2Loader);

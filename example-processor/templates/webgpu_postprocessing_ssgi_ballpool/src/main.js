@@ -10,13 +10,15 @@ import {
   velocity,
   add,
   vec4,
-  directionToColor,
-  colorToDirection,
+  packNormalToRGB,
+  unpackRGBToNormal,
   sample,
 } from "three/tsl";
 import { ssgi } from "three/addons/tsl/display/SSGINode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 import { World } from "@perplexdotgg/bounce";
+
+import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const BALL_RADIUS = 0.4;
 const FILL_RATIO = 0.4;
@@ -38,8 +40,8 @@ let ballsMesh = null;
 let wallMeshes = [];
 const boxSize = { w: 8, h: BOX_HEIGHT, d: BOX_DEPTH };
 
-let mouseRayOrigin = new Vector3();
-let mouseRayDir = new Vector3();
+const mouseRayOrigin = new Vector3();
+const mouseRayDir = new Vector3();
 let mouseMoving = false;
 let mouseStopTimer = 0;
 let pointerDown = false;
@@ -66,6 +68,7 @@ async function init() {
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.5;
   renderer.shadowMap.enabled = true;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   //
@@ -77,7 +80,7 @@ async function init() {
     mrt({
       output: output,
       diffuseColor: diffuseColor,
-      normal: directionToColor(normalView),
+      normal: packNormalToRGB(normalView),
       velocity: velocity,
     })
   );
@@ -97,7 +100,7 @@ async function init() {
   normalTexture.type = UnsignedByteType;
 
   const sceneNormal = sample((uv) => {
-    return colorToDirection(scenePassNormal.sample(uv));
+    return unpackRGBToNormal(scenePassNormal.sample(uv));
   });
 
   // gi
@@ -108,11 +111,11 @@ async function init() {
 
   // composite
 
-  const gi = giPass.rgb;
-  const ao = giPass.a;
+  const ao = giPass.getAONode().toInspector("SSGI.AO");
+  const gi = giPass.getGINode().toInspector("SSGI.GI");
 
   const compositePass = vec4(
-    add(scenePassColor.rgb.mul(ao), scenePassDiffuse.rgb.mul(gi)),
+    add(scenePassColor.rgb.mul(ao.r), scenePassDiffuse.rgb.mul(gi.rgb)),
     scenePassColor.a
   );
 

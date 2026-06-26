@@ -117,8 +117,8 @@ function animate() {
   renderer.render(scene, camera);
 }
 
-function exportFile() {
-  const result = exporter.parse(mesh);
+async function exportFile() {
+  const result = await exporter.parseAsync(mesh);
   saveArrayBuffer(result, "file.drc");
 }
 

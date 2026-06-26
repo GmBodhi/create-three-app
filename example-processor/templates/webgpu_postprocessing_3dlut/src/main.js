@@ -60,6 +60,7 @@ async function init() {
   camera.position.set(8, 10, 12);
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   // Loaders
 

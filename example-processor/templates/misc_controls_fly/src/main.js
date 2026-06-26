@@ -39,6 +39,7 @@ function init() {
   camera.position.z = radius * 5;
 
   scene = new Scene();
+  scene.background = new Color(0x000000);
   scene.fog = new FogExp2(0x000000, 0.00000025);
 
   dirLight = new DirectionalLight(0xffffff, 3);

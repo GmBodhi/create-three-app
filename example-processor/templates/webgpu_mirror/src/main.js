@@ -18,6 +18,7 @@ init();
 function init() {
   // scene
   scene = new Scene();
+  scene.background = new Color(0x000000);
 
   // camera
   camera = new PerspectiveCamera(

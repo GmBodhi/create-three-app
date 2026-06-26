@@ -1,0 +1,69 @@
+<html>
+  <head>
+    <title>
+      three.js webgpu - postprocessing - Screen Space Reflections (SSR) +
+      denoise
+    </title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta
+      property="og:title"
+      content="three.js webgpu - postprocessing - Screen Space Reflections (SSR) + denoise"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://threejs.org/examples/webgpu_postprocessing_ssr_denoise.html"
+    />
+    <meta
+      property="og:image"
+      content="https://threejs.org/examples/screenshots/webgpu_postprocessing_ssr_denoise.jpg"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="compare-hint" hidden="">
+      Hold Shift and move the mouse to scrub the comparison
+    </div>
+
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>SSR + Denoising</span>
+      </div>
+
+      <small>
+        Screen Space Reflections with Spatiotemporal Denoising by
+        <a href="https://x.com/0beqz" target="_blank" rel="noopener">0beqz</a
+        >.<br />
+        Dungeon - Low Poly Game Level Challenge by
+        <a href="https://sketchfab.com/warkarma" target="_blank" rel="noopener"
+          >Warkarma</a
+        >.<br />
+      </small>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -6,12 +6,28 @@
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
+    <meta property="og:title" content="three.js webgl - IFCLoader" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://threejs.org/examples/webgl_loader_ifc.html"
+    />
+    <meta
+      property="og:image"
+      content="https://threejs.org/examples/screenshots/webgl_loader_ifc.jpg"
+    />
   </head>
 
   <body style="overflow: hidden">
     <div id="info">
       <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
-      - See
+      - IFC loader using
+      <a
+        href="https://github.com/ThatOpen/engine_web-ifc"
+        target="_blank"
+        rel="noopener"
+        >web-ifc</a
+      >. See
       <a href="https://github.com/ThatOpen" target="_blank" rel="noopener"
         >main project repository</a
       >
@@ -23,10 +39,7 @@
         "imports": {
           "three": "../build/three.module.js",
           "three/addons/": "./jsm/",
-          "three/examples/jsm/utils/BufferGeometryUtils": "./jsm/utils/BufferGeometryUtils.js",
-          "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.5.23/build/index.module.js",
-          "web-ifc": "https://cdn.jsdelivr.net/npm/web-ifc@0.0.36/web-ifc-api.js",
-          "web-ifc-three": "https://cdn.jsdelivr.net/npm/web-ifc-three@0.0.126/IFCLoader.js"
+          "web-ifc": "https://cdn.jsdelivr.net/npm/web-ifc@0.0.77/web-ifc-api.js"
         }
       }
     </script>

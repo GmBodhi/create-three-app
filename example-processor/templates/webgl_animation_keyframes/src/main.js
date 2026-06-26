@@ -16,7 +16,10 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Sky } from "three/addons/objects/Sky.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
-import { DRACOLoader } from "three/addons/loaders/DRACOLoader.js";
+import {
+  DRACOLoader,
+  DRACO_GLTF_CONFIG,
+} from "three/addons/loaders/DRACOLoader.js";
 
 let mixer;
 
@@ -66,7 +69,7 @@ controls.target.set(0, 0.7, 0);
 controls.update();
 
 const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("jsm/libs/draco/gltf/");
+dracoLoader.setDecoderPath(DRACO_GLTF_CONFIG);
 
 const loader = new GLTFLoader();
 loader.setDRACOLoader(dracoLoader);
