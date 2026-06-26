@@ -5071,6 +5071,16 @@
         "/src"
       ]
     },
+    "webgpu_postprocessing_ssr_denoise": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_postprocessing_sss": {
       "files": {
         "index.html": "src",
