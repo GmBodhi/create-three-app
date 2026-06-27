@@ -104,6 +104,7 @@ function createGUI() {
       emoji: "models/svg/emoji.svg",
       blueprint: "models/svg/blueprint.svg",
       wideStroke: "models/svg/tests/wideStroke.svg",
+      letter: "models/svg/tests/letter.svg",
     })
     .name("SVG File")
     .onChange(update);
