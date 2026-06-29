@@ -32,10 +32,8 @@ let aoPass, traaPass, transparentMesh;
 
 const params = {
   samples: 16,
-  distanceExponent: 1,
-  distanceFallOff: 1,
-  radius: 0.25,
-  scale: 0.5,
+  radius: 0.5,
+  scale: 0.8,
   thickness: 1,
   aoOnly: false,
   transparentOpacity: 0.3,
@@ -578,8 +576,6 @@ async function init() {
 
   const gui = renderer.inspector.createParameters("Settings");
   gui.add(params, "samples", 4, 32, 1).onChange(updateParameters);
-  gui.add(params, "distanceExponent", 1, 2).onChange(updateParameters);
-  gui.add(params, "distanceFallOff", 0.01, 1).onChange(updateParameters);
   gui.add(params, "radius", 0.1, 1).onChange(updateParameters);
   gui.add(params, "scale", 0.01, 1).onChange(updateParameters);
   gui.add(params, "thickness", 0.01, 2).onChange(updateParameters);
@@ -604,8 +600,6 @@ async function init() {
 
 function updateParameters() {
   aoPass.samples.value = params.samples;
-  aoPass.distanceExponent.value = params.distanceExponent;
-  aoPass.distanceFallOff.value = params.distanceFallOff;
   aoPass.radius.value = params.radius;
   aoPass.scale.value = params.scale;
   aoPass.thickness.value = params.thickness;

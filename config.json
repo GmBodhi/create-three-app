@@ -4731,6 +4731,16 @@
         "/src"
       ]
     },
+    "webgpu_particles_soft": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_performance": {
       "files": {
         "index.html": "src",
