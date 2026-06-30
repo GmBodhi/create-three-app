@@ -25,6 +25,7 @@ function init() {
   const renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(200, 200);
+  renderer.debug.diagnostics.keywords = true;
   rendererDOM.appendChild(renderer.domElement);
 
   const material = new NodeMaterial();
@@ -110,6 +111,7 @@ output = vec4( finalColor, opacity );
     };
 
     const webGLRenderer = new WebGPURenderer({ forceWebGL: true });
+    webGLRenderer.debug.diagnostics.keywords = true;
 
     const build = async () => {
       try {

@@ -16,7 +16,6 @@ import { ClusteredLighting } from "three/addons/lighting/ClusteredLighting.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { SkyMesh } from "three/addons/objects/SkyMesh.js";
 
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
@@ -51,7 +50,7 @@ async function init() {
     50,
     window.innerWidth / window.innerHeight,
     1,
-    20000
+    200
   );
   camera.position.set(36, 18, 36);
 
@@ -70,43 +69,11 @@ async function init() {
 
   await renderer.init();
 
-  // a physical sky drives the backdrop and the image-based lighting; the
-  // sun sits just below the horizon for an almost-night mood
-
-  const sky = new SkyMesh();
-  sky.scale.setScalar(10000);
-  sky.turbidity.value = 10;
-  sky.rayleigh.value = 3;
-  sky.mieCoefficient.value = 0.005;
-  sky.mieDirectionalG.value = 0.7;
-
-  const sun = new Vector3().setFromSphericalCoords(
-    1,
-    MathUtils.degToRad(92), // elevation: 2° below the horizon (almost night)
-    MathUtils.degToRad(225) // azimuth
-  );
-  sky.sunPosition.value.copy(sun);
-
-  scene.add(sky);
-
-  // the sun sits below the horizon, so keep its disc hidden; bake the sky
-  // into an environment map for the faint ambient colour it still casts
-
-  const pmremGenerator = new PMREMGenerator(renderer);
-
-  sky.showSunDisc.value = false;
-  scene.environment = pmremGenerator.fromScene(scene).texture;
-  scene.environmentIntensity = 0.75;
-
   // ground
 
   const ground = new Mesh(
     new PlaneGeometry(1000, 1000).rotateX(-Math.PI / 2),
-    new MeshStandardNodeMaterial({
-      color: 0x2a2a2a,
-      roughness: 0.6,
-      metalness: 0,
-    })
+    new MeshPhongNodeMaterial({ color: 0x2a2a2a, shininess: 80 })
   );
   scene.add(ground);
 
@@ -120,10 +87,9 @@ async function init() {
   ];
 
   const bigGeometry = new SphereGeometry(BIG_RADIUS, 64, 32);
-  const bigMaterial = new MeshStandardNodeMaterial({
+  const bigMaterial = new MeshPhongNodeMaterial({
     color: 0xdddddd,
-    roughness: 0.5,
-    metalness: 0,
+    shininess: 80,
   });
 
   for (const position of bigPositions) {
@@ -209,9 +175,7 @@ async function init() {
   scenePass = pass(scene, camera);
   clusterInfluence = uniform(0);
 
-  // the large far plane spreads the exponential z-slices out, so the orb
-  // field falls around slices 7–11; default into that range
-  debugZSliceNode = uniform(10, "int");
+  debugZSliceNode = uniform(20, "int");
 
   renderPipeline = new RenderPipeline(renderer);
 
