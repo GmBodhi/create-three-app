@@ -130,10 +130,10 @@ async function init() {
       collisionPosRT.texture,
       getCoord(position.xz)
     ).toInspector("Collision Test", () => {
-      return texture(collisionPosRT.texture).r; // .div( collisionCamera.position.y );
+      return texture(collisionPosRT.texture); // .div( collisionCamera.position.y );
     });
 
-    const rippleFloorArea = rippleOnSurface.r.add(scale.x.mul(surfaceOffset));
+    const rippleFloorArea = rippleOnSurface.add(scale.x.mul(surfaceOffset));
 
     If(position.y.greaterThan(rippleFloorArea), () => {
       position.x = particleData.x.add(

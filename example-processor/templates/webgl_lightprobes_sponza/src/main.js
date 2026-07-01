@@ -17,8 +17,8 @@ import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.j
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Sky } from "three/addons/objects/Sky.js";
-import { LightProbeGrid } from "three/addons/lighting/LightProbeGrid.js";
-import { LightProbeGridHelper } from "three/addons/helpers/LightProbeGridHelper.js";
+import { LightProbeGridWebGL } from "three/addons/lighting/LightProbeGridWebGL.js";
+import { LightProbeGridHelperWebGL } from "three/addons/helpers/LightProbeGridHelperWebGL.js";
 
 const MODEL_INDEX_URL =
   "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/model-index.json";
@@ -198,7 +198,7 @@ async function init() {
         probes.dispose();
       }
 
-      probes = new LightProbeGrid(
+      probes = new LightProbeGridWebGL(
         params.sizeX,
         params.sizeY,
         params.sizeZ,
@@ -220,7 +220,7 @@ async function init() {
       probes.visible = params.enabled;
 
       if (!probesHelper) {
-        probesHelper = new LightProbeGridHelper(probes, params.probeSize);
+        probesHelper = new LightProbeGridHelperWebGL(probes, params.probeSize);
         probesHelper.visible = params.showProbes;
         scene.add(probesHelper);
       } else {
@@ -290,7 +290,7 @@ async function init() {
       if (probesHelper) {
         scene.remove(probesHelper);
         probesHelper.dispose();
-        probesHelper = new LightProbeGridHelper(probes, value);
+        probesHelper = new LightProbeGridHelperWebGL(probes, value);
         probesHelper.visible = params.showProbes;
         scene.add(probesHelper);
       }

@@ -21,7 +21,9 @@ import {
   SRGBColorSpace,
   MathUtils,
   Vector3,
+  Spherical,
   Quaternion,
+  Euler,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -30,7 +32,7 @@ import { RenderPixelatedPass } from "three/addons/postprocessing/RenderPixelated
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer, composer, crystalMesh, timer;
+let camera, scene, renderer, composer, controls, crystalMesh, timer;
 let gui, params;
 
 init();
@@ -64,7 +66,7 @@ function init() {
 
   window.addEventListener("resize", onWindowResize);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
   controls.maxZoom = 2;
 
   // gui
@@ -74,7 +76,12 @@ function init() {
     pixelSize: 6,
     normalEdgeStrength: 0.3,
     depthEdgeStrength: 0.4,
+    snapping: true,
     pixelAlignedPanning: true,
+    pixelAlignedObjects: true,
+    rotationSnap: 15,
+    cameraRotationSnap: 9,
+    cameraZoomSnap: 0.1,
   };
   gui
     .add(params, "pixelSize")
@@ -86,7 +93,34 @@ function init() {
     });
   gui.add(renderPixelatedPass, "normalEdgeStrength").min(0).max(2).step(0.05);
   gui.add(renderPixelatedPass, "depthEdgeStrength").min(0).max(1).step(0.05);
-  gui.add(params, "pixelAlignedPanning");
+
+  const snappingControl = gui
+    .add(params, "snapping")
+    .name("Enable Pixel Snapping");
+  const snappingFolder = gui.addFolder("Snapping").close();
+  snappingControl.onChange((enabled) =>
+    snappingFolder.controllers.forEach((c) => c.enable(enabled))
+  );
+  snappingFolder.add(params, "pixelAlignedPanning");
+  snappingFolder.add(params, "pixelAlignedObjects");
+  snappingFolder
+    .add(params, "rotationSnap")
+    .min(0)
+    .max(90)
+    .step(1)
+    .name("rotationSnap (deg, 0 = off)");
+  snappingFolder
+    .add(params, "cameraRotationSnap")
+    .min(0)
+    .max(90)
+    .step(1)
+    .name("cameraRotationSnap (deg, 0 = off)");
+  snappingFolder
+    .add(params, "cameraZoomSnap")
+    .min(0)
+    .max(1)
+    .step(0.05)
+    .name("cameraZoomSnap (0 = off)");
 
   // textures
 
@@ -175,18 +209,49 @@ function animate() {
 
   const t = timer.getElapsed();
 
-  crystalMesh.material.emissiveIntensity = Math.sin(t * 3) * 0.5 + 0.5;
+  // Quantize the pulsing glow to a few discrete brightness levels to match the pixelated aesthetic
+  const brightnessLevels = 6;
+  crystalMesh.material.emissiveIntensity =
+    Math.round((Math.sin(t * 3) * 0.5 + 0.5) * (brightnessLevels - 1)) /
+    (brightnessLevels - 1);
   crystalMesh.position.y = 0.7 + Math.sin(t * 2) * 0.05;
-  crystalMesh.rotation.y = stopGoEased(t, 2, 4) * 2 * Math.PI;
+  crystalMesh.rotation.y = stopGoEased(t, 6, 8) * 2 * Math.PI;
 
   const rendererSize = renderer.getSize(new Vector2());
   const aspectRatio = rendererSize.x / rendererSize.y;
-  if (params["pixelAlignedPanning"]) {
+  const pixelsPerScreenWidth = Math.floor(rendererSize.x / params["pixelSize"]);
+  const pixelsPerScreenHeight = Math.floor(
+    rendererSize.y / params["pixelSize"]
+  );
+
+  // The top-level 'snapping' checkbox gates every individual snapping effect at once
+  const snapping = params["snapping"];
+
+  // Remember the camera's true (unsnapped) transform so OrbitControls interaction is unaffected by snapping
+  const cameraPosition = camera.position.clone();
+  const cameraQuaternion = camera.quaternion.clone();
+  const cameraZoom = camera.zoom;
+
+  // Snap the camera's rotation and scale first, so the translation snap below derives its pixel grid
+  // and screen-space basis from the already-snapped orientation and zoom
+  if (
+    snapping &&
+    (params["cameraRotationSnap"] > 0 || params["cameraZoomSnap"] > 0)
+  ) {
+    pixelAlignCamera(
+      camera,
+      controls.target,
+      params["cameraRotationSnap"],
+      params["cameraZoomSnap"]
+    );
+  }
+
+  if (snapping && params["pixelAlignedPanning"]) {
     pixelAlignFrustum(
       camera,
       aspectRatio,
-      Math.floor(rendererSize.x / params["pixelSize"]),
-      Math.floor(rendererSize.y / params["pixelSize"])
+      pixelsPerScreenWidth,
+      pixelsPerScreenHeight
     );
   } else if (camera.left != -aspectRatio || camera.top != 1.0) {
     // Reset the Camera Frustum if it has been modified
@@ -197,7 +262,38 @@ function animate() {
     camera.updateProjectionMatrix();
   }
 
+  // Remember the crystal's true (unsnapped) transform so its bulk movement is unaffected by snapping.
+  // We snapshot the euler rotation (not the quaternion) because that's what drives the spin: restoring
+  // the quaternion would let three.js re-derive a gimbal-equivalent euler and corrupt the y rotation.
+  const crystalPosition = crystalMesh.position.clone();
+  const crystalRotation = crystalMesh.rotation.clone();
+
+  if (snapping && params["pixelAlignedObjects"]) {
+    // Snap the moving objects to the screen-space pixel grid so they don't shimmer when pixelated
+    const worldScreenWidth = (camera.right - camera.left) / camera.zoom;
+    const worldScreenHeight = (camera.top - camera.bottom) / camera.zoom;
+    pixelAlignObject(
+      crystalMesh,
+      camera,
+      worldScreenWidth / pixelsPerScreenWidth,
+      worldScreenHeight / pixelsPerScreenHeight
+    );
+  }
+
+  if (snapping && params["rotationSnap"] > 0) {
+    // Snap the moving objects' rotation to the nearest camera-relative euler increment
+    snapObjectRotation(crystalMesh, camera, params["rotationSnap"]);
+  }
+
   composer.render();
+
+  // Restore the true transforms after rendering so the next frame's motion builds on the real trajectory
+  crystalMesh.position.copy(crystalPosition);
+  crystalMesh.rotation.copy(crystalRotation);
+  camera.position.copy(cameraPosition);
+  camera.quaternion.copy(cameraQuaternion);
+  camera.zoom = cameraZoom;
+  camera.updateProjectionMatrix();
 }
 
 // Helper functions
@@ -228,6 +324,38 @@ function stopGoEased(x, downtime, period) {
   const tween = x - cycle * period;
   const linStep = easeInOutCubic(linearStep(tween, downtime, period));
   return cycle + linStep;
+}
+
+function pixelAlignCamera(
+  camera,
+  target,
+  rotationIncrementDegrees,
+  zoomIncrement
+) {
+  // Snap the camera's orbit to the nearest increment of azimuth/polar angle around the target. Working
+  // in spherical coordinates (rather than snapping the euler angles) keeps the orbit translation locked
+  // onto the target and guarantees a roll-free orientation, since we re-aim with lookAt and world up.
+  if (rotationIncrementDegrees > 0) {
+    const increment = MathUtils.degToRad(rotationIncrementDegrees);
+    const offset = new Vector3().subVectors(camera.position, target);
+    const spherical = new Spherical().setFromVector3(offset);
+    spherical.theta = Math.round(spherical.theta / increment) * increment;
+    spherical.phi = Math.round(spherical.phi / increment) * increment;
+    spherical.makeSafe();
+    offset.setFromSpherical(spherical);
+    camera.position.copy(target).add(offset);
+    camera.up.set(0.0, 1.0, 0.0);
+    camera.lookAt(target);
+  }
+
+  // Snap the camera's zoom to the nearest increment so the pixel grid stays a stable size while scaling
+  if (zoomIncrement > 0) {
+    camera.zoom = Math.max(
+      zoomIncrement,
+      Math.round(camera.zoom / zoomIncrement) * zoomIncrement
+    );
+    camera.updateProjectionMatrix();
+  }
 }
 
 function pixelAlignFrustum(
@@ -266,4 +394,48 @@ function pixelAlignFrustum(
   camera.top = 1.0 - fractY * pixelHeight;
   camera.bottom = -1.0 - fractY * pixelHeight;
   camera.updateProjectionMatrix();
+}
+
+function pixelAlignObject(object, camera, pixelWidth, pixelHeight) {
+  // 1. Build the camera's orthonormal screen-space basis
+  const camRot = new Quaternion();
+  camera.getWorldQuaternion(camRot);
+  const camRight = new Vector3(1.0, 0.0, 0.0).applyQuaternion(camRot);
+  const camUp = new Vector3(0.0, 1.0, 0.0).applyQuaternion(camRot);
+  const camForward = new Vector3(0.0, 0.0, -1.0).applyQuaternion(camRot);
+
+  // 2. Decompose the object's world position onto that basis
+  const pos = object.position;
+  const posRight = pos.dot(camRight);
+  const posUp = pos.dot(camUp);
+  const posForward = pos.dot(camForward);
+
+  // 3. Snap the screen-space (right/up) components to the pixel grid, leaving depth untouched
+  const snappedRight = Math.round(posRight / pixelWidth) * pixelWidth;
+  const snappedUp = Math.round(posUp / pixelHeight) * pixelHeight;
+
+  // 4. Recompose the world position from the snapped basis components
+  pos.set(0, 0, 0);
+  pos.addScaledVector(camRight, snappedRight);
+  pos.addScaledVector(camUp, snappedUp);
+  pos.addScaledVector(camForward, posForward);
+}
+
+function snapObjectRotation(object, camera, incrementDegrees) {
+  const increment = MathUtils.degToRad(incrementDegrees);
+
+  // 1. Express the object's rotation relative to the camera
+  const camRot = new Quaternion();
+  camera.getWorldQuaternion(camRot);
+  const relative = camRot.clone().invert().multiply(object.quaternion);
+
+  // 2. Snap each euler axis (in camera space) to the nearest increment
+  const euler = new Euler().setFromQuaternion(relative);
+  euler.x = Math.round(euler.x / increment) * increment;
+  euler.y = Math.round(euler.y / increment) * increment;
+  euler.z = Math.round(euler.z / increment) * increment;
+
+  // 3. Convert back to a world-space rotation
+  relative.setFromEuler(euler);
+  object.quaternion.copy(camRot.multiply(relative));
 }
