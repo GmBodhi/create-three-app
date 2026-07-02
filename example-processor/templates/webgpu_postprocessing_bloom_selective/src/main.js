@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { pass, mrt, output, float, uniform } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
+import { dualKawaseBloom } from "three/addons/tsl/display/DualKawaseBloomNode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
@@ -68,11 +69,29 @@ const bloomIntensityPass = scenePass
   .getTextureNode("bloomIntensity")
   .toInspector("Bloom Intensity");
 
-const bloomPass = bloom(outputPass.mul(bloomIntensityPass));
+const params = { type: "Gaussian" };
+const bloomInput = outputPass.mul(bloomIntensityPass);
+
+const strength = uniform(1);
+const radius = uniform(0);
+const threshold = uniform(0);
+
+const bloomPasses = {
+  Gaussian: bloom(bloomInput, strength, radius, threshold),
+  "Dual Kawase": dualKawaseBloom(bloomInput, strength, radius, threshold),
+};
 
 const renderPipeline = new RenderPipeline(renderer);
 renderPipeline.outputColorTransform = false;
-renderPipeline.outputNode = outputPass.add(bloomPass).renderOutput();
+
+function updateBloom() {
+  renderPipeline.outputNode = outputPass
+    .add(bloomPasses[params.type])
+    .renderOutput();
+  renderPipeline.needsUpdate = true;
+}
+
+updateBloom();
 
 // controls
 
@@ -107,9 +126,12 @@ window.addEventListener("pointerdown", (event) => {
 const gui = renderer.inspector.createParameters("Settings");
 
 const bloomFolder = gui.addFolder("Bloom");
-bloomFolder.add(bloomPass.threshold, "value", 0.0, 1.0).name("threshold");
-bloomFolder.add(bloomPass.strength, "value", 0.0, 3).name("strength");
-bloomFolder.add(bloomPass.radius, "value", 0.0, 1.0).name("radius");
+bloomFolder
+  .add(params, "type", ["Gaussian", "Dual Kawase"])
+  .onChange(updateBloom);
+bloomFolder.add(threshold, "value", 0.0, 1.0).name("threshold");
+bloomFolder.add(strength, "value", 0.0, 3).name("strength");
+bloomFolder.add(radius, "value", 0.0, 1.0).name("radius");
 
 const toneMappingFolder = gui.addFolder("Tone Mapping");
 toneMappingFolder.add(renderer, "toneMappingExposure", 0.1, 3).name("exposure");

@@ -1,8 +1,9 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass, mrt, output, emissive, vec4 } from "three/tsl";
+import { pass, mrt, output, emissive, vec4, uniform } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
+import { dualKawaseBloom } from "three/addons/tsl/display/DualKawaseBloomNode.js";
 
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
@@ -87,10 +88,24 @@ function init() {
     .getTextureNode("emissive")
     .toInspector("Emissive");
 
-  const bloomPass = bloom(emissivePass, 2.5, 0.5);
+  const params = { type: "Gaussian" };
+
+  const strength = uniform(2.5);
+  const radius = uniform(0.5);
+
+  const bloomPasses = {
+    Gaussian: bloom(emissivePass, strength, radius),
+    "Dual Kawase": dualKawaseBloom(emissivePass, strength, radius),
+  };
 
   renderPipeline = new RenderPipeline(renderer);
-  renderPipeline.outputNode = outputPass.add(bloomPass);
+
+  function updateBloom() {
+    renderPipeline.outputNode = outputPass.add(bloomPasses[params.type]);
+    renderPipeline.needsUpdate = true;
+  }
+
+  updateBloom();
 
   //
 
@@ -107,8 +122,11 @@ function init() {
   const gui = renderer.inspector.createParameters("Settings");
 
   const bloomFolder = gui.addFolder("Bloom");
-  bloomFolder.add(bloomPass.strength, "value", 0.0, 5.0).name("strength");
-  bloomFolder.add(bloomPass.radius, "value", 0.0, 1.0).name("radius");
+  bloomFolder
+    .add(params, "type", ["Gaussian", "Dual Kawase"])
+    .onChange(updateBloom);
+  bloomFolder.add(strength, "value", 0.0, 5.0).name("strength");
+  bloomFolder.add(radius, "value", 0.0, 1.0).name("radius");
 
   const toneMappingFolder = gui.addFolder("Tone Mapping");
   toneMappingFolder

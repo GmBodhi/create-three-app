@@ -1,8 +1,9 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { pass } from "three/tsl";
+import { pass, uniform } from "three/tsl";
 import { bloom } from "three/addons/tsl/display/BloomNode.js";
+import { dualKawaseBloom } from "three/addons/tsl/display/DualKawaseBloomNode.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
@@ -13,9 +14,7 @@ let camera;
 let renderPipeline, renderer, mixer, timer;
 
 const params = {
-  threshold: 0,
-  strength: 1,
-  radius: 0,
+  type: "Gaussian",
   exposure: 1,
 };
 
@@ -70,9 +69,21 @@ async function init() {
     .getTextureNode("output")
     .toInspector("Color");
 
-  const bloomPass = bloom(scenePassColor).toInspector("Bloom");
+  const strength = uniform(1);
+  const radius = uniform(0);
+  const threshold = uniform(0);
 
-  renderPipeline.outputNode = scenePassColor.add(bloomPass);
+  const bloomPasses = {
+    Gaussian: bloom(scenePassColor, strength, radius, threshold),
+    "Dual Kawase": dualKawaseBloom(scenePassColor, strength, radius, threshold),
+  };
+
+  function updateBloom() {
+    renderPipeline.outputNode = scenePassColor.add(bloomPasses[params.type]);
+    renderPipeline.needsUpdate = true;
+  }
+
+  updateBloom();
 
   //
 
@@ -87,17 +98,15 @@ async function init() {
 
   const bloomFolder = gui.addFolder("bloom");
 
-  bloomFolder.add(params, "threshold", 0.0, 1.0).onChange(function (value) {
-    bloomPass.threshold.value = value;
-  });
+  bloomFolder
+    .add(params, "type", ["Gaussian", "Dual Kawase"])
+    .onChange(updateBloom);
 
-  bloomFolder.add(params, "strength", 0.0, 3.0).onChange(function (value) {
-    bloomPass.strength.value = value;
-  });
+  bloomFolder.add(threshold, "value", 0.0, 1.0).name("threshold");
 
-  bloomFolder.add(params, "radius", 0.0, 1.0, 0.01).onChange(function (value) {
-    bloomPass.radius.value = value;
-  });
+  bloomFolder.add(strength, "value", 0.0, 3.0).name("strength");
+
+  bloomFolder.add(radius, "value", 0.0, 1.0, 0.01).name("radius");
 
   const toneMappingFolder = gui.addFolder("tone mapping");
 

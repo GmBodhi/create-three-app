@@ -1,20 +1,20 @@
 <html>
   <head>
-    <title>three.js webgpu - ambient occlusion</title>
+    <title>three.js webgpu - light probe volume</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-    <meta property="og:title" content="three.js webgpu - ambient occlusion" />
+    <meta property="og:title" content="three.js webgpu - light probe volume" />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://threejs.org/examples/webgpu_postprocessing_ao.html"
+      content="https://threejs.org/examples/webgpu_lightprobes.html"
     />
     <meta
       property="og:image"
-      content="https://threejs.org/examples/screenshots/webgpu_postprocessing_ao.jpg"
+      content="https://threejs.org/examples/screenshots/webgpu_lightprobes.jpg"
     />
     <link type="text/css" rel="stylesheet" href="example.css" />
   </head>
@@ -30,19 +30,13 @@
       <div class="title-wrapper">
         <a href="https://threejs.org/" target="_blank" rel="noopener"
           >three.js</a
-        ><span>AO</span>
+        ><span>Light Probe Volume</span>
       </div>
 
-      <small>
-        Ambient Occlusion: switchable between GTAO and SSAO.<br />
-        Tennyson bust from
-        <a
-          href="https://threedscans.com/lincoln/tennyson/"
-          target="_blank"
-          rel="noopener"
-          >Three D Scans</a
-        >.
-      </small>
+      <small
+        >Position-dependent diffuse global illumination via L2 SH probe
+        grid.</small
+      >
     </div>
 
     <script type="importmap">

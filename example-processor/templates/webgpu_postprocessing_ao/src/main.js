@@ -16,6 +16,7 @@ import {
   builtinAOContext,
 } from "three/tsl";
 import { ao } from "three/addons/tsl/display/GTAONode.js";
+import { ssao } from "three/addons/tsl/display/SSAONode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -31,10 +32,16 @@ let camera, scene, renderer, renderPipeline, controls;
 let aoPass, traaPass, transparentMesh;
 
 const params = {
+  aoType: "GTAO",
   samples: 16,
   radius: 0.5,
-  scale: 0.8,
-  thickness: 1,
+  scale: 0.8, // GTAO
+  thickness: 1, // GTAO
+  temporalFiltering: true, // GTAO
+  intensity: 2, // SSAO
+  bias: 0.025, // SSAO
+  blurEnabled: true, // SSAO
+  blurSharpness: 2, // SSAO
   aoOnly: false,
   transparentOpacity: 0.3,
 };
@@ -120,27 +127,50 @@ async function init() {
 
   const scenePass = pass(scene, camera).toInspector("Color");
 
-  // ao
-
-  aoPass = ao(prePassDepth, prePassNormal, camera).toInspector(
-    "GTAO",
-    (inspectNode) => inspectNode.r
-  );
-  aoPass.resolutionScale = 0.5; // running AO in half resolution is often sufficient
-  aoPass.useTemporalFiltering = true;
-
-  const aoPassOutput = aoPass.getTextureNode();
-
-  // scene context
-
-  scenePass.contextNode = builtinAOContext(aoPassOutput.sample(screenUV).r);
-
   // final output + traa
 
   traaPass = traa(scenePass, prePassDepth, prePassVelocity, camera);
   traaPass.useSubpixelCorrection = false;
 
-  renderPipeline.outputNode = traaPass;
+  // ao: the AO node feeds the scene's ambient term via `builtinAOContext`, and
+  // can be switched between GTAO ( ground-truth, needs temporal denoise ) and the
+  // cheaper SSAO ( self-denoised )
+
+  function updateOutput() {
+    renderPipeline.outputNode = params.aoOnly
+      ? vec4(vec3(aoPass.getTextureNode().sample(screenUV).r), 1)
+      : traaPass;
+    renderer.toneMapping = params.aoOnly ? NoToneMapping : NeutralToneMapping;
+    renderPipeline.needsUpdate = true;
+  }
+
+  function createAO() {
+    if (aoPass) aoPass.dispose();
+
+    aoPass =
+      params.aoType === "SSAO"
+        ? ssao(prePassDepth, prePassNormal, camera).toInspector(
+            "SSAO",
+            (inspectNode) => inspectNode.r
+          )
+        : ao(prePassDepth, prePassNormal, camera).toInspector(
+            "GTAO",
+            (inspectNode) => inspectNode.r
+          );
+
+    aoPass.resolutionScale = 0.5; // running AO in half resolution is often sufficient
+
+    updateParameters();
+
+    scenePass.contextNode = builtinAOContext(
+      aoPass.getTextureNode().sample(screenUV).r
+    );
+    scenePass.needsUpdate = true;
+
+    updateOutput();
+  }
+
+  createAO();
 
   // models
 
@@ -575,36 +605,74 @@ async function init() {
   // GUI
 
   const gui = renderer.inspector.createParameters("Settings");
+  gui
+    .add(params, "aoType", ["GTAO", "SSAO"])
+    .name("AO type")
+    .onChange(() => {
+      createAO();
+      updateControls();
+    });
   gui.add(params, "samples", 4, 32, 1).onChange(updateParameters);
   gui.add(params, "radius", 0.1, 1).onChange(updateParameters);
-  gui.add(params, "scale", 0.01, 1).onChange(updateParameters);
-  gui.add(params, "thickness", 0.01, 2).onChange(updateParameters);
-  gui.add(aoPass, "useTemporalFiltering").name("temporal filtering");
+
+  const gtaoControls = [
+    gui.add(params, "scale", 0.01, 1).onChange(updateParameters),
+    gui.add(params, "thickness", 0.01, 2).onChange(updateParameters),
+    gui.add(aoPass, "resolutionScale", 0, 1).name("resolution scale"),
+    gui
+      .add(params, "temporalFiltering")
+      .name("temporal filtering")
+      .onChange(updateParameters),
+  ];
+
+  const ssaoControls = [
+    gui.add(params, "intensity", 0, 4).onChange(updateParameters),
+    gui.add(params, "bias", 0, 0.2).onChange(updateParameters),
+    gui.add(params, "blurEnabled").name("blur").onChange(updateParameters),
+    gui
+      .add(params, "blurSharpness", 0, 8)
+      .name("blur sharpness")
+      .onChange(updateParameters),
+  ];
+
   gui.add(transparentMesh, "visible").name("show transparent mesh");
   gui
     .add(params, "transparentOpacity", 0, 1, 0.01)
     .name("transparent opacity")
-    .onChange(updateParameters);
-  gui.add(params, "aoOnly").onChange((value) => {
-    if (value === true) {
-      renderPipeline.outputNode = vec4(vec3(aoPass.r), 1);
-      renderer.toneMapping = NoToneMapping;
-    } else {
-      renderPipeline.outputNode = traaPass;
-      renderer.toneMapping = NeutralToneMapping;
-    }
+    .onChange((value) => {
+      transparentMesh.material.opacity = value;
+    });
+  gui.add(params, "aoOnly").onChange(updateOutput);
 
-    renderPipeline.needsUpdate = true;
-  });
+  // show only the controls that apply to the active AO type
+
+  function updateControls() {
+    if (params.aoType === "GTAO") {
+      gtaoControls.forEach((control) => control.show());
+      ssaoControls.forEach((control) => control.hide());
+    } else {
+      gtaoControls.forEach((control) => control.hide());
+      ssaoControls.forEach((control) => control.show());
+    }
+  }
+
+  updateControls();
 }
 
 function updateParameters() {
   aoPass.samples.value = params.samples;
   aoPass.radius.value = params.radius;
-  aoPass.scale.value = params.scale;
-  aoPass.thickness.value = params.thickness;
 
-  transparentMesh.material.opacity = params.transparentOpacity;
+  if (params.aoType === "SSAO") {
+    aoPass.intensity.value = params.intensity;
+    aoPass.bias.value = params.bias;
+    aoPass.blurEnabled = params.blurEnabled;
+    aoPass.blurSharpness.value = params.blurSharpness;
+  } else {
+    aoPass.scale.value = params.scale;
+    aoPass.thickness.value = params.thickness;
+    aoPass.useTemporalFiltering = params.temporalFiltering;
+  }
 }
 
 function onWindowResize() {
