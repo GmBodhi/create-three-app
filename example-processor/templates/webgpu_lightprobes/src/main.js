@@ -188,15 +188,13 @@ async function init() {
       probes.visible = value;
     });
 
-  let rebakeTimer = null;
   gui
     .add(params, "resolution", 2, 12, 1)
     .name("Resolution")
     .onChange((value) => {
-      // Debounce so a slider drag rebakes once it settles, not every step.
-      if (rebakeTimer !== null) clearTimeout(rebakeTimer);
-      rebakeTimer = setTimeout(() => bake(value), 250);
-    });
+      bake(value);
+    })
+    .debounce(250);
   gui
     .add(params, "showProbes")
     .name("Show Probes")

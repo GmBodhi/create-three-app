@@ -9,7 +9,9 @@ import {
   float,
   mix,
   step,
+  renderOutput,
 } from "three/tsl";
+import { fxaa } from "three/addons/tsl/display/FXAANode.js";
 
 import { ClusteredLighting } from "three/addons/lighting/ClusteredLighting.js";
 
@@ -56,7 +58,7 @@ async function init() {
 
   scene = new Scene();
 
-  renderer = new WebGPURenderer({ antialias: true });
+  renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -178,6 +180,7 @@ async function init() {
   debugZSliceNode = uniform(20, "int");
 
   renderPipeline = new RenderPipeline(renderer);
+  renderPipeline.outputColorTransform = false;
 
   updatePostProcessing();
 
@@ -238,7 +241,10 @@ function updatePostProcessing() {
   // blend the heatmap over the scene by the slider amount; step() keeps
   // empty clusters transparent
   const finalInfluence = clusterInfluence.mul(step(0.0001, heatmap));
-  renderPipeline.outputNode = mix(scenePass, heatColor, finalInfluence);
+
+  const outputPass = renderOutput(mix(scenePass, heatColor, finalInfluence));
+
+  renderPipeline.outputNode = fxaa(outputPass);
   renderPipeline.needsUpdate = true;
 }
 
