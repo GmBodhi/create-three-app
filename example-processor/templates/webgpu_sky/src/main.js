@@ -11,6 +11,8 @@ let camera, scene, renderer;
 
 let sky, sun;
 
+let sphere, cubeCamera;
+
 init();
 
 function initSky() {
@@ -28,9 +30,9 @@ function initSky() {
     rayleigh: 3,
     mieCoefficient: 0.005,
     mieDirectionalG: 0.7,
-    elevation: 2,
-    azimuth: 180,
-    exposure: renderer.toneMappingExposure,
+    elevation: 65,
+    azimuth: 0,
+    exposure: 0.05,
     cloudCoverage: 0.4,
     cloudDensity: 0.4,
     cloudElevation: 0.5,
@@ -100,6 +102,15 @@ function init() {
 
   scene = new Scene();
 
+  const cubeRenderTarget = new CubeRenderTarget(256, { type: HalfFloatType });
+  cubeCamera = new CubeCamera(1, 1000, cubeRenderTarget);
+
+  sphere = new Mesh(
+    new SphereGeometry(400, 64, 32),
+    new MeshBasicNodeMaterial({ envMap: cubeRenderTarget.texture })
+  );
+  scene.add(sphere);
+
   renderer = new WebGPURenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -127,5 +138,9 @@ function onWindowResize() {
 }
 
 function animate() {
+  sphere.visible = false;
+  cubeCamera.update(renderer, scene);
+  sphere.visible = true;
+
   renderer.render(scene, camera);
 }
