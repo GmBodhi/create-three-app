@@ -48,7 +48,7 @@ function init() {
     const light = new PointLight(color, intensity, 20);
     light.castShadow = true;
     light.shadow.bias = -0.005; // reduces self-shadowing on double-sided objects
-    light.shadow.mapSize.width = 128;
+    light.shadow.mapSize.setScalar(128);
     light.shadow.radius = 10;
 
     let geometry = new SphereGeometry(0.3, 12, 6);
