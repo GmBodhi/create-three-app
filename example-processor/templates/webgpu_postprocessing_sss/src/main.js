@@ -49,6 +49,7 @@ async function init() {
   dirLight.castShadow = true;
   dirLight.shadow.bias = -0.001; // remove self-shadowing artifacts
   dirLight.shadow.camera.top = 4;
+  dirLight.shadow.radius = 2;
   dirLight.shadow.camera.bottom = -4;
   dirLight.shadow.camera.left = -4;
   dirLight.shadow.camera.right = 4;
@@ -101,7 +102,6 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 

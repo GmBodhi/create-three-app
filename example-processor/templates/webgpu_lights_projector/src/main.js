@@ -25,7 +25,6 @@ function init() {
   document.body.appendChild(renderer.domElement);
 
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
 
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1;

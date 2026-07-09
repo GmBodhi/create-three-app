@@ -36,7 +36,6 @@ async function init() {
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.62;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 

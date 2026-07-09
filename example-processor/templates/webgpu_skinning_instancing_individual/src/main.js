@@ -409,7 +409,6 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
   renderer.toneMapping = NeutralToneMapping;
   renderer.toneMappingExposure = 0.96;
   renderer.inspector = new Inspector();
