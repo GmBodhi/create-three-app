@@ -75,7 +75,7 @@ async function init() {
     renderTarget.texture,
     getParallaxCorrectNormal(
       reflectVector,
-      vec3(200, 100, 100),
+      vec3(200, 200, 100),
       vec3(0, -50, 0)
     )
   );
