@@ -118,7 +118,7 @@ function updateCount() {
     numLat * numLng +
     " lines, " +
     numLinesCulled +
-    ' culled (<a target="_blank" href="http://callum.com">author</a>)';
+    ' culled (<a target="_blank" href="https://callum.com">author</a>)';
   document.getElementById("title").innerHTML = str.replace(
     /\B(?=(\d{3})+(?!\d))/g,
     ","
