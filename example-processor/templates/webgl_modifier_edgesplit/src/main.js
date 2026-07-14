@@ -33,15 +33,6 @@ const params = {
 init();
 
 function init() {
-  const info = document.createElement("div");
-  info.style.position = "absolute";
-  info.style.top = "10px";
-  info.style.width = "100%";
-  info.style.textAlign = "center";
-  info.innerHTML =
-    '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - Edge Split modifier';
-  document.body.appendChild(info);
-
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

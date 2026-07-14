@@ -31,12 +31,6 @@ function init() {
   const container = document.createElement("div");
   document.body.appendChild(container);
 
-  const info = document.createElement("div");
-  info.id = "info";
-  info.innerHTML =
-    '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - kinect';
-  document.body.appendChild(info);
-
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
