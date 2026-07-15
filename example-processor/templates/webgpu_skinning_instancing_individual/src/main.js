@@ -15,6 +15,7 @@ import {
   uniform,
   vec4,
   vertexIndex,
+  mat3,
 } from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -174,12 +175,11 @@ function createComputedMesh(source, instanceCount) {
         boneMatW.mul(skinWeight.w).mul(skinVertex)
       )
     ).xyz;
-    const skinNormal = bindMatrixInverse
-      .mul(skinMatrix)
-      .mul(bindMatrix)
-      .transformDirection(
-        sourceVertices.element(sourceOffset.add(uint(1))).xyz
-      ).xyz;
+
+    const skinMatrix3 = mat3(bindMatrixInverse.mul(skinMatrix).mul(bindMatrix));
+    const skinNormal = skinMatrix3.mul(
+      sourceVertices.element(sourceOffset.add(uint(1))).xyz
+    );
     const instanceMatrix = instanceMatricesNode.element(meshInstance);
 
     vertices
