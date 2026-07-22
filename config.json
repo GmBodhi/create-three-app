@@ -4541,7 +4541,7 @@
         "/src"
       ]
     },
-    "webgpu_materials_retroreflective": {
+    "webgpu_materials_retroreflection": {
       "files": {
         "index.html": "src",
         "main.js": "src",

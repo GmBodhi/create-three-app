@@ -14,11 +14,11 @@ import {
   viewportLinearDepth,
   viewportDepthTexture,
   viewportSharedTexture,
-  mx_worley_noise_float,
   positionWorld,
   time,
 } from "three/tsl";
 import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
+import { voronoi2d, voronoi3d } from "three/addons/tsl/math/voronoiNoise.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
@@ -133,10 +133,10 @@ function init() {
   // water
 
   const t = time.mul(0.8);
-  const floorUV = positionWorld.xzy;
+  const floorUV = positionWorld.xz;
 
-  const waterLayer0 = mx_worley_noise_float(floorUV.mul(6).add(t)).pow(2);
-  const waterLayer1 = mx_worley_noise_float(floorUV.mul(3).add(t)).pow(2);
+  const waterLayer0 = voronoi2d(floorUV.mul(6), t);
+  const waterLayer1 = voronoi2d(floorUV.mul(3), t);
 
   const waterIntensity = waterLayer0.mul(waterLayer1);
   const waterColor = waterIntensity
@@ -201,10 +201,12 @@ function init() {
     0
   );
 
+  const causticNoise = voronoi3d(positionWorld.mul(6), t);
+
   //material.colorNode = colorNode;
   floor.material.colorNode = causticFade.mix(
     material.colorNode,
-    material.colorNode.add(waterLayer0)
+    material.colorNode.add(causticNoise)
   );
 
   // renderer

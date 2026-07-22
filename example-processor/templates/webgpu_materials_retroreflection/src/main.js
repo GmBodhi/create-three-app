@@ -10,8 +10,8 @@ let camera, scene, renderer;
 let frontLight, bandMaterial;
 
 const params = {
-  retroreflectivity: true,
-  retroreflective: 1.0,
+  retroreflective: true,
+  retroreflectivity: 1.0,
   frontLightIntensity: 5.0,
 };
 
@@ -61,12 +61,12 @@ function init() {
 
   const gui = new GUI();
   gui
-    .add(params, "retroreflectivity")
-    .name("retroreflectivity")
+    .add(params, "retroreflective")
+    .name("retroreflective")
     .onChange(updateMaterial);
   gui
-    .add(params, "retroreflective", 0, 1, 0.01)
-    .name("retroreflective")
+    .add(params, "retroreflectivity", 0, 1, 0.01)
+    .name("retroreflectivity")
     .onChange(updateMaterial);
   gui
     .add(params, "frontLightIntensity", 0, 30, 0.1)
@@ -92,7 +92,7 @@ function createCone() {
     color: 0xf7f0d6,
     roughness: 0.22,
     metalness: 0.0,
-    retroreflective: params.retroreflective,
+    retroreflectivity: params.retroreflectivity,
   });
 
   const base = new Mesh(new BoxGeometry(2.6, 0.24, 2.6), orangeMaterial);
@@ -160,8 +160,8 @@ function radiusAtHeight(y, bodyBottom, bodyHeight, radiusBottom, radiusTop) {
 }
 
 function updateMaterial() {
-  bandMaterial.retroreflective = params.retroreflectivity
-    ? params.retroreflective
+  bandMaterial.retroreflectivity = params.retroreflective
+    ? params.retroreflectivity
     : 0;
   frontLight.intensity = params.frontLightIntensity;
 }
