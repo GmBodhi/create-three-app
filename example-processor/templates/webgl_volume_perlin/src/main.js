@@ -110,6 +110,9 @@ function init() {
 
 					uniform float threshold;
 					uniform float steps;
+					uniform bool refine;
+
+					#define REFINEMENT_STEPS 4
 
 					vec2 hitBox( vec3 orig, vec3 dir ) {
 						const vec3 box_min = vec3( - 0.5 );
@@ -165,6 +168,37 @@ function init() {
 
 							if ( d > threshold ) {
 
+								if ( refine ) {
+
+									// The surface lies between the previous ray parameter i.e. (t - stepSize)
+									// and the current ray parameter (t). Bisect that interval to localize
+									// the crossing precisely.
+
+									float t0 = max( t - stepSize, bounds.x );
+									float t1 = t;
+
+									for ( int j = 0; j < REFINEMENT_STEPS; j ++ ) {
+
+										float tm = ( t0 + t1 ) * 0.5;
+
+										float dm = sample1( vOrigin + tm * rayDir + 0.5 );
+
+										if ( dm > threshold ) {
+
+											t1 = tm;
+
+										} else {
+
+											t0 = tm;
+
+										}
+
+									}
+
+									p = vOrigin + t1 * rayDir;
+
+								}
+
 								color.rgb = normal( p + 0.5 ) * 0.5 + ( p * 1.5 + 0.25 );
 								color.a = 1.;
 								break;
@@ -186,6 +220,7 @@ function init() {
       cameraPos: { value: new Vector3() },
       threshold: { value: 0.6 },
       steps: { value: 200 },
+      refine: { value: true },
     },
     vertexShader,
     fragmentShader,
@@ -197,16 +232,18 @@ function init() {
 
   //
 
-  const parameters = { threshold: 0.6, steps: 200 };
+  const parameters = { threshold: 0.6, steps: 200, refine: true };
 
   function update() {
     material.uniforms.threshold.value = parameters.threshold;
     material.uniforms.steps.value = parameters.steps;
+    material.uniforms.refine.value = parameters.refine;
   }
 
   const gui = new GUI();
   gui.add(parameters, "threshold", 0, 1, 0.01).onChange(update);
   gui.add(parameters, "steps", 0, 300, 1).onChange(update);
+  gui.add(parameters, "refine").onChange(update);
 
   window.addEventListener("resize", onWindowResize);
 }
