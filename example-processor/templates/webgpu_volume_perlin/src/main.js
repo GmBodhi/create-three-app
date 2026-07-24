@@ -5,6 +5,7 @@ import {
   Break,
   If,
   Loop,
+  select,
   bool,
   vec3,
   vec4,
@@ -102,11 +103,10 @@ function init() {
               const pm = p0.add(p1).mul(0.5).toConst();
               const dm = texture.sample(pm.add(0.5)).r.toConst();
 
-              If(dm.greaterThan(threshold), () => {
-                p1.assign(pm);
-              }).Else(() => {
-                p0.assign(pm);
-              });
+              const isGreater = dm.greaterThan(threshold);
+
+              p1.assign(select(isGreater, pm, p1).uniformFlow());
+              p0.assign(select(isGreater, p0, pm).uniformFlow());
             });
 
             surfacePos.assign(p1);
