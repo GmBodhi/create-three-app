@@ -5814,6 +5814,16 @@
         "/src"
       ]
     },
+    "webgpu_xr_shadows": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webxr_ar_camera_access": {
       "files": {
         "index.html": "src",
