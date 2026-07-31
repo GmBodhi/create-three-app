@@ -34,7 +34,7 @@ let aoPass, traaPass, transparentMesh;
 const params = {
   aoType: "GTAO",
   samples: 16,
-  radius: 0.5,
+  radius: 0.4,
   resolutionScale: 0.5,
   scale: 0.8, // GTAO
   thickness: 1, // GTAO
