@@ -16,6 +16,7 @@ import {
   GridHelper,
   WebGLRenderer,
   AnimationMixer,
+  AnimationClip,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -26,7 +27,14 @@ import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
 const manager = new LoadingManager();
 
-let camera, scene, renderer, stats, object, loader, guiMorphsFolder;
+let camera,
+  scene,
+  renderer,
+  stats,
+  object,
+  loader,
+  guiMorphsFolder,
+  guiAnimationsFolder;
 let mixer;
 
 const timer = new Timer();
@@ -50,6 +58,7 @@ const assets = [
   "exampleWindow",
   "Head_69",
   "morph-translation",
+  "ball_anims_asc_2018",
 ];
 
 const scales = new Map();
@@ -57,6 +66,7 @@ scales.set("warrior/Warrior", 100);
 scales.set("archer/ArcherRi01", 100);
 scales.set("stanford-bunny", 0.001);
 scales.set("Head_69", 100);
+scales.set("ball_anims_asc_2018", 50);
 
 init();
 
@@ -131,9 +141,12 @@ function init() {
   });
 
   guiMorphsFolder = gui.addFolder("Morphs").hide();
+  guiAnimationsFolder = gui.addFolder("Animations").hide();
 }
 
 function loadAsset(asset) {
+  loader.trimAnimationClips = asset === "ball_anims_asc_2018";
+
   loader.load("models/fbx/" + asset + ".fbx", function (group) {
     if (object) {
       object.traverse(function (child) {
@@ -164,11 +177,31 @@ function loadAsset(asset) {
     const scale = scales.get(asset);
     object.scale.setScalar(scale || 1);
 
+    guiAnimationsFolder.children.forEach((child) => child.destroy());
+    guiAnimationsFolder.hide();
+
     if (object.animations && object.animations.length) {
       mixer = new AnimationMixer(object);
 
       const action = mixer.clipAction(object.animations[0]);
       action.play();
+
+      const clips = object.animations;
+      const animationParams = { clip: clips[0].name };
+
+      guiAnimationsFolder.show();
+      guiAnimationsFolder
+        .add(
+          animationParams,
+          "clip",
+          clips.map((clip) => clip.name)
+        )
+        .onChange(function (name) {
+          mixer.stopAllAction();
+
+          const clip = AnimationClip.findByName(clips, name);
+          mixer.clipAction(clip).play();
+        });
     } else {
       mixer = null;
     }
