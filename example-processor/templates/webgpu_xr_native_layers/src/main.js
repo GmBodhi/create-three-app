@@ -17,7 +17,7 @@ import {
 import { HTMLMesh } from "three/addons/interactive/HTMLMesh.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
-let camera, scene, renderer;
+let camera, scene, renderer, renderPipeline;
 let controller1, controller2;
 let controllerGrip1, controllerGrip2;
 
@@ -164,6 +164,7 @@ function init() {
   document.body.appendChild(renderer.domElement);
   renderer.setAnimationLoop(render);
   renderer.xr.enabled = true;
+  renderPipeline = new DirectRenderPipeline(renderer);
 
   //
 
@@ -603,8 +604,6 @@ function handleController(controller) {
 function render() {
   timer.update();
 
-  renderer.xr.renderLayers();
-
   handleController(controller1);
   handleController(controller2);
 
@@ -672,5 +671,5 @@ function render() {
     object.userData.velocity.y -= 9.8 * delta;
   }
 
-  renderer.render(scene, camera);
+  renderPipeline.render(scene, camera);
 }

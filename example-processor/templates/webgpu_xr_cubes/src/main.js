@@ -18,7 +18,7 @@ const rendererParameters = {
 const controllerModelFactory = new XRControllerModelFactory();
 
 let container;
-let camera, scene, raycaster, renderer;
+let camera, scene, raycaster, renderer, renderPipeline;
 
 let room;
 
@@ -126,6 +126,7 @@ function setRenderer(newRenderer, oldRenderer = null) {
   }
 
   renderer = newRenderer;
+  renderPipeline = new DirectRenderPipeline(renderer);
   setupControllers();
 }
 
@@ -266,5 +267,5 @@ function animate() {
     cube.rotation.z += cube.userData.velocity.z * 2 * delta;
   }
 
-  renderer.render(scene, camera);
+  renderPipeline.render(scene, camera);
 }

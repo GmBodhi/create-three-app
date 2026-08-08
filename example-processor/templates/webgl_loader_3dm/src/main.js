@@ -42,7 +42,7 @@ function init() {
   scene.add(directionalLight);
 
   const loader = new Rhino3dmLoader();
-  loader.setLibraryPath("https://cdn.jsdelivr.net/npm/rhino3dm@8.17.0/");
+  loader.setLibraryPath("https://cdn.jsdelivr.net/npm/rhino3dm@8.32.1/");
   loader.load(
     "models/3dm/Rhino_Logo.3dm",
     function (object) {
