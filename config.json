@@ -4031,6 +4031,16 @@
         "/src"
       ]
     },
+    "webgpu_gaussian_splatting": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_generator_building": {
       "files": {
         "index.html": "src",
