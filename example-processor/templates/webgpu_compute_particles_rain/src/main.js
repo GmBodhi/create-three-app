@@ -172,12 +172,11 @@ async function init() {
     .mul(3)
     .exp()
     .mul(0.1);
-  rainMaterial.vertexNode = billboarding({
-    position: positionBuffer.toAttribute(),
-  });
+  rainMaterial.positionNode = positionGeometry.add(
+    positionBuffer.toAttribute()
+  );
+  rainMaterial.vertexNode = billboarding({ horizontalRotation: true });
   rainMaterial.opacity = 0.2;
-  rainMaterial.side = DoubleSide;
-  rainMaterial.forceSinglePass = true;
   rainMaterial.depthWrite = false;
   rainMaterial.depthTest = true;
   rainMaterial.transparent = true;

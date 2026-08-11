@@ -195,8 +195,8 @@ function init() {
 
   // billboarding - follow the camera rotation only horizontally
 
-  flame1Material.vertexNode = billboarding();
-  flame2Material.vertexNode = billboarding();
+  flame1Material.vertexNode = billboarding({ horizontalRotation: true });
+  flame2Material.vertexNode = billboarding({ horizontalRotation: true });
 
   // meshes
 
