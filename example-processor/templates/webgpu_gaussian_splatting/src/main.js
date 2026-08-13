@@ -30,7 +30,7 @@ const sources = {
   },
   lion: {
     name: "Lion (SPZ)",
-    url: "three/examples/models/spz/lion.spz",
+    url: "three/examples/models/spz/lion.v3.spz",
     loader: SPZLoader,
     rotation: new Euler(Math.PI, 0, 0),
     cameraPosition: new Vector3(0, 0.2, 1),
@@ -38,6 +38,19 @@ const sources = {
       author: "Renaud",
       authorUrl: "https://superspl.at/user?id=rohls",
       source: "https://superspl.at/scene/56155c3f",
+      license: "CC Attribution",
+      licenseUrl: "http://creativecommons.org/licenses/by/4.0/",
+    },
+  },
+  tomatoes: {
+    name: "Tomatoes (SPZ v4)",
+    url: "three/examples/models/spz/tomatoes.v4.spz",
+    loader: SPZLoader,
+    cameraPosition: new Vector3(0, 0.35, 1),
+    credit: {
+      author: "Grail",
+      authorUrl: "https://superspl.at/user/grail",
+      source: "https://superspl.at/scene/2826d2c0",
       license: "CC Attribution",
       licenseUrl: "http://creativecommons.org/licenses/by/4.0/",
     },
