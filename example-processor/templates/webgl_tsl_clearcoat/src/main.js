@@ -28,13 +28,12 @@ function init() {
   scene = new Scene();
 
   group = new Group();
-  scene.add(group);
 
   new HDRCubeTextureLoader()
     .setPath("textures/cube/pisaHDR/")
     .load(
       ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"],
-      function (texture) {
+      async function (texture) {
         const geometry = new SphereGeometry(0.8, 64, 32);
 
         const textureLoader = new TextureLoader();
@@ -85,6 +84,8 @@ function init() {
         let mesh = new Mesh(geometry, material);
         mesh.position.x = -1;
         mesh.position.y = 1;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
         group.add(mesh);
 
         // fibers
@@ -99,6 +100,8 @@ function init() {
         mesh = new Mesh(geometry, material);
         mesh.position.x = 1;
         mesh.position.y = 1;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
         group.add(mesh);
 
         // golf
@@ -116,6 +119,8 @@ function init() {
         mesh = new Mesh(geometry, material);
         mesh.position.x = -1;
         mesh.position.y = -1;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
         group.add(mesh);
 
         // clearcoat + normalmap
@@ -134,12 +139,20 @@ function init() {
         mesh = new Mesh(geometry, material);
         mesh.position.x = 1;
         mesh.position.y = -1;
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
         group.add(mesh);
 
         //
 
         scene.background = texture;
         scene.environment = texture;
+
+        // wait until the models can be added to the scene without blocking due to shader compilation
+
+        await renderer.compileAsync(group, camera, scene);
+
+        scene.add(group);
       }
     );
 
@@ -147,14 +160,17 @@ function init() {
 
   particleLight = new Mesh(
     new SphereGeometry(0.05, 8, 8),
-    new MeshBasicMaterial({ color: 0xffffff })
+    new MeshBasicNodeMaterial({ color: 0xffffff })
   );
   scene.add(particleLight);
 
-  particleLight.add(new PointLight(0xffffff, 30));
+  const pointLight = new PointLight(0xffffff, 30);
+  pointLight.castShadow = true;
+  particleLight.add(pointLight);
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setNodesHandler(new WebGLNodesHandler());
+  renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
