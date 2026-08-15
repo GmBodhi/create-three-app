@@ -6,7 +6,7 @@ import {
   Scene,
   Color,
   Fog,
-  DirectionalLight,
+  SunLight,
   HemisphereLight,
   Mesh,
   PlaneGeometry,
@@ -14,7 +14,6 @@ import {
   InstancedMesh,
   AnimationMixer,
   WebGLRenderer,
-  VSMShadowMap,
 } from "three";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -50,25 +49,19 @@ function init() {
 
   scene.fog = new Fog(0x99ddff, 5000, 10000);
 
-  const light = new DirectionalLight(0xffffff, 1);
+  const light = new SunLight(0xffffff, 2);
 
   light.position.set(200, 1000, 50);
 
   light.castShadow = true;
 
-  light.shadow.camera.left = -5000;
-  light.shadow.camera.right = 5000;
-  light.shadow.camera.top = 5000;
-  light.shadow.camera.bottom = -5000;
-  light.shadow.camera.far = 2000;
+  light.shadow.camera.far = 10000;
 
-  light.shadow.bias = -0.01;
-
-  light.shadow.camera.updateProjectionMatrix();
+  light.shadow.mapSize.setScalar(2048);
 
   scene.add(light);
 
-  const hemi = new HemisphereLight(0x99ddff, 0x669933, 1 / 3);
+  const hemi = new HemisphereLight(0x99ddff, 0x669933, 0.5);
 
   scene.add(hemi);
 
@@ -127,7 +120,6 @@ function init() {
   renderer.setAnimationLoop(animate);
   document.body.appendChild(renderer.domElement);
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = VSMShadowMap;
   //
 
   stats = new Stats();

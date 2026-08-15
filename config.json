@@ -1504,6 +1504,16 @@
         "/src"
       ]
     },
+    "webgl_lights_sunlight": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_lines_colors": {
       "files": {
         "index.html": "src",

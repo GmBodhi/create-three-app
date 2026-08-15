@@ -9,8 +9,7 @@ import {
   Color,
   Fog,
   Group,
-  DirectionalLight,
-  CameraHelper,
+  SunLight,
   WebGLRenderer,
   ACESFilmicToneMapping,
   PCFShadowMap,
@@ -35,7 +34,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 
 let scene, renderer, camera, floor, orbitControls;
-let group, followGroup, model, skeleton, mixer, timer;
+let group, model, skeleton, mixer, timer;
 
 let actions;
 
@@ -84,22 +83,11 @@ function init() {
   group = new Group();
   scene.add(group);
 
-  followGroup = new Group();
-  scene.add(followGroup);
-
-  const dirLight = new DirectionalLight(0xffffff, 5);
-  dirLight.position.set(-2, 5, -3);
-  dirLight.castShadow = true;
-  const cam = dirLight.shadow.camera;
-  cam.top = cam.right = 2;
-  cam.bottom = cam.left = -2;
-  cam.near = 3;
-  cam.far = 8;
-  dirLight.shadow.mapSize.set(1024, 1024);
-  followGroup.add(dirLight);
-  followGroup.add(dirLight.target);
-
-  //scene.add( new CameraHelper( cam ) );
+  const sunLight = new SunLight(0xffffff, 5);
+  sunLight.position.set(-2, 5, -3);
+  sunLight.castShadow = true;
+  sunLight.shadow.camera.far = 20;
+  scene.add(sunLight);
 
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -316,7 +304,6 @@ function updateCharacter(delta) {
     group.quaternion.rotateTowards(rotate, controls.rotateSpeed);
 
     orbitControls.target.copy(position).add({ x: 0, y: 1, z: 0 });
-    followGroup.position.copy(position);
 
     // Move the floor without any limit
     const dx = position.x - floor.position.x;

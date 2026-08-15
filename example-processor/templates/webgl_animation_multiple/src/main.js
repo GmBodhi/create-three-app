@@ -7,8 +7,7 @@ import {
   Color,
   Fog,
   HemisphereLight,
-  DirectionalLight,
-  CameraHelper,
+  SunLight,
   Mesh,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -55,18 +54,11 @@ function init() {
   hemiLight.position.set(0, 20, 0);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 3);
-  dirLight.position.set(-3, 10, -10);
-  dirLight.castShadow = true;
-  dirLight.shadow.camera.top = 4;
-  dirLight.shadow.camera.bottom = -4;
-  dirLight.shadow.camera.left = -4;
-  dirLight.shadow.camera.right = 4;
-  dirLight.shadow.camera.near = 0.1;
-  dirLight.shadow.camera.far = 40;
-  scene.add(dirLight);
-
-  // scene.add( new CameraHelper( dirLight.shadow.camera ) );
+  const sunLight = new SunLight(0xffffff, 3);
+  sunLight.position.set(-3, 10, -10);
+  sunLight.castShadow = true;
+  sunLight.shadow.camera.far = 20;
+  scene.add(sunLight);
 
   // ground
 

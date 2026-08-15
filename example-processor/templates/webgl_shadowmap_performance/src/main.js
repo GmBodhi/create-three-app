@@ -7,7 +7,7 @@ import {
   Color,
   Fog,
   AmbientLight,
-  DirectionalLight,
+  SunLight,
   WebGLRenderer,
   PCFShadowMap,
   PlaneGeometry,
@@ -25,9 +25,6 @@ import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.j
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
-
-const SHADOW_MAP_WIDTH = 2048,
-  SHADOW_MAP_HEIGHT = 1024;
 
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;
@@ -71,21 +68,12 @@ function init() {
   const ambient = new AmbientLight(0xffffff);
   scene.add(ambient);
 
-  const light = new DirectionalLight(0xffffff, 3);
-  light.position.set(0, 1500, 1000);
-  light.castShadow = true;
-  light.shadow.camera.top = 2000;
-  light.shadow.camera.bottom = -2000;
-  light.shadow.camera.left = -2000;
-  light.shadow.camera.right = 2000;
-  light.shadow.camera.near = 1200;
-  light.shadow.camera.far = 2500;
-  light.shadow.bias = 0.0001;
-
-  light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
-  light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
-
-  scene.add(light);
+  const sunLight = new SunLight(0xffffff, 3);
+  sunLight.position.set(0, 1500, 1000);
+  sunLight.castShadow = true;
+  sunLight.shadow.camera.far = FAR;
+  sunLight.shadow.normalBias = 1;
+  scene.add(sunLight);
 
   createScene();
 

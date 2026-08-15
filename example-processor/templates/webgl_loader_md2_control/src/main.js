@@ -7,8 +7,7 @@ import {
   Color,
   Fog,
   AmbientLight,
-  DirectionalLight,
-  CameraHelper,
+  SunLight,
   TextureLoader,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -74,24 +73,11 @@ function init() {
 
   scene.add(new AmbientLight(0x666666, 3));
 
-  const light = new DirectionalLight(0xffffff, 7);
-  light.position.set(200, 450, 500);
-
-  light.castShadow = true;
-
-  light.shadow.mapSize.width = 1024;
-  light.shadow.mapSize.height = 512;
-
-  light.shadow.camera.near = 100;
-  light.shadow.camera.far = 1200;
-
-  light.shadow.camera.left = -1000;
-  light.shadow.camera.right = 1000;
-  light.shadow.camera.top = 350;
-  light.shadow.camera.bottom = -350;
-
-  scene.add(light);
-  // scene.add( new CameraHelper( light.shadow.camera ) );
+  const sunLight = new SunLight(0xffffff, 7);
+  sunLight.position.set(200, 450, 500);
+  sunLight.castShadow = true;
+  sunLight.shadow.camera.far = 2000;
+  scene.add(sunLight);
 
   //  GROUND
 
@@ -217,7 +203,6 @@ function init() {
 
     const gyro = new Gyroscope();
     gyro.add(camera);
-    gyro.add(light, light.target);
 
     characters[Math.floor(nSkins / 2)].root.add(gyro);
   };

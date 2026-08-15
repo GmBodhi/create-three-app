@@ -12,7 +12,7 @@ import {
   Vector3,
   PerspectiveCamera,
   Scene,
-  DirectionalLight,
+  SunLight,
   WebGLRenderer,
   ACESFilmicToneMapping,
   EquirectangularReflectionMapping,
@@ -28,7 +28,6 @@ import {
   RGBAFormat,
   UnsignedByteType,
   VSMShadowMap,
-  CameraHelper,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -110,7 +109,7 @@ async function init() {
 
   scene = new Scene();
 
-  sun = new DirectionalLight(0xffffff, 4.0);
+  sun = new SunLight(0xffffff, 4.0);
   sun.position.set(-1, 2.6, 1.4);
   scene.add(sun);
 
@@ -339,21 +338,12 @@ function addShadow(v) {
   if (v) {
     renderer.shadowMap.type = VSMShadowMap;
     const shadow = sun.shadow;
-    shadow.mapSize.width = shadow.mapSize.height = 2048;
     shadow.radius = 2;
     shadow.bias = -0.0005;
-    const shadowCam = shadow.camera,
-      s = 5;
-    shadowCam.near = 0.1;
-    shadowCam.far = 6;
-    shadowCam.right = shadowCam.top = s;
-    shadowCam.left = shadowCam.bottom = -s;
+    shadow.camera.far = 6;
   } else {
     if (sun.shadow) sun.shadow.dispose();
   }
-
-  // debug shadow
-  //scene.add(  new CameraHelper(shadowCam) );
 }
 
 // function smoothWater() {
