@@ -4781,6 +4781,16 @@
         "/src"
       ]
     },
+    "webgpu_oit": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_parallax_uv": {
       "files": {
         "index.html": "src",
