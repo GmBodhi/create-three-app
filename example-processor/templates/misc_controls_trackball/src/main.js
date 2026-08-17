@@ -24,6 +24,7 @@ let perspectiveCamera, orthographicCamera, controls, scene, renderer, stats;
 
 const params = {
   orthographicCamera: false,
+  multiTouchRoll: false,
 };
 
 const frustumSize = 400;
@@ -108,6 +109,13 @@ function init() {
       createControls(value ? orthographicCamera : perspectiveCamera);
     });
 
+  gui
+    .add(params, "multiTouchRoll")
+    .name("multi touch roll")
+    .onChange(function (value) {
+      controls.multiTouchRoll = value;
+    });
+
   //
 
   window.addEventListener("resize", onWindowResize);
@@ -121,6 +129,8 @@ function createControls(camera) {
   controls.rotateSpeed = 1.0;
   controls.zoomSpeed = 1.2;
   controls.panSpeed = 0.8;
+
+  controls.multiTouchRoll = params.multiTouchRoll;
 
   controls.keys = ["KeyA", "KeyS", "KeyD"];
 }
