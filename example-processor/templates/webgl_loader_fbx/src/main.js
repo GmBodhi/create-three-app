@@ -29,6 +29,7 @@ const manager = new LoadingManager();
 let camera,
   scene,
   renderer,
+  controls,
   stats,
   object,
   loader,
@@ -118,7 +119,10 @@ function init() {
   renderer.shadowMap.enabled = true;
   container.appendChild(renderer.domElement);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.enableZoom = false;
+  controls.enablePan = false;
+  controls.enableDamping = true;
   controls.target.set(0, 100, 0);
   controls.update();
 
@@ -244,6 +248,8 @@ function animate() {
   const delta = timer.getDelta();
 
   if (mixer) mixer.update(delta);
+
+  controls.update();
 
   renderer.render(scene, camera);
 
