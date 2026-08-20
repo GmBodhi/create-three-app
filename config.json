@@ -4041,7 +4041,7 @@
         "/src"
       ]
     },
-    "webgpu_gaussian_splatting": {
+    "webgpu_gaussian_splat": {
       "files": {
         "index.html": "src",
         "main.js": "src",

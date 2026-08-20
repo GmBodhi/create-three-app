@@ -5,7 +5,7 @@ import * as THREE from "three/webgpu";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SPLATLoader } from "three/addons/loaders/SPLATLoader.js";
 import { SPZLoader } from "three/addons/loaders/SPZLoader.js";
-import { GaussianSplatMesh } from "three/addons/objects/GaussianSplatMesh.js";
+import { GaussianSplat } from "three/addons/objects/GaussianSplat.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer, controls, splats, splatRoot;
@@ -110,7 +110,7 @@ async function loadSplatSource(sourceKey) {
 
   disposeCurrentSplats();
 
-  splats = new GaussianSplatMesh(splatData, { autoSort: false });
+  splats = new GaussianSplat(splatData, { autoSort: false });
   splatRoot = splats;
 
   if (source.rotation !== undefined) splatRoot.rotation.copy(source.rotation);
