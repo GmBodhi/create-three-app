@@ -3741,6 +3741,16 @@
         "/src"
       ]
     },
+    "webgpu_clipping_stencil": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compile_async": {
       "files": {
         "index.html": "src",

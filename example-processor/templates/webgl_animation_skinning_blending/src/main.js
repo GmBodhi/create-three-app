@@ -7,7 +7,6 @@ import {
   Color,
   Fog,
   HemisphereLight,
-  SunLight,
   Mesh,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -19,6 +18,7 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 let scene, renderer, camera, stats;

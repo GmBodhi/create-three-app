@@ -9,7 +9,6 @@ import {
   Color,
   Fog,
   Group,
-  SunLight,
   WebGLRenderer,
   ACESFilmicToneMapping,
   PCFShadowMap,
@@ -27,6 +26,7 @@ import {
   AnimationMixer,
 } from "three";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 

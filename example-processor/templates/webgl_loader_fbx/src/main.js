@@ -8,7 +8,6 @@ import {
   Color,
   Fog,
   HemisphereLight,
-  SunLight,
   Mesh,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -20,6 +19,7 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

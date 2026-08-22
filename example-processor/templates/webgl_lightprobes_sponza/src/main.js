@@ -9,10 +9,10 @@ import {
   WebGLRenderer,
   ACESFilmicToneMapping,
   LoadingManager,
-  SunLight,
   MathUtils,
 } from "three";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";

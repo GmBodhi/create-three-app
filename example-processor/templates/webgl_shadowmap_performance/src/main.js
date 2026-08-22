@@ -7,7 +7,6 @@ import {
   Color,
   Fog,
   AmbientLight,
-  SunLight,
   WebGLRenderer,
   PCFShadowMap,
   PlaneGeometry,
@@ -21,6 +20,7 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";

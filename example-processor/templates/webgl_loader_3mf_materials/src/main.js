@@ -6,7 +6,6 @@ import {
   Fog,
   PerspectiveCamera,
   HemisphereLight,
-  SunLight,
   LoadingManager,
   Mesh,
   PlaneGeometry,
@@ -15,6 +14,7 @@ import {
   PCFShadowMap,
 } from "three";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ThreeMFLoader } from "three/addons/loaders/3MFLoader.js";
 

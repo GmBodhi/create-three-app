@@ -6,7 +6,6 @@ import {
   Scene,
   Color,
   Fog,
-  SunLight,
   HemisphereLight,
   Mesh,
   PlaneGeometry,
@@ -16,6 +15,7 @@ import {
   WebGLRenderer,
 } from "three";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import Stats from "three/addons/libs/stats.module.js";

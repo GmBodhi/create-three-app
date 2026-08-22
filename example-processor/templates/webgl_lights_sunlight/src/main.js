@@ -10,7 +10,6 @@ import {
   ACESFilmicToneMapping,
   Timer,
   PMREMGenerator,
-  SunLight,
   Mesh,
   PlaneGeometry,
   MeshStandardMaterial,
@@ -19,6 +18,7 @@ import {
   BoxGeometry,
 } from "three";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
 import { Sky } from "three/addons/objects/Sky.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -58,7 +58,7 @@ function tintCascades(shader) {
 					#if defined( USE_SHADOWMAP ) && NUM_SUN_LIGHT_SHADOWS > 0
 
 						float cascade = 0.0;
-						for ( int i = 0; i < 4; i ++ ) cascade += step( sunShadowCascade[ i ].y, vSunShadowWorldPosition.w );
+						for ( int i = 0; i < 2; i ++ ) cascade += step( sunShadowCascade[ i ].y, vSunShadowWorldPosition.w );
 						gl_FragColor.rgb *= 0.7 + 0.3 * cos( cascade * 1.2 + vec3( 0.0, 4.2, 2.1 ) );
 
 					#endif

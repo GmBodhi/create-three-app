@@ -7,7 +7,6 @@ import {
   Color,
   Fog,
   HemisphereLight,
-  SunLight,
   Mesh,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -17,6 +16,7 @@ import {
   Matrix4,
 } from "three";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import * as SkeletonUtils from "three/addons/utils/SkeletonUtils.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";

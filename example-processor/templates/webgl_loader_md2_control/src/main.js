@@ -7,7 +7,6 @@ import {
   Color,
   Fog,
   AmbientLight,
-  SunLight,
   TextureLoader,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -20,6 +19,7 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { MD2CharacterComplex } from "three/addons/misc/MD2CharacterComplex.js";
 import { Gyroscope } from "three/addons/misc/Gyroscope.js";

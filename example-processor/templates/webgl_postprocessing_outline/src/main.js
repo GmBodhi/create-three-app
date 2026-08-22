@@ -9,7 +9,6 @@ import {
   Scene,
   PerspectiveCamera,
   AmbientLight,
-  SunLight,
   Mesh,
   MeshPhongMaterial,
   SphereGeometry,
@@ -24,6 +23,7 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
