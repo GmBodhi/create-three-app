@@ -137,31 +137,24 @@ async function init() {
     countY: 7,
     countZ: 7,
     bounces: 1,
-    lightAzimuth: -45,
+    lightAzimuth: 135,
     lightElevation: 55,
     lightIntensity: 100.0,
     shadows: true,
   };
 
   function updateLightPosition() {
-    const azimuth = MathUtils.degToRad(params.lightAzimuth);
     const elevation = MathUtils.degToRad(params.lightElevation);
-    const radius = lightBaseDistance;
-    const horizontal = Math.cos(elevation) * radius;
-    const vertical = Math.sin(elevation) * radius;
+    const azimuth = MathUtils.degToRad(params.lightAzimuth);
 
-    dirLight.position.set(
-      modelCenter.x + Math.cos(azimuth) * horizontal,
-      targetY + vertical,
-      modelCenter.z + Math.sin(azimuth) * horizontal
-    );
-    dirLight.target.position.set(modelCenter.x, targetY, modelCenter.z);
-    dirLight.target.updateMatrixWorld();
-
-    const phi = MathUtils.degToRad(90 - params.lightElevation);
-    const theta = MathUtils.degToRad(params.lightAzimuth);
-    sun.setFromSphericalCoords(1, phi, theta);
+    sun.setFromSphericalCoords(1, Math.PI / 2 - elevation, azimuth);
     sky.sunPosition.value.copy(sun);
+
+    dirLight.target.position.set(modelCenter.x, targetY, modelCenter.z);
+    dirLight.position
+      .copy(dirLight.target.position)
+      .addScaledVector(sun, lightBaseDistance);
+    dirLight.target.updateMatrixWorld();
   }
 
   function scheduleRebake() {
