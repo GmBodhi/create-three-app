@@ -282,9 +282,7 @@ async function init() {
     environmentNode: hdrTexture,
     envImportanceSampling: params.ssr.envImportanceSampling,
     binaryRefine: params.ssr.binaryRefine,
-  });
-  ssrNode.setEnvMap(hdrTexture);
-  ssrNode.toInspector("SSR");
+  }).toInspector("SSR");
 
   temporalReprojectNode = temporalReproject(
     ssrNode,
