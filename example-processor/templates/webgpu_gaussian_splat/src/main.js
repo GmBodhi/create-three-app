@@ -8,10 +8,18 @@ import { SPZLoader } from "three/addons/loaders/SPZLoader.js";
 import { GaussianSplat } from "three/addons/objects/GaussianSplat.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
-let camera, scene, renderer, controls, splats, splatRoot;
+let camera, scene, renderer, controls, splats, splatRoot, hitMarker;
 ColorManagement.workingColorSpace = SRGBColorSpace;
 
 const zeroVector = new Vector3();
+const raycaster = new Raycaster();
+const pointer = new Vector2();
+
+// for raycast testing
+const CLICK_DRAG_THRESHOLD = 4;
+const HIT_MARKER_SIZE_RATIO = 1 / 50;
+let pointerDownX = 0;
+let pointerDownY = 0;
 
 const sources = {
   millipede: {
@@ -99,9 +107,45 @@ async function init() {
       await loadSplatSource(getSourceKeyByName(value));
     });
 
+  hitMarker = new Mesh(
+    new SphereGeometry(1, 16, 12),
+    new MeshBasicMaterial({ color: 0xff0000, depthTest: false })
+  );
+  hitMarker.visible = false;
+  scene.add(hitMarker);
+
   await loadSplatSource(getSourceKeyByName(params.source));
 
   window.addEventListener("resize", onWindowResize);
+  renderer.domElement.addEventListener("pointerdown", onPointerDown);
+  renderer.domElement.addEventListener("click", onClick);
+}
+
+function onPointerDown(event) {
+  pointerDownX = event.clientX;
+  pointerDownY = event.clientY;
+}
+
+function onClick(event) {
+  // check drag distance
+  const dx = event.clientX - pointerDownX;
+  const dy = event.clientY - pointerDownY;
+  if (Math.sqrt(dx * dx + dy * dy) > CLICK_DRAG_THRESHOLD) {
+    return;
+  }
+
+  pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
+  pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  raycaster.setFromCamera(pointer, camera);
+
+  const hit = raycaster.intersectObject(splatRoot, true)[0];
+  if (hit) {
+    hitMarker.position.copy(hit.point);
+    hitMarker.visible = true;
+  } else {
+    hitMarker.visible = false;
+  }
 }
 
 async function loadSplatSource(sourceKey) {
@@ -118,8 +162,24 @@ async function loadSplatSource(sourceKey) {
   scene.add(splatRoot);
 
   fitCameraToSplats(splats, source);
+  updateHitMarkerSize(splats);
 
   updateLicenseInfo(source);
+}
+
+function getWorldBoundingSphere(mesh) {
+  mesh.updateWorldMatrix(true, false);
+
+  return mesh.splatGeometry.boundingSphere
+    .clone()
+    .applyMatrix4(mesh.matrixWorld);
+}
+
+function updateHitMarkerSize(mesh) {
+  const sphere = getWorldBoundingSphere(mesh);
+  hitMarker.scale.setScalar(
+    Math.max(sphere.radius * HIT_MARKER_SIZE_RATIO, 0.0001)
+  );
 }
 
 function updateLicenseInfo(source) {
@@ -162,11 +222,7 @@ function disposeCurrentSplats() {
 }
 
 function fitCameraToSplats(mesh, source) {
-  mesh.updateWorldMatrix(true, false);
-
-  const sphere = mesh.splatGeometry.boundingSphere
-    .clone()
-    .applyMatrix4(mesh.matrixWorld);
+  const sphere = getWorldBoundingSphere(mesh);
   const radius = Math.max(sphere.radius, 0.01);
   const distance = radius / Math.sin(MathUtils.degToRad(camera.fov) * 0.5);
 

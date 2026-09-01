@@ -5834,6 +5834,26 @@
         "/src"
       ]
     },
+    "webgpu_vxgi": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_vxgi_sponza": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_water": {
       "files": {
         "index.html": "src",
