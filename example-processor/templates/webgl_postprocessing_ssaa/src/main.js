@@ -29,7 +29,7 @@ let cameraO, ssaaRenderPassO;
 let gui, stats;
 
 const params = {
-  sampleLevel: 4,
+  sampleLevel: 3,
   unbiased: true,
   camera: "perspective",
   clearColor: "black",
@@ -158,7 +158,6 @@ function init() {
   // postprocessing
 
   composer = new EffectComposer(renderer);
-  composer.setPixelRatio(1); // ensure pixel ratio is always 1 for performance reasons
   ssaaRenderPassP = new SSAARenderPass(scene, cameraP);
   composer.addPass(ssaaRenderPassP);
   ssaaRenderPassO = new SSAARenderPass(scene, cameraO);
@@ -176,7 +175,7 @@ function onWindowResize() {
 
   cameraP.aspect = aspect;
   cameraP.setViewOffset(width, height, params.viewOffsetX, 0, width, height);
-  cameraO.updateProjectionMatrix();
+  cameraP.updateProjectionMatrix();
 
   cameraO.left = -height * aspect;
   cameraO.right = height * aspect;
