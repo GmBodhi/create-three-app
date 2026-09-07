@@ -1,27 +1,23 @@
 import "./style.css"; // For webpack support
 
+import * as THREE from "three/webgpu";
 import {
-  Color,
-  MathUtils,
-  Scene,
-  Fog,
-  PerspectiveCamera,
-  WebGLRenderer,
-  ACESFilmicToneMapping,
-  Timer,
-  PMREMGenerator,
-  Mesh,
-  PlaneGeometry,
-  MeshStandardMaterial,
-  Object3D,
-  InstancedMesh,
-  BoxGeometry,
-} from "three";
+  cos,
+  float,
+  output,
+  positionView,
+  rangeFogFactor,
+  reference,
+  step,
+  vec3,
+  vec4,
+} from "three/tsl";
 
-import { SunLight } from "three/addons/lights/SunLight.js";
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
-import { Sky } from "three/addons/objects/Sky.js";
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+import { SkyMesh } from "three/addons/objects/SkyMesh.js";
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 
 let renderer,
   scene,
@@ -47,29 +43,31 @@ const _sunDay = new Color(0xfff2e3),
 const _fogDay = new Color(0xd8e2ea),
   _fogDusk = new Color(0xd9a273);
 
-// tints each fragment by its cascade, using the data of the built-in sun shadow shader
+// tints each fragment by its cascade, using the data of the built-in sun shadow node
 
-function tintCascades(shader) {
-  shader.fragmentShader = shader.fragmentShader.replace(
-    "#include <opaque_fragment>",
-    /* glsl */ `
-					#include <opaque_fragment>
+function tintCascades() {
+  const cascadeData = reference("_cascadeData", "vec4", sunLight.shadow);
+  const viewDepth = positionView.z.negate();
 
-					#if defined( USE_SHADOWMAP ) && NUM_SUN_LIGHT_SHADOWS > 0
+  let cascade = float(0);
 
-						float cascade = 0.0;
+  for (let i = 0; i < sunLight.shadow.getViewportCount(); i++) {
+    cascade = cascade.add(step(cascadeData.element(i).y, viewDepth));
+  }
 
-						for ( int i = 0; i < SUN_LIGHT_CASCADES; i ++ ) {
+  const tint = cos(cascade.mul(1.2).add(vec3(0, 4.2, 2.1)))
+    .mul(0.3)
+    .add(0.7);
 
-							cascade += step( sunShadowCascade[ i ].y, vSunShadowWorldPosition.w );
+  // tint before the fog by wrapping the scene fog
 
-						}
-
-						gl_FragColor.rgb *= 0.7 + 0.3 * cos( cascade * 1.2 + vec3( 0.0, 4.2, 2.1 ) );
-
-					#endif
-				`
+  const fogColor = reference("color", "color", scene.fog);
+  const fogFactor = rangeFogFactor(
+    reference("near", "float", scene.fog),
+    reference("far", "float", scene.fog)
   );
+
+  return vec4(fogFactor.mix(output.rgb.mul(tint), fogColor), output.a);
 }
 
 init();
@@ -90,7 +88,7 @@ function updateSun() {
 
   scene.fog.color.lerpColors(_fogDusk, _fogDay, daylight);
 
-  sky.material.uniforms.sunPosition.value.copy(sunLight.position);
+  sky.sunPosition.value.copy(sunLight.position);
 
   // light the scene with the sky itself
 
@@ -117,13 +115,15 @@ function init() {
   camera.position.set(60, 8, 0);
   camera.lookAt(-60, 8, 0);
 
-  renderer = new WebGLRenderer({ antialias: true });
+  renderer = new WebGPURenderer({ antialias: true });
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.shadowMap.enabled = true;
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.6;
+  renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
   controls = new FirstPersonControls(camera, renderer.domElement);
@@ -136,13 +136,14 @@ function init() {
 
   // sky and sun
 
-  sky = new Sky();
+  sky = new SkyMesh();
   sky.scale.setScalar(9000);
   scene.add(sky);
 
-  sky.material.uniforms.turbidity.value = 3;
-  sky.material.uniforms.rayleigh.value = 2;
-  sky.material.uniforms.showSunDisc.value = false; // the sun is represented by the light
+  sky.turbidity.value = 3;
+  sky.rayleigh.value = 2;
+  sky.cloudSpeed.value = 0; // keep the clouds static, like the WebGL version
+  sky.showSunDisc.value = false; // the sun is represented by the light
 
   sunLight = new SunLight();
   sunLight.castShadow = true;
@@ -151,7 +152,7 @@ function init() {
   sunLight.shadow.normalBias = 0.05;
   scene.add(sunLight);
 
-  updateSun();
+  renderer.init().then(updateSun);
 
   // ground
 
@@ -220,20 +221,13 @@ function init() {
 
   // gui
 
-  const materials = [ground.material, posts.material, towers.material];
-
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Sun Light");
 
   gui
     .add(params, "showCascades")
     .name("show cascades")
     .onChange(function (value) {
-      for (const material of materials) {
-        if (value) material.onBeforeCompile = tintCascades;
-        else delete material.onBeforeCompile;
-
-        material.needsUpdate = true;
-      }
+      scene.fogNode = value ? tintCascades() : null;
     });
 
   gui

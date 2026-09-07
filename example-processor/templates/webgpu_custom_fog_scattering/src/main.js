@@ -5,6 +5,7 @@ import {
   densityFogFactor,
   mix,
   pass,
+  positionLocal,
   reference,
   uniform,
   vec2,
@@ -13,7 +14,10 @@ import { gaussianBlur } from "three/addons/tsl/display/GaussianBlurNode.js";
 
 import { FirstPersonControls } from "three/addons/controls/FirstPersonControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
-import { TreeGenerator } from "three/addons/generators/TreeGenerator.js";
+import {
+  TreeGenerator,
+  createTreeMaterial,
+} from "three/addons/generators/TreeGenerator.js";
 
 let camera, scene, renderer, renderPipeline, controls;
 
@@ -25,7 +29,7 @@ const params = {
 
 init();
 
-async function init() {
+function init() {
   camera = new PerspectiveCamera(
     55,
     window.innerWidth / window.innerHeight,
@@ -41,39 +45,56 @@ async function init() {
 
   scene.fog = new FogExp2(0xc6cace, 0.11);
   scene.background = new Color(0xc6cace);
+  updateFogRange();
 
-  // everything is a flat black silhouette — the fog and the scattering blur
-  // do all the shaping, so no lights are needed ( MeshBasicMaterial is unlit )
+  // Soft sky light reveals the bark nearby; the distant trees fade into silhouettes.
 
-  const material = new MeshBasicMaterial({ color: 0x000000 });
+  const treeMaterial = createTreeMaterial({
+    barkColor: 0x302c28,
+    barkScale: new Vector3(35, 2, 35),
+  });
+  treeMaterial.colorNode = treeMaterial.colorNode.mul(
+    positionLocal.y.smoothstep(0, 0.5)
+  );
 
-  // a few seeded variants of a tall scots pine: a clean bole rising into a
-  // high, open crown of fine bare branches
+  scene.add(new HemisphereLight(0xdce6ed, 0x292521, 1.5));
+
+  const skyLight = new DirectionalLight(0xdce6ed, 2);
+  skyLight.position.set(-3, 8, 5);
+  scene.add(skyLight);
+
+  // Bare deciduous trees with uneven crowns, gently curved trunks and fine twigs.
 
   const variants = [];
 
-  const generator = new TreeGenerator(material);
+  const generator = new TreeGenerator(treeMaterial)
+    .setTaper(0.94)
+    .setTaperCurve(0.85)
+    .setLevels(5)
+    .setBranchAngle([62, 46, 38, 32])
+    .setAngleVariance(24)
+    .setLengthRatio(0.62)
+    .setLengthVariance(0.3)
+    .setBranchLengthFalloff(0.45)
+    .setMinLength(0.04)
+    .setDroop(0.08)
+    .setUpPull(0.18)
+    .setGnarl([0.045, 0.13, 0.2, 0.26, 0.3])
+    .setSectionLength(0.26)
+    .setRadialSegments(7)
+    .setRadiusExponent(2)
+    .setMinRadius(0.0007)
+    .setRootFlare(0.5)
+    .setFlareFrac(0.12)
+    .setChildStart(0.22);
 
-  for (let v = 0; v < 6; v++) {
+  for (let v = 0; v < 10; v++) {
     const mesh = generator
       .setSeed(v + 1)
-      .setTrunkLength(2.6 + v * 0.3) // the crowns ride high in the fog
-      .setTrunkRadius(0.06)
-      .setTaper(0.28) // slender, tapers slowly
-      .setLevels(4)
-      .setChildren([7, 5, 4]) // a wide whorl of limbs ramifying into many fine twigs
-      .setBranchAngle([55, 50, 46]) // a rounded crown that turns up
-      .setAngleVariance(22)
-      .setLengthRatio(0.46) // short crown limbs ( a modest pine crown )
-      .setMinLength(0.04)
-      .setDroop(0.05)
-      .setUpPull(0.42) // crown branches reach up toward the light
-      .setGnarl([0, 0.14, 0.24, 0.34]) // dead-straight trunk, wispier twigs
-      .setSectionLength(0.34)
-      .setRadialSegments(7)
-      .setRadiusExponent(2.5) // slender bole, whippy thin twigs
-      .setMinRadius(0.0023) // very fine twigs
-      .setTrunkClear(0.72) // tall clean bole; the crown sits only at the top
+      .setTrunkLength(3.4 + v * 0.16)
+      .setTrunkRadius(0.065 + v * 0.004)
+      .setChildren([7 + (v % 3), 4, 3, 1])
+      .setTrunkClear(0.38 + (v % 4) * 0.05)
       .build();
 
     variants.push(mesh.geometry);
@@ -81,6 +102,8 @@ async function init() {
 
   const placements = variants.map(() => []);
 
+  MathUtils.seededRandom(25);
+  const random = MathUtils.seededRandom;
   const dummy = new Object3D();
   const cols = 13,
     rows = 12,
@@ -88,25 +111,21 @@ async function init() {
 
   for (let i = 0; i < cols; i++) {
     for (let j = 0; j < rows; j++) {
-      const v = Math.floor(Math.random() * variants.length);
+      const v = Math.floor(random() * variants.length);
 
-      const x =
-        (i - cols / 2) * spacing + (Math.random() - 0.5) * spacing * 0.8;
+      const x = (i - cols / 2) * spacing + (random() - 0.5) * spacing * 1.4;
       const z =
-        j * spacing -
-        rows * spacing +
-        4.2 +
-        (Math.random() - 0.5) * spacing * 0.8;
+        j * spacing - rows * spacing + 4.2 + (random() - 0.5) * spacing * 1.4;
 
       dummy.position.set(x, 0, z);
 
-      const scale = 0.85 + Math.random() * 0.4;
+      const scale = 0.7 + random() * 0.65;
       dummy.rotation.set(
-        (Math.random() - 0.5) * 0.05,
-        Math.random() * Math.PI * 2,
-        (Math.random() - 0.5) * 0.05
-      ); // slight lean
-      dummy.scale.set(scale, scale * (0.9 + Math.random() * 0.3), scale);
+        (random() - 0.5) * 0.08,
+        random() * Math.PI * 2,
+        (random() - 0.5) * 0.08
+      );
+      dummy.scale.set(scale, scale * (0.85 + random() * 0.3), scale);
       dummy.updateMatrix();
 
       placements[v].push(dummy.matrix.clone());
@@ -115,7 +134,7 @@ async function init() {
 
   variants.forEach((geometry, v) => {
     const list = placements[v];
-    const mesh = new InstancedMesh(geometry, material, list.length);
+    const mesh = new InstancedMesh(geometry, treeMaterial, list.length);
     for (let k = 0; k < list.length; k++) mesh.setMatrixAt(k, list[k]);
     mesh.instanceMatrix.needsUpdate = true;
     scene.add(mesh);
@@ -124,10 +143,10 @@ async function init() {
   // a couple of dominant trunks close to the camera to anchor the depth
 
   [
-    [-1.1, 4.9, 1.5, 1.1],
-    [1.5, 4, 1.2, 0.3],
-  ].forEach(([x, z, s, ry]) => {
-    const hero = new Mesh(variants[variants.length - 1], material);
+    [-1.1, 4.9, 1.25, 1.1, 8],
+    [1.5, 4, 1.1, 0.3, 5],
+  ].forEach(([x, z, s, ry, v]) => {
+    const hero = new Mesh(variants[v], treeMaterial);
     hero.position.set(x, 0, z);
     hero.rotation.y = ry;
     hero.scale.setScalar(s);
@@ -136,9 +155,10 @@ async function init() {
 
   // ground
 
+  const groundMaterial = new MeshBasicMaterial({ color: 0x000000 });
   const ground = new Mesh(
     new PlaneGeometry(600, 600).rotateX(-Math.PI / 2),
-    material
+    groundMaterial
   );
   scene.add(ground);
 
@@ -155,7 +175,7 @@ async function init() {
 
   controls = new FirstPersonControls(camera, renderer.domElement);
   controls.movementSpeed = 2;
-  controls.lookSpeed = 0.1;
+  controls.lookSpeed = 0.2;
   controls.lookAt(-0.2, 1.7, -8);
 
   renderPipeline = new RenderPipeline(renderer);
@@ -191,22 +211,28 @@ async function init() {
   // gui
 
   const gui = renderer.inspector.createParameters("Settings");
-  gui.add(scene.fog, "density", 0.025, 0.16).step(0.0005).name("fog density");
+  gui
+    .add(scene.fog, "density", 0.025, 0.16)
+    .step(0.0005)
+    .name("fog density")
+    .onChange(updateFogRange);
   gui.add(scattering, "value", 0, 5).name("scattering factor");
   gui
     .add(params, "scatteringEnabled")
     .name("enable scattering")
     .onChange((value) => {
-      if (value === true) {
-        renderPipeline.outputNode = compositeNode;
-      } else {
-        renderPipeline.outputNode = scenePassColor;
-      }
-
+      renderPipeline.outputNode =
+        value === true ? compositeNode : scenePassColor;
       renderPipeline.needsUpdate = true;
     });
 
   window.addEventListener("resize", resize);
+}
+
+function updateFogRange() {
+  // Clip where FogExp2 leaves only 0.1% of the unfogged scene color.
+  camera.far = Math.min(120, Math.sqrt(-Math.log(0.001)) / scene.fog.density);
+  camera.updateProjectionMatrix();
 }
 
 function resize() {

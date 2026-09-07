@@ -81,7 +81,7 @@ function init() {
 
   controls = new FirstPersonControls(camera, renderer.domElement);
   controls.movementSpeed = 150;
-  controls.lookSpeed = 0.1;
+  controls.lookSpeed = 0.2;
 
   stats = new Stats();
   container.appendChild(stats.dom);

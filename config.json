@@ -3209,6 +3209,16 @@
         "/src/shaders"
       ]
     },
+    "webgl_sculpt": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_shader": {
       "files": {
         "index.html": "src",
@@ -4341,6 +4351,16 @@
         "/src"
       ]
     },
+    "webgpu_lights_sunlight": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lines_fat": {
       "files": {
         "index.html": "src",
@@ -5321,6 +5341,16 @@
         "/src"
       ]
     },
+    "webgpu_sculpt": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_shadertoy": {
       "files": {
         "index.html": "src",
@@ -6155,6 +6185,16 @@
       ]
     },
     "webxr_xr_paint": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webxr_xr_sculpt": {
       "files": {
         "index.html": "src",
         "main.js": "src",

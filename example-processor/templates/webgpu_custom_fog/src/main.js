@@ -187,7 +187,7 @@ async function init() {
 
   controls = new FirstPersonControls(camera, renderer.domElement);
   controls.movementSpeed = 20;
-  controls.lookSpeed = 0.1;
+  controls.lookSpeed = 0.2;
   controls.lookAt(0, 5, -120); // face across the valley
 
   window.addEventListener("resize", resize);

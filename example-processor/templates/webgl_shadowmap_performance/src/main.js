@@ -96,7 +96,7 @@ function init() {
 
   controls = new FirstPersonControls(camera, renderer.domElement);
 
-  controls.lookSpeed = 0.0125;
+  controls.lookSpeed = 0.2;
   controls.movementSpeed = 500;
   controls.lookVertical = true;
 
