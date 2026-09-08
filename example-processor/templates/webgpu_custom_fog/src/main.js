@@ -19,7 +19,7 @@ import { ForestGenerator } from "three/addons/generators/ForestGenerator.js";
 
 let camera, scene, renderer, controls, timer;
 let terrain, forest, terrainGroup, forestGroup;
-let sky, sun, sunLight, pmremGenerator, envScene;
+let sky, sun, sunLight, pmremGenerator, envScene, envRenderTarget;
 
 const parameters = {
   elevation: 11, // sun height above the horizon, in degrees ( low = golden hour )
@@ -66,6 +66,8 @@ async function init() {
 
   sun = new Vector3();
   envScene = new Scene();
+  sky.showSunDisc.value = false;
+  envScene.add(sky);
 
   // custom fog. an animated, two-octave triNoise3D haze that settles into
   // the valley as a level band: solid below `fogBase` ( down under the
@@ -215,13 +217,11 @@ function updateSun() {
   sunLight.position.copy(sun).multiplyScalar(900);
   sunLight.shadow.needsUpdate = true; // the sun moved, so the on-demand shadow map needs one refresh
 
-  // re-bake the sky ( without the sun disc ) into the environment map for IBL.
-  // the sky lives only in envScene; it is never added to the visible scene
-  sky.showSunDisc.value = false;
-  envScene.add(sky);
-  const env = pmremGenerator.fromScene(envScene).texture;
-  if (scene.environment) scene.environment.dispose();
-  scene.environment = env;
+  // Reuse the environment render target when the sun moves.
+  envRenderTarget = pmremGenerator.fromScene(envScene, 0, 0.1, 100, {
+    renderTarget: envRenderTarget,
+  });
+  scene.environment = envRenderTarget.texture;
 }
 
 // a new seed ( and whatever erosion / valley bias is dialled in ) rebuilds

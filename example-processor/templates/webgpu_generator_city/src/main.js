@@ -18,9 +18,9 @@ import { LightProbeGridHelper } from "three/addons/helpers/LightProbeGridHelper.
 let camera, scene, renderer, controls, timer;
 let cityGroup, cityProxy, materials, city, renderPipeline;
 let sky, sun, sunLight, pmremGenerator, envScene, envRenderTarget, cityBounds;
-let probes,
-  probesHelper,
-  rebakeTimer = null;
+let probes, probesHelper;
+let bakeIndex = 0,
+  bakePass = 0;
 
 // the irradiance grid spans the whole footprint plus the streets, rising to
 // the mid-rise rooftops. diffuse GI is low frequency, so a coarse grid still
@@ -127,9 +127,18 @@ async function init() {
   materials = { building: createBuildingMaterial(city.layout, city.seedNode) };
   generateCity();
 
-  // bake the irradiance grid once the city and sun are in place
+  // irradiance probes across the city, with the bottom layer just above the road
 
-  bakeProbes();
+  probes = new LightProbeGrid(
+    GRID_SIZE.x,
+    GRID_SIZE.y,
+    GRID_SIZE.z,
+    GRID_PROBES.x,
+    GRID_PROBES.y,
+    GRID_PROBES.z
+  );
+  probes.position.set(0, GRID_SIZE.y / 2 + 1, 0);
+  scene.add(probes);
 
   renderPipeline = new RenderPipeline(renderer);
 
@@ -152,21 +161,21 @@ async function init() {
     .debounce(300)
     .onChange(() => {
       generateCity();
-      scheduleRebake();
+      resetProbeBake();
     });
   gui
     .add(parameters, "timeOfDay", 6, 18, 0.1)
     .name("time of day")
     .onChange(() => {
       updateSun();
-      scheduleRebake();
+      resetProbeBake();
     });
   gui.add(renderer, "toneMappingExposure", 0.01, 1).name("exposure");
   gui
     .add(parameters, "gi")
     .name("global illumination")
     .onChange((value) => {
-      if (probes) probes.visible = value;
+      probes.visible = value;
     });
   gui
     .add(parameters, "showProbes")
@@ -274,57 +283,46 @@ function generateCity() {
   scene.add(cityProxy);
 }
 
-function bakeProbes() {
-  if (probes === undefined) {
-    probes = new LightProbeGrid(
-      GRID_SIZE.x,
-      GRID_SIZE.y,
-      GRID_SIZE.z,
-      GRID_PROBES.x,
-      GRID_PROBES.y,
-      GRID_PROBES.z
-    );
-    probes.position.set(0, GRID_SIZE.y / 2 + 1, 0); // bottom probe layer floats just above the road, never in its plane
-    scene.add(probes);
-  }
+function resetProbeBake() {
+  bakeIndex = 0;
+  bakePass = 0;
+}
 
-  // swap the detailed city for its box proxy, and hide the probe spheres and the
-  // sun disc, so each cubemap captures only the boxes, ground and sky fill. the
-  // DirectionalLight supplies the direct sun; a single bounce pass folds the warm
-  // stone back into the shade. the proxy is a single draw, so the bake stays cheap
+function updateProbes() {
+  const totalProbes = GRID_PROBES.x * GRID_PROBES.y * GRID_PROBES.z;
+  if (bakeIndex >= totalProbes) return;
+
+  // capture the box proxy, ground and sky without the helper or sun disc.
+  // the directional light supplies sunlight; pass 1 captures the diffuse bounce
 
   if (probesHelper) probesHelper.visible = false;
   cityGroup.visible = false;
   cityProxy.visible = true;
   sky.showSunDisc.value = false;
 
-  probes.bake(renderer, scene, {
-    cubemapSize: 16,
-    near: 0.1,
-    far: 20000,
-    bounces: 1,
-  });
-
-  sky.showSunDisc.value = true;
-  cityProxy.visible = false;
-  cityGroup.visible = true;
-  probes.visible = parameters.gi;
-
-  if (probesHelper) {
-    probesHelper.update();
-    probesHelper.visible = parameters.showProbes;
+  try {
+    // Publish one row per frame. Finish the direct pass before starting
+    // the indirect pass, which reads a snapshot of the completed direct bake.
+    probes.bake(renderer, scene, {
+      cubemapSize: 16,
+      near: 0.1,
+      far: 20000,
+      start: bakeIndex,
+      count: GRID_PROBES.x,
+      pass: bakePass,
+    });
+  } finally {
+    sky.showSunDisc.value = true;
+    cityProxy.visible = false;
+    cityGroup.visible = true;
+    if (probesHelper) probesHelper.visible = parameters.showProbes;
   }
-}
 
-// re-baking walks the whole city cubemap by cubemap, so coalesce the rapid
-// onChange calls from dragging a slider into a single bake once it settles
-
-function scheduleRebake() {
-  if (rebakeTimer !== null) clearTimeout(rebakeTimer);
-  rebakeTimer = setTimeout(() => {
-    rebakeTimer = null;
-    bakeProbes();
-  }, 300);
+  bakeIndex += GRID_PROBES.x;
+  if (bakeIndex === totalProbes && bakePass === 0) {
+    bakeIndex = 0;
+    bakePass = 1;
+  }
 }
 
 function toggleProbesHelper(value) {
@@ -346,6 +344,8 @@ function onWindowResize() {
 function animate() {
   timer.update();
   controls.update(timer.getDelta());
+
+  updateProbes();
 
   renderPipeline.render();
 }
