@@ -6,8 +6,6 @@ import {
   Fog,
   PerspectiveCamera,
   HemisphereLight,
-  DirectionalLight,
-  CameraHelper,
   LoadingManager,
   Mesh,
   PlaneGeometry,
@@ -16,6 +14,7 @@ import {
   PCFShadowMap,
 } from "three";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { ThreeMFLoader } from "three/addons/loaders/3MFLoader.js";
 
@@ -43,19 +42,11 @@ function init() {
   hemiLight.position.set(0, 100, 0);
   scene.add(hemiLight);
 
-  const dirLight = new DirectionalLight(0xffffff, 3);
-  dirLight.position.set(-0, 40, 50);
-  dirLight.castShadow = true;
-  dirLight.shadow.camera.top = 50;
-  dirLight.shadow.camera.bottom = -25;
-  dirLight.shadow.camera.left = -25;
-  dirLight.shadow.camera.right = 25;
-  dirLight.shadow.camera.near = 0.1;
-  dirLight.shadow.camera.far = 200;
-  dirLight.shadow.mapSize.set(1024, 1024);
-  scene.add(dirLight);
-
-  // scene.add( new CameraHelper( dirLight.shadow.camera ) );
+  const sunLight = new SunLight(0xffffff, 3);
+  sunLight.position.set(0, 40, 50);
+  sunLight.castShadow = true;
+  sunLight.shadow.camera.far = 100;
+  scene.add(sunLight);
 
   //
 

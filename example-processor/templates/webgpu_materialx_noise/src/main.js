@@ -2,18 +2,41 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 import {
+  Fn,
+  add,
+  dot,
+  element,
+  float,
+  floor,
+  int,
+  mix,
+  mul,
   normalWorld,
+  sub,
   time,
-  mx_noise_vec3,
-  mx_worley_noise_vec3,
+  uv,
+  vec2,
+  vec3,
   mx_cell_noise_float,
   mx_fractal_noise_vec3,
+  mx_modulo,
+  mx_noise_vec3,
+  mx_unifiednoise2d,
+  mx_unifiednoise3d,
+  mx_worley_noise_float_2d,
+  mx_worley_noise_float_3d,
 } from "three/tsl";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { HDRCubeTextureLoader } from "three/addons/loaders/HDRCubeTextureLoader.js";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
+import {
+  mxHextileComputeBlendWeights,
+  mxHextileCoord,
+} from "three/addons/loaders/materialx/MaterialXHextile.js";
 
 let container;
 
@@ -21,10 +44,11 @@ let camera, scene, renderer;
 
 let particleLight;
 let group;
+const spheres = [];
 
 init();
 
-function init() {
+async function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
@@ -34,68 +58,315 @@ function init() {
     1,
     1000
   );
-  camera.position.z = 100;
+  camera.position.z = 190;
 
   scene = new Scene();
 
   group = new Group();
   scene.add(group);
 
-  new HDRCubeTextureLoader()
-    .setPath("textures/cube/pisaHDR/")
-    .load(
-      ["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"],
-      function (hdrTexture) {
-        const geometry = new SphereGeometry(8, 64, 32);
+  const [hdrTexture, font] = await Promise.all([
+    new HDRCubeTextureLoader()
+      .setPath("textures/cube/pisaHDR/")
+      .loadAsync(["px.hdr", "nx.hdr", "py.hdr", "ny.hdr", "pz.hdr", "nz.hdr"]),
+    new FontLoader().loadAsync("fonts/helvetiker_regular.typeface.json"),
+  ]);
 
-        const customUV = normalWorld.mul(10).add(time);
+  const geometry = new SphereGeometry(5, 64, 32);
+  const labelMaterial = new MeshBasicMaterial({ color: 0xffffff });
 
-        // left top
-
-        let material = new MeshPhysicalNodeMaterial();
-        material.colorNode = mx_noise_vec3(customUV);
-
-        let mesh = new Mesh(geometry, material);
-        mesh.position.x = -10;
-        mesh.position.y = 10;
-        group.add(mesh);
-
-        // right top
-
-        material = new MeshPhysicalNodeMaterial();
-        material.colorNode = mx_cell_noise_float(customUV);
-
-        mesh = new Mesh(geometry, material);
-        mesh.position.x = 10;
-        mesh.position.y = 10;
-        group.add(mesh);
-
-        // left bottom
-
-        material = new MeshPhysicalNodeMaterial();
-        material.colorNode = mx_worley_noise_vec3(customUV);
-
-        mesh = new Mesh(geometry, material);
-        mesh.position.x = -10;
-        mesh.position.y = -10;
-        group.add(mesh);
-
-        // right bottom
-
-        material = new MeshPhysicalNodeMaterial();
-        material.colorNode = mx_fractal_noise_vec3(customUV.mul(0.2));
-
-        mesh = new Mesh(geometry, material);
-        mesh.position.x = 10;
-        mesh.position.y = -10;
-        group.add(mesh);
-
-        //
-
-        scene.background = hdrTexture;
-        scene.environment = hdrTexture;
-      }
+  const position2D = uv(0)
+    .mul(12)
+    .add(vec2(time.mul(0.35), time.mul(0.19)));
+  const position3D = normalWorld
+    .mul(4)
+    .add(vec3(time.mul(0.35), time.mul(0.19), time.mul(0.27)));
+  const fractal2D = vec3(position2D.x, position2D.y, 0).mul(0.35);
+  const fractal3D = position3D.mul(0.35);
+  const unifiedOffset2D = vec2(time.mul(0.35), time.mul(0.19));
+  const unifiedOffset3D = vec3(time.mul(0.35), time.mul(0.19), time.mul(0.27));
+  const unifiedNoise3D = (
+    noiseType,
+    position,
+    freq,
+    offset,
+    jitter = 1,
+    outmin = 0,
+    outmax = 1,
+    clampoutput = false,
+    octaves = 1,
+    lacunarity = 2,
+    diminish = 0.5,
+    style = 0
+  ) =>
+    Fn(() =>
+      mx_unifiednoise3d(
+        noiseType,
+        position,
+        freq,
+        offset,
+        jitter,
+        outmin,
+        outmax,
+        clampoutput,
+        octaves,
+        lacunarity,
+        diminish,
+        style
+      )
+    )();
+  const textileTexcoord = (speedX, speedY) =>
+    uv(0)
+      .mul(3)
+      .add(vec2(time.mul(speedX), time.mul(speedY)));
+  const checkerboard = (color1, color2, uvtiling, uvoffset, texcoord) => {
+    const tiledUv = sub(mul(texcoord, uvtiling), uvoffset);
+    const checkerMix = mx_modulo(dot(floor(tiledUv), vec2(1, 1)), float(2));
+    return mix(color2, color1, checkerMix);
+  };
+  const hextiledCheckerboard = (
+    texcoord,
+    {
+      color1 = vec3(1, 1, 1),
+      color2 = vec3(0, 0, 0),
+      uvtiling = vec2(4, 4),
+      uvoffset = vec2(0, 0),
+      tiling = vec2(1, 1),
+      rotation = 0,
+      rotationrange = vec2(0, 360),
+      scale = 0,
+      scalerange = vec2(0.5, 2),
+      offset = 0,
+      offsetrange = vec2(0, 1),
+      falloff = 0.5,
+      falloffcontrast = 0.5,
+      lumacoeffs = vec3(0.2722287, 0.6740818, 0.0536895),
+    } = {}
+  ) => {
+    const tileData = mxHextileCoord(
+      mul(texcoord, tiling),
+      rotation,
+      rotationrange,
+      scale,
+      scalerange,
+      offset,
+      offsetrange
     );
+    const c0 = checkerboard(
+      color1,
+      color2,
+      uvtiling,
+      uvoffset,
+      tileData.coords[0]
+    );
+    const c1 = checkerboard(
+      color1,
+      color2,
+      uvtiling,
+      uvoffset,
+      tileData.coords[1]
+    );
+    const c2 = checkerboard(
+      color1,
+      color2,
+      uvtiling,
+      uvoffset,
+      tileData.coords[2]
+    );
+    const luminanceWeights = mix(
+      vec3(1, 1, 1),
+      vec3(dot(c0, lumacoeffs), dot(c1, lumacoeffs), dot(c2, lumacoeffs)),
+      vec3(falloffcontrast, falloffcontrast, falloffcontrast)
+    );
+    const blendWeights = mxHextileComputeBlendWeights(
+      luminanceWeights,
+      tileData.weights,
+      falloff
+    );
+    return add(
+      add(mul(element(blendWeights, 0), c0), mul(element(blendWeights, 1), c1)),
+      mul(element(blendWeights, 2), c2)
+    );
+  };
+
+  const noiseExamples = [
+    { label: ["Noise", "2D"], createNode: () => mx_noise_vec3(position2D) },
+    { label: ["Noise", "3D"], createNode: () => mx_noise_vec3(position3D) },
+    {
+      label: ["Cellnoise", "2D"],
+      createNode: () => mx_cell_noise_float(position2D),
+    },
+    {
+      label: ["Cellnoise", "3D"],
+      createNode: () => mx_cell_noise_float(position3D),
+    },
+    {
+      label: ["Worley", "2D style 0"],
+      createNode: () => mx_worley_noise_float_2d(position2D, 1, 0),
+    },
+    {
+      label: ["Worley", "3D style 0"],
+      createNode: () => mx_worley_noise_float_3d(position3D, 1, 0),
+    },
+    {
+      label: ["Worley", "2D style 1"],
+      createNode: () => mx_worley_noise_float_2d(position2D, 1, 1),
+    },
+    {
+      label: ["Worley", "3D style 1"],
+      createNode: () => mx_worley_noise_float_3d(position3D, 1, 1),
+    },
+    {
+      label: ["Fractal", "2D"],
+      createNode: () => mx_fractal_noise_vec3(fractal2D),
+    },
+    {
+      label: ["Fractal", "3D"],
+      createNode: () => mx_fractal_noise_vec3(fractal3D),
+    },
+    {
+      label: ["Unified Perlin", "2D"],
+      createNode: () =>
+        mx_unifiednoise2d(int(0), position2D, vec2(1, 1), unifiedOffset2D),
+    },
+    {
+      label: ["Unified Perlin", "3D"],
+      createNode: () =>
+        unifiedNoise3D(int(0), position3D, vec3(1, 1, 1), unifiedOffset3D),
+    },
+    {
+      label: ["Unified Cell", "2D"],
+      createNode: () =>
+        mx_unifiednoise2d(int(1), position2D, vec2(1, 1), unifiedOffset2D),
+    },
+    {
+      label: ["Unified Cell", "3D"],
+      createNode: () =>
+        unifiedNoise3D(int(1), position3D, vec3(1, 1, 1), unifiedOffset3D),
+    },
+    {
+      label: ["Unified Worley", "2D style 0"],
+      createNode: () =>
+        mx_unifiednoise2d(
+          int(2),
+          position2D,
+          vec2(1, 1),
+          unifiedOffset2D,
+          1,
+          0,
+          1,
+          false,
+          1,
+          2,
+          0.5,
+          0
+        ),
+    },
+    {
+      label: ["Unified Worley", "3D style 0"],
+      createNode: () =>
+        unifiedNoise3D(
+          int(2),
+          position3D,
+          vec3(1, 1, 1),
+          unifiedOffset3D,
+          1,
+          0,
+          1,
+          false,
+          1,
+          2,
+          0.5,
+          0
+        ),
+    },
+    {
+      label: ["Unified Worley", "2D style 1"],
+      createNode: () =>
+        mx_unifiednoise2d(
+          int(2),
+          position2D,
+          vec2(1, 1),
+          unifiedOffset2D,
+          1,
+          0,
+          1,
+          false,
+          1,
+          2,
+          0.5,
+          1
+        ),
+    },
+    {
+      label: ["Unified Worley", "3D style 1"],
+      createNode: () =>
+        unifiedNoise3D(
+          int(2),
+          position3D,
+          vec3(1, 1, 1),
+          unifiedOffset3D,
+          1,
+          0,
+          1,
+          false,
+          1,
+          2,
+          0.5,
+          1
+        ),
+    },
+    {
+      label: ["Unified Fractal", "2D"],
+      createNode: () =>
+        mx_unifiednoise2d(
+          int(3),
+          position2D,
+          vec2(1, 1),
+          unifiedOffset2D,
+          1,
+          0,
+          1,
+          false,
+          3
+        ),
+    },
+    {
+      label: ["Unified Fractal", "3D"],
+      createNode: () =>
+        unifiedNoise3D(
+          int(3),
+          position3D,
+          vec3(1, 1, 1),
+          unifiedOffset3D,
+          1,
+          0,
+          1,
+          false,
+          3
+        ),
+    },
+    {
+      label: ["Hex Tiled", "checkerboard"],
+      createNode: () =>
+        hextiledCheckerboard(textileTexcoord(0.08, 0.04), {
+          color1: vec3(1, 1, 1),
+          color2: vec3(0, 0, 0),
+          uvtiling: vec2(8, 8),
+          tiling: vec2(2.2, 2.2),
+          rotation: 0.25,
+          scale: 0.1,
+          offset: 0.2,
+          falloff: 0.35,
+          falloffcontrast: 0.25,
+        }),
+    },
+  ];
+
+  createNoiseGrid(noiseExamples, geometry, font, labelMaterial);
+
+  scene.background = hdrTexture;
+  scene.environment = hdrTexture;
 
   // LIGHTS
 
@@ -147,10 +418,81 @@ function render() {
   particleLight.position.y = Math.cos(timer * 5) * 40;
   particleLight.position.z = Math.cos(timer * 3) * 30;
 
-  for (let i = 0; i < group.children.length; i++) {
-    const child = group.children[i];
+  for (let i = 0; i < spheres.length; i++) {
+    const child = spheres[i];
     child.rotation.y += 0.005;
   }
 
   renderer.render(scene, camera);
+}
+
+function createNoiseGrid(noiseExamples, geometry, font, labelMaterial) {
+  const columns = 7;
+  const spacingX = 15.5;
+  const spacingY = 18;
+  const rowOffset =
+    (Math.ceil(noiseExamples.length / columns) - 1) * spacingY * 0.5;
+  const columnOffset = (columns - 1) * spacingX * 0.5;
+  const errorMaterial = new MeshBasicMaterial({ color: 0xff3333 });
+
+  for (let i = 0; i < noiseExamples.length; i++) {
+    const example = noiseExamples[i];
+    const column = i % columns;
+    const row = Math.floor(i / columns);
+    const x = column * spacingX - columnOffset;
+    const y = rowOffset - row * spacingY;
+    const labelLines = example.label.slice();
+
+    const material = new MeshPhysicalNodeMaterial();
+
+    try {
+      material.colorNode = example.createNode();
+    } catch (error) {
+      console.error(
+        `Failed to create MaterialX noise sample: ${example.label.join(" ")}`,
+        error
+      );
+      labelLines.push("Failed");
+    }
+
+    const mesh = new Mesh(
+      geometry,
+      material.colorNode ? material : errorMaterial
+    );
+    mesh.position.set(x, y, 0);
+    group.add(mesh);
+    spheres.push(mesh);
+
+    const label = createLabel(labelLines, font, labelMaterial);
+    label.position.set(x, y - 7.5, 0);
+    group.add(label);
+  }
+}
+
+function createLabel(lines, font, material) {
+  const label = new Group();
+  const lineHeight = 1.55;
+  const startY = (lines.length - 1) * lineHeight * 0.5;
+
+  for (let i = 0; i < lines.length; i++) {
+    const textGeometry = new TextGeometry(lines[i], {
+      font: font,
+      size: 1.15,
+      depth: 0.02,
+      curveSegments: 2,
+    });
+
+    textGeometry.computeBoundingBox();
+
+    const boundingBox = textGeometry.boundingBox;
+    const offsetX = -0.5 * (boundingBox.max.x - boundingBox.min.x);
+    const offsetY = -0.5 * (boundingBox.max.y - boundingBox.min.y);
+    textGeometry.translate(offsetX, offsetY, 0);
+
+    const textMesh = new Mesh(textGeometry, material);
+    textMesh.position.y = startY - i * lineHeight;
+    label.add(textMesh);
+  }
+
+  return label;
 }

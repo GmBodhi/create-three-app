@@ -24,16 +24,6 @@ let camera, scene, renderer, controls;
 init();
 
 function init() {
-  const info = document.createElement("div");
-  info.style.position = "absolute";
-  info.style.top = "10px";
-  info.style.width = "100%";
-  info.style.textAlign = "center";
-  info.style.color = "#fff";
-  info.innerHTML =
-    '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - geometry extrude shapes';
-  document.body.appendChild(info);
-
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

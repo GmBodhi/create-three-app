@@ -18,6 +18,8 @@ import {
   vec3,
 } from "three/tsl";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -30,6 +32,7 @@ init();
 
 async function init() {
   renderer = new WebGPURenderer({ antialias: true });
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -116,13 +119,9 @@ async function init() {
 
   // light
 
-  const light = new DirectionalLight(0xffffff, 3);
+  const light = new SunLight(0xffffff, 3);
   light.position.set(18, 30, 12);
   light.castShadow = true;
-  light.shadow.camera.left = -60;
-  light.shadow.camera.right = 60;
-  light.shadow.camera.top = 60;
-  light.shadow.camera.bottom = -60;
   light.shadow.camera.far = 110;
   light.shadow.mapSize.set(4096, 4096);
   light.shadow.bias = -0.0005;

@@ -2,6 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
@@ -36,21 +38,14 @@ function init() {
 
   //
 
-  const light = new DirectionalLight(0xffffff, 1);
+  const light = new SunLight(0xffffff, 1);
 
   light.position.set(200, 1000, 50);
 
   light.shadow.mapSize.width = 2048;
   light.shadow.mapSize.height = 2048;
   light.castShadow = true;
-
-  light.shadow.camera.left = -5000;
-  light.shadow.camera.right = 5000;
-  light.shadow.camera.top = 5000;
-  light.shadow.camera.bottom = -5000;
-  light.shadow.camera.far = 2000;
-
-  light.shadow.camera.updateProjectionMatrix();
+  light.shadow.camera.far = 10000;
 
   scene.add(light);
 
@@ -114,6 +109,7 @@ function init() {
   // renderer
 
   renderer = new WebGPURenderer({ antialias: true });
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.setAnimationLoop(animate);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

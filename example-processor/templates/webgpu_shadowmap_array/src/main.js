@@ -28,7 +28,6 @@ async function init() {
 
   renderer.shadowMap.enabled = true;
   renderer.shadowMap.type = BasicShadowMap;
-  // renderer.shadowMap.type = PCFSoftShadowMap;
 
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.2;

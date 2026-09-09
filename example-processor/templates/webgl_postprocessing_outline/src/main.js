@@ -9,7 +9,6 @@ import {
   Scene,
   PerspectiveCamera,
   AmbientLight,
-  DirectionalLight,
   Mesh,
   MeshPhongMaterial,
   SphereGeometry,
@@ -24,6 +23,7 @@ import {
 import Stats from "three/addons/libs/stats.module.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { OBJLoader } from "three/addons/loaders/OBJLoader.js";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
@@ -127,20 +127,11 @@ function init() {
 
   scene.add(new AmbientLight(0xaaaaaa, 0.6));
 
-  const light = new DirectionalLight(0xddffdd, 2);
+  const light = new SunLight(0xddffdd, 2);
   light.position.set(5, 5, 5);
   light.castShadow = true;
-  light.shadow.mapSize.width = 1024;
-  light.shadow.mapSize.height = 1024;
-
-  const d = 10;
-
-  light.shadow.camera.left = -d;
-  light.shadow.camera.right = d;
-  light.shadow.camera.top = d;
-  light.shadow.camera.bottom = -d;
-  light.shadow.camera.far = 25;
-
+  light.shadow.camera.far = 40;
+  light.shadow.mapSize.setScalar(2048);
   scene.add(light);
 
   // model

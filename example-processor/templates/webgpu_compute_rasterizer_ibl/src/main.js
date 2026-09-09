@@ -1445,7 +1445,7 @@ async function init() {
       hwNormal,
       normalize(vTangent),
       sampleMapHW(sourceMaterial.normalMap)
-    ).transformDirection(cameraViewMatrix);
+    ).transformNormalByViewMatrix(cameraViewMatrix);
     const metalRoughHW = sampleMapHW(sourceMaterial.roughnessMap); // glTF packs roughness (g) and metalness (b) in one texture
     hwShadedMaterial.roughnessNode = sqrt(
       metalRoughHW.g.mul(metalRoughHW.g).add(hwKernelRoughness)
@@ -1688,7 +1688,7 @@ async function init() {
       normal_interp,
       computeTangent(w0, w1, w2, t_uv0, t_uv1, t_uv2, normal_interp),
       sampleMap(sourceMaterial.normalMap)
-    ).transformDirection(cameraViewMatrix);
+    ).transformNormalByViewMatrix(cameraViewMatrix);
     const metalRough = sampleMap(sourceMaterial.roughnessMap); // glTF packs roughness (g) and metalness (b) in one texture
     resolveShadedMaterial.roughnessNode = sqrt(
       metalRough.g.mul(metalRough.g).add(kernelRoughness)

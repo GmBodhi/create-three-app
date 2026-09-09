@@ -19,6 +19,9 @@ import {
   Loop,
 } from "three/tsl";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
+
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -56,18 +59,12 @@ function init() {
 
   // lights
 
-  const directionalLight = new DirectionalLight("#ffffff", 2);
-  directionalLight.position.set(6.25, 3, 4);
-  directionalLight.castShadow = true;
-  directionalLight.shadow.mapSize.set(1024, 1024);
-  directionalLight.shadow.camera.near = 0.1;
-  directionalLight.shadow.camera.far = 30;
-  directionalLight.shadow.camera.top = 8;
-  directionalLight.shadow.camera.right = 8;
-  directionalLight.shadow.camera.bottom = -8;
-  directionalLight.shadow.camera.left = -8;
-  directionalLight.shadow.normalBias = 0.05;
-  scene.add(directionalLight);
+  const sunLight = new SunLight("#ffffff", 2);
+  sunLight.position.set(6.25, 3, 4);
+  sunLight.castShadow = true;
+  sunLight.shadow.camera.far = 30;
+  sunLight.shadow.normalBias = 0.05;
+  scene.add(sunLight);
 
   // terrain
 
@@ -263,6 +260,7 @@ function init() {
   // renderer
 
   renderer = new WebGPURenderer({ antialias: true });
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);

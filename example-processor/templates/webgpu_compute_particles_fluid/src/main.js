@@ -162,6 +162,16 @@ async function init() {
       particleCountUniform.value = value;
     });
 
+  await renderer.init();
+  await renderer.compileComputeAsync([
+    clearGridKernel,
+    p2g1Kernel,
+    p2g2Kernel,
+    updateGridKernel,
+    g2pKernel,
+  ]);
+  await renderer.compileAsync(scene, camera);
+
   window.addEventListener("resize", onWindowResize);
   controls.update();
   renderer.setAnimationLoop(render);

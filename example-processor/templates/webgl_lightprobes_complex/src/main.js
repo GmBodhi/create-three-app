@@ -20,8 +20,8 @@ import {
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
-import { LightProbeGrid } from "three/addons/lighting/LightProbeGrid.js";
-import { LightProbeGridHelper } from "three/addons/helpers/LightProbeGridHelper.js";
+import { LightProbeGridWebGL } from "three/addons/lighting/LightProbeGridWebGL.js";
+import { LightProbeGridHelperWebGL } from "three/addons/helpers/LightProbeGridHelperWebGL.js";
 
 let camera, scene, renderer, controls;
 let probesLeft, probesRight;
@@ -268,7 +268,7 @@ async function init() {
     resolution: 6,
   };
 
-  async function bakeWithResolution(resolution) {
+  async function bake(resolution) {
     // Remove both volumes before baking to prevent feedback
 
     if (probesLeft) {
@@ -283,7 +283,7 @@ async function init() {
 
     // Bake both volumes
 
-    probesLeft = new LightProbeGrid(
+    probesLeft = new LightProbeGridWebGL(
       7.8,
       4.7,
       7.6,
@@ -295,7 +295,7 @@ async function init() {
     probesLeft.bake(renderer, scene, { cubemapSize: 32, near: 0.05, far: 20 });
     probesLeft.visible = params.enabled;
 
-    probesRight = new LightProbeGrid(
+    probesRight = new LightProbeGridWebGL(
       7.8,
       4.7,
       7.6,
@@ -315,11 +315,11 @@ async function init() {
     // Update debug visualization
 
     if (!probesHelperLeft) {
-      probesHelperLeft = new LightProbeGridHelper(probesLeft);
+      probesHelperLeft = new LightProbeGridHelperWebGL(probesLeft);
       probesHelperLeft.visible = params.showProbes;
       scene.add(probesHelperLeft);
 
-      probesHelperRight = new LightProbeGridHelper(probesRight);
+      probesHelperRight = new LightProbeGridHelperWebGL(probesRight);
       probesHelperRight.visible = params.showProbes;
       scene.add(probesHelperRight);
     } else {
@@ -331,7 +331,7 @@ async function init() {
     }
   }
 
-  await bakeWithResolution(params.resolution);
+  await bake(params.resolution);
 
   // GUI
 
@@ -347,7 +347,7 @@ async function init() {
     .add(params, "resolution", 2, 12, 1)
     .name("Resolution")
     .onFinishChange((value) => {
-      bakeWithResolution(value);
+      bake(value);
     });
   gui
     .add(params, "showProbes")

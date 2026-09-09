@@ -144,12 +144,12 @@ function init() {
 
   const materials = {
     blurred: blurredBlur,
-    depth: depthMaterial,
     checker: checkerMaterial,
+    depth: depthMaterial,
     pixel: pixelMaterial,
   };
 
-  const options = { material: "blurred" };
+  const options = { material: "checker" };
   box.material = materials[options.material];
 
   const gui = renderer.inspector.createParameters("Scene settings");

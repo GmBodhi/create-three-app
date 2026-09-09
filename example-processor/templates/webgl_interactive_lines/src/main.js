@@ -35,15 +35,6 @@ function init() {
   container = document.createElement("div");
   document.body.appendChild(container);
 
-  const info = document.createElement("div");
-  info.style.position = "absolute";
-  info.style.top = "10px";
-  info.style.width = "100%";
-  info.style.textAlign = "center";
-  info.innerHTML =
-    '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> webgl - interactive lines';
-  container.appendChild(info);
-
   camera = new PerspectiveCamera(
     70,
     window.innerWidth / window.innerHeight,

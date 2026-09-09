@@ -28,7 +28,6 @@ function init() {
   renderer.toneMappingExposure = 1;
 
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
 
   scene = new Scene();
 

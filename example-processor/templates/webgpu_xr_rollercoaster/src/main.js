@@ -13,7 +13,7 @@ import { VRButton } from "three/addons/webxr/VRButton.js";
 import { setupWebGLXRFallback } from "three/addons/webxr/WebGLXRFallback.js";
 
 let mesh, material, geometry;
-let renderer;
+let renderer, renderPipeline;
 
 const rendererParameters = {
   antialias: true,
@@ -55,6 +55,7 @@ function setRenderer(newRenderer, oldRenderer = null) {
   }
 
   renderer = newRenderer;
+  renderPipeline = new DirectRenderPipeline(renderer);
 }
 
 const scene = new Scene();
@@ -269,7 +270,7 @@ function animate() {
 
   //
 
-  renderer.render(scene, camera);
+  renderPipeline.render(scene, camera);
 
   prevTime = time;
 }

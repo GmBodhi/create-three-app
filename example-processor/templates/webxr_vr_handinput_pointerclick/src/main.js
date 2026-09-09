@@ -20,189 +20,18 @@ import { OculusHandModel } from "three/addons/webxr/OculusHandModel.js";
 import { OculusHandPointerModel } from "three/addons/webxr/OculusHandPointerModel.js";
 import { createText } from "three/addons/webxr/Text2D.js";
 
-import {
-  World,
-  System,
-  Component,
-  TagComponent,
-  Types,
-} from "three/addons/libs/ecsy.module.js";
-
-class Object3D extends Component {}
-
-Object3D.schema = {
-  object: { type: Types.Ref },
-};
-
-class Button extends Component {}
-
-Button.schema = {
-  // button states: [none, hovered, pressed]
-  currState: { type: Types.String, default: "none" },
-  prevState: { type: Types.String, default: "none" },
-  action: { type: Types.Ref, default: () => {} },
-};
-
-class ButtonSystem extends System {
-  execute(/* delta, time */) {
-    this.queries.buttons.results.forEach((entity) => {
-      const button = entity.getMutableComponent(Button);
-      const buttonMesh = entity.getComponent(Object3D).object;
-      if (button.currState == "none") {
-        buttonMesh.scale.set(1, 1, 1);
-      } else {
-        buttonMesh.scale.set(1.1, 1.1, 1.1);
-      }
-
-      if (button.currState == "pressed" && button.prevState != "pressed") {
-        button.action();
-      }
-
-      // preserve prevState, clear currState
-      // HandRaySystem will update currState
-      button.prevState = button.currState;
-      button.currState = "none";
-    });
-  }
-}
-
-ButtonSystem.queries = {
-  buttons: {
-    components: [Button],
-  },
-};
-
-class Intersectable extends TagComponent {}
-
-class HandRaySystem extends System {
-  init(attributes) {
-    this.handPointers = attributes.handPointers;
-  }
-
-  execute(/* delta, time */) {
-    this.handPointers.forEach((hp) => {
-      let distance = null;
-      let intersectingEntity = null;
-      this.queries.intersectable.results.forEach((entity) => {
-        const object = entity.getComponent(Object3D).object;
-        const intersections = hp.intersectObject(object, false);
-        if (intersections && intersections.length > 0) {
-          if (distance == null || intersections[0].distance < distance) {
-            distance = intersections[0].distance;
-            intersectingEntity = entity;
-          }
-        }
-      });
-      if (distance) {
-        hp.setCursor(distance);
-        if (intersectingEntity.hasComponent(Button)) {
-          const button = intersectingEntity.getMutableComponent(Button);
-          if (hp.isPinched()) {
-            button.currState = "pressed";
-          } else if (button.currState != "pressed") {
-            button.currState = "hovered";
-          }
-        }
-      } else {
-        hp.setCursor(1.5);
-      }
-    });
-  }
-}
-
-HandRaySystem.queries = {
-  intersectable: {
-    components: [Intersectable],
-  },
-};
-
-class Rotating extends TagComponent {}
-
-class RotatingSystem extends System {
-  execute(delta /*, time*/) {
-    this.queries.rotatingObjects.results.forEach((entity) => {
-      const object = entity.getComponent(Object3D).object;
-      object.rotation.x += 0.4 * delta;
-      object.rotation.y += 0.4 * delta;
-    });
-  }
-}
-
-RotatingSystem.queries = {
-  rotatingObjects: {
-    components: [Rotating],
-  },
-};
-
-class HandsInstructionText extends TagComponent {}
-
-class InstructionSystem extends System {
-  init(attributes) {
-    this.controllers = attributes.controllers;
-  }
-
-  execute(/* delta, time */) {
-    let visible = false;
-    this.controllers.forEach((controller) => {
-      if (controller.visible) {
-        visible = true;
-      }
-    });
-
-    this.queries.instructionTexts.results.forEach((entity) => {
-      const object = entity.getComponent(Object3D).object;
-      object.visible = visible;
-    });
-  }
-}
-
-InstructionSystem.queries = {
-  instructionTexts: {
-    components: [HandsInstructionText],
-  },
-};
-
-class OffsetFromCamera extends Component {}
-
-OffsetFromCamera.schema = {
-  x: { type: Types.Number, default: 0 },
-  y: { type: Types.Number, default: 0 },
-  z: { type: Types.Number, default: 0 },
-};
-
-class NeedCalibration extends TagComponent {}
-
-class CalibrationSystem extends System {
-  init(attributes) {
-    this.camera = attributes.camera;
-    this.renderer = attributes.renderer;
-  }
-
-  execute(/* delta, time */) {
-    this.queries.needCalibration.results.forEach((entity) => {
-      if (this.renderer.xr.getSession()) {
-        const offset = entity.getComponent(OffsetFromCamera);
-        const object = entity.getComponent(Object3D).object;
-        const xrCamera = this.renderer.xr.getCamera();
-        object.position.x = xrCamera.position.x + offset.x;
-        object.position.y = xrCamera.position.y + offset.y;
-        object.position.z = xrCamera.position.z + offset.z;
-        entity.removeComponent(NeedCalibration);
-      }
-    });
-  }
-}
-
-CalibrationSystem.queries = {
-  needCalibration: {
-    components: [NeedCalibration],
-  },
-};
-
-const world = new World();
 const timer = new Timer();
 timer.connect(document);
 let camera, scene, renderer;
+let menuMesh, torusKnot, instructionText;
+let controllers, handPointers;
+let needsCalibration = true;
+
+// meshes the hand rays can intersect
+const intersectables = [];
+
+// button states: [none, hovered, pressed]
+const buttons = [];
 
 init();
 
@@ -294,6 +123,9 @@ function init() {
   hand2.add(handPointer2);
   scene.add(hand2);
 
+  controllers = [controllerGrip1, controllerGrip2];
+  handPointers = [handPointer1, handPointer2];
+
   // setup objects in scene and entities
   const floorGeometry = new PlaneGeometry(4, 4);
   const floorMaterial = new MeshPhongMaterial({ color: 0x222222 });
@@ -307,7 +139,7 @@ function init() {
     opacity: 0,
     transparent: true,
   });
-  const menuMesh = new Mesh(menuGeometry, menuMaterial);
+  menuMesh = new Mesh(menuGeometry, menuMaterial);
   menuMesh.position.set(0.4, 1, -1);
   menuMesh.rotation.y = -Math.PI / 12;
   scene.add(menuMesh);
@@ -337,11 +169,11 @@ function init() {
   const tkGeometry = new TorusKnotGeometry(0.5, 0.2, 200, 32);
   const tkMaterial = new MeshPhongMaterial({ color: 0xffffff });
   tkMaterial.metalness = 0.8;
-  const torusKnot = new Mesh(tkGeometry, tkMaterial);
+  torusKnot = new Mesh(tkGeometry, tkMaterial);
   torusKnot.position.set(0, 1, -5);
   scene.add(torusKnot);
 
-  const instructionText = createText(
+  instructionText = createText(
     "This is a WebXR Hands demo, please explore with hands.",
     0.04
   );
@@ -353,79 +185,52 @@ function init() {
   exitText.visible = false;
   scene.add(exitText);
 
-  world
-    .registerComponent(Object3D)
-    .registerComponent(Button)
-    .registerComponent(Intersectable)
-    .registerComponent(Rotating)
-    .registerComponent(HandsInstructionText)
-    .registerComponent(OffsetFromCamera)
-    .registerComponent(NeedCalibration);
+  intersectables.push(
+    menuMesh,
+    orangeButton,
+    pinkButton,
+    resetButton,
+    exitButton
+  );
 
-  world
-    .registerSystem(RotatingSystem)
-    .registerSystem(InstructionSystem, {
-      controllers: [controllerGrip1, controllerGrip2],
-    })
-    .registerSystem(CalibrationSystem, { renderer: renderer, camera: camera })
-    .registerSystem(ButtonSystem)
-    .registerSystem(HandRaySystem, {
-      handPointers: [handPointer1, handPointer2],
-    });
-
-  const menuEntity = world.createEntity();
-  menuEntity.addComponent(Intersectable);
-  menuEntity.addComponent(OffsetFromCamera, { x: 0.4, y: 0, z: -1 });
-  menuEntity.addComponent(NeedCalibration);
-  menuEntity.addComponent(Object3D, { object: menuMesh });
-
-  const obEntity = world.createEntity();
-  obEntity.addComponent(Intersectable);
-  obEntity.addComponent(Object3D, { object: orangeButton });
-  const obAction = function () {
-    torusKnot.material.color.setHex(0xffd3b5);
-  };
-
-  obEntity.addComponent(Button, { action: obAction });
-
-  const pbEntity = world.createEntity();
-  pbEntity.addComponent(Intersectable);
-  pbEntity.addComponent(Object3D, { object: pinkButton });
-  const pbAction = function () {
-    torusKnot.material.color.setHex(0xe84a5f);
-  };
-
-  pbEntity.addComponent(Button, { action: pbAction });
-
-  const rbEntity = world.createEntity();
-  rbEntity.addComponent(Intersectable);
-  rbEntity.addComponent(Object3D, { object: resetButton });
-  const rbAction = function () {
-    torusKnot.material.color.setHex(0xffffff);
-  };
-
-  rbEntity.addComponent(Button, { action: rbAction });
-
-  const ebEntity = world.createEntity();
-  ebEntity.addComponent(Intersectable);
-  ebEntity.addComponent(Object3D, { object: exitButton });
-  const ebAction = function () {
-    exitText.visible = true;
-    setTimeout(function () {
-      exitText.visible = false;
-      renderer.xr.getSession().end();
-    }, 2000);
-  };
-
-  ebEntity.addComponent(Button, { action: ebAction });
-
-  const tkEntity = world.createEntity();
-  tkEntity.addComponent(Rotating);
-  tkEntity.addComponent(Object3D, { object: torusKnot });
-
-  const itEntity = world.createEntity();
-  itEntity.addComponent(HandsInstructionText);
-  itEntity.addComponent(Object3D, { object: instructionText });
+  buttons.push(
+    {
+      mesh: orangeButton,
+      currState: "none",
+      prevState: "none",
+      action: function () {
+        torusKnot.material.color.setHex(0xffd3b5);
+      },
+    },
+    {
+      mesh: pinkButton,
+      currState: "none",
+      prevState: "none",
+      action: function () {
+        torusKnot.material.color.setHex(0xe84a5f);
+      },
+    },
+    {
+      mesh: resetButton,
+      currState: "none",
+      prevState: "none",
+      action: function () {
+        torusKnot.material.color.setHex(0xffffff);
+      },
+    },
+    {
+      mesh: exitButton,
+      currState: "none",
+      prevState: "none",
+      action: function () {
+        exitText.visible = true;
+        setTimeout(function () {
+          exitText.visible = false;
+          renderer.xr.getSession().end();
+        }, 2000);
+      },
+    }
+  );
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -437,12 +242,88 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+function calibrateMenu() {
+  // position the menu relative to the camera once the session has started
+
+  if (needsCalibration && renderer.xr.getSession()) {
+    const xrCamera = renderer.xr.getCamera();
+    menuMesh.position.x = xrCamera.position.x + 0.4;
+    menuMesh.position.y = xrCamera.position.y;
+    menuMesh.position.z = xrCamera.position.z - 1;
+    needsCalibration = false;
+  }
+}
+
+function updateInstructionText() {
+  // the instruction text is only visible as long as motion controllers are used
+
+  instructionText.visible = controllers.some(
+    (controller) => controller.visible
+  );
+}
+
+function updateHandRays() {
+  handPointers.forEach((hp) => {
+    let distance = null;
+    let intersectingMesh = null;
+    intersectables.forEach((object) => {
+      const intersections = hp.intersectObject(object, false);
+      if (intersections && intersections.length > 0) {
+        if (distance == null || intersections[0].distance < distance) {
+          distance = intersections[0].distance;
+          intersectingMesh = object;
+        }
+      }
+    });
+    if (distance) {
+      hp.setCursor(distance);
+      const button = buttons.find((button) => button.mesh === intersectingMesh);
+      if (button !== undefined) {
+        if (hp.isPinched()) {
+          button.currState = "pressed";
+        } else if (button.currState != "pressed") {
+          button.currState = "hovered";
+        }
+      }
+    } else {
+      hp.setCursor(1.5);
+    }
+  });
+}
+
+function updateButtons() {
+  buttons.forEach((button) => {
+    if (button.currState == "none") {
+      button.mesh.scale.set(1, 1, 1);
+    } else {
+      button.mesh.scale.set(1.1, 1.1, 1.1);
+    }
+
+    if (button.currState == "pressed" && button.prevState != "pressed") {
+      button.action();
+    }
+
+    // preserve prevState, clear currState
+    // updateHandRays() will update currState
+
+    button.prevState = button.currState;
+    button.currState = "none";
+  });
+}
+
 function animate() {
   timer.update();
 
   const delta = timer.getDelta();
-  const elapsedTime = timer.getElapsed();
   renderer.xr.updateCamera(camera);
-  world.execute(delta, elapsedTime);
+
+  calibrateMenu();
+  updateInstructionText();
+  updateHandRays();
+  updateButtons();
+
+  torusKnot.rotation.x += 0.4 * delta;
+  torusKnot.rotation.y += 0.4 * delta;
+
   renderer.render(scene, camera);
 }

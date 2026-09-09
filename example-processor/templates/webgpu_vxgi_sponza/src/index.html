@@ -1,0 +1,65 @@
+<html>
+  <head>
+    <title>three.js webgpu - VXGI (Sponza)</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta property="og:title" content="three.js webgpu - voxel GI (Sponza)" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://threejs.org/examples/webgpu_vxgi_sponza.html"
+    />
+    <meta
+      property="og:image"
+      content="https://threejs.org/examples/screenshots/webgpu_vxgi_sponza.jpg"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>VXGI (Sponza)</span>
+      </div>
+
+      <small
+        >Diffuse global illumination using Voxel Cone Tracing. WASD to move,
+        mouse to look.</small
+      >
+    </div>
+
+    <progress
+      id="progressBar"
+      value="0"
+      max="100"
+      style="
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      "
+    ></progress>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -85,6 +85,7 @@ async function init() {
   const computeInit = Fn(() => {
     const position = positionBuffer.element(instanceIndex);
     const velocity = velocityBuffer.element(instanceIndex);
+    const ripplePosition = ripplePositionBuffer.element(instanceIndex);
     const rippleTime = rippleTimeBuffer.element(instanceIndex);
 
     const randX = hash(instanceIndex);
@@ -96,6 +97,10 @@ async function init() {
     position.z = randZ.mul(100).add(-50);
 
     velocity.y = randX.mul(-0.04).add(-0.2);
+
+    ripplePosition.x = randZ.mul(100).add(-50);
+    ripplePosition.y = -1;
+    ripplePosition.z = randY.mul(100).add(-50);
 
     rippleTime.x = 1000;
   })().compute(maxParticleCount);
@@ -172,12 +177,11 @@ async function init() {
     .mul(3)
     .exp()
     .mul(0.1);
-  rainMaterial.vertexNode = billboarding({
-    position: positionBuffer.toAttribute(),
-  });
+  rainMaterial.positionNode = positionGeometry.add(
+    positionBuffer.toAttribute()
+  );
+  rainMaterial.vertexNode = billboarding({ horizontalRotation: true });
   rainMaterial.opacity = 0.2;
-  rainMaterial.side = DoubleSide;
-  rainMaterial.forceSinglePass = true;
   rainMaterial.depthWrite = false;
   rainMaterial.depthTest = true;
   rainMaterial.transparent = true;

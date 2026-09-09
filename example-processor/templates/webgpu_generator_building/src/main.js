@@ -3,6 +3,8 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import { uniform } from "three/tsl";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SkyMesh } from "three/addons/objects/SkyMesh.js";
@@ -41,13 +43,13 @@ init();
 
 async function init() {
   renderer = new WebGPURenderer({ antialias: true });
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.toneMapping = ACESFilmicToneMapping;
   renderer.toneMappingExposure = 0.25;
   renderer.shadowMap.enabled = true;
-  renderer.shadowMap.type = PCFSoftShadowMap;
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
@@ -90,16 +92,14 @@ async function init() {
   controls.autoRotateSpeed = 0.3;
   controls.update();
 
-  // a single directional key aligned with the sky's sun, for the crisp
-  // relief shadows the IBL alone can't give. updateSun() and
-  // fitShadowCamera() drive its colour, intensity and shadow frustum
+  // sunlight aligned with the sky, with shadows fitted to the view camera
 
-  sunLight = new DirectionalLight();
+  sunLight = new SunLight();
   sunLight.castShadow = true;
+  sunLight.shadow.camera.far = 1000;
   sunLight.shadow.mapSize.set(2048, 2048);
   sunLight.shadow.bias = -0.0004;
   scene.add(sunLight);
-  scene.add(sunLight.target);
 
   // place the sun ( sky, IBL, key light and shadow ) for the current time
   updateSun();
@@ -156,8 +156,6 @@ function generate() {
   building = generator.build();
   building.castShadow = building.receiveShadow = true;
   scene.add(building);
-
-  fitShadowCamera();
 }
 
 function updateSun() {
@@ -185,6 +183,7 @@ function updateSun() {
   const transmittance = Math.sqrt(Math.max(sinElevation, 0)); // 0 at the horizon → 1 at the zenith
   sunLight.color.copy(sunHorizonColor).lerp(sunMiddayColor, transmittance);
   sunLight.intensity = 6 * transmittance; // illuminance perpendicular to the rays; the renderer applies N·L per surface
+  sunLight.position.copy(sun);
 
   // re-bake the sky ( without the sun disc ) into the environment map for IBL
 
@@ -195,39 +194,6 @@ function updateSun() {
   scene.environment = env;
   sky.showSunDisc.value = true;
   scene.add(sky);
-
-  fitShadowCamera();
-}
-
-function fitShadowCamera() {
-  // fit the directional light's shadow frustum to the tower and the full
-  // ground shadow it casts, so a low sun's long shadow isn't clipped
-
-  const height = parameters.height;
-  const tipDistance = height / Math.max(sun.y, 0.05); // shadow tip on the ground
-  const centerX = -sun.x * tipDistance * 0.5;
-  const centerZ = -sun.z * tipDistance * 0.5;
-
-  const radius = Math.hypot(parameters.width, parameters.depth) * 0.5;
-  const half = Math.hypot(centerX, centerZ) + radius + 20;
-  const distance = half + height; // place the light clear of the whole scene
-
-  sunLight.target.position.set(centerX, 0, centerZ);
-  sunLight.target.updateMatrixWorld();
-  sunLight.position.set(
-    centerX + sun.x * distance,
-    sun.y * distance,
-    centerZ + sun.z * distance
-  );
-
-  const shadowCamera = sunLight.shadow.camera;
-  shadowCamera.left = -half;
-  shadowCamera.right = half;
-  shadowCamera.top = half;
-  shadowCamera.bottom = -half;
-  shadowCamera.near = 1;
-  shadowCamera.far = distance * 2;
-  shadowCamera.updateProjectionMatrix();
 }
 
 function onWindowResize() {

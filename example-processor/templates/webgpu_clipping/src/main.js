@@ -2,6 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -38,20 +40,11 @@ function init() {
   spotLight.shadow.radius = 4;
   scene.add(spotLight);
 
-  const dirLight = new DirectionalLight(0x55505a, 3);
-  dirLight.position.set(0, 3, 0);
-  dirLight.castShadow = true;
-  dirLight.shadow.camera.near = 1;
-  dirLight.shadow.camera.far = 10;
-
-  dirLight.shadow.camera.right = 1;
-  dirLight.shadow.camera.left = -1;
-  dirLight.shadow.camera.top = 1;
-  dirLight.shadow.camera.bottom = -1;
-
-  dirLight.shadow.mapSize.width = 1024;
-  dirLight.shadow.mapSize.height = 1024;
-  scene.add(dirLight);
+  const sunLight = new SunLight(0x55505a, 3);
+  sunLight.position.set(0, 3, 0);
+  sunLight.castShadow = true;
+  sunLight.shadow.camera.far = 10;
+  scene.add(sunLight);
 
   // Clipping planes
 
@@ -102,6 +95,7 @@ function init() {
   // Renderer
 
   renderer = new WebGPURenderer({ antialias: true });
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.shadowMap.enabled = true;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

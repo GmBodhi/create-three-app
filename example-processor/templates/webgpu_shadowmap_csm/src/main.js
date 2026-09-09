@@ -68,7 +68,6 @@ function init() {
   renderer.setAnimationLoop(animate);
 
   renderer.shadowMap.enabled = params.shadows;
-  renderer.shadowMap.type = PCFSoftShadowMap;
 
   renderer.inspector = new Inspector();
 

@@ -154,7 +154,7 @@ function init() {
   controls = new FirstPersonControls(camera, renderer.domElement);
 
   controls.movementSpeed = 1000;
-  controls.lookSpeed = 0.125;
+  controls.lookSpeed = 0.2;
   controls.lookVertical = true;
 
   stats = new Stats();

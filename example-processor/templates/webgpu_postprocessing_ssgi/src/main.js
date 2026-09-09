@@ -110,7 +110,7 @@ async function init() {
   const gi = giPass.getGINode().toInspector("SSGI.GI");
 
   const compositePass = vec4(
-    add(scenePassColor.rgb.mul(ao.r), scenePassDiffuse.rgb.mul(gi.rgb)),
+    add(scenePassColor.rgb.mul(ao), scenePassDiffuse.rgb.mul(gi.rgb)),
     scenePassColor.a
   );
   compositePass.name = "Composite";

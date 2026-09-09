@@ -65,7 +65,19 @@ async function init() {
 
   renderPipeline = new RenderPipeline(renderer);
 
-  const scenePass = pass(scene, camera);
+  // below optimized config is only relevant when using MSAA and also optional.
+  // store no multisampled data and only resolve color
+
+  const config = {
+    storeMultisampledColorBuffer: false,
+    storeMultisampledDepthBuffer: false,
+    storeMultisampledStencilBuffer: false,
+    resolveColorBuffer: true,
+    resolveDepthBuffer: false,
+    resolveStencilBuffer: false,
+  };
+
+  const scenePass = pass(scene, camera, config);
   const scenePassColor = scenePass
     .getTextureNode("output")
     .toInspector("Color");

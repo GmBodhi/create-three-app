@@ -9,6 +9,7 @@ import {
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { GUI } from "three/addons/libs/lil-gui.module.min.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { SimplifyModifier } from "three/addons/modifiers/SimplifyModifier.js";
 
@@ -17,15 +18,6 @@ let renderer, scene, camera;
 init();
 
 function init() {
-  const info = document.createElement("div");
-  info.style.position = "absolute";
-  info.style.top = "10px";
-  info.style.width = "100%";
-  info.style.textAlign = "center";
-  info.innerHTML =
-    '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> - Vertex Reduction using SimplifyModifier';
-  document.body.appendChild(info);
-
   renderer = new WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -65,16 +57,32 @@ function init() {
       const simplified = mesh.clone();
       simplified.material = simplified.material.clone();
       simplified.material.flatShading = true;
-      const count = Math.floor(
-        simplified.geometry.attributes.position.count * 0.875
-      ); // number of vertices to remove
-      simplified.geometry = modifier.modify(simplified.geometry, count);
 
       simplified.position.x = 3;
       simplified.rotation.y = -Math.PI / 2;
       scene.add(simplified);
 
-      render();
+      const params = { ratio: 0.125 };
+
+      async function simplify() {
+        const count = Math.floor(
+          mesh.geometry.attributes.position.count * (1 - params.ratio)
+        ); // number of vertices to remove
+
+        const geometry = await modifier.modify(mesh.geometry, count);
+
+        if (simplified.geometry !== mesh.geometry)
+          simplified.geometry.dispose();
+
+        simplified.geometry = geometry;
+
+        render();
+      }
+
+      simplify();
+
+      const gui = new GUI();
+      gui.add(params, "ratio", 0.01, 1, 0.01).onChange(simplify);
     }
   );
 
