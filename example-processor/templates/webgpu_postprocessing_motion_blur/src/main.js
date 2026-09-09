@@ -12,6 +12,8 @@ import {
   screenUV,
   vec4,
 } from "three/tsl";
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { motionBlur } from "three/addons/tsl/display/MotionBlur.js";
 
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -43,16 +45,9 @@ function init() {
   scene = new Scene();
   scene.fog = new Fog(0x0487e2, 7, 25);
 
-  const sunLight = new DirectionalLight(0xffe499, 5);
+  const sunLight = new SunLight(0xffe499, 5);
   sunLight.castShadow = true;
-  sunLight.shadow.camera.near = 0.1;
   sunLight.shadow.camera.far = 10;
-  sunLight.shadow.camera.right = 2;
-  sunLight.shadow.camera.left = -2;
-  sunLight.shadow.camera.top = 2;
-  sunLight.shadow.camera.bottom = -2;
-  sunLight.shadow.mapSize.width = 1024;
-  sunLight.shadow.mapSize.height = 1024;
   sunLight.position.set(4, 4, 2);
 
   const waterAmbientLight = new HemisphereLight(0x333366, 0x74ccf4, 5);
@@ -144,6 +139,7 @@ function init() {
   // renderer
 
   renderer = new WebGPURenderer();
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

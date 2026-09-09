@@ -2,6 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
@@ -83,11 +85,12 @@ function init() {
 
   scene.add(new AmbientLight(0x757f8e, 3));
 
-  const directionalLight = new DirectionalLight(0xfffecd, 1.5);
-  directionalLight.position.set(100, 100, 100);
-  directionalLight.castShadow = true;
-  directionalLight.shadow.mapSize.set(2048, 2048);
-  scene.add(directionalLight);
+  const sunLight = new SunLight(0xfffecd, 1.5);
+  sunLight.position.set(100, 100, 100);
+  sunLight.castShadow = true;
+  sunLight.shadow.camera.far = 10;
+  sunLight.shadow.mapSize.set(2048, 2048);
+  scene.add(sunLight);
 
   const spotLight = new SpotLight(0xffc100, 10, 10, Math.PI / 16, 0.02, 2);
   spotLight.position.set(2, 2, 0);
@@ -98,6 +101,7 @@ function init() {
   scene.add(spotLight);
 
   renderer = new WebGPURenderer();
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.inspector = new Inspector();

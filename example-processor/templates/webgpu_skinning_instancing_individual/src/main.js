@@ -18,6 +18,8 @@ import {
   mat3,
 } from "three/tsl";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -234,18 +236,12 @@ async function init() {
 
   scene.add(new HemisphereLight(0xffffff, 0x939b9e, 1.2));
 
-  const directionalLight = new DirectionalLight(0xfffbf4, 2.8);
-  directionalLight.position.set(-4, 10, 8);
-  directionalLight.castShadow = true;
-  directionalLight.shadow.mapSize.set(2048, 2048);
-  directionalLight.shadow.camera.left = -5;
-  directionalLight.shadow.camera.right = 5;
-  directionalLight.shadow.camera.top = 5;
-  directionalLight.shadow.camera.bottom = -5;
-  directionalLight.shadow.camera.near = 0.1;
-  directionalLight.shadow.camera.far = 30;
-  directionalLight.shadow.camera.updateProjectionMatrix();
-  scene.add(directionalLight);
+  const sunLight = new SunLight(0xfffbf4, 2.8);
+  sunLight.position.set(-4, 10, 8);
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.set(2048, 2048);
+  sunLight.shadow.camera.far = 30;
+  scene.add(sunLight);
 
   const rimLight = new DirectionalLight(0xe8f4ff, 0.85);
   rimLight.position.set(7, 5, -5);
@@ -405,6 +401,7 @@ async function init() {
   });
 
   renderer = new WebGPURenderer({ antialias: true });
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);

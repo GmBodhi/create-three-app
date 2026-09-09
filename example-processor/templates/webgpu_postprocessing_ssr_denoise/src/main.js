@@ -25,6 +25,8 @@ import {
   renderOutput,
   saturation,
 } from "three/tsl";
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { ssr } from "three/addons/tsl/display/SSRNode.js";
 import { temporalReproject } from "three/addons/tsl/display/TemporalReprojectNode.js";
 import { recurrentDenoise } from "three/addons/tsl/display/RecurrentDenoiseNode.js";
@@ -189,6 +191,7 @@ async function init() {
   });
 
   renderer = new WebGPURenderer();
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.inspector = new Inspector();
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = AgXToneMapping;
@@ -204,21 +207,14 @@ async function init() {
   hdrTexture.generateMipmaps = true;
   hdrTexture.needsUpdate = true;
 
-  const directionalLight = new DirectionalLight("#ffffff", 20);
-  directionalLight.position.set(-10.9, 2.2, 10.75);
-  directionalLight.castShadow = true;
-  directionalLight.shadow.autoUpdate = false;
-  directionalLight.shadow.needsUpdate = true;
-  directionalLight.shadow.mapSize.width = 4096;
-  directionalLight.shadow.mapSize.height = 4096;
-  directionalLight.shadow.camera.left = -1.75;
-  directionalLight.shadow.camera.right = 1.75;
-  directionalLight.shadow.camera.top = 1.75;
-  directionalLight.shadow.camera.bottom = -1.75;
-  directionalLight.shadow.camera.near = 0.1;
-  directionalLight.shadow.camera.far = 50;
-  directionalLight.shadow.bias = -0.0005;
-  scene.add(directionalLight);
+  const sunLight = new SunLight("#ffffff", 20);
+  sunLight.position.set(-10.9, 2.2, 10.75);
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.width = 4096;
+  sunLight.shadow.mapSize.height = 4096;
+  sunLight.shadow.camera.far = 50;
+  sunLight.shadow.normalBias = 0.0015;
+  scene.add(sunLight);
 
   await renderer.init();
 
@@ -470,12 +466,9 @@ async function init() {
   // Concise UI for Directional Light controls
   const lightGui = renderer.inspector.createParameters("Light").close();
   ["x", "y", "z"].forEach((axis) => {
-    lightGui
-      .add(directionalLight.position, axis, -30, 30)
-      .name(axis.toUpperCase())
-      .onChange(() => (directionalLight.shadow.needsUpdate = true));
+    lightGui.add(sunLight.position, axis, -30, 30).name(axis.toUpperCase());
   });
-  lightGui.add(directionalLight, "intensity", 0, 50).name("Intensity");
+  lightGui.add(sunLight, "intensity", 0, 50).name("Intensity");
 
   updateOutputNode();
   renderer.setAnimationLoop(animate);

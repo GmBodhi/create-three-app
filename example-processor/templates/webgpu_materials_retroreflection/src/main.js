@@ -1,23 +1,39 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
+import {
+  color,
+  mix,
+  mx_noise_float,
+  pass,
+  positionLocal,
+  positionWorld,
+  materialColor,
+  materialRoughness,
+  reflector,
+  transformNormalToView,
+  vec2,
+  vec3,
+} from "three/tsl";
+import { bloom } from "three/addons/tsl/display/BloomNode.js";
+import { hashBlur } from "three/addons/tsl/display/hashBlur.js";
 
-import { GUI } from "three/addons/libs/lil-gui.module.min.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
-let camera, scene, renderer;
-let frontLight, bandMaterial;
+let camera, scene, renderer, renderPipeline, controls;
+let frontLight, reflectedFlashLight, bandMaterial;
 
 const params = {
-  retroreflective: true,
-  retroreflectivity: 1.0,
-  frontLightIntensity: 5.0,
+  enabled: true,
+  amount: 1.0,
+  flashLight: 5.0,
 };
 
 init();
 
-function init() {
+async function init() {
   if (WebGPU.isAvailable() === false) {
     document.body.appendChild(WebGPU.getErrorMessage());
 
@@ -33,76 +49,262 @@ function init() {
     0.1,
     100
   );
-  camera.position.set(4, 2.5, 6);
+  camera.position.set(2.3, 1.32, 3.25);
 
   scene = new Scene();
-  scene.background = new Color(0x11151d);
+  scene.background = new Color(0x0f131a);
+  scene.fog = new Fog(0x0f131a, 4, 18);
   scene.add(camera);
 
-  scene.add(new HemisphereLight(0xffffff, 0x223344, 0.8));
-
-  frontLight = new PointLight(0xffffff, params.frontLightIntensity, 18, 1.4);
+  // camera-mounted LED flashlight (~6500K = sRGB white)
+  frontLight = new PointLight(0xffffff, params.flashLight, 12);
   camera.add(frontLight);
 
-  createCone();
+  // the flashlight's mirror image below the ground: it stands in for the
+  // puddle-bounced beam, so the retro bands also light up in the reflection
+  reflectedFlashLight = new PointLight(0xffffff, params.flashLight * 0.35, 12);
+  scene.add(reflectedFlashLight);
 
-  const grid = new GridHelper(8, 16, 0x344055, 0x202838);
-  scene.add(grid);
+  createFloor();
+  createCones();
 
   renderer = new WebGPURenderer({ antialias: true });
+  renderer.toneMapping = ACESFilmicToneMapping;
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
-  const controls = new OrbitControls(camera, renderer.domElement);
-  controls.target.set(0, 1.5, 0);
+  await renderer.init();
+
+  const pmremGenerator = new PMREMGenerator(renderer);
+  scene.environment = pmremGenerator.fromScene(
+    createNightEnvironment(),
+    0.02
+  ).texture;
+
+  renderPipeline = new RenderPipeline(renderer);
+
+  const scenePass = pass(scene, camera);
+  const scenePassColor = scenePass.getTextureNode();
+
+  renderPipeline.outputNode = scenePassColor.add(
+    bloom(scenePassColor, 0.15, 0, 0)
+  );
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.target.set(0, 0.33, 0);
+  controls.maxPolarAngle = Math.PI / 2 - 0.05; // keep the camera above the ground
+  controls.enableDamping = true;
   controls.update();
 
-  const gui = new GUI();
+  const gui = renderer.inspector.createParameters("Settings");
+  gui.add(params, "enabled").onChange(updateMaterial);
+  gui.add(params, "amount", 0, 1, 0.01).onChange(updateMaterial);
   gui
-    .add(params, "retroreflective")
-    .name("retroreflective")
-    .onChange(updateMaterial);
-  gui
-    .add(params, "retroreflectivity", 0, 1, 0.01)
-    .name("retroreflectivity")
-    .onChange(updateMaterial);
-  gui
-    .add(params, "frontLightIntensity", 0, 30, 0.1)
-    .name("front light intensity")
-    .onChange(updateMaterial);
+    .add(params, "flashLight", 0, 30, 0.1)
+    .name("flash light")
+    .onChange((value) => (frontLight.intensity = value));
 
   window.addEventListener("resize", onWindowResize);
 
   updateMaterial();
 }
 
-function createCone() {
-  const cone = new Group();
-  scene.add(cone);
+function createNightEnvironment() {
+  const environment = new Scene();
 
+  // sky: faint city glow at the horizon fading to a dark zenith
+  const skyMaterial = new MeshBasicNodeMaterial({ side: BackSide });
+  skyMaterial.colorNode = mix(
+    color(0x05070c),
+    color(0x2a3148),
+    positionLocal.normalize().y.abs().oneMinus().pow(4)
+  );
+  environment.add(new Mesh(new SphereGeometry(10), skyMaterial));
+
+  // distant buildings with sparse lit windows
+  const buildingMaterial = new MeshBasicNodeMaterial();
+
+  const cell = vec2(
+    positionWorld.x.add(positionWorld.z.mul(1.7)).mul(3),
+    positionWorld.y.mul(2.5)
+  );
+  const cellUV = cell.fract();
+  const window_ = cellUV.x
+    .smoothstep(0.15, 0.3)
+    .mul(cellUV.x.smoothstep(0.7, 0.85).oneMinus())
+    .mul(cellUV.y.smoothstep(0.2, 0.35))
+    .mul(cellUV.y.smoothstep(0.65, 0.8).oneMinus());
+  const lit = mx_noise_float(cell.floor().mul(0.731).add(0.37)).smoothstep(
+    0.0,
+    0.1
+  );
+  const windowColor = mix(
+    color(0x88a8ff),
+    color(0xffc16b),
+    mx_noise_float(cell.floor().mul(0.317)).add(1).mul(0.5)
+  );
+  buildingMaterial.colorNode = mix(
+    color(0x05060a),
+    windowColor.mul(12),
+    window_.mul(lit)
+  );
+
+  for (let i = 0; i < 8; i++) {
+    const angle = (i / 8) * Math.PI * 2 + 0.35;
+    const height = 2.5 + ((i * 2.7) % 3.5);
+    const building = new Mesh(new BoxGeometry(2, height, 1), buildingMaterial);
+    building.position.set(
+      Math.cos(angle) * 9,
+      height / 2 - 0.5,
+      Math.sin(angle) * 9
+    );
+    building.lookAt(0, height / 2 - 0.5, 0);
+    environment.add(building);
+  }
+
+  // street lamps: sodium and LED
+  const warmLampMaterial = new MeshBasicMaterial();
+  warmLampMaterial.color.setRGB(18, 11, 4);
+
+  const coolLampMaterial = new MeshBasicMaterial();
+  coolLampMaterial.color.setRGB(7, 9, 13);
+
+  for (let i = 0; i < 6; i++) {
+    const angle = (i / 6) * Math.PI * 2 + 0.7;
+    const lamp = new Mesh(
+      new SphereGeometry(0.35),
+      i % 3 === 2 ? coolLampMaterial : warmLampMaterial
+    );
+    lamp.position.set(Math.cos(angle) * 8, 2.5 + (i % 3), Math.sin(angle) * 8);
+    environment.add(lamp);
+  }
+
+  // moon
+  const moonMaterial = new MeshBasicMaterial();
+  moonMaterial.color.setRGB(2.5, 3, 4);
+  const moon = new Mesh(new SphereGeometry(0.6), moonMaterial);
+  moon.position.set(4, 7, -5);
+  environment.add(moon);
+
+  return environment;
+}
+
+function createFloor() {
+  const material = new MeshStandardNodeMaterial({
+    color: 0x1b1e23,
+    roughness: 0.6,
+  });
+
+  const reflection = reflector({ resolutionScale: 0.5 });
+  reflection.target.rotateX(-Math.PI / 2);
+  scene.add(reflection.target);
+
+  const position = positionWorld.xz;
+
+  // fade procedural detail as its period approaches the pixel footprint,
+  // which grows anisotropically at grazing angles and with distance
+  const bandlimit = (p) => p.fwidth().length().smoothstep(0.5, 1.5).oneMinus();
+
+  // asphalt: tonal grain and broad worn patches
+  const grain = mx_noise_float(position.mul(60))
+    .mul(bandlimit(position.mul(60)))
+    .mul(0.2);
+  const patches = mx_noise_float(position.mul(1.5)).mul(0.08);
+  const asphalt = materialColor.mul(grain.add(patches).add(1));
+
+  // puddles: flat, dark and mirror-like
+  const puddle = mx_noise_float(position.mul(0.45).add(6.27)).smoothstep(
+    0.25,
+    0.45
+  );
+
+  // bump: heightfield normal from finite differences of a fine noise, flattened in puddles
+  const bumpNoise = (p) => mx_noise_float(p.mul(180));
+  const e = 0.002;
+  const strength = puddle
+    .oneMinus()
+    .mul(bandlimit(position.mul(180)))
+    .mul(0.0015);
+  const h = bumpNoise(position);
+  const hx = bumpNoise(position.add(vec2(e, 0)));
+  const hz = bumpNoise(position.add(vec2(0, e)));
+  const bump = vec3(
+    h.sub(hx).mul(strength),
+    hz.sub(h).mul(strength),
+    e
+  ).normalize();
+
+  material.normalNode = transformNormalToView(bump);
+
+  // the surface relief wobbles the reflection; puddles stay calm
+  reflection.uvNode = reflection.uvNode.add(bump.xy.mul(0.03));
+
+  material.colorNode = mix(asphalt, asphalt.mul(0.3), puddle);
+  material.roughnessNode = mix(
+    mx_noise_float(position.mul(50))
+      .mul(bandlimit(position.mul(50)))
+      .mul(0.15)
+      .add(materialRoughness),
+    0.05,
+    puddle
+  );
+
+  // rain-soaked: the whole surface reflects, streaky on wet asphalt and sharpest in the puddles
+  const wetness = mix(0.15, 0.7, puddle);
+  const reflectionBlur = mix(0.08, 0.005, puddle);
+  material.emissiveNode = hashBlur(reflection, reflectionBlur, {
+    repeats: 32,
+  }).rgb.mul(wetness);
+
+  const floor = new Mesh(new PlaneGeometry(40, 40), material);
+  floor.rotation.x = -Math.PI / 2;
+  scene.add(floor);
+}
+
+function createCones() {
   const orangeMaterial = new MeshPhysicalNodeMaterial({
     color: 0xff6a00,
     roughness: 0.45,
-    metalness: 0.0,
   });
+
+  // worn plastic: uncorrelated noise on roughness and tone
+  orangeMaterial.roughnessNode = mx_noise_float(positionLocal.mul(30))
+    .mul(0.2)
+    .add(materialRoughness);
+  orangeMaterial.colorNode = materialColor.mul(
+    mx_noise_float(positionLocal.add(7.3).mul(20)).mul(0.1).add(1)
+  );
 
   bandMaterial = new MeshPhysicalNodeMaterial({
     color: 0xf7f0d6,
     roughness: 0.22,
-    metalness: 0.0,
-    retroreflectivity: params.retroreflectivity,
+    retroreflectivity: params.amount,
   });
 
-  const base = new Mesh(new BoxGeometry(2.6, 0.24, 2.6), orangeMaterial);
-  base.position.y = 0.12;
+  const count = 5;
+  const radius = 1.1;
+
+  for (let i = 0; i < count; i++) {
+    const cone = createCone(orangeMaterial, bandMaterial);
+    const angle = (i / count) * Math.PI * 2;
+    cone.position.set(Math.cos(angle) * radius, 0, Math.sin(angle) * radius);
+    scene.add(cone);
+  }
+}
+
+function createCone(orangeMaterial, bandMaterial) {
+  const cone = new Group();
+
+  const base = new Mesh(createBaseGeometry(0.42, 0.04, 0.08), orangeMaterial);
   cone.add(base);
 
-  const bodyHeight = 3.2;
-  const bodyBottom = 0.24;
-  const bodyRadiusBottom = 1.0;
-  const bodyRadiusTop = 0.18;
+  const bodyHeight = 0.71;
+  const bodyBottom = 0.04;
+  const bodyRadiusBottom = 0.17;
+  const bodyRadiusTop = 0.035;
 
   const body = new Mesh(
     new CylinderGeometry(
@@ -118,40 +320,45 @@ function createCone() {
   body.position.y = bodyBottom + bodyHeight * 0.5;
   cone.add(body);
 
-  const bandHeight = 0.48;
-  const bandCenter = bodyBottom + bodyHeight * 0.52;
-  const bandBottom = bandCenter - bandHeight * 0.5;
-  const bandTop = bandCenter + bandHeight * 0.5;
-  const bandRadiusBottom =
-    radiusAtHeight(
-      bandBottom,
-      bodyBottom,
-      bodyHeight,
-      bodyRadiusBottom,
-      bodyRadiusTop
-    ) * 1.01;
-  const bandRadiusTop =
-    radiusAtHeight(
-      bandTop,
-      bodyBottom,
-      bodyHeight,
-      bodyRadiusBottom,
-      bodyRadiusTop
-    ) * 1.01;
+  const bands = [
+    { center: bodyBottom + bodyHeight * 0.6, height: 0.1 },
+    { center: bodyBottom + bodyHeight * 0.4, height: 0.06 },
+  ];
 
-  const band = new Mesh(
-    new CylinderGeometry(
-      bandRadiusTop,
-      bandRadiusBottom,
-      bandHeight,
-      96,
-      1,
-      true
-    ),
-    bandMaterial
-  );
-  band.position.y = bandCenter;
-  cone.add(band);
+  for (const { center, height } of bands) {
+    const bandRadiusBottom =
+      radiusAtHeight(
+        center - height * 0.5,
+        bodyBottom,
+        bodyHeight,
+        bodyRadiusBottom,
+        bodyRadiusTop
+      ) * 1.01;
+    const bandRadiusTop =
+      radiusAtHeight(
+        center + height * 0.5,
+        bodyBottom,
+        bodyHeight,
+        bodyRadiusBottom,
+        bodyRadiusTop
+      ) * 1.01;
+
+    const band = new Mesh(
+      new CylinderGeometry(
+        bandRadiusTop,
+        bandRadiusBottom,
+        height,
+        96,
+        1,
+        true
+      ),
+      bandMaterial
+    );
+    band.position.y = center;
+    cone.add(band);
+  }
+
+  return cone;
 }
 
 function radiusAtHeight(y, bodyBottom, bodyHeight, radiusBottom, radiusTop) {
@@ -159,11 +366,31 @@ function radiusAtHeight(y, bodyBottom, bodyHeight, radiusBottom, radiusTop) {
   return MathUtils.lerp(radiusBottom, radiusTop, t);
 }
 
+function createBaseGeometry(size, thickness, radius) {
+  const half = size / 2;
+
+  const shape = new Shape();
+  shape.moveTo(-half + radius, -half);
+  shape.lineTo(half - radius, -half);
+  shape.absarc(half - radius, -half + radius, radius, -Math.PI / 2, 0);
+  shape.lineTo(half, half - radius);
+  shape.absarc(half - radius, half - radius, radius, 0, Math.PI / 2);
+  shape.lineTo(-half + radius, half);
+  shape.absarc(-half + radius, half - radius, radius, Math.PI / 2, Math.PI);
+  shape.lineTo(-half, -half + radius);
+  shape.absarc(-half + radius, -half + radius, radius, Math.PI, Math.PI * 1.5);
+
+  const geometry = new ExtrudeGeometry(shape, {
+    depth: thickness,
+    bevelEnabled: false,
+  });
+  geometry.rotateX(-Math.PI / 2);
+
+  return geometry;
+}
+
 function updateMaterial() {
-  bandMaterial.retroreflectivity = params.retroreflective
-    ? params.retroreflectivity
-    : 0;
-  frontLight.intensity = params.frontLightIntensity;
+  bandMaterial.retroreflectivity = params.enabled ? params.amount : 0;
 }
 
 function onWindowResize() {
@@ -174,5 +401,14 @@ function onWindowResize() {
 }
 
 function render() {
-  renderer.render(scene, camera);
+  controls.update();
+
+  reflectedFlashLight.position.set(
+    camera.position.x,
+    -camera.position.y,
+    camera.position.z
+  );
+  reflectedFlashLight.intensity = frontLight.intensity * 0.35;
+
+  renderPipeline.render();
 }

@@ -2,6 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
+import { SunLight } from "three/addons/lights/SunLight.js";
+import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -71,17 +73,12 @@ function init() {
 
   scene.add(new AmbientLight(0xffffff, 1.5));
 
-  const dirLight = new DirectionalLight(0xffffff, 3);
-  dirLight.position.set(5, 10, 7.5);
-  dirLight.castShadow = true;
-  dirLight.shadow.camera.right = 2;
-  dirLight.shadow.camera.left = -2;
-  dirLight.shadow.camera.top = 2;
-  dirLight.shadow.camera.bottom = -2;
-
-  dirLight.shadow.mapSize.width = 1024;
-  dirLight.shadow.mapSize.height = 1024;
-  scene.add(dirLight);
+  const sunLight = new SunLight(0xffffff, 3);
+  sunLight.position.set(5, 10, 7.5);
+  sunLight.castShadow = true;
+  sunLight.shadow.mapSize.set(2048, 2048);
+  sunLight.shadow.camera.far = 15;
+  scene.add(sunLight);
 
   planes = [
     new Plane(new Vector3(-1, 0, 0), 0),
@@ -176,6 +173,7 @@ function init() {
   // Renderer
 
   renderer = new WebGPURenderer({ antialias: true, stencil: true });
+  renderer.library.addLight(SunLightNode, SunLight);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
