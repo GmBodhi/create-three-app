@@ -4421,6 +4421,16 @@
         "/src"
       ]
     },
+    "webgpu_loader_gltf_diffuse_roughness": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_loader_gltf_dispersion": {
       "files": {
         "index.html": "src",
