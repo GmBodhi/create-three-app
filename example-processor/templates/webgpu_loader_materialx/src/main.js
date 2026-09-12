@@ -258,6 +258,7 @@ function reportMaterialXLog(sample, materialName, log) {
 
 async function addSample(sample, path) {
   const model = prefab.clone();
+  model.visible = false;
 
   models.push(model);
 
@@ -289,6 +290,7 @@ async function addSample(sample, path) {
   }
 
   await renderer.compileAsync(model, camera, scene);
+  model.visible = true;
 }
 
 function addGUI() {

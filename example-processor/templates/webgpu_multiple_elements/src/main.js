@@ -113,7 +113,6 @@ function animate() {
 
   renderer.setClearColor(0xffffff);
   renderer.setScissorTest(false);
-  renderer.setViewport(0, 0, canvas.width, canvas.height);
   renderer.clear();
 
   //renderer.setClearColor( 0xe0e0e0 );
@@ -130,14 +129,14 @@ function animate() {
     // get its position relative to the page's viewport
     const rect = element.getBoundingClientRect();
 
-    // check if it's offscreen. If so skip it
+    // check if it's not fully in view. If so skip it
     if (
-      rect.bottom < 0 ||
-      rect.top > renderer.domElement.clientHeight ||
-      rect.right < 0 ||
-      rect.left > renderer.domElement.clientWidth
+      rect.top < 0 ||
+      rect.bottom > renderer.domElement.clientHeight ||
+      rect.left < 0 ||
+      rect.right > renderer.domElement.clientWidth
     ) {
-      return; // it's off screen
+      return; // it's not fully in view
     }
 
     // set the viewport
