@@ -11,7 +11,11 @@ import { uniform } from "three/tsl";
 import { pixelationPass } from "three/addons/tsl/display/PixelationPassNode.js";
 
 let camera, scene, renderer, renderPipeline, crystalMesh, timer;
-let effectController;
+let scenePass;
+
+const params = {
+  pixelAlignedPanning: true,
+};
 
 init();
 
@@ -109,21 +113,8 @@ function init() {
   renderer.shadowMap.type = BasicShadowMap;
   document.body.appendChild(renderer.domElement);
 
-  effectController = {
-    pixelSize: uniform(6),
-    normalEdgeStrength: uniform(0.3),
-    depthEdgeStrength: uniform(0.4),
-    pixelAlignedPanning: true,
-  };
-
   renderPipeline = new RenderPipeline(renderer);
-  const scenePass = pixelationPass(
-    scene,
-    camera,
-    effectController.pixelSize,
-    effectController.normalEdgeStrength,
-    effectController.depthEdgeStrength
-  );
+  scenePass = pixelationPass(scene, camera, 6, uniform(0.3), uniform(0.4));
   renderPipeline.outputNode = scenePass;
 
   window.addEventListener("resize", onWindowResize);
@@ -134,14 +125,14 @@ function init() {
   // gui
 
   const gui = renderer.inspector.createParameters("Settings");
-  gui.add(effectController.pixelSize, "value", 1, 16, 1).name("Pixel Size");
+  gui.add(scenePass, "pixelSize", 1, 16, 1).name("Pixel Size");
   gui
-    .add(effectController.normalEdgeStrength, "value", 0, 2, 0.05)
+    .add(scenePass.normalEdgeStrength, "value", 0, 2, 0.05)
     .name("Normal Edge Strength");
   gui
-    .add(effectController.depthEdgeStrength, "value", 0, 1, 0.05)
+    .add(scenePass.depthEdgeStrength, "value", 0, 1, 0.05)
     .name("Depth Edge Strength");
-  gui.add(effectController, "pixelAlignedPanning");
+  gui.add(params, "pixelAlignedPanning");
 }
 
 function onWindowResize() {
@@ -165,8 +156,8 @@ function animate() {
   const rendererSize = renderer.getSize(new Vector2());
   const aspectRatio = rendererSize.x / rendererSize.y;
 
-  if (effectController.pixelAlignedPanning) {
-    const pixelSize = effectController.pixelSize.value;
+  if (params.pixelAlignedPanning) {
+    const pixelSize = scenePass.pixelSize;
 
     pixelAlignFrustum(
       camera,
