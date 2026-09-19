@@ -5,7 +5,8 @@ import {
   AgXToneMapping,
   PerspectiveCamera,
   Scene,
-  PMREMGenerator,
+  WebGLRenderTarget,
+  HalfFloatType,
   EquirectangularReflectionMapping,
   Vector3,
   Vector2,
@@ -30,11 +31,12 @@ let scene,
   exporter,
   mesh,
   controls,
+  environment,
   renderTarget,
   dataTexture;
 
 const params = {
-  target: "pmrem",
+  target: "render-target",
   export: exportFile,
 };
 
@@ -65,16 +67,15 @@ function init() {
 
   //
 
-  const pmremGenerator = new PMREMGenerator(renderer);
-  pmremGenerator.compileEquirectangularShader();
+  renderTarget = new WebGLRenderTarget(1024, 512, { type: HalfFloatType });
 
   hdrLoader.load(
     "textures/equirectangular/venice_sunset_1k.hdr",
     function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
 
-      renderTarget = pmremGenerator.fromEquirectangular(texture);
-      scene.background = renderTarget.texture;
+      environment = texture;
+      scene.background = environment;
     }
   );
 
@@ -94,7 +95,7 @@ function init() {
 
   gui
     .add(params, "target")
-    .options(["pmrem", "data-texture"])
+    .options(["render-target", "data-texture"])
     .onChange(swapScene);
   gui.add(params, "export").name("Export KTX2");
   gui.open();
@@ -152,10 +153,10 @@ function createDataTexture() {
 }
 
 function swapScene() {
-  if (params.target == "pmrem") {
+  if (params.target == "render-target") {
     camera.position.set(10, 0, 0);
     controls.enabled = true;
-    scene.background = renderTarget.texture;
+    scene.background = environment;
     mesh.visible = false;
     renderer.toneMapping = AgXToneMapping;
   } else {
@@ -170,9 +171,19 @@ function swapScene() {
 async function exportFile() {
   let result;
 
-  if (params.target == "pmrem")
+  if (params.target == "render-target") {
+    const exportCamera = camera.clone();
+    exportCamera.aspect = renderTarget.width / renderTarget.height;
+    exportCamera.updateProjectionMatrix();
+
+    renderer.setRenderTarget(renderTarget);
+    renderer.render(scene, exportCamera);
+    renderer.setRenderTarget(null);
+
     result = await exporter.parse(renderer, renderTarget);
-  else result = await exporter.parse(dataTexture);
+  } else {
+    result = await exporter.parse(dataTexture);
+  }
 
   saveArrayBuffer(result, params.target + ".ktx2");
 }

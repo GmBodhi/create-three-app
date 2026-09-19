@@ -149,9 +149,7 @@ function fitCameraToSelection(camera, controls, selection, fitOffset = 1.3) {
 
   const maxSize = Math.max(size.x, size.y, size.z);
   const fitHeightDistance =
-    maxSize / (2 * Math.atan((Math.PI * camera.fov) / 360));
-  // const fitWidthDistance = fitHeightDistance / camera.aspect;
-  // const distance = fitOffset * Math.max( fitHeightDistance, fitWidthDistance );
+    maxSize / (2 * Math.tan((Math.PI * camera.fov) / 360));
   const distance = fitOffset * fitHeightDistance;
 
   const direction = controls.target

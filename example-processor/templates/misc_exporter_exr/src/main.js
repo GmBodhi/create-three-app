@@ -4,7 +4,8 @@ import {
   WebGLRenderer,
   PerspectiveCamera,
   Scene,
-  PMREMGenerator,
+  WebGLRenderTarget,
+  HalfFloatType,
   EquirectangularReflectionMapping,
   Vector3,
   Vector2,
@@ -15,7 +16,6 @@ import {
   PlaneGeometry,
   Mesh,
   Color,
-  HalfFloatType,
 } from "three";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
@@ -34,11 +34,12 @@ let scene,
   exporter,
   mesh,
   controls,
+  environment,
   renderTarget,
   dataTexture;
 
 const params = {
-  target: "pmrem",
+  target: "render-target",
   type: "HalfFloatType",
   compression: "ZIP",
   export: exportFile,
@@ -70,16 +71,15 @@ function init() {
 
   //
 
-  const pmremGenerator = new PMREMGenerator(renderer);
-  pmremGenerator.compileEquirectangularShader();
+  renderTarget = new WebGLRenderTarget(1024, 512, { type: HalfFloatType });
 
   hdrLoader.load(
     "textures/equirectangular/san_giuseppe_bridge_2k.hdr",
     function (texture) {
       texture.mapping = EquirectangularReflectionMapping;
 
-      renderTarget = pmremGenerator.fromEquirectangular(texture);
-      scene.background = renderTarget.texture;
+      environment = texture;
+      scene.background = environment;
     }
   );
 
@@ -100,7 +100,7 @@ function init() {
   const input = gui.addFolder("Input");
   input
     .add(params, "target")
-    .options(["pmrem", "data-texture"])
+    .options(["render-target", "data-texture"])
     .onChange(swapScene);
 
   const options = gui.addFolder("Output Options");
@@ -163,10 +163,10 @@ function createDataTexture() {
 }
 
 function swapScene() {
-  if (params.target == "pmrem") {
+  if (params.target == "render-target") {
     camera.position.set(10, 0, 0);
     controls.enabled = true;
-    scene.background = renderTarget.texture;
+    scene.background = environment;
     mesh.visible = false;
   } else {
     camera.position.set(0, 0, 70);
@@ -186,16 +186,25 @@ async function exportFile() {
   else if (params.compression == "ZIPS") exportCompression = ZIPS_COMPRESSION;
   else exportCompression = NO_COMPRESSION;
 
-  if (params.target == "pmrem")
+  if (params.target == "render-target") {
+    const exportCamera = camera.clone();
+    exportCamera.aspect = renderTarget.width / renderTarget.height;
+    exportCamera.updateProjectionMatrix();
+
+    renderer.setRenderTarget(renderTarget);
+    renderer.render(scene, exportCamera);
+    renderer.setRenderTarget(null);
+
     result = await exporter.parse(renderer, renderTarget, {
       type: exportType,
       compression: exportCompression,
     });
-  else
+  } else {
     result = await exporter.parse(dataTexture, {
       type: exportType,
       compression: exportCompression,
     });
+  }
 
   saveArrayBuffer(result, params.target + ".exr");
 }

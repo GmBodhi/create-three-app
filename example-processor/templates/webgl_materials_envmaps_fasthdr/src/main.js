@@ -9,7 +9,6 @@ import {
   Mesh,
   MeshPhysicalMaterial,
   MeshStandardMaterial,
-  CubeUVReflectionMapping,
 } from "three";
 
 import Stats from "three/addons/libs/stats.module.js";
@@ -25,14 +24,13 @@ const params = {
   backgroundBlurriness: 0.0,
 };
 
-let container, stats;
+let stats;
 let camera, scene, renderer, controls;
 
 init();
 
-function init() {
-  container = document.createElement("div");
-  document.body.appendChild(container);
+async function init() {
+  const container = document.getElementById("container");
 
   camera = new PerspectiveCamera(
     params.fov,
@@ -47,7 +45,6 @@ function init() {
   renderer = new WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  renderer.setAnimationLoop(animate);
 
   container.appendChild(renderer.domElement);
 
@@ -86,7 +83,6 @@ function init() {
       roughness: 0.0,
     })
   );
-  sphere03.position.z += 0;
   scene.add(sphere03);
 
   const sphere04 = new Mesh(
@@ -111,17 +107,25 @@ function init() {
   sphere05.position.z -= 2;
   scene.add(sphere05);
 
-  const loader = new KTX2Loader().detectSupport(renderer);
+  const loader = new KTX2Loader()
+    .setPath("textures/pmrem/")
+    .detectSupport(renderer);
 
-  function loadTexture(url) {
-    loader.load(url, (texture) => {
-      texture.mapping = CubeUVReflectionMapping;
-      scene.environment = texture;
-      scene.background = texture;
-    });
+  async function loadTexture(name) {
+    const texture = await loader.loadAsync(`${name}_2k.pmrem.ktx2`);
+
+    if (name !== params.image) {
+      texture.dispose();
+      return;
+    }
+
+    texture.isPMREMTexture = true;
+
+    if (scene.environment) scene.environment.dispose();
+
+    scene.environment = texture;
+    scene.background = texture;
   }
-
-  loadTexture("https://cdn.needle.tools/static/hdris/ballroom_2k.pmrem.ktx2");
 
   stats = new Stats();
   container.appendChild(stats.dom);
@@ -137,24 +141,16 @@ function init() {
 
   gui
     .add(params, "image", {
-      ballroom: "https://cdn.needle.tools/static/hdris/ballroom_2k.pmrem.ktx2",
-      "brown photostudio":
-        "https://cdn.needle.tools/static/hdris/brown_photostudio_02_2k.pmrem.ktx2",
-      "cape hill":
-        "https://cdn.needle.tools/static/hdris/cape_hill_2k.pmrem.ktx2",
-      cannon: "https://cdn.needle.tools/static/hdris/cannon_2k.pmrem.ktx2",
-      "metro noord":
-        "https://cdn.needle.tools/static/hdris/metro_noord_2k.pmrem.ktx2",
-      "the sky is on fire":
-        "https://cdn.needle.tools/static/hdris/the_sky_is_on_fire_2k.pmrem.ktx2",
-      "studio small 09":
-        "https://cdn.needle.tools/static/hdris/studio_small_09_2k.pmrem.ktx2",
-      "wide street 01":
-        "https://cdn.needle.tools/static/hdris/wide_street_01_2k.pmrem.ktx2",
+      ballroom: "ballroom",
+      "brown photostudio": "brown_photostudio_02",
+      "cape hill": "cape_hill",
+      cannon: "cannon",
+      "metro noord": "metro_noord",
+      "the sky is on fire": "the_sky_is_on_fire",
+      "studio small 09": "studio_small_09",
+      "wide street 01": "wide_street_01",
     })
-    .onChange(() => {
-      loadTexture(params.image);
-    });
+    .onChange(loadTexture);
 
   gui.add(params, "exposure", 0, 2, 0.01);
 
@@ -168,6 +164,9 @@ function init() {
     .name("background blurriness");
 
   gui.open();
+
+  await loadTexture(params.image);
+  renderer.setAnimationLoop(animate);
 }
 
 function onWindowResize() {
