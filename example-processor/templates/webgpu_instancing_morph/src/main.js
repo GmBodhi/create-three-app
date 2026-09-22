@@ -109,7 +109,7 @@ function init() {
   // renderer
 
   renderer = new WebGPURenderer({ antialias: true });
-  renderer.library.addLight(SunLightNode, SunLight);
+  SunLight.registerNode(SunLightNode);
   renderer.setAnimationLoop(animate);
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);

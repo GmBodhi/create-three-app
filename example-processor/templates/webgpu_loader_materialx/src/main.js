@@ -176,7 +176,7 @@ function init() {
           "three/examples/models/gltf/ShaderBall.glb"
         )
       ).scene;
-      await computePrefabTangents();
+      computePrefabTangents();
 
       for (const sample of samples) {
         await addSample(sample, SAMPLE_PATH);
@@ -192,9 +192,7 @@ function init() {
   window.addEventListener("resize", onWindowResize);
 }
 
-async function computePrefabTangents() {
-  await MikkTSpace.ready;
-
+function computePrefabTangents() {
   prefab.traverse(function (node) {
     if (node.isMesh === false) return;
 
@@ -258,11 +256,8 @@ function reportMaterialXLog(sample, materialName, log) {
 
 async function addSample(sample, path) {
   const model = prefab.clone();
-  model.visible = false;
 
   models.push(model);
-
-  scene.add(model);
 
   updateModelsAlign();
 
@@ -289,8 +284,18 @@ async function addSample(sample, path) {
     previewMesh.renderOrder = 2;
   }
 
-  await renderer.compileAsync(model, camera, scene);
-  model.visible = true;
+  // Skip double-pass materials until compileAsync() preserves each pass's side.
+  if (
+    !(
+      material.transparent &&
+      material.side === DoubleSide &&
+      material.forceSinglePass === false
+    )
+  ) {
+    await renderer.compileAsync(model, camera, scene);
+  }
+
+  scene.add(model);
 }
 
 function addGUI() {

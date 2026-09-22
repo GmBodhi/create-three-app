@@ -76,7 +76,7 @@ async function init() {
   scene.add(sky);
 
   renderer = new WebGPURenderer({ antialias: true });
-  renderer.library.addLight(SunLightNode, SunLight);
+  SunLight.registerNode(SunLightNode);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
