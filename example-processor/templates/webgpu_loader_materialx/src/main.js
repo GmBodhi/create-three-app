@@ -81,6 +81,7 @@ const localSamples = [
   "open_pbr_surface_velvet.mtlx",
   "open_pbr_surface_pearl.mtlx",
   "open_pbr_surface_honey.mtlx",
+  "displacement.mtlx",
 ];
 
 let camera, scene, renderer;
