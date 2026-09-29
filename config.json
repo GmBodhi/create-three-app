@@ -4601,6 +4601,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_node_proxy": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_retroreflection": {
       "files": {
         "index.html": "src",
