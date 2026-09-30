@@ -3160,16 +3160,6 @@
         "/src"
       ]
     },
-    "webgl_renderer_pathtracer": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_rendertarget_texture2darray": {
       "files": {
         "index.html": "src",
@@ -5312,6 +5302,16 @@
       ]
     },
     "webgpu_refraction": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_renderer_pathtracer": {
       "files": {
         "index.html": "src",
         "main.js": "src",
