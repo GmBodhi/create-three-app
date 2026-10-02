@@ -5704,6 +5704,16 @@
         "/src"
       ]
     },
+    "webgpu_tsl_occlusion_dither": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_tsl_procedural_terrain": {
       "files": {
         "index.html": "src",
