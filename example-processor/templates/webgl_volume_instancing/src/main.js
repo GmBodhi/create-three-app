@@ -187,7 +187,9 @@ function init() {
 				`;
 
   const loader = new VOXLoader();
-  loader.load("models/vox/menger.vox", function (chunks) {
+  loader.load("models/vox/menger.vox", function (result) {
+    const chunks = result.chunks;
+
     for (let i = 0; i < chunks.length; i++) {
       const chunk = chunks[i];
 
