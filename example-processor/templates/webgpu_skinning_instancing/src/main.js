@@ -77,11 +77,12 @@ function init() {
         child.material.metalnessNode = mix(0.0, randomMetalness, oscNode);
         child.material.colorNode = mix(color(0xffffff), randomColors, oscNode);
 
-        child.isInstancedMesh = true;
+        child.isInstancedMesh = true; // TODO: Resolve this hack
         child.instanceMatrix = new InstancedBufferAttribute(
           new Float32Array(instanceCount * 16),
           16
         );
+        child.instanceColor = null;
         child.count = instanceCount;
 
         for (let i = 0; i < instanceCount; i++) {
