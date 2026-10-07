@@ -53,50 +53,51 @@ const [sourceModel, targetModel] = await Promise.all([
 const timer = new Timer();
 timer.connect(document);
 
-export const lightSpeed = /*#__PURE__*/ Fn(([suv_immutable]) => {
-  // forked from https://www.shadertoy.com/view/7ly3D1
+export const lightSpeed = /*#__PURE__*/ Fn(
+  ([suv_immutable, time]) => {
+    // forked from https://www.shadertoy.com/view/7ly3D1
 
-  const suv = vec2(suv_immutable);
-  const uv = vec2(length(suv), atan(suv.y, suv.x));
-  const offset = float(
-    float(0.1)
-      .mul(sin(uv.y.mul(10).sub(time.mul(0.6))))
-      .mul(cos(uv.y.mul(48).add(time.mul(0.3))))
-      .mul(cos(uv.y.mul(3.7).add(time)))
-  );
-  const rays = vec3(
-    vec3(sin(uv.y.mul(150).add(time)).mul(0.5).add(0.5))
-      .mul(
-        vec3(
-          sin(uv.y.mul(80).sub(time.mul(0.6)))
-            .mul(0.5)
-            .add(0.5)
-        )
-      )
-      .mul(
-        vec3(
-          sin(uv.y.mul(45).add(time.mul(0.8)))
-            .mul(0.5)
-            .add(0.5)
-        )
-      )
-      .mul(
-        vec3(
-          sub(
-            1,
-            cos(uv.y.add(mul(22, time).sub(pow(uv.x.add(offset), 0.3).mul(60))))
+    const suv = vec2(suv_immutable);
+    const uv = vec2(length(suv), atan(suv.y, suv.x));
+    const offset = float(
+      float(0.1)
+        .mul(sin(uv.y.mul(10).sub(time.mul(0.6))))
+        .mul(cos(uv.y.mul(48).add(time.mul(0.3))))
+        .mul(cos(uv.y.mul(3.7).add(time)))
+    );
+    const rays = vec3(
+      vec3(sin(uv.y.mul(150).add(time)).mul(0.5).add(0.5))
+        .mul(
+          vec3(
+            sin(uv.y.mul(80).sub(time.mul(0.6)))
+              .mul(0.5)
+              .add(0.5)
           )
         )
-      )
-      .mul(vec3(uv.x.mul(2)))
-  );
+        .mul(
+          vec3(
+            sin(uv.y.mul(45).add(time.mul(0.8)))
+              .mul(0.5)
+              .add(0.5)
+          )
+        )
+        .mul(
+          vec3(
+            sub(
+              1,
+              cos(
+                uv.y.add(mul(22, time).sub(pow(uv.x.add(offset), 0.3).mul(60)))
+              )
+            )
+          )
+        )
+        .mul(vec3(uv.x.mul(2)))
+    );
 
-  return rays;
-}).setLayout({
-  name: "lightSpeed",
-  type: "vec3",
-  inputs: [{ name: "suv", type: "vec2" }],
-});
+    return rays;
+  },
+  { suv: "vec2", time: "float", return: "vec3" }
+);
 
 // scene
 
@@ -110,7 +111,7 @@ const coloredVignette = screenUV
     hue(color(0x0175ad), time.mul(0.1)),
     hue(color(0x02274f), time.mul(0.5))
   );
-const lightSpeedEffect = lightSpeed(normalWorldGeometry).clamp();
+const lightSpeedEffect = lightSpeed(normalWorldGeometry, time).clamp();
 const lightSpeedSky = normalWorldGeometry.y
   .remapClamp(-0.1, 1)
   .mix(0, lightSpeedEffect);

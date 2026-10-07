@@ -293,23 +293,22 @@ debugFolder
 debugFolder.close();
 
 // HELPER FUNCTIONS
-const pow2Ceil = Fn(([x]) => {
-  If(x.equal(uint(0)), () => {
-    return uint(1);
-  });
+const pow2Ceil = Fn(
+  ([x]) => {
+    If(x.equal(uint(0)), () => {
+      return uint(1);
+    });
 
-  const val = x.sub(1).toVar("val");
-  val.assign(val.bitOr(val.shiftRight(1)));
-  val.assign(val.bitOr(val.shiftRight(2)));
-  val.assign(val.bitOr(val.shiftRight(4)));
-  val.assign(val.bitOr(val.shiftRight(8)));
-  val.assign(val.bitOr(val.shiftRight(16)));
-  return val.add(1);
-}).setLayout({
-  name: "pow2Ceil",
-  type: "uint",
-  inputs: [{ name: "x", type: "uint" }],
-});
+    const val = x.sub(1).toVar("val");
+    val.assign(val.bitOr(val.shiftRight(1)));
+    val.assign(val.bitOr(val.shiftRight(2)));
+    val.assign(val.bitOr(val.shiftRight(4)));
+    val.assign(val.bitOr(val.shiftRight(8)));
+    val.assign(val.bitOr(val.shiftRight(16)));
+    return val.add(1);
+  },
+  { x: "uint", return: "uint" }
+);
 
 // ALGORITHM CONSTRUCTORS
 
