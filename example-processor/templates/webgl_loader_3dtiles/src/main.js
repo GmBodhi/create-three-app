@@ -190,24 +190,20 @@ async function init() {
 
   class EffectPassAdapter {
     constructor(pass) {
+      // pmndrs passes only know whether they need depth after initialization
+      pass.initialize(renderer, false, HalfFloatType);
+
       this.pass = pass;
       this.needsSwap = pass.needsSwap !== false;
+      this.needsDepthTexture = pass.needsDepthTexture === true;
       this.enabled = true;
-      this._initialized = false;
+    }
+
+    setDepthTexture(depthTexture) {
+      this.pass.setDepthTexture(depthTexture);
     }
 
     render(renderer, writeBuffer, readBuffer) {
-      if (!this._initialized) {
-        this.pass.initialize(renderer, false, HalfFloatType);
-        this.pass.setSize(readBuffer.width, readBuffer.height);
-
-        if (readBuffer.depthTexture && this.pass.setDepthTexture) {
-          this.pass.setDepthTexture(readBuffer.depthTexture);
-        }
-
-        this._initialized = true;
-      }
-
       if (this.pass.fullscreenMaterial instanceof EffectMaterial) {
         this.pass.fullscreenMaterial.adoptCameraSettings(camera);
       }
@@ -216,7 +212,7 @@ async function init() {
     }
 
     setSize(width, height) {
-      if (this._initialized) this.pass.setSize(width, height);
+      this.pass.setSize(width, height);
     }
   }
 
