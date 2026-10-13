@@ -27,7 +27,6 @@ import {
   vec4,
   cross,
   step,
-  storage,
 } from "three/tsl";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
@@ -48,23 +47,14 @@ const workgroupSize = 64;
 const gridSize = new Vector3(gridSize1d, gridSize1d, gridSize1d);
 const fixedPointMultiplier = 1e7;
 
-let particleCountUniform,
-  stiffnessUniform,
+let stiffnessUniform,
   restDensityUniform,
   dynamicViscosityUniform,
   dtUniform,
   gravityUniform,
   gridSizeUniform;
 let particleBuffer, cellBuffer, cellBufferFloat;
-let clearGridKernel,
-  p2g1Kernel,
-  p2g2Kernel,
-  updateGridKernel,
-  g2pKernel,
-  workgroupKernel;
-let p2g1KernelWorkgroupBuffer,
-  p2g2KernelWorkgroupBuffer,
-  g2pKernelWorkgroupBuffer;
+let clearGridKernel, p2g1Kernel, p2g2Kernel, updateGridKernel, g2pKernel;
 let particleMesh;
 const mouseCoord = new Vector3();
 const prevMouseCoord = new Vector3();
@@ -122,36 +112,6 @@ async function init() {
 
   const gui = renderer.inspector.createParameters("Settings");
 
-  const numWorkgroups = Math.ceil(params.particleCount / workgroupSize);
-
-  p2g1KernelWorkgroupBuffer = new IndirectStorageBufferAttribute(
-    new Uint32Array([numWorkgroups, 1, 1]),
-    1
-  );
-  p2g2KernelWorkgroupBuffer = new IndirectStorageBufferAttribute(
-    new Uint32Array([numWorkgroups, 1, 1]),
-    1
-  );
-  g2pKernelWorkgroupBuffer = new IndirectStorageBufferAttribute(
-    new Uint32Array([numWorkgroups, 1, 1]),
-    1
-  );
-
-  const p2g1WorkgroupStorage = storage(p2g1KernelWorkgroupBuffer, "uint", 3);
-  const p2g2WorkgroupStorage = storage(p2g2KernelWorkgroupBuffer, "uint", 3);
-  const g2pWorkgroupStorage = storage(g2pKernelWorkgroupBuffer, "uint", 3);
-
-  workgroupKernel = Fn(() => {
-    const workgroupsToDispatch = particleCountUniform
-      .sub(1)
-      .div(workgroupSize)
-      .add(1);
-
-    p2g1WorkgroupStorage.element(0).assign(workgroupsToDispatch);
-    p2g2WorkgroupStorage.element(0).assign(workgroupsToDispatch);
-    g2pWorkgroupStorage.element(0).assign(workgroupsToDispatch);
-  })().compute(1);
-
   gui
     .add(params, "particleCount", 4096, maxParticles, 4096)
     .onChange((value) => {
@@ -159,7 +119,6 @@ async function init() {
       p2g1Kernel.count = value;
       p2g2Kernel.count = value;
       g2pKernel.count = value;
-      particleCountUniform.value = value;
     });
 
   await renderer.init();
@@ -209,7 +168,6 @@ function setupBuffers() {
 
 function setupUniforms() {
   gridSizeUniform = uniform(gridSize);
-  particleCountUniform = uniform(params.particleCount, "uint");
   stiffnessUniform = uniform(50);
   restDensityUniform = uniform(1.5);
   dynamicViscosityUniform = uniform(0.1);
@@ -694,14 +652,13 @@ async function render() {
 
   prevMouseCoord.copy(mouseCoord);
 
-  renderer.compute(workgroupKernel);
-
-  //renderer.compute( [ clearGridKernel, p2g1Kernel, p2g2Kernel, updateGridKernel, g2pKernel ] );
-  renderer.compute(clearGridKernel);
-  renderer.compute(p2g1Kernel, p2g1KernelWorkgroupBuffer);
-  renderer.compute(p2g2Kernel, p2g2KernelWorkgroupBuffer);
-  renderer.compute(updateGridKernel);
-  renderer.compute(g2pKernel, g2pKernelWorkgroupBuffer);
+  renderer.compute([
+    clearGridKernel,
+    p2g1Kernel,
+    p2g2Kernel,
+    updateGridKernel,
+    g2pKernel,
+  ]);
 
   renderer.render(scene, camera);
 }

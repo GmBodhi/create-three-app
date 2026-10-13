@@ -23,6 +23,7 @@ import {
   EXRExporter,
   ZIP_COMPRESSION,
   ZIPS_COMPRESSION,
+  RLE_COMPRESSION,
   NO_COMPRESSION,
 } from "three/addons/exporters/EXRExporter.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
@@ -105,7 +106,7 @@ function init() {
 
   const options = gui.addFolder("Output Options");
   options.add(params, "type").options(["FloatType", "HalfFloatType"]);
-  options.add(params, "compression").options(["ZIP", "ZIPS", "NONE"]);
+  options.add(params, "compression").options(["ZIP", "ZIPS", "RLE", "NONE"]);
 
   gui.add(params, "export").name("Export EXR");
   gui.open();
@@ -184,6 +185,7 @@ async function exportFile() {
 
   if (params.compression == "ZIP") exportCompression = ZIP_COMPRESSION;
   else if (params.compression == "ZIPS") exportCompression = ZIPS_COMPRESSION;
+  else if (params.compression == "RLE") exportCompression = RLE_COMPRESSION;
   else exportCompression = NO_COMPRESSION;
 
   if (params.target == "render-target") {
