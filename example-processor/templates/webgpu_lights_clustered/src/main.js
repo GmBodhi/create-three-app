@@ -33,6 +33,7 @@ let renderPipeline, scenePass, clusterInfluence, debugZSliceNode;
 
 const balls = [];
 const dummy = new Object3D();
+const size = new Vector2();
 
 const params = {
   intensity: 1,
@@ -215,12 +216,9 @@ function updatePostProcessing() {
   // the overlay samples the cluster grid at the current resolution, so it
   // is rebuilt whenever the renderer size changes
 
-  const lightingNode = lighting
-    .getNode(scene)
-    .setSize(
-      window.innerWidth * window.devicePixelRatio,
-      window.innerHeight * window.devicePixelRatio
-    );
+  renderer.getDrawingBufferSize(size);
+
+  const lightingNode = lighting.getNode(scene).setSize(size.width, size.height);
 
   // map the light count of each cluster ( 0 … maxLightsPerCluster ) to a
   // blue → green → red gradient
