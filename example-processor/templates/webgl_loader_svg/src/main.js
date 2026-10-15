@@ -105,6 +105,8 @@ function createGUI() {
       blueprint: "models/svg/blueprint.svg",
       wideStroke: "models/svg/tests/wideStroke.svg",
       letter: "models/svg/tests/letter.svg",
+      closePathInitialPoint: "models/svg/tests/closePathInitialPoint.svg",
+      closePathOpenSubpath: "models/svg/tests/closePathOpenSubpath.svg",
     })
     .name("SVG File")
     .onChange(update);

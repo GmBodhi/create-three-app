@@ -150,11 +150,11 @@ async function init() {
       pow(halfTime.add(1), 4.0).mul(instances),
       100
     ).toVar("instanceCount");
-    atomicStore(drawStorage.get("instanceCount"), instanceCount);
+    atomicStore(drawStorage.element(0).get("instanceCount"), instanceCount);
   })().compute(instances);
 
   computeInitDrawBuffer = Fn(() => {
-    const drawInfo = drawStorage;
+    const drawInfo = drawStorage.element(0);
 
     drawInfo.get("vertexCount").assign(3);
     atomicStore(drawInfo.get("instanceCount"), uint(0));
