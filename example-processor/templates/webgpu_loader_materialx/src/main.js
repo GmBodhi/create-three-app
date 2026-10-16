@@ -305,17 +305,7 @@ async function addSample(sample, path) {
     previewMesh.renderOrder = 2;
   }
 
-  // Skip double-pass materials until compileAsync() preserves each pass's side.
-  if (
-    !(
-      material.transparent &&
-      material.side === DoubleSide &&
-      material.forceSinglePass === false
-    )
-  ) {
-    await renderer.compileAsync(model, camera, scene);
-  }
-
+  await renderer.compileAsync(model, camera, scene);
   scene.add(model);
 }
 

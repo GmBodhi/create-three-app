@@ -19,8 +19,6 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-
 const GRID = 30; // GRID x GRID spheres
 const SPACING = 5;
 const RADIUS = 0.5;
@@ -43,12 +41,6 @@ const params = {
 init();
 
 async function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
