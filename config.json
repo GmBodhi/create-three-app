@@ -4481,6 +4481,16 @@
         "/src"
       ]
     },
+    "webgpu_loader_jpegxl": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_loader_materialx": {
       "files": {
         "index.html": "src",
