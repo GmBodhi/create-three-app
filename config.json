@@ -5824,6 +5824,16 @@
         "/src"
       ]
     },
+    "webgpu_unwrap": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_upscaling_fsr1": {
       "files": {
         "index.html": "src",

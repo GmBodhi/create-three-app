@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>three.js webgpu - UV unwrap</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta property="og:title" content="three.js webgpu - UV unwrap" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://threejs.org/examples/webgpu_unwrap.html"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>UV Unwrapping</span>
+      </div>
+
+      <small>
+        <a
+          href="https://www.cs.jhu.edu/~misha/Fall09/Levy02.pdf"
+          target="_blank"
+          rel="noopener"
+          >Least Squares Conformal Maps</a
+        >-based UV atlas generation for lightmap and normal baking, by
+        <a href="https://ben3d.ca" target="_blank" rel="noopener">Ben Houston</a
+        >.
+      </small>
+    </div>
+
+    <!-- The standard E2E cleanup hides .lbl overlays, including timings and quality warnings. -->
+    <div id="status" class="lbl" role="status">Loading renderer...</div>
+    <div id="atlas-preview">
+      <canvas id="atlas" width="512" height="512"></canvas>
+    </div>
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>
