@@ -107,6 +107,7 @@ function createGUI() {
       letter: "models/svg/tests/letter.svg",
       closePathInitialPoint: "models/svg/tests/closePathInitialPoint.svg",
       closePathOpenSubpath: "models/svg/tests/closePathOpenSubpath.svg",
+      useHref: "models/svg/tests/useHref.svg",
     })
     .name("SVG File")
     .onChange(update);

@@ -21,7 +21,7 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 
 let camera, scene, renderer;
 
-let box;
+let box, morphMesh;
 
 init();
 
@@ -89,7 +89,7 @@ async function init() {
   //materialBox.colorNode = texture( uvTexture, uv( 1 ) );
 
   box = new Mesh(geometryBox, materialBox);
-  box.position.set(0, 1, 0);
+  box.position.set(-1, 1, 0);
   scene.add(box);
 
   // displace example
@@ -105,7 +105,7 @@ async function init() {
   materialSphere.positionNode = positionLocal.add(displace);
 
   const sphere = new Mesh(geometrySphere, materialSphere);
-  sphere.position.set(-2, -1, 0);
+  sphere.position.set(-3, -1, 0);
   scene.add(sphere);
 
   // data texture
@@ -116,7 +116,7 @@ async function init() {
   materialPlane.transparent = true;
 
   const plane = new Mesh(geometryPlane, materialPlane);
-  plane.position.set(0, -1, 0);
+  plane.position.set(-1, -1, 0);
   scene.add(plane);
 
   // compressed texture
@@ -132,7 +132,7 @@ async function init() {
 
   const geo = flipY(new PlaneGeometry());
   const planeCompressed = new Mesh(geo, materialCompressed);
-  planeCompressed.position.set(-2, 1, 0);
+  planeCompressed.position.set(-3, 1, 0);
   scene.add(planeCompressed);
 
   // points
@@ -150,7 +150,7 @@ async function init() {
   materialPoints.colorNode = positionLocal.mul(3);
 
   const pointCloud = new Points(geometryPoints, materialPoints);
-  pointCloud.position.set(2, -1, 0);
+  pointCloud.position.set(1, -1, 0);
   scene.add(pointCloud);
 
   // lines
@@ -169,8 +169,44 @@ async function init() {
   materialLine.colorNode = attribute("color");
 
   const line = new Line(geometryLine, materialLine);
-  line.position.set(2, 1, 0);
+  line.position.set(1, 1, 0);
   scene.add(line);
+
+  // morph targets
+
+  const geometryMorph = new BoxGeometry(1, 1, 1, 8, 8, 8);
+  const positionMorph = geometryMorph.attributes.position;
+
+  const colors = new Float32Array(positionMorph.count * 3);
+  const morphPositions = new Float32Array(positionMorph.count * 3);
+  const morphColors = new Float32Array(positionMorph.count * 3);
+
+  const vertex = new Vector3();
+
+  for (let i = 0; i < positionMorph.count; i++) {
+    vertex
+      .fromBufferAttribute(positionMorph, i)
+      .normalize()
+      .multiplyScalar(0.7);
+    vertex.toArray(morphPositions, i * 3);
+
+    // red -> blue
+
+    colors[i * 3] = 1;
+    morphColors[i * 3 + 2] = 1;
+  }
+
+  geometryMorph.setAttribute("color", new BufferAttribute(colors, 3));
+  geometryMorph.morphAttributes.position = [
+    new BufferAttribute(morphPositions, 3),
+  ];
+  geometryMorph.morphAttributes.color = [new BufferAttribute(morphColors, 3)];
+
+  const materialMorph = new MeshBasicNodeMaterial({ vertexColors: true });
+
+  morphMesh = new Mesh(geometryMorph, materialMorph);
+  morphMesh.position.set(3, 1, 0);
+  scene.add(morphMesh);
 
   window.addEventListener("resize", onWindowResize);
 }
@@ -186,6 +222,11 @@ function animate() {
   if (box) {
     box.rotation.x += 0.01;
     box.rotation.y += 0.02;
+  }
+
+  if (morphMesh) {
+    morphMesh.morphTargetInfluences[0] =
+      Math.sin(performance.now() * 0.002) * 0.5 + 0.5;
   }
 
   renderer.render(scene, camera);
