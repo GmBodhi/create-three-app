@@ -16,7 +16,7 @@ import {
 } from "three/tsl";
 import { ssgi } from "three/addons/tsl/display/SSGINode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
-import { World } from "@perplexdotgg/bounce";
+import { RapierPhysics } from "three/addons/physics/RapierPhysics.js";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
@@ -33,12 +33,36 @@ let camera, scene, renderer, renderPipeline;
 let raycaster, pointer;
 let mouseLight;
 
-let world;
+let physics;
 let ballCount = 0;
-let bodies = [];
 let ballsMesh = null;
 let wallMeshes = [];
 const boxSize = { w: 8, h: BOX_HEIGHT, d: BOX_DEPTH };
+
+const whiteMaterial = new MeshPhysicalMaterial({
+  color: 0xeeeeee,
+  roughness: 0.7,
+  metalness: 0.0,
+});
+
+const redMaterial = new MeshPhysicalMaterial({
+  color: 0xff2222,
+  roughness: 0.7,
+  metalness: 0.0,
+});
+
+const greenMaterial = new MeshPhysicalMaterial({
+  color: 0x22ff22,
+  roughness: 0.7,
+  metalness: 0.0,
+});
+
+const ballGeometry = new SphereGeometry(BALL_RADIUS, 32, 16);
+
+const ballMaterial = new MeshPhysicalMaterial({
+  roughness: 0.3,
+  metalness: 0.1,
+});
 
 const mouseRayOrigin = new Vector3();
 const mouseRayDir = new Vector3();
@@ -53,6 +77,8 @@ const mouseRayDirTarget = new Vector3();
 init();
 
 async function init() {
+  physics = await RapierPhysics();
+
   camera = new PerspectiveCamera(
     CAM_FOV,
     window.innerWidth / window.innerHeight,
@@ -169,6 +195,7 @@ function getBallCount() {
 
 function rebuildScene() {
   for (const mesh of wallMeshes) {
+    physics.world.removeRigidBody(mesh.userData.physics.body);
     scene.remove(mesh);
     mesh.geometry.dispose();
   }
@@ -176,25 +203,14 @@ function rebuildScene() {
   wallMeshes = [];
 
   if (ballsMesh) {
+    physics.removeMesh(ballsMesh);
     scene.remove(ballsMesh);
     ballsMesh.dispose();
     ballsMesh = null;
   }
 
-  bodies = [];
-
   boxSize.w = getBoxWidth();
   ballCount = getBallCount();
-
-  world = new World({
-    gravity: [0, -9.81, 0],
-    solveVelocityIterations: 6,
-    solvePositionIterations: 2,
-    linearDamping: 0.1,
-    angularDamping: 0.1,
-    restitution: 0.4,
-    friction: 0.5,
-  });
 
   fitCameraToBox();
   createBox();
@@ -206,24 +222,6 @@ function createBox() {
   const hh = boxSize.h / 2;
   const hd = boxSize.d / 2;
   const t = WALL_THICKNESS;
-
-  const whiteMaterial = new MeshPhysicalMaterial({
-    color: 0xeeeeee,
-    roughness: 0.7,
-    metalness: 0.0,
-  });
-
-  const redMaterial = new MeshPhysicalMaterial({
-    color: 0xff2222,
-    roughness: 0.7,
-    metalness: 0.0,
-  });
-
-  const greenMaterial = new MeshPhysicalMaterial({
-    color: 0x22ff22,
-    roughness: 0.7,
-    metalness: 0.0,
-  });
 
   const walls = [
     {
@@ -241,7 +239,12 @@ function createBox() {
       pos: [0, hh, -hd - t / 2],
       mat: whiteMaterial,
     },
-    { size: [boxSize.w, boxSize.h, t], pos: [0, hh, hd + t / 2], noMesh: true },
+    {
+      size: [boxSize.w, boxSize.h, t],
+      pos: [0, hh, hd + t / 2],
+      mat: whiteMaterial,
+      noMesh: true,
+    },
     {
       size: [t, boxSize.h, boxSize.d],
       pos: [-hw - t / 2, hh, 0],
@@ -255,34 +258,20 @@ function createBox() {
   ];
 
   for (const w of walls) {
-    const shape = world.createBox({
-      width: w.size[0],
-      height: w.size[1],
-      depth: w.size[2],
-    });
-    world.createStaticBody({ shape, position: w.pos });
+    const geo = new BoxGeometry(w.size[0], w.size[1], w.size[2]);
+    const mesh = new Mesh(geo, w.mat);
+    mesh.position.set(...w.pos);
+    mesh.receiveShadow = true;
+    wallMeshes.push(mesh);
 
-    if (!w.noMesh) {
-      const geo = new BoxGeometry(w.size[0], w.size[1], w.size[2]);
-      const mesh = new Mesh(geo, w.mat);
-      mesh.position.set(...w.pos);
-      mesh.receiveShadow = true;
-      scene.add(mesh);
-      wallMeshes.push(mesh);
-    }
+    physics.addMesh(mesh, 0, 0.4);
+
+    if (!w.noMesh) scene.add(mesh);
   }
 }
 
 function createBalls() {
-  const sphereGeo = new SphereGeometry(BALL_RADIUS, 32, 16);
-  const sphereShape = world.createSphere({ radius: BALL_RADIUS });
-
-  const material = new MeshPhysicalMaterial({
-    roughness: 0.3,
-    metalness: 0.1,
-  });
-
-  ballsMesh = new InstancedMesh(sphereGeo, material, ballCount);
+  ballsMesh = new InstancedMesh(ballGeometry, ballMaterial, ballCount);
   ballsMesh.castShadow = true;
   ballsMesh.receiveShadow = true;
   scene.add(ballsMesh);
@@ -293,6 +282,7 @@ function createBalls() {
   ];
 
   const color = new Color();
+  const matrix = new Matrix4();
   const hw = boxSize.w / 2 - BALL_RADIUS - 0.1;
   const hd = boxSize.d / 2 - BALL_RADIUS - 0.1;
 
@@ -304,16 +294,10 @@ function createBalls() {
     const y = BALL_RADIUS + Math.random() * (boxSize.h - BALL_RADIUS * 2);
     const z = (Math.random() - 0.5) * 2 * hd;
 
-    const body = world.createDynamicBody({
-      shape: sphereShape,
-      position: [x, y, z],
-      mass: 1,
-      restitution: 0.5,
-      friction: 0.4,
-    });
-
-    bodies.push(body);
+    ballsMesh.setMatrixAt(i, matrix.makeTranslation(x, y, z));
   }
+
+  physics.addMesh(ballsMesh, 1, 0.5);
 }
 
 function onPointerDown(event) {
@@ -359,18 +343,19 @@ function respawnBalls() {
   const hw = boxSize.w / 2 - BALL_RADIUS - 0.1;
   const hd = boxSize.d / 2 - BALL_RADIUS - 0.1;
   const count = 5;
+  const position = new Vector3();
 
   for (let i = 0; i < count; i++) {
-    const body = bodies[Math.floor(Math.random() * bodies.length)];
-
-    body.position.set([
+    position.set(
       (Math.random() - 0.5) * 2 * hw,
       boxSize.h - BALL_RADIUS - Math.random() * 1,
-      (Math.random() - 0.5) * 2 * hd,
-    ]);
-    body.linearVelocity.set([0, 0, 0]);
-    body.angularVelocity.set([0, 0, 0]);
-    body.commitChanges();
+      (Math.random() - 0.5) * 2 * hd
+    );
+
+    const index = Math.floor(Math.random() * ballCount);
+
+    physics.setMeshPosition(ballsMesh, position, index);
+    ballsMesh.userData.physics.body[index].wakeUp();
   }
 }
 
@@ -390,7 +375,7 @@ function onWindowResize() {
 }
 
 const timer = new Timer();
-const _dummy = new Object3D();
+const _matrix = new Matrix4();
 
 function animate() {
   timer.update();
@@ -412,9 +397,9 @@ function animate() {
     const _ballPos = new Vector3();
     const _pushDir = new Vector3();
 
-    for (const body of bodies) {
-      const bp = body.position;
-      _ballPos.set(bp.x, bp.y, bp.z);
+    for (let i = 0; i < ballCount; i++) {
+      ballsMesh.getMatrixAt(i, _matrix);
+      _ballPos.setFromMatrixPosition(_matrix);
 
       const ray = new Ray(mouseRayOrigin, mouseRayDir);
       ray.closestPointToPoint(_ballPos, _closest);
@@ -427,32 +412,10 @@ function animate() {
         _pushDir.normalize();
 
         const strength = pushStrength * (1 - dist / pushRadius);
-        body.applyLinearImpulse({
-          x: _pushDir.x * strength,
-          y: _pushDir.y * strength,
-          z: _pushDir.z * strength,
-        });
+        physics.applyImpulse(ballsMesh, _pushDir.multiplyScalar(strength), i);
       }
     }
   }
-
-  if (world) {
-    world.advanceTime(1 / 60, dt);
-  }
-
-  for (let i = 0; i < bodies.length; i++) {
-    const body = bodies[i];
-    const p = body.position;
-    const q = body.orientation;
-
-    _dummy.position.set(p.x, p.y, p.z);
-    _dummy.quaternion.set(q.x, q.y, q.z, q.w);
-    _dummy.updateMatrix();
-
-    ballsMesh.setMatrixAt(i, _dummy.matrix);
-  }
-
-  ballsMesh.instanceMatrix.needsUpdate = true;
 
   renderPipeline.render();
 }
