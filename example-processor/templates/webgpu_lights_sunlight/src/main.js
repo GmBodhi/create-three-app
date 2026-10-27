@@ -8,6 +8,7 @@ import {
   positionView,
   rangeFogFactor,
   reference,
+  renderGroup,
   step,
   vec3,
   vec4,
@@ -46,7 +47,11 @@ const _fogDay = new Color(0xd8e2ea),
 // tints each fragment by its cascade, using the data of the built-in sun shadow node
 
 function tintCascades() {
-  const cascadeData = reference("_cascadeData", "vec4", sunLight.shadow);
+  const cascadeData = reference(
+    "_cascadeData",
+    "vec4",
+    sunLight.shadow
+  ).setGroup(renderGroup);
   const viewDepth = positionView.z.negate();
 
   let cascade = float(0);
@@ -61,11 +66,10 @@ function tintCascades() {
 
   // tint before the fog by wrapping the scene fog
 
-  const fogColor = reference("color", "color", scene.fog);
-  const fogFactor = rangeFogFactor(
-    reference("near", "float", scene.fog),
-    reference("far", "float", scene.fog)
-  );
+  const fogColor = reference("color", "color", scene.fog).setGroup(renderGroup);
+  const fogNear = reference("near", "float", scene.fog).setGroup(renderGroup);
+  const fogFar = reference("far", "float", scene.fog).setGroup(renderGroup);
+  const fogFactor = rangeFogFactor(fogNear, fogFar);
 
   return vec4(fogFactor.mix(output.rgb.mul(tint), fogColor), output.a);
 }
