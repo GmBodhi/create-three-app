@@ -3771,6 +3771,16 @@
         "/src"
       ]
     },
+    "webgpu_color_grading": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compile_async": {
       "files": {
         "index.html": "src",
@@ -3862,26 +3872,6 @@
       ]
     },
     "webgpu_compute_points": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgpu_compute_rasterizer": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgpu_compute_rasterizer_ibl": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4102,6 +4092,66 @@
       ]
     },
     "webgpu_geometry_loft": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_gpudriven_city": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_gpudriven_ibl": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_gpudriven_instanced": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_gpudriven_materials": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_gpudriven_meshes": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_gpudriven_meshlets": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4641,7 +4691,7 @@
         "/src"
       ]
     },
-    "webgpu_materials_node_proxy": {
+    "webgpu_materials_node_instance": {
       "files": {
         "index.html": "src",
         "main.js": "src",

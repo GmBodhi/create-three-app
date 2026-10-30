@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>three.js webgpu - compute rasterizer ibl</title>
+    <title>three.js webgpu - city generator - gpu-driven</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -8,16 +8,16 @@
     />
     <meta
       property="og:title"
-      content="three.js webgpu - compute rasterizer ibl"
+      content="three.js webgpu - city generator - gpu-driven"
     />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://threejs.org/examples/webgpu_compute_rasterizer_ibl.html"
+      content="https://threejs.org/examples/webgpu_gpudriven_city.html"
     />
     <meta
       property="og:image"
-      content="https://threejs.org/examples/screenshots/webgpu_compute_rasterizer_ibl.jpg"
+      content="https://threejs.org/examples/screenshots/webgpu_gpudriven_city.jpg"
     />
     <link type="text/css" rel="stylesheet" href="example.css" />
   </head>
@@ -33,13 +33,15 @@
       <div class="title-wrapper">
         <a href="https://threejs.org/" target="_blank" rel="noopener"
           >three.js</a
-        ><span>GPU-Driven Compute Rasterizer — IBL</span>
+        ><span>City Generator — GPU-Driven</span>
       </div>
 
-      <small
-        >Rendering <span id="triangleCount"></span> triangles.<br />Battle
-        Damaged Sci-fi Helmet by theblueturtle_</small
-      >
+      <small>
+        <span id="stats"></span> drawn with MeshletDrawingPipeline or
+        VisibilityBufferDrawingPipeline.<br />
+        Walk: click to look around, WASD to move, Shift to run. Fly: steer with
+        the mouse, WASD to move.
+      </small>
     </div>
 
     <script type="importmap">

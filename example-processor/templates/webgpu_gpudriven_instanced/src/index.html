@@ -1,21 +1,25 @@
 <html>
   <head>
-    <title>three.js webgpu - compute rasterizer</title>
+    <title>three.js webgpu - gpu-driven instanced</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-    <meta property="og:title" content="three.js webgpu - compute rasterizer" />
+    <meta
+      property="og:title"
+      content="three.js webgpu - gpu-driven instanced"
+    />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://threejs.org/examples/webgpu_compute_rasterizer.html"
+      content="https://threejs.org/examples/webgpu_gpudriven_instanced.html"
     />
     <meta
       property="og:image"
-      content="https://threejs.org/examples/screenshots/webgpu_compute_rasterizer.jpg"
+      content="https://threejs.org/examples/screenshots/webgpu_gpudriven_instanced.jpg"
     />
+    <link rel="icon" href="data:," />
     <link type="text/css" rel="stylesheet" href="example.css" />
   </head>
   <body style="overflow: hidden">
@@ -26,14 +30,17 @@
         rel="noopener"
         class="logo-link"
       ></a>
-
       <div class="title-wrapper">
         <a href="https://threejs.org/" target="_blank" rel="noopener"
           >three.js</a
-        ><span>GPU-Driven Compute Rasterizer</span>
+        ><span>GPU-Driven Instanced</span>
       </div>
-
-      <small>Rendering <span id="triangleCount"></span> triangles.</small>
+      <small>
+        Instanced Lucy statues of 100k triangles each, culled and simplified per
+        cluster on the GPU.<br />
+        <span id="status" role="status">Loading...</span><br />
+        <span id="stats"></span>
+      </small>
     </div>
 
     <script type="importmap">

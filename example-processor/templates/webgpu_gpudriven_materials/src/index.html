@@ -1,21 +1,25 @@
 <html>
   <head>
-    <title>three.js webgpu - proxy node material</title>
+    <title>three.js webgpu - gpu-driven materials</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-    <meta property="og:title" content="three.js webgpu - proxy node material" />
+    <meta
+      property="og:title"
+      content="three.js webgpu - gpu-driven materials"
+    />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://threejs.org/examples/webgpu_materials_node_proxy.html"
+      content="https://threejs.org/examples/webgpu_gpudriven_materials.html"
     />
     <meta
       property="og:image"
-      content="https://threejs.org/examples/screenshots/webgpu_materials_node_proxy.jpg"
+      content="https://threejs.org/examples/screenshots/webgpu_gpudriven_materials.jpg"
     />
+    <link rel="icon" href="data:," />
     <link type="text/css" rel="stylesheet" href="example.css" />
   </head>
   <body style="overflow: hidden">
@@ -26,14 +30,17 @@
         rel="noopener"
         class="logo-link"
       ></a>
-
       <div class="title-wrapper">
         <a href="https://threejs.org/" target="_blank" rel="noopener"
           >three.js</a
-        ><span>Proxy Node Material</span>
+        ><span>GPU-Driven Materials</span>
       </div>
-
-      <small id="stats">Compiling...</small>
+      <small>
+        Built-in and custom TSL materials drawn by the GPU-driven pipeline, one
+        sector of statues per material.<br />
+        <span id="status" role="status">Loading...</span><br />
+        <span id="stats"></span>
+      </small>
     </div>
 
     <script type="importmap">

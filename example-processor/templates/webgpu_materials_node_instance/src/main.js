@@ -26,7 +26,7 @@ const colors = [];
 const phases = [];
 
 const params = {
-  material: "Proxy Node Material",
+  material: "Node Material Instance",
   randomize: randomizeColors,
 };
 
@@ -100,7 +100,10 @@ async function init() {
   const gui = renderer.inspector.createParameters("Settings");
 
   gui
-    .add(params, "material", ["Proxy Node Material", "Node Material per Mesh"])
+    .add(params, "material", [
+      "Node Material Instance",
+      "Node Material per Mesh",
+    ])
     .onChange(setMaterials);
   gui.add(params, "randomize").name("randomize colors");
 
@@ -130,7 +133,7 @@ async function setMaterials() {
   const disposed = new Set();
 
   for (const mesh of meshes) {
-    if (mesh.material.isProxyNodeMaterial)
+    if (mesh.material.isNodeMaterialInstance)
       disposed.add(mesh.material.nodeMaterial);
 
     disposed.add(mesh.material);
@@ -145,7 +148,7 @@ async function setMaterials() {
       );
     }
   } else {
-    // one node material defines the shader, each proxy only stores its values
+    // one node material defines the shader, each instance only stores its values
 
     const nodeMaterial = new MeshStandardNodeMaterial(
       createNodes(
@@ -155,9 +158,9 @@ async function setMaterials() {
     );
 
     for (let i = 0; i < meshes.length; i++) {
-      // values read by materialReference(), userData is independent for each proxy
+      // values read by materialReference(), userData is independent for each instance
 
-      const material = new ProxyNodeMaterial(nodeMaterial);
+      const material = new NodeMaterialInstance(nodeMaterial);
       material.myColor = colors[i];
       material.userData.phase = phases[i];
 

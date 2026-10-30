@@ -284,26 +284,26 @@ async function init() {
     // Bake both volumes
 
     probesLeft = new LightProbeGridWebGL(
-      7.8,
-      4.7,
-      7.6,
+      8,
+      5,
+      8,
       resolution,
       resolution,
       resolution
     );
-    probesLeft.position.set(-3.9, 2.45, 0);
+    probesLeft.position.set(-4, 2.5, 0);
     probesLeft.bake(renderer, scene, { cubemapSize: 32, near: 0.05, far: 20 });
     probesLeft.visible = params.enabled;
 
     probesRight = new LightProbeGridWebGL(
-      7.8,
-      4.7,
-      7.6,
+      8,
+      5,
+      8,
       resolution,
       resolution,
       resolution
     );
-    probesRight.position.set(3.9, 2.45, 0);
+    probesRight.position.set(4, 2.5, 0);
     probesRight.bake(renderer, scene, { cubemapSize: 32, near: 0.05, far: 20 });
     probesRight.visible = params.enabled;
 
