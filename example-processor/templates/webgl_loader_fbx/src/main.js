@@ -8,6 +8,8 @@ import {
   Color,
   Fog,
   HemisphereLight,
+  DirectionalLight,
+  CameraHelper,
   Mesh,
   PlaneGeometry,
   MeshPhongMaterial,
@@ -19,7 +21,6 @@ import {
 
 import Stats from "three/addons/libs/stats.module.js";
 
-import { SunLight } from "three/addons/lights/SunLight.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { FBXLoader } from "three/addons/loaders/FBXLoader.js";
 import { GUI } from "three/addons/libs/lil-gui.module.min.js";
@@ -90,10 +91,16 @@ function init() {
   hemiLight.position.set(0, 200, 0);
   scene.add(hemiLight);
 
-  const sunLight = new SunLight(0xffffff, 5);
-  sunLight.position.set(0, 200, 100);
-  sunLight.castShadow = true;
-  scene.add(sunLight);
+  const dirLight = new DirectionalLight(0xffffff, 5);
+  dirLight.position.set(0, 200, 100);
+  dirLight.castShadow = true;
+  dirLight.shadow.camera.top = 180;
+  dirLight.shadow.camera.bottom = -100;
+  dirLight.shadow.camera.left = -120;
+  dirLight.shadow.camera.right = 120;
+  scene.add(dirLight);
+
+  // scene.add( new CameraHelper( dirLight.shadow.camera ) );
 
   // ground
   const mesh = new Mesh(

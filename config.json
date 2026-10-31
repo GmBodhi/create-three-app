@@ -1944,6 +1944,16 @@
         "/src"
       ]
     },
+    "webgl_loader_priority": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgl_loader_stl": {
       "files": {
         "index.html": "src",
@@ -2075,6 +2085,16 @@
       ]
     },
     "webgl_loader_usdz": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgl_loader_vdb": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -3160,16 +3180,6 @@
         "/src"
       ]
     },
-    "webgl_renderer_pathtracer": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_rendertarget_texture2darray": {
       "files": {
         "index.html": "src",
@@ -3761,6 +3771,16 @@
         "/src"
       ]
     },
+    "webgpu_color_grading": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_compile_async": {
       "files": {
         "index.html": "src",
@@ -3852,26 +3872,6 @@
       ]
     },
     "webgpu_compute_points": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgpu_compute_rasterizer": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgpu_compute_rasterizer_ibl": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4191,6 +4191,16 @@
         "/src"
       ]
     },
+    "webgpu_lightmap_baking": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_lightprobe": {
       "files": {
         "index.html": "src",
@@ -4242,6 +4252,16 @@
       ]
     },
     "webgpu_lights_clustered": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_lights_clustered_city": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4421,6 +4441,16 @@
         "/src"
       ]
     },
+    "webgpu_loader_gltf_diffuse_roughness": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_loader_gltf_dispersion": {
       "files": {
         "index.html": "src",
@@ -4452,6 +4482,16 @@
       ]
     },
     "webgpu_loader_gltf_transmission": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_loader_jpegxl": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -4591,6 +4631,16 @@
         "/src"
       ]
     },
+    "webgpu_materials_node_instance": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_materials_retroreflection": {
       "files": {
         "index.html": "src",
@@ -4672,6 +4722,66 @@
       ]
     },
     "webgpu_mesh_batch": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_meshlets": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_meshlets_city": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_meshlets_ibl": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_meshlets_instanced": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_meshlets_materials": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_meshlets_meshes": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -5301,6 +5411,16 @@
         "/src"
       ]
     },
+    "webgpu_renderer_pathtracer": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_rendertarget_2d-array_3d": {
       "files": {
         "index.html": "src",
@@ -5684,6 +5804,16 @@
         "/src"
       ]
     },
+    "webgpu_tsl_occlusion_dither": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_tsl_procedural_terrain": {
       "files": {
         "index.html": "src",
@@ -5745,6 +5875,16 @@
       ]
     },
     "webgpu_tsl_wood": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_unwrap": {
       "files": {
         "index.html": "src",
         "main.js": "src",

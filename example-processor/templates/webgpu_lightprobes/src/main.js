@@ -8,6 +8,7 @@ import { LightProbeGrid } from "three/addons/lighting/LightProbeGrid.js";
 import { LightProbeGridHelper } from "three/addons/helpers/LightProbeGridHelper.js";
 
 let camera, scene, renderer, controls;
+let pendingBake = null;
 let probes, probesHelper;
 
 init();
@@ -105,7 +106,7 @@ async function init() {
   scene.add(sphere);
 
   // Light
-  const light = new PointLight(0xffffff, 40);
+  const light = new PointLight(0xffffff, 20);
   light.position.set(0, 4.5, 0);
   light.castShadow = true;
   light.shadow.mapSize.setScalar(256);
@@ -136,24 +137,25 @@ async function init() {
   // Bake light probe volume
 
   async function bake(resolution) {
+    light.intensity = params.lightIntensity;
+
     if (probes) {
       scene.remove(probes);
       probes.dispose();
     }
 
-    probes = new LightProbeGrid(
-      5.6,
-      4.7,
-      5.6,
-      resolution,
-      resolution,
-      resolution
-    );
-    probes.position.set(0, 2.45, 0);
-    await probes.bake(renderer, scene, {
+    probes = new LightProbeGrid(6, 5, 6, resolution, resolution, resolution);
+    probes.position.set(0, 2.5, 0);
+
+    // Keep the helper spheres out of the cubemap captures.
+    if (probesHelper) probesHelper.visible = false;
+
+    // Each bounce pass captures the light of the previous pass.
+    probes.bake(renderer, scene, {
       cubemapSize: 32,
       near: 0.05,
       far: 20,
+      bounces: params.bounces,
     });
     probes.visible = params.enabled;
     scene.add(probes);
@@ -167,6 +169,7 @@ async function init() {
     } else {
       probesHelper.probes = probes;
       probesHelper.update();
+      probesHelper.visible = params.showProbes;
     }
   }
 
@@ -174,9 +177,16 @@ async function init() {
     enabled: true,
     showProbes: false,
     resolution: 6,
+    bounces: 3,
+    lightIntensity: 20,
   };
 
   await bake(params.resolution);
+
+  function requestBake() {
+    // Bake before rendering the next frame, so light uniforms use the new intensity.
+    pendingBake = () => bake(params.resolution);
+  }
 
   // GUI
 
@@ -191,9 +201,17 @@ async function init() {
   gui
     .add(params, "resolution", 2, 12, 1)
     .name("Resolution")
-    .onChange((value) => {
-      bake(value);
-    })
+    .onChange(requestBake)
+    .debounce(250);
+  gui
+    .add(params, "bounces", 0, 10, 1)
+    .name("Bounces")
+    .onChange(requestBake)
+    .debounce(250);
+  gui
+    .add(params, "lightIntensity", 1, 100, 1)
+    .name("Light Intensity")
+    .onChange(requestBake)
     .debounce(250);
   gui
     .add(params, "showProbes")
@@ -215,5 +233,11 @@ function onWindowResize() {
 }
 
 function animate() {
+  if (pendingBake !== null) {
+    const bake = pendingBake;
+    pendingBake = null;
+    bake();
+  }
+
   renderer.render(scene, camera);
 }

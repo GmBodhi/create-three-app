@@ -10,6 +10,7 @@ import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 import { SkyMesh } from "three/addons/objects/SkyMesh.js";
 import { LightProbeGrid } from "three/addons/lighting/LightProbeGrid.js";
 import { LightProbeGridHelper } from "three/addons/helpers/LightProbeGridHelper.js";
+import { MeshletDrawingPipeline } from "three/addons/pipelines/MeshletDrawingPipeline.js";
 
 const MODEL_INDEX_URL =
   "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Assets/main/Models/model-index.json";
@@ -25,20 +26,22 @@ let probeFar,
 let modelSize = null;
 let sunLight = null,
   sky = null;
+let pipelines;
 
 const _box = new Box3();
 const _size = new Vector3();
 
 const params = {
+  pipeline: "Meshlet",
   enabled: true,
   showProbes: false,
   probeSize: 0.2,
   boundsX: -0.5,
   boundsY: 6,
   boundsZ: -0.3,
-  sizeX: 21,
-  sizeY: 11,
-  sizeZ: 9,
+  sizeX: 23.3,
+  sizeY: 12.8,
+  sizeZ: 10.5,
   countX: 10,
   countY: 7,
   countZ: 7,
@@ -76,7 +79,7 @@ async function init() {
   scene.add(sky);
 
   renderer = new WebGPURenderer({ antialias: true });
-  renderer.library.addLight(SunLightNode, SunLight);
+  SunLight.registerNode(SunLightNode);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
@@ -85,6 +88,14 @@ async function init() {
   renderer.toneMappingExposure = 1.0;
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
+
+  // the clusters of the objects are culled and drawn on the GPU, also in the cubemap captures of the probes
+
+  pipelines = {
+    Meshlet: new MeshletDrawingPipeline(),
+    Default: renderer.drawingPipeline,
+  };
+  renderer.drawingPipeline = pipelines[params.pipeline];
 
   await renderer.init();
 
@@ -149,6 +160,12 @@ async function init() {
   updateLightPosition();
 
   const gui = renderer.inspector.createParameters("Light Probes");
+  gui
+    .add(params, "pipeline", Object.keys(pipelines))
+    .name("Pipeline")
+    .onChange((value) => {
+      renderer.drawingPipeline = pipelines[value];
+    });
   gui
     .add(params, "enabled")
     .name("GI")
@@ -286,7 +303,7 @@ function updateProbes() {
 
   const resolution = probes.resolution;
   const totalProbes = resolution.x * resolution.y * resolution.z;
-  const count = Math.min(4, totalProbes - bakeIndex);
+  const count = Math.min(16, totalProbes - bakeIndex);
 
   // Keep the helper spheres out of the cubemap captures.
   if (probesHelper) probesHelper.visible = false;

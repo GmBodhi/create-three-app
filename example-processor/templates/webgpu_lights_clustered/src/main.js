@@ -19,8 +19,6 @@ import { Inspector } from "three/addons/inspector/Inspector.js";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
-import WebGPU from "three/addons/capabilities/WebGPU.js";
-
 const GRID = 30; // GRID x GRID spheres
 const SPACING = 5;
 const RADIUS = 0.5;
@@ -33,6 +31,7 @@ let renderPipeline, scenePass, clusterInfluence, debugZSliceNode;
 
 const balls = [];
 const dummy = new Object3D();
+const size = new Vector2();
 
 const params = {
   intensity: 1,
@@ -42,12 +41,6 @@ const params = {
 init();
 
 async function init() {
-  if (WebGPU.isAvailable() === false) {
-    document.body.appendChild(WebGPU.getErrorMessage());
-
-    throw new Error("No WebGPU support");
-  }
-
   camera = new PerspectiveCamera(
     50,
     window.innerWidth / window.innerHeight,
@@ -215,12 +208,9 @@ function updatePostProcessing() {
   // the overlay samples the cluster grid at the current resolution, so it
   // is rebuilt whenever the renderer size changes
 
-  const lightingNode = lighting
-    .getNode(scene)
-    .setSize(
-      window.innerWidth * window.devicePixelRatio,
-      window.innerHeight * window.devicePixelRatio
-    );
+  renderer.getDrawingBufferSize(size);
+
+  const lightingNode = lighting.getNode(scene).setSize(size.width, size.height);
 
   // map the light count of each cluster ( 0 … maxLightsPerCluster ) to a
   // blue → green → red gradient

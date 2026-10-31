@@ -4,6 +4,7 @@ import {
   WebGLRenderer,
   Scene,
   PerspectiveCamera,
+  OrthographicCamera,
   Color,
   Vector3,
   CatmullRomCurve3,
@@ -23,6 +24,7 @@ import { LineGeometry } from "three/addons/lines/LineGeometry.js";
 import * as GeometryUtils from "three/addons/utils/GeometryUtils.js";
 
 let line, renderer, scene, camera, camera2, controls;
+let cameraPerspective, cameraOrthographic;
 let line1;
 let matLine, matLineBasic, matLineDashed;
 let gui;
@@ -30,6 +32,8 @@ let gui;
 // viewport
 let insetWidth;
 let insetHeight;
+
+const frustumSize = 60;
 
 init();
 
@@ -43,13 +47,22 @@ function init() {
 
   scene = new Scene();
 
-  camera = new PerspectiveCamera(
-    40,
-    window.innerWidth / window.innerHeight,
+  const aspect = window.innerWidth / window.innerHeight;
+
+  cameraPerspective = new PerspectiveCamera(40, aspect, 1, 1000);
+  cameraPerspective.position.set(-40, 0, 60);
+
+  cameraOrthographic = new OrthographicCamera(
+    (-frustumSize * aspect) / 2,
+    (frustumSize * aspect) / 2,
+    frustumSize / 2,
+    -frustumSize / 2,
     1,
     1000
   );
-  camera.position.set(-40, 0, 60);
+  cameraOrthographic.position.copy(cameraPerspective.position);
+
+  camera = cameraPerspective;
 
   camera2 = new PerspectiveCamera(40, 1, 1, 1000);
   camera2.position.copy(camera.position);
@@ -141,8 +154,16 @@ function init() {
 }
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  const aspect = window.innerWidth / window.innerHeight;
+
+  cameraPerspective.aspect = aspect;
+  cameraPerspective.updateProjectionMatrix();
+
+  cameraOrthographic.left = (-frustumSize * aspect) / 2;
+  cameraOrthographic.right = (frustumSize * aspect) / 2;
+  cameraOrthographic.top = frustumSize / 2;
+  cameraOrthographic.bottom = -frustumSize / 2;
+  cameraOrthographic.updateProjectionMatrix();
 
   renderer.setSize(window.innerWidth, window.innerHeight);
 
@@ -190,14 +211,27 @@ function initGui() {
   gui = new GUI();
 
   const param = {
+    camera: 0,
     "line type": 0,
     "world units": false,
-    width: 10,
-    alphaToCoverage: false,
+    width: 5,
+    alphaToCoverage: true,
     dashed: false,
     "dash scale": 1,
     "dash / gap": 1,
   };
+
+  gui
+    .add(param, "camera", { perspective: 0, orthographic: 1 })
+    .onChange(function (val) {
+      const previous = camera;
+
+      camera = val === 0 ? cameraPerspective : cameraOrthographic;
+      camera.position.copy(previous.position);
+      camera.quaternion.copy(previous.quaternion);
+
+      controls.object = camera;
+    });
 
   gui
     .add(param, "line type", { LineGeometry: 0, "gl.LINE": 1 })
@@ -230,7 +264,7 @@ function initGui() {
         .max(0.5)
         .setValue(0.5);
     } else {
-      widthController.name("width (pixels)").min(1).max(10).setValue(10);
+      widthController.name("width (pixels)").min(1).max(10).setValue(5);
     }
   });
 

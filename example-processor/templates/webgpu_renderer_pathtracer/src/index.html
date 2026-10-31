@@ -1,0 +1,96 @@
+<html>
+  <head>
+    <title>three.js webgpu - three-gpu-pathtracer</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta
+      property="og:title"
+      content="three.js webgpu - three-gpu-pathtracer"
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://threejs.org/examples/webgpu_renderer_pathtracer.html"
+    />
+    <meta
+      property="og:image"
+      content="https://threejs.org/examples/screenshots/webgpu_renderer_pathtracer.jpg"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+
+  <body style="overflow: hidden">
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>Path Tracer</span>
+      </div>
+
+      <small>
+        <a
+          href="https://github.com/gkjohnson/three-gpu-pathtracer"
+          target="_blank"
+          rel="noopener"
+          >three-gpu-pathtracer</a
+        >. See the
+        <a
+          href="https://github.com/gkjohnson/three-gpu-pathtracer"
+          target="_blank"
+          rel="noopener"
+          >main project repository</a
+        >
+        for more information and examples on high fidelity path tracing.<br />
+        <a href="https://skfb.ly/6tqYD" target="_blank" rel="noopener"
+          >Steampunk Camera</a
+        >
+        by
+        <a href="https://sketchfab.com/lumoize" target="_blank" rel="noopener"
+          >dylanheyes</a
+        >
+        (CC BY). Other models from the
+        <a
+          href="https://github.com/KhronosGroup/glTF-Sample-Assets"
+          target="_blank"
+          rel="noopener"
+          >Khronos glTF sample assets</a
+        >.<br />
+        <a
+          href="https://polyhaven.com/a/blouberg_sunrise_2"
+          target="_blank"
+          rel="noopener"
+          >Blouberg Sunrise 2</a
+        >
+        by
+        <a href="https://gregzaal.com/" target="_blank" rel="noopener"
+          >Greg Zaal</a
+        >.
+      </small>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/",
+          "three/examples/": "./",
+          "three-gpu-pathtracer/webgpu": "https://cdn.jsdelivr.net/npm/three-gpu-pathtracer@0.0.26/src/webgpu/index.js",
+          "three-mesh-bvh": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.9.15/src/index.js",
+          "three-mesh-bvh/webgpu": "https://cdn.jsdelivr.net/npm/three-mesh-bvh@0.9.15/src/webgpu/index.js"
+        }
+      }
+    </script>
+  </body>
+</html>

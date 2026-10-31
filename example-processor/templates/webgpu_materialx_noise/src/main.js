@@ -124,6 +124,7 @@ async function init() {
     const checkerMix = mx_modulo(dot(floor(tiledUv), vec2(1, 1)), float(2));
     return mix(color2, color1, checkerMix);
   };
+
   const hextiledCheckerboard = (
     texcoord,
     {

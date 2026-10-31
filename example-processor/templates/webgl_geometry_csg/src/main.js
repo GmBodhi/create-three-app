@@ -194,6 +194,9 @@ function animate() {
   updateCSG();
 
   wireframe.geometry = result.geometry;
+  wireframe.position.copy(result.position);
+  wireframe.quaternion.copy(result.quaternion);
+  wireframe.scale.copy(result.scale);
   wireframe.visible = params.wireframe;
 
   renderer.render(scene, camera);

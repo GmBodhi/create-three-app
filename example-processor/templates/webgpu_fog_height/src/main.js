@@ -1,7 +1,13 @@
 import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
-import { exponentialHeightFogFactor, uniform, fog, color } from "three/tsl";
+import {
+  exponentialHeightFogFactor,
+  uniform,
+  renderGroup,
+  fog,
+  color,
+} from "three/tsl";
 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
@@ -24,8 +30,8 @@ function init() {
 
   // height fog
 
-  const density = uniform(0.04);
-  const height = uniform(2);
+  const density = uniform(0.04).setGroup(renderGroup);
+  const height = uniform(2).setGroup(renderGroup);
 
   const fogFactor = exponentialHeightFogFactor(density, height);
 

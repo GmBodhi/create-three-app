@@ -8,6 +8,7 @@ import { LightProbeGrid } from "three/addons/lighting/LightProbeGrid.js";
 import { LightProbeGridHelper } from "three/addons/helpers/LightProbeGridHelper.js";
 
 let camera, scene, renderer, controls;
+let pendingBake = null;
 let probesLeft, probesRight;
 let probesHelperLeft, probesHelperRight;
 
@@ -62,7 +63,10 @@ async function init() {
 
   // Dividing wall at x=0 with doorway
 
-  const dividerMat = new MeshStandardMaterial({ color: 0xcccccc });
+  const dividerMat = new MeshStandardMaterial({
+    color: 0xcccccc,
+    shadowSide: FrontSide,
+  });
   const doorwayHalfGap = 1.25;
 
   // Left section of divider (z = -4 to -1.25)
@@ -141,6 +145,7 @@ async function init() {
       color: 0xffd700,
       metalness: 0.3,
       roughness: 0.4,
+      shadowSide: FrontSide,
     })
   );
   sphere.position.set(-4, 1.41, 0);
@@ -214,8 +219,9 @@ async function init() {
   warmLight.position.set(-4, 4.5, 0);
   warmLight.castShadow = true;
   warmLight.shadow.mapSize.setScalar(256);
-  warmLight.shadow.radius = 12;
+  warmLight.shadow.radius = 6;
   warmLight.shadow.bias = -0.002;
+  warmLight.shadow.normalBias = 0.05;
   scene.add(warmLight);
 
   // Cool point light in right room
@@ -223,8 +229,9 @@ async function init() {
   coolLight.position.set(4, 4.5, 0);
   coolLight.castShadow = true;
   coolLight.shadow.mapSize.setScalar(256);
-  coolLight.shadow.radius = 12;
+  coolLight.shadow.radius = 6;
   coolLight.shadow.bias = -0.002;
+  coolLight.shadow.normalBias = 0.05;
   scene.add(coolLight);
 
   // Renderer
@@ -253,9 +260,14 @@ async function init() {
     enabled: true,
     showProbes: false,
     resolution: 6,
+    bounces: 3,
+    lightIntensity: 30,
   };
 
   async function bake(resolution) {
+    warmLight.intensity = params.lightIntensity;
+    coolLight.intensity = params.lightIntensity;
+
     // Remove both volumes before baking to prevent feedback
 
     if (probesLeft) {
@@ -268,48 +280,60 @@ async function init() {
       probesRight.dispose();
     }
 
-    // Bake both volumes. The `falloff` fades each volume past its
-    // boundary so the two rooms blend smoothly without bleeding into
-    // each other.
+    // Each volume lights its own room.
 
     probesLeft = new LightProbeGrid(
-      7.8,
-      4.7,
-      7.6,
+      8,
+      5,
+      8,
       resolution,
       resolution,
       resolution
     );
-    probesLeft.position.set(-3.9, 2.45, 0);
-    probesLeft.falloff = 1.0;
-    await probesLeft.bake(renderer, scene, {
-      cubemapSize: 32,
-      near: 0.05,
-      far: 20,
-    });
-    probesLeft.visible = params.enabled;
+    probesLeft.position.set(-4, 2.5, 0);
 
     probesRight = new LightProbeGrid(
-      7.8,
-      4.7,
-      7.6,
+      8,
+      5,
+      8,
       resolution,
       resolution,
       resolution
     );
-    probesRight.position.set(3.9, 2.45, 0);
-    probesRight.falloff = 1.0;
-    await probesRight.bake(renderer, scene, {
-      cubemapSize: 32,
-      near: 0.05,
-      far: 20,
-    });
+    probesRight.position.set(4, 2.5, 0);
+
+    // Keep the helper spheres out of the cubemap captures.
+
+    if (probesHelperLeft)
+      probesHelperLeft.visible = probesHelperRight.visible = false;
+
+    // Add both volumes after the direct light pass, so that each bounce pass
+    // also sees the other room through the doorway.
+
+    const bounces = params.bounces;
+
+    for (let pass = 0; pass <= bounces; pass++) {
+      probesLeft.bake(renderer, scene, {
+        cubemapSize: 32,
+        near: 0.05,
+        far: 20,
+        pass,
+      });
+      probesRight.bake(renderer, scene, {
+        cubemapSize: 32,
+        near: 0.05,
+        far: 20,
+        pass,
+      });
+
+      if (pass === 0) {
+        scene.add(probesLeft);
+        scene.add(probesRight);
+      }
+    }
+
+    probesLeft.visible = params.enabled;
     probesRight.visible = params.enabled;
-
-    // Add both after baking
-
-    scene.add(probesLeft);
-    scene.add(probesRight);
 
     // Update debug visualization
 
@@ -327,10 +351,17 @@ async function init() {
 
       probesHelperRight.probes = probesRight;
       probesHelperRight.update();
+
+      probesHelperLeft.visible = probesHelperRight.visible = params.showProbes;
     }
   }
 
   await bake(params.resolution);
+
+  function requestBake() {
+    // Bake before rendering the next frame, so light uniforms use the new intensity.
+    pendingBake = () => bake(params.resolution);
+  }
 
   // GUI
 
@@ -346,9 +377,17 @@ async function init() {
   gui
     .add(params, "resolution", 2, 12, 1)
     .name("Resolution")
-    .onChange((value) => {
-      bake(value);
-    })
+    .onChange(requestBake)
+    .debounce(250);
+  gui
+    .add(params, "bounces", 0, 10, 1)
+    .name("Bounces")
+    .onChange(requestBake)
+    .debounce(250);
+  gui
+    .add(params, "lightIntensity", 1, 100, 1)
+    .name("Light Intensity")
+    .onChange(requestBake)
     .debounce(250);
   gui
     .add(params, "showProbes")
@@ -371,5 +410,11 @@ function onWindowResize() {
 }
 
 function animate() {
+  if (pendingBake !== null) {
+    const bake = pendingBake;
+    pendingBake = null;
+    bake();
+  }
+
   renderer.render(scene, camera);
 }

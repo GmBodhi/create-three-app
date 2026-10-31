@@ -9,6 +9,7 @@ import {
   Mesh,
   BoxGeometry,
   PlaneGeometry,
+  FrontSide,
   CylinderGeometry,
   SphereGeometry,
   TorusKnotGeometry,
@@ -78,7 +79,10 @@ async function init() {
 
   // Dividing wall at x=0 with doorway
 
-  const dividerMat = new MeshStandardMaterial({ color: 0xcccccc });
+  const dividerMat = new MeshStandardMaterial({
+    color: 0xcccccc,
+    shadowSide: FrontSide,
+  });
   const doorwayHalfGap = 1.25;
 
   // Left section of divider (z = -4 to -1.25)
@@ -157,6 +161,7 @@ async function init() {
       color: 0xffd700,
       metalness: 0.3,
       roughness: 0.4,
+      shadowSide: FrontSide,
     })
   );
   sphere.position.set(-4, 1.41, 0);
@@ -230,8 +235,9 @@ async function init() {
   warmLight.position.set(-4, 4.5, 0);
   warmLight.castShadow = true;
   warmLight.shadow.mapSize.setScalar(256);
-  warmLight.shadow.radius = 12;
+  warmLight.shadow.radius = 6;
   warmLight.shadow.bias = -0.002;
+  warmLight.shadow.normalBias = 0.05;
   scene.add(warmLight);
 
   // Cool point light in right room
@@ -239,8 +245,9 @@ async function init() {
   coolLight.position.set(4, 4.5, 0);
   coolLight.castShadow = true;
   coolLight.shadow.mapSize.setScalar(256);
-  coolLight.shadow.radius = 12;
+  coolLight.shadow.radius = 6;
   coolLight.shadow.bias = -0.002;
+  coolLight.shadow.normalBias = 0.05;
   scene.add(coolLight);
 
   // Renderer
@@ -284,26 +291,26 @@ async function init() {
     // Bake both volumes
 
     probesLeft = new LightProbeGridWebGL(
-      7.8,
-      4.7,
-      7.6,
+      8,
+      5,
+      8,
       resolution,
       resolution,
       resolution
     );
-    probesLeft.position.set(-3.9, 2.45, 0);
+    probesLeft.position.set(-4, 2.5, 0);
     probesLeft.bake(renderer, scene, { cubemapSize: 32, near: 0.05, far: 20 });
     probesLeft.visible = params.enabled;
 
     probesRight = new LightProbeGridWebGL(
-      7.8,
-      4.7,
-      7.6,
+      8,
+      5,
+      8,
       resolution,
       resolution,
       resolution
     );
-    probesRight.position.set(3.9, 2.45, 0);
+    probesRight.position.set(4, 2.5, 0);
     probesRight.bake(renderer, scene, { cubemapSize: 32, near: 0.05, far: 20 });
     probesRight.visible = params.enabled;
 

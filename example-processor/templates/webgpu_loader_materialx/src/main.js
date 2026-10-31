@@ -19,6 +19,8 @@ import {
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
+import { EXRLoader } from "three/addons/loaders/EXRLoader.js";
+import { TIFFLoader } from "three/addons/loaders/TIFFLoader.js";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
 
 import * as MikkTSpace from "three/addons/libs/mikktspace.module.js";
@@ -71,6 +73,9 @@ const localSamples = [
   "standard_surface_ior_test.mtlx",
   "standard_surface_combined_test.mtlx",
   "standard_surface_texture_opacity_test.mtlx",
+  "standard_surface_image_exr_test.mtlx",
+  "standard_surface_image_tiff_test.mtlx",
+  "standard_surface_image_hdr_emission_test.mtlx",
   "standard_surface_transmission_test.mtlx",
   "standard_surface_transmission_only_test.mtlx",
   "standard_surface_transmission_rough.mtlx",
@@ -81,12 +86,18 @@ const localSamples = [
   "open_pbr_surface_velvet.mtlx",
   "open_pbr_surface_pearl.mtlx",
   "open_pbr_surface_honey.mtlx",
+  "displacement.mtlx",
 ];
 
 let camera, scene, renderer;
 let controls, prefab;
 const models = [];
 const strictInterfaceValidator = createStrictInterfaceValidator();
+
+// Let MaterialX <image> nodes load .exr, .tif and .hdr files through their loaders.
+DefaultLoadingManager.addHandler(/\.exr$/i, new EXRLoader());
+DefaultLoadingManager.addHandler(/\.tiff?$/i, new TIFFLoader());
+DefaultLoadingManager.addHandler(/\.hdr$/i, new HDRLoader());
 
 init();
 
@@ -176,7 +187,7 @@ function init() {
           "three/examples/models/gltf/ShaderBall.glb"
         )
       ).scene;
-      await computePrefabTangents();
+      computePrefabTangents();
 
       for (const sample of samples) {
         await addSample(sample, SAMPLE_PATH);
@@ -192,9 +203,7 @@ function init() {
   window.addEventListener("resize", onWindowResize);
 }
 
-async function computePrefabTangents() {
-  await MikkTSpace.ready;
-
+function computePrefabTangents() {
   prefab.traverse(function (node) {
     if (node.isMesh === false) return;
 
@@ -259,9 +268,15 @@ function reportMaterialXLog(sample, materialName, log) {
 async function addSample(sample, path) {
   const model = prefab.clone();
 
-  models.push(model);
+  // Single-sided plane facing up with UVs running (0,0) at the front-left to (1,1) at the back-right.
+  const uvPlane = new Mesh(new PlaneGeometry(2, 2));
+  uvPlane.name = "UV_Plane";
+  uvPlane.rotation.x = -Math.PI / 2;
+  uvPlane.position.y = 0.05;
+  uvPlane.visible = false;
+  model.add(uvPlane);
 
-  scene.add(model);
+  models.push(model);
 
   updateModelsAlign();
 
@@ -283,35 +298,46 @@ async function addSample(sample, path) {
   const previewMesh = model.getObjectByName("Preview_Mesh");
   previewMesh.material = material;
 
+  uvPlane.material = material;
+
   if (material.transparent) {
     calibrationMesh.renderOrder = 1;
     previewMesh.renderOrder = 2;
   }
 
   await renderer.compileAsync(model, camera, scene);
+  scene.add(model);
 }
 
 function addGUI() {
   const gui = renderer.inspector.createParameters("MaterialX Loader");
 
   const API = {
+    geometry: "Shader Ball",
     showCalibrationMesh: true,
     showPreviewMesh: true,
   };
 
+  function updateVisibility() {
+    const shaderBall = API.geometry === "Shader Ball";
+
+    setVisibility("Calibration_Mesh", shaderBall && API.showCalibrationMesh);
+    setVisibility("Preview_Mesh", shaderBall && API.showPreviewMesh);
+    setVisibility("UV_Plane", !shaderBall);
+  }
+
+  gui
+    .add(API, "geometry", ["Shader Ball", "UV Plane"])
+    .name("Geometry")
+    .onChange(updateVisibility);
   gui
     .add(API, "showCalibrationMesh")
     .name("Calibration Mesh")
-    .onChange(function (value) {
-      setVisibility("Calibration_Mesh", value);
-    });
-
+    .onChange(updateVisibility);
   gui
     .add(API, "showPreviewMesh")
     .name("Preview Mesh")
-    .onChange(function (value) {
-      setVisibility("Preview_Mesh", value);
-    });
+    .onChange(updateVisibility);
 }
 
 function setVisibility(name, visible) {

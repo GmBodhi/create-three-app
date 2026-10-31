@@ -293,23 +293,22 @@ debugFolder
 debugFolder.close();
 
 // HELPER FUNCTIONS
-const pow2Ceil = Fn(([x]) => {
-  If(x.equal(uint(0)), () => {
-    return uint(1);
-  });
+const pow2Ceil = Fn(
+  ([x]) => {
+    If(x.equal(uint(0)), () => {
+      return uint(1);
+    });
 
-  const val = x.sub(1).toVar("val");
-  val.assign(val.bitOr(val.shiftRight(1)));
-  val.assign(val.bitOr(val.shiftRight(2)));
-  val.assign(val.bitOr(val.shiftRight(4)));
-  val.assign(val.bitOr(val.shiftRight(8)));
-  val.assign(val.bitOr(val.shiftRight(16)));
-  return val.add(1);
-}).setLayout({
-  name: "pow2Ceil",
-  type: "uint",
-  inputs: [{ name: "x", type: "uint" }],
-});
+    const val = x.sub(1).toVar("val");
+    val.assign(val.bitOr(val.shiftRight(1)));
+    val.assign(val.bitOr(val.shiftRight(2)));
+    val.assign(val.bitOr(val.shiftRight(4)));
+    val.assign(val.bitOr(val.shiftRight(8)));
+    val.assign(val.bitOr(val.shiftRight(16)));
+    return val.add(1);
+  },
+  { x: "uint", return: "uint" }
+);
 
 // ALGORITHM CONSTRUCTORS
 
@@ -816,28 +815,43 @@ async function init(leftSideDisplay = true) {
     .setPBO(true)
     .setName(`Debug_${leftSideDisplay ? "Left" : "Right"}`);
 
-  const buffers = {
+  const storageNodes = {
     "Input Buffer": inputStorage,
     "Input Vectorized Buffer": inputVectorizedStorage,
     "Workgroup Sums Buffer": workgroupSumsStorage,
     "Debug Buffer": debugStorage,
   };
 
+  let readbackBufferSize = 0;
+  const readbackBufferSizes = {};
+
+  for (const [key, storageNode] of Object.entries(storageNodes)) {
+    const byteLength = storageNode.value.array.byteLength;
+    readbackBufferSize = Math.max(readbackBufferSize, byteLength);
+    readbackBufferSizes[key] = byteLength;
+  }
+
+  const readbackBuffer = new ReadbackBuffer(readbackBufferSize);
+
   const logFunctionName = `Log ${leftSideDisplay ? "Left" : "Right"} Side`;
   const functionObj = {};
   functionObj[logFunctionName] = async () => {
-    const selectedBuffer = buffers[unifiedEffectController.loggedBuffer];
-    const readbackBuffer = new ReadbackBuffer(selectedBuffer.value);
+    const selectedStorageNode =
+      storageNodes[unifiedEffectController.loggedBuffer];
+    const size = readbackBufferSizes[unifiedEffectController.loggedBuffer];
 
-    const result = new Uint32Array(
-      await renderer.getArrayBufferAsync(readbackBuffer)
+    await renderer.getArrayBufferAsync(
+      selectedStorageNode.value,
+      readbackBuffer,
+      0,
+      size
     );
 
-    console.log(result);
+    console.log(new Uint32Array(readbackBuffer.buffer));
 
-    // Remove GPU/CPU readback buffer from memory
+    // Release GPU/CPU readback buffer so it can be remapped for next log.
 
-    readbackBuffer.dispose();
+    readbackBuffer.release();
   };
 
   debugFolder.add(

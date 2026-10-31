@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>three.js webgl - loader priority</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a href="https://threejs.org" target="_blank" rel="noopener">three.js</a>
+      - loader priority<br />
+      Keep the main asset at default priority and lower the priority of
+      background assets.<br />
+      Click to reload all assets. Background priority:
+      <a href="?background=auto">Default (auto)</a> |
+      <a href="?background=low">Low</a><br />
+      Chrome already gives default fetch requests high priority. Hints may vary
+      by browser and network conditions.<br />
+      <span id="status"></span>
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.module.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

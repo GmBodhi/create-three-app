@@ -2,8 +2,6 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
-import { SunLight } from "three/addons/lights/SunLight.js";
-import { SunLightNode } from "three/addons/lights/SunLightNode.js";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
@@ -11,7 +9,11 @@ import { uniform } from "three/tsl";
 import { pixelationPass } from "three/addons/tsl/display/PixelationPassNode.js";
 
 let camera, scene, renderer, renderPipeline, crystalMesh, timer;
-let effectController;
+let scenePass;
+
+const params = {
+  pixelAlignedPanning: true,
+};
 
 init();
 
@@ -85,12 +87,11 @@ function init() {
 
   scene.add(new AmbientLight(0x757f8e, 3));
 
-  const sunLight = new SunLight(0xfffecd, 1.5);
-  sunLight.position.set(100, 100, 100);
-  sunLight.castShadow = true;
-  sunLight.shadow.camera.far = 10;
-  sunLight.shadow.mapSize.set(2048, 2048);
-  scene.add(sunLight);
+  const directionalLight = new DirectionalLight(0xfffecd, 1.5);
+  directionalLight.position.set(100, 100, 100);
+  directionalLight.castShadow = true;
+  directionalLight.shadow.mapSize.set(2048, 2048);
+  scene.add(directionalLight);
 
   const spotLight = new SpotLight(0xffc100, 10, 10, Math.PI / 16, 0.02, 2);
   spotLight.position.set(2, 2, 0);
@@ -101,7 +102,6 @@ function init() {
   scene.add(spotLight);
 
   renderer = new WebGPURenderer();
-  renderer.library.addLight(SunLightNode, SunLight);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(animate);
   renderer.inspector = new Inspector();
@@ -109,21 +109,8 @@ function init() {
   renderer.shadowMap.type = BasicShadowMap;
   document.body.appendChild(renderer.domElement);
 
-  effectController = {
-    pixelSize: uniform(6),
-    normalEdgeStrength: uniform(0.3),
-    depthEdgeStrength: uniform(0.4),
-    pixelAlignedPanning: true,
-  };
-
   renderPipeline = new RenderPipeline(renderer);
-  const scenePass = pixelationPass(
-    scene,
-    camera,
-    effectController.pixelSize,
-    effectController.normalEdgeStrength,
-    effectController.depthEdgeStrength
-  );
+  scenePass = pixelationPass(scene, camera, 6, uniform(0.3), uniform(0.4));
   renderPipeline.outputNode = scenePass;
 
   window.addEventListener("resize", onWindowResize);
@@ -134,14 +121,14 @@ function init() {
   // gui
 
   const gui = renderer.inspector.createParameters("Settings");
-  gui.add(effectController.pixelSize, "value", 1, 16, 1).name("Pixel Size");
+  gui.add(scenePass, "pixelSize", 1, 16, 1).name("Pixel Size");
   gui
-    .add(effectController.normalEdgeStrength, "value", 0, 2, 0.05)
+    .add(scenePass.normalEdgeStrength, "value", 0, 2, 0.05)
     .name("Normal Edge Strength");
   gui
-    .add(effectController.depthEdgeStrength, "value", 0, 1, 0.05)
+    .add(scenePass.depthEdgeStrength, "value", 0, 1, 0.05)
     .name("Depth Edge Strength");
-  gui.add(effectController, "pixelAlignedPanning");
+  gui.add(params, "pixelAlignedPanning");
 }
 
 function onWindowResize() {
@@ -165,8 +152,8 @@ function animate() {
   const rendererSize = renderer.getSize(new Vector2());
   const aspectRatio = rendererSize.x / rendererSize.y;
 
-  if (effectController.pixelAlignedPanning) {
-    const pixelSize = effectController.pixelSize.value;
+  if (params.pixelAlignedPanning) {
+    const pixelSize = scenePass.pixelSize;
 
     pixelAlignFrustum(
       camera,

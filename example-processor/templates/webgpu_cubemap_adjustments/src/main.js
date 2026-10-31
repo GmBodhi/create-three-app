@@ -3,6 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import {
   uniform,
+  renderGroup,
   mix,
   pmremTexture,
   reference,
@@ -74,18 +75,28 @@ async function init() {
     saturation: 1,
   };
 
-  const mixNode = reference("mix", "float", adjustments);
-  const proceduralNode = reference("procedural", "float", adjustments);
-  const intensityNode = reference("intensity", "float", adjustments);
-  const hueNode = reference("hue", "float", adjustments);
-  const saturationNode = reference("saturation", "float", adjustments);
+  const mixNode = reference("mix", "float", adjustments).setGroup(renderGroup);
+  const proceduralNode = reference("procedural", "float", adjustments).setGroup(
+    renderGroup
+  );
+  const intensityNode = reference("intensity", "float", adjustments).setGroup(
+    renderGroup
+  );
+  const hueNode = reference("hue", "float", adjustments).setGroup(renderGroup);
+  const saturationNode = reference("saturation", "float", adjustments).setGroup(
+    renderGroup
+  );
 
   const rotateY1Matrix = new Matrix4();
   const rotateY2Matrix = new Matrix4();
 
   const getEnvironmentNode = (reflectNode, positionNode) => {
-    const custom1UV = reflectNode.xyz.mul(uniform(rotateY1Matrix));
-    const custom2UV = reflectNode.xyz.mul(uniform(rotateY2Matrix));
+    const custom1UV = reflectNode.xyz.mul(
+      uniform(rotateY1Matrix).setGroup(renderGroup)
+    );
+    const custom2UV = reflectNode.xyz.mul(
+      uniform(rotateY2Matrix).setGroup(renderGroup)
+    );
     const mixCubeMaps = mix(
       pmremTexture(hdr1Texture, custom1UV),
       pmremTexture(hdr2Texture, custom2UV),

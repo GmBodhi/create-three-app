@@ -235,11 +235,11 @@ function raycast() {
 
   if (lastHoveredInstance === batchId) return;
 
-  if (lastHoveredInstance) {
+  if (lastHoveredInstance !== null) {
     batchedMesh.setColorAt(lastHoveredInstance, lastHoveredColor);
   }
 
-  if (batchId) {
+  if (batchId !== null) {
     batchedMesh.getColorAt(batchId, lastHoveredColor);
     batchedMesh.setColorAt(batchId, highlight);
   }

@@ -17,6 +17,7 @@ import {
   cross,
   triNoise3D,
   time,
+  EPSILON,
 } from "three/tsl";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
@@ -285,7 +286,7 @@ function setupComputeShaders() {
     const vertex1Position = vertexPositionBuffer.element(vertexIds.y);
 
     const delta = vertex1Position.sub(vertex0Position).toVar();
-    const dist = delta.length().max(0.000001).toVar();
+    const dist = delta.length().max(EPSILON).toVar();
     const force = dist
       .sub(restLength)
       .mul(stiffnessUniform)

@@ -8,6 +8,7 @@ import {
   triNoise3D,
   normalWorld,
   uniform,
+  renderGroup,
   densityFogFactor,
 } from "three/tsl";
 
@@ -82,12 +83,14 @@ async function init() {
   const skyColor = color(skyColorValue);
   const groundColor = color(groundColorValue);
 
-  const fogBase = uniform(-20); // world-y the fog is solid below ( the valley floor )
-  const fogTop = uniform(55); // world-y the fog fades out by ( mid-mountain )
-  const haze = uniform(0.0012); // distance haze, so the far peaks dissolve into the same grey
+  const fogBase = uniform(-20).setGroup(renderGroup); // world-y the fog is solid below ( the valley floor )
+  const fogTop = uniform(55).setGroup(renderGroup); // world-y the fog fades out by ( mid-mountain )
+  const haze = uniform(0.0012).setGroup(renderGroup); // distance haze, so the far peaks dissolve into the same grey
 
   // a alternative way to create a TimerNode
-  const time = uniform(0).onFrameUpdate((frame) => frame.time);
+  const time = uniform(0)
+    .setGroup(renderGroup)
+    .onFrameUpdate((frame) => frame.time);
 
   const fogNoiseA = triNoise3D(positionWorld.mul(0.005), 0.2, time);
   const fogNoiseB = triNoise3D(positionWorld.mul(0.01), 0.2, time.mul(1.2));

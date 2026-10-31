@@ -151,14 +151,14 @@ async function init() {
     }
 
     probes = new LightProbeGridWebGL(
-      5.6,
-      4.7,
-      5.6,
+      6,
+      5,
+      6,
       resolution,
       resolution,
       resolution
     );
-    probes.position.set(0, 2.45, 0);
+    probes.position.set(0, 2.5, 0);
     probes.bake(renderer, scene, { cubemapSize: 32, near: 0.05, far: 20 });
     probes.visible = params.enabled;
     scene.add(probes);

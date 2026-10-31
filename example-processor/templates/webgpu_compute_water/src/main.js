@@ -243,7 +243,7 @@ async function init() {
 
       prevHeightStorage.element(instanceIndex).assign(height);
       writeBuffer.element(instanceIndex).assign(newHeight);
-    })().compute(WIDTH * WIDTH, [16, 16]);
+    })().computeKernel([16, 16]);
 
   // Create both ping-pong compute shaders
   computeHeightAtoB = createComputeHeight(
