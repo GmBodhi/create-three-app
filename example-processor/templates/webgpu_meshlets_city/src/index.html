@@ -1,20 +1,20 @@
 <html>
   <head>
-    <title>three.js webgpu - gpu-driven ibl</title>
+    <title>three.js webgpu - meshlets city</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-    <meta property="og:title" content="three.js webgpu - gpu-driven ibl" />
+    <meta property="og:title" content="three.js webgpu - meshlets city" />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://threejs.org/examples/webgpu_gpudriven_ibl.html"
+      content="https://threejs.org/examples/webgpu_meshlets_city.html"
     />
     <meta
       property="og:image"
-      content="https://threejs.org/examples/screenshots/webgpu_gpudriven_ibl.jpg"
+      content="https://threejs.org/examples/screenshots/webgpu_meshlets_city.jpg"
     />
     <link type="text/css" rel="stylesheet" href="example.css" />
   </head>
@@ -30,14 +30,15 @@
       <div class="title-wrapper">
         <a href="https://threejs.org/" target="_blank" rel="noopener"
           >three.js</a
-        ><span>GPU-Driven Compute Rasterizer — IBL</span>
+        ><span>Meshlets City</span>
       </div>
 
-      <small
-        >Rendering <span id="triangleCount"></span> triangles with meshlet
-        drawing pipelines.<br />Battle Damaged Sci-fi Helmet by
-        theblueturtle_</small
-      >
+      <small>
+        <span id="stats"></span> drawn with MeshletDrawingPipeline or
+        VisibilityBufferDrawingPipeline.<br />
+        Walk: click to look around, WASD to move, Shift to run. Fly: steer with
+        the mouse, WASD to move.
+      </small>
     </div>
 
     <script type="importmap">

@@ -37,7 +37,7 @@ const instanceCount = rows * cols;
 
 const options = {
   Mode: "Meshlet Debug",
-  Rasterizer: "Hardware",
+  Rasterizer: "Meshlet",
   "LOD Threshold": 1,
   "Occlusion Culling": false,
   "Animation Speed": 1,
@@ -61,12 +61,12 @@ async function init() {
   // the objects are spread out and hardly occlude each other, so occlusion culling costs more than it saves
 
   pipelines = {
-    Hybrid: new VisibilityBufferDrawingPipeline({
+    "Visibility Buffer": new VisibilityBufferDrawingPipeline({
       maxRasterSize: 16,
       debug: true,
       occlusionCulling: false,
     }),
-    Hardware: new MeshletDrawingPipeline({
+    Meshlet: new MeshletDrawingPipeline({
       debug: true,
       occlusionCulling: false,
     }),
@@ -150,14 +150,14 @@ async function init() {
 
   parameterGroup
     .add(options, "Rasterizer", {
-      Hybrid: "Hybrid",
-      Hardware: "Hardware",
+      "Visibility Buffer": "Visibility Buffer",
+      Meshlet: "Meshlet",
       Basic: "Basic",
     })
     .onChange(updateRasterizer);
 
   const maxRasterSize = parameterGroup
-    .add(pipelines["Hybrid"], "maxRasterSize", 1, 64, 1)
+    .add(pipelines["Visibility Buffer"], "maxRasterSize", 1, 64, 1)
     .name("Max Raster Size");
 
   const lodThreshold = parameterGroup
@@ -187,7 +187,9 @@ async function init() {
       : standardPipeline;
 
     gpuDriven ? mode.show() : mode.hide();
-    rasterizer === "Hybrid" ? maxRasterSize.show() : maxRasterSize.hide();
+    rasterizer === "Visibility Buffer"
+      ? maxRasterSize.show()
+      : maxRasterSize.hide();
     gpuDriven ? lodThreshold.show() : lodThreshold.hide();
     gpuDriven ? occlusionCulling.show() : occlusionCulling.hide();
   }

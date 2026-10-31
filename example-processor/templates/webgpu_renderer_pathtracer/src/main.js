@@ -47,7 +47,7 @@ async function init() {
   camera = new PerspectiveCamera(
     45,
     window.innerWidth / window.innerHeight,
-    0.1,
+    0.01,
     100
   );
 
@@ -61,6 +61,7 @@ async function init() {
   await renderer.init();
 
   pathTracer = new WebGPUPathTracer(renderer);
+  pathTracer.useMegakernel(true); // TODO: Remove once the wavefront backend supports array-bound struct buffers.
   pathTracer.filterGlossyFactor = 1;
   pathTracer.minSamples = 3;
   pathTracer.maxSamples = 32;

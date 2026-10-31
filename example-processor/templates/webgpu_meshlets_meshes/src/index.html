@@ -1,21 +1,22 @@
 <html>
   <head>
-    <title>three.js webgpu - gpu-driven meshlets</title>
+    <title>three.js webgpu - meshlets meshes</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
       content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
     />
-    <meta property="og:title" content="three.js webgpu - gpu-driven meshlets" />
+    <meta property="og:title" content="three.js webgpu - meshlets meshes" />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://threejs.org/examples/webgpu_gpudriven_meshlets.html"
+      content="https://threejs.org/examples/webgpu_meshlets_meshes.html"
     />
     <meta
       property="og:image"
-      content="https://threejs.org/examples/screenshots/webgpu_gpudriven_meshlets.jpg"
+      content="https://threejs.org/examples/screenshots/webgpu_meshlets_meshes.jpg"
     />
+    <link rel="icon" href="data:," />
     <link type="text/css" rel="stylesheet" href="example.css" />
   </head>
   <body style="overflow: hidden">
@@ -26,17 +27,17 @@
         rel="noopener"
         class="logo-link"
       ></a>
-
       <div class="title-wrapper">
         <a href="https://threejs.org/" target="_blank" rel="noopener"
           >three.js</a
-        ><span>GPU-Driven Compute Rasterizer</span>
+        ><span>Meshlets Meshes</span>
       </div>
-
-      <small
-        >Rendering <span id="triangleCount"></span> triangles with meshlet
-        drawing pipelines.</small
-      >
+      <small>
+        Individual meshes of Lucy statues of 100k triangles each, culled and
+        simplified per cluster on the GPU.<br />
+        <span id="status" role="status">Loading...</span><br />
+        <span id="stats"></span>
+      </small>
     </div>
 
     <script type="importmap">

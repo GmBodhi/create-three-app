@@ -37,7 +37,7 @@ const INNER_RADIUS = 10;
 const ROWS = 8;
 
 const parameters = {
-  pipeline: "GPU-driven",
+  pipeline: "Meshlet",
   meshlets: false,
   lod: 3,
   rotate: true,
@@ -67,7 +67,7 @@ async function init() {
   await renderer.init();
 
   pipelines = {
-    "GPU-driven": new MeshletDrawingPipeline({
+    Meshlet: new MeshletDrawingPipeline({
       lodThreshold: parameters.lod,
       shadowLodThreshold: parameters.lod,
     }),
@@ -314,7 +314,7 @@ function createGUI() {
     .add(parameters, "meshlets")
     .name("Show meshlets")
     .onChange((value) => {
-      pipelines["GPU-driven"].debug = value;
+      pipelines["Meshlet"].debug = value;
       renderer.toneMapping = value ? NoToneMapping : ACESFilmicToneMapping;
       prepare();
     });
@@ -322,8 +322,8 @@ function createGUI() {
     .add(parameters, "lod", 1, 8, 0.5)
     .name("LOD error (px)")
     .onChange((value) => {
-      pipelines["GPU-driven"].lodThreshold = value;
-      pipelines["GPU-driven"].shadowLodThreshold = value;
+      pipelines["Meshlet"].lodThreshold = value;
+      pipelines["Meshlet"].shadowLodThreshold = value;
     });
   gui
     .add(parameters, "rotate")
@@ -353,8 +353,8 @@ function animate(time) {
     (statueCount * geometry.index.count) / 3
   )} triangles in the scene`;
 
-  if (renderer.drawingPipeline === pipelines["GPU-driven"]) {
-    const info = pipelines["GPU-driven"].info;
+  if (renderer.drawingPipeline === pipelines["Meshlet"]) {
+    const info = pipelines["Meshlet"].info;
     text += ` | ${formatCount(info.triangles)} drawn in ${formatCount(
       info.clusters
     )} clusters`;

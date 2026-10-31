@@ -16,13 +16,12 @@ if (WebGPU.isAvailable() === false) {
 const SPACING = 3;
 
 const parameters = {
-  pipeline: "GPU-driven",
+  pipeline: "Meshlet",
   statues: 10000,
   occlusion: true,
   meshlets: false,
   lod: 3,
   rotate: true,
-  mode: "Static",
 };
 
 const status = document.getElementById("status");
@@ -31,7 +30,7 @@ const timer = new Timer();
 
 let renderer, scene, camera, controls, pipelines, sunLight;
 let geometry,
-  materials,
+  material,
   statues = null;
 
 init().catch((error) => {
@@ -50,7 +49,7 @@ async function init() {
   await renderer.init();
 
   pipelines = {
-    "GPU-driven": new MeshletDrawingPipeline({
+    Meshlet: new MeshletDrawingPipeline({
       occlusionCulling: parameters.occlusion,
       lodThreshold: parameters.lod,
       shadowLodThreshold: parameters.lod,
@@ -121,12 +120,7 @@ async function init() {
   );
   geometry.scale(4 / size.y, 4 / size.y, 4 / size.y);
 
-  // marble, sandstone and bronze. the meshes of each material are drawn together
-
-  materials = [0xc2b9ad, 0xb0a597, 0xd3cbc0, 0xb59a74, 0xa6855c, 0x7a4f24].map(
-    (color) =>
-      new MeshStandardNodeMaterial({ color, roughness: 0.45, metalness: 0.1 })
-  );
+  material = new MeshStandardNodeMaterial({ roughness: 0.45, metalness: 0.1 });
 
   createStatues();
   createGUI();
@@ -135,48 +129,50 @@ async function init() {
 }
 
 function createStatues() {
-  // the meshes share the geometry and the materials, the previous statues are just removed
-
   if (statues !== null) {
     scene.remove(statues);
-    statues = null;
+    statues.dispose();
   }
 
-  const group = createGroup();
-
-  // a square grid around the center, each statue with its own rotation, scale and material
+  // a square grid around the center, each statue with its own rotation, scale and tint
 
   const count = parameters.statues;
   const side = Math.ceil(Math.sqrt(count));
+  const matrix = new Matrix4();
+  const position = new Vector3();
+  const quaternion = new Quaternion();
+  const scale = new Vector3();
+  const color = new Color();
+  const up = new Vector3(0, 1, 0);
+
+  statues = new InstancedMesh(geometry, material, count);
+  statues.castShadow = true;
+  statues.receiveShadow = true;
 
   for (let i = 0; i < count; i++) {
     const x = ((i % side) - (side - 1) / 2) * SPACING;
     const z = (Math.floor(i / side) - (side - 1) / 2) * SPACING;
 
-    const tone = Math.random();
-    const material =
-      tone < 0.6
-        ? materials[Math.floor(Math.random() * 3)]
-        : tone < 0.9
-        ? materials[3 + Math.floor(Math.random() * 2)]
-        : materials[5];
-
-    const statue = new Mesh(geometry, material);
-    statue.position.set(
+    position.set(
       x + (Math.random() - 0.5) * SPACING * 0.4,
       0,
       z + (Math.random() - 0.5) * SPACING * 0.4
     );
-    statue.rotation.y = Math.random() * Math.PI * 2;
-    statue.scale.setScalar(0.8 + Math.random() * 0.4);
-    statue.userData.distance = Math.hypot(x, z);
-    statue.userData.spin = (Math.random() - 0.5) * 2;
-    statue.castShadow = true;
-    statue.receiveShadow = true;
-    group.add(statue);
+    quaternion.setFromAxisAngle(up, Math.random() * Math.PI * 2);
+    scale.setScalar(0.8 + Math.random() * 0.4);
+    statues.setMatrixAt(i, matrix.compose(position, quaternion, scale));
+
+    // marble, sandstone and bronze
+
+    const tone = Math.random();
+    if (tone < 0.6) color.setHSL(0.1, 0.12, 0.6 + Math.random() * 0.15);
+    else if (tone < 0.9) color.setHSL(0.08, 0.35, 0.55 + Math.random() * 0.1);
+    else color.setHSL(0.07, 0.6, 0.3);
+    statues.setColorAt(i, color);
   }
 
-  setGroup(group);
+  statues.computeBoundingSphere();
+  scene.add(statues);
 
   // fit the shadow camera to the grid
 
@@ -188,30 +184,6 @@ function createStatues() {
   shadowCamera.far = sunLight.position.length() + extent * 1.5;
   shadowCamera.updateProjectionMatrix();
   sunLight.shadow.needsUpdate = true;
-}
-
-function createGroup() {
-  // a regular group is traversed every frame. a static bundle group is captured once: the pipeline uploads
-  // the transforms of its meshes once and doesn't traverse it again until needsUpdate is set. a bundle
-  // group which isn't static is drawn like a regular group
-
-  if (parameters.mode === "Default" || parameters.mode === "Animate")
-    return new Group();
-
-  const group = new BundleGroup();
-  group.static = parameters.mode === "Static";
-
-  return group;
-}
-
-function setGroup(group) {
-  if (statues !== null) {
-    scene.remove(statues);
-    group.add(...statues.children);
-  }
-
-  statues = group;
-  scene.add(statues);
 }
 
 async function prepare() {
@@ -232,7 +204,7 @@ async function prepare() {
 }
 
 function createGUI() {
-  const pipeline = pipelines["GPU-driven"];
+  const pipeline = pipelines["Meshlet"];
 
   const gui = renderer.inspector.createParameters("Settings");
   gui
@@ -277,20 +249,6 @@ function createGUI() {
     .add(parameters, "rotate")
     .name("Auto rotate")
     .onChange((value) => (controls.autoRotate = value));
-  gui
-    .add(parameters, "mode", ["Default", "Animate", "Static", "Bundle Group"])
-    .name("Mode")
-    .onChange((value) => {
-      // the shadow map follows the animated statues, the others stand on the ground again
-
-      sunLight.shadow.autoUpdate = value === "Animate";
-
-      if (value !== "Animate")
-        for (const statue of statues.children) statue.position.y = 0;
-
-      setGroup(createGroup());
-      prepare();
-    });
 }
 
 function onWindowResize() {
@@ -308,31 +266,15 @@ function formatCount(value) {
 
 function animate(time) {
   timer.update(time);
-  const delta = timer.getDelta();
-
-  controls.update(delta);
-
-  if (parameters.mode === "Animate") {
-    // the statues spin and hop in a wave from the center, the transforms of all meshes are uploaded every frame
-
-    const elapsed = timer.getElapsed();
-
-    for (const statue of statues.children) {
-      statue.rotation.y += statue.userData.spin * delta;
-      statue.position.y =
-        Math.max(0, Math.sin(elapsed * 3 - statue.userData.distance * 0.15)) *
-        1.5;
-    }
-  }
-
+  controls.update(timer.getDelta());
   renderer.render(scene, camera);
 
   let text = `${formatCount(
     (parameters.statues * geometry.index.count) / 3
   )} triangles in the scene`;
 
-  if (renderer.drawingPipeline === pipelines["GPU-driven"]) {
-    const info = pipelines["GPU-driven"].info;
+  if (renderer.drawingPipeline === pipelines["Meshlet"]) {
+    const info = pipelines["Meshlet"].info;
     text += ` | ${formatCount(info.triangles)} drawn in ${formatCount(
       info.clusters
     )} clusters`;

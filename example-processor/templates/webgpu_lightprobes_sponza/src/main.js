@@ -32,7 +32,7 @@ const _box = new Box3();
 const _size = new Vector3();
 
 const params = {
-  pipeline: "GPU-driven",
+  pipeline: "Meshlet",
   enabled: true,
   showProbes: false,
   probeSize: 0.2,
@@ -92,7 +92,7 @@ async function init() {
   // the clusters of the objects are culled and drawn on the GPU, also in the cubemap captures of the probes
 
   pipelines = {
-    "GPU-driven": new MeshletDrawingPipeline(),
+    Meshlet: new MeshletDrawingPipeline(),
     Default: renderer.drawingPipeline,
   };
   renderer.drawingPipeline = pipelines[params.pipeline];

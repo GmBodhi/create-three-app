@@ -60,7 +60,7 @@ const parameters = {
   tiles: parseInt(search.get("tiles") || "6"), // the generated city is repeated on a tiles x tiles grid
   timeOfDay: 9, // hours: 6 sunrise, 12 noon, 18 sunset
   shadows: search.get("shadows") !== "0",
-  pipeline: search.get("pipeline") || "gpu-driven",
+  pipeline: search.get("pipeline") || "meshlet",
   static: search.get("static") !== "0",
   occlusion: search.get("occlusion") !== "0",
   prepass: search.get("prepass") !== "0",
@@ -110,7 +110,7 @@ async function init() {
   // the meshlet drawing pipelines draw the towers, the standard drawing pipeline of the renderer draws every object on its own, for comparison
 
   pipelines = {
-    "gpu-driven": new MeshletDrawingPipeline({
+    meshlet: new MeshletDrawingPipeline({
       debug: parameters.meshlets,
       occlusionCulling: parameters.occlusion,
       depthPrepass: parameters.prepass,
@@ -322,22 +322,22 @@ async function init() {
     .add(parameters, "occlusion")
     .name("occlusion culling")
     .onChange((value) => {
-      pipelines["gpu-driven"].occlusionCulling = value;
+      pipelines["meshlet"].occlusionCulling = value;
       pipelines["visibility-buffer"].occlusionCulling = value;
     });
-  gui.add(pipelines["gpu-driven"], "depthPrepass").name("depth prepass");
+  gui.add(pipelines["meshlet"], "depthPrepass").name("depth prepass");
   gui
     .add(parameters, "lod", 0, 8, 0.1)
     .name("lod (pixels)")
     .onChange((value) => {
-      pipelines["gpu-driven"].lodThreshold = value;
+      pipelines["meshlet"].lodThreshold = value;
       pipelines["visibility-buffer"].lodThreshold = value;
     });
   gui
     .add(parameters, "shadowLod", 0, 8, 0.5)
     .name("shadow lod (texels)")
     .onChange((value) => {
-      pipelines["gpu-driven"].shadowLodThreshold = value;
+      pipelines["meshlet"].shadowLodThreshold = value;
       pipelines["visibility-buffer"].shadowLodThreshold = value;
       sunLight.shadow.needsUpdate = true;
     });
@@ -371,7 +371,7 @@ async function init() {
     .add(parameters, "meshlets")
     .name("show meshlets")
     .onChange((value) => {
-      pipelines["gpu-driven"].debug = value;
+      pipelines["meshlet"].debug = value;
       pipelines["visibility-buffer"].debug = value;
       renderer.toneMapping = value ? NoToneMapping : ACESFilmicToneMapping;
     });
@@ -612,7 +612,7 @@ function generateCity() {
   // so they draw a regular group
 
   const gpuDriven =
-    parameters.pipeline === "gpu-driven" ||
+    parameters.pipeline === "meshlet" ||
     parameters.pipeline === "visibility-buffer";
 
   tilesGroup = parameters.static && gpuDriven ? new BundleGroup() : new Group();
