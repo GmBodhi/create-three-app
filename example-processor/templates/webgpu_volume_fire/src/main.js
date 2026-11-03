@@ -598,8 +598,7 @@ function init() {
   vertexCount = teapotGeometry.attributes.position.count;
   teapotVerticesBuffer = storage(
     teapotGeometry.attributes.position,
-    "vec3",
-    vertexCount
+    "vec3"
   ).toReadOnly();
 
   createComputePasses();

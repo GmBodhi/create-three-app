@@ -2094,16 +2094,6 @@
         "/src"
       ]
     },
-    "webgl_loader_vdb": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_loader_vox": {
       "files": {
         "index.html": "src",
@@ -4512,6 +4502,16 @@
       ]
     },
     "webgpu_loader_texture_ktx2": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_loader_vdb": {
       "files": {
         "index.html": "src",
         "main.js": "src",

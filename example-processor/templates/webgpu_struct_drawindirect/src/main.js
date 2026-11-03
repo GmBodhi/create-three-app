@@ -3,7 +3,7 @@ import "./style.css"; // For webpack support
 import * as THREE from "three/webgpu";
 import {
   struct,
-  storage,
+  storageStruct,
   sin,
   cross,
   normalize,
@@ -141,7 +141,7 @@ async function init() {
     "DrawBuffer"
   );
 
-  const drawStorage = storage(drawBuffer, drawBufferStruct, drawBuffer.count);
+  const drawStorage = storageStruct(drawBuffer, drawBufferStruct);
 
   computeDrawBuffer = Fn(() => {
     const halfTime = sin(time.mul(0.5));
@@ -150,17 +150,15 @@ async function init() {
       pow(halfTime.add(1), 4.0).mul(instances),
       100
     ).toVar("instanceCount");
-    atomicStore(drawStorage.element(0).get("instanceCount"), instanceCount);
+    atomicStore(drawStorage.get("instanceCount"), instanceCount);
   })().compute(instances);
 
   computeInitDrawBuffer = Fn(() => {
-    const drawInfo = drawStorage.element(0);
-
-    drawInfo.get("vertexCount").assign(3);
-    atomicStore(drawInfo.get("instanceCount"), uint(0));
-    drawInfo.get("firstVertex").assign(0);
-    drawInfo.get("firstInstance").assign(0);
-    drawInfo.get("offset").assign(0);
+    drawStorage.get("vertexCount").assign(3);
+    atomicStore(drawStorage.get("instanceCount"), uint(0));
+    drawStorage.get("firstVertex").assign(0);
+    drawStorage.get("firstInstance").assign(0);
+    drawStorage.get("offset").assign(0);
   })().compute(1);
 
   const vPosition = varyingProperty("vec3", "vPosition");

@@ -264,15 +264,11 @@ async function initBitonicSort() {
   randomizeDataArray(array);
 
   const currentElementsBuffer = new StorageInstancedBufferAttribute(array, 1);
-  const currentElementsStorage = storage(currentElementsBuffer, "uint", size)
+  const currentElementsStorage = storage(currentElementsBuffer, "uint")
     .setPBO(true)
     .setName("Elements");
   const randomizedElementsBuffer = new StorageInstancedBufferAttribute(size, 1);
-  const randomizedElementsStorage = storage(
-    randomizedElementsBuffer,
-    "uint",
-    size
-  )
+  const randomizedElementsStorage = storage(randomizedElementsBuffer, "uint")
     .setPBO(true)
     .setName("RandomizedElements");
 
@@ -364,7 +360,7 @@ async function initGlobalSwapOnly() {
 
   const infoArray = new Uint32Array([3, 2, 2]);
   const infoBuffer = new StorageInstancedBufferAttribute(infoArray, 1);
-  const infoStorage = storage(infoBuffer, "uint", infoBuffer.count)
+  const infoStorage = storage(infoBuffer, "uint")
     .setPBO(true)
     .setName("TheInfo");
 
@@ -372,18 +368,10 @@ async function initGlobalSwapOnly() {
     new Uint32Array(1).fill(2),
     1
   );
-  const nextBlockHeightStorage = storage(
-    nextBlockHeightBuffer,
-    "uint",
-    nextBlockHeightBuffer.count
-  )
+  const nextBlockHeightStorage = storage(nextBlockHeightBuffer, "uint")
     .setPBO(true)
     .setName("NextBlockHeight");
-  const nextBlockHeightRead = storage(
-    nextBlockHeightBuffer,
-    "uint",
-    nextBlockHeightBuffer.count
-  )
+  const nextBlockHeightRead = storage(nextBlockHeightBuffer, "uint")
     .setPBO(true)
     .setName("NextBlockHeight")
     .toReadOnly();
@@ -397,19 +385,13 @@ async function initGlobalSwapOnly() {
   randomizeDataArray(array);
 
   const currentElementsBuffer = new StorageInstancedBufferAttribute(array, 1);
-  const currentElementsStorage = storage(currentElementsBuffer, "uint", size)
+  const currentElementsStorage = storage(currentElementsBuffer, "uint")
     .setPBO(true)
     .setName("Elements");
   const tempBuffer = new StorageInstancedBufferAttribute(array, 1);
-  const tempStorage = storage(tempBuffer, "uint", size)
-    .setPBO(true)
-    .setName("Temp");
+  const tempStorage = storage(tempBuffer, "uint").setPBO(true).setName("Temp");
   const randomizedElementsBuffer = new StorageInstancedBufferAttribute(size, 1);
-  const randomizedElementsStorage = storage(
-    randomizedElementsBuffer,
-    "uint",
-    size
-  )
+  const randomizedElementsStorage = storage(randomizedElementsBuffer, "uint")
     .setPBO(true)
     .setName("RandomizedElements");
 

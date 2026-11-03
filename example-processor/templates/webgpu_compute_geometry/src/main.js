@@ -46,14 +46,13 @@ const jelly = Fn(({ renderer, geometry, object }) => {
 
   // Attributes
 
-  const positionAttribute = storage(positionBaseAttribute, "vec3", count);
+  const positionAttribute = storage(positionBaseAttribute, "vec3");
   const positionStorageAttribute = storage(
     positionStorageBufferAttribute,
-    "vec3",
-    count
+    "vec3"
   );
 
-  const speedAttribute = storage(speedBufferAttribute, "vec3", count);
+  const speedAttribute = storage(speedBufferAttribute, "vec3");
 
   // Vectors
 

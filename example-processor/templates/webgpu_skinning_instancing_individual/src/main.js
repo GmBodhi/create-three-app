@@ -92,11 +92,7 @@ function getSkeletonState(skeleton, instanceCount) {
       skeleton,
       boneCount,
       boneMatrices,
-      boneMatricesNode: storage(
-        boneMatrices,
-        "mat4",
-        boneMatrices.count
-      ).toReadOnly(),
+      boneMatricesNode: storage(boneMatrices, "mat4").toReadOnly(),
     };
 
     skeletonStates.set(skeleton, state);
@@ -113,21 +109,18 @@ function createComputedMesh(source, instanceCount) {
 
   const sourceVertices = storage(
     createSourceVertexAttribute(geometry),
-    "vec4",
-    vertexCount * 3
+    "vec4"
   ).toReadOnly();
   const skinIndices = storage(
     new StorageBufferAttribute(
       new Uint32Array(geometry.getAttribute("skinIndex").array),
       4
     ),
-    "uvec4",
-    vertexCount
+    "uvec4"
   ).toReadOnly();
   const skinWeights = storage(
     new StorageBufferAttribute(geometry.getAttribute("skinWeight").array, 4),
-    "vec4",
-    vertexCount
+    "vec4"
   ).toReadOnly();
   const bindMatrix = uniform(source.bindMatrix, "mat4");
   const bindMatrixInverse = uniform(source.bindMatrixInverse, "mat4");
@@ -363,16 +356,8 @@ async function init() {
 
     const bellyWeights = new StorageBufferAttribute(instanceCount, 1);
     instanceMatrices = new StorageBufferAttribute(instanceCount, 16);
-    bellyWeightsNode = storage(
-      bellyWeights,
-      "float",
-      instanceCount
-    ).toReadOnly();
-    instanceMatricesNode = storage(
-      instanceMatrices,
-      "mat4",
-      instanceCount
-    ).toReadOnly();
+    bellyWeightsNode = storage(bellyWeights, "float").toReadOnly();
+    instanceMatricesNode = storage(instanceMatrices, "mat4").toReadOnly();
 
     for (let i = 0; i < instanceCount; i++) {
       const bodyType = bodyTypes[i % bodyTypes.length];

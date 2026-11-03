@@ -122,13 +122,11 @@ async function init() {
   // storage buffers
   const particlePositions = storage(
     new StorageInstancedBufferAttribute(nbParticles, 4),
-    "vec4",
-    nbParticles
+    "vec4"
   );
   const particleVelocities = storage(
     new StorageInstancedBufferAttribute(nbParticles, 4),
-    "vec4",
-    nbParticles
+    "vec4"
   );
 
   // init particles buffers
@@ -222,11 +220,7 @@ async function init() {
   linksMaterial.depthWrite = false;
   linksMaterial.depthTest = false;
   linksMaterial.blending = AdditiveBlending;
-  linksMaterial.opacityNode = storage(
-    linksColorsSBA,
-    "vec4",
-    linksColorsSBA.count
-  ).toAttribute().w;
+  linksMaterial.opacityNode = storage(linksColorsSBA, "vec4").toAttribute().w;
 
   const linksMesh = new Mesh(linksGeom, linksMaterial);
   linksMesh.frustumCulled = false;
@@ -287,12 +281,8 @@ async function init() {
       });
 
       // then we update the links correspondingly
-      const linksPositions = storage(
-        linksVerticesSBA,
-        "vec4",
-        linksVerticesSBA.count
-      );
-      const linksColors = storage(linksColorsSBA, "vec4", linksColorsSBA.count);
+      const linksPositions = storage(linksVerticesSBA, "vec4");
+      const linksColors = storage(linksColorsSBA, "vec4");
       const firstLinkIndex = instanceIndex.mul(8);
       const secondLinkIndex = firstLinkIndex.add(4);
 

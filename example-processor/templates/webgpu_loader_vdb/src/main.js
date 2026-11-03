@@ -1,0 +1,468 @@
+import "./style.css"; // For webpack support
+
+import * as THREE from "three/webgpu";
+import {
+  Fn,
+  If,
+  Loop,
+  Break,
+  float,
+  vec2,
+  vec3,
+  vec4,
+  uniform,
+  texture,
+  texture3D,
+  agxToneMapping,
+  saturation,
+  hash,
+  screenCoordinate,
+  screenSize,
+  cameraPosition,
+  modelWorldMatrixInverse,
+  exp,
+  sqrt,
+  dot,
+  clamp,
+  max,
+} from "three/tsl";
+import { RaymarchingBox } from "three/addons/tsl/utils/Raymarching.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
+import { Inspector } from "three/addons/inspector/Inspector.js";
+import { VDBLoader } from "three-vdb-loader";
+import { VDBSequenceLoader } from "three-vdb-loader/sequence";
+
+// Both models are fluid simulations with a soot density and a temperature grid. The
+// sequence is 192 NanoVDB frames (24 fps, 31 MB) fetched ahead of playback and decoded in
+// web workers; the openvdb.org fire is one OpenVDB file.
+const models = {
+  "oil fire, 192 frames (31 MB)": {
+    url: "https://richardmonette.github.io/three-vdb-loader/examples/models/sequences/fire_fp8/fire_fp8.json",
+    sequence: true,
+    extinction: 20, // per domain length of 96 cells
+    cells: 96,
+    kelvin: 1, // the simulation stores degrees above ambient
+  },
+  "fire (openvdb.org), one frame (28 MB)": {
+    url: "https://media.githubusercontent.com/media/AcademySoftwareFoundation/openvdb-website/master/download/models/fire.vdb",
+    extinction: 60, // per box length
+    kelvin: 33, // its temperature is in arbitrary units
+  },
+};
+
+let renderer,
+  scene,
+  camera,
+  controls,
+  timer,
+  gui,
+  playback,
+  frameControl = null;
+let mesh = null,
+  sequence = null,
+  generation = 0;
+
+const status = document.getElementById("status");
+
+// Shading parameters, shared by both models.
+const extinction = uniform(20);
+const albedo = uniform(0.25);
+const emission = uniform(0.3);
+const exposure = uniform(1);
+const chroma = uniform(2);
+const steps = uniform(100);
+
+const parameters = {
+  model: Object.keys(models)[0],
+  playing: true,
+  frame: 0,
+  loop: true,
+};
+
+init();
+
+async function init() {
+  renderer = new WebGPURenderer();
+  renderer.setPixelRatio(window.devicePixelRatio);
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
+  document.body.appendChild(renderer.domElement);
+
+  scene = new Scene();
+  scene.background = new Color(0x2b3a4a);
+
+  camera = new PerspectiveCamera(
+    50,
+    window.innerWidth / window.innerHeight,
+    0.1,
+    1000
+  );
+
+  controls = new OrbitControls(camera, renderer.domElement);
+  controls.autoRotate = true;
+
+  timer = new Timer();
+
+  gui = renderer.inspector.createParameters("Parameters");
+  gui.add(parameters, "model", Object.keys(models)).onChange(load);
+
+  playback = gui.addFolder("sequence");
+  playback
+    .add(parameters, "playing")
+    .onChange((v) => sequence && (v ? sequence.play() : sequence.pause()));
+  playback
+    .add(parameters, "loop")
+    .onChange((v) => sequence && (sequence.loop = v));
+
+  const shading = gui.addFolder("shading");
+  shading.add(extinction, "value", 0, 200, 0.5).name("extinction").listen();
+  shading.add(albedo, "value", 0, 1, 0.01).name("albedo");
+  shading.add(emission, "value", 0, 2, 0.01).name("emission");
+  shading.add(exposure, "value", 0, 4, 0.01).name("exposure");
+  shading.add(chroma, "value", 0, 3, 0.01).name("saturation");
+  shading.add(steps, "value", 10, 400, 1).name("steps");
+
+  gui.add(controls, "autoRotate").name("rotate");
+
+  window.addEventListener("resize", onWindowResize);
+
+  load();
+}
+
+async function load() {
+  const model = models[parameters.model];
+  const id = ++generation;
+
+  clear();
+  status.textContent = "loading...";
+
+  let grids;
+
+  if (model.sequence) {
+    const loaded = await new VDBSequenceLoader()
+      .setGridNames(["density", "temperature"])
+      .setTextureType(UnsignedByteType)
+      .loadAsync(model.url, (loaded, total) => {
+        if (id === generation)
+          status.textContent =
+            loaded < total ? "fetching frame " + loaded + " / " + total : "";
+      });
+
+    if (id !== generation) {
+      loaded.dispose();
+      return;
+    }
+
+    sequence = loaded;
+    sequence.loop = parameters.loop;
+    if (parameters.playing) sequence.play();
+
+    grids = sequence.grids;
+
+    // The frame slider needs the frame count, so it is added once the first sequence is in.
+    if (frameControl === null) {
+      frameControl = playback
+        .add(parameters, "frame", 0, sequence.frameCount - 1, 1)
+        .onChange(
+          (v) => sequence && v !== sequence.frame && (sequence.frame = v)
+        )
+        .listen();
+    }
+
+    playback.show();
+  } else {
+    grids = await new VDBLoader()
+      .setGridNames(["density", "temperature"])
+      .loadAsync(model.url);
+
+    if (id !== generation) return;
+
+    status.textContent = "";
+  }
+
+  const [density, temperature] = grids;
+
+  extinction.value = model.extinction;
+
+  const center = density.bbox.getCenter(new Vector3());
+  const size = density.bbox.getSize(new Vector3()).addScalar(1);
+
+  mesh = new Mesh(
+    new BoxGeometry(1, 1, 1),
+    createMaterial(density, temperature, model)
+  );
+  mesh.matrixAutoUpdate = false;
+  mesh.matrix
+    .copy(density.transform)
+    .multiply(new Matrix4().makeTranslation(center).scale(size));
+  mesh.updateMatrixWorld(true);
+  scene.add(mesh);
+
+  const box = new Box3().setFromObject(mesh);
+  const radius = box.getSize(new Vector3()).length() / 2;
+
+  box.getCenter(controls.target);
+  camera.position
+    .copy(controls.target)
+    .add(
+      new Vector3(0, 0, radius / Math.sin(MathUtils.degToRad(camera.fov / 2)))
+    );
+  camera.near = radius / 100;
+  camera.far = radius * 10;
+  camera.updateProjectionMatrix();
+}
+
+function clear() {
+  if (mesh !== null) {
+    scene.remove(mesh);
+    if (sequence === null)
+      for (const texture of mesh.material.userData.textures) texture.dispose();
+    mesh.material.dispose();
+    mesh = null;
+  }
+
+  if (sequence !== null) {
+    sequence.dispose();
+    sequence = null;
+  }
+
+  playback.hide();
+}
+
+// Linear sRGB radiance of a blackbody, by integrating Planck's law against the CIE 1931
+// colour matching functions (the multi-lobe Gaussian fit of Wyman, Sloan and Shirley 2013).
+// The values are absolute, so a flame's brightness as well as its colour follows from its temperature.
+function blackbodyTable(minK, maxK, count) {
+  const g = (x, mu, s1, s2) =>
+    Math.exp(-0.5 * ((x - mu) / (x < mu ? s1 : s2)) ** 2);
+  const cie = (nm) => [
+    1.056 * g(nm, 599.8, 37.9, 31.0) +
+      0.362 * g(nm, 442.0, 16.0, 26.7) -
+      0.065 * g(nm, 501.1, 20.4, 26.2),
+    0.821 * g(nm, 568.8, 46.9, 40.5) + 0.286 * g(nm, 530.9, 16.3, 31.1),
+    1.217 * g(nm, 437.0, 11.8, 36.0) + 0.681 * g(nm, 459.0, 26.0, 13.8),
+  ];
+
+  const h = 6.62607015e-34,
+    c = 2.99792458e8,
+    k = 1.380649e-23;
+  const data = new Uint16Array(count * 4);
+
+  for (let i = 0; i < count; i++) {
+    const T = minK + ((maxK - minK) * i) / (count - 1);
+    let X = 0,
+      Y = 0,
+      Z = 0;
+
+    for (let nm = 380; nm <= 780; nm += 5) {
+      const wavelength = nm * 1e-9;
+      const L =
+        ((2 * h * c * c) /
+          (wavelength ** 5 * (Math.exp((h * c) / (wavelength * k * T)) - 1))) *
+        5e-9;
+      const [x, y, z] = cie(nm);
+      X += L * x;
+      Y += L * y;
+      Z += L * z;
+    }
+
+    data[i * 4] = DataUtils.toHalfFloat(
+      Math.max(0, 3.2406 * X - 1.5372 * Y - 0.4986 * Z)
+    );
+    data[i * 4 + 1] = DataUtils.toHalfFloat(
+      Math.max(0, -0.9689 * X + 1.8758 * Y + 0.0415 * Z)
+    );
+    data[i * 4 + 2] = DataUtils.toHalfFloat(
+      Math.max(0, 0.0557 * X - 0.204 * Y + 1.057 * Z)
+    );
+    data[i * 4 + 3] = DataUtils.toHalfFloat(1);
+  }
+
+  return data;
+}
+
+const BLACKBODY_MIN_K = 300,
+  BLACKBODY_MAX_K = 2500;
+
+const blackbodyMap = new DataTexture(
+  blackbodyTable(BLACKBODY_MIN_K, BLACKBODY_MAX_K, 1024),
+  1024,
+  1,
+  RGBAFormat,
+  HalfFloatType
+);
+blackbodyMap.minFilter = blackbodyMap.magFilter = LinearFilter;
+blackbodyMap.needsUpdate = true;
+
+// Emission and absorption through the soot, as a fluid simulator's volume renderer does it:
+// hot soot radiates as a blackbody and cooler soot scatters the sun and sky.
+function createMaterial(density, temperature, model) {
+  const AMBIENT_K = 293.15;
+  const DRAPER_K = 798; // below this nothing glows
+  const HG_G = 0.1;
+
+  const lightDir = vec3(0.8, 0.5, -0.3).normalize();
+  const lightColor = vec3(12, 11, 9);
+  const ambientLight = vec3(0.4, 0.42, 0.46);
+
+  // Byte textures hold the grids normalized to their value ranges; the temperature also goes to kelvin.
+  const range = (grid, scale = 1) =>
+    grid.texture.type === UnsignedByteType
+      ? vec2(
+          (grid.valueRange.y - grid.valueRange.x) * scale,
+          grid.valueRange.x * scale
+        )
+      : vec2(scale, 0);
+
+  const densityMap = texture3D(density.texture, null, 0);
+  const temperatureMap = texture3D(temperature.texture, null, 0);
+  const densityRange = range(density);
+  const temperatureRange = range(temperature, model.kelvin);
+
+  // Extinction is per domain length when the model says how many cells that is, else per box length.
+  const image = density.texture.image;
+  const sigma = extinction.mul(
+    model.cells
+      ? (image.width + image.height + image.depth) / 3 / model.cells
+      : 1
+  );
+
+  const sootAt = Fn(([p]) =>
+    densityMap.sample(p.add(0.5)).r.mul(densityRange.x).add(densityRange.y)
+  );
+  const kelvinAt = Fn(([p]) =>
+    temperatureMap
+      .sample(p.add(0.5))
+      .r.mul(temperatureRange.x)
+      .add(temperatureRange.y)
+      .add(AMBIENT_K)
+  );
+
+  const blackbodyRadiance = Fn(
+    ([T]) =>
+      texture(
+        blackbodyMap,
+        vec2(T.sub(BLACKBODY_MIN_K).div(BLACKBODY_MAX_K - BLACKBODY_MIN_K), 0.5)
+      ).rgb
+  );
+
+  // Fire is a pure absorber and emitter; only cooler soot scatters.
+  const fireAlbedo = Fn(([T]) =>
+    albedo.mul(clamp(float(1500).sub(T).div(500), 0, 1))
+  );
+
+  const hgPhase = Fn(([cosTheta]) => {
+    const d = float(1 + HG_G * HG_G).sub(cosTheta.mul(2 * HG_G));
+    return float(1 - HG_G * HG_G).div(d.mul(sqrt(d)).mul(4 * Math.PI));
+  });
+
+  // Transmittance of the soot between p and the sun. Hot gas expands, so the same soot extinguishes less.
+  const sunTransmittance = Fn(([p]) => {
+    const tau = float(0).toVar();
+
+    Loop({ start: 1, end: 11, type: "int" }, ({ i }) => {
+      const q = p.add(lightDir.mul(float(i).div(16))).toVar();
+
+      If(max(q.x.abs(), max(q.y.abs(), q.z.abs())).greaterThan(0.5), () => {
+        Break();
+      });
+
+      tau.addAssign(
+        sootAt(q)
+          .mul(sigma)
+          .mul(float(AMBIENT_K).div(kelvinAt(q)))
+          .div(16)
+      );
+    });
+
+    return exp(tau.negate());
+  });
+
+  const fire = Fn(() => {
+    const transmittance = float(1).toVar();
+    const radiance = vec3(0).toVar();
+
+    // A per pixel offset along the ray hides the march steps.
+    const jitter = hash(
+      screenCoordinate.x.add(screenCoordinate.y.mul(screenSize.x)).toUint()
+    );
+    const origin = modelWorldMatrixInverse.mul(vec4(cameraPosition, 1)).xyz;
+
+    RaymarchingBox(steps, ({ positionRay, stepSize }) => {
+      const dir = positionRay.sub(origin).normalize();
+      const p = positionRay.add(dir.mul(jitter.mul(stepSize)));
+
+      const d = sootAt(p).toVar();
+      const T = kelvinAt(p).toVar();
+
+      If(d.greaterThan(1e-5).or(T.greaterThan(DRAPER_K)), () => {
+        const sigmaT = d.mul(sigma).mul(float(AMBIENT_K).div(T)).toVar();
+        const dT = exp(sigmaT.negate().mul(stepSize)).toVar();
+        const a = fireAlbedo(T).toVar();
+
+        // Thermal emission by Kirchhoff's law (what absorbs, radiates) plus in-scattered sun and sky light.
+        const glow = blackbodyRadiance(T)
+          .mul(a.oneMinus().mul(emission))
+          .mul(T.greaterThan(DRAPER_K));
+        const scattered = lightColor
+          .mul(sunTransmittance(p).mul(hgPhase(dot(dir, lightDir))))
+          .add(ambientLight)
+          .mul(a);
+
+        radiance.addAssign(
+          glow
+            .add(scattered)
+            .mul(sigmaT)
+            .mul(transmittance.mul(dT.oneMinus()).div(max(sigmaT, 1e-4)))
+        );
+        transmittance.mulAssign(dT);
+
+        If(transmittance.lessThan(0.005), () => {
+          Break();
+        });
+      });
+    });
+
+    // Premultiplied: the radiance is already weighted by the transmittance in front of it.
+    return vec4(
+      saturation(agxToneMapping(radiance, exposure), chroma),
+      transmittance.oneMinus()
+    );
+  });
+
+  const material = new NodeMaterial();
+  material.colorNode = fire();
+  material.side = BackSide;
+  material.transparent = true;
+  material.depthWrite = false;
+  material.blending = CustomBlending;
+  material.blendSrc = OneFactor;
+  material.blendDst = OneMinusSrcAlphaFactor;
+  material.blendSrcAlpha = OneFactor;
+  material.blendDstAlpha = OneMinusSrcAlphaFactor;
+
+  material.userData.textures = [density.texture, temperature.texture];
+
+  return material;
+}
+
+function onWindowResize() {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function animate() {
+  controls.update();
+
+  if (sequence !== null) {
+    timer.update();
+    sequence.update(timer.getDelta());
+
+    // The slider follows playback; while paused it drives the sequence instead.
+    if (sequence.playing) parameters.frame = sequence.frame;
+  }
+
+  renderer.render(scene, camera);
+}

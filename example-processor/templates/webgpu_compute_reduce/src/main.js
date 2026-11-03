@@ -168,7 +168,6 @@ if (WebGPU.isAvailable() === false) {
 
 // Total number of elements and the dimensions of the display grid.
 const size = 262144;
-const vecSize = divRoundUp(size, 4);
 // Grid display is gridDim x gridDim
 const gridDim = Math.sqrt(size);
 let maxWorkgroupSize = 64;
@@ -511,7 +510,8 @@ const createReduce3Fn = (createReduce3FnProps) => {
   } = createReduce3FnProps;
 
   const fnDef = Fn(() => {
-    const inputSize = uint(inputBuffer.bufferCount);
+    // TODO: read the length in the shader once TSL supports WGSL's "arrayLength"
+    const inputSize = uint(inputBuffer.value.count);
     const rowOffset = workgroupId.x.mul(rowSize);
 
     // If the current rows elements exceed the bounds of the input
@@ -793,11 +793,7 @@ async function init(leftSideDisplay = true) {
     array,
     4
   );
-  const inputVectorizedStorage = storage(
-    inputVec4BufferAttribute,
-    "uvec4",
-    vecSize
-  )
+  const inputVectorizedStorage = storage(inputVec4BufferAttribute, "uvec4")
     .setPBO(true)
     .setName(`CurrentVectorized_${leftSideDisplay ? "Left" : "Right"}`);
 

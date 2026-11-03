@@ -109,11 +109,7 @@ async function init() {
     sizes,
     1
   );
-  const instanceSizeStorage = storage(
-    instanceSizeBufferAttribute,
-    "float",
-    instanceSizeBufferAttribute.count
-  );
+  const instanceSizeStorage = storage(instanceSizeBufferAttribute, "float");
 
   computeSize = Fn(() => {
     const { pulseSpeed, minWidth, maxWidth } = effectController;

@@ -49,7 +49,7 @@ async function init(forceWebGL = false) {
       typeSize
     );
 
-    arrayBufferNodes.push(storage(arrayBuffer, type[i], size).setPBO(true));
+    arrayBufferNodes.push(storage(arrayBuffer, type[i]).setPBO(true));
   }
 
   const computeInitOrder = Fn(() => {

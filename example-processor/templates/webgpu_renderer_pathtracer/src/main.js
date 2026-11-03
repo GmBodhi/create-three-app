@@ -51,7 +51,8 @@ async function init() {
     100
   );
 
-  renderer = new WebGPURenderer({ antialias: true });
+  // timestamps let the path tracer adapt its frame budget, and the resolution with it, to the device
+  renderer = new WebGPURenderer({ antialias: true, trackTimestamp: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
@@ -61,11 +62,15 @@ async function init() {
   await renderer.init();
 
   pathTracer = new WebGPUPathTracer(renderer);
-  pathTracer.useMegakernel(true); // TODO: Remove once the wavefront backend supports array-bound struct buffers.
   pathTracer.filterGlossyFactor = 1;
   pathTracer.minSamples = 3;
   pathTracer.maxSamples = 32;
   pathTracer.renderScale = params.resolutionScale;
+  pathTracer.addEventListener("progress", ({ samples }) => {
+    if (samples) {
+      params.samples = Math.floor(samples.avg);
+    }
+  });
 
   scene = new Scene();
   scene.background = new Color(0xeeeeee);
@@ -189,10 +194,6 @@ function createGUI() {
 function animate() {
   if (params.enable) {
     pathTracer.renderSample();
-
-    pathTracer.getSampleCountsAsync().then((counts) => {
-      params.samples = Math.floor(counts.avg);
-    });
   } else {
     renderer.render(scene, camera);
   }
