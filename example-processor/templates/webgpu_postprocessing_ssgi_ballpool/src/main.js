@@ -15,6 +15,7 @@ import {
   sample,
 } from "three/tsl";
 import { ssgi } from "three/addons/tsl/display/SSGINode.js";
+import { temporalDenoise } from "three/addons/tsl/display/DenoiseNode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 import { RapierPhysics } from "three/addons/physics/RapierPhysics.js";
 
@@ -135,13 +136,27 @@ async function init() {
   giPass.sliceCount.value = 2;
   giPass.stepCount.value = 8;
 
-  // composite
+  // denoise: GI in rgb and AO in alpha, accumulated in time
 
   const ao = giPass.getAONode().toInspector("SSGI.AO");
   const gi = giPass.getGINode().toInspector("SSGI.GI");
 
+  const denoiseNode = temporalDenoise(vec4(gi.rgb, ao.r), {
+    depth: scenePassDepth,
+    normal: sceneNormal,
+    camera,
+    velocity: scenePassVelocity,
+    alpha: true,
+  });
+  const denoised = denoiseNode.getTextureNode().toInspector("Denoise");
+
+  // composite
+
   const compositePass = vec4(
-    add(scenePassColor.rgb.mul(ao), scenePassDiffuse.rgb.mul(gi.rgb)),
+    add(
+      scenePassColor.rgb.mul(denoised.a),
+      scenePassDiffuse.rgb.mul(denoised.rgb)
+    ),
     scenePassColor.a
   );
 

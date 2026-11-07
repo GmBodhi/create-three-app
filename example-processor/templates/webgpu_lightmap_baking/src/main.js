@@ -6,6 +6,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 import { HDRLoader } from "three/addons/loaders/HDRLoader.js";
 import { LightMapper } from "three/addons/lighting/LightMapper.js";
+import { denoise } from "three/addons/tsl/display/DenoiseNode.js";
 import {
   RayTracedRadiosity,
   rayTracedRadiosityIrradiance,
@@ -22,20 +23,35 @@ if (WebGPU.isAvailable() === false) {
 
 let camera, scene, renderer, controls, status;
 let world, meshes, materials;
-let radiosity, lightMapper;
-let needsBake = false;
+let radiosity,
+  lightMapper,
+  denoiseNode = null;
+let needsBake = false,
+  denoised = false;
 
 const params = {
   scene: "Cornell Box",
   resolution: 1024,
+  denoise: false,
 };
 
 const scenes = { "Cornell Box": createCornellBox, Courtyard: loadCourtyard };
 const worlds = {};
 
-// every sample continues the ray sequences of the texels
+// phones have less GPU memory, 4096² takes over 1 GB with the denoiser
 
-const samples = 64;
+const phone = window.matchMedia("(pointer: coarse)").matches;
+
+// every sample continues the ray sequences of the texels. The bake casts this many rays per texel, as
+// many per frame as keep the frame rate of the display
+
+const rays = 512;
+const frameTimes = [];
+
+let bakedRays = 0,
+  raysPerFrame = 8,
+  averageFrameTime = 0,
+  lastFrame = 0;
 
 init();
 
@@ -74,9 +90,14 @@ async function init() {
     .name("Scene")
     .onChange(setScene);
   gui
-    .add(params, "resolution", [256, 1024, 2048, 4096])
+    .add(
+      params,
+      "resolution",
+      phone ? [256, 1024, 2048] : [256, 1024, 2048, 4096]
+    )
     .name("Light Map Resolution")
     .onChange(requestBake);
+  gui.add(params, "denoise").name("Denoise").onChange(requestBake);
   gui.add({ bake: requestBake }, "bake").name("Re-Bake GI");
 
   window.addEventListener("resize", onWindowResize);
@@ -119,9 +140,9 @@ function createCornellBox() {
   const room = new Group();
   root.add(room);
 
-  const wallMaterial = new MeshStandardMaterial({ color: 0xcccccc });
-  const redMaterial = new MeshStandardMaterial({ color: 0xff0000 });
-  const greenMaterial = new MeshStandardMaterial({ color: 0x00ff00 });
+  const wallMaterial = new MeshStandardNodeMaterial({ color: 0xcccccc });
+  const redMaterial = new MeshStandardNodeMaterial({ color: 0xff0000 });
+  const greenMaterial = new MeshStandardNodeMaterial({ color: 0x00ff00 });
 
   // Floor
   const floor = new Mesh(new PlaneGeometry(6, 6), wallMaterial);
@@ -159,7 +180,7 @@ function createCornellBox() {
 
   // Objects inside the box
 
-  const objectMaterial = new MeshStandardMaterial({ color: 0xeeeeee });
+  const objectMaterial = new MeshStandardNodeMaterial({ color: 0xeeeeee });
 
   // Tall box
   const tallBox = new Mesh(new BoxGeometry(1.2, 2.5, 1.2), objectMaterial);
@@ -168,7 +189,7 @@ function createCornellBox() {
   room.add(tallBox);
 
   // Sphere
-  const sphereMaterial = new MeshStandardMaterial({
+  const sphereMaterial = new MeshStandardNodeMaterial({
     color: 0x0044ff,
     roughness: 0.15,
   });
@@ -179,7 +200,7 @@ function createCornellBox() {
   // Emissive light panel, ray radiosity bakes its direct light with soft shadows
   const lightPanel = new Mesh(
     new PlaneGeometry(2, 2),
-    new MeshStandardMaterial({
+    new MeshStandardNodeMaterial({
       color: 0x000000,
       emissive: 0xffffff,
       emissiveIntensity: 20,
@@ -210,13 +231,13 @@ async function loadCourtyard() {
 
   const root = new Group();
 
-  const stone = new MeshStandardMaterial({ color: 0xddd0b8 });
-  const plaster = new MeshStandardMaterial({ color: 0xd9a066 });
-  const tiles = new MeshStandardMaterial({ color: 0xb59a7e });
-  const water = new MeshStandardMaterial({ color: 0x3c7a8a });
-  const leaves = new MeshStandardMaterial({ color: 0x4a7a32 });
+  const stone = new MeshStandardNodeMaterial({ color: 0xddd0b8 });
+  const plaster = new MeshStandardNodeMaterial({ color: 0xd9a066 });
+  const tiles = new MeshStandardNodeMaterial({ color: 0xb59a7e });
+  const water = new MeshStandardNodeMaterial({ color: 0x3c7a8a });
+  const leaves = new MeshStandardNodeMaterial({ color: 0x4a7a32 });
   const banners = [0xb02a20, 0x2a4ab0, 0xd8a020, 0x2a8a50].map(
-    (color) => new MeshStandardMaterial({ color })
+    (color) => new MeshStandardNodeMaterial({ color })
   );
 
   function add(parent, geometry, material, x, y, z) {
@@ -337,9 +358,10 @@ function requestBake() {
 }
 
 function bake() {
-  for (const material of materials) material.lightMap = null;
+  setLightMap(null);
 
   lightMapper?.dispose();
+  denoiseNode?.dispose();
   radiosity?.dispose();
 
   // each mesh gets a new geometry with light map UVs, also for another resolution
@@ -361,14 +383,40 @@ function bake() {
 
   // the light map accumulates one sample per frame in animate()
 
+  // to denoise, the light mapper also bakes the inputs of the denoiser: the variance of each texel
+  // and the surfaces of the texels as guides, which take more memory
+
   lightMapper = new LightMapper(
     renderer,
     world.atlas.resolution,
-    rayTracedRadiosityIrradiance(radiosity)
+    rayTracedRadiosityIrradiance(radiosity),
+    { variance: params.denoise, guides: params.denoise }
   );
   lightMapper.addObjects(meshes);
 
-  for (const material of materials) material.lightMap = lightMapper.texture;
+  // the denoiser filters once, when the bake is done
+
+  denoiseNode = params.denoise
+    ? denoise(lightMapper.getTextureNode("color"), {
+        position: lightMapper.getTextureNode("position"),
+        normal: lightMapper.getTextureNode("normal"),
+        variance: lightMapper.getTextureNode("variance"),
+        quality: "quality",
+      })
+    : null;
+  if (denoiseNode !== null) denoiseNode.autoUpdate = false;
+  denoised = false;
+  bakedRays = 0;
+  raysPerFrame = 8;
+
+  setLightMap(lightMapper.getTextureNode());
+}
+
+function setLightMap(lightMapNode) {
+  for (const material of materials) {
+    material.lightMapNode = lightMapNode;
+    material.needsUpdate = true;
+  }
 }
 
 function onWindowResize() {
@@ -384,11 +432,56 @@ function animate() {
     needsBake = false;
   }
 
-  if (lightMapper.samples < samples) {
-    lightMapper.update();
-    status.textContent = `Baking: ${lightMapper.samples} / ${samples} samples`;
+  const now = performance.now();
+
+  if (lastFrame > 0) {
+    const frameTime = now - lastFrame;
+
+    averageFrameTime += (frameTime - averageFrameTime) * 0.2;
+
+    frameTimes.push(frameTime);
+    if (frameTimes.length > 60) frameTimes.shift();
+  }
+
+  lastFrame = now;
+
+  if (bakedRays < rays) {
+    // the frames take a multiple of the refresh interval of the display, about the shorter ones of
+    // the recent frames. Fewer rays per frame while the frames take longer, a quarter more otherwise
+
+    const sorted = [...frameTimes].sort((a, b) => a - b);
+    const refreshTime = Math.max(
+      sorted[Math.floor(sorted.length * 0.2)] ?? 16,
+      4
+    );
+
+    if (averageFrameTime > refreshTime * 1.25)
+      raysPerFrame = Math.max(Math.floor(raysPerFrame * 0.75), 1);
+    else
+      raysPerFrame = Math.min(raysPerFrame + Math.ceil(raysPerFrame / 4), 64);
+
+    // samples of 2 to 8 rays per texel: the light map accumulates at most 256 samples
+
+    const budget = Math.min(raysPerFrame, rays - bakedRays);
+    const samples = Math.ceil(budget / 8);
+
+    radiosity.rays = Math.max(Math.ceil(budget / samples), 2);
+    lightMapper.update(samples);
+    bakedRays += samples * radiosity.rays;
+
+    status.textContent = `Baking: ${bakedRays} / ${rays} rays per texel`;
   } else {
-    status.textContent = `Baked: ${samples} samples`;
+    status.textContent = `Baked: ${rays} rays per texel${
+      denoised ? ", denoised" : ""
+    }`;
+  }
+
+  // denoise once the bake is done
+
+  if (denoiseNode !== null && !denoised && bakedRays >= rays) {
+    denoiseNode.textureNeedsUpdate = true;
+    denoised = true;
+    setLightMap(denoiseNode);
   }
 
   renderer.render(scene, camera);
