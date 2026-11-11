@@ -1,0 +1,59 @@
+<html>
+  <head>
+    <title>three.js webgpu - noise smoothing</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <meta property="og:title" content="three.js webgpu - noise smoothing" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://threejs.org/examples/webgpu_tsl_noise_smoothing.html"
+    />
+    <meta
+      property="og:image"
+      content="https://threejs.org/examples/screenshots/webgpu_tsl_noise_smoothing.jpg"
+    />
+    <link type="text/css" rel="stylesheet" href="example.css" />
+  </head>
+  <body style="overflow: hidden">
+    <div id="info">
+      <a
+        href="https://threejs.org/"
+        target="_blank"
+        rel="noopener"
+        class="logo-link"
+      ></a>
+
+      <div class="title-wrapper">
+        <a href="https://threejs.org/" target="_blank" rel="noopener"
+          >three.js</a
+        ><span>Noise Smoothing</span>
+      </div>
+
+      <small>
+        Compare how spatial smoothing and temporal accumulation reduce noise in
+        a dithered sphere or a uniform field.<br />Frames accumulated:
+        <span id="frames">0</span>
+      </small>
+    </div>
+
+    <div class="label" style="left: 0">White Noise</div>
+    <div class="label" id="noiseLabel" style="right: 0">
+      Hierarchical Hashed Weyl
+    </div>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "../build/three.webgpu.js",
+          "three/webgpu": "../build/three.webgpu.js",
+          "three/tsl": "../build/three.tsl.js",
+          "three/addons/": "./jsm/"
+        }
+      }
+    </script>
+  </body>
+</html>

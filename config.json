@@ -5804,6 +5804,16 @@
         "/src"
       ]
     },
+    "webgpu_tsl_noise_smoothing": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
     "webgpu_tsl_occlusion_dither": {
       "files": {
         "index.html": "src",
