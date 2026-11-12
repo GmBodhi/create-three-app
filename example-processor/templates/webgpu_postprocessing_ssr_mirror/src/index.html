@@ -1,8 +1,7 @@
 <html>
   <head>
     <title>
-      three.js webgpu - postprocessing - Screen Space Reflections (SSR) +
-      denoise
+      three.js webgpu - postprocessing - Mirror Screen Space Reflections (SSR)
     </title>
     <meta charset="utf-8" />
     <meta
@@ -11,25 +10,21 @@
     />
     <meta
       property="og:title"
-      content="three.js webgpu - postprocessing - Screen Space Reflections (SSR) + denoise"
+      content="three.js webgpu - postprocessing - Mirror Screen Space Reflections (SSR)"
     />
     <meta property="og:type" content="website" />
     <meta
       property="og:url"
-      content="https://threejs.org/examples/webgpu_postprocessing_ssr_denoise.html"
+      content="https://threejs.org/examples/webgpu_postprocessing_ssr_mirror.html"
     />
     <meta
       property="og:image"
-      content="https://threejs.org/examples/screenshots/webgpu_postprocessing_ssr_denoise.jpg"
+      content="https://threejs.org/examples/screenshots/webgpu_postprocessing_ssr_mirror.jpg"
     />
     <link type="text/css" rel="stylesheet" href="example.css" />
   </head>
 
   <body style="overflow: hidden">
-    <div id="compare-hint" hidden="">
-      Hold Shift and move the mouse to scrub the comparison
-    </div>
-
     <div id="info">
       <a
         href="https://threejs.org/"
@@ -41,14 +36,26 @@
       <div class="title-wrapper">
         <a href="https://threejs.org/" target="_blank" rel="noopener"
           >three.js</a
-        ><span>SSR + Denoising</span>
+        ><span>Mirror SSR</span>
       </div>
 
       <small>
-        Screen Space Reflections with Spatiotemporal Denoising by
-        <a href="https://x.com/0beqz" target="_blank" rel="noopener">0beqz</a
-        >.<br />
-        Dungeon - Low Poly Game Level Challenge by Warkarma.<br />
+        One mirror trace per pixel, followed by a roughness-dependent blur
+        post-process.<br />
+        <a href="https://skfb.ly/6tqYD" target="_blank" rel="noopener"
+          >Steampunk Camera</a
+        >
+        by
+        <a href="https://sketchfab.com/lumoize" target="_blank" rel="noopener"
+          >dylanheyes</a
+        >
+        is licensed under
+        <a
+          href="https://creativecommons.org/licenses/by/4.0/"
+          target="_blank"
+          rel="noopener"
+          >Creative Commons Attribution</a
+        >.
       </small>
     </div>
 

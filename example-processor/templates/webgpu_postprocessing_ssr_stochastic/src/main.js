@@ -12,6 +12,7 @@ import {
   sample,
   packNormalToRGB,
   unpackRGBToNormal,
+  vec2,
   velocity,
   diffuseColor,
   vec3,
@@ -25,7 +26,8 @@ import {
   saturation,
 } from "three/tsl";
 import { ssr } from "three/addons/tsl/display/SSRNode.js";
-import { temporalDenoise } from "three/addons/tsl/display/DenoiseNode.js";
+import { temporalReproject } from "three/addons/tsl/display/TemporalReprojectNode.js";
+import { recurrentDenoise } from "three/addons/tsl/display/RecurrentDenoiseNode.js";
 import { sharpen } from "three/addons/tsl/display/SharpenNode.js";
 import { traa } from "three/addons/tsl/display/TRAANode.js";
 
@@ -51,33 +53,21 @@ PhysicalLightingModel.prototype.indirectSpecular = function (builder) {
 
 const OUTPUT_COMPARE_DENOISE = 8;
 const OUTPUT_COMPARE_SSR = 9;
-
-const GRADED_OUTPUTS = new Set([
-  0,
-  1,
-  3,
-  4,
-  OUTPUT_COMPARE_DENOISE,
-  OUTPUT_COMPARE_SSR,
-]);
-
 const compareHint = document.getElementById("compare-hint");
-
-function isCompareMode(output) {
-  return output === OUTPUT_COMPARE_DENOISE || output === OUTPUT_COMPARE_SSR;
-}
-
-function updateCompareHint(output) {
-  compareHint.hidden = !isCompareMode(output);
-}
-
 const compareSplit = uniform(0.5);
 const compareResolution = uniform(
   new Vector2(window.innerWidth, window.innerHeight)
 );
 
-function buildCompareNode(noisy, denoised) {
-  const compareColor = mix(noisy, denoised, step(compareSplit, screenUV.x));
+function isCompareMode() {
+  return (
+    params.output === OUTPUT_COMPARE_DENOISE ||
+    params.output === OUTPUT_COMPARE_SSR
+  );
+}
+
+function buildCompareNode(left, right) {
+  const compareColor = mix(left, right, step(compareSplit, screenUV.x));
   const lineWidth = float(1).div(compareResolution.x);
   const onLine = float(1).sub(
     step(lineWidth, abs(screenUV.x.sub(compareSplit)))
@@ -106,13 +96,30 @@ const params = {
     environmentIntensity: 3.14, // not too sure why exactly, but multiplying by ~PI makes the env map reflections match Blender more
   },
 
+  temporalReproject: {
+    maxFrames: 16,
+    clampIntensity: 0.25,
+    flickerSuppression: 1,
+    hitPointReprojection: true,
+  },
+
   denoise: {
     enabled: true,
-    luminancePhi: 3,
-    maxFrames: 8,
+    lumaPhi: 0.75,
+    depthPhi: 20,
+    normalPhi: 0.3,
+    roughnessPhi: 100,
+    radius: 1.5,
+    alphaPhi: 5,
+    strength: 0.725,
+    adapt: 0.5,
+    smoothDisocclusions: true,
+    flickerSuppression: 1,
+    adaptiveTrust: 1,
   },
 
   post: {
+    traa: true,
     grading: {
       toneMapping: "AgX",
       exposure: 1.57,
@@ -127,14 +134,14 @@ let camera,
   scene,
   model,
   renderer,
-  postProcessing,
+  renderPipeline,
   ssrNode,
-  denoiseNode,
-  denoised;
+  temporalReprojectNode,
+  denoiseNode;
 let controls;
-let scenePassNode, combinedOutputNode, scenePassDepth, scenePassVelocity;
+let combinedOutputNode, scenePassColor, scenePassDepth, scenePassVelocity;
 let gammaUniform, contrastUniform, saturationUniform;
-const denoiseEnabled = uniform(1);
+const temporalOutputs = new Map();
 
 init();
 
@@ -207,10 +214,9 @@ async function init() {
 
   scene.environmentIntensity = 1;
 
-  postProcessing = new RenderPipeline(renderer);
+  renderPipeline = new RenderPipeline(renderer);
 
   const scenePass = pass(scene, camera);
-  scenePassNode = scenePass;
   scenePass.setMRT(
     mrt({
       output: output,
@@ -224,9 +230,7 @@ async function init() {
     })
   );
 
-  const scenePassColor = scenePass
-    .getTextureNode("output")
-    .toInspector("Color");
+  scenePassColor = scenePass.getTextureNode("output").toInspector("Color");
   const scenePassNormal = scenePass
     .getTextureNode("normal")
     .toInspector("Normal");
@@ -252,6 +256,11 @@ async function init() {
     unpackRGBToNormal(scenePassNormal.sample(uv).rgb)
   );
 
+  // metalness in diffuseColor.a, roughness in normal.a (no separate metalrough MRT)
+  const scenePassMetalRough = sample((uv) =>
+    vec2(scenePassDiffuseColor.sample(uv).a, scenePassNormal.sample(uv).a)
+  ).toInspector("Metalness/Roughness");
+
   ssrNode = ssr(scenePassColor, scenePassDepth, sceneNormal, {
     stochastic: true,
     diffuseNode: scenePassDiffuseColor,
@@ -262,28 +271,37 @@ async function init() {
     binaryRefine: params.ssr.binaryRefine,
   }).toInspector("SSR");
 
-  // the reflections are accumulated in time and filtered within the footprint of their reflection lobe,
-  // with the roughness of the scene and the ray length of each pixel ( SSR alpha channel )
-
-  const ssrTexture = ssrNode.getTextureNode();
-
-  denoiseNode = temporalDenoise(ssrTexture, {
-    depth: scenePassDepth,
-    normal: sceneNormal,
+  temporalReprojectNode = temporalReproject(
+    ssrNode,
+    scenePassDepth,
+    scenePassNormal,
+    scenePassVelocity,
     camera,
-    velocity: scenePassVelocity,
-    roughness: sample((uv) => scenePassNormal.sample(uv).a),
-    hitDistance: sample((uv) => ssrTexture.sample(uv).a),
-  });
-  denoised = mix(
-    ssrNode.rgb,
-    denoiseNode.getTextureNode().rgb,
-    denoiseEnabled
-  ).toInspector("Denoise");
-  // feed the denoised result + velocity back into SSR for multi-bounce reflections
-  ssrNode.setHistory(denoiseNode.getTexture(), scenePassVelocity);
+    {
+      mode: "specular",
+      accumulate: false,
+    }
+  );
+  temporalReprojectNode.toInspector("Temporal Reproject");
 
-  const denoisePassBlend = vec4(denoised, ssrNode.a.greaterThan(0).toVar());
+  denoiseNode = recurrentDenoise(temporalReprojectNode, camera, {
+    depth: scenePassDepth,
+    normal: scenePassNormal,
+    raw: ssrNode,
+    metalRoughness: scenePassMetalRough,
+    mode: "specular",
+    accumulate: true,
+  });
+  denoiseNode.alphaSource = "raylength"; // SSR alpha channel contains ray length
+  denoiseNode.toInspector("Denoise");
+  // feed the denoised result + velocity back into SSR for multi-bounce reflections
+  ssrNode.setHistory(denoiseNode, scenePassVelocity);
+  temporalReprojectNode.setHistoryTexture(denoiseNode);
+
+  const denoisePassBlend = vec4(
+    denoiseNode.rgb,
+    ssrNode.a.greaterThan(0).toVar()
+  );
 
   gammaUniform = uniform(params.post.grading.gamma);
   contrastUniform = uniform(params.post.grading.contrast);
@@ -295,8 +313,8 @@ async function init() {
   outputNode.toInspector("Combined SSR");
   combinedOutputNode = outputNode;
 
-  postProcessing.outputNode = applyPostProcessing(combinedOutputNode);
-  postProcessing.outputColorTransform = false;
+  renderPipeline.outputNode = applyPostProcessing(combinedOutputNode);
+  renderPipeline.outputColorTransform = false;
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
@@ -321,68 +339,132 @@ async function init() {
 
   window.addEventListener("resize", onWindowResize);
   renderer.domElement.addEventListener("pointermove", onComparePointerMove);
+  renderer.domElement.addEventListener("pointerleave", releaseCompareControls);
+  window.addEventListener("keyup", (event) => {
+    if (event.key === "Shift") releaseCompareControls();
+  });
+  window.addEventListener("blur", releaseCompareControls);
 
   applyParams();
   applyPost();
 
   const outputTypes = {
-    Combined: 0,
-    "Denoised SSR": 4,
+    Beauty: 0,
+    SSR: 1,
+    "SSR DN": 4,
     "Compare (Denoise)": OUTPUT_COMPARE_DENOISE,
     "Compare (Reflections)": OUTPUT_COMPARE_SSR,
-    "SSR (Raw)": 1,
     "Ray Length": 7,
+    "Accumulation Speed (Alpha)": 6,
   };
 
-  const ssrGui = renderer.inspector.createParameters("SSR settings");
-  ssrGui.add(params, "output", outputTypes).onChange(updateOutputNode);
-  ssrGui.add(params.ssr, "quality", 0, 1).name("quality").onChange(applyParams);
+  const displayGui = renderer.inspector.createParameters("Display");
+  displayGui
+    .add(params, "output", outputTypes)
+    .name("Output")
+    .onChange(updateOutputNode);
+  displayGui.add(params.post, "traa").name("TRAA").onChange(updateOutputNode);
+
+  const ssrGui = renderer.inspector.createParameters("SSR");
   ssrGui
-    .add(params.ssr, "mirrorBias", 0, 1)
-    .name("mirror bias")
+    .add(params.ssr, "intensity", 0, 4)
+    .name("Intensity")
     .onChange(applyParams);
   ssrGui
-    .add(params.ssr, "stepExponent", 1, 4, 0.5)
-    .name("step exponent")
+    .add(params.ssr, "quality", 0, 1, 0.01)
+    .name("Quality")
     .onChange(applyParams);
   ssrGui
     .add(params.ssr, "binaryRefine")
-    .name("binary refine")
+    .name("Binary refine")
     .onChange(applyParams);
   ssrGui
     .add(params.ssr, "maxDistance", 0, 5)
-    .name("max distance")
-    .onChange(applyParams);
-  ssrGui
-    .add(params.ssr, "intensity", 0, 4)
-    .name("intensity")
+    .name("Max distance")
     .onChange(applyParams);
   ssrGui
     .add(params.ssr, "thickness", 0, 0.25)
-    .name("thickness")
+    .name("Thickness")
     .onChange(applyParams);
-  ssrGui
-    .add(params.ssr, "environmentIntensity", 0, 10)
-    .name("env intensity")
-    .onChange(applyParams);
-  ssrGui.add(params, "roughness", 0, 1).onChange((value) => {
-    scene.traverse((object) => {
-      if (object.material) object.material.roughness = value;
-    });
-  });
 
-  const denoiseGui = renderer.inspector.createParameters("Denoise settings");
+  const denoiseGui = renderer.inspector.createParameters("Denoising");
   denoiseGui
     .add(params.denoise, "enabled")
-    .name("enabled")
+    .name("Enabled")
     .onChange(applyParams);
   denoiseGui
-    .add(params.denoise, "luminancePhi", 0, 10)
-    .name("luminance phi")
+    .add(params.denoise, "lumaPhi", 0, 3)
+    .name("Luma phi")
     .onChange(applyParams);
   denoiseGui
-    .add(params.denoise, "maxFrames", 1, 32, 1)
-    .name("max frames")
+    .add(params.denoise, "depthPhi", 0, 50)
+    .name("Depth phi")
+    .onChange(applyParams);
+  denoiseGui
+    .add(params.denoise, "normalPhi", 0.01, 1, 0.01)
+    .name("Normal phi")
+    .onChange(applyParams);
+  denoiseGui
+    .add(params.denoise, "alphaPhi", 0, 15)
+    .name("Ray length phi")
+    .onChange(applyParams);
+  denoiseGui
+    .add(params.denoise, "radius", 0, 3)
+    .name("Radius")
+    .onChange(applyParams);
+  denoiseGui
+    .add(params.denoise, "strength", 0.5, 0.95)
+    .name("Strength")
+    .onChange(applyParams);
+  denoiseGui
+    .add(params.denoise, "adapt", 0, 1)
+    .name("Adapt")
+    .onChange(applyParams);
+
+  const temporalReprojectGui = renderer.inspector
+    .createParameters("Temporal reprojection")
+    .close();
+  temporalReprojectGui
+    .add(params.temporalReproject, "maxFrames", 1, 128, 1)
+    .name("History frames")
+    .onChange(applyParams);
+  temporalReprojectGui
+    .add(params.temporalReproject, "clampIntensity", 0, 1)
+    .name("Clamp intensity")
+    .onChange(applyParams);
+  temporalReprojectGui
+    .add(params.temporalReproject, "flickerSuppression", 0, 1)
+    .name("Flicker suppression")
+    .onChange(applyParams);
+  temporalReprojectGui
+    .add(params.temporalReproject, "hitPointReprojection")
+    .name("Hit point reprojection")
+    .onChange(applyParams);
+
+  const sceneGui = renderer.inspector.createParameters("Scene");
+  sceneGui
+    .add(params, "roughness", 0, 1)
+    .name("Roughness")
+    .onChange((value) => {
+      scene.traverse((object) => {
+        if (object.material) object.material.roughness = value;
+      });
+    });
+  sceneGui
+    .add(params.ssr, "environmentIntensity", 0, 10)
+    .name("Environment intensity")
+    .onChange(applyParams);
+
+  const advancedGui = renderer.inspector
+    .createParameters("SSR advanced")
+    .close();
+  advancedGui
+    .add(params.ssr, "mirrorBias", 0, 1)
+    .name("Mirror bias")
+    .onChange(applyParams);
+  advancedGui
+    .add(params.ssr, "stepExponent", 1, 4, 0.5)
+    .name("Step exponent")
     .onChange(applyParams);
 
   // Concise UI for Directional Light controls
@@ -417,10 +499,30 @@ function applyParams() {
   ssrNode.screenEdgeFadeBlack = params.ssr.screenEdgeFadeBlack;
   ssrNode.environmentIntensity.value = params.ssr.environmentIntensity;
 
+  if (temporalReprojectNode) {
+    temporalReprojectNode.maxFrames.value = params.temporalReproject.maxFrames;
+    temporalReprojectNode.clampIntensity.value =
+      params.temporalReproject.clampIntensity;
+    temporalReprojectNode.flickerSuppression.value =
+      params.temporalReproject.flickerSuppression;
+    temporalReprojectNode.hitPointReprojection.value =
+      params.temporalReproject.hitPointReprojection;
+  }
+
   if (denoiseNode) {
-    denoiseEnabled.value = params.denoise.enabled ? 1 : 0;
-    denoiseNode.luminancePhi.value = params.denoise.luminancePhi;
-    denoiseNode.maxFrames.value = params.denoise.maxFrames;
+    denoiseNode.lumaPhi.value = params.denoise.lumaPhi;
+    denoiseNode.depthPhi.value = params.denoise.depthPhi;
+    denoiseNode.normalPhi.value = params.denoise.normalPhi;
+    denoiseNode.roughnessPhi.value = params.denoise.roughnessPhi;
+    denoiseNode.radius.value = params.denoise.enabled
+      ? params.denoise.radius
+      : 0;
+    denoiseNode.alphaPhi.value = params.denoise.alphaPhi;
+    denoiseNode.strength.value = params.denoise.strength;
+    denoiseNode.adapt.value = params.denoise.adapt;
+    denoiseNode.smoothDisocclusions.value = params.denoise.smoothDisocclusions;
+    denoiseNode.flickerSuppression.value = params.denoise.flickerSuppression;
+    denoiseNode.adaptiveTrust.value = params.denoise.adaptiveTrust;
   }
 }
 
@@ -436,10 +538,19 @@ function applyGrading(source) {
 }
 
 function applyPostProcessing(source) {
-  return sharpen(
-    traa(applyGrading(source), scenePassDepth, scenePassVelocity, camera),
-    0
-  );
+  if (!params.post.traa) return applyGrading(source);
+  let temporal = temporalOutputs.get(source);
+  if (temporal === undefined) {
+    temporal = traa(
+      applyGrading(source),
+      scenePassDepth,
+      scenePassVelocity,
+      camera
+    );
+    temporalOutputs.set(source, temporal);
+  }
+
+  return sharpen(temporal, 0);
 }
 
 function applyPost() {
@@ -453,50 +564,47 @@ function applyPost() {
 }
 
 function updateOutputNode() {
-  if (!postProcessing) return;
+  if (!renderPipeline) return;
 
   let node;
 
   switch (params.output) {
     case 0:
       node = applyPostProcessing(combinedOutputNode);
-      break; // Combined
+      break; // Beauty
     case 1:
-      node = applyPostProcessing(vec4(ssrNode.rgb, 1));
-      break; // SSR (Raw)
+      node = applyGrading(vec4(ssrNode.rgb, 1));
+      break; // SSR
     case 4:
-      node = applyPostProcessing(vec4(denoised, 1));
-      break; // Denoised SSR
+      node = applyGrading(vec4(denoiseNode.rgb, 1));
+      break; // SSR DN
+    case 6:
+      node = vec4(denoiseNode.aaa, 1);
+      break; // Accumulation Speed (Alpha)
     case 7:
       node = vec4(ssrNode.aaa, 1);
-      break; // Ray Length (Raw)
-    case OUTPUT_COMPARE_DENOISE: {
-      // Compare (denoised | noisy)
-
-      const noisySSR = applyPostProcessing(vec4(ssrNode.rgb, 1));
-      const denoisedSSR = applyPostProcessing(vec4(denoised, 1));
-      node = buildCompareNode(denoisedSSR, noisySSR);
-      break;
-    }
-
-    case OUTPUT_COMPARE_SSR: {
-      // Compare (combined SSR vs. scene only)
-
+      break; // Ray Length
+    case OUTPUT_COMPARE_DENOISE:
       node = buildCompareNode(
-        applyPostProcessing(combinedOutputNode),
-        applyPostProcessing(scenePassNode)
+        applyGrading(vec4(denoiseNode.rgb, 1)),
+        applyGrading(vec4(ssrNode.rgb, 1))
       );
       break;
-    }
+    case OUTPUT_COMPARE_SSR:
+      node = buildCompareNode(
+        applyPostProcessing(combinedOutputNode),
+        applyPostProcessing(scenePassColor)
+      );
+      break;
   }
 
-  if (!isCompareMode(params.output)) controls.enabled = true;
+  compareHint.hidden = !isCompareMode();
+  releaseCompareControls();
 
-  updateCompareHint(params.output);
-
-  postProcessing.outputColorTransform = !GRADED_OUTPUTS.has(params.output);
-  postProcessing.outputNode = node;
-  postProcessing.needsUpdate = true;
+  renderPipeline.outputColorTransform =
+    params.output === 6 || params.output === 7;
+  renderPipeline.outputNode = node;
+  renderPipeline.needsUpdate = true;
 }
 
 function onWindowResize() {
@@ -507,24 +615,26 @@ function onWindowResize() {
   compareResolution.value.set(window.innerWidth, window.innerHeight);
 }
 
+function releaseCompareControls() {
+  controls.enabled = true;
+}
+
 function onComparePointerMove(event) {
-  if (!isCompareMode(params.output)) return;
+  if (!isCompareMode()) return;
+
+  controls.enabled = !event.shiftKey;
 
   if (event.shiftKey) {
-    controls.enabled = false;
-
     const rect = renderer.domElement.getBoundingClientRect();
     compareSplit.value = Math.max(
       0,
       Math.min(1, (event.clientX - rect.left) / rect.width)
     );
-  } else {
-    controls.enabled = true;
   }
 }
 
 function animate() {
   controls.update();
 
-  postProcessing.render();
+  renderPipeline.render();
 }

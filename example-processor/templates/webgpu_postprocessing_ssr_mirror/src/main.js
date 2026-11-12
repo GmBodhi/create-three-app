@@ -14,6 +14,10 @@ import {
   packNormalToRGB,
   unpackRGBToNormal,
   vec2,
+  vec4,
+  uniform,
+  mix,
+  passTexture,
   colorSpaceToWorking,
 } from "three/tsl";
 import { ssr } from "three/addons/tsl/display/SSRNode.js";
@@ -26,17 +30,19 @@ import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 
 const params = {
+  output: "Beauty",
+  enabled: true,
   quality: 0.5,
-  blurQuality: 1,
-  maxDistance: 1,
   intensity: 1,
+  maxDistance: 1,
   thickness: 0.03,
   binaryRefine: false,
   roughness: 1,
-  enabled: true,
+  blur: true,
+  blurQuality: 1,
 };
 
-let camera, scene, model, renderer, renderPipeline, ssrPass;
+let camera, scene, model, renderer, renderPipeline;
 let controls;
 
 init();
@@ -154,18 +160,39 @@ async function init() {
 
   //
 
-  ssrPass = ssr(scenePassColor, scenePassDepth, sceneNormal, {
+  const reflection = ssr(scenePassColor, scenePassDepth, sceneNormal, {
     metalnessNode: scenePassMetalRough.r,
     roughnessNode: scenePassMetalRough.g,
+    binaryRefine: params.binaryRefine,
   }).toInspector("SSR");
 
-  // blend SSR over beauty (SSR outputs premultiplied color, so use additive blending)
+  const raw = passTexture(reflection, reflection.getRenderTarget().texture);
+  const blurred = reflection.getTextureNode();
+  const blurEnabled = uniform(1);
+  const combined = scenePassColor.rgb.add(
+    mix(raw.rgb, blurred.rgb, blurEnabled)
+  );
+  const spatialAA = smaa(vec4(combined, 1));
 
-  const outputNode = smaa(scenePassColor.add(ssrPass.rgb));
+  function updateOutput() {
+    let view;
 
-  renderPipeline.outputNode = outputNode;
+    switch (params.output) {
+      case "Beauty":
+        view = spatialAA;
+        break;
+      case "SSR":
+        view = vec4(raw.rgb, 1);
+        break;
+      case "SSR DN":
+        view = vec4(blurred.rgb, 1);
+        break;
+    }
 
-  //
+    renderPipeline.outputNode = params.enabled ? view : scenePass;
+    renderPipeline.outputColorTransform = true;
+    renderPipeline.needsUpdate = true;
+  }
 
   controls = new OrbitControls(camera, renderer.domElement);
   controls.enableDamping = true;
@@ -175,48 +202,69 @@ async function init() {
 
   // GUI
 
-  const gui = renderer.inspector.createParameters("Settings");
-  const ssrFolder = gui.addFolder("SSR");
-  ssrFolder.add(params, "quality", 0, 1).onChange(updateParameters);
-  ssrFolder.add(params, "blurQuality", 1, 3, 1).onChange(updateParameters);
-  ssrFolder.add(params, "maxDistance", 0, 1).onChange(updateParameters);
-  ssrFolder.add(params, "intensity", 0, 1).onChange(updateParameters);
-  ssrFolder.add(params, "thickness", 0, 0.05).onChange(updateParameters);
-  ssrFolder
-    .add(params, "binaryRefine")
-    .name("binary refine")
-    .onChange(updateParameters);
-  ssrFolder.add(params, "enabled").onChange(() => {
-    if (params.enabled === true) {
-      renderPipeline.outputNode = outputNode;
-    } else {
-      renderPipeline.outputNode = scenePass;
-    }
+  const displayGui = renderer.inspector.createParameters("Display");
+  displayGui
+    .add(params, "output", ["Beauty", "SSR", "SSR DN"])
+    .name("Output")
+    .info(
+      "DN means denoise; this mirror example uses spatial blur rather than stochastic denoising."
+    )
+    .onChange(updateOutput);
 
-    renderPipeline.needsUpdate = true;
-  });
-  const modelFolder = gui.addFolder("Model");
-  modelFolder.add(params, "roughness", 0, 1).onChange((value) => {
-    model.traverse(function (object) {
-      if (object.material) {
-        object.material.roughness = value;
-      }
+  const ssrGui = renderer.inspector.createParameters("SSR");
+  ssrGui.add(params, "enabled").name("Enabled").onChange(updateOutput);
+  ssrGui
+    .add(params, "intensity", 0, 1)
+    .name("Intensity")
+    .onChange(updateParameters);
+  ssrGui
+    .add(params, "quality", 0, 1, 0.01)
+    .name("Quality")
+    .onChange(updateParameters);
+  ssrGui
+    .add(params, "binaryRefine")
+    .name("Binary refine")
+    .onChange(updateParameters);
+  ssrGui
+    .add(params, "maxDistance", 0, 1)
+    .name("Max distance")
+    .onChange(updateParameters);
+  ssrGui
+    .add(params, "thickness", 0, 0.05)
+    .name("Thickness")
+    .onChange(updateParameters);
+
+  const blurGui = renderer.inspector.createParameters("Blur");
+  blurGui
+    .add(params, "blur")
+    .name("Enabled")
+    .onChange((value) => (blurEnabled.value = Number(value)));
+  blurGui
+    .add(params, "blurQuality", 1, 3, 1)
+    .name("Quality")
+    .onChange(updateParameters);
+
+  const sceneGui = renderer.inspector.createParameters("Scene");
+  sceneGui
+    .add(params, "roughness", 0, 1)
+    .name("Roughness")
+    .onChange((value) => {
+      model?.traverse((object) => {
+        if (object.material) object.material.roughness = value;
+      });
     });
-  });
 
   updateParameters();
-}
+  updateOutput();
 
-function updateParameters() {
-  ssrPass.quality.value = params.quality;
-  // blurQuality is a build-time constant: assigning it recompiles the blur material
-  // (the setter no-ops when the value is unchanged).
-  ssrPass.blurQuality = params.blurQuality;
-  ssrPass.maxDistance.value = params.maxDistance;
-  ssrPass.intensity.value = params.intensity;
-  ssrPass.thickness.value = params.thickness;
-  // build-time constant: assigning it recompiles the SSR material (setter no-ops if unchanged)
-  ssrPass.binaryRefine = params.binaryRefine;
+  function updateParameters() {
+    reflection.quality.value = params.quality;
+    reflection.intensity.value = params.intensity;
+    reflection.binaryRefine = params.binaryRefine;
+    reflection.maxDistance.value = params.maxDistance;
+    reflection.thickness.value = params.thickness;
+    reflection.blurQuality = params.blurQuality;
+  }
 }
 
 function onWindowResize() {

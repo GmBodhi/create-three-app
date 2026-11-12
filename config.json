@@ -5311,7 +5311,7 @@
         "/src"
       ]
     },
-    "webgpu_postprocessing_ssr": {
+    "webgpu_postprocessing_ssr_animation": {
       "files": {
         "index.html": "src",
         "main.js": "src",
@@ -5321,7 +5321,17 @@
         "/src"
       ]
     },
-    "webgpu_postprocessing_ssr_denoise": {
+    "webgpu_postprocessing_ssr_mirror": {
+      "files": {
+        "index.html": "src",
+        "main.js": "src",
+        "style.css": "src"
+      },
+      "dirs": [
+        "/src"
+      ]
+    },
+    "webgpu_postprocessing_ssr_stochastic": {
       "files": {
         "index.html": "src",
         "main.js": "src",
