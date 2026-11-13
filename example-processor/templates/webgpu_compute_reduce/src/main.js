@@ -867,7 +867,10 @@ async function init(leftSideDisplay = true) {
   const computeResetBuffer = computeResetBufferFn().compute(size);
   const computeResetWorkgroupSums = computeResetWorkgroupSumsFn().compute(256);
 
-  const renderer = new WebGPURenderer({ antialias: false });
+  const renderer = new WebGPURenderer({
+    antialias: false,
+    trackTimestamp: true,
+  });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
 
@@ -1119,8 +1122,6 @@ async function init(leftSideDisplay = true) {
 
   renderer.info.autoReset = false;
 
-  const computeTimer = new GPUTimer(renderer);
-
   const stepAnimation = async function () {
     const currentAlgorithm = effectController.algo;
     const state = effectController.state;
@@ -1136,8 +1137,6 @@ async function init(leftSideDisplay = true) {
 
       const cpuTime = 0;
 
-      computeTimer.begin();
-
       switch (currentAlgorithm) {
         case "Reduce 0 (N/2)": {
           let m = size / 2;
@@ -1148,6 +1147,7 @@ async function init(leftSideDisplay = true) {
             const reduce0 = reduce0Calls[i];
             // Do a reduction step
             renderer.compute(reduce0);
+            renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
 
             m /= 2;
           }
@@ -1160,13 +1160,12 @@ async function init(leftSideDisplay = true) {
 
           for (let i = 0; i < currentAlgoCalls.length; i++) {
             renderer.compute(currentAlgoCalls[i]);
+            renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
           }
 
           break;
         }
       }
-
-      const computeTime = await computeTimer.end();
 
       // DEBUG: const reductionResult = new Uint32Array( await renderer.getArrayBufferAsync( currentBuffer ) )[0];
 
@@ -1175,9 +1174,9 @@ async function init(leftSideDisplay = true) {
       if (effectController.algo.substring(0, 3) === "CPU") {
         passInfoString = `Ran in ${cpuTime}ms<br>`;
       } else {
-        const computeTimeText =
-          computeTime === null ? "N/A" : `${computeTime.toFixed(6)}ms`;
-        passInfoString = `${renderer.info.compute.frameCalls} pass in ${computeTimeText}<br>`;
+        passInfoString = `${
+          renderer.info.compute.frameCalls
+        } pass in ${renderer.info.compute.timestamp.toFixed(6)}ms<br>`;
       }
 
       timestamps[
@@ -1188,6 +1187,7 @@ async function init(leftSideDisplay = true) {
     }
 
     renderer.render(scene, camera);
+    renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
 
     // Validate next state
 

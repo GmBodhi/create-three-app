@@ -140,6 +140,7 @@ async function init(forceWebGL = false) {
   const renderer = new WebGPURenderer({
     antialias: false,
     forceWebGL: forceWebGL,
+    trackTimestamp: true,
   });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth / 2, window.innerHeight);
@@ -167,33 +168,23 @@ async function init(forceWebGL = false) {
 
   renderer.info.autoReset = false;
 
-  const computeTimer = new GPUTimer(renderer);
-  const renderTimer = new GPUTimer(renderer);
-
   const stepAnimation = async function () {
     renderer.info.reset();
 
-    computeTimer.begin();
     renderer.compute(compute);
-    const computeTime = computeTimer.end();
-
-    renderTimer.begin();
     renderer.render(scene, camera);
-    const renderTime = renderTimer.end();
 
-    const [computeDuration, renderDuration] = await Promise.all([
-      computeTime,
-      renderTime,
-    ]);
-    const computeTimeText =
-      computeDuration === null ? "N/A" : `${computeDuration.toFixed(6)}ms`;
-    const renderTimeText =
-      renderDuration === null ? "N/A" : `${renderDuration.toFixed(6)}ms`;
+    renderer.resolveTimestampsAsync(TimestampQuery.COMPUTE);
+    renderer.resolveTimestampsAsync(TimestampQuery.RENDER);
 
     timestamps[forceWebGL ? "webgl" : "webgpu"].innerHTML = `
 
-							Compute ${renderer.info.compute.frameCalls} pass in ${computeTimeText}<br>
-							Draw ${renderer.info.render.drawCalls} pass in ${renderTimeText}`;
+							Compute ${
+                renderer.info.compute.frameCalls
+              } pass in ${renderer.info.compute.timestamp.toFixed(6)}ms<br>
+							Draw ${
+                renderer.info.render.drawCalls
+              } pass in ${renderer.info.render.timestamp.toFixed(6)}ms`;
 
     setTimeout(stepAnimation, 1000);
   };

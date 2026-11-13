@@ -52,7 +52,6 @@ async function init() {
   );
 
   // timestamps let the path tracer adapt its frame budget, and the resolution with it, to the device
-  // TODO: remove once three-gpu-pathtracer uses GPUTimer instead of trackTimestamp
   renderer = new WebGPURenderer({ antialias: true, trackTimestamp: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
