@@ -176,7 +176,7 @@ function init() {
   //
 
   const geoFloor = new BoxGeometry(2000, 0.1, 2000);
-  const matStdFloor = new MeshStandardMaterial({ color: 0x444444 });
+  const matStdFloor = new MeshStandardNodeMaterial({ color: 0x444444 });
   matStdFloor.roughnessNode = checker(uv().mul(400));
   const mshStdFloor = new Mesh(geoFloor, matStdFloor);
   scene.add(mshStdFloor);

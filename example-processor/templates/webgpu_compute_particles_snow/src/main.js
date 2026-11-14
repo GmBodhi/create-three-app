@@ -191,7 +191,7 @@ async function init() {
 
   const plane = new Mesh(
     floorGeometry,
-    new MeshStandardMaterial({
+    new MeshStandardNodeMaterial({
       color: 0x0c1e1e,
       roughness: 0.5,
       metalness: 0,

@@ -10,7 +10,7 @@ import {
   PerspectiveCamera,
   WebGPURenderer,
   NeutralToneMapping,
-  MeshStandardMaterial,
+  MeshStandardNodeMaterial,
   EquirectangularReflectionMapping,
   Matrix4,
   Vector3,
@@ -183,7 +183,7 @@ async function init() {
   base.position.set(0, 0, 0.548);
   scene.add(base);
 
-  const text_mat = new MeshStandardMaterial();
+  const text_mat = new MeshStandardNodeMaterial();
   text_mat.colorNode = TSL.color("#000000");
 
   // Create finish labels (using negative wood index for left column)

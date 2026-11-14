@@ -26,7 +26,7 @@ function init() {
 
   scene = new Scene();
 
-  const material = new MeshBasicMaterial();
+  const material = new MeshBasicNodeMaterial();
 
   // random colors between instances from 0x000000 to 0xFFFFFF
   const randomColors = range(new Color(0x000000), new Color(0xffffff));

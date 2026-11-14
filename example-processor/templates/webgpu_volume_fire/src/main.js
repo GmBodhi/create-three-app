@@ -858,7 +858,7 @@ function init() {
 
   teapot = new Mesh(
     teapotGeometry,
-    new MeshStandardMaterial({
+    new MeshStandardNodeMaterial({
       color: 0x000000,
       roughness: 1.0,
       metalness: 1.0,

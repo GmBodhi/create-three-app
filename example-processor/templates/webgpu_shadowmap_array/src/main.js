@@ -82,7 +82,7 @@ async function init() {
 
   // Create the ground with enhanced texture
   const planeGeometry = new PlaneGeometry(1500, 1500, 2, 2);
-  const planeMaterial = new MeshPhongMaterial({
+  const planeMaterial = new MeshPhongNodeMaterial({
     color: 0x88aa44,
     shininess: 5,
     specular: 0x222222,
