@@ -13,7 +13,6 @@ import {
   float,
   clamp,
   struct,
-  atomicStore,
   int,
   ivec3,
   array,
@@ -27,6 +26,7 @@ import {
   vec4,
   cross,
   step,
+  atomicExchange,
 } from "three/tsl";
 
 import { Inspector } from "three/addons/inspector/Inspector.js";
@@ -54,7 +54,7 @@ let stiffnessUniform,
   gravityUniform,
   gridSizeUniform;
 let particleBuffer, cellBuffer, cellBufferFloat;
-let clearGridKernel, p2g1Kernel, p2g2Kernel, updateGridKernel, g2pKernel;
+let p2g1Kernel, p2g2Kernel, updateGridKernel, g2pKernel;
 let particleMesh;
 const mouseCoord = new Vector3();
 const prevMouseCoord = new Vector3();
@@ -123,7 +123,6 @@ async function init() {
 
   await renderer.init();
   await renderer.compileComputeAsync([
-    clearGridKernel,
     p2g1Kernel,
     p2g2Kernel,
     updateGridKernel,
@@ -182,11 +181,10 @@ function setupUniforms() {
 }
 
 function setupComputeShaders() {
-  // the MLS-MPM system uses five compute shaders:
-  // 1. clearGridKernel: this clears the grid before each pass
-  // 2. p2g1Kernel & 3. p2g2Kernel: These particle2grid kernels transfer the particles' energy to the grid
-  // 4. updateGridKernel: updates the grid
-  // 5. g2pKernel: grid2particle kernel, transfers the grid energy back to the particles
+  // the MLS-MPM system uses four compute shaders:
+  // 1. p2g1Kernel & 2. p2g2Kernel: These particle2grid kernels transfer the particles' energy to the grid
+  // 3. updateGridKernel: updates the grid and clears the atomic cell buffer in place for the next pass
+  // 4. g2pKernel: grid2particle kernel, transfers the grid energy back to the particles
   // the implementation closely follows https://github.com/matsuoka-601/WebGPU-Ocean
 
   // because webgpu only supports int atomics, we use fixed point floats by multiplying/dividing the float values with a high integer constant
@@ -199,14 +197,6 @@ function setupComputeShaders() {
   };
 
   const cellCount = gridSize.x * gridSize.y * gridSize.z;
-  clearGridKernel = Fn(() => {
-    atomicStore(cellBuffer.element(instanceIndex).get("x"), 0);
-    atomicStore(cellBuffer.element(instanceIndex).get("y"), 0);
-    atomicStore(cellBuffer.element(instanceIndex).get("z"), 0);
-    atomicStore(cellBuffer.element(instanceIndex).get("mass"), 0);
-  })()
-    .compute(cellCount)
-    .setName("clearGridKernel");
 
   p2g1Kernel = Fn(() => {
     const particlePosition = particleBuffer
@@ -390,20 +380,20 @@ function setupComputeShaders() {
 
   updateGridKernel = Fn(() => {
     const cell = cellBuffer.element(instanceIndex);
-    const mass = decodeFixedPoint(atomicLoad(cell.get("mass"))).toConst();
+    const mass = decodeFixedPoint(
+      atomicExchange(cell.get("mass"), 0)
+    ).toConst();
+    const cellX = atomicExchange(cell.get("x"), 0);
+    const cellY = atomicExchange(cell.get("y"), 0);
+    const cellZ = atomicExchange(cell.get("z"), 0);
+
     If(mass.lessThanEqual(0), () => {
       Return();
     });
 
-    const vx = decodeFixedPoint(atomicLoad(cell.get("x")))
-      .div(mass)
-      .toVar();
-    const vy = decodeFixedPoint(atomicLoad(cell.get("y")))
-      .div(mass)
-      .toVar();
-    const vz = decodeFixedPoint(atomicLoad(cell.get("z")))
-      .div(mass)
-      .toVar();
+    const vx = decodeFixedPoint(cellX).div(mass).toVar();
+    const vy = decodeFixedPoint(cellY).div(mass).toVar();
+    const vz = decodeFixedPoint(cellZ).div(mass).toVar();
 
     const x = int(instanceIndex).div(int(gridSize.z * gridSize.y));
     const y = int(instanceIndex).div(int(gridSize.z)).mod(int(gridSize.y));
@@ -652,13 +642,7 @@ async function render() {
 
   prevMouseCoord.copy(mouseCoord);
 
-  renderer.compute([
-    clearGridKernel,
-    p2g1Kernel,
-    p2g2Kernel,
-    updateGridKernel,
-    g2pKernel,
-  ]);
+  renderer.compute([p2g1Kernel, p2g2Kernel, updateGridKernel, g2pKernel]);
 
   renderer.render(scene, camera);
 }

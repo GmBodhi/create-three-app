@@ -130,11 +130,11 @@ function init() {
   );
 
   shader = shader.replace(
-    "\t\t\tif ( frustumTest ) {\n\t\t\t\tfloat depth = texture2D( shadowMap, shadowCoord.xy ).r;",
+    "\t\t\tif ( frustumTest ) {\n\t\t\t\tfloat depth = textureLod( shadowMap, shadowCoord.xy, 0.0 ).r;",
     "\t\t\tif ( frustumTest ) {\n" +
       PCSSGetShadow_ +
       "\n" +
-      "\t\t\t\tfloat depth = texture2D( shadowMap, shadowCoord.xy ).r;"
+      "\t\t\t\tfloat depth = textureLod( shadowMap, shadowCoord.xy, 0.0 ).r;"
   );
 
   ShaderChunk.shadowmap_pars_fragment = shader;

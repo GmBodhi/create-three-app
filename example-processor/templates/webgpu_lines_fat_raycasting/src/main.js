@@ -64,11 +64,7 @@ function init() {
   timer = new Timer();
   timer.connect(document);
 
-  renderer = new WebGPURenderer({
-    antialias: true,
-    alpha: true,
-    trackTimestamp: true,
-  });
+  renderer = new WebGPURenderer({ antialias: true, alpha: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setClearColor(0x000000);

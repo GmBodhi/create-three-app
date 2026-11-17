@@ -51,8 +51,7 @@ async function init() {
     100
   );
 
-  // timestamps let the path tracer adapt its frame budget, and the resolution with it, to the device
-  renderer = new WebGPURenderer({ antialias: true, trackTimestamp: true });
+  renderer = new WebGPURenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.toneMapping = ACESFilmicToneMapping;
