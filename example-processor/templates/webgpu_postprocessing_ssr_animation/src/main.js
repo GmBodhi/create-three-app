@@ -12,8 +12,8 @@ import {
   color,
   positionLocal,
   sample,
-  packNormalToRGB,
-  unpackRGBToNormal,
+  packNormalToOctahedral,
+  unpackOctahedralToNormal,
   vec2,
   vec4,
   uniform,
@@ -182,12 +182,17 @@ async function init() {
     mrt({
       output: output,
       diffuseColor: vec4(diffuseColor.rgb, materialMetalness),
-      normal: vec4(packNormalToRGB(normalView), materialRoughness),
-      velocity: velocity,
+      normal: packNormalToOctahedral(normalView),
+      velocity: vec4(velocity, materialRoughness, 0),
     })
   );
 
-  scenePass.getTexture("normal").type = UnsignedByteType;
+  // octahedral normals can't be filtered across their folds
+
+  const normalTexture = scenePass.getTexture("normal");
+  normalTexture.format = RGFormat;
+  normalTexture.minFilter = normalTexture.magFilter = NearestFilter;
+
   scenePass.getTexture("diffuseColor").type = UnsignedByteType;
 
   const scenePassColor = scenePass.getTextureNode("output");
@@ -196,15 +201,14 @@ async function init() {
   const scenePassVelocity = scenePass.getTextureNode("velocity");
   const scenePassDiffuseColor = scenePass.getTextureNode("diffuseColor");
 
-  const sceneNormal = sample((uv) =>
-    unpackRGBToNormal(scenePassNormal.sample(uv).rgb)
-  );
-  const sceneRoughness = sample((uv) => scenePassNormal.sample(uv).a);
+  const normalDecode = (value) => unpackOctahedralToNormal(value.rg);
+  const sceneNormal = sample((uv) => normalDecode(scenePassNormal.sample(uv)));
+  const sceneRoughness = sample((uv) => scenePassVelocity.sample(uv).z);
 
-  // metalness in diffuseColor.a, roughness in normal.a
+  // metalness in diffuseColor.a, roughness in velocity.z
 
   const sceneMetalRough = sample((uv) =>
-    vec2(scenePassDiffuseColor.sample(uv).a, scenePassNormal.sample(uv).a)
+    vec2(scenePassDiffuseColor.sample(uv).a, scenePassVelocity.sample(uv).z)
   );
 
   // ssr
@@ -230,6 +234,7 @@ async function init() {
     {
       mode: "specular",
       accumulate: false,
+      normalDecode: normalDecode,
     }
   );
   temporalReprojectNode.maxFrames.value = 16;
@@ -237,7 +242,7 @@ async function init() {
 
   const denoiseNode = recurrentDenoise(temporalReprojectNode, camera, {
     depth: scenePassDepth,
-    normal: scenePassNormal,
+    normal: sceneNormal,
     raw: ssrNode,
     metalRoughness: sceneMetalRough,
     mode: "specular",

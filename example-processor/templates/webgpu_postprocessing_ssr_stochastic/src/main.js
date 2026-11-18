@@ -11,7 +11,8 @@ import {
   screenUV,
   sample,
   packNormalToRGB,
-  unpackRGBToNormal,
+  packNormalToOctahedral,
+  unpackOctahedralToNormal,
   vec2,
   velocity,
   diffuseColor,
@@ -224,16 +225,18 @@ async function init() {
       // metal Fresnel f0; do NOT bake in the (1-metalness) diffuse attenuation here, as
       // that zeroes metals and destroys their specular tint (f0 would become 0 → black).
       diffuseColor: vec4(diffuseColor.rgb, materialMetalness),
-      // Pack roughness into normal alpha channel to save MRT bandwidth
-      normal: vec4(packNormalToRGB(normalView).rgb, materialRoughness),
-      velocity: velocity,
+      normal: packNormalToOctahedral(normalView),
+      // Pack roughness into the spare velocity channel to save MRT bandwidth
+      velocity: vec4(velocity, materialRoughness, 0),
     })
   );
 
   scenePassColor = scenePass.getTextureNode("output").toInspector("Color");
   const scenePassNormal = scenePass
     .getTextureNode("normal")
-    .toInspector("Normal");
+    .toInspector("Normal", (node) =>
+      packNormalToRGB(unpackOctahedralToNormal(node.rg))
+    );
   scenePassDepth = scenePass
     .getTextureNode("depth")
     .toInspector("Depth", () => {
@@ -246,26 +249,28 @@ async function init() {
     .getTextureNode("diffuseColor")
     .toInspector("Diffuse Color");
 
+  // octahedral normals can't be filtered across their folds
+
   const normalTexture = scenePass.getTexture("normal");
-  normalTexture.type = UnsignedByteType;
+  normalTexture.format = RGFormat;
+  normalTexture.minFilter = normalTexture.magFilter = NearestFilter;
 
   const diffuseTexture = scenePass.getTexture("diffuseColor");
   diffuseTexture.type = UnsignedByteType;
 
-  const sceneNormal = sample((uv) =>
-    unpackRGBToNormal(scenePassNormal.sample(uv).rgb)
-  );
+  const normalDecode = (value) => unpackOctahedralToNormal(value.rg);
+  const sceneNormal = sample((uv) => normalDecode(scenePassNormal.sample(uv)));
 
-  // metalness in diffuseColor.a, roughness in normal.a (no separate metalrough MRT)
+  // metalness in diffuseColor.a, roughness in velocity.z (no separate metalrough MRT)
   const scenePassMetalRough = sample((uv) =>
-    vec2(scenePassDiffuseColor.sample(uv).a, scenePassNormal.sample(uv).a)
+    vec2(scenePassDiffuseColor.sample(uv).a, scenePassVelocity.sample(uv).z)
   ).toInspector("Metalness/Roughness");
 
   ssrNode = ssr(scenePassColor, scenePassDepth, sceneNormal, {
     stochastic: true,
     diffuseNode: scenePassDiffuseColor,
     metalnessNode: scenePassDiffuseColor.a,
-    roughnessNode: scenePassNormal.a,
+    roughnessNode: scenePassVelocity.z,
     environmentNode: hdrTexture,
     envImportanceSampling: params.ssr.envImportanceSampling,
     binaryRefine: params.ssr.binaryRefine,
@@ -280,13 +285,14 @@ async function init() {
     {
       mode: "specular",
       accumulate: false,
+      normalDecode: normalDecode,
     }
   );
   temporalReprojectNode.toInspector("Temporal Reproject");
 
   denoiseNode = recurrentDenoise(temporalReprojectNode, camera, {
     depth: scenePassDepth,
-    normal: scenePassNormal,
+    normal: sceneNormal,
     raw: ssrNode,
     metalRoughness: scenePassMetalRough,
     mode: "specular",

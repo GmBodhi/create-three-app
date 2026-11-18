@@ -12,7 +12,8 @@ import {
   color,
   sample,
   packNormalToRGB,
-  unpackRGBToNormal,
+  packNormalToOctahedral,
+  unpackOctahedralToNormal,
   vec2,
   vec4,
   uniform,
@@ -124,7 +125,7 @@ async function init() {
   scenePass.setMRT(
     mrt({
       output: output,
-      normal: packNormalToRGB(normalView),
+      normal: packNormalToOctahedral(normalView),
       metalrough: vec2(metalness, roughness), // pack metalness and roughness into a single attachment
     })
   );
@@ -135,7 +136,10 @@ async function init() {
   const scenePassNormal = scenePass
     .getTextureNode("normal")
     .toInspector("Normal", (node) => {
-      return colorSpaceToWorking(node, SRGBColorSpace);
+      return colorSpaceToWorking(
+        packNormalToRGB(unpackOctahedralToNormal(node.rg)),
+        SRGBColorSpace
+      );
     });
   const scenePassDepth = scenePass
     .getTextureNode("depth")
@@ -146,16 +150,19 @@ async function init() {
     .getTextureNode("metalrough")
     .toInspector("Metalness-Roughness");
 
-  // optional: optimize bandwidth by reducing the texture precision for normals and metal/roughness
+  // octahedral normals can't be filtered across their folds
 
   const normalTexture = scenePass.getTexture("normal");
-  normalTexture.type = UnsignedByteType;
+  normalTexture.format = RGFormat;
+  normalTexture.minFilter = normalTexture.magFilter = NearestFilter;
+
+  // optional: optimize bandwidth by reducing the texture precision for metal/roughness
 
   const metalRoughTexture = scenePass.getTexture("metalrough");
   metalRoughTexture.type = UnsignedByteType;
 
   const sceneNormal = sample((uv) => {
-    return unpackRGBToNormal(scenePassNormal.sample(uv));
+    return unpackOctahedralToNormal(scenePassNormal.sample(uv).rg);
   });
 
   //
