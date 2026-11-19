@@ -36,7 +36,7 @@ const params = {
   samples: 16,
   radius: 0.4,
   resolutionScale: 0.5,
-  scale: 0.8, // GTAO
+  scale: 1.5, // GTAO
   thickness: 1, // GTAO
   temporalFiltering: true, // GTAO
   intensity: 2, // SSAO
@@ -631,7 +631,7 @@ async function init() {
   gui.add(params, "radius", 0.1, 1).onChange(updateParameters);
 
   const gtaoControls = [
-    gui.add(params, "scale", 0.01, 1).onChange(updateParameters),
+    gui.add(params, "scale", 0.01, 2).onChange(updateParameters),
     gui.add(params, "thickness", 0.01, 2).onChange(updateParameters),
     gui
       .add(params, "temporalFiltering")

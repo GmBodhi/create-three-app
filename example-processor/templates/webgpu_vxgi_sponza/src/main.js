@@ -62,9 +62,8 @@ async function init() {
 
   sky = new SkyMesh();
   sky.scale.setScalar(450000);
-  sky.turbidity.value = 10;
   sky.rayleigh.value = 2;
-  sky.mieCoefficient.value = 0.005;
+  sky.mieCoefficient.value = 0.025;
   sky.mieDirectionalG.value = 0.8;
   scene.add(sky);
 

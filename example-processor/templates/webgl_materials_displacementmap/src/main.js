@@ -26,7 +26,7 @@ let camera, scene, renderer, controls;
 const settings = {
   metalness: 1.0,
   roughness: 0.4,
-  ambientIntensity: 0.2,
+  ambientIntensity: 0,
   aoMapIntensity: 1.0,
   envMapIntensity: 1.0,
   displacementScale: 2.436143, // from original model

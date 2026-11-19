@@ -1176,7 +1176,7 @@ async function init(leftSideDisplay = true) {
         passInfoString = `Ran in ${cpuTime}ms<br>`;
       } else {
         const computeTimeText =
-          computeTime === null ? "N/A" : `${computeTime.toFixed(6)}ms`;
+          computeTime === null ? "N/A" : `${computeTime.delta.toFixed(6)}ms`;
         passInfoString = `${renderer.info.compute.frameCalls} pass in ${computeTimeText}<br>`;
       }
 

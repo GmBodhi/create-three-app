@@ -45,7 +45,7 @@ sky.scale.setScalar(10000);
 scene.add(sky);
 
 const uniforms = sky.material.uniforms;
-uniforms["turbidity"].value = 0;
+uniforms["mieCoefficient"].value = 0;
 uniforms["rayleigh"].value = 3;
 uniforms["mieDirectionalG"].value = 0.7;
 uniforms["cloudElevation"].value = 1;

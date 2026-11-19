@@ -186,9 +186,11 @@ async function init(forceWebGL = false) {
       renderTime,
     ]);
     const computeTimeText =
-      computeDuration === null ? "N/A" : `${computeDuration.toFixed(6)}ms`;
+      computeDuration === null
+        ? "N/A"
+        : `${computeDuration.delta.toFixed(6)}ms`;
     const renderTimeText =
-      renderDuration === null ? "N/A" : `${renderDuration.toFixed(6)}ms`;
+      renderDuration === null ? "N/A" : `${renderDuration.delta.toFixed(6)}ms`;
 
     timestamps[forceWebGL ? "webgl" : "webgpu"].innerHTML = `
 

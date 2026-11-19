@@ -60,7 +60,7 @@ async function init() {
   );
   camera.lookAt(scene.position);
 
-  const ambientLight = new AmbientLight(0xffffff, 8); // soft white light
+  const ambientLight = new AmbientLight(0xffffff, 6); // soft white light
   scene.add(ambientLight);
 
   const dracoLoader = new DRACOLoader();

@@ -85,9 +85,8 @@ function init() {
   sky.scale.setScalar(10000);
   scene.add(sky);
 
-  sky.turbidity.value = 10;
   sky.rayleigh.value = 2;
-  sky.mieCoefficient.value = 0.005;
+  sky.mieCoefficient.value = 0.025;
   sky.mieDirectionalG.value = 0.8;
   sky.cloudCoverage.value = 0.4;
   sky.cloudDensity.value = 0.5;

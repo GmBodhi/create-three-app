@@ -142,7 +142,7 @@ async function init() {
   reflection.target.rotateX(-Math.PI / 2);
   scene.add(reflection.target);
 
-  const floorMaterial = new MeshStandardNodeMaterial();
+  const floorMaterial = new MeshLambertNodeMaterial();
   floorMaterial.transparent = true;
   floorMaterial.colorNode = Fn(() => {
     // ranges adjustment

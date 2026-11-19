@@ -140,7 +140,7 @@ function init() {
   sky.scale.setScalar(9000);
   scene.add(sky);
 
-  sky.material.uniforms.turbidity.value = 3;
+  sky.material.uniforms.mieCoefficient.value = 0.0075;
   sky.material.uniforms.rayleigh.value = 2;
   sky.material.uniforms.showSunDisc.value = false; // the sun is represented by the light
 

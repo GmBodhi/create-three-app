@@ -6,6 +6,7 @@ import { PLYLoader } from "three/addons/loaders/PLYLoader.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 import { Inspector } from "three/addons/inspector/Inspector.js";
 import { MeshletDrawingPipeline } from "three/addons/pipelines/MeshletDrawingPipeline.js";
+import { VisibilityBufferDrawingPipeline } from "three/addons/pipelines/VisibilityBufferDrawingPipeline.js";
 import WebGPU from "three/addons/capabilities/WebGPU.js";
 
 if (WebGPU.isAvailable() === false) {
@@ -21,6 +22,8 @@ const parameters = {
   occlusion: true,
   meshlets: false,
   lod: 3,
+  lodTransition: 0,
+  transitionRadius: 60,
   rotate: true,
 };
 
@@ -52,6 +55,15 @@ async function init() {
     Meshlet: new MeshletDrawingPipeline({
       occlusionCulling: parameters.occlusion,
       lodThreshold: parameters.lod,
+      lodTransition: parameters.lodTransition,
+      transitionScreenRadius: parameters.transitionRadius,
+      shadowLodThreshold: parameters.lod,
+    }),
+    "Visibility Buffer": new VisibilityBufferDrawingPipeline({
+      occlusionCulling: parameters.occlusion,
+      lodThreshold: parameters.lod,
+      lodTransition: parameters.lodTransition,
+      transitionScreenRadius: parameters.transitionRadius,
       shadowLodThreshold: parameters.lod,
     }),
     "Default (slow)": renderer.drawingPipeline,
@@ -204,13 +216,21 @@ async function prepare() {
 }
 
 function createGUI() {
-  const pipeline = pipelines["Meshlet"];
+  // the meshlet drawing pipelines share the settings, the default drawing pipeline ignores them
+
+  const meshletPipelines = [
+    pipelines["Meshlet"],
+    pipelines["Visibility Buffer"],
+  ];
 
   const gui = renderer.inspector.createParameters("Settings");
   gui
     .add(parameters, "pipeline", Object.keys(pipelines))
     .name("Pipeline")
-    .onChange(prepare);
+    .onChange(() => {
+      updateGUI();
+      prepare();
+    });
   gui
     .add(parameters, "statues", {
       "1,000": 1000,
@@ -226,22 +246,49 @@ function createGUI() {
     .add(parameters, "lod", 1, 8, 0.5)
     .name("LOD error (px)")
     .onChange((value) => {
-      pipeline.lodThreshold = value;
-      pipeline.shadowLodThreshold = value;
+      for (const pipeline of meshletPipelines) {
+        pipeline.lodThreshold = value;
+        pipeline.shadowLodThreshold = value;
+      }
+
       sunLight.shadow.needsUpdate = true;
     });
+
+  // the levels of detail crossfade in the clusters drawn by the hardware rasterizer
+
+  const lodTransition = gui
+    .add(parameters, "lodTransition", 0, 1, 0.05)
+    .name("LOD transition")
+    .onChange((value) => {
+      for (const pipeline of meshletPipelines) pipeline.lodTransition = value;
+    });
+
+  // the statues smaller on the screen switch their levels of detail without a transition
+
+  const transitionRadius = gui
+    .add(parameters, "transitionRadius", 0, 200, 1)
+    .name("Transition min radius (px)")
+    .onChange((value) => {
+      for (const pipeline of meshletPipelines)
+        pipeline.transitionScreenRadius = value;
+    });
+  const depthPrepass = gui
+    .add(pipelines["Meshlet"], "depthPrepass")
+    .name("Depth prepass")
+    .onChange(prepare);
   gui
     .add(parameters, "occlusion")
     .name("Occlusion culling")
     .onChange((value) => {
-      pipeline.occlusionCulling = value;
+      for (const pipeline of meshletPipelines)
+        pipeline.occlusionCulling = value;
       prepare();
     });
   gui
     .add(parameters, "meshlets")
     .name("Show meshlets")
     .onChange((value) => {
-      pipeline.debug = value;
+      for (const pipeline of meshletPipelines) pipeline.debug = value;
       renderer.toneMapping = value ? NoToneMapping : ACESFilmicToneMapping;
       prepare();
     });
@@ -249,6 +296,20 @@ function createGUI() {
     .add(parameters, "rotate")
     .name("Auto rotate")
     .onChange((value) => (controls.autoRotate = value));
+
+  function updateGUI() {
+    parameters.pipeline !== "Default (slow)"
+      ? lodTransition.show()
+      : lodTransition.hide();
+    parameters.pipeline !== "Default (slow)"
+      ? transitionRadius.show()
+      : transitionRadius.hide();
+    parameters.pipeline === "Meshlet"
+      ? depthPrepass.show()
+      : depthPrepass.hide();
+  }
+
+  updateGUI();
 }
 
 function onWindowResize() {
@@ -273,11 +334,13 @@ function animate(time) {
     (parameters.statues * geometry.index.count) / 3
   )} triangles in the scene`;
 
-  if (renderer.drawingPipeline === pipelines["Meshlet"]) {
-    const info = pipelines["Meshlet"].info;
+  if (renderer.drawingPipeline !== pipelines["Default (slow)"]) {
+    const info = renderer.drawingPipeline.info;
     text += ` | ${formatCount(info.triangles)} drawn in ${formatCount(
       info.clusters
     )} clusters`;
+    if (info.transitionClusters > 0)
+      text += ` (${formatCount(info.transitionClusters)} in transitions)`;
   }
 
   stats.textContent = text;

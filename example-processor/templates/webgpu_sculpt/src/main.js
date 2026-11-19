@@ -169,7 +169,7 @@ function init() {
     strength: sculptor.getStrength(),
     detail: sculptor.getDetail(),
     negative: sculptor.getNegative(),
-    mirror: sculptor.mirror,
+    mirrorAxis: sculptor.mirrorAxis,
   };
   const actions = { export: exportGLTF };
   const gui = renderer.inspector.createParameters("Sculptor");
@@ -206,9 +206,11 @@ function init() {
     sculptor.setDetail(value);
   });
 
-  gui.add(params, "mirror").onChange(function (value) {
-    sculptor.mirror = value;
-  });
+  gui
+    .add(params, "mirrorAxis", ["none", "x", "y", "z"])
+    .onChange(function (value) {
+      sculptor.mirrorAxis = value;
+    });
 
   gui.add(mesh.material, "wireframe").onChange(function () {
     mesh.material.needsUpdate = true;

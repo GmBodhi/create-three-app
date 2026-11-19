@@ -7,7 +7,7 @@ import {
   AmbientLight,
   PerspectiveCamera,
   SphereGeometry,
-  MeshStandardMaterial,
+  MeshLambertMaterial,
   BackSide,
   Mesh,
   LoadingManager,
@@ -46,7 +46,7 @@ function init() {
   const panoSphereGeo = new SphereGeometry(6, 256, 256);
 
   // Create the panoramic sphere material
-  const panoSphereMat = new MeshStandardMaterial({
+  const panoSphereMat = new MeshLambertMaterial({
     side: BackSide,
     displacementScale: -4.0,
   });

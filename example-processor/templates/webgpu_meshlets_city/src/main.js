@@ -143,9 +143,8 @@ async function init() {
 
   sky = new SkyMesh();
   sky.scale.setScalar(20000);
-  sky.turbidity.value = 8;
   sky.rayleigh.value = 3;
-  sky.mieCoefficient.value = 0.008;
+  sky.mieCoefficient.value = 0.032;
   sky.mieDirectionalG.value = 0.88;
 
   sun = new Vector3();
