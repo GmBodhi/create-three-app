@@ -1401,26 +1401,6 @@
         "/src"
       ]
     },
-    "webgl_lightprobe": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgl_lightprobe_cubecamera": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
     "webgl_lightprobes": {
       "files": {
         "index.html": "src",
@@ -4182,26 +4162,6 @@
       ]
     },
     "webgpu_lightmap_baking": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgpu_lightprobe": {
-      "files": {
-        "index.html": "src",
-        "main.js": "src",
-        "style.css": "src"
-      },
-      "dirs": [
-        "/src"
-      ]
-    },
-    "webgpu_lightprobe_cubecamera": {
       "files": {
         "index.html": "src",
         "main.js": "src",

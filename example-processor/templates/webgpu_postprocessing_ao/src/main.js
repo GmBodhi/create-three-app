@@ -39,7 +39,7 @@ const params = {
   scale: 1.5, // GTAO
   thickness: 1, // GTAO
   temporalFiltering: true, // GTAO
-  intensity: 2, // SSAO
+  intensity: 3, // SSAO
   bias: 0.025, // SSAO
   blurEnabled: true, // SSAO
   blurSharpness: 2, // SSAO

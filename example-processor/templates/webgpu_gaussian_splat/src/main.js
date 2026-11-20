@@ -22,6 +22,20 @@ let pointerDownX = 0;
 let pointerDownY = 0;
 
 const sources = {
+  splatLab: {
+    name: "Splat Lab (SPZ v4)",
+    url: "three/examples/models/spz/splat_lab.v4.spz",
+    loader: SPZLoader,
+    cameraPosition: new Vector3(0, 0.35, 1),
+    rotation: new Euler(-Math.PI * 0.09, 0, Math.PI),
+    credit: {
+      author: "Felix Herbst",
+      authorUrl: "https://superspl.at/user/hybridherbst",
+      source: "https://superspl.at/scene/a91eee9d",
+      license: "CC Attribution",
+      licenseUrl: "http://creativecommons.org/licenses/by/4.0/",
+    },
+  },
   millipede: {
     name: "Millipede (SPLAT)",
     url: "three/examples/models/splat/millipede.splat",
@@ -215,8 +229,7 @@ function disposeCurrentSplats() {
   if (splatRoot === undefined) return;
 
   scene.remove(splatRoot);
-  splats.geometry.dispose();
-  splats.material.dispose();
+  splats.dispose();
   splats = undefined;
   splatRoot = undefined;
 }
