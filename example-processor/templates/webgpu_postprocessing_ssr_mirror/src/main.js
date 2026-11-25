@@ -8,6 +8,7 @@ import {
   normalView,
   metalness,
   roughness,
+  specularColorBlended,
   screenUV,
   color,
   sample,
@@ -127,6 +128,7 @@ async function init() {
       output: output,
       normal: packNormalToOctahedral(normalView),
       metalrough: vec2(metalness, roughness), // pack metalness and roughness into a single attachment
+      specular: specularColorBlended, // the material's F0, tints reflections on metals
     })
   );
 
@@ -149,6 +151,9 @@ async function init() {
   const scenePassMetalRough = scenePass
     .getTextureNode("metalrough")
     .toInspector("Metalness-Roughness");
+  const scenePassSpecular = scenePass
+    .getTextureNode("specular")
+    .toInspector("Specular");
 
   // octahedral normals can't be filtered across their folds
 
@@ -161,6 +166,8 @@ async function init() {
   const metalRoughTexture = scenePass.getTexture("metalrough");
   metalRoughTexture.type = UnsignedByteType;
 
+  scenePass.getTexture("specular").type = UnsignedByteType;
+
   const sceneNormal = sample((uv) => {
     return unpackOctahedralToNormal(scenePassNormal.sample(uv).rg);
   });
@@ -170,6 +177,7 @@ async function init() {
   const reflection = ssr(scenePassColor, scenePassDepth, sceneNormal, {
     metalnessNode: scenePassMetalRough.r,
     roughnessNode: scenePassMetalRough.g,
+    specularNode: scenePassSpecular,
     binaryRefine: params.binaryRefine,
   }).toInspector("SSR");
 
