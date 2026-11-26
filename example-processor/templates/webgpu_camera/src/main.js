@@ -2,6 +2,8 @@ import "./style.css"; // For webpack support
 
 import * as THREE from "three/webgpu";
 
+import { Inspector } from "three/addons/inspector/Inspector.js";
+
 let SCREEN_WIDTH = window.innerWidth;
 let SCREEN_HEIGHT = window.innerHeight;
 let aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
@@ -108,6 +110,7 @@ function init() {
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
   renderer.setAnimationLoop(animate);
+  renderer.inspector = new Inspector();
   container.appendChild(renderer.domElement);
 
   renderer.setScissorTest(true);
