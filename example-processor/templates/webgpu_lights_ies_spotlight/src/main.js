@@ -89,9 +89,7 @@ async function init() {
 
   //
 
-  const material = new MeshPhongMaterial({
-    color: 0x999999 /*, dithering: true*/,
-  });
+  const material = new MeshPhongMaterial({ color: 0x999999 });
 
   const geometry = new PlaneGeometry(200, 200);
 
@@ -115,6 +113,7 @@ async function init() {
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setAnimationLoop(render);
   renderer.shadowMap.enabled = true;
+  renderer.dithering = true;
   renderer.inspector = new Inspector();
   document.body.appendChild(renderer.domElement);
 
