@@ -69,7 +69,7 @@ async function init() {
 
   computeNode = computeShaderFn()
     .compute(particlesCount)
-    .setName("Update Particles");
+    .setName("Points / Update");
   computeNode.onInit(({ renderer }) => {
     const precomputeShaderNode = Fn(() => {
       const particleIndex = float(instanceIndex);
@@ -85,7 +85,11 @@ async function init() {
       velocity.xy = vec2(velX, velY);
     });
 
-    renderer.compute(precomputeShaderNode().compute(particlesCount));
+    renderer.compute(
+      precomputeShaderNode()
+        .compute(particlesCount)
+        .setName("Points / Initialize Positions")
+    );
   });
 
   // use a compute shader to animate the point cloud's vertex data.

@@ -103,7 +103,9 @@ async function init() {
     ripplePosition.z = randY.mul(100).add(-50);
 
     rippleTime.x = 1000;
-  })().compute(maxParticleCount);
+  })()
+    .compute(maxParticleCount)
+    .setName("Rain / Initialize Particles");
 
   //
 
@@ -166,7 +168,7 @@ async function init() {
 
   computeParticles = computeUpdate()
     .compute(maxParticleCount)
-    .setName("Particles");
+    .setName("Rain / Update Particles");
 
   // rain
 
@@ -350,7 +352,7 @@ function animate() {
   // position
 
   scene.overrideMaterial = collisionPosMaterial;
-  scene.name = "Collision Scene";
+  scene.name = "Rain / Collision Depth";
   renderer.setRenderTarget(collisionPosRT);
   renderer.render(scene, collisionCamera);
 

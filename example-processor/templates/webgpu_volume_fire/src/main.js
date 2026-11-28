@@ -236,7 +236,7 @@ function createComputePasses() {
     textureStore(curlNoiseTex, coord, vec4(noiseVal, 0.0)).toWriteOnly();
   })()
     .compute(CELL_COUNT)
-    .setName("computeCurlNoise");
+    .setName("Fire / Curl Noise");
 
   // 1) Advect velocity + external forces (buoyancy, weight, turbulence)
   //    read: velTexA, dyeTexNode -> write: velTexB
@@ -335,7 +335,7 @@ function createComputePasses() {
     textureStore(velTexB, coord, vec4(newVel, 0)).toWriteOnly();
   })()
     .compute(CELL_COUNT)
-    .setName("advectVelocity");
+    .setName("Fire / Advect Velocity");
 
   // 2) Divergence of the advected velocity
   //    read: velTexB -> write: divTex
@@ -356,7 +356,7 @@ function createComputePasses() {
     textureStore(divTex, coord, vec4(divergence, 0, 0, 0)).toWriteOnly();
   })()
     .compute(CELL_COUNT)
-    .setName("divergence");
+    .setName("Fire / Divergence");
 
   // 3) Jacobi pressure solve (ping-pong A <-> B)
 
@@ -388,8 +388,16 @@ function createComputePasses() {
       .compute(CELL_COUNT)
       .setName(name);
 
-  jacobiPassAB = jacobi(pressTexA, pressTexB, "jacobiAB");
-  jacobiPassBA = jacobi(pressTexB, pressTexA, "jacobiBA");
+  jacobiPassAB = jacobi(
+    pressTexA,
+    pressTexB,
+    "Fire / Pressure / Jacobi, A to B"
+  );
+  jacobiPassBA = jacobi(
+    pressTexB,
+    pressTexA,
+    "Fire / Pressure / Jacobi, B to A"
+  );
 
   // 4) Project: subtract pressure gradient -> divergence-free velocity
   //    read: velTexB, pressTexA -> write: velTexA (final velocity of the frame)
@@ -412,7 +420,7 @@ function createComputePasses() {
     textureStore(velTexA, coord, vec4(vel, 0)).toWriteOnly();
   })()
     .compute(CELL_COUNT)
-    .setName("project");
+    .setName("Fire / Project Velocity");
 
   // 5) Advect density / temperature
   //    read: dyeTexNode, velTexA -> write: dyeTexWriteNode
@@ -452,7 +460,7 @@ function createComputePasses() {
     ).toWriteOnly();
   })()
     .compute(CELL_COUNT)
-    .setName("advectDye");
+    .setName("Fire / Advect Dye");
 
   // 6) Emit density/temperature from teapot vertices
   //    write: dyeTexWriteNode
@@ -534,7 +542,7 @@ function createComputePasses() {
     );
   })()
     .compute(vertexCount)
-    .setName("emitTeapot");
+    .setName("Fire / Emit from Teapot");
 }
 
 // ---------------------------------------------------------------

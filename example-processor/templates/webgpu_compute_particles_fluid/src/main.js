@@ -264,7 +264,7 @@ function setupComputeShaders() {
     );
   })()
     .compute(params.particleCount, [workgroupSize, 1, 1])
-    .setName("p2g1Kernel");
+    .setName("Fluid Simulation / Particle to Grid, Transfer");
 
   p2g2Kernel = Fn(() => {
     const particlePosition = particleBuffer
@@ -376,7 +376,7 @@ function setupComputeShaders() {
     );
   })()
     .compute(params.particleCount, [workgroupSize, 1, 1])
-    .setName("p2g2Kernel");
+    .setName("Fluid Simulation / Particle to Grid, Stress");
 
   updateGridKernel = Fn(() => {
     const cell = cellBuffer.element(instanceIndex);
@@ -420,7 +420,7 @@ function setupComputeShaders() {
     cellBufferFloat.element(instanceIndex).assign(vec4(vx, vy, vz, mass));
   })()
     .compute(cellCount)
-    .setName("updateGridKernel");
+    .setName("Fluid Simulation / Update Grid");
 
   const clampToRoundedBox = (pos, box, radius) => {
     const result = pos.sub(0.5).toVar();
@@ -562,7 +562,7 @@ function setupComputeShaders() {
       .assign(particleVelocity);
   })()
     .compute(params.particleCount, [workgroupSize, 1, 1])
-    .setName("g2pKernel");
+    .setName("Fluid Simulation / Grid to Particle");
 }
 
 function setupMesh() {
@@ -642,7 +642,9 @@ async function render() {
 
   prevMouseCoord.copy(mouseCoord);
 
-  renderer.compute([p2g1Kernel, p2g2Kernel, updateGridKernel, g2pKernel]);
+  const kernels = [p2g1Kernel, p2g2Kernel, updateGridKernel, g2pKernel];
+  kernels.name = "Fluid Simulation / Step";
+  renderer.compute(kernels);
 
   renderer.render(scene, camera);
 }

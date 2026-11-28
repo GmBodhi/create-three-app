@@ -249,11 +249,11 @@ async function init() {
   computeHeightAtoB = createComputeHeight(
     heightStorageA,
     heightStorageB
-  ).setName("Update Height A→B");
+  ).setName("Water / Height, A to B");
   computeHeightBtoA = createComputeHeight(
     heightStorageB,
     heightStorageA
-  ).setName("Update Height B→A");
+  ).setName("Water / Height, B to A");
 
   // Water Geometry corresponds with buffered compute grid.
   const waterGeometry = new PlaneGeometry(BOUNDS, BOUNDS, WIDTH - 1, WIDTH - 1);
@@ -447,7 +447,7 @@ async function init() {
       .assign(velocity);
   })()
     .compute(NUM_DUCKS)
-    .setName("Update Ducks");
+    .setName("Water / Ducks");
 
   // Models / Textures
 

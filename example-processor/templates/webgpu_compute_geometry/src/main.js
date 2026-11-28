@@ -69,7 +69,9 @@ const jelly = Fn(({ renderer, geometry, object }) => {
     // Modified storage position starts out the same as the base position.
 
     currentPosition.assign(basePosition);
-  })().compute(count);
+  })()
+    .compute(count)
+    .setName("Jelly / Initialize");
 
   //
 
@@ -100,7 +102,7 @@ const jelly = Fn(({ renderer, geometry, object }) => {
     currentPosition.addAssign(currentSpeed);
   })()
     .compute(count)
-    .setName("Update Jelly");
+    .setName("Jelly / Update");
 
   // initialize the storage buffer with the base position
 

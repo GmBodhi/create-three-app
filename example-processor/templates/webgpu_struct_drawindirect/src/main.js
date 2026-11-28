@@ -151,7 +151,9 @@ async function init() {
       100
     ).toVar("instanceCount");
     atomicStore(drawStorage.get("instanceCount"), instanceCount);
-  })().compute(instances);
+  })()
+    .compute(instances)
+    .setName("Indirect Draw / Update Instance Count");
 
   computeInitDrawBuffer = Fn(() => {
     drawStorage.get("vertexCount").assign(3);
@@ -159,7 +161,9 @@ async function init() {
     drawStorage.get("firstVertex").assign(0);
     drawStorage.get("firstInstance").assign(0);
     drawStorage.get("offset").assign(0);
-  })().compute(1);
+  })()
+    .compute(1)
+    .setName("Indirect Draw / Reset Arguments");
 
   const vPosition = varyingProperty("vec3", "vPosition");
   const vColor = varyingProperty("vec4", "vColor");

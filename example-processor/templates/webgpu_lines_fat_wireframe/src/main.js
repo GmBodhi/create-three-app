@@ -107,7 +107,7 @@ function animate() {
 
   scene.backgroundNode = null;
 
-  scene.name = "Scene";
+  scene.name = "Main View";
 
   renderer.render(scene, camera);
 
@@ -130,7 +130,7 @@ function animate() {
 
   scene.backgroundNode = backgroundNode;
 
-  scene.name = "Scene [ Scissor ]";
+  scene.name = "Scissor View";
 
   renderer.render(scene, camera2);
 

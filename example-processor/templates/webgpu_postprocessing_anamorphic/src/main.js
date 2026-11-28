@@ -132,6 +132,7 @@ async function init() {
       wrapS: MirroredRepeatWrapping,
       wrapT: MirroredRepeatWrapping,
     });
+    brightPass.name = "Anamorphic Highlights";
 
     // Horizontal blur
     const total = vec4(0);

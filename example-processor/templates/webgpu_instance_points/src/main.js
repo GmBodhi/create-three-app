@@ -47,6 +47,7 @@ async function init() {
   camera.position.set(-40, 0, 60);
 
   camera2 = new PerspectiveCamera(40, 1, 1, 1000);
+  camera2.name = "Inset View";
   camera2.position.copy(camera.position);
 
   backgroundNode = color(0x222222);
@@ -121,7 +122,9 @@ async function init() {
     instanceSizeStorage
       .element(instanceIndex)
       .assign(sizeFactor.mul(maxWidth.sub(minWidth)).add(minWidth));
-  })().compute(divisions);
+  })()
+    .compute(divisions)
+    .setName("Points / Resize");
 
   // Material / Sprites
 

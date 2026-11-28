@@ -21,7 +21,7 @@ let renderer;
 let views = [];
 
 class View {
-  constructor(left, top, width, height) {
+  constructor(name, left, top, width, height) {
     this.left = left;
     this.top = top;
     this.width = width;
@@ -36,6 +36,7 @@ class View {
     this.camera.updateProjectionMatrix();
 
     this.scene = new Scene();
+    this.scene.name = name;
 
     const normalizedUV = screenUV.mul(vec2(1, -1)).add(vec2(0, 1)); // Flip Y and offset
 
@@ -84,10 +85,10 @@ async function init() {
 
   // Create views after renderer initialization
   views = [
-    new View(0.0, 0.0, 0.5, 0.5),
-    new View(0.5, 0.0, 0.5, 0.5),
-    new View(0.0, 0.5, 0.5, 0.5),
-    new View(0.5, 0.5, 0.5, 0.5),
+    new View("Texture View / Data Array", 0.0, 0.0, 0.5, 0.5),
+    new View("Texture View / 3D Data", 0.5, 0.0, 0.5, 0.5),
+    new View("Texture View / Array Render Target", 0.0, 0.5, 0.5, 0.5),
+    new View("Texture View / 3D Render Target", 0.5, 0.5, 0.5, 0.5),
   ];
 
   // Add OrbitControls after views and renderer are created
@@ -201,6 +202,7 @@ async function init() {
         const materialClear = new NodeMaterial();
         materialClear.outputNode = vec4(0);
         const clearQuadMesh = new QuadMesh(materialClear);
+        clearQuadMesh.name = "Texture Update / Clear 3D Target";
         for (let i = 0; i < size.depth; i++) {
           renderer.setRenderTarget(fbo3D, i);
           clearQuadMesh.render(renderer);
@@ -224,10 +226,12 @@ async function init() {
 
         renderer.setRenderTarget(fboArray, j);
         renderer.clear();
+        quadMesh.name = "Texture Update / Write Array Layer";
         quadMesh.render(renderer);
 
         renderer.setRenderTarget(fbo3D, j);
         renderer.clear();
+        quadMesh.name = "Texture Update / Write 3D Slice";
         quadMesh.render(renderer);
 
         renderer.setRenderTarget(null);

@@ -62,6 +62,7 @@ function init() {
     5000
   );
   orthoCamera = new OrthographicCamera();
+  orthoCamera.name = "Shadow Camera / Preview";
 
   renderer = new WebGPURenderer({ antialias: true });
   renderer.setSize(window.innerWidth, window.innerHeight);

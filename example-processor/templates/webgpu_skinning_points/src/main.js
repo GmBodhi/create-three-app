@@ -93,10 +93,15 @@ function init() {
           return pointPositionArray.toAttribute();
         })()
           .compute(countOfPoints)
+          .setName("Skinning Points / Initialize")
           .onInit(() => {
             // initialize point positions and speeds
 
-            renderer.compute(updateSkinningPoints().compute(countOfPoints));
+            renderer.compute(
+              updateSkinningPoints()
+                .compute(countOfPoints)
+                .setName("Skinning Points / Update")
+            );
           });
 
         const pointCloud = new Sprite(materialPoints);

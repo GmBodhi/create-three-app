@@ -285,6 +285,7 @@ function init() {
   scene.add(rollercoasterLayer);
 
   rcscene = new Scene();
+  rcscene.name = "XR Layers / Radio-Controlled Car";
   rcscene.background = new Color(0xf0f0ff);
 
   const rclight = new HemisphereLight(0xfff0f0, 0x606066);
@@ -404,6 +405,7 @@ function init() {
   horseCamera.position.y = 300;
 
   horseScene = new Scene();
+  horseScene.name = "XR Layers / Horse";
   horseScene.background = new Color(0xf0f0f0);
 
   //
@@ -433,6 +435,7 @@ function init() {
 
   // set up ui
   guiScene = new Scene();
+  guiScene.name = "XR Layers / GUI";
   guiScene.background = new Color(0x0);
 
   guiCamera = new OrthographicCamera(-1, 1, 1, -1, 0, 1);

@@ -25,10 +25,12 @@ async function init() {
   camera.position.z = 1500;
 
   scene1 = new Scene();
+  scene1.name = "Filtering / Linear";
   scene1.background = new Color(0x000000);
   scene1.fog = new Fog(0x000000, 1500, 4000);
 
   scene2 = new Scene();
+  scene2.name = "Filtering / Nearest";
   scene2.background = new Color(0x000000);
   scene2.fog = new Fog(0x000000, 1500, 4000);
 

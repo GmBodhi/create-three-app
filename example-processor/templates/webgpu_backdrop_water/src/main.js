@@ -249,7 +249,7 @@ function init() {
   const scenePassColorBlurred = gaussianBlur(scenePassColor);
   scenePassColorBlurred.directionNode = waterMask
     .select(scenePassDepth, scenePass.getLinearDepthNode().mul(5))
-    .toInspector("Post-Processing / Blur Strength [ Depth ]", (node) =>
+    .toInspector("Post-Processing / Blur Strength, Depth", (node) =>
       node.toFloat()
     );
 

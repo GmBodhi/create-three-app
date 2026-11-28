@@ -65,9 +65,9 @@ async function init() {
 
   // compute
 
-  const computeNode = computeTexture({ storageTexture }).compute(
-    width * height
-  );
+  const computeNode = computeTexture({ storageTexture })
+    .compute(width * height)
+    .setName("Storage Texture / Generate");
 
   const material = new MeshBasicNodeMaterial({ color: 0x00ff00 });
   material.colorNode = texture(storageTexture);

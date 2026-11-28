@@ -42,6 +42,7 @@ function init() {
   camera.position.set(-40, 0, 60);
 
   camera2 = new PerspectiveCamera(40, 1, 1, 1000);
+  camera2.name = "Inset View";
   camera2.position.copy(camera.position);
 
   controls = new OrbitControls(camera, renderer.domElement);

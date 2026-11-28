@@ -126,6 +126,7 @@ function init() {
   };
 
   computeQuad = new QuadMesh(new NodeMaterial());
+  computeQuad.name = "Noise / Generate";
   computeQuad.material.fragmentNode = createComputeNode();
 
   // sigma = 0 selects a sigma = 1 Gaussian with kernel radius 3
@@ -141,6 +142,7 @@ function init() {
   blurredDisplay = output(gaussianBlur(current, null, 0).r);
 
   displayQuad = new QuadMesh(new NodeMaterial());
+  displayQuad.name = "Noise / Display";
   displayQuad.material.fragmentNode = params.spatialBlur
     ? blurredDisplay
     : display;

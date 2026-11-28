@@ -36,9 +36,11 @@ function init() {
   camera.position.z = 1500;
 
   scene1 = new Scene();
+  scene1.name = "Anisotropy / Maximum";
   scene1.fog = new Fog(0xf2f7ff, 1, 25000);
 
   scene2 = new Scene();
+  scene2.name = "Anisotropy / Off";
   scene2.fog = new Fog(0xf2f7ff, 1, 25000);
 
   scene1.add(new AmbientLight(0xeef0ff, 3));

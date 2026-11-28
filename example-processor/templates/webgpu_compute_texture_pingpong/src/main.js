@@ -84,7 +84,9 @@ async function init() {
     textureStore(writePing, indexUV, vec4(r, g, b, 1));
   });
 
-  computeInitNode = computeInit().compute(width * height);
+  computeInitNode = computeInit()
+    .compute(width * height)
+    .setName("Ping-Pong Texture / Initialize");
 
   // compute ping-pong: blur function using .load() for textureLoad
   const blur = Fn(([readTex, uv]) => {
@@ -108,8 +110,12 @@ async function init() {
     textureStore(writeTex, indexUV, vec4(color.rgb.mul(1.05), 1));
   });
 
-  computeToPong = computePingPong(readPing, writePong).compute(width * height);
-  computeToPing = computePingPong(readPong, writePing).compute(width * height);
+  computeToPong = computePingPong(readPing, writePong)
+    .compute(width * height)
+    .setName("Ping-Pong Texture / Update, Ping to Pong");
+  computeToPing = computePingPong(readPong, writePing)
+    .compute(width * height)
+    .setName("Ping-Pong Texture / Update, Pong to Ping");
 
   //
 

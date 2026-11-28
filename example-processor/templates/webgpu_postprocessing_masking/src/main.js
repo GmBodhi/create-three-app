@@ -13,13 +13,16 @@ function init() {
   // scene
 
   const baseScene = new Scene();
+  baseScene.name = "Masking / Base";
   baseScene.background = new Color(0xe0e0e0);
 
   const maskScene1 = new Scene();
+  maskScene1.name = "Masking / Mask 1";
   box = new Mesh(new BoxGeometry(4, 4, 4));
   maskScene1.add(box);
 
   const maskScene2 = new Scene();
+  maskScene2.name = "Masking / Mask 2";
   torus = new Mesh(new TorusGeometry(3, 1, 16, 32));
   maskScene2.add(torus);
 

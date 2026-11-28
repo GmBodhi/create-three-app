@@ -121,6 +121,7 @@ function init() {
     0,
     CAMERA_HEIGHT
   );
+  shadowCamera.name = "Contact Shadow / Capture";
   shadowCamera.rotation.x = Math.PI / 2;
   shadowGroup.add(shadowCamera);
 

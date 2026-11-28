@@ -72,6 +72,10 @@ function FXScene(geometry, rotationSpeed, backgroundColor) {
 
   // Setup scene
   const scene = new Scene();
+  scene.name =
+    geometry.type === "BoxGeometry"
+      ? "Transition / Boxes"
+      : "Transition / Icosahedra";
   scene.background = new Color(backgroundColor);
   scene.add(new AmbientLight(0xaaaaaa, 3));
 

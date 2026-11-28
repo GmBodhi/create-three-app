@@ -120,6 +120,7 @@ function init() {
   );
 
   quadMesh = new QuadMesh(material);
+  quadMesh.name = "MRT / Display Color and Normals";
 
   // Controls
 

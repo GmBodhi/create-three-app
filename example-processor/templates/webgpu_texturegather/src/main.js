@@ -82,6 +82,7 @@ async function init(forceWebGL = false) {
 
   const cameraZ = 2.5;
   const rtScene = new Scene();
+  rtScene.name = "Texture Gather / Source";
   rtScene.background = new Color(0x808080);
   const rtCamera = new PerspectiveCamera(
     50,

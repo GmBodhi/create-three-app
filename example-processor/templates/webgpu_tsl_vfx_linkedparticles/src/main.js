@@ -134,7 +134,9 @@ async function init() {
     Fn(() => {
       particlePositions.element(instanceIndex).xyz.assign(vec3(10000.0));
       particlePositions.element(instanceIndex).w.assign(vec3(-1.0)); // life is stored in w component; x<0 means dead
-    })().compute(nbParticles)
+    })()
+      .compute(nbParticles)
+      .setName("Linked Particles / Initialize")
   );
 
   // particles output
@@ -330,7 +332,7 @@ async function init() {
     });
   })()
     .compute(nbParticles)
-    .setName("Update Particles");
+    .setName("Linked Particles / Update");
 
   spawnParticles = Fn(() => {
     const particleIndex = spawnIndex
@@ -364,7 +366,7 @@ async function init() {
     velocity.assign(rDir.mul(5.0));
   })()
     .compute(nbToSpawn.value)
-    .setName("Spawn Particles");
+    .setName("Linked Particles / Spawn");
 
   // background , an inverted icosahedron
   const backgroundGeom = new IcosahedronGeometry(100, 5).applyMatrix4(

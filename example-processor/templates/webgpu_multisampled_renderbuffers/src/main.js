@@ -107,6 +107,7 @@ function init() {
   materialFX.colorNode = texture(renderTarget.texture).rgb;
 
   quadMesh = new QuadMesh(materialFX);
+  quadMesh.name = "MSAA / Display Buffers";
 }
 
 function onWindowMouseMove(e) {

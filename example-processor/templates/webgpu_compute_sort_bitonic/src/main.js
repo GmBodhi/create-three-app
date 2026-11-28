@@ -307,8 +307,12 @@ async function initBitonicSort() {
   );
 
   // Initialize each value in the elements buffer.
-  const computeInit = computeInitFn().compute(size);
-  const computeReset = computeResetBuffersFn().compute(size);
+  const computeInit = computeInitFn()
+    .compute(size)
+    .setName("Bitonic Sort / Initialize");
+  const computeReset = computeResetBuffersFn()
+    .compute(size)
+    .setName("Bitonic Sort / Reset Buffers");
 
   renderer.compute(computeInit);
 
@@ -488,16 +492,28 @@ async function initGlobalSwapOnly() {
   });
 
   // Initialize each value in the elements buffer.
-  const computeInit = computeInitFn().compute(size);
+  const computeInit = computeInitFn()
+    .compute(size)
+    .setName("Bitonic Sort / Initialize");
   // Swap a pair of elements in the elements buffer.
-  const computeBitonicStep = computeBitonicStepFn().compute(size / 2);
+  const computeBitonicStep = computeBitonicStepFn()
+    .compute(size / 2)
+    .setName("Bitonic Sort / Compare and Swap");
   // Set the conditions for the next swap.
-  const computeSetAlgo = computeSetAlgoFn().compute(1);
+  const computeSetAlgo = computeSetAlgoFn()
+    .compute(1)
+    .setName("Bitonic Sort / Advance Step");
   // Align the current buffer with the temp buffer if the previous sort was executed in a global scope.
-  const computeAlignCurrent = computeAlignCurrentFn().compute(size);
+  const computeAlignCurrent = computeAlignCurrentFn()
+    .compute(size)
+    .setName("Bitonic Sort / Copy Buffer");
   // Reset the buffers and algorithm information after a full bitonic sort has been completed.
-  const computeResetBuffers = computeResetBuffersFn().compute(size);
-  const computeResetAlgo = computeResetAlgoFn().compute(1);
+  const computeResetBuffers = computeResetBuffersFn()
+    .compute(size)
+    .setName("Bitonic Sort / Reset Buffers");
+  const computeResetAlgo = computeResetAlgoFn()
+    .compute(1)
+    .setName("Bitonic Sort / Reset Step");
 
   scene.add(
     createDisplayMesh(currentElementsStorage, infoStorage, nextBlockHeightRead)

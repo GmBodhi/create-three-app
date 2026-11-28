@@ -353,7 +353,9 @@ const createReduce1Fn = (createReduce1FnProps) => {
     });
 
     inputBuffer.element(instanceIndex).assign(tSum);
-  })().compute(dispatchSize, [workgroupSize]);
+  })()
+    .compute(dispatchSize, [workgroupSize])
+    .setName("Reduction / Naive Accumulation");
 
   return fnDef;
 };
@@ -400,7 +402,9 @@ const createReduce2Fn = (createReduce2FnProps) => {
     If(invocationLocalIndex.equal(uint(0)), () => {
       inputBuffer.element(workgroupId.x).assign(tSum.element(uint(0)));
     });
-  })().compute(dispatchSize, [workgroupSize]);
+  })()
+    .compute(dispatchSize, [workgroupSize])
+    .setName("Reduction / Workgroup");
 
   return fnDef;
 };
@@ -746,7 +750,9 @@ const createReduce4Fn = (props) => {
       );
       intermediateBuffer.element(workgroupId.x).assign(reducedWorkgroupSum);
     });
-  })().compute(numInvocations, [maxWorkgroupSize]);
+  })()
+    .compute(numInvocations, [maxWorkgroupSize])
+    .setName("Reduction / Vectorized Subgroup");
 
   return fnDef;
 };
@@ -864,8 +870,12 @@ async function init(leftSideDisplay = true) {
   });
 
   // Re-initialize compute buffer
-  const computeResetBuffer = computeResetBufferFn().compute(size);
-  const computeResetWorkgroupSums = computeResetWorkgroupSumsFn().compute(256);
+  const computeResetBuffer = computeResetBufferFn()
+    .compute(size)
+    .setName("Reduction / Reset Buffer");
+  const computeResetWorkgroupSums = computeResetWorkgroupSumsFn()
+    .compute(256)
+    .setName("Reduction / Reset Workgroup Sums");
 
   const renderer = new WebGPURenderer({ antialias: false });
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -893,7 +903,9 @@ async function init(leftSideDisplay = true) {
   const reduce0Calls = [];
 
   for (let i = size / 2; i >= 1; i /= 2) {
-    const reduce0 = computeReduce0Fn.compute(i, [maxWorkgroupSize]);
+    const reduce0 = computeReduce0Fn
+      .compute(i, [maxWorkgroupSize])
+      .setName("Reduction / Pairwise");
     reduce0Calls.push(reduce0);
   }
 
@@ -946,7 +958,9 @@ async function init(leftSideDisplay = true) {
       workPerThread: 4,
       rowSize: rowSize,
       vectorized: false,
-    }).compute(maxWorkgroupSize * numRows, [maxWorkgroupSize]),
+    })
+      .compute(maxWorkgroupSize * numRows, [maxWorkgroupSize])
+      .setName("Reduction / Reduce Workgroups"),
     createReduce3Fn({
       inputBuffer: workgroupSumsStorage,
       intermediateBuffer: inputStorage,
@@ -954,7 +968,9 @@ async function init(leftSideDisplay = true) {
       workPerThread: 4,
       rowSize: rowSize,
       vectorized: false,
-    }).compute(32, [32]),
+    })
+      .compute(32, [32])
+      .setName("Reduction / Reduce Workgroup Sums"),
   ];
 
   const reduce4Calls = [
@@ -972,13 +988,17 @@ async function init(leftSideDisplay = true) {
       workPerThread: 4,
       rowSize: rowSize,
       vectorized: false,
-    }).compute(32, [32]),
+    })
+      .compute(32, [32])
+      .setName("Reduction / Reduce Workgroup Sums"),
   ];
 
   const incorrectBaselineCalls = [
     createIncorrectBaselineFn({
       inputBuffer: inputStorage,
-    }).compute(size),
+    })
+      .compute(size)
+      .setName("Reduction / Baseline"),
   ];
 
   const calls = {

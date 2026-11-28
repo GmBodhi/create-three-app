@@ -69,6 +69,7 @@ function init() {
   materialFX.colorNode = texture(depthTexture);
 
   quad = new QuadMesh(materialFX);
+  quad.name = "Depth / Visualize";
 
   //
 

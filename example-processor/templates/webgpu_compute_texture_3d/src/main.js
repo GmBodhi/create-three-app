@@ -109,11 +109,11 @@ async function init() {
 
   const storageTexture = new Storage3DTexture(size, size, size);
   storageTexture.generateMipmaps = false;
-  storageTexture.name = "cloud";
+  storageTexture.name = "Cloud";
 
   computeNode = computeCloud({ storageTexture })
     .compute(size * size * size)
-    .setName("computeCloud");
+    .setName("Cloud / Generate");
 
   // Shader
 

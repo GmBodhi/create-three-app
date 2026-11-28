@@ -70,9 +70,13 @@ async function init(forceWebGL = false) {
 
   // compute
 
-  const computeInit = computeInitOrder().compute(size);
+  const computeInit = computeInitOrder()
+    .compute(size)
+    .setName("Buffer Order / Initialize");
 
-  const compute = computeInvertOrder().compute(size);
+  const compute = computeInvertOrder()
+    .compute(size)
+    .setName("Buffer Order / Reverse");
 
   const material = new MeshBasicNodeMaterial({ color: 0x00ff00 });
 

@@ -457,7 +457,7 @@ function init() {
     format: RedFormat,
     resolutionScale: resolutionScale.value,
   })
-    .setName("lowResFogPass")
+    .setName("Fog Raymarch")
     .toInspector("Volumetric Fog");
 
   // Denoising Options: JBU, Gaussian Blur, Disabled (Raw)

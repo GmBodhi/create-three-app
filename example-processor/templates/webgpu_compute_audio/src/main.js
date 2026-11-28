@@ -137,7 +137,9 @@ async function init() {
 
   // compute
 
-  computeNode = computeShaderFn().compute(waveBuffer.length);
+  computeNode = computeShaderFn()
+    .compute(waveBuffer.length)
+    .setName("Audio / Generate Samples");
 
   // renderer
 

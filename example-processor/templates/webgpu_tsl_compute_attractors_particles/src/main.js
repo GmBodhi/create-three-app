@@ -204,7 +204,9 @@ async function init() {
     velocity.assign(baseVelocity);
   });
 
-  const initCompute = init().compute(count);
+  const initCompute = init()
+    .compute(count)
+    .setName("Attractor Particles / Initialize");
 
   const reset = () => {
     renderer.compute(initCompute);
@@ -277,7 +279,9 @@ async function init() {
       mod(position.add(halfHalfExtent), boundHalfExtent).sub(halfHalfExtent)
     );
   });
-  updateCompute = update().compute(count).setName("Update Particles");
+  updateCompute = update()
+    .compute(count)
+    .setName("Attractor Particles / Update");
 
   // nodes
 
